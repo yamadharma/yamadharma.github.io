@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>centos | Д. С. Кулябов</title>
+    <link>/ru/tags/centos/</link>
+      <atom:link href="/ru/tags/centos/index.xml" rel="self" type="application/rss+xml" />
+    <description>centos</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>ru-ru</language><copyright>© 2020 Dmitry S. Kulyabov</copyright>
+    <image>
+      <url>img/map[gravatar:%!s(bool=false) shape:circle]</url>
+      <title>centos</title>
+      <link>/ru/tags/centos/</link>
+    </image>
+    
+    <item>
+      <title>Миграция с Drupal-6 на Drupal-8</title>
+      <link>/ru/1/01/01/drupal6-to-8/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>/ru/1/01/01/drupal6-to-8/</guid>
+      <description>&lt;h2 id=&#34;информация-по-миграции-&#34;&gt;Информация по миграции&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://www.drupal.org/upgrade/migrate&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Upgrading from Drupal 6 or 7 to Drupal 8&lt;/a&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://www.drupal.org/node/2257723&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Executing a Drupal 6/7 to Drupal 8 upgrade&lt;/a&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://drupalwatchdog.com/blog/2014/12/drupal-upgrade-1&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;The Drupal 6 to 8 Upgrade Challenge&lt;/a&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://www.drupal.org/node/2167633&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Known Issues with the Drupal 6/7 -&amp;gt; 8 Upgrade Path&lt;/a&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;обновление-php-&#34;&gt;Обновление PHP&lt;/h2&gt;
+&lt;p&gt;Для Drupal-8 нужен php-5.5. В Centos-7 идёт php-5.4. Обновим его до php-5.6. Вначале установним нужные репозитории
+(см. &lt;a href=&#34;https://webtatic.com/packages/php56/&#34;&gt;https://webtatic.com/packages/php56/&lt;/a&gt;):&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Сделаем подмену дистрибутивного php на php-5.6:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;yum install yum-plugin-replace
+yum replace php-common --replace-with=php56w-common
+yum install php56w-opcache
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;установка-drush-8-&#34;&gt;Установка Drush 8&lt;/h2&gt;
+&lt;p&gt;Установим Composer:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;yum -y install composer
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Установим Drush (dev):&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;mkdir /usr/local/src/drush
+cd /usr/local/src/drush
+composer require drush/drush:dev-master
+ln -s /usr/local/src/drush/vendor/drush/drush/drush /usr/local/bin/drush
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>Настройка SELinux для некоторых приложений</title>
+      <link>/ru/1/01/01/selinux-apps/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>/ru/1/01/01/selinux-apps/</guid>
+      <description>&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;setsebool&lt;/code&gt; запускаем как с ключём &lt;code&gt;-P&lt;/code&gt; (для запоминания настроек), так и без него (чтобы работало в текущей сессии).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;a-namehead_www-servera-www-сервер-&#34;&gt;&lt;a name=&#39;head_www-server&#39;&gt;&lt;/a&gt; WWW-сервер&lt;/h2&gt;
+&lt;p&gt;{% codeblock lang:bash %}
+setsebool -P httpd_unified 1
+setsebool -P httpd_can_network_connect_db 1
+setsebool -P httpd_can_network_connect 1
+setsebool -P httpd_can_network_relay 1
+setsebool -P httpd_can_sendmail 1
+setsebool -P httpd_execmem 1
+setsebool -P httpd_use_fusefs 1
+{% endcodeblock %}&lt;/p&gt;
+&lt;h2 id=&#34;a-namehead_dba-базы-данных-&#34;&gt;&lt;a name=&#39;head_db&#39;&gt;&lt;/a&gt; Базы данных&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Postgres&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;{% codeblock lang:bash %}
+setsebool -P selinuxuser_postgresql_connect_enabled 1
+{% endcodeblock %}&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;MySQL&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;{% codeblock lang:bash %}
+setsebool -P selinuxuser_mysql_connect_enabled 1
+{% endcodeblock %}&lt;/p&gt;
+&lt;h2 id=&#34;ojs-&#34;&gt;OJS&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Настраиваем 
+&lt;a href=&#34;#head_www-server&#34;&gt;www-сервер&lt;/a&gt; и 
+&lt;a href=&#34;#head_db&#34;&gt;базу данных&lt;/a&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Настраиваем доступ к файловой системе.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;{% codeblock lang:bash %}
+semanage fcontext &amp;ndash;add -t httpd_sys_rw_content_t &amp;ldquo;/var/www/html/ojs/cache(/.&lt;em&gt;)?&amp;rdquo;
+semanage fcontext &amp;ndash;add -t httpd_sys_rw_content_t &amp;ldquo;/var/www/html/ojs/public(/.&lt;/em&gt;)?&amp;rdquo;
+semanage fcontext &amp;ndash;add -t httpd_sys_rw_content_t &amp;ldquo;/var/www/html/ojs/config.inc.php&amp;rdquo;
+semanage fcontext &amp;ndash;add -t httpd_sys_rw_content_t &amp;ldquo;/var/www/html/ojs/plugins/generic(/.*)?&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;semanage fcontext &amp;ndash;add -t httpd_sys_rw_content_t &amp;ldquo;/var/www/data(/.*)?&amp;rdquo;
+{% endcodeblock %}&lt;/p&gt;
+&lt;h2 id=&#34;drupal-&#34;&gt;Drupal&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Настраиваем 
+&lt;a href=&#34;#head_www-server&#34;&gt;www-сервер&lt;/a&gt; и 
+&lt;a href=&#34;#head_db&#34;&gt;базу данных&lt;/a&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Настраиваем доступ к файловой системе.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;{% codeblock lang:bash %}
+semanage fcontext &amp;ndash;add -t httpd_sys_rw_content_t &amp;ldquo;/var/www/html/sites/drupal/(.&lt;em&gt;)/sites/(.&lt;/em&gt;)/files(/.&lt;em&gt;)?&amp;rdquo;
+semanage fcontext &amp;ndash;add -t httpd_sys_rw_content_t &amp;ldquo;/var/www/html/sites/drupal/(.&lt;/em&gt;)/cache(/.&lt;em&gt;)?&amp;rdquo;
+semanage fcontext &amp;ndash;add -t httpd_sys_rw_content_t &amp;ldquo;/var/www/html/sites/drupal/(.&lt;/em&gt;)/sites/all(/.*)?&amp;rdquo;
+{% endcodeblock %}&lt;/p&gt;
+&lt;h2 id=&#34;moodle-&#34;&gt;Moodle&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Настраиваем 
+&lt;a href=&#34;#head_www-server&#34;&gt;www-сервер&lt;/a&gt; и 
+&lt;a href=&#34;#head_db&#34;&gt;базу данных&lt;/a&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Настраиваем доступ к файловой системе.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/moodle/web-git/mod(/.*)?&amp;quot;
+semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/moodle/web-git/local(/.*)?&amp;quot;
+semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/moodle/web-git/theme(/.*)?&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;letsencript-&#34;&gt;LetsEncript&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;semanage fcontext -a -t cert_t &#39;/etc/letsencrypt/(archive|live)(/.*)?&#39;
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

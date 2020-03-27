@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>samba | Д. С. Кулябов</title>
+    <link>/ru/tags/samba/</link>
+      <atom:link href="/ru/tags/samba/index.xml" rel="self" type="application/rss+xml" />
+    <description>samba</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>ru-ru</language><copyright>© 2020 Dmitry S. Kulyabov</copyright>
+    <image>
+      <url>img/map[gravatar:%!s(bool=false) shape:circle]</url>
+      <title>samba</title>
+      <link>/ru/tags/samba/</link>
+    </image>
+    
+    <item>
+      <title>Миграция с Samba3 на Samba4</title>
+      <link>/ru/1/01/01/samba-migrate/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>/ru/1/01/01/samba-migrate/</guid>
+      <description>&lt;h3 id=&#34;установка-пакетов-&#34;&gt;Установка пакетов&lt;/h3&gt;
+&lt;p&gt;В качестве системы для сервера используем Centos7. Там пока не
+поддерживается функционал Samba4 AD (конфликт mit-krb и heimdal). Поэтому поставим самбу с
+EnterpriseSAMBA.com &lt;a href=&#34;https://portal.enterprisesamba.com/&#34;&gt;https://portal.enterprisesamba.com/&lt;/a&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;cd /etc/yum.repos.d
+wget https://sernet-samba-public:Noo1oxe4zo@download.sernet.de/packages/samba/4.2/rhel/7/sernet-samba-4.2.repo
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;В файле &lt;code&gt;/etc/yum.repos.d/sernet-samba-4.2.repo&lt;/code&gt; заменим
+&lt;code&gt;USERNAME:ACCESSKEY&lt;/code&gt; на свои данные либо на публичную учётную запись
+&lt;code&gt;sernet-samba-public:Noo1oxe4zo&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Установим нужные пакеты:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;yum -y install sernet-samba sernet-samba-ad
+yum -y install bind
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;поиск-дубликатов-sid-&#34;&gt;Поиск дубликатов SID&lt;/h3&gt;
+&lt;p&gt;Найдём дубликаты SID с помощью следующего скрипта (запусткается на
+машине, где расположен ldap).&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;#!/usr/bin/python
+# A quick and dirty python script that checks for duplicat SID&#39;s using slapcat.
+import os
+ 
+data = os.popen(&amp;quot;slapcat | grep sambaSID&amp;quot;, &#39;r&#39;)
+line = []
+ 
+def anydup(thelist):
+        dups = list(set([x for x in thelist if thelist.count(x) &amp;gt; 1]))
+        for i in dups:
+                print &amp;quot;Duplicate id: &amp;quot;, i
+ 
+for each_line in data:
+        line.append(each_line.strip())
+ 
+anydup(line)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Далее дубликаты удаляются с помощью редактирования ldap (я использовал
+&lt;a href=&#34;https://directory.apache.org/studio/&#34;&gt;https://directory.apache.org/studio/&lt;/a&gt;).&lt;/p&gt;
+&lt;h3 id=&#34;предварительная-конфигурация-&#34;&gt;Предварительная конфигурация&lt;/h3&gt;
+&lt;p&gt;Добавил в файл &lt;code&gt;/etc/hosts&lt;/code&gt; адрес хоста.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;127.0.0.1               localhost.localdomain   localhost                                                                                                                                     
+10.130.64.23            dc.dk.sci.pfu.edu.ru    dc
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Также прописал его в прямой и обратной зонах DNS.&lt;/p&gt;
+&lt;h3 id=&#34;перенос-конфигурационных-файлов-&#34;&gt;Перенос конфигурационных файлов&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;pdc ~ # scp -r /var/lib/samba/private/ dc.dk.sci.pfu.edu.ru:/var/lib/samba/samba3tdb/
+pdc ~ # scp /etc/samba/smb.conf dc.dk.sci.pfu.edu.ru:/var/lib/samba/samba3tdb/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;В &lt;code&gt;/var/lib/samba/samba3tdb/smb.conf&lt;/code&gt; следует заменить имя контроллера домена.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;netbios name = dc
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Поскольку при миграции используется информация из ldap, на хосте &lt;code&gt;dc&lt;/code&gt;
+задаю файл &lt;code&gt;/etc/openldap/ldap.conf&lt;/code&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;BASE    dc=dk,dc=sci,dc=pfu,dc=edu,dc=ru                                                                                                                                                      
+URI     ldap://ldap.dk.sci.pfu.edu.ru                                                                                                                                                         
+                                                                                                                                                                                              
+TLS_REQCERT     allow
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;проведение-миграции-&#34;&gt;Проведение миграции&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;samba-tool domain classicupgrade --dbdir=/var/lib/samba/samba3tdb/ --use-xattrs=yes --realm=dk.sci.pfu.edu.ru --dns-backend=BIND9_DLZ /var/lib/samba/samba3tdb/smb.conf
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;шаманство-&#34;&gt;Шаманство&lt;/h4&gt;
+&lt;p&gt;В файле &lt;code&gt;/var/lib/samba/samba3tdb/smb.conf&lt;/code&gt; заменил доменное имя&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;passdb backend = ldapsam:ldap://ldap.dk.sci.pfu.edu.ru
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;на ip-адрес&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;passdb backend = ldapsam:ldap://10.130.64.11
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Без этого миграция падала с ошибкой &lt;code&gt;LDAP client internal error: NT_STATUS_BAD_NETWORK_NAME&lt;/code&gt;.&lt;/p&gt;
+&lt;h4 id=&#34;настройка-firewalld-&#34;&gt;Настройка firewalld&lt;/h4&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;firewall-cmd --add-service=ldap --permanent
+firewall-cmd --add-service=kerberos --permanent
+firewall-cmd --add-service=kpasswd --permanent
+firewall-cmd --add-service=samba --permanent
+firewall-cmd --add-service=samba-client --permanent
+firewall-cmd --reload
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;настройка-selinux-&#34;&gt;Настройка SELinux&lt;/h4&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;setsebool -P samba_export_all_ro 1
+setsebool -P samba_export_all_rw 1
+setsebool -P samba_domain_controller 1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;настройка-kerberos-&#34;&gt;Настройка Kerberos&lt;/h3&gt;
+&lt;p&gt;Создадим файл конфигурации kerberos:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;mv /etc/krb5.conf{,.default}
+cp /var/lib/samba/private/krb5.conf /etc
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;настройка-dns-&#34;&gt;Настройка DNS&lt;/h3&gt;
+&lt;p&gt;В файле &lt;code&gt;/etc/resolv.conf&lt;/code&gt; задаём локальный DNS-сервер:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;search dk.sci.pfu.edu.ru                                                                                                                                                                      
+nameserver 127.0.0.1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;В &lt;code&gt;/etc/named.conf&lt;/code&gt; подключаем сконфигурённую конфигурацию:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;include &amp;quot;/var/lib/samba/private/named.conf&amp;quot;; 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Также в раздел &lt;code&gt;options&lt;/code&gt; добавляем:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;options {
+     [...]
+     tkey-gssapi-keytab &amp;quot;/var/lib/samba/private/dns.keytab&amp;quot;;
+     [...]
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;А также следующее:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;options {
+     [...]
+	 allow-query { localhost; 10.128.0.0/9; };
+	 allow-update { 10.128.0.0/9; 127.0.0.0/8; };
+     forwarders { 10.130.64.239; 8.8.8.8; 8.8.4.4; };
+     allow-transfer {
+		 # this config is for a single master DNS server
+		 none;
+	 };
+     [...]
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;настройка-firewalld--1&#34;&gt;Настройка firewalld&lt;/h4&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;firewall-cmd --add-service=dns --permanent
+firewall-cmd --reload
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;настройки-прав-доступа-&#34;&gt;Настройки прав доступа&lt;/h4&gt;
+&lt;p&gt;Права доступа:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;chown -R root:named /var/lib/samba/private/dns
+chmod 770 /var/lib/samba/private/dns
+chgrp named /var/lib/samba/private/dns.keytab
+chmod g+r /var/lib/samba/private/dns.keytab
+chgrp named /var/lib/samba/private
+chgrp -R named /var/lib/samba/private/sam.ldb.d
+chmod g+rw /var/lib/samba/private/sam.ldb.d/*
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;настройка-selinux--1&#34;&gt;Настройка SELinux&lt;/h4&gt;
+&lt;p&gt;Изменим текущий контекст:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;chcon -t named_conf_t /var/lib/samba/private/dns.keytab
+chcon -t named_conf_t /var/lib/samba/private/named.conf
+chcon -t named_conf_t /var/lib/samba/private/named.conf.update
+chcon -R -t named_var_run_t /var/lib/samba/private/dns
+chcon -t named_var_run_t /var/lib/samba/private/dns/${MYREALM}.zone
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Изменим постоянный контекст:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;semanage fcontext -a -t named_conf_t /var/lib/samba/private/dns.keytab
+semanage fcontext -a -t named_conf_t /var/lib/samba/private/named.conf
+semanage fcontext -a -t named_conf_t /var/lib/samba/private/named.conf.update
+semanage fcontext -a -t named_var_run_t &amp;quot;/var/lib/samba/private/dns(/.*)?&amp;quot;
+semanage fcontext -a -t named_var_run_t /var/lib/samba/private/dns/${MYREALM}.zone
+semanage fcontext -a -t named_var_run_t /var/lib/samba/private/dns/${MYREALM}.zone.jnl
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;запуск-демонов-&#34;&gt;Запуск демонов&lt;/h3&gt;
+&lt;p&gt;Сконфигурим тип сервера samba в файле &lt;code&gt;/etc/default/sernet-samba&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;SAMBA_START_MODE=&amp;quot;ad&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Запустим демоны:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;systemctl start named.service
+systemctl start sernet-samba-ad.service
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Добавим их в автозагрузку:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;systemctl enable named.service
+systemctl enable sernet-samba-ad.service
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;проверка-&#34;&gt;Проверка&lt;/h3&gt;
+&lt;p&gt;Проверка DNS.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# host -t SRV _ldap._tcp.dk.sci.pfu.edu.ru.
+_ldap._tcp.dk.sci.pfu.edu.ru has SRV record 0 100 389 dc.dk.sci.pfu.edu.ru.
+# host -t SRV _kerberos._udp.dk.sci.pfu.edu.ru.
+_kerberos._udp.dk.sci.pfu.edu.ru has SRV record 0 100 88 dc.dk.sci.pfu.edu.ru.
+# host -t A dc.dk.sci.pfu.edu.ru.
+dc.dk.sci.pfu.edu.ru has address 10.130.64.23
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Замена пароля администратора:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;samba-tool user setpassword Administrator
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Проверка &lt;code&gt;smbclient&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;smbclient //localhost/netlogon -UAdministrator -c &#39;ls&#39;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Аналогичный результат должно давать (&lt;code&gt;dc&lt;/code&gt; &amp;mdash; имя сервера):&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;smbclient //dc/netlogon -k -c &#39;ls&#39;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Проверка kerberos:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;kinit administrator@DK.SCI.PFU.EDU.RU
+klist
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;дополнительно-&#34;&gt;Дополнительно&lt;/h3&gt;
+&lt;p&gt;Убрать проверку сложности пароля:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;samba-tool domain passwordsettings set --complexity=off
+samba-tool domain passwordsettings set --history-length=0
+samba-tool domain passwordsettings set --min-pwd-age=0
+samba-tool domain passwordsettings set --max-pwd-age=0
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>lj | Д. С. Кулябов</title>
+    <link>/ru/tags/lj/</link>
+      <atom:link href="/ru/tags/lj/index.xml" rel="self" type="application/rss+xml" />
+    <description>lj</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>ru-ru</language><copyright>© 2020 Dmitry S. Kulyabov</copyright><lastBuildDate>Sat, 21 Apr 2018 15:37:34 +0000</lastBuildDate>
+    <image>
+      <url>img/map[gravatar:%!s(bool=false) shape:circle]</url>
+      <title>lj</title>
+      <link>/ru/tags/lj/</link>
+    </image>
+    
+    <item>
+      <title>Миграция с livejournal на hexo</title>
+      <link>/ru/2018/04/21/from-lj-to-hexo/</link>
+      <pubDate>Sat, 21 Apr 2018 15:37:34 +0000</pubDate>
+      <guid>/ru/2018/04/21/from-lj-to-hexo/</guid>
+      <description>&lt;p&gt;Миграция с 
+&lt;a href=&#34;https://yamadharma.livejournal.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;livejornal&lt;/a&gt; составила некоторые проблемы.&lt;/p&gt;
+&lt;p&gt;Хочу заметить, что комментарии я не переносил.&lt;/p&gt;
+&lt;p&gt;Наиболее подходящим показался мне 
+&lt;a href=&#34;https://github.com/arty-name/livejournal-export&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;livejournal-export&lt;/a&gt;. Он переводит сразу в &lt;em&gt;markdown&lt;/em&gt;. Однако, при этом не импортируются теги.
+Для идентификации использует параметры сессии броузера.&lt;/p&gt;
+&lt;p&gt;Вторым вариантом я рассмотрел 
+&lt;a href=&#34;https://github.com/ghewgill/ljdump&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;ljdump&lt;/a&gt;. Он скачивает журнал в &lt;em&gt;html&lt;/em&gt;. Для идентификации использует логин и пароль.&lt;/p&gt;
+&lt;p&gt;Потом пришлось преобразовать в &lt;em&gt;markdown&lt;/em&gt;. Для этого написал скрипт &lt;em&gt;xml2md&lt;/em&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
+import os
+import sys
+from lxml import etree
+import html2text
+from datetime import datetime
+from transliterate import translit, get_available_language_codes
+
+outdir = &#39;markdown&#39;
+os.makedirs(outdir, exist_ok=True)
+
+infile = sys.argv[1]
+print(infile)
+
+tree = etree.parse(infile)
+post = tree.getroot()
+
+postTitle = &#39;&#39;
+postTags = &#39;&#39;
+
+for elem in post.getchildren():
+    if not elem.text:
+        text = &amp;quot;None&amp;quot;
+    else:
+        text = elem.text
+    # print(elem.tag + &amp;quot; =&amp;gt; &amp;quot; + text)
+    # book_dict[elem.tag] = text
+    if elem.tag == &#39;subject&#39;:
+        postTitle = text
+    if elem.tag == &#39;eventtime&#39;:
+        postDate = text
+    if elem.tag == &#39;event&#39;:
+        postContent = text
+    if elem.tag == &#39;props&#39;:
+        for propsElem in elem.getchildren():
+            if not elem.text:
+                text = &amp;quot;None&amp;quot;
+            else:
+                text = propsElem.text
+            # print(propsElem.tag + &amp;quot; =&amp;gt; &amp;quot; + text)
+            if propsElem.tag == &#39;taglist&#39;:
+                postTags = text
+            
+
+
+
+postHeader = &#39;layout: post\n&#39;+&#39;title: &#39;+postTitle+&#39;\n&#39;+&#39;date: &#39;+str(postDate)
+postHeader = postHeader+&#39;\ncategories: blog\nlang: ru&#39;
+postHeader = postHeader+&#39;\ntags: [&#39;+postTags+&#39;]&#39;
+postHeader = postHeader+&#39;\n&#39;+&#39;---&#39;
+
+h = html2text.HTML2Text()
+h.ignore_links = False
+h.body_width = 0
+h.unicode_snob = True
+postContent = h.handle(postContent)
+
+fullPost = postHeader+&#39;\n\n\n&#39;+postContent
+
+date = datetime.strptime(postDate, &#39;%Y-%m-%d %H:%M:%S&#39;)
+outFile = &#39;{0.year}-{0.month:02d}-{0.day:02d}&#39;.format(date)
+if postTitle != &#39;&#39;:
+    translitTitle = translit(postTitle, &#39;ru&#39;, reversed=True)
+    translitTitle = translitTitle.replace(&amp;quot; &amp;quot;,&amp;quot;_&amp;quot;)
+    translitTitle = translitTitle.replace(&amp;quot;:&amp;quot;,&amp;quot;&amp;quot;)
+    translitTitle = translitTitle.replace(&amp;quot;&#39;&amp;quot;,&amp;quot;&amp;quot;)
+    translitTitle = translitTitle.replace(&amp;quot;«&amp;quot;,&amp;quot;&amp;quot;)
+    translitTitle = translitTitle.replace(&amp;quot;»&amp;quot;,&amp;quot;&amp;quot;)
+    translitTitle = translitTitle.replace(&amp;quot;;&amp;quot;,&amp;quot;&amp;quot;)
+else:
+    translitTitle = &#39;{0.hour:02d}-{0.minute:02d}-{0.second:02d}&#39;.format(date)
+outFile = outFile+&#39;-&#39;+translitTitle
+
+f = open(outdir+&#39;/&#39;+str(outFile)+&#39;.md&#39;, &#39;w&#39;)
+f.write(fullPost)
+f.close()
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Преобразование можно выполнить с помощью команды:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;./xml2md &amp;lt;file&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;При этом создаётся каталог &lt;em&gt;markdown&lt;/em&gt; и в него помещается результат конвертации.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>У меня появился новый LiveJournal Messenger</title>
+      <link>/ru/2009/06/30/u-menja-pojavilsja-novyj-livejournal-messenger/</link>
+      <pubDate>Tue, 30 Jun 2009 09:39:00 +0000</pubDate>
+      <guid>/ru/2009/06/30/u-menja-pojavilsja-novyj-livejournal-messenger/</guid>
+      <description>&lt;p&gt;Включил себе LiveJournal Messenger. Вот мой Windows Live ID: &lt;a href=&#34;mailto:yamadharma@livejournal.com&#34;&gt;yamadharma@livejournal.com&lt;/a&gt;. 
+&lt;a href=&#34;http://www.livejournal.com/manage/settings/?cat=extensions&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Подключайтесь&lt;/a&gt; тоже и давайте общаться.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Blog-клиенты (2). Deepest Sender</title>
+      <link>/ru/2006/12/22/blog-klienty-2-deepest-sender/</link>
+      <pubDate>Fri, 22 Dec 2006 20:43:00 +0000</pubDate>
+      <guid>/ru/2006/12/22/blog-klienty-2-deepest-sender/</guid>
+      <description>&lt;p&gt;Критерии отбора blog-клиентов. Выделим следующие критерии.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Поддерживаемые API. Основные LiveJournal, WordPress, Blogger.
+&lt;ul&gt;
+&lt;li&gt;Наличие WYSIWIG-редактора. Сюда же входит возможность работы с изображениями, поддержка drag and drop.&lt;/li&gt;
+&lt;li&gt;Наличие предпросмотра.&lt;/li&gt;
+&lt;li&gt;Возможность детектирования проигрываемой музыки.&lt;/li&gt;
+&lt;li&gt;Возможность работать с черновиками записи.&lt;/li&gt;
+&lt;li&gt;Поддержка offline-моды.&lt;/li&gt;
+&lt;li&gt;Возможность работы с предыдущими постами.&lt;/li&gt;
+&lt;li&gt;Наличие локализации.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;И собственно subj.&lt;br&gt;
+
+&lt;a href=&#34;http://deepestsender.mozdev.org&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Deepest Sender&lt;/a&gt; — это blog-клиент, являющийся plugin&#39;ом к 
+&lt;a href=&#34;http://www.mozilla.org/products/firefox/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Firefox&lt;/a&gt;, 
+&lt;a href=&#34;http://www.mozilla.org/projects/seamonkey/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;SeaMonkey&lt;/a&gt; и 
+&lt;a href=&#34;http://developer.mozilla.org/en/docs/XULRunner&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;XULRunner. &lt;/a&gt;Соответсвенно является многоплатформенным. Удовлетворяет  всем перечисленным критериям. Фактически это первый (который я нашёл) клиент под Unix с нормальным WYSIWYG. Сейчас использую его и он мне нравится.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Менеджеры изображений. F-spot.</title>
+      <link>/ru/2006/12/06/menedzhery-izobrazhenij-f-spot/</link>
+      <pubDate>Wed, 06 Dec 2006 16:48:00 +0000</pubDate>
+      <guid>/ru/2006/12/06/menedzhery-izobrazhenij-f-spot/</guid>
+      <description>&lt;p&gt;Можно разделить менеджеры изображений на по методу упорядочивания содержимого:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;на основе каталогов;&lt;/li&gt;
+&lt;li&gt;на основе меток.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Наиболее известный из последних &amp;mdash; Picasa (&lt;a href=&#34;http://picasa.google.com&#34;&gt;http://picasa.google.com&lt;/a&gt;).&lt;br&gt;
+F-spot (&lt;a href=&#34;http://f-spot.org&#34;&gt;http://f-spot.org&lt;/a&gt;) использует эту же парадигму.&lt;br&gt;
+Особенности F-spot.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Не индексирует весь диск автоматически. Нужно добавлять необходимые каталоги или файлы (можно и с фотокамеры).&lt;/li&gt;
+&lt;li&gt;При импорте изображений логично сразу присвоить им метку.&lt;/li&gt;
+&lt;li&gt;При импорте отмечен пункт &amp;ldquo;копировать файлы в каталог Pictures&amp;rdquo;. Я отключаю эту возможность. К сожалению, выбор не сохраняется.&lt;/li&gt;
+&lt;li&gt;Метки могут иметь иерархическую структуру. Изображению можно присвоить несколько меток.&lt;/li&gt;
+&lt;li&gt;Из программы можно экспортировать изображения в 
+&lt;a href=&#34;http://www.flickr.com/&#34; title=&#34;http://www.flickr.com&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Flickr&lt;/a&gt; (
+&lt;a href=&#34;http://www.flickr.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;http://www.flickr.com&lt;/a&gt;), 
+&lt;a href=&#34;http://picasaweb.google.com/&#34; title=&#34;http://picasaweb.google.com&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Picasa Web&lt;/a&gt; (&lt;a href=&#34;http://picasaweb.google.com&#34;&gt;http://picasaweb.google.com&lt;/a&gt;), а также на сайты с движком 
+&lt;a href=&#34;http://gallery.sourceforge.net/&#34; title=&#34;http://gallery.sourceforge.net/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Gallery&lt;/a&gt; (
+&lt;a href=&#34;http://o.r.i.g.i.n.a.l.%20%28http//jimmac.musichall.cz/original.php%29&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;http://gallery.sourceforge.net&lt;/a&gt;) и 
+&lt;a href=&#34;http://jimmac.musichall.cz/original.php&#34; title=&#34;http://jimmac.musichall.cz/original.php&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;O.r.i.g.i.n.a.l.&lt;/a&gt; (
+&lt;a href=&#34;http://o.r.i.g.i.n.a.l.%20%28http//jimmac.musichall.cz/original.php%29&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;http://jimmac.musichall.cz/original.php&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Завёл аккаунт на Flickr, экспортировал изображение. Метки тоже экспортировались.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt; &lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>lj-клиенты</title>
+      <link>/ru/2006/11/30/lj-klienty/</link>
+      <pubDate>Thu, 30 Nov 2006 22:14:00 +0000</pubDate>
+      <guid>/ru/2006/11/30/lj-klienty/</guid>
+      <description>&lt;p&gt;Клиенты для работы с LiveJournal.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;При работе с Windows предлагается использовать 
+&lt;a href=&#34;http://semagic.sourceforge.net/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Semagic&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Мультипротокольные im-клиенты зачастую имеют модуль для работы LiveJournal. Стоит правда отметить, что реализована лишь базовая функциональность.
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://thekonst.net/en/centericq&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;centericq&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://sim-icq.sourceforge.net/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;sim&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Клиенты для работы только c LiveJournal.
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://logjam.danga.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;LogJam&lt;/a&gt;
+&lt;ol&gt;
+&lt;li&gt;Pro:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;Возможность предпросмотра.&lt;/li&gt;
+&lt;li&gt;Возможность получения названия мелодии из нескольких плееров: Amarok, XMMS, Rhytmbox, MPD.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;Contra:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;Отсутствие WYSIWYG редактора. Редактирование происходит в plain text с возможностью вставки html-тегов.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://kluje.sourceforge.net/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;KLuJe&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://klivejournal.sourceforge.net/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;KLiveJournal&lt;/a&gt;
+&lt;ol&gt;
+&lt;li&gt;Contra:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;Убил кодировку в этом посте. Пришлось перенабирать.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Мультипротокольные blog-клиенты.
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://www.dropline.net/drivel/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Drivel&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol&gt;
+&lt;li&gt;Поддерживаемые API: LiveJournal, Blogger, MovableType, Advogato, Atom (а также базирующиеся на них, например WordPress, Drupal).&lt;/li&gt;
+&lt;li&gt;Pro:
+&lt;ul&gt;
+&lt;li&gt;Возможность получения названия мелодии из плееров, поддерживающих D-BUS.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Contra:
+&lt;ul&gt;
+&lt;li&gt;Отсутствие WYSIWYG редактора. Редактирование происходит в plain text с возможностью вставки html-тегов.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;Эпикриз:&lt;/strong&gt; Работаю в 
+&lt;a href=&#34;http://logjam.danga.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;LogJam&lt;/a&gt; и 
+&lt;a href=&#34;http://www.dropline.net/drivel/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Drivel&lt;/a&gt;.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Почин</title>
+      <link>/ru/2006/11/06/12-39-00/</link>
+      <pubDate>Mon, 06 Nov 2006 12:39:00 +0000</pubDate>
+      <guid>/ru/2006/11/06/12-39-00/</guid>
+      <description>&lt;p&gt;Супер! Я обнаружил, что забанен в 
+&lt;a href=&#34;http://community.livejournal.com/left_ideology/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;&lt;strong&gt;left_ideology&lt;/strong&gt;&lt;/a&gt; :-)&lt;br&gt;
+Поздравляю себя с почином :-)&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

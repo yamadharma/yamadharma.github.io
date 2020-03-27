@@ -1,0 +1,1041 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>soft | Д. С. Кулябов</title>
+    <link>/ru/categories/soft/</link>
+      <atom:link href="/ru/categories/soft/index.xml" rel="self" type="application/rss+xml" />
+    <description>soft</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>ru-ru</language><copyright>© 2020 Dmitry S. Kulyabov</copyright><lastBuildDate>Sat, 21 Apr 2018 15:37:34 +0000</lastBuildDate>
+    <image>
+      <url>img/map[gravatar:%!s(bool=false) shape:circle]</url>
+      <title>soft</title>
+      <link>/ru/categories/soft/</link>
+    </image>
+    
+    <item>
+      <title>Миграция с livejournal на hexo</title>
+      <link>/ru/2018/04/21/from-lj-to-hexo/</link>
+      <pubDate>Sat, 21 Apr 2018 15:37:34 +0000</pubDate>
+      <guid>/ru/2018/04/21/from-lj-to-hexo/</guid>
+      <description>&lt;p&gt;Миграция с 
+&lt;a href=&#34;https://yamadharma.livejournal.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;livejornal&lt;/a&gt; составила некоторые проблемы.&lt;/p&gt;
+&lt;p&gt;Хочу заметить, что комментарии я не переносил.&lt;/p&gt;
+&lt;p&gt;Наиболее подходящим показался мне 
+&lt;a href=&#34;https://github.com/arty-name/livejournal-export&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;livejournal-export&lt;/a&gt;. Он переводит сразу в &lt;em&gt;markdown&lt;/em&gt;. Однако, при этом не импортируются теги.
+Для идентификации использует параметры сессии броузера.&lt;/p&gt;
+&lt;p&gt;Вторым вариантом я рассмотрел 
+&lt;a href=&#34;https://github.com/ghewgill/ljdump&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;ljdump&lt;/a&gt;. Он скачивает журнал в &lt;em&gt;html&lt;/em&gt;. Для идентификации использует логин и пароль.&lt;/p&gt;
+&lt;p&gt;Потом пришлось преобразовать в &lt;em&gt;markdown&lt;/em&gt;. Для этого написал скрипт &lt;em&gt;xml2md&lt;/em&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
+import os
+import sys
+from lxml import etree
+import html2text
+from datetime import datetime
+from transliterate import translit, get_available_language_codes
+
+outdir = &#39;markdown&#39;
+os.makedirs(outdir, exist_ok=True)
+
+infile = sys.argv[1]
+print(infile)
+
+tree = etree.parse(infile)
+post = tree.getroot()
+
+postTitle = &#39;&#39;
+postTags = &#39;&#39;
+
+for elem in post.getchildren():
+    if not elem.text:
+        text = &amp;quot;None&amp;quot;
+    else:
+        text = elem.text
+    # print(elem.tag + &amp;quot; =&amp;gt; &amp;quot; + text)
+    # book_dict[elem.tag] = text
+    if elem.tag == &#39;subject&#39;:
+        postTitle = text
+    if elem.tag == &#39;eventtime&#39;:
+        postDate = text
+    if elem.tag == &#39;event&#39;:
+        postContent = text
+    if elem.tag == &#39;props&#39;:
+        for propsElem in elem.getchildren():
+            if not elem.text:
+                text = &amp;quot;None&amp;quot;
+            else:
+                text = propsElem.text
+            # print(propsElem.tag + &amp;quot; =&amp;gt; &amp;quot; + text)
+            if propsElem.tag == &#39;taglist&#39;:
+                postTags = text
+            
+
+
+
+postHeader = &#39;layout: post\n&#39;+&#39;title: &#39;+postTitle+&#39;\n&#39;+&#39;date: &#39;+str(postDate)
+postHeader = postHeader+&#39;\ncategories: blog\nlang: ru&#39;
+postHeader = postHeader+&#39;\ntags: [&#39;+postTags+&#39;]&#39;
+postHeader = postHeader+&#39;\n&#39;+&#39;---&#39;
+
+h = html2text.HTML2Text()
+h.ignore_links = False
+h.body_width = 0
+h.unicode_snob = True
+postContent = h.handle(postContent)
+
+fullPost = postHeader+&#39;\n\n\n&#39;+postContent
+
+date = datetime.strptime(postDate, &#39;%Y-%m-%d %H:%M:%S&#39;)
+outFile = &#39;{0.year}-{0.month:02d}-{0.day:02d}&#39;.format(date)
+if postTitle != &#39;&#39;:
+    translitTitle = translit(postTitle, &#39;ru&#39;, reversed=True)
+    translitTitle = translitTitle.replace(&amp;quot; &amp;quot;,&amp;quot;_&amp;quot;)
+    translitTitle = translitTitle.replace(&amp;quot;:&amp;quot;,&amp;quot;&amp;quot;)
+    translitTitle = translitTitle.replace(&amp;quot;&#39;&amp;quot;,&amp;quot;&amp;quot;)
+    translitTitle = translitTitle.replace(&amp;quot;«&amp;quot;,&amp;quot;&amp;quot;)
+    translitTitle = translitTitle.replace(&amp;quot;»&amp;quot;,&amp;quot;&amp;quot;)
+    translitTitle = translitTitle.replace(&amp;quot;;&amp;quot;,&amp;quot;&amp;quot;)
+else:
+    translitTitle = &#39;{0.hour:02d}-{0.minute:02d}-{0.second:02d}&#39;.format(date)
+outFile = outFile+&#39;-&#39;+translitTitle
+
+f = open(outdir+&#39;/&#39;+str(outFile)+&#39;.md&#39;, &#39;w&#39;)
+f.write(fullPost)
+f.close()
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Преобразование можно выполнить с помощью команды:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;./xml2md &amp;lt;file&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;При этом создаётся каталог &lt;em&gt;markdown&lt;/em&gt; и в него помещается результат конвертации.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Установка темы NexT для hexo</title>
+      <link>/ru/2018/04/04/hexo-theme-next/</link>
+      <pubDate>Wed, 04 Apr 2018 13:24:22 +0000</pubDate>
+      <guid>/ru/2018/04/04/hexo-theme-next/</guid>
+      <description>&lt;p&gt;Пробую поменять тему оформления блога на 
+&lt;a href=&#34;https://github.com/iissnan/hexo-theme-next&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;NexT&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Также можно посмотреть документацию:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/theme-next/hexo-theme-next/blob/master/docs/ru/README.md&#34;&gt;https://github.com/theme-next/hexo-theme-next/blob/master/docs/ru/README.md&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/iissnan/hexo-theme-next/blob/master/README.md&#34;&gt;https://github.com/iissnan/hexo-theme-next/blob/master/README.md&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;скачиваем-тему-&#34;&gt;Скачиваем тему&lt;/h3&gt;
+&lt;p&gt;Переходим в каталог блога и скачиваем.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;git clone https://github.com/theme-next/hexo-theme-next themes/next
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;конфигурационный-файл-&#34;&gt;Конфигурационный файл&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;mkdir -p source/_data
+cd source/_data
+touch next.yml
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Убедимся, что в файле &lt;code&gt;themes/next/_config.yml&lt;/code&gt; установлено:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;override: false
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;В корневом файле &lt;code&gt;_config.yml&lt;/code&gt; устанавливаем:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;theme: next
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;и&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;source_dir: source
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;В файл &lt;code&gt;source/_data/next.yml&lt;/code&gt; переносим из &lt;code&gt;themes/next/_config.yml&lt;/code&gt;
+параметры, которые меняем.&lt;/p&gt;
+&lt;h3 id=&#34;страницы-категорий-и-тегов-&#34;&gt;Страницы категорий и тегов&lt;/h3&gt;
+&lt;p&gt;Создадим страницы &lt;code&gt;tags&lt;/code&gt; и &lt;code&gt;categories&lt;/code&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;hexo new page &amp;quot;tags&amp;quot;
+hexo new page &amp;quot;categories&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Отредактирем файлы &lt;code&gt;source/tags/index.md&lt;/code&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-markdown&#34;&gt;---
+title: tags
+date: &amp;quot;2018-04-04T14:41:32+00:00&amp;quot;
+type: &amp;quot;tags&amp;quot;
+---
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;и &lt;code&gt;source/categories/index.md&lt;/code&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-markdown&#34;&gt;---
+title: categories
+date: &amp;quot;2018-04-04T14:41:37+00:00&amp;quot;
+type: &amp;quot;categories&amp;quot;
+---
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Добавим описание меню в файл &lt;code&gt;source/_data/next.yml&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;menu:
+  home: / || home
+  tags: /tags/ || tags
+  categories: /categories/ || th
+  archives: /archives/ || archive
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;личная-фотография-&#34;&gt;Личная фотография&lt;/h3&gt;
+&lt;p&gt;Сделаем каталог для изображений:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;mkdir -p source/images
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Поместим туда файл (например, &lt;code&gt;avatar.jpg&lt;/code&gt;) и запишем в конфиг
+&lt;code&gt;source/_data/next.yml&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;avatar: /images/avatar.jpg
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Я сделал ширину 126px.&lt;/p&gt;
+&lt;h3 id=&#34;комментарии-&#34;&gt;Комментарии&lt;/h3&gt;
+&lt;p&gt;Комментарии настроил через Disqus.
+Для этого сконфигурил на 
+&lt;a href=&#34;http://www.disqus.com&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Disqus&lt;/a&gt; сайт с коротким именем &lt;em&gt;yamadharma-blog&lt;/em&gt;.
+Добавил в файл &lt;code&gt;source/_data/next.yml&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;disqus:
+  enable: true
+  shortname: yamadharma-blog
+  count: true
+  lazyload: false
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>Переход блога на hexo</title>
+      <link>/ru/2018/03/28/hexo/</link>
+      <pubDate>Wed, 28 Mar 2018 13:10:47 +0000</pubDate>
+      <guid>/ru/2018/03/28/hexo/</guid>
+      <description>&lt;p&gt;Блог на 
+&lt;a href=&#34;https://jekyllrb.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Jekyll&lt;/a&gt; вести не получилось. Попробовал перейти на 
+&lt;a href=&#34;https://hexo.io&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Hexo&lt;/a&gt;. Он
+попроще, но зато всё, что нужно, работает сразу.&lt;/p&gt;
+&lt;h2 id=&#34;установка-hexo-&#34;&gt;Установка Hexo&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Установил Hexo (глобально):&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;npm install -g hexo-cli
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Инициализировал каталог блога:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;hexo init .
+npm install
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Установил плагин для выкладывания на git (это делается в каталоге блога):&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;npm install hexo-deployer-git --save
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Установил плагин для генерации RSS (такая опция есть в теме):&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;npm install hexo-generator-feed --save
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Задал конфигурацию &lt;code&gt;_config.yml&lt;/code&gt;:&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;{% codeblock lang:yaml %}&lt;/p&gt;
+&lt;h1 id=&#34;site&#34;&gt;Site&lt;/h1&gt;
+&lt;p&gt;title: В борьбе обретёшь ты право своё
+subtitle: Делай, что должен, и будь, что будет
+description:
+keywords:
+author: Дмитрий Кулябов
+language: ru
+timezone:&lt;/p&gt;
+&lt;h1 id=&#34;url&#34;&gt;URL&lt;/h1&gt;
+&lt;h2 id=&#34;if-your-site-is-put-in-a-subdirectory-set-url-as-httpyoursitecomchild-and-root-as-child&#34;&gt;If your site is put in a subdirectory, set url as &amp;lsquo;&lt;a href=&#34;http://yoursite.com/child&#39;&#34;&gt;http://yoursite.com/child&#39;&lt;/a&gt; and root as &amp;lsquo;/child/&amp;rsquo;&lt;/h2&gt;
+&lt;p&gt;url: &lt;a href=&#34;https://yamadharma.bitbucket.io/&#34;&gt;https://yamadharma.bitbucket.io/&lt;/a&gt;
+root: /
+permalink: :lang/:year/:month/:day/:title/
+permalink_defaults:
+lang: ru&lt;/p&gt;
+&lt;h1 id=&#34;directory&#34;&gt;Directory&lt;/h1&gt;
+&lt;p&gt;source_dir: source
+public_dir: public
+tag_dir: tags
+archive_dir: archives
+category_dir: categories
+code_dir: downloads/code
+i18n_dir: :lang
+skip_render:&lt;/p&gt;
+&lt;h1 id=&#34;writing&#34;&gt;Writing&lt;/h1&gt;
+&lt;p&gt;new_post_name: :lang/:year-:month-:day-:title.md # File name of new posts
+default_layout: post
+titlecase: false # Transform title into titlecase
+external_link: true # Open external links in new tab
+filename_case: 0
+render_drafts: false
+post_asset_folder: false
+relative_link: false
+future: true
+highlight:
+enable: true
+line_number: true
+auto_detect: false
+tab_replace:&lt;/p&gt;
+&lt;h1 id=&#34;home-page-setting&#34;&gt;Home page setting&lt;/h1&gt;
+&lt;h1 id=&#34;path-root-path-for-your-blogs-index-page-default--&#34;&gt;path: Root path for your blogs index page. (default = &amp;lsquo;&#39;)&lt;/h1&gt;
+&lt;h1 id=&#34;per_page-posts-displayed-per-page-0--disable-pagination&#34;&gt;per_page: Posts displayed per page. (0 = disable pagination)&lt;/h1&gt;
+&lt;h1 id=&#34;order_by-posts-order-order-by-date-descending-by-default&#34;&gt;order_by: Posts order. (Order by date descending by default)&lt;/h1&gt;
+&lt;p&gt;index_generator:
+path: &#39;&amp;rsquo;
+per_page: 10
+order_by: -date&lt;/p&gt;
+&lt;h1 id=&#34;category--tag&#34;&gt;Category &amp;amp; Tag&lt;/h1&gt;
+&lt;p&gt;default_category: uncategorized
+category_map:
+tag_map:&lt;/p&gt;
+&lt;h1 id=&#34;date--time-format&#34;&gt;Date / Time format&lt;/h1&gt;
+&lt;h2 id=&#34;hexo-uses-momentjs-to-parse-and-display-date&#34;&gt;Hexo uses Moment.js to parse and display date&lt;/h2&gt;
+&lt;h2 id=&#34;you-can-customize-the-date-format-as-defined-in&#34;&gt;You can customize the date format as defined in&lt;/h2&gt;
+&lt;h2 id=&#34;httpmomentjscomdocsdisplayingformat&#34;&gt;&lt;a href=&#34;http://momentjs.com/docs/#/displaying/format/&#34;&gt;http://momentjs.com/docs/#/displaying/format/&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;date_format: YYYY-MM-DD
+time_format: HH:mm:ss&lt;/p&gt;
+&lt;h1 id=&#34;pagination&#34;&gt;Pagination&lt;/h1&gt;
+&lt;h2 id=&#34;set-per_page-to-0-to-disable-pagination&#34;&gt;Set per_page to 0 to disable pagination&lt;/h2&gt;
+&lt;p&gt;per_page: 10
+pagination_dir: page&lt;/p&gt;
+&lt;h1 id=&#34;extensions&#34;&gt;Extensions&lt;/h1&gt;
+&lt;h2 id=&#34;plugins-httpshexoioplugins&#34;&gt;Plugins: &lt;a href=&#34;https://hexo.io/plugins/&#34;&gt;https://hexo.io/plugins/&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id=&#34;themes-httpshexoiothemes&#34;&gt;Themes: &lt;a href=&#34;https://hexo.io/themes/&#34;&gt;https://hexo.io/themes/&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;theme: landscape&lt;/p&gt;
+&lt;h1 id=&#34;deployment&#34;&gt;Deployment&lt;/h1&gt;
+&lt;h2 id=&#34;docs-httpshexoiodocsdeploymenthtml&#34;&gt;Docs: &lt;a href=&#34;https://hexo.io/docs/deployment.html&#34;&gt;https://hexo.io/docs/deployment.html&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;deploy:
+type: git
+repo: &lt;a href=&#34;mailto:git@bitbucket.org&#34;&gt;git@bitbucket.org&lt;/a&gt;:yamadharma/yamadharma.bitbucket.org.git
+branch: master&lt;/p&gt;
+&lt;h1 id=&#34;feed&#34;&gt;Feed&lt;/h1&gt;
+&lt;h2 id=&#34;httpsgithubcomhexojshexo-generator-feed&#34;&gt;&lt;a href=&#34;https://github.com/hexojs/hexo-generator-feed&#34;&gt;https://github.com/hexojs/hexo-generator-feed&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;feed:
+type: atom
+path: atom.xml
+limit: 20
+hub:
+content:
+content_limit: 600
+content_limit_delim: &#39; &#39;
+{% endcodeblock %}&lt;/p&gt;
+&lt;p&gt;Таким образом, без настройки, получена работающая конфигурация.&lt;/p&gt;
+&lt;h2 id=&#34;порядок-работы-следующий-&#34;&gt;Порядок работы следующий&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Создаём новый файл для поста:
+&lt;pre&gt;&lt;code&gt;hexo new &amp;lt;title&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Радактируем пост.&lt;/li&gt;
+&lt;li&gt;Генерим страницы:
+&lt;pre&gt;&lt;code&gt;hexo generate
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;или&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;hexo g
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Выкладываем страницы на сайт:
+&lt;pre&gt;&lt;code&gt;hexo deploy
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;или&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;hexo d
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Очищаем каталог:
+&lt;pre&gt;&lt;code&gt;hexo clean
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Миграция с blogspot на hexo</title>
+      <link>/ru/2018/03/27/from-blogspot-to-hexo/</link>
+      <pubDate>Tue, 27 Mar 2018 15:56:18 +0000</pubDate>
+      <guid>/ru/2018/03/27/from-blogspot-to-hexo/</guid>
+      <description>&lt;h2 id=&#34;hexo&#34;&gt;Hexo&lt;/h2&gt;
+&lt;p&gt;Перешёл на 
+&lt;a href=&#34;https://hexo.io&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;hexo&lt;/a&gt;. Дополнительно решил перенести свои заметки с 
+&lt;a href=&#34;http://yamadharma.blogspot.ru/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;blogspot&lt;/a&gt;.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Установил пакет для миграции:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;npm install hexo-migrator-blogger --save
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Подправил файл миграции
+(&lt;code&gt;node_modules/hexo-migrator-blogger/lib/migrate.js&lt;/code&gt;), чтобы
+нормальные названия файлов были:
+{% codeblock lang:patch %}
+&amp;mdash; migrate.js.old      2016-09-24 10:02:27.000000000 +0300
++++ migrate.js  2018-03-27 15:23:52.475311505 +0300
+@@ -11,17 +11,19 @@ module.exports = function(source, target
+var posts = JSON.parse(body).feed.entry;
+async.each(posts, function(item, cb) {
+var title = item.title[&amp;lsquo;$t&amp;rsquo;];&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;pre&gt;&lt;code&gt;       var file = title.replace(/\s/g,&#39;-&#39;).replace(/[^A-z 0-9 -]/g,&#39;&#39;);
+       var published = item.published[&#39;$t&#39;];
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;pre&gt;&lt;code&gt;       var file = moment(published).format(&#39;YYYY-MM-DD&#39;) + &#39;-&#39; + title;
+       var tags = &#39;&#39;;
+       if (item.category) {
+           tags = item.category.map(prop(&#39;term&#39;));
+       }
+       var header = [
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;pre&gt;&lt;code&gt;           &#39;title: |&#39;,
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;pre&gt;&lt;code&gt;           &#39;\t&#39; +  title,
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;pre&gt;&lt;code&gt;          &#39;layout: post&#39;,
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;pre&gt;&lt;code&gt;           &#39;title: &#39; + &#39;\&amp;quot;&#39; + title + &#39;\&amp;quot;&#39;,
+           &#39;date: &#39; + moment(published).format(&#39;YYYY-MM-DD HH:mm:ss&#39;),
+           &#39;tags: [&#39; + tags + &#39;]&#39;,
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;pre&gt;&lt;code&gt;          &#39;categories: blog&#39;,
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;pre&gt;&lt;code&gt;          &#39;lang: ru&#39;,
+           &#39;---&#39;,
+       ];
+       var content = item.content[&#39;$t&#39;];
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;{% endcodeblock %}&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Запустил миграцию:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;hexo migrate blogger &amp;quot;http://yamadharma.blogspot.ru/feeds/posts/default?alt=json&amp;amp;max-results=10000&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Почистил получившиеся файлы:
+{% codeblock lang:bash %}
+#!/bin/bash&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;name-clean&#34;&gt;name: clean&lt;/h1&gt;
+&lt;p&gt;for i in *.md
+do
+sed -i -e &amp;ldquo;s:&lt;/div&gt;::g&amp;rdquo;&lt;br&gt;
+-e &amp;ldquo;s:&amp;lt;div.*&amp;gt;::g&amp;rdquo;&lt;br&gt;
+&amp;ldquo;$i&amp;rdquo;
+done
+{% endcodeblock %}&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Сделал транслит названий:
+{% codeblock lang:bash %}
+#!/bin/bash&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;name-translit&#34;&gt;name: translit&lt;/h1&gt;
+&lt;h1 id=&#34;перекодирует-рекурсивно-в-текущем-каталоге-имена&#34;&gt;Перекодирует рекурсивно в текущем каталоге имена&lt;/h1&gt;
+&lt;h1 id=&#34;файлов-и-каталогов-в-транслит&#34;&gt;файлов и каталогов в транслит.&lt;/h1&gt;
+&lt;h1 id=&#34;успенский-в-а-к-проблеме-транслитерации-русских-текстов-латинскими-буквами&#34;&gt;Успенский В. А. К проблеме транслитерации русских текстов латинскими буквами&lt;/h1&gt;
+&lt;h1 id=&#34;httplingvoforumnetindexphptopic357580&#34;&gt;&lt;a href=&#34;http://lingvoforum.net/index.php?topic=35758.0&#34;&gt;http://lingvoforum.net/index.php?topic=35758.0&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;shopt -s nullglob
+for NAME in *
+do
+TRS=&lt;code&gt;echo $NAME | sed &amp;quot;y/абвгдезиклмнопрстуфц/abvgdeziklmnoprstufc/&amp;quot;&lt;/code&gt;
+TRS=&lt;code&gt;echo $TRS | sed &amp;quot;y/АБВГДЕЗИКЛМНОПРСТУФЦ/ABVGDEZIKLMNOPRSTUFC/&amp;quot;&lt;/code&gt;
+TRS=${TRS//х/kh} TRS=${TRS//Х/KH};
+TRS=${TRS//ч/ch} TRS=${TRS//Ч/CH};
+TRS=${TRS//ш/sh} TRS=${TRS//Ш/SH};
+TRS=${TRS//ё/yo} TRS=${TRS//Ё/YO};
+TRS=${TRS//ж/zh} TRS=${TRS//Ж/ZH};
+TRS=${TRS//щ/th} TRS=${TRS//Щ/TH};
+TRS=${TRS//э/eh} TRS=${TRS//Э/EH};
+TRS=${TRS//ю/yu} TRS=${TRS//Ю/YU};
+TRS=${TRS//я/ya} TRS=${TRS//Я/YA};
+TRS=${TRS//й/yj} TRS=${TRS//Й/yj};
+TRS=${TRS//ъ/jh} TRS=${TRS//Ъ/JH};
+TRS=${TRS//ь/j} TRS=${TRS//Ь/J};
+TRS=${TRS//ы/ih} TRS=${TRS//Ы/IH};&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;TRS=${TRS// /_};
+
+if [[ -d &amp;quot;$NAME&amp;quot; ]]
+then
+mv -v &amp;quot;$NAME&amp;quot; &amp;quot;$TRS&amp;quot;
+cd &amp;quot;$TRS&amp;quot;
+&amp;quot;$0&amp;quot;
+cd ..
+else
+mv -v &amp;quot;$NAME&amp;quot; &amp;quot;$TRS&amp;quot;
+fi
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;done
+{% endcodeblock %}&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Работа с видео</title>
+      <link>/ru/2007/01/10/rabota-s-video/</link>
+      <pubDate>Wed, 10 Jan 2007 22:59:00 +0000</pubDate>
+      <guid>/ru/2007/01/10/rabota-s-video/</guid>
+      <description>&lt;p&gt;Выделим несколько задач работы с видео.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Кодирование DVD (DVD-riping). Критерии выбора ПО:
+&lt;ul&gt;
+&lt;li&gt;крайняя простота использования;&lt;/li&gt;
+&lt;li&gt;поддержка разных кодеков, особенно H.264;&lt;/li&gt;
+&lt;li&gt;работа с несколькими звуковыми дорожками и несколькими субтитрами;&lt;/li&gt;
+&lt;li&gt;поддержка разных видео-контейнеров.
+Пока пользуюсь 
+&lt;a href=&#34;http://ogmrip.sourceforge.net/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;OGMRip&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Простая обработка видео. Основные задачи: обрезка, наложение фильтров, кодирование. Наиболее оптимальным  представляется 
+&lt;a href=&#34;http://www.avidemux.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;avidemux&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Линейный и нелинейный монтаж. Использую пока следующие программы: 
+&lt;a href=&#34;http://www.kinodv.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;kino&lt;/a&gt; (для задач попроще) и 
+&lt;a href=&#34;http://heroinewarrior.com/cinelerra.php3&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;cinelerra&lt;/a&gt; (более сложные задачи). Также рекомендуются: 
+&lt;a href=&#34;http://kdenlive.sourceforge.net/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;KDEnlive&lt;/a&gt;, 
+&lt;a href=&#34;http://www.pitivi.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;PiTiVi&lt;/a&gt;.&lt;/li&gt;
+&lt;/ol&gt;</description>
+    </item>
+    
+    <item>
+      <title>Расширения Firefox</title>
+      <link>/ru/2006/12/24/rasshirenija-firefox/</link>
+      <pubDate>Sun, 24 Dec 2006 18:10:00 +0000</pubDate>
+      <guid>/ru/2006/12/24/rasshirenija-firefox/</guid>
+      <description>&lt;p&gt;Я использую следующие расширения.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Улучшение интерфейса.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://firefox.exxile.net/aios/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;All-in-One Sidebar&lt;/a&gt;: удобная боковая панель.&lt;/li&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://www.mrtech.com/extensions/local_install/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;MR Tech Local Install&lt;/a&gt;: улучшения для работы с расширениями.&lt;/li&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://tmp.garyr.net/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Tab Mix Plus&lt;/a&gt;: работа с вкладками.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;Загрузки.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://flashgot.net/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;FlashGot&lt;/a&gt;: интерфейс к менеджерам загрузки.&lt;/li&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://www.pdfdownload.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;PDF Download&lt;/a&gt;: не загружает сразу PDF для просмотра, а предлагает некий набор действий.&lt;/li&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://videodownloader.net/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;VideoDownloader&lt;/a&gt;: загрузка разных медийных материалов со страницы.&lt;/li&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://www.compunach.co.nr/unplug/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;UnPlug&lt;/a&gt;: то же, что и предыдущее расширение. Поставил для пробы.&lt;/li&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://park2.wakwak.com/%7Ebenki/cacheviewer.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CacheViewer&lt;/a&gt; (&lt;a href=&#34;https://addons.mozilla.org/firefox/2489&#34;&gt;https://addons.mozilla.org/firefox/2489&lt;/a&gt;): работа с кэшем броузера. Есть возможность поиска.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;Работа с изображениями.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://imagezoom.yellowgorilla.net/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Image Zoom&lt;/a&gt;: удобное изменение масштаба изображения.&lt;/li&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://imglikeopera.mozdev.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;ImgLikeOpera&lt;/a&gt;: позволяет не загружать изображения (стоит, но я не пользуюсь).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol start=&#34;4&#34;&gt;
+&lt;li&gt;Языковые инструменты.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a href=&#34;https://addons.mozilla.org/firefox/3529/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Russian hot keys bugfix&lt;/a&gt;: позволяет работать клавишным сочетаниям в русском регистре.&lt;/li&gt;
+&lt;li&gt;
+&lt;a href=&#34;https://addons.mozilla.org/firefox/3703/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Russian spell dictionary&lt;/a&gt;: собственно русский словарь для проверки орфографии.&lt;/li&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://en.design-noir.de/mozilla/dictionary-switcher/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Dictionary Switcher&lt;/a&gt;: переключатель словарей.[](&lt;a href=&#34;http://en.design-noir.de/mozilla/dictionary-switcher-tb/&#34;&gt;http://en.design-noir.de/mozilla/dictionary-switcher-tb/&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://www.google.com/search?q=Firefox%20Human%20URL&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Human URL&lt;/a&gt;: вместо символов %XX пишутся нормальные буквы.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol start=&#34;5&#34;&gt;
+&lt;li&gt;Красивости.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://www.cutemenuproject.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CuteMenus - Crystal SVG&lt;/a&gt;: красивости для оформления меню.&lt;/li&gt;
+&lt;li&gt;
+&lt;a href=&#34;https://addons.mozilla.org/en-US/firefox/addon/1951&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Fission&lt;/a&gt;: Индикатор процесса загрузки страницы в панели адреса.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol start=&#34;6&#34;&gt;
+&lt;li&gt;Работа с закладками.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://www.foxmarks.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Foxmarks Bookmark Synchronizer&lt;/a&gt;: синхронизирует закладки с сервером sync.foxcloud.com. Особенно удобно, когда работаешь в нескольких местах.&lt;/li&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://www.google.com/search?q=Firefox%20Enhanced%20Bookmark%20Search&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Enhanced Bookmark Search&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol start=&#34;7&#34;&gt;
+&lt;li&gt;Банерорезки&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://www.pierceive.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Adblock Filterset.G Updater&lt;/a&gt;: обновление фильтров для Adblock Plus.&lt;/li&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://adblockplus.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Adblock Plus&lt;/a&gt;: банерорезка.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol start=&#34;8&#34;&gt;
+&lt;li&gt;Usability&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://urandom.ca/nosquint/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;NoSquint&lt;/a&gt;: запоминает увеличение страницы.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol start=&#34;9&#34;&gt;
+&lt;li&gt;Разное&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://deepestsender.mozdev.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Deepest Sender&lt;/a&gt;: blog-клиент.&lt;/li&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://www.foxytunes.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;FoxyTunes&lt;/a&gt;: управление проигрыванием музыки.&lt;/li&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://amb.vis.ne.jp/mozilla/scrapbook/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;ScrapBook&lt;/a&gt;: позволяет сохранять страницы целиком и каталогизировать их.&lt;/li&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://passwordexporter.fligtar.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Password Exporter&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://www.google.com/search?q=Firefox%20Enhanced%20History%20Manager&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Enhanced History Manager&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://fasterfox.mozdev.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Fasterfox&lt;/a&gt;: должно ускорять работу броузера. Не знаю, работает или нет.&lt;/li&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://informenter.mozdev.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;InFormEnter&lt;/a&gt;: работа с формами.&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Blog-клиенты (2). Deepest Sender</title>
+      <link>/ru/2006/12/22/blog-klienty-2-deepest-sender/</link>
+      <pubDate>Fri, 22 Dec 2006 20:43:00 +0000</pubDate>
+      <guid>/ru/2006/12/22/blog-klienty-2-deepest-sender/</guid>
+      <description>&lt;p&gt;Критерии отбора blog-клиентов. Выделим следующие критерии.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Поддерживаемые API. Основные LiveJournal, WordPress, Blogger.
+&lt;ul&gt;
+&lt;li&gt;Наличие WYSIWIG-редактора. Сюда же входит возможность работы с изображениями, поддержка drag and drop.&lt;/li&gt;
+&lt;li&gt;Наличие предпросмотра.&lt;/li&gt;
+&lt;li&gt;Возможность детектирования проигрываемой музыки.&lt;/li&gt;
+&lt;li&gt;Возможность работать с черновиками записи.&lt;/li&gt;
+&lt;li&gt;Поддержка offline-моды.&lt;/li&gt;
+&lt;li&gt;Возможность работы с предыдущими постами.&lt;/li&gt;
+&lt;li&gt;Наличие локализации.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;И собственно subj.&lt;br&gt;
+
+&lt;a href=&#34;http://deepestsender.mozdev.org&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Deepest Sender&lt;/a&gt; — это blog-клиент, являющийся plugin&#39;ом к 
+&lt;a href=&#34;http://www.mozilla.org/products/firefox/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Firefox&lt;/a&gt;, 
+&lt;a href=&#34;http://www.mozilla.org/projects/seamonkey/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;SeaMonkey&lt;/a&gt; и 
+&lt;a href=&#34;http://developer.mozilla.org/en/docs/XULRunner&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;XULRunner. &lt;/a&gt;Соответсвенно является многоплатформенным. Удовлетворяет  всем перечисленным критериям. Фактически это первый (который я нашёл) клиент под Unix с нормальным WYSIWYG. Сейчас использую его и он мне нравится.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Первичная обработка фотографий</title>
+      <link>/ru/2006/12/21/pervichnaja-obrabotka-fotografij/</link>
+      <pubDate>Thu, 21 Dec 2006 13:41:00 +0000</pubDate>
+      <guid>/ru/2006/12/21/pervichnaja-obrabotka-fotografij/</guid>
+      <description>&lt;p&gt;После скачивания фотографий на компьютер возникает необходимость дать им более информативные имена и повернуть &amp;ldquo;лежащие&amp;rdquo; фотографии. Это можно сделать, запустив в каталоге с файлами следующую команду:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;jhead -n%Y%m%d-%H%M%S -autorot *.jpg
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Файлы получают названия в формате YYYYMMDD-HHMMSS (ГодМесяцДень-ЧасМинутаСекунда).&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Менеджеры изображений. F-spot.</title>
+      <link>/ru/2006/12/06/menedzhery-izobrazhenij-f-spot/</link>
+      <pubDate>Wed, 06 Dec 2006 16:48:00 +0000</pubDate>
+      <guid>/ru/2006/12/06/menedzhery-izobrazhenij-f-spot/</guid>
+      <description>&lt;p&gt;Можно разделить менеджеры изображений на по методу упорядочивания содержимого:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;на основе каталогов;&lt;/li&gt;
+&lt;li&gt;на основе меток.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Наиболее известный из последних &amp;mdash; Picasa (&lt;a href=&#34;http://picasa.google.com&#34;&gt;http://picasa.google.com&lt;/a&gt;).&lt;br&gt;
+F-spot (&lt;a href=&#34;http://f-spot.org&#34;&gt;http://f-spot.org&lt;/a&gt;) использует эту же парадигму.&lt;br&gt;
+Особенности F-spot.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Не индексирует весь диск автоматически. Нужно добавлять необходимые каталоги или файлы (можно и с фотокамеры).&lt;/li&gt;
+&lt;li&gt;При импорте изображений логично сразу присвоить им метку.&lt;/li&gt;
+&lt;li&gt;При импорте отмечен пункт &amp;ldquo;копировать файлы в каталог Pictures&amp;rdquo;. Я отключаю эту возможность. К сожалению, выбор не сохраняется.&lt;/li&gt;
+&lt;li&gt;Метки могут иметь иерархическую структуру. Изображению можно присвоить несколько меток.&lt;/li&gt;
+&lt;li&gt;Из программы можно экспортировать изображения в 
+&lt;a href=&#34;http://www.flickr.com/&#34; title=&#34;http://www.flickr.com&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Flickr&lt;/a&gt; (
+&lt;a href=&#34;http://www.flickr.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;http://www.flickr.com&lt;/a&gt;), 
+&lt;a href=&#34;http://picasaweb.google.com/&#34; title=&#34;http://picasaweb.google.com&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Picasa Web&lt;/a&gt; (&lt;a href=&#34;http://picasaweb.google.com&#34;&gt;http://picasaweb.google.com&lt;/a&gt;), а также на сайты с движком 
+&lt;a href=&#34;http://gallery.sourceforge.net/&#34; title=&#34;http://gallery.sourceforge.net/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Gallery&lt;/a&gt; (
+&lt;a href=&#34;http://o.r.i.g.i.n.a.l.%20%28http//jimmac.musichall.cz/original.php%29&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;http://gallery.sourceforge.net&lt;/a&gt;) и 
+&lt;a href=&#34;http://jimmac.musichall.cz/original.php&#34; title=&#34;http://jimmac.musichall.cz/original.php&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;O.r.i.g.i.n.a.l.&lt;/a&gt; (
+&lt;a href=&#34;http://o.r.i.g.i.n.a.l.%20%28http//jimmac.musichall.cz/original.php%29&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;http://jimmac.musichall.cz/original.php&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Завёл аккаунт на Flickr, экспортировал изображение. Метки тоже экспортировались.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt; &lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>lj-клиенты</title>
+      <link>/ru/2006/11/30/lj-klienty/</link>
+      <pubDate>Thu, 30 Nov 2006 22:14:00 +0000</pubDate>
+      <guid>/ru/2006/11/30/lj-klienty/</guid>
+      <description>&lt;p&gt;Клиенты для работы с LiveJournal.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;При работе с Windows предлагается использовать 
+&lt;a href=&#34;http://semagic.sourceforge.net/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Semagic&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Мультипротокольные im-клиенты зачастую имеют модуль для работы LiveJournal. Стоит правда отметить, что реализована лишь базовая функциональность.
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://thekonst.net/en/centericq&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;centericq&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://sim-icq.sourceforge.net/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;sim&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Клиенты для работы только c LiveJournal.
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://logjam.danga.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;LogJam&lt;/a&gt;
+&lt;ol&gt;
+&lt;li&gt;Pro:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;Возможность предпросмотра.&lt;/li&gt;
+&lt;li&gt;Возможность получения названия мелодии из нескольких плееров: Amarok, XMMS, Rhytmbox, MPD.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;Contra:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;Отсутствие WYSIWYG редактора. Редактирование происходит в plain text с возможностью вставки html-тегов.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://kluje.sourceforge.net/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;KLuJe&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://klivejournal.sourceforge.net/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;KLiveJournal&lt;/a&gt;
+&lt;ol&gt;
+&lt;li&gt;Contra:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;Убил кодировку в этом посте. Пришлось перенабирать.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Мультипротокольные blog-клиенты.
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://www.dropline.net/drivel/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Drivel&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol&gt;
+&lt;li&gt;Поддерживаемые API: LiveJournal, Blogger, MovableType, Advogato, Atom (а также базирующиеся на них, например WordPress, Drupal).&lt;/li&gt;
+&lt;li&gt;Pro:
+&lt;ul&gt;
+&lt;li&gt;Возможность получения названия мелодии из плееров, поддерживающих D-BUS.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Contra:
+&lt;ul&gt;
+&lt;li&gt;Отсутствие WYSIWYG редактора. Редактирование происходит в plain text с возможностью вставки html-тегов.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;Эпикриз:&lt;/strong&gt; Работаю в 
+&lt;a href=&#34;http://logjam.danga.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;LogJam&lt;/a&gt; и 
+&lt;a href=&#34;http://www.dropline.net/drivel/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Drivel&lt;/a&gt;.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Gnash</title>
+      <link>/ru/2006/11/11/23-44-00/</link>
+      <pubDate>Sat, 11 Nov 2006 23:44:00 +0000</pubDate>
+      <guid>/ru/2006/11/11/23-44-00/</guid>
+      <description>&lt;p&gt;Поставил gnash из cvs. Встал. Наконец заработал звук.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>LJ Jabber</title>
+      <link>/ru/2006/10/28/lj-jabber/</link>
+      <pubDate>Sat, 28 Oct 2006 08:00:00 +0000</pubDate>
+      <guid>/ru/2006/10/28/lj-jabber/</guid>
+      <description>&lt;p&gt;Подключился к jabber-серверу LiveJournal&#39;а.  Сразу в списке появились все френды (что логично).  SIM к jabber&#39;у подключился сразу. Нет таких проблем, как с протоколом icq.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>amd64 и flash</title>
+      <link>/ru/2006/09/24/amd64-i-flash/</link>
+      <pubDate>Sun, 24 Sep 2006 15:19:00 +0000</pubDate>
+      <guid>/ru/2006/09/24/amd64-i-flash/</guid>
+      <description>&lt;p&gt;Попробовал использовать сначала &lt;code&gt;nspluginwrapper&lt;/code&gt;. Работает хорошо. Через &lt;code&gt;qemu&lt;/code&gt;. Но &lt;code&gt;qemu&lt;/code&gt;, откомпилированный &lt;code&gt;gcc-4&lt;/code&gt;, не работает. Поэтому пришлось перейти на &lt;code&gt;gnash&lt;/code&gt;. Snapshot августовский не откомпилировался. Июньский нормально, но нет звука. Поставил из cvs &amp;mdash; проблемы с прозрачностью. Звука тоже нет.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Openoffice on amd64</title>
+      <link>/ru/2006/09/04/openoffice-on-amd64/</link>
+      <pubDate>Mon, 04 Sep 2006 09:16:00 +0000</pubDate>
+      <guid>/ru/2006/09/04/openoffice-on-amd64/</guid>
+      <description>&lt;p&gt;Вчера откомпилил openoffice-2.0.4_rc1-r1 под amd64.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Ion — раскладка клавиатуры</title>
+      <link>/ru/2006/09/03/ion-raskladka-klaviatury/</link>
+      <pubDate>Sun, 03 Sep 2006 14:00:00 +0000</pubDate>
+      <guid>/ru/2006/09/03/ion-raskladka-klaviatury/</guid>
+      <description>&lt;p&gt;Стандартная раскладка клавиатуры в ion&#39;е мне не очень понравилась. Например, совершенно невозможно работать с mc. Надо попробовать другие раскладки. На ум приходят раскладки emacs и screen.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Window manager</title>
+      <link>/ru/2006/09/02/window-manager/</link>
+      <pubDate>Sat, 02 Sep 2006 17:19:00 +0000</pubDate>
+      <guid>/ru/2006/09/02/window-manager/</guid>
+      <description>&lt;p&gt;Пользуюсь сейчас window manager&#39;ом WindowMaker. Вроде, вполне устраивал. Но сейчас решил попробовать менеджеры без перекрывающихся окон. Попробовал последовательно wmii &lt;a href=&#34;http://www.wmii.de/wmii&#34;&gt;http://www.wmii.de/wmii&lt;/a&gt; и dwm &lt;a href=&#34;http://www.wmii.de/dwm&#34;&gt;http://www.wmii.de/dwm&lt;/a&gt;. Оба великолепны при работе только с терминалом (как в rio). Но нормально функционировать со всем зоопарком приложений не могут. Поэтому пробую сейчас ion &lt;a href=&#34;http://www.modeemi.fi/~tuomov/ion&#34;&gt;http://www.modeemi.fi/~tuomov/ion&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Gentoo: конвертация из x86 в x86_64 (2)</title>
+      <link>/ru/2006/08/21/gentoo-konvertatsija-iz-x86-v-x86-64-2/</link>
+      <pubDate>Mon, 21 Aug 2006 12:19:00 +0000</pubDate>
+      <guid>/ru/2006/08/21/gentoo-konvertatsija-iz-x86-v-x86-64-2/</guid>
+      <description>&lt;ol&gt;
+&lt;li&gt;Провозившись с данной проблемой выходные (и частично неделю),
+провёл конвертацию.&lt;/li&gt;
+&lt;li&gt;Оказалось, что всё очень просто.&lt;/li&gt;
+&lt;li&gt;Однако, после начала обновления системы (&lt;code&gt;emerge -e system&lt;/code&gt;), стали
+отваливаться приложения (не могут подгрузить библиотеки).&lt;/li&gt;
+&lt;li&gt;К сожалению, в новом профайле не поддерживается построение
+библиотек под несколько архитектур (может, просто я не знаю).&lt;/li&gt;
+&lt;li&gt;Хотя в консоли всё функционирует нормально.&lt;/li&gt;
+&lt;li&gt;Скоро, надеюсь, всё конвертну.&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Gentoo: конвертация из x86 в x86_64</title>
+      <link>/ru/2006/08/18/gentoo-konvertatsija-iz-x86-v-x86-64/</link>
+      <pubDate>Fri, 18 Aug 2006 09:21:00 +0000</pubDate>
+      <guid>/ru/2006/08/18/gentoo-konvertatsija-iz-x86-v-x86-64/</guid>
+      <description>&lt;ol&gt;
+&lt;li&gt;На недавно обновлённом компьютере (до этого был Pentium III)
+крутится 32-битная ОС (Gentoo Linux) (Hurd и Plan9 не учитываю).&lt;/li&gt;
+&lt;li&gt;Решил конвертнуть в 64-битную. Однако документации по этому вопросу
+не нашёл.&lt;/li&gt;
+&lt;li&gt;Так-что решил заняться самодеятельностью. Как получится, напишу об этом (с приложением скриптов).&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Hurd</title>
+      <link>/ru/2006/08/04/22-30-00/</link>
+      <pubDate>Fri, 04 Aug 2006 22:30:00 +0000</pubDate>
+      <guid>/ru/2006/08/04/22-30-00/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;А оно того стоит? Насколько я знаю hurd все еще очень сыр.&lt;br&gt;
+Может лучше сразу к plan9 руки прикладывать?&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Почему заниматься hurd&#39;ом, а просто не точнуть plan9?&lt;br&gt;
+Я всё-таки рассматриваю hurd как продолжателя hlan9. Ядро у plan9 не фонтан.&lt;br&gt;
+Кроме того, hurd мне представляется конструктором. Что откуда брать?&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Из plan9:
+&lt;ul&gt;
+&lt;li&gt;протокол 9p2000u;&lt;/li&gt;
+&lt;li&gt;соответственно структуру файловой системы (каталоги);&lt;/li&gt;
+&lt;li&gt;оконную систему rio. Только оконный менеджер мне больше нравится в духе wmii или ion.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;OSKit: источник драйверов, файловых систем и т.д. (просто тырим из других ОС)))).&lt;/li&gt;
+&lt;li&gt;Ядро типа Fluke.&lt;/li&gt;
+&lt;li&gt;Подсистему безопасности Flask (политики берём из SELinux).&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Подумаю и припишу ещё ))) &lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Plan9</title>
+      <link>/ru/2006/07/12/10-50-00/</link>
+      <pubDate>Wed, 12 Jul 2006 10:50:00 +0000</pubDate>
+      <guid>/ru/2006/07/12/10-50-00/</guid>
+      <description>&lt;h2 id=&#34;plan9-&#34;&gt;Plan9&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;/img/2006/06/glenda-vs-tux.jpg&#34; alt=&#34;Glenda vs Tux&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Пытаемся поплотнее заниматься Plan9. Особено интересует протокол 9p2000u.&lt;br&gt;
+&lt;strong&gt;Идея:&lt;/strong&gt; внедрить этот протокол в Hurd.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Перенос блога на Jekyll &#43; Octopress</title>
+      <link>/ru/1/01/01/jekyll-octopress/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>/ru/1/01/01/jekyll-octopress/</guid>
+      <description>&lt;h2 id=&#34;репозиторий-для-сайта-&#34;&gt;Репозиторий для сайта&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Создал локальный каталог для сайта:
+{% codeblock lang:bash %}
+mkdir ~/mysite
+{% endcodeblock %}&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;локальный-git-репозиторий-&#34;&gt;Локальный git-репозиторий&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Создал пустой git-репозиторий:
+{% codeblock lang:bash %}
+cd ~/mysite
+git init
+{% endcodeblock %}&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Создал в нём файл &lt;code&gt;README.md&lt;/code&gt;
+{% codeblock lang:bash %}
+touch README.md
+{% endcodeblock %}&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Сделал коммит:
+{% codeblock lang:bash %}
+git add .
+git commit -am &amp;lsquo;Initial commit&amp;rsquo;
+{% endcodeblock %}&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Создаю ветку для кода (в &lt;code&gt;master&lt;/code&gt; будет сайт):
+{% codeblock lang:bash %}
+git branch source
+git checkout source
+{% endcodeblock %}&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+&lt;a href=&#34;#head_site-template-create&#34;&gt;Далее создаю шаблон для сайта&lt;/a&gt; в ветке &lt;code&gt;source&lt;/code&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;репозиторий-на-bitbucket-&#34;&gt;Репозиторий на Bitbucket&lt;/h3&gt;
+&lt;p&gt;Я пользовался 
+&lt;a href=&#34;https://confluence.atlassian.com/display/BITBUCKET/Publishing&amp;#43;a&amp;#43;Website&amp;#43;on&amp;#43;Bitbucket&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;инструкцией от bitbucket&#39;а&lt;/a&gt;.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Создал на bitbucket&#39;е репозиторий с названием
+&lt;code&gt;yamadharma.bitbucket.org&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Выложил репозиторий
+{% codeblock lang:bash %}
+cd ~/mysite
+git remote add origin &lt;a href=&#34;mailto:git@bitbucket.org&#34;&gt;git@bitbucket.org&lt;/a&gt;:yamadharma/yamadharma.bitbucket.org.git
+git push -u origin &amp;ndash;all
+git push -u origin &amp;ndash;tags
+{% endcodeblock %}&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;выкладывание-сайта-на-bitbucket-&#34;&gt;Выкладывание сайта на Bitbucket&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Создал файл &lt;code&gt;_deploy.yml&lt;/code&gt; с помощью команды
+{% codeblock lang:bash %}
+octopress deploy init git -u &lt;a href=&#34;mailto:git@bitbucket.org&#34;&gt;git@bitbucket.org&lt;/a&gt;:yamadharma/yamadharma.bitbucket.org.git
+{% endcodeblock %}&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Подредактировал &lt;code&gt;.gitignore&lt;/code&gt;:
+{% codeblock lang:bash %}
+echo &amp;ldquo;.deploy&amp;rdquo; &amp;raquo; .gitignore
+{% endcodeblock %}&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Сгенерил сайт:
+{% codeblock lang:bash %}
+jekyll b
+{% endcodeblock %}&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Выложил существующий сайт:
+{% codeblock lang:bash %}
+octopress deploy
+{% endcodeblock %}&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Положил ветку &lt;code&gt;source&lt;/code&gt; на git:
+{% codeblock lang:bash %}
+git add .
+git commit -am &amp;lsquo;Поправил сайт&amp;rsquo;
+git push
+{% endcodeblock %}&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;a-namehead_site-template-createa-создание-шаблона-сайта-&#34;&gt;&lt;a name=&#39;head_site-template-create&#39;&gt;&lt;/a&gt; Создание шаблона сайта&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;В каталоге сайта создаю шаблон:
+{% codeblock lang:bash %}
+cd ~/mysite
+git checkout source
+octopress new -f .
+{% endcodeblock %}&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Поддержка многоязычности</title>
+      <link>/ru/1/01/01/octopus-multilingual/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>/ru/1/01/01/octopus-multilingual/</guid>
+      <description>&lt;p&gt;Добавим в конфигурационный файл (&lt;code&gt;_config.yml&lt;/code&gt;):&lt;/p&gt;
+&lt;p&gt;{% codeblock lang:yaml %}
+gems:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;octopress-multilingual&lt;/li&gt;
+&lt;li&gt;octopress-linkblog
+{% endcodeblock %}&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Также зададим язык по-умолчанию:&lt;/p&gt;
+&lt;p&gt;{% codeblock lang:yaml %}
+lang: ru
+{% endcodeblock %}&lt;/p&gt;
+&lt;h2 id=&#34;язык-для-постов-&#34;&gt;Язык для постов&lt;/h2&gt;
+&lt;p&gt;Добавим язык  в заголовок шаблонов:&lt;/p&gt;
+&lt;p&gt;{% codeblock lang:yaml %}
+lang: ru
+{% endcodeblock %}&lt;/p&gt;
+&lt;h2 id=&#34;конфигурация-для-разных-языков-&#34;&gt;Конфигурация для разных языков&lt;/h2&gt;
+&lt;p&gt;В каталоге &lt;code&gt;_data&lt;/code&gt; создадим конфигурационные файлы вида
+&lt;code&gt;lang_[language_code].yml&lt;/code&gt;:&lt;/p&gt;
+&lt;p&gt;{% codeblock lang:yaml %}
+_data
+lang_en.yml
+lang_ru.yml
+{% endcodeblock %}&lt;/p&gt;
+&lt;p&gt;Примерное их содержание:&lt;/p&gt;
+&lt;p&gt;{% codeblock lang:yaml %}&lt;/p&gt;
+&lt;h1 id=&#34;lang_enyml&#34;&gt;lang_en.yml&lt;/h1&gt;
+&lt;p&gt;title: English title&lt;/p&gt;
+&lt;h1 id=&#34;lang_ruyml&#34;&gt;lang_ru.yml&lt;/h1&gt;
+&lt;p&gt;title: Русское название сайта
+{% endcodeblock %}&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

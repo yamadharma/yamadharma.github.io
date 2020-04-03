@@ -5,7 +5,7 @@
     <link>/ru/tags/centos/</link>
       <atom:link href="/ru/tags/centos/index.xml" rel="self" type="application/rss+xml" />
     <description>centos</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>ru-ru</language><copyright>© 2020 Dmitry S. Kulyabov</copyright>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>ru-ru</language><copyright>© 2020 Dmitry S. Kulyabov</copyright><lastBuildDate>Thu, 19 Nov 2015 11:39:41 +0000</lastBuildDate>
     <image>
       <url>img/map[gravatar:%!s(bool=false) shape:circle]</url>
       <title>centos</title>
@@ -14,9 +14,9 @@
     
     <item>
       <title>Миграция с Drupal-6 на Drupal-8</title>
-      <link>/ru/1/01/01/drupal6-to-8/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>/ru/1/01/01/drupal6-to-8/</guid>
+      <link>/ru/2015/11/19/drupal6-to-8/</link>
+      <pubDate>Thu, 19 Nov 2015 11:39:41 +0000</pubDate>
+      <guid>/ru/2015/11/19/drupal6-to-8/</guid>
       <description>&lt;h2 id=&#34;информация-по-миграции-&#34;&gt;Информация по миграции&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -61,35 +61,32 @@ ln -s /usr/local/src/drush/vendor/drush/drush/drush /usr/local/bin/drush
     
     <item>
       <title>Настройка SELinux для некоторых приложений</title>
-      <link>/ru/1/01/01/selinux-apps/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>/ru/1/01/01/selinux-apps/</guid>
+      <link>/ru/2015/05/15/selinux-apps/</link>
+      <pubDate>Fri, 15 May 2015 05:56:13 +0000</pubDate>
+      <guid>/ru/2015/05/15/selinux-apps/</guid>
       <description>&lt;ul&gt;
 &lt;li&gt;&lt;code&gt;setsebool&lt;/code&gt; запускаем как с ключём &lt;code&gt;-P&lt;/code&gt; (для запоминания настроек), так и без него (чтобы работало в текущей сессии).&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;a-namehead_www-servera-www-сервер-&#34;&gt;&lt;a name=&#39;head_www-server&#39;&gt;&lt;/a&gt; WWW-сервер&lt;/h2&gt;
-&lt;p&gt;{% codeblock lang:bash %}
-setsebool -P httpd_unified 1
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;setsebool -P httpd_unified 1
 setsebool -P httpd_can_network_connect_db 1
 setsebool -P httpd_can_network_connect 1
 setsebool -P httpd_can_network_relay 1
 setsebool -P httpd_can_sendmail 1
 setsebool -P httpd_execmem 1
 setsebool -P httpd_use_fusefs 1
-{% endcodeblock %}&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id=&#34;a-namehead_dba-базы-данных-&#34;&gt;&lt;a name=&#39;head_db&#39;&gt;&lt;/a&gt; Базы данных&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;Postgres&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;{% codeblock lang:bash %}
-setsebool -P selinuxuser_postgresql_connect_enabled 1
-{% endcodeblock %}&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;setsebool -P selinuxuser_postgresql_connect_enabled 1
+&lt;/code&gt;&lt;/pre&gt;
 &lt;ul&gt;
 &lt;li&gt;MySQL&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;{% codeblock lang:bash %}
-setsebool -P selinuxuser_mysql_connect_enabled 1
-{% endcodeblock %}&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;setsebool -P selinuxuser_mysql_connect_enabled 1
+&lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id=&#34;ojs-&#34;&gt;OJS&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -101,13 +98,13 @@ setsebool -P selinuxuser_mysql_connect_enabled 1
 &lt;p&gt;Настраиваем доступ к файловой системе.&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;{% codeblock lang:bash %}
-semanage fcontext &amp;ndash;add -t httpd_sys_rw_content_t &amp;ldquo;/var/www/html/ojs/cache(/.&lt;em&gt;)?&amp;rdquo;
-semanage fcontext &amp;ndash;add -t httpd_sys_rw_content_t &amp;ldquo;/var/www/html/ojs/public(/.&lt;/em&gt;)?&amp;rdquo;
-semanage fcontext &amp;ndash;add -t httpd_sys_rw_content_t &amp;ldquo;/var/www/html/ojs/config.inc.php&amp;rdquo;
-semanage fcontext &amp;ndash;add -t httpd_sys_rw_content_t &amp;ldquo;/var/www/html/ojs/plugins/generic(/.*)?&amp;rdquo;&lt;/p&gt;
-&lt;p&gt;semanage fcontext &amp;ndash;add -t httpd_sys_rw_content_t &amp;ldquo;/var/www/data(/.*)?&amp;rdquo;
-{% endcodeblock %}&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/html/ojs/cache(/.*)?&amp;quot;
+semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/html/ojs/public(/.*)?&amp;quot;
+semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/html/ojs/config.inc.php&amp;quot;
+semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/html/ojs/plugins/generic(/.*)?&amp;quot;
+
+semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/data(/.*)?&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id=&#34;drupal-&#34;&gt;Drupal&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -119,11 +116,10 @@ semanage fcontext &amp;ndash;add -t httpd_sys_rw_content_t &amp;ldquo;/var/www/h
 &lt;p&gt;Настраиваем доступ к файловой системе.&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;{% codeblock lang:bash %}
-semanage fcontext &amp;ndash;add -t httpd_sys_rw_content_t &amp;ldquo;/var/www/html/sites/drupal/(.&lt;em&gt;)/sites/(.&lt;/em&gt;)/files(/.&lt;em&gt;)?&amp;rdquo;
-semanage fcontext &amp;ndash;add -t httpd_sys_rw_content_t &amp;ldquo;/var/www/html/sites/drupal/(.&lt;/em&gt;)/cache(/.&lt;em&gt;)?&amp;rdquo;
-semanage fcontext &amp;ndash;add -t httpd_sys_rw_content_t &amp;ldquo;/var/www/html/sites/drupal/(.&lt;/em&gt;)/sites/all(/.*)?&amp;rdquo;
-{% endcodeblock %}&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/html/sites/drupal/(.*)/sites/(.*)/files(/.*)?&amp;quot;
+semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/html/sites/drupal/(.*)/cache(/.*)?&amp;quot;
+semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/html/sites/drupal/(.*)/sites/all(/.*)?&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id=&#34;moodle-&#34;&gt;Moodle&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;

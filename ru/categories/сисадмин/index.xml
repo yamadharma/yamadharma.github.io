@@ -111,122 +111,10 @@ node_revision__body.body_value
     </item>
     
     <item>
-      <title>Счастье есть</title>
-      <link>/ru/2007/06/30/schaste-est/</link>
-      <pubDate>Sat, 30 Jun 2007 13:30:00 +0000</pubDate>
-      <guid>/ru/2007/06/30/schaste-est/</guid>
-      <description>&lt;p&gt;Просидел всю неделю под виндой. Качал MSDN. К концу недели стало уже плохо. В пятницу поставил Vista. Это добило меня окончательно. Вечером перегрузился под Linux. Счастье есть.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>К вопросу о настройке маршрутизатора ASUS WL-500gP</title>
-      <link>/ru/2007/01/14/k-voprosu-o-nastrojke-marshrutizatora-asus-wl-500gp/</link>
-      <pubDate>Sun, 14 Jan 2007 18:18:00 +0000</pubDate>
-      <guid>/ru/2007/01/14/k-voprosu-o-nastrojke-marshrutizatora-asus-wl-500gp/</guid>
-      <description>&lt;p&gt;При настройке возникли следующие проблемы.&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;Нужно было догадаться, что сервер доступа в настройках называется Heart-Beat Server.&lt;/li&gt;
-&lt;li&gt;Задавать маршрутизацию можно либо на на внутреннем eth (LAN), либо на внешнем ppp (WAN). Таким образом, получить доступ к домашней сети провайдера оказалось невозможным. Пришлось качать альтернативную прошивку (&lt;a href=&#34;http://oleg.wl500g.info/),&#34;&gt;http://oleg.wl500g.info/),&lt;/a&gt; в которой возможно (кроме кучи других бонусов) задавать маршрутную таблицу на внешнем eth (MAN) интерфейсе.&lt;/li&gt;
-&lt;/ol&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Monit и gentoo rc-scripts</title>
-      <link>/ru/2006/09/17/monit-i-gentoo-rc-scripts/</link>
-      <pubDate>Sun, 17 Sep 2006 20:55:00 +0000</pubDate>
-      <guid>/ru/2006/09/17/monit-i-gentoo-rc-scripts/</guid>
-      <description>&lt;p&gt;При использовании monit для перезапуска rc-скриптов в gentoo использовал killall и опцию zap.&lt;br&gt;
-Нашёл это-же решение, но оформленное красивее.&lt;/p&gt;
-&lt;p&gt;Это файл /etc/monit.d/bin/kickservice&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;#!/bin/sh  
-# kickservice by Eric Radman  
-# Script used by monit to kill off and restart daemons  
-# /etc/monit.d/bin/kickservice  
-   
-function stop ()  
-{  
-     /etc/init.d/$1 pause  
-     /etc/init.d/$1 zap  
-     if [ &amp;quot;$2&amp;quot; == &amp;quot;kill&amp;quot; ]  
-         then  
-         /bin/killall $3  
-     fi  
-}  
-   
-function start ()  
-{  
-     /etc/init.d/$1 zap  
-     /etc/init.d/$1 start  
-}  
-   
-case &amp;quot;$1&amp;quot; in  
-  start)  
-     start $2 $3 $4  
-     ;;  
-  stop)  
-     stop $2 $3 $4  
-     ;;  
-  *)  
-     echo &amp;quot;Usage: kickservice [start|stop] [service] kill [daemon]&amp;quot;  
-     ;;  
- esac  
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Проблема возникла из-за того, что при установке baselayout-1.12.x перестал нормально работать pppd (при подключении через pptp к VPN-серверу провайдера). Очень часто соединение не устанавливается (вина, думаю, провайдерского сервера). По идее после этого он должен перезапускаться, а он просто ничего не делал. Решил снять проблему с помощью monit.&lt;br&gt;
-Убрал net.ppp0 из загрузки, и заставил monit мониторить ppp0.&lt;/p&gt;
-&lt;p&gt;Вот скрипт /etc/monit.d/ppp0&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;check process pppd with pidfile /var/run/ppp0.pid  
-   start program = &amp;quot;/etc/monit.d/bin/kickservice start net.ppp0&amp;quot;  
-   stop program = &amp;quot;/etc/monit.d/bin/kickservice stop net.ppp0 kill pppd&amp;quot;  
-   if 5 restarts within 5 cycles then timeout
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;P. S. Хотел запостить скрипты, но не знаю как :(&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>Пожаротушение</title>
-      <link>/ru/2006/07/14/11-48-00/</link>
-      <pubDate>Fri, 14 Jul 2006 11:48:00 +0000</pubDate>
-      <guid>/ru/2006/07/14/11-48-00/</guid>
-      <description>&lt;p&gt;Новая ссылочка по системам пожаротушения:&lt;br&gt;
-&lt;a href=&#34;http://www.ista-tech.ru/fire/statya/sx/ART/810/BRN/1245.html&#34;&gt;http://www.ista-tech.ru/fire/statya/sx/ART/810/BRN/1245.html&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Цитата:&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;По степени вредного воздействия на материальные ценности при срабатывании САП образуют (в порядке убывания вредности) следующий ряд:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;аэрозольные и порошковые;&lt;/li&gt;
-&lt;li&gt;пенные и водо-пенные;&lt;/li&gt;
-&lt;li&gt;водяные;&lt;/li&gt;
-&lt;li&gt;системы тонкодисперсной воды;&lt;/li&gt;
-&lt;li&gt;газовые.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/blockquote&gt;</description>
-    </item>
-    
-    <item>
-      <title>Гроза</title>
-      <link>/ru/2006/07/12/10-06-00/</link>
-      <pubDate>Wed, 12 Jul 2006 10:06:00 +0000</pubDate>
-      <guid>/ru/2006/07/12/10-06-00/</guid>
-      <description>&lt;p&gt;В воскресенье была гроза. Сработала система пожаротушения (замкнуло?). От Этого умерли все сервера на открытой стойке. В том числе и почта.&lt;/p&gt;
-&lt;p&gt;В понедельник была гроза. Дома сгорел монитор.&lt;/p&gt;
-&lt;p&gt;Почту ещё не поднял.&lt;/p&gt;
-&lt;p&gt;Вот ссылочка:&lt;br&gt;
-
-&lt;a href=&#34;http://www.ivd.ru/document.xgi?id=4941&amp;amp;gid=393&amp;amp;hid=485&amp;amp;oid=485&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;http://www.ivd.ru/document.xgi?id=4941&amp;amp;gid=393&amp;amp;hid=485&amp;amp;oid=485&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Цитата:&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Недостатков тоже хватает. Во-первых, тушащий материал при взаимодействии с влагой дает щелочную (аэрозоли) или кислотную реакцию (порошки), что может приводить к коррозии металла, деструкции материалов, а также к выводу из строя электронной техники. Во-вторых, в момент срабатывания системы видимость в помещении снижается почти до нуля, что небезопасно для не успевших эвакуироваться людей. В-третьих, попадание порошков и аэрозолей в глаза или дыхательные пути вредно для здоровья. В-четвертых, порошки слеживаются, что ограничивает срок их хранения (необходима перезарядка или замена устройств тушения раз в 5 - 10 лет).&lt;/p&gt;
-&lt;p&gt;Первые три недостатка обусловливают повышенные требования к надежности систем, в частности к защите от ложного срабатывания.&lt;/p&gt;
-&lt;/blockquote&gt;</description>
-    </item>
-    
-    <item>
       <title>Миграция с Drupal-6 на Drupal-8</title>
-      <link>/ru/1/01/01/drupal6-to-8/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>/ru/1/01/01/drupal6-to-8/</guid>
+      <link>/ru/2015/11/19/drupal6-to-8/</link>
+      <pubDate>Thu, 19 Nov 2015 11:39:41 +0000</pubDate>
+      <guid>/ru/2015/11/19/drupal6-to-8/</guid>
       <description>&lt;h2 id=&#34;информация-по-миграции-&#34;&gt;Информация по миграции&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -271,9 +159,9 @@ ln -s /usr/local/src/drush/vendor/drush/drush/drush /usr/local/bin/drush
     
     <item>
       <title>Миграция с Samba3 на Samba4</title>
-      <link>/ru/1/01/01/samba-migrate/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>/ru/1/01/01/samba-migrate/</guid>
+      <link>/ru/2015/10/27/samba-migrate/</link>
+      <pubDate>Tue, 27 Oct 2015 13:48:49 +0300</pubDate>
+      <guid>/ru/2015/10/27/samba-migrate/</guid>
       <description>&lt;h3 id=&#34;установка-пакетов-&#34;&gt;Установка пакетов&lt;/h3&gt;
 &lt;p&gt;В качестве системы для сервера используем Centos7. Там пока не
 поддерживается функционал Samba4 AD (конфликт mit-krb и heimdal). Поэтому поставим самбу с
@@ -462,35 +350,32 @@ samba-tool domain passwordsettings set --max-pwd-age=0
     
     <item>
       <title>Настройка SELinux для некоторых приложений</title>
-      <link>/ru/1/01/01/selinux-apps/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>/ru/1/01/01/selinux-apps/</guid>
+      <link>/ru/2015/05/15/selinux-apps/</link>
+      <pubDate>Fri, 15 May 2015 05:56:13 +0000</pubDate>
+      <guid>/ru/2015/05/15/selinux-apps/</guid>
       <description>&lt;ul&gt;
 &lt;li&gt;&lt;code&gt;setsebool&lt;/code&gt; запускаем как с ключём &lt;code&gt;-P&lt;/code&gt; (для запоминания настроек), так и без него (чтобы работало в текущей сессии).&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;a-namehead_www-servera-www-сервер-&#34;&gt;&lt;a name=&#39;head_www-server&#39;&gt;&lt;/a&gt; WWW-сервер&lt;/h2&gt;
-&lt;p&gt;{% codeblock lang:bash %}
-setsebool -P httpd_unified 1
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;setsebool -P httpd_unified 1
 setsebool -P httpd_can_network_connect_db 1
 setsebool -P httpd_can_network_connect 1
 setsebool -P httpd_can_network_relay 1
 setsebool -P httpd_can_sendmail 1
 setsebool -P httpd_execmem 1
 setsebool -P httpd_use_fusefs 1
-{% endcodeblock %}&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id=&#34;a-namehead_dba-базы-данных-&#34;&gt;&lt;a name=&#39;head_db&#39;&gt;&lt;/a&gt; Базы данных&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;Postgres&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;{% codeblock lang:bash %}
-setsebool -P selinuxuser_postgresql_connect_enabled 1
-{% endcodeblock %}&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;setsebool -P selinuxuser_postgresql_connect_enabled 1
+&lt;/code&gt;&lt;/pre&gt;
 &lt;ul&gt;
 &lt;li&gt;MySQL&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;{% codeblock lang:bash %}
-setsebool -P selinuxuser_mysql_connect_enabled 1
-{% endcodeblock %}&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;setsebool -P selinuxuser_mysql_connect_enabled 1
+&lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id=&#34;ojs-&#34;&gt;OJS&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -502,13 +387,13 @@ setsebool -P selinuxuser_mysql_connect_enabled 1
 &lt;p&gt;Настраиваем доступ к файловой системе.&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;{% codeblock lang:bash %}
-semanage fcontext &amp;ndash;add -t httpd_sys_rw_content_t &amp;ldquo;/var/www/html/ojs/cache(/.&lt;em&gt;)?&amp;rdquo;
-semanage fcontext &amp;ndash;add -t httpd_sys_rw_content_t &amp;ldquo;/var/www/html/ojs/public(/.&lt;/em&gt;)?&amp;rdquo;
-semanage fcontext &amp;ndash;add -t httpd_sys_rw_content_t &amp;ldquo;/var/www/html/ojs/config.inc.php&amp;rdquo;
-semanage fcontext &amp;ndash;add -t httpd_sys_rw_content_t &amp;ldquo;/var/www/html/ojs/plugins/generic(/.*)?&amp;rdquo;&lt;/p&gt;
-&lt;p&gt;semanage fcontext &amp;ndash;add -t httpd_sys_rw_content_t &amp;ldquo;/var/www/data(/.*)?&amp;rdquo;
-{% endcodeblock %}&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/html/ojs/cache(/.*)?&amp;quot;
+semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/html/ojs/public(/.*)?&amp;quot;
+semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/html/ojs/config.inc.php&amp;quot;
+semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/html/ojs/plugins/generic(/.*)?&amp;quot;
+
+semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/data(/.*)?&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id=&#34;drupal-&#34;&gt;Drupal&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -520,11 +405,10 @@ semanage fcontext &amp;ndash;add -t httpd_sys_rw_content_t &amp;ldquo;/var/www/h
 &lt;p&gt;Настраиваем доступ к файловой системе.&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;{% codeblock lang:bash %}
-semanage fcontext &amp;ndash;add -t httpd_sys_rw_content_t &amp;ldquo;/var/www/html/sites/drupal/(.&lt;em&gt;)/sites/(.&lt;/em&gt;)/files(/.&lt;em&gt;)?&amp;rdquo;
-semanage fcontext &amp;ndash;add -t httpd_sys_rw_content_t &amp;ldquo;/var/www/html/sites/drupal/(.&lt;/em&gt;)/cache(/.&lt;em&gt;)?&amp;rdquo;
-semanage fcontext &amp;ndash;add -t httpd_sys_rw_content_t &amp;ldquo;/var/www/html/sites/drupal/(.&lt;/em&gt;)/sites/all(/.*)?&amp;rdquo;
-{% endcodeblock %}&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/html/sites/drupal/(.*)/sites/(.*)/files(/.*)?&amp;quot;
+semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/html/sites/drupal/(.*)/cache(/.*)?&amp;quot;
+semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/html/sites/drupal/(.*)/sites/all(/.*)?&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id=&#34;moodle-&#34;&gt;Moodle&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -547,9 +431,9 @@ semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/moodle/web-
     
     <item>
       <title>Установка виртуальной машины NOC на oVirt</title>
-      <link>/ru/1/01/01/ova-on-ovirt/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>/ru/1/01/01/ova-on-ovirt/</guid>
+      <link>/ru/2015/05/13/ova-on-ovirt/</link>
+      <pubDate>Wed, 13 May 2015 08:48:57 +0000</pubDate>
+      <guid>/ru/2015/05/13/ova-on-ovirt/</guid>
       <description>&lt;p&gt;Чтобы не мучиться с установкой 
 &lt;a href=&#34;https://kb.nocproject.org&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;NOC&lt;/a&gt; решил установить с образа, 
 &lt;a href=&#34;https://kb.nocproject.org/display/SITE/Downloads&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;предлагаемого на сайте&lt;/a&gt;. К сажалению, образ предлагается в формате &lt;code&gt;ova&lt;/code&gt;, а у меня стоит oVirt (&lt;code&gt;ovirt-engine&lt;/code&gt;). Он этот формат не понимает. Однако у меня есть ещё хост с &lt;code&gt;kvm&lt;/code&gt; (&lt;code&gt;kvm-host&lt;/code&gt;).&lt;/p&gt;
@@ -604,6 +488,118 @@ cd /net/kvm-host/var/lib/libvirt/images
 virt-v2v -b vlan5  -i libvirtxml -o rhev -os ovirt-node-01:/ovirt/export noc-x86_64-Debian-8-disk1.xml
 {% endcodeblock %}&lt;/p&gt;
 &lt;p&gt;Здесь &lt;code&gt;ovirt-node-01&lt;/code&gt; — узел, на котором запускаются виртуальные машины, &lt;code&gt;vlan5&lt;/code&gt; — интерфейс, к которому она будет подключена.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Счастье есть</title>
+      <link>/ru/2007/06/30/schaste-est/</link>
+      <pubDate>Sat, 30 Jun 2007 13:30:00 +0000</pubDate>
+      <guid>/ru/2007/06/30/schaste-est/</guid>
+      <description>&lt;p&gt;Просидел всю неделю под виндой. Качал MSDN. К концу недели стало уже плохо. В пятницу поставил Vista. Это добило меня окончательно. Вечером перегрузился под Linux. Счастье есть.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>К вопросу о настройке маршрутизатора ASUS WL-500gP</title>
+      <link>/ru/2007/01/14/k-voprosu-o-nastrojke-marshrutizatora-asus-wl-500gp/</link>
+      <pubDate>Sun, 14 Jan 2007 18:18:00 +0000</pubDate>
+      <guid>/ru/2007/01/14/k-voprosu-o-nastrojke-marshrutizatora-asus-wl-500gp/</guid>
+      <description>&lt;p&gt;При настройке возникли следующие проблемы.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Нужно было догадаться, что сервер доступа в настройках называется Heart-Beat Server.&lt;/li&gt;
+&lt;li&gt;Задавать маршрутизацию можно либо на на внутреннем eth (LAN), либо на внешнем ppp (WAN). Таким образом, получить доступ к домашней сети провайдера оказалось невозможным. Пришлось качать альтернативную прошивку (&lt;a href=&#34;http://oleg.wl500g.info/),&#34;&gt;http://oleg.wl500g.info/),&lt;/a&gt; в которой возможно (кроме кучи других бонусов) задавать маршрутную таблицу на внешнем eth (MAN) интерфейсе.&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Monit и gentoo rc-scripts</title>
+      <link>/ru/2006/09/17/monit-i-gentoo-rc-scripts/</link>
+      <pubDate>Sun, 17 Sep 2006 20:55:00 +0000</pubDate>
+      <guid>/ru/2006/09/17/monit-i-gentoo-rc-scripts/</guid>
+      <description>&lt;p&gt;При использовании monit для перезапуска rc-скриптов в gentoo использовал killall и опцию zap.&lt;br&gt;
+Нашёл это-же решение, но оформленное красивее.&lt;/p&gt;
+&lt;p&gt;Это файл /etc/monit.d/bin/kickservice&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;#!/bin/sh  
+# kickservice by Eric Radman  
+# Script used by monit to kill off and restart daemons  
+# /etc/monit.d/bin/kickservice  
+   
+function stop ()  
+{  
+     /etc/init.d/$1 pause  
+     /etc/init.d/$1 zap  
+     if [ &amp;quot;$2&amp;quot; == &amp;quot;kill&amp;quot; ]  
+         then  
+         /bin/killall $3  
+     fi  
+}  
+   
+function start ()  
+{  
+     /etc/init.d/$1 zap  
+     /etc/init.d/$1 start  
+}  
+   
+case &amp;quot;$1&amp;quot; in  
+  start)  
+     start $2 $3 $4  
+     ;;  
+  stop)  
+     stop $2 $3 $4  
+     ;;  
+  *)  
+     echo &amp;quot;Usage: kickservice [start|stop] [service] kill [daemon]&amp;quot;  
+     ;;  
+ esac  
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Проблема возникла из-за того, что при установке baselayout-1.12.x перестал нормально работать pppd (при подключении через pptp к VPN-серверу провайдера). Очень часто соединение не устанавливается (вина, думаю, провайдерского сервера). По идее после этого он должен перезапускаться, а он просто ничего не делал. Решил снять проблему с помощью monit.&lt;br&gt;
+Убрал net.ppp0 из загрузки, и заставил monit мониторить ppp0.&lt;/p&gt;
+&lt;p&gt;Вот скрипт /etc/monit.d/ppp0&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;check process pppd with pidfile /var/run/ppp0.pid  
+   start program = &amp;quot;/etc/monit.d/bin/kickservice start net.ppp0&amp;quot;  
+   stop program = &amp;quot;/etc/monit.d/bin/kickservice stop net.ppp0 kill pppd&amp;quot;  
+   if 5 restarts within 5 cycles then timeout
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;P. S. Хотел запостить скрипты, но не знаю как :(&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Пожаротушение</title>
+      <link>/ru/2006/07/14/11-48-00/</link>
+      <pubDate>Fri, 14 Jul 2006 11:48:00 +0000</pubDate>
+      <guid>/ru/2006/07/14/11-48-00/</guid>
+      <description>&lt;p&gt;Новая ссылочка по системам пожаротушения:&lt;br&gt;
+&lt;a href=&#34;http://www.ista-tech.ru/fire/statya/sx/ART/810/BRN/1245.html&#34;&gt;http://www.ista-tech.ru/fire/statya/sx/ART/810/BRN/1245.html&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Цитата:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;По степени вредного воздействия на материальные ценности при срабатывании САП образуют (в порядке убывания вредности) следующий ряд:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;аэрозольные и порошковые;&lt;/li&gt;
+&lt;li&gt;пенные и водо-пенные;&lt;/li&gt;
+&lt;li&gt;водяные;&lt;/li&gt;
+&lt;li&gt;системы тонкодисперсной воды;&lt;/li&gt;
+&lt;li&gt;газовые.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>Гроза</title>
+      <link>/ru/2006/07/12/10-06-00/</link>
+      <pubDate>Wed, 12 Jul 2006 10:06:00 +0000</pubDate>
+      <guid>/ru/2006/07/12/10-06-00/</guid>
+      <description>&lt;p&gt;В воскресенье была гроза. Сработала система пожаротушения (замкнуло?). От Этого умерли все сервера на открытой стойке. В том числе и почта.&lt;/p&gt;
+&lt;p&gt;В понедельник была гроза. Дома сгорел монитор.&lt;/p&gt;
+&lt;p&gt;Почту ещё не поднял.&lt;/p&gt;
+&lt;p&gt;Вот ссылочка:&lt;br&gt;
+
+&lt;a href=&#34;http://www.ivd.ru/document.xgi?id=4941&amp;amp;gid=393&amp;amp;hid=485&amp;amp;oid=485&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;http://www.ivd.ru/document.xgi?id=4941&amp;amp;gid=393&amp;amp;hid=485&amp;amp;oid=485&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Цитата:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Недостатков тоже хватает. Во-первых, тушащий материал при взаимодействии с влагой дает щелочную (аэрозоли) или кислотную реакцию (порошки), что может приводить к коррозии металла, деструкции материалов, а также к выводу из строя электронной техники. Во-вторых, в момент срабатывания системы видимость в помещении снижается почти до нуля, что небезопасно для не успевших эвакуироваться людей. В-третьих, попадание порошков и аэрозолей в глаза или дыхательные пути вредно для здоровья. В-четвертых, порошки слеживаются, что ограничивает срок их хранения (необходима перезарядка или замена устройств тушения раз в 5 - 10 лет).&lt;/p&gt;
+&lt;p&gt;Первые три недостатка обусловливают повышенные требования к надежности систем, в частности к защите от ложного срабатывания.&lt;/p&gt;
+&lt;/blockquote&gt;</description>
     </item>
     
   </channel>

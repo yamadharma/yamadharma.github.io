@@ -493,6 +493,153 @@ fi
     </item>
     
     <item>
+      <title>Поддержка многоязычности</title>
+      <link>/ru/2015/04/20/octopus-multilingual/</link>
+      <pubDate>Mon, 20 Apr 2015 13:17:32 +0000</pubDate>
+      <guid>/ru/2015/04/20/octopus-multilingual/</guid>
+      <description>&lt;p&gt;Добавим в конфигурационный файл (&lt;code&gt;_config.yml&lt;/code&gt;):&lt;/p&gt;
+&lt;p&gt;{% codeblock lang:yaml %}
+gems:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;octopress-multilingual&lt;/li&gt;
+&lt;li&gt;octopress-linkblog
+{% endcodeblock %}&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Также зададим язык по-умолчанию:&lt;/p&gt;
+&lt;p&gt;{% codeblock lang:yaml %}
+lang: ru
+{% endcodeblock %}&lt;/p&gt;
+&lt;h2 id=&#34;язык-для-постов-&#34;&gt;Язык для постов&lt;/h2&gt;
+&lt;p&gt;Добавим язык  в заголовок шаблонов:&lt;/p&gt;
+&lt;p&gt;{% codeblock lang:yaml %}
+lang: ru
+{% endcodeblock %}&lt;/p&gt;
+&lt;h2 id=&#34;конфигурация-для-разных-языков-&#34;&gt;Конфигурация для разных языков&lt;/h2&gt;
+&lt;p&gt;В каталоге &lt;code&gt;_data&lt;/code&gt; создадим конфигурационные файлы вида
+&lt;code&gt;lang_[language_code].yml&lt;/code&gt;:&lt;/p&gt;
+&lt;p&gt;{% codeblock lang:yaml %}
+_data
+lang_en.yml
+lang_ru.yml
+{% endcodeblock %}&lt;/p&gt;
+&lt;p&gt;Примерное их содержание:&lt;/p&gt;
+&lt;p&gt;{% codeblock lang:yaml %}&lt;/p&gt;
+&lt;h1 id=&#34;lang_enyml&#34;&gt;lang_en.yml&lt;/h1&gt;
+&lt;p&gt;title: English title&lt;/p&gt;
+&lt;h1 id=&#34;lang_ruyml&#34;&gt;lang_ru.yml&lt;/h1&gt;
+&lt;p&gt;title: Русское название сайта
+{% endcodeblock %}&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Перенос блога на Jekyll &#43; Octopress</title>
+      <link>/ru/2015/03/23/jekyll-octopress/</link>
+      <pubDate>Mon, 23 Mar 2015 13:51:36 +0300</pubDate>
+      <guid>/ru/2015/03/23/jekyll-octopress/</guid>
+      <description>&lt;h2 id=&#34;репозиторий-для-сайта-&#34;&gt;Репозиторий для сайта&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Создал локальный каталог для сайта:
+{% codeblock lang:bash %}
+mkdir ~/mysite
+{% endcodeblock %}&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;локальный-git-репозиторий-&#34;&gt;Локальный git-репозиторий&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Создал пустой git-репозиторий:
+{% codeblock lang:bash %}
+cd ~/mysite
+git init
+{% endcodeblock %}&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Создал в нём файл &lt;code&gt;README.md&lt;/code&gt;
+{% codeblock lang:bash %}
+touch README.md
+{% endcodeblock %}&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Сделал коммит:
+{% codeblock lang:bash %}
+git add .
+git commit -am &amp;lsquo;Initial commit&amp;rsquo;
+{% endcodeblock %}&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Создаю ветку для кода (в &lt;code&gt;master&lt;/code&gt; будет сайт):
+{% codeblock lang:bash %}
+git branch source
+git checkout source
+{% endcodeblock %}&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+&lt;a href=&#34;#head_site-template-create&#34;&gt;Далее создаю шаблон для сайта&lt;/a&gt; в ветке &lt;code&gt;source&lt;/code&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;репозиторий-на-bitbucket-&#34;&gt;Репозиторий на Bitbucket&lt;/h3&gt;
+&lt;p&gt;Я пользовался 
+&lt;a href=&#34;https://confluence.atlassian.com/display/BITBUCKET/Publishing&amp;#43;a&amp;#43;Website&amp;#43;on&amp;#43;Bitbucket&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;инструкцией от bitbucket&#39;а&lt;/a&gt;.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Создал на bitbucket&#39;е репозиторий с названием
+&lt;code&gt;yamadharma.bitbucket.org&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Выложил репозиторий
+{% codeblock lang:bash %}
+cd ~/mysite
+git remote add origin &lt;a href=&#34;mailto:git@bitbucket.org&#34;&gt;git@bitbucket.org&lt;/a&gt;:yamadharma/yamadharma.bitbucket.org.git
+git push -u origin &amp;ndash;all
+git push -u origin &amp;ndash;tags
+{% endcodeblock %}&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;выкладывание-сайта-на-bitbucket-&#34;&gt;Выкладывание сайта на Bitbucket&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Создал файл &lt;code&gt;_deploy.yml&lt;/code&gt; с помощью команды
+{% codeblock lang:bash %}
+octopress deploy init git -u &lt;a href=&#34;mailto:git@bitbucket.org&#34;&gt;git@bitbucket.org&lt;/a&gt;:yamadharma/yamadharma.bitbucket.org.git
+{% endcodeblock %}&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Подредактировал &lt;code&gt;.gitignore&lt;/code&gt;:
+{% codeblock lang:bash %}
+echo &amp;ldquo;.deploy&amp;rdquo; &amp;raquo; .gitignore
+{% endcodeblock %}&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Сгенерил сайт:
+{% codeblock lang:bash %}
+jekyll b
+{% endcodeblock %}&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Выложил существующий сайт:
+{% codeblock lang:bash %}
+octopress deploy
+{% endcodeblock %}&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Положил ветку &lt;code&gt;source&lt;/code&gt; на git:
+{% codeblock lang:bash %}
+git add .
+git commit -am &amp;lsquo;Поправил сайт&amp;rsquo;
+git push
+{% endcodeblock %}&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;a-namehead_site-template-createa-создание-шаблона-сайта-&#34;&gt;&lt;a name=&#39;head_site-template-create&#39;&gt;&lt;/a&gt; Создание шаблона сайта&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;В каталоге сайта создаю шаблон:
+{% codeblock lang:bash %}
+cd ~/mysite
+git checkout source
+octopress new -f .
+{% endcodeblock %}&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
       <title>Работа с видео</title>
       <link>/ru/2007/01/10/rabota-s-video/</link>
       <pubDate>Wed, 10 Jan 2007 22:59:00 +0000</pubDate>
@@ -898,153 +1045,6 @@ F-spot (&lt;a href=&#34;http://f-spot.org&#34;&gt;http://f-spot.org&lt;/a&gt;) �
 &lt;p&gt;Пытаемся поплотнее заниматься Plan9. Особено интересует протокол 9p2000u.&lt;br&gt;
 &lt;strong&gt;Идея:&lt;/strong&gt; внедрить этот протокол в Hurd.&lt;/p&gt;
 </description>
-    </item>
-    
-    <item>
-      <title>Перенос блога на Jekyll &#43; Octopress</title>
-      <link>/ru/1/01/01/jekyll-octopress/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>/ru/1/01/01/jekyll-octopress/</guid>
-      <description>&lt;h2 id=&#34;репозиторий-для-сайта-&#34;&gt;Репозиторий для сайта&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Создал локальный каталог для сайта:
-{% codeblock lang:bash %}
-mkdir ~/mysite
-{% endcodeblock %}&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;локальный-git-репозиторий-&#34;&gt;Локальный git-репозиторий&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Создал пустой git-репозиторий:
-{% codeblock lang:bash %}
-cd ~/mysite
-git init
-{% endcodeblock %}&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Создал в нём файл &lt;code&gt;README.md&lt;/code&gt;
-{% codeblock lang:bash %}
-touch README.md
-{% endcodeblock %}&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Сделал коммит:
-{% codeblock lang:bash %}
-git add .
-git commit -am &amp;lsquo;Initial commit&amp;rsquo;
-{% endcodeblock %}&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Создаю ветку для кода (в &lt;code&gt;master&lt;/code&gt; будет сайт):
-{% codeblock lang:bash %}
-git branch source
-git checkout source
-{% endcodeblock %}&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;
-&lt;a href=&#34;#head_site-template-create&#34;&gt;Далее создаю шаблон для сайта&lt;/a&gt; в ветке &lt;code&gt;source&lt;/code&gt;.&lt;/p&gt;
-&lt;h3 id=&#34;репозиторий-на-bitbucket-&#34;&gt;Репозиторий на Bitbucket&lt;/h3&gt;
-&lt;p&gt;Я пользовался 
-&lt;a href=&#34;https://confluence.atlassian.com/display/BITBUCKET/Publishing&amp;#43;a&amp;#43;Website&amp;#43;on&amp;#43;Bitbucket&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;инструкцией от bitbucket&#39;а&lt;/a&gt;.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Создал на bitbucket&#39;е репозиторий с названием
-&lt;code&gt;yamadharma.bitbucket.org&lt;/code&gt;.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Выложил репозиторий
-{% codeblock lang:bash %}
-cd ~/mysite
-git remote add origin &lt;a href=&#34;mailto:git@bitbucket.org&#34;&gt;git@bitbucket.org&lt;/a&gt;:yamadharma/yamadharma.bitbucket.org.git
-git push -u origin &amp;ndash;all
-git push -u origin &amp;ndash;tags
-{% endcodeblock %}&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;выкладывание-сайта-на-bitbucket-&#34;&gt;Выкладывание сайта на Bitbucket&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Создал файл &lt;code&gt;_deploy.yml&lt;/code&gt; с помощью команды
-{% codeblock lang:bash %}
-octopress deploy init git -u &lt;a href=&#34;mailto:git@bitbucket.org&#34;&gt;git@bitbucket.org&lt;/a&gt;:yamadharma/yamadharma.bitbucket.org.git
-{% endcodeblock %}&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Подредактировал &lt;code&gt;.gitignore&lt;/code&gt;:
-{% codeblock lang:bash %}
-echo &amp;ldquo;.deploy&amp;rdquo; &amp;raquo; .gitignore
-{% endcodeblock %}&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Сгенерил сайт:
-{% codeblock lang:bash %}
-jekyll b
-{% endcodeblock %}&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Выложил существующий сайт:
-{% codeblock lang:bash %}
-octopress deploy
-{% endcodeblock %}&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Положил ветку &lt;code&gt;source&lt;/code&gt; на git:
-{% codeblock lang:bash %}
-git add .
-git commit -am &amp;lsquo;Поправил сайт&amp;rsquo;
-git push
-{% endcodeblock %}&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;a-namehead_site-template-createa-создание-шаблона-сайта-&#34;&gt;&lt;a name=&#39;head_site-template-create&#39;&gt;&lt;/a&gt; Создание шаблона сайта&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;В каталоге сайта создаю шаблон:
-{% codeblock lang:bash %}
-cd ~/mysite
-git checkout source
-octopress new -f .
-{% endcodeblock %}&lt;/li&gt;
-&lt;/ul&gt;</description>
-    </item>
-    
-    <item>
-      <title>Поддержка многоязычности</title>
-      <link>/ru/1/01/01/octopus-multilingual/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>/ru/1/01/01/octopus-multilingual/</guid>
-      <description>&lt;p&gt;Добавим в конфигурационный файл (&lt;code&gt;_config.yml&lt;/code&gt;):&lt;/p&gt;
-&lt;p&gt;{% codeblock lang:yaml %}
-gems:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;octopress-multilingual&lt;/li&gt;
-&lt;li&gt;octopress-linkblog
-{% endcodeblock %}&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Также зададим язык по-умолчанию:&lt;/p&gt;
-&lt;p&gt;{% codeblock lang:yaml %}
-lang: ru
-{% endcodeblock %}&lt;/p&gt;
-&lt;h2 id=&#34;язык-для-постов-&#34;&gt;Язык для постов&lt;/h2&gt;
-&lt;p&gt;Добавим язык  в заголовок шаблонов:&lt;/p&gt;
-&lt;p&gt;{% codeblock lang:yaml %}
-lang: ru
-{% endcodeblock %}&lt;/p&gt;
-&lt;h2 id=&#34;конфигурация-для-разных-языков-&#34;&gt;Конфигурация для разных языков&lt;/h2&gt;
-&lt;p&gt;В каталоге &lt;code&gt;_data&lt;/code&gt; создадим конфигурационные файлы вида
-&lt;code&gt;lang_[language_code].yml&lt;/code&gt;:&lt;/p&gt;
-&lt;p&gt;{% codeblock lang:yaml %}
-_data
-lang_en.yml
-lang_ru.yml
-{% endcodeblock %}&lt;/p&gt;
-&lt;p&gt;Примерное их содержание:&lt;/p&gt;
-&lt;p&gt;{% codeblock lang:yaml %}&lt;/p&gt;
-&lt;h1 id=&#34;lang_enyml&#34;&gt;lang_en.yml&lt;/h1&gt;
-&lt;p&gt;title: English title&lt;/p&gt;
-&lt;h1 id=&#34;lang_ruyml&#34;&gt;lang_ru.yml&lt;/h1&gt;
-&lt;p&gt;title: Русское название сайта
-{% endcodeblock %}&lt;/p&gt;</description>
     </item>
     
   </channel>

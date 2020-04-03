@@ -1247,6 +1247,244 @@ fb2:
     </item>
     
     <item>
+      <title>Миграция с Drupal-6 на Drupal-8</title>
+      <link>/ru/2015/11/19/drupal6-to-8/</link>
+      <pubDate>Thu, 19 Nov 2015 11:39:41 +0000</pubDate>
+      <guid>/ru/2015/11/19/drupal6-to-8/</guid>
+      <description>&lt;h2 id=&#34;информация-по-миграции-&#34;&gt;Информация по миграции&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://www.drupal.org/upgrade/migrate&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Upgrading from Drupal 6 or 7 to Drupal 8&lt;/a&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://www.drupal.org/node/2257723&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Executing a Drupal 6/7 to Drupal 8 upgrade&lt;/a&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://drupalwatchdog.com/blog/2014/12/drupal-upgrade-1&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;The Drupal 6 to 8 Upgrade Challenge&lt;/a&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://www.drupal.org/node/2167633&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Known Issues with the Drupal 6/7 -&amp;gt; 8 Upgrade Path&lt;/a&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;обновление-php-&#34;&gt;Обновление PHP&lt;/h2&gt;
+&lt;p&gt;Для Drupal-8 нужен php-5.5. В Centos-7 идёт php-5.4. Обновим его до php-5.6. Вначале установним нужные репозитории
+(см. &lt;a href=&#34;https://webtatic.com/packages/php56/&#34;&gt;https://webtatic.com/packages/php56/&lt;/a&gt;):&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Сделаем подмену дистрибутивного php на php-5.6:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;yum install yum-plugin-replace
+yum replace php-common --replace-with=php56w-common
+yum install php56w-opcache
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;установка-drush-8-&#34;&gt;Установка Drush 8&lt;/h2&gt;
+&lt;p&gt;Установим Composer:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;yum -y install composer
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Установим Drush (dev):&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;mkdir /usr/local/src/drush
+cd /usr/local/src/drush
+composer require drush/drush:dev-master
+ln -s /usr/local/src/drush/vendor/drush/drush/drush /usr/local/bin/drush
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>Миграция с Samba3 на Samba4</title>
+      <link>/ru/2015/10/27/samba-migrate/</link>
+      <pubDate>Tue, 27 Oct 2015 13:48:49 +0300</pubDate>
+      <guid>/ru/2015/10/27/samba-migrate/</guid>
+      <description>&lt;h3 id=&#34;установка-пакетов-&#34;&gt;Установка пакетов&lt;/h3&gt;
+&lt;p&gt;В качестве системы для сервера используем Centos7. Там пока не
+поддерживается функционал Samba4 AD (конфликт mit-krb и heimdal). Поэтому поставим самбу с
+EnterpriseSAMBA.com &lt;a href=&#34;https://portal.enterprisesamba.com/&#34;&gt;https://portal.enterprisesamba.com/&lt;/a&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;cd /etc/yum.repos.d
+wget https://sernet-samba-public:Noo1oxe4zo@download.sernet.de/packages/samba/4.2/rhel/7/sernet-samba-4.2.repo
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;В файле &lt;code&gt;/etc/yum.repos.d/sernet-samba-4.2.repo&lt;/code&gt; заменим
+&lt;code&gt;USERNAME:ACCESSKEY&lt;/code&gt; на свои данные либо на публичную учётную запись
+&lt;code&gt;sernet-samba-public:Noo1oxe4zo&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Установим нужные пакеты:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;yum -y install sernet-samba sernet-samba-ad
+yum -y install bind
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;поиск-дубликатов-sid-&#34;&gt;Поиск дубликатов SID&lt;/h3&gt;
+&lt;p&gt;Найдём дубликаты SID с помощью следующего скрипта (запусткается на
+машине, где расположен ldap).&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;#!/usr/bin/python
+# A quick and dirty python script that checks for duplicat SID&#39;s using slapcat.
+import os
+ 
+data = os.popen(&amp;quot;slapcat | grep sambaSID&amp;quot;, &#39;r&#39;)
+line = []
+ 
+def anydup(thelist):
+        dups = list(set([x for x in thelist if thelist.count(x) &amp;gt; 1]))
+        for i in dups:
+                print &amp;quot;Duplicate id: &amp;quot;, i
+ 
+for each_line in data:
+        line.append(each_line.strip())
+ 
+anydup(line)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Далее дубликаты удаляются с помощью редактирования ldap (я использовал
+&lt;a href=&#34;https://directory.apache.org/studio/&#34;&gt;https://directory.apache.org/studio/&lt;/a&gt;).&lt;/p&gt;
+&lt;h3 id=&#34;предварительная-конфигурация-&#34;&gt;Предварительная конфигурация&lt;/h3&gt;
+&lt;p&gt;Добавил в файл &lt;code&gt;/etc/hosts&lt;/code&gt; адрес хоста.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;127.0.0.1               localhost.localdomain   localhost                                                                                                                                     
+10.130.64.23            dc.dk.sci.pfu.edu.ru    dc
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Также прописал его в прямой и обратной зонах DNS.&lt;/p&gt;
+&lt;h3 id=&#34;перенос-конфигурационных-файлов-&#34;&gt;Перенос конфигурационных файлов&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;pdc ~ # scp -r /var/lib/samba/private/ dc.dk.sci.pfu.edu.ru:/var/lib/samba/samba3tdb/
+pdc ~ # scp /etc/samba/smb.conf dc.dk.sci.pfu.edu.ru:/var/lib/samba/samba3tdb/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;В &lt;code&gt;/var/lib/samba/samba3tdb/smb.conf&lt;/code&gt; следует заменить имя контроллера домена.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;netbios name = dc
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Поскольку при миграции используется информация из ldap, на хосте &lt;code&gt;dc&lt;/code&gt;
+задаю файл &lt;code&gt;/etc/openldap/ldap.conf&lt;/code&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;BASE    dc=dk,dc=sci,dc=pfu,dc=edu,dc=ru                                                                                                                                                      
+URI     ldap://ldap.dk.sci.pfu.edu.ru                                                                                                                                                         
+                                                                                                                                                                                              
+TLS_REQCERT     allow
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;проведение-миграции-&#34;&gt;Проведение миграции&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;samba-tool domain classicupgrade --dbdir=/var/lib/samba/samba3tdb/ --use-xattrs=yes --realm=dk.sci.pfu.edu.ru --dns-backend=BIND9_DLZ /var/lib/samba/samba3tdb/smb.conf
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;шаманство-&#34;&gt;Шаманство&lt;/h4&gt;
+&lt;p&gt;В файле &lt;code&gt;/var/lib/samba/samba3tdb/smb.conf&lt;/code&gt; заменил доменное имя&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;passdb backend = ldapsam:ldap://ldap.dk.sci.pfu.edu.ru
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;на ip-адрес&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;passdb backend = ldapsam:ldap://10.130.64.11
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Без этого миграция падала с ошибкой &lt;code&gt;LDAP client internal error: NT_STATUS_BAD_NETWORK_NAME&lt;/code&gt;.&lt;/p&gt;
+&lt;h4 id=&#34;настройка-firewalld-&#34;&gt;Настройка firewalld&lt;/h4&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;firewall-cmd --add-service=ldap --permanent
+firewall-cmd --add-service=kerberos --permanent
+firewall-cmd --add-service=kpasswd --permanent
+firewall-cmd --add-service=samba --permanent
+firewall-cmd --add-service=samba-client --permanent
+firewall-cmd --reload
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;настройка-selinux-&#34;&gt;Настройка SELinux&lt;/h4&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;setsebool -P samba_export_all_ro 1
+setsebool -P samba_export_all_rw 1
+setsebool -P samba_domain_controller 1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;настройка-kerberos-&#34;&gt;Настройка Kerberos&lt;/h3&gt;
+&lt;p&gt;Создадим файл конфигурации kerberos:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;mv /etc/krb5.conf{,.default}
+cp /var/lib/samba/private/krb5.conf /etc
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;настройка-dns-&#34;&gt;Настройка DNS&lt;/h3&gt;
+&lt;p&gt;В файле &lt;code&gt;/etc/resolv.conf&lt;/code&gt; задаём локальный DNS-сервер:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;search dk.sci.pfu.edu.ru                                                                                                                                                                      
+nameserver 127.0.0.1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;В &lt;code&gt;/etc/named.conf&lt;/code&gt; подключаем сконфигурённую конфигурацию:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;include &amp;quot;/var/lib/samba/private/named.conf&amp;quot;; 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Также в раздел &lt;code&gt;options&lt;/code&gt; добавляем:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;options {
+     [...]
+     tkey-gssapi-keytab &amp;quot;/var/lib/samba/private/dns.keytab&amp;quot;;
+     [...]
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;А также следующее:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;options {
+     [...]
+	 allow-query { localhost; 10.128.0.0/9; };
+	 allow-update { 10.128.0.0/9; 127.0.0.0/8; };
+     forwarders { 10.130.64.239; 8.8.8.8; 8.8.4.4; };
+     allow-transfer {
+		 # this config is for a single master DNS server
+		 none;
+	 };
+     [...]
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;настройка-firewalld--1&#34;&gt;Настройка firewalld&lt;/h4&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;firewall-cmd --add-service=dns --permanent
+firewall-cmd --reload
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;настройки-прав-доступа-&#34;&gt;Настройки прав доступа&lt;/h4&gt;
+&lt;p&gt;Права доступа:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;chown -R root:named /var/lib/samba/private/dns
+chmod 770 /var/lib/samba/private/dns
+chgrp named /var/lib/samba/private/dns.keytab
+chmod g+r /var/lib/samba/private/dns.keytab
+chgrp named /var/lib/samba/private
+chgrp -R named /var/lib/samba/private/sam.ldb.d
+chmod g+rw /var/lib/samba/private/sam.ldb.d/*
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;настройка-selinux--1&#34;&gt;Настройка SELinux&lt;/h4&gt;
+&lt;p&gt;Изменим текущий контекст:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;chcon -t named_conf_t /var/lib/samba/private/dns.keytab
+chcon -t named_conf_t /var/lib/samba/private/named.conf
+chcon -t named_conf_t /var/lib/samba/private/named.conf.update
+chcon -R -t named_var_run_t /var/lib/samba/private/dns
+chcon -t named_var_run_t /var/lib/samba/private/dns/${MYREALM}.zone
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Изменим постоянный контекст:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;semanage fcontext -a -t named_conf_t /var/lib/samba/private/dns.keytab
+semanage fcontext -a -t named_conf_t /var/lib/samba/private/named.conf
+semanage fcontext -a -t named_conf_t /var/lib/samba/private/named.conf.update
+semanage fcontext -a -t named_var_run_t &amp;quot;/var/lib/samba/private/dns(/.*)?&amp;quot;
+semanage fcontext -a -t named_var_run_t /var/lib/samba/private/dns/${MYREALM}.zone
+semanage fcontext -a -t named_var_run_t /var/lib/samba/private/dns/${MYREALM}.zone.jnl
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;запуск-демонов-&#34;&gt;Запуск демонов&lt;/h3&gt;
+&lt;p&gt;Сконфигурим тип сервера samba в файле &lt;code&gt;/etc/default/sernet-samba&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;SAMBA_START_MODE=&amp;quot;ad&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Запустим демоны:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;systemctl start named.service
+systemctl start sernet-samba-ad.service
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Добавим их в автозагрузку:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;systemctl enable named.service
+systemctl enable sernet-samba-ad.service
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;проверка-&#34;&gt;Проверка&lt;/h3&gt;
+&lt;p&gt;Проверка DNS.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# host -t SRV _ldap._tcp.dk.sci.pfu.edu.ru.
+_ldap._tcp.dk.sci.pfu.edu.ru has SRV record 0 100 389 dc.dk.sci.pfu.edu.ru.
+# host -t SRV _kerberos._udp.dk.sci.pfu.edu.ru.
+_kerberos._udp.dk.sci.pfu.edu.ru has SRV record 0 100 88 dc.dk.sci.pfu.edu.ru.
+# host -t A dc.dk.sci.pfu.edu.ru.
+dc.dk.sci.pfu.edu.ru has address 10.130.64.23
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Замена пароля администратора:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;samba-tool user setpassword Administrator
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Проверка &lt;code&gt;smbclient&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;smbclient //localhost/netlogon -UAdministrator -c &#39;ls&#39;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Аналогичный результат должно давать (&lt;code&gt;dc&lt;/code&gt; &amp;mdash; имя сервера):&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;smbclient //dc/netlogon -k -c &#39;ls&#39;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Проверка kerberos:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;kinit administrator@DK.SCI.PFU.EDU.RU
+klist
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;дополнительно-&#34;&gt;Дополнительно&lt;/h3&gt;
+&lt;p&gt;Убрать проверку сложности пароля:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;samba-tool domain passwordsettings set --complexity=off
+samba-tool domain passwordsettings set --history-length=0
+samba-tool domain passwordsettings set --min-pwd-age=0
+samba-tool domain passwordsettings set --max-pwd-age=0
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
       <title>Бетяев С. К. - Записки гидродинамика</title>
       <link>/ru/2015/10/26/zapiski-gidrodinamika/</link>
       <pubDate>Mon, 26 Oct 2015 08:46:00 +0000</pubDate>
@@ -1296,9 +1534,8 @@ fb2:
       <guid>/ru/2015/08/04/kolganov-fenomen-db/</guid>
       <description>&lt;h2 id=&#34;колганов-в-а---феномен-дб-дмитрий-быков-и-его-двойники&#34;&gt;Колганов В. А. - Феномен ДБ. Дмитрий Быков и его двойники&lt;/h2&gt;
 &lt;p&gt;
-&lt;a href=&#34;http://libgen.is/book/index.php?md5=64a3f2c433ea32dd25be3bcff72dcd24&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;http://libgen.is/book/index.php?md5=64a3f2c433ea32dd25be3bcff72dcd24&lt;/a&gt;&lt;br&gt;
-Всегда недолюбливал Дмитрия Быкова. Он мне казался каким-то склизким и легковесным. А стихи его вообще не более, чем рифмовка. Данная книга утвердила меня в этом мнении.&lt;/p&gt;
-</description>
+&lt;a href=&#34;http://libgen.is/book/index.php?md5=64a3f2c433ea32dd25be3bcff72dcd24&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;http://libgen.is/book/index.php?md5=64a3f2c433ea32dd25be3bcff72dcd24&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Всегда недолюбливал Дмитрия Быкова. Он мне казался каким-то склизким и легковесным. А стихи его вообще не более, чем рифмовка. Данная книга утвердила меня в этом мнении.&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -1319,6 +1556,187 @@ fb2:
     </item>
     
     <item>
+      <title>Настройка SELinux для некоторых приложений</title>
+      <link>/ru/2015/05/15/selinux-apps/</link>
+      <pubDate>Fri, 15 May 2015 05:56:13 +0000</pubDate>
+      <guid>/ru/2015/05/15/selinux-apps/</guid>
+      <description>&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;setsebool&lt;/code&gt; запускаем как с ключём &lt;code&gt;-P&lt;/code&gt; (для запоминания настроек), так и без него (чтобы работало в текущей сессии).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;a-namehead_www-servera-www-сервер-&#34;&gt;&lt;a name=&#39;head_www-server&#39;&gt;&lt;/a&gt; WWW-сервер&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;setsebool -P httpd_unified 1
+setsebool -P httpd_can_network_connect_db 1
+setsebool -P httpd_can_network_connect 1
+setsebool -P httpd_can_network_relay 1
+setsebool -P httpd_can_sendmail 1
+setsebool -P httpd_execmem 1
+setsebool -P httpd_use_fusefs 1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;a-namehead_dba-базы-данных-&#34;&gt;&lt;a name=&#39;head_db&#39;&gt;&lt;/a&gt; Базы данных&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Postgres&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;setsebool -P selinuxuser_postgresql_connect_enabled 1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;MySQL&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;setsebool -P selinuxuser_mysql_connect_enabled 1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;ojs-&#34;&gt;OJS&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Настраиваем 
+&lt;a href=&#34;#head_www-server&#34;&gt;www-сервер&lt;/a&gt; и 
+&lt;a href=&#34;#head_db&#34;&gt;базу данных&lt;/a&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Настраиваем доступ к файловой системе.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/html/ojs/cache(/.*)?&amp;quot;
+semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/html/ojs/public(/.*)?&amp;quot;
+semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/html/ojs/config.inc.php&amp;quot;
+semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/html/ojs/plugins/generic(/.*)?&amp;quot;
+
+semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/data(/.*)?&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;drupal-&#34;&gt;Drupal&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Настраиваем 
+&lt;a href=&#34;#head_www-server&#34;&gt;www-сервер&lt;/a&gt; и 
+&lt;a href=&#34;#head_db&#34;&gt;базу данных&lt;/a&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Настраиваем доступ к файловой системе.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/html/sites/drupal/(.*)/sites/(.*)/files(/.*)?&amp;quot;
+semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/html/sites/drupal/(.*)/cache(/.*)?&amp;quot;
+semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/html/sites/drupal/(.*)/sites/all(/.*)?&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;moodle-&#34;&gt;Moodle&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Настраиваем 
+&lt;a href=&#34;#head_www-server&#34;&gt;www-сервер&lt;/a&gt; и 
+&lt;a href=&#34;#head_db&#34;&gt;базу данных&lt;/a&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Настраиваем доступ к файловой системе.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/moodle/web-git/mod(/.*)?&amp;quot;
+semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/moodle/web-git/local(/.*)?&amp;quot;
+semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/moodle/web-git/theme(/.*)?&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;letsencript-&#34;&gt;LetsEncript&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;semanage fcontext -a -t cert_t &#39;/etc/letsencrypt/(archive|live)(/.*)?&#39;
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>Установка виртуальной машины NOC на oVirt</title>
+      <link>/ru/2015/05/13/ova-on-ovirt/</link>
+      <pubDate>Wed, 13 May 2015 08:48:57 +0000</pubDate>
+      <guid>/ru/2015/05/13/ova-on-ovirt/</guid>
+      <description>&lt;p&gt;Чтобы не мучиться с установкой 
+&lt;a href=&#34;https://kb.nocproject.org&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;NOC&lt;/a&gt; решил установить с образа, 
+&lt;a href=&#34;https://kb.nocproject.org/display/SITE/Downloads&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;предлагаемого на сайте&lt;/a&gt;. К сажалению, образ предлагается в формате &lt;code&gt;ova&lt;/code&gt;, а у меня стоит oVirt (&lt;code&gt;ovirt-engine&lt;/code&gt;). Он этот формат не понимает. Однако у меня есть ещё хост с &lt;code&gt;kvm&lt;/code&gt; (&lt;code&gt;kvm-host&lt;/code&gt;).&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Распаковываю &lt;code&gt;noc-x86_64-Debian-8.ova&lt;/code&gt;:
+{% codeblock lang:bash %}
+tar -xf noc-x86_64-Debian-8.ova
+{% endcodeblock %}&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Конвертирую в формат &lt;code&gt;qcow2&lt;/code&gt;:
+{% codeblock lang:bash %}
+qemu-img convert -O qcow2 noc-x86_64-Debian-8-disk1.vmdk noc-x86_64-Debian-8-disk1.qcow2
+{% endcodeblock %}&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Создаю виртуальную машину на kvm. По большому счёту это нужно лишь для создания xml-файла описания виртуальной машины.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Машина сначала не загрузилась потому, что в &lt;code&gt;/etc/fstab&lt;/code&gt; на &lt;code&gt;/boot&lt;/code&gt; был жёстко прописан &lt;code&gt;/dev/sda1&lt;/code&gt;. Поменял на &lt;code&gt;/dev/vda1&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Пароли следующие:
+{% codeblock lang:bash %}
+Username: user
+Password: thenocproject
+Root password: thenocproject
+{% endcodeblock %}&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;На web-интерфейс логин и пароль:
+{% codeblock lang:bash %}
+User: admin
+Password: admin
+{% endcodeblock %}&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Образы на &lt;code&gt;kvm-host&lt;/code&gt; находятся в каталоге &lt;code&gt;/var/lib/libvirt/images&lt;/code&gt;, а соответствующие конфигурационные файлы в &lt;code&gt;/etc/libvirt/qemu&lt;/code&gt;. Копируем нужный конфиг в &lt;code&gt;/var/lib/libvirt/images&lt;/code&gt; и называем &lt;code&gt;noc-x86_64-Debian-8-disk1.xml&lt;/code&gt;. Поскольку будем работать по сети, заменяем в нём путь к образу с &lt;code&gt;/var/lib/...&lt;/code&gt; на  &lt;code&gt;/net/kvm-host/var/lib/...&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Заходим на хост &lt;code&gt;ovirt-engine&lt;/code&gt;, монтируем &lt;code&gt;kvm-host&lt;/code&gt; по autofs:
+{% codeblock lang:bash %}
+cd /net/kvm-host/var/lib/libvirt/images
+{% endcodeblock %}&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Импортируем образ в oVirt:&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;{% codeblock lang:bash %}
+virt-v2v -b vlan5  -i libvirtxml -o rhev -os ovirt-node-01:/ovirt/export noc-x86_64-Debian-8-disk1.xml
+{% endcodeblock %}&lt;/p&gt;
+&lt;p&gt;Здесь &lt;code&gt;ovirt-node-01&lt;/code&gt; — узел, на котором запускаются виртуальные машины, &lt;code&gt;vlan5&lt;/code&gt; — интерфейс, к которому она будет подключена.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Поддержка многоязычности</title>
+      <link>/ru/2015/04/20/octopus-multilingual/</link>
+      <pubDate>Mon, 20 Apr 2015 13:17:32 +0000</pubDate>
+      <guid>/ru/2015/04/20/octopus-multilingual/</guid>
+      <description>&lt;p&gt;Добавим в конфигурационный файл (&lt;code&gt;_config.yml&lt;/code&gt;):&lt;/p&gt;
+&lt;p&gt;{% codeblock lang:yaml %}
+gems:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;octopress-multilingual&lt;/li&gt;
+&lt;li&gt;octopress-linkblog
+{% endcodeblock %}&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Также зададим язык по-умолчанию:&lt;/p&gt;
+&lt;p&gt;{% codeblock lang:yaml %}
+lang: ru
+{% endcodeblock %}&lt;/p&gt;
+&lt;h2 id=&#34;язык-для-постов-&#34;&gt;Язык для постов&lt;/h2&gt;
+&lt;p&gt;Добавим язык  в заголовок шаблонов:&lt;/p&gt;
+&lt;p&gt;{% codeblock lang:yaml %}
+lang: ru
+{% endcodeblock %}&lt;/p&gt;
+&lt;h2 id=&#34;конфигурация-для-разных-языков-&#34;&gt;Конфигурация для разных языков&lt;/h2&gt;
+&lt;p&gt;В каталоге &lt;code&gt;_data&lt;/code&gt; создадим конфигурационные файлы вида
+&lt;code&gt;lang_[language_code].yml&lt;/code&gt;:&lt;/p&gt;
+&lt;p&gt;{% codeblock lang:yaml %}
+_data
+lang_en.yml
+lang_ru.yml
+{% endcodeblock %}&lt;/p&gt;
+&lt;p&gt;Примерное их содержание:&lt;/p&gt;
+&lt;p&gt;{% codeblock lang:yaml %}&lt;/p&gt;
+&lt;h1 id=&#34;lang_enyml&#34;&gt;lang_en.yml&lt;/h1&gt;
+&lt;p&gt;title: English title&lt;/p&gt;
+&lt;h1 id=&#34;lang_ruyml&#34;&gt;lang_ru.yml&lt;/h1&gt;
+&lt;p&gt;title: Русское название сайта
+{% endcodeblock %}&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>Ширах Р. - Ночь физиков. Гейзенберг, Ган, Вайцзеккер и немецкая бомба</title>
       <link>/ru/2015/04/16/shirakh-nochj-fizikov/</link>
       <pubDate>Thu, 16 Apr 2015 10:54:00 +0000</pubDate>
@@ -1333,6 +1751,319 @@ fb2:
 &lt;li&gt;Также возможно, что у Германии просто не было ресурсов на данный проект.&lt;/li&gt;
 &lt;li&gt;Ган получил нобелевку за то, что не сделал бомбу.&lt;/li&gt;
 &lt;/ol&gt;</description>
+    </item>
+    
+    <item>
+      <title>Написание адреса</title>
+      <link>/ru/2015/03/25/address-rules/</link>
+      <pubDate>Wed, 25 Mar 2015 09:29:42 +0300</pubDate>
+      <guid>/ru/2015/03/25/address-rules/</guid>
+      <description>&lt;h2 id=&#34;русские-рекомендации-&#34;&gt;Русские рекомендации&lt;/h2&gt;
+&lt;p&gt;
+&lt;a href=&#34;http://www.russianpost.ru/resp_engine.aspx?Path=RP/SERVISE/RU/Home/postuslug/Rule_adress&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Правила оформления почтовых отправлений&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Реквизиты адреса на почтовых отправлениях и бланках почтовых переводов
+денежных средств пишутся в следующем порядке:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;банковские реквизиты (для почтовых переводов, направляемых
+юридическому лицу или принимаемых от юридического лица);&lt;/li&gt;
+&lt;li&gt;для юридического лица - полное или краткое наименование, для
+гражданина - фамилия, имя, отчество;&lt;/li&gt;
+&lt;li&gt;название улицы, номер дома, номер квартиры;&lt;/li&gt;
+&lt;li&gt;название района;&lt;/li&gt;
+&lt;li&gt;название населенного пункта (города, поселка и т.п.);&lt;/li&gt;
+&lt;li&gt;название республики, края, области, автономного округа (области);&lt;/li&gt;
+&lt;li&gt;название страны (для международных почтовых отправлений);&lt;/li&gt;
+&lt;li&gt;почтовый индекс.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Такой порядок написания почтового адреса установлен «Правилами
+оказания услуг почтовой связи», утвержденными в 1997 году. Правильно,
+например:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Справочно-информационный портал «Русский язык»,
+«Письмовник»,
+ведущим раздела,
+Малый Сухаревский пер., 11,
+Москва, 123000.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Или так:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;И. И. Иванову,
+ул. Садовая, д. 25,
+г. Мытищи, Московская область,
+301002.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;При адресовании должностному или физическому лицу инициалы указывают
+перед фамилией: &lt;code&gt;В. В. Иванову&lt;/code&gt;, &lt;code&gt;А. А. Петрову&lt;/code&gt;. Между инициалами, а
+также между инициалами и фамилией ставятся пробелы.&lt;/p&gt;
+&lt;p&gt;При адресовании документа физическому лицу допускается вначале
+указывать почтовый адрес, затем — инициалы и фамилию получателя.&lt;/p&gt;
+&lt;h2 id=&#34;международный-стандарт-оформления-почтового-адреса-&#34;&gt;Международный стандарт оформления почтового адреса&lt;/h2&gt;
+&lt;h3 id=&#34;для-написания-почтового-адреса-частных-лиц-используются-следующие-элементы-&#34;&gt;Для написания почтового адреса частных лиц используются следующие элементы:&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;наименование адресата (указание семейного положения или титула
+лица), например: мистер, мисс, миссис, Его Святейшество, Его
+Превосходительство, Ее Величество и т. д.;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;имена / имя, фамилия, приставка к имени:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;имена (прозвище, особенные имена) в сочетании с фамилией для
+различения лиц в семье, например: Джон, Майкл, Дуди, Милли и
+т. д.;&lt;/li&gt;
+&lt;li&gt;фамилия семьи (слово или группа слов), используемая для
+обозначения семьи, например: Райдер, Смит, Низмен и т. д.;&lt;/li&gt;
+&lt;li&gt;приставка к имени, например: старший, младший;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;занятие, функция, по адресу (через)&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;определенное занятие, например: инженер, судья, нотариус и т. д.;&lt;/li&gt;
+&lt;li&gt;по адресу (через). Указывается связь с другим лицом или
+учреждением (например, по адресу Эйси Браун Бовери, по адресу
+семьи Смит);&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;пункт доставки:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;вид улицы (бульвар, авеню, улица, дорога, площадь и т. д.);&lt;/li&gt;
+&lt;li&gt;название улицы (например, Станционная авеню, Станционная улица,
+Станционная площадь, станция Виктория, станция Лайм-стрит);&lt;/li&gt;
+&lt;li&gt;идентификационный номер на улице, № подъезда или здания, этажа и
+квартиры (27/307, подъезд № 27, 4-й этаж, квартира № 7);&lt;/li&gt;
+&lt;li&gt;название дополнительного адресного компонента, относящегося к
+зданию, кварталу, башне, комплексу и т. д.;&lt;/li&gt;
+&lt;li&gt;название села, местечка, деревни, квартала, региона (Тикхилл,
+Док-лендз, Ерлхэм, Кэмден, Сохо и т. д.);&lt;/li&gt;
+&lt;li&gt;общая доставка;&lt;/li&gt;
+&lt;li&gt;почтовый ящик и номер (для обладателей ящика);&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;почтовый код или номер почтового маршрута, местность, наименование
+учреждения, осуществляющего доставку:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;почтовый код, который обычно используется для итоговой
+сортировки местным или региональным узлом доставки. К этим кодам
+могут добавляться другие цифры или буквы, например: 75015; ВН2120;&lt;/li&gt;
+&lt;li&gt;номер почтового маршрута, код, включающий несколько цифр и / или
+букв, указывающих маршрут для направления почты к месту
+назначения, например: 67-Дорога БеллинзонаАироло; К1А -отправка на
+сортировочный участок;&lt;/li&gt;
+&lt;li&gt;название учреждения доставки, название учреждения,
+ответственного за доставку почтового отправления адресату в место
+назначения, например: Берн 31 (почтовый ящик) и т. д.;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;название территории или провинции и / или название страны:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;название региона, графства, района, кантона и т. д. Например:
+Техас, Йоркшир, Уэльс и т. д.;&lt;/li&gt;
+&lt;li&gt;название страны назначения (Швейцария, Франция, Великобритания,
+США и т. д.).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Mr Walter EGGERS 3040 Idaho Ave NW Apt #621 WASHINGTON D.C. 20016 USA&lt;/p&gt;
+&lt;p&gt;MrErin SIMPERINGHAM 127 Salisbury Road CAM PER DOWN NSW 2050 AUSTRALIA&lt;/p&gt;
+&lt;p&gt;MR Adam SIMPERINGHAM 37 Franklin Road Freemans Bay AUCKLAND NEWZELAND&lt;/p&gt;
+&lt;p&gt;Mr Costas MAVRIKIS 81 Pine Brook Dr LARCHMONT N.Y 10538 USA&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;для-написания-почтового-адреса-юридических-лиц-используются-следующие-элементы-&#34;&gt;Для написания почтового адреса юридических лиц используются следующие элементы:&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;название организации (Nestle Ltd; Kodak Ltd; UNESCO и т. п.);&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;деятельность или изделия (фирма по гражданскому строительству,
+общая трастовая компания, продажа семян);&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;пункт доставки;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;отдел или подразделение организации (отдел внешней торговли, отдел
+цветных металлов, общий отдел и т. п.);&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;почтовый код или номер почтового маршрута, местность, наименование
+учреждения, осуществляющего доставку;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;название территории или провинции и / или название страны.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Элементы 4, 5, 6 адреса для юридического лица указываются так же, как
+при написании адреса частных лиц.&lt;/p&gt;
+&lt;h2 id=&#34;американские-и-британские-адреса-обычно-составляются-по-следующим-правилам-&#34;&gt;Американские и британские адреса обычно составляются по следующим правилам:&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Имя человека, которому предназначено письмо.&lt;/li&gt;
+&lt;li&gt;Организация (если письмо имеет целью деловое общение).&lt;/li&gt;
+&lt;li&gt;Номер дома, название улицы, номер квартиры.&lt;/li&gt;
+&lt;li&gt;Название города (и штат – для США).&lt;/li&gt;
+&lt;li&gt;Почтовый индекс.&lt;/li&gt;
+&lt;li&gt;Название страны.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;При написании делового письма, перед именем ставится соответствующая
+форма обращения:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Mr. – любому мужчине.&lt;/li&gt;
+&lt;li&gt;Mrs. – женщине, состоящей в браке.&lt;/li&gt;
+&lt;li&gt;Miss – женщине, не состоящей в браке.&lt;/li&gt;
+&lt;li&gt;Ms. – при отсутствии информации о семейном положении женщины.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Например: &lt;code&gt;Mr. Richard Johnson&lt;/code&gt; (возможно &lt;code&gt;Mr. R. Johnson&lt;/code&gt;).&lt;/p&gt;
+&lt;p&gt;Если имя адресата вам неизвестно, можно ограничиться названием
+организации.&lt;/p&gt;
+&lt;h3 id=&#34;британский-адрес-&#34;&gt;Британский адрес&lt;/h3&gt;
+&lt;p&gt;В британском английском точка после Mr, Mrs, Ms и инициалов не
+ставится.&lt;/p&gt;
+&lt;p&gt;Согласно требованиям Королевской почтовой службы Великобритании (Royal
+Mail), название города пишется прописными буквами.&lt;/p&gt;
+&lt;p&gt;Итак, пример британского почтового адреса будет выглядеть следующим
+образом:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Miss S Pollard
+Chapman&amp;amp;Hall Ltd
+2 Chapel Hill
+BOURNEMOUTH
+BH1 1AA
+UK
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;американский-адрес-&#34;&gt;Американский адрес&lt;/h3&gt;
+&lt;p&gt;Название штата записывается двухбуквенным сокращением (например, NY –
+Нью-Йорк, CA – Калифорния). Полный список сокращений можно узнать на
+официальном сайте Почтовой службы США – usps.com.&lt;/p&gt;
+&lt;p&gt;Кроме того, в случае деловых писем, адрес рекомендуется полностью
+писать прописными буквами:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;JAMES KERRY
+438 DARK SPURT
+SAN FRANCISCO
+CA 94528
+USA
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Если же вы указываете адрес в теле письма, используйте
+пунктуацию. Например:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Please send mail to Mr. James Kerry, 438 Dark Spurt, San Francisco, CA 94528, USA.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;российский-адрес-в-английском-написании-&#34;&gt;Российский адрес в английском написании&lt;/h3&gt;
+&lt;p&gt;Поскольку обратный адрес в нашем случае предназначен для российской
+почты, то записывать его лучше так, чтобы он был понятен российским
+почтальонам.&lt;/p&gt;
+&lt;p&gt;Все наименования при этом транслитерируются. Например:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Smirnov A. N.
+ul. Kosmonavtov 35-11
+Vyborg
+Leningradskaya oblast
+112233
+RUSSIA&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>Перенос блога на Jekyll &#43; Octopress</title>
+      <link>/ru/2015/03/23/jekyll-octopress/</link>
+      <pubDate>Mon, 23 Mar 2015 13:51:36 +0300</pubDate>
+      <guid>/ru/2015/03/23/jekyll-octopress/</guid>
+      <description>&lt;h2 id=&#34;репозиторий-для-сайта-&#34;&gt;Репозиторий для сайта&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Создал локальный каталог для сайта:
+{% codeblock lang:bash %}
+mkdir ~/mysite
+{% endcodeblock %}&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;локальный-git-репозиторий-&#34;&gt;Локальный git-репозиторий&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Создал пустой git-репозиторий:
+{% codeblock lang:bash %}
+cd ~/mysite
+git init
+{% endcodeblock %}&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Создал в нём файл &lt;code&gt;README.md&lt;/code&gt;
+{% codeblock lang:bash %}
+touch README.md
+{% endcodeblock %}&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Сделал коммит:
+{% codeblock lang:bash %}
+git add .
+git commit -am &amp;lsquo;Initial commit&amp;rsquo;
+{% endcodeblock %}&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Создаю ветку для кода (в &lt;code&gt;master&lt;/code&gt; будет сайт):
+{% codeblock lang:bash %}
+git branch source
+git checkout source
+{% endcodeblock %}&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+&lt;a href=&#34;#head_site-template-create&#34;&gt;Далее создаю шаблон для сайта&lt;/a&gt; в ветке &lt;code&gt;source&lt;/code&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;репозиторий-на-bitbucket-&#34;&gt;Репозиторий на Bitbucket&lt;/h3&gt;
+&lt;p&gt;Я пользовался 
+&lt;a href=&#34;https://confluence.atlassian.com/display/BITBUCKET/Publishing&amp;#43;a&amp;#43;Website&amp;#43;on&amp;#43;Bitbucket&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;инструкцией от bitbucket&#39;а&lt;/a&gt;.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Создал на bitbucket&#39;е репозиторий с названием
+&lt;code&gt;yamadharma.bitbucket.org&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Выложил репозиторий
+{% codeblock lang:bash %}
+cd ~/mysite
+git remote add origin &lt;a href=&#34;mailto:git@bitbucket.org&#34;&gt;git@bitbucket.org&lt;/a&gt;:yamadharma/yamadharma.bitbucket.org.git
+git push -u origin &amp;ndash;all
+git push -u origin &amp;ndash;tags
+{% endcodeblock %}&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;выкладывание-сайта-на-bitbucket-&#34;&gt;Выкладывание сайта на Bitbucket&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Создал файл &lt;code&gt;_deploy.yml&lt;/code&gt; с помощью команды
+{% codeblock lang:bash %}
+octopress deploy init git -u &lt;a href=&#34;mailto:git@bitbucket.org&#34;&gt;git@bitbucket.org&lt;/a&gt;:yamadharma/yamadharma.bitbucket.org.git
+{% endcodeblock %}&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Подредактировал &lt;code&gt;.gitignore&lt;/code&gt;:
+{% codeblock lang:bash %}
+echo &amp;ldquo;.deploy&amp;rdquo; &amp;raquo; .gitignore
+{% endcodeblock %}&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Сгенерил сайт:
+{% codeblock lang:bash %}
+jekyll b
+{% endcodeblock %}&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Выложил существующий сайт:
+{% codeblock lang:bash %}
+octopress deploy
+{% endcodeblock %}&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Положил ветку &lt;code&gt;source&lt;/code&gt; на git:
+{% codeblock lang:bash %}
+git add .
+git commit -am &amp;lsquo;Поправил сайт&amp;rsquo;
+git push
+{% endcodeblock %}&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;a-namehead_site-template-createa-создание-шаблона-сайта-&#34;&gt;&lt;a name=&#39;head_site-template-create&#39;&gt;&lt;/a&gt; Создание шаблона сайта&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;В каталоге сайта создаю шаблон:
+{% codeblock lang:bash %}
+cd ~/mysite
+git checkout source
+octopress new -f .
+{% endcodeblock %}&lt;/li&gt;
+&lt;/ul&gt;</description>
     </item>
     
     <item>
@@ -1970,9 +2701,9 @@ Chacon S. - Pro Git
     
     <item>
       <title>Хокинг С., Млодинов Л. - Высший замысел</title>
-      <link>/ru/2013/11/06/khoking-s.-mlodinov-l-vihsshiyj-zamihsel/</link>
+      <link>/ru/2013/11/06/khoking-mlodinov-vihsshiyj-zamihsel/</link>
       <pubDate>Wed, 06 Nov 2013 07:35:00 +0000</pubDate>
-      <guid>/ru/2013/11/06/khoking-s.-mlodinov-l-vihsshiyj-zamihsel/</guid>
+      <guid>/ru/2013/11/06/khoking-mlodinov-vihsshiyj-zamihsel/</guid>
       <description>&lt;h2 id=&#34;хокинг-с-млодинов-л---высший-замысел&#34;&gt;Хокинг С., Млодинов Л. - Высший замысел&lt;/h2&gt;
 &lt;p&gt;
 &lt;a href=&#34;http://libgen.is/book/index.php?md5=59f8a844ddd4cebd24fe4dddbbd6c1ea&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;http://libgen.is/book/index.php?md5=59f8a844ddd4cebd24fe4dddbbd6c1ea&lt;/a&gt;&lt;/p&gt;
@@ -4044,8 +4775,8 @@ P.P.S. Познакомились с чапельником.&lt;/p&gt;
       <link>/ru/2007/01/10/21-54-00/</link>
       <pubDate>Wed, 10 Jan 2007 21:54:00 +0000</pubDate>
       <guid>/ru/2007/01/10/21-54-00/</guid>
-      <description>&lt;p&gt;There is no knowledge, that is not power.
-&lt;em&gt;Ralph Waldo Emerson &amp;ldquo;Society and Solitude (1870)&amp;quot;&lt;/em&gt;&lt;/p&gt;
+      <description>&lt;p&gt;There is no knowledge, that is not power.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Ralph Waldo Emerson &amp;ldquo;Society and Solitude (1870)&amp;quot;&lt;/em&gt;&lt;/p&gt;
 </description>
     </item>
     
@@ -5112,742 +5843,6 @@ P.S. А как же Сейлор Плутон?&lt;/p&gt;
 &lt;p&gt;Недостатков тоже хватает. Во-первых, тушащий материал при взаимодействии с влагой дает щелочную (аэрозоли) или кислотную реакцию (порошки), что может приводить к коррозии металла, деструкции материалов, а также к выводу из строя электронной техники. Во-вторых, в момент срабатывания системы видимость в помещении снижается почти до нуля, что небезопасно для не успевших эвакуироваться людей. В-третьих, попадание порошков и аэрозолей в глаза или дыхательные пути вредно для здоровья. В-четвертых, порошки слеживаются, что ограничивает срок их хранения (необходима перезарядка или замена устройств тушения раз в 5 - 10 лет).&lt;/p&gt;
 &lt;p&gt;Первые три недостатка обусловливают повышенные требования к надежности систем, в частности к защите от ложного срабатывания.&lt;/p&gt;
 &lt;/blockquote&gt;</description>
-    </item>
-    
-    <item>
-      <title>Миграция с Drupal-6 на Drupal-8</title>
-      <link>/ru/1/01/01/drupal6-to-8/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>/ru/1/01/01/drupal6-to-8/</guid>
-      <description>&lt;h2 id=&#34;информация-по-миграции-&#34;&gt;Информация по миграции&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;
-&lt;a href=&#34;https://www.drupal.org/upgrade/migrate&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Upgrading from Drupal 6 or 7 to Drupal 8&lt;/a&gt;.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;
-&lt;a href=&#34;https://www.drupal.org/node/2257723&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Executing a Drupal 6/7 to Drupal 8 upgrade&lt;/a&gt;.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;
-&lt;a href=&#34;https://drupalwatchdog.com/blog/2014/12/drupal-upgrade-1&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;The Drupal 6 to 8 Upgrade Challenge&lt;/a&gt;.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;
-&lt;a href=&#34;https://www.drupal.org/node/2167633&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Known Issues with the Drupal 6/7 -&amp;gt; 8 Upgrade Path&lt;/a&gt;.&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;обновление-php-&#34;&gt;Обновление PHP&lt;/h2&gt;
-&lt;p&gt;Для Drupal-8 нужен php-5.5. В Centos-7 идёт php-5.4. Обновим его до php-5.6. Вначале установним нужные репозитории
-(см. &lt;a href=&#34;https://webtatic.com/packages/php56/&#34;&gt;https://webtatic.com/packages/php56/&lt;/a&gt;):&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Сделаем подмену дистрибутивного php на php-5.6:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;yum install yum-plugin-replace
-yum replace php-common --replace-with=php56w-common
-yum install php56w-opcache
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h2 id=&#34;установка-drush-8-&#34;&gt;Установка Drush 8&lt;/h2&gt;
-&lt;p&gt;Установим Composer:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;yum -y install composer
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Установим Drush (dev):&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;mkdir /usr/local/src/drush
-cd /usr/local/src/drush
-composer require drush/drush:dev-master
-ln -s /usr/local/src/drush/vendor/drush/drush/drush /usr/local/bin/drush
-&lt;/code&gt;&lt;/pre&gt;</description>
-    </item>
-    
-    <item>
-      <title>Миграция с Samba3 на Samba4</title>
-      <link>/ru/1/01/01/samba-migrate/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>/ru/1/01/01/samba-migrate/</guid>
-      <description>&lt;h3 id=&#34;установка-пакетов-&#34;&gt;Установка пакетов&lt;/h3&gt;
-&lt;p&gt;В качестве системы для сервера используем Centos7. Там пока не
-поддерживается функционал Samba4 AD (конфликт mit-krb и heimdal). Поэтому поставим самбу с
-EnterpriseSAMBA.com &lt;a href=&#34;https://portal.enterprisesamba.com/&#34;&gt;https://portal.enterprisesamba.com/&lt;/a&gt;.&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;cd /etc/yum.repos.d
-wget https://sernet-samba-public:Noo1oxe4zo@download.sernet.de/packages/samba/4.2/rhel/7/sernet-samba-4.2.repo
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;В файле &lt;code&gt;/etc/yum.repos.d/sernet-samba-4.2.repo&lt;/code&gt; заменим
-&lt;code&gt;USERNAME:ACCESSKEY&lt;/code&gt; на свои данные либо на публичную учётную запись
-&lt;code&gt;sernet-samba-public:Noo1oxe4zo&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;Установим нужные пакеты:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;yum -y install sernet-samba sernet-samba-ad
-yum -y install bind
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&#34;поиск-дубликатов-sid-&#34;&gt;Поиск дубликатов SID&lt;/h3&gt;
-&lt;p&gt;Найдём дубликаты SID с помощью следующего скрипта (запусткается на
-машине, где расположен ldap).&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;#!/usr/bin/python
-# A quick and dirty python script that checks for duplicat SID&#39;s using slapcat.
-import os
- 
-data = os.popen(&amp;quot;slapcat | grep sambaSID&amp;quot;, &#39;r&#39;)
-line = []
- 
-def anydup(thelist):
-        dups = list(set([x for x in thelist if thelist.count(x) &amp;gt; 1]))
-        for i in dups:
-                print &amp;quot;Duplicate id: &amp;quot;, i
- 
-for each_line in data:
-        line.append(each_line.strip())
- 
-anydup(line)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Далее дубликаты удаляются с помощью редактирования ldap (я использовал
-&lt;a href=&#34;https://directory.apache.org/studio/&#34;&gt;https://directory.apache.org/studio/&lt;/a&gt;).&lt;/p&gt;
-&lt;h3 id=&#34;предварительная-конфигурация-&#34;&gt;Предварительная конфигурация&lt;/h3&gt;
-&lt;p&gt;Добавил в файл &lt;code&gt;/etc/hosts&lt;/code&gt; адрес хоста.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;127.0.0.1               localhost.localdomain   localhost                                                                                                                                     
-10.130.64.23            dc.dk.sci.pfu.edu.ru    dc
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Также прописал его в прямой и обратной зонах DNS.&lt;/p&gt;
-&lt;h3 id=&#34;перенос-конфигурационных-файлов-&#34;&gt;Перенос конфигурационных файлов&lt;/h3&gt;
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;pdc ~ # scp -r /var/lib/samba/private/ dc.dk.sci.pfu.edu.ru:/var/lib/samba/samba3tdb/
-pdc ~ # scp /etc/samba/smb.conf dc.dk.sci.pfu.edu.ru:/var/lib/samba/samba3tdb/
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;В &lt;code&gt;/var/lib/samba/samba3tdb/smb.conf&lt;/code&gt; следует заменить имя контроллера домена.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;netbios name = dc
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Поскольку при миграции используется информация из ldap, на хосте &lt;code&gt;dc&lt;/code&gt;
-задаю файл &lt;code&gt;/etc/openldap/ldap.conf&lt;/code&gt;.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;BASE    dc=dk,dc=sci,dc=pfu,dc=edu,dc=ru                                                                                                                                                      
-URI     ldap://ldap.dk.sci.pfu.edu.ru                                                                                                                                                         
-                                                                                                                                                                                              
-TLS_REQCERT     allow
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&#34;проведение-миграции-&#34;&gt;Проведение миграции&lt;/h3&gt;
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;samba-tool domain classicupgrade --dbdir=/var/lib/samba/samba3tdb/ --use-xattrs=yes --realm=dk.sci.pfu.edu.ru --dns-backend=BIND9_DLZ /var/lib/samba/samba3tdb/smb.conf
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h4 id=&#34;шаманство-&#34;&gt;Шаманство&lt;/h4&gt;
-&lt;p&gt;В файле &lt;code&gt;/var/lib/samba/samba3tdb/smb.conf&lt;/code&gt; заменил доменное имя&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;passdb backend = ldapsam:ldap://ldap.dk.sci.pfu.edu.ru
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;на ip-адрес&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;passdb backend = ldapsam:ldap://10.130.64.11
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Без этого миграция падала с ошибкой &lt;code&gt;LDAP client internal error: NT_STATUS_BAD_NETWORK_NAME&lt;/code&gt;.&lt;/p&gt;
-&lt;h4 id=&#34;настройка-firewalld-&#34;&gt;Настройка firewalld&lt;/h4&gt;
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;firewall-cmd --add-service=ldap --permanent
-firewall-cmd --add-service=kerberos --permanent
-firewall-cmd --add-service=kpasswd --permanent
-firewall-cmd --add-service=samba --permanent
-firewall-cmd --add-service=samba-client --permanent
-firewall-cmd --reload
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h4 id=&#34;настройка-selinux-&#34;&gt;Настройка SELinux&lt;/h4&gt;
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;setsebool -P samba_export_all_ro 1
-setsebool -P samba_export_all_rw 1
-setsebool -P samba_domain_controller 1
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&#34;настройка-kerberos-&#34;&gt;Настройка Kerberos&lt;/h3&gt;
-&lt;p&gt;Создадим файл конфигурации kerberos:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;mv /etc/krb5.conf{,.default}
-cp /var/lib/samba/private/krb5.conf /etc
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&#34;настройка-dns-&#34;&gt;Настройка DNS&lt;/h3&gt;
-&lt;p&gt;В файле &lt;code&gt;/etc/resolv.conf&lt;/code&gt; задаём локальный DNS-сервер:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;search dk.sci.pfu.edu.ru                                                                                                                                                                      
-nameserver 127.0.0.1
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;В &lt;code&gt;/etc/named.conf&lt;/code&gt; подключаем сконфигурённую конфигурацию:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;include &amp;quot;/var/lib/samba/private/named.conf&amp;quot;; 
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Также в раздел &lt;code&gt;options&lt;/code&gt; добавляем:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;options {
-     [...]
-     tkey-gssapi-keytab &amp;quot;/var/lib/samba/private/dns.keytab&amp;quot;;
-     [...]
-};
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;А также следующее:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;options {
-     [...]
-	 allow-query { localhost; 10.128.0.0/9; };
-	 allow-update { 10.128.0.0/9; 127.0.0.0/8; };
-     forwarders { 10.130.64.239; 8.8.8.8; 8.8.4.4; };
-     allow-transfer {
-		 # this config is for a single master DNS server
-		 none;
-	 };
-     [...]
-};
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h4 id=&#34;настройка-firewalld--1&#34;&gt;Настройка firewalld&lt;/h4&gt;
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;firewall-cmd --add-service=dns --permanent
-firewall-cmd --reload
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h4 id=&#34;настройки-прав-доступа-&#34;&gt;Настройки прав доступа&lt;/h4&gt;
-&lt;p&gt;Права доступа:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;chown -R root:named /var/lib/samba/private/dns
-chmod 770 /var/lib/samba/private/dns
-chgrp named /var/lib/samba/private/dns.keytab
-chmod g+r /var/lib/samba/private/dns.keytab
-chgrp named /var/lib/samba/private
-chgrp -R named /var/lib/samba/private/sam.ldb.d
-chmod g+rw /var/lib/samba/private/sam.ldb.d/*
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h4 id=&#34;настройка-selinux--1&#34;&gt;Настройка SELinux&lt;/h4&gt;
-&lt;p&gt;Изменим текущий контекст:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;chcon -t named_conf_t /var/lib/samba/private/dns.keytab
-chcon -t named_conf_t /var/lib/samba/private/named.conf
-chcon -t named_conf_t /var/lib/samba/private/named.conf.update
-chcon -R -t named_var_run_t /var/lib/samba/private/dns
-chcon -t named_var_run_t /var/lib/samba/private/dns/${MYREALM}.zone
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Изменим постоянный контекст:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;semanage fcontext -a -t named_conf_t /var/lib/samba/private/dns.keytab
-semanage fcontext -a -t named_conf_t /var/lib/samba/private/named.conf
-semanage fcontext -a -t named_conf_t /var/lib/samba/private/named.conf.update
-semanage fcontext -a -t named_var_run_t &amp;quot;/var/lib/samba/private/dns(/.*)?&amp;quot;
-semanage fcontext -a -t named_var_run_t /var/lib/samba/private/dns/${MYREALM}.zone
-semanage fcontext -a -t named_var_run_t /var/lib/samba/private/dns/${MYREALM}.zone.jnl
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&#34;запуск-демонов-&#34;&gt;Запуск демонов&lt;/h3&gt;
-&lt;p&gt;Сконфигурим тип сервера samba в файле &lt;code&gt;/etc/default/sernet-samba&lt;/code&gt;:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;SAMBA_START_MODE=&amp;quot;ad&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Запустим демоны:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;systemctl start named.service
-systemctl start sernet-samba-ad.service
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Добавим их в автозагрузку:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;systemctl enable named.service
-systemctl enable sernet-samba-ad.service
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&#34;проверка-&#34;&gt;Проверка&lt;/h3&gt;
-&lt;p&gt;Проверка DNS.&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# host -t SRV _ldap._tcp.dk.sci.pfu.edu.ru.
-_ldap._tcp.dk.sci.pfu.edu.ru has SRV record 0 100 389 dc.dk.sci.pfu.edu.ru.
-# host -t SRV _kerberos._udp.dk.sci.pfu.edu.ru.
-_kerberos._udp.dk.sci.pfu.edu.ru has SRV record 0 100 88 dc.dk.sci.pfu.edu.ru.
-# host -t A dc.dk.sci.pfu.edu.ru.
-dc.dk.sci.pfu.edu.ru has address 10.130.64.23
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Замена пароля администратора:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;samba-tool user setpassword Administrator
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Проверка &lt;code&gt;smbclient&lt;/code&gt;:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;smbclient //localhost/netlogon -UAdministrator -c &#39;ls&#39;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Аналогичный результат должно давать (&lt;code&gt;dc&lt;/code&gt; &amp;mdash; имя сервера):&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;smbclient //dc/netlogon -k -c &#39;ls&#39;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Проверка kerberos:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;kinit administrator@DK.SCI.PFU.EDU.RU
-klist
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&#34;дополнительно-&#34;&gt;Дополнительно&lt;/h3&gt;
-&lt;p&gt;Убрать проверку сложности пароля:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;samba-tool domain passwordsettings set --complexity=off
-samba-tool domain passwordsettings set --history-length=0
-samba-tool domain passwordsettings set --min-pwd-age=0
-samba-tool domain passwordsettings set --max-pwd-age=0
-&lt;/code&gt;&lt;/pre&gt;</description>
-    </item>
-    
-    <item>
-      <title>Написание адреса</title>
-      <link>/ru/1/01/01/address-rules/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>/ru/1/01/01/address-rules/</guid>
-      <description>&lt;h2 id=&#34;русские-рекомендации-&#34;&gt;Русские рекомендации&lt;/h2&gt;
-&lt;p&gt;
-&lt;a href=&#34;http://www.russianpost.ru/resp_engine.aspx?Path=RP/SERVISE/RU/Home/postuslug/Rule_adress&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Правила оформления почтовых отправлений&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Реквизиты адреса на почтовых отправлениях и бланках почтовых переводов
-денежных средств пишутся в следующем порядке:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;банковские реквизиты (для почтовых переводов, направляемых
-юридическому лицу или принимаемых от юридического лица);&lt;/li&gt;
-&lt;li&gt;для юридического лица - полное или краткое наименование, для
-гражданина - фамилия, имя, отчество;&lt;/li&gt;
-&lt;li&gt;название улицы, номер дома, номер квартиры;&lt;/li&gt;
-&lt;li&gt;название района;&lt;/li&gt;
-&lt;li&gt;название населенного пункта (города, поселка и т.п.);&lt;/li&gt;
-&lt;li&gt;название республики, края, области, автономного округа (области);&lt;/li&gt;
-&lt;li&gt;название страны (для международных почтовых отправлений);&lt;/li&gt;
-&lt;li&gt;почтовый индекс.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Такой порядок написания почтового адреса установлен «Правилами
-оказания услуг почтовой связи», утвержденными в 1997 году. Правильно,
-например:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;Справочно-информационный портал «Русский язык»,
-«Письмовник»,
-ведущим раздела,
-Малый Сухаревский пер., 11,
-Москва, 123000.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Или так:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;И. И. Иванову,
-ул. Садовая, д. 25,
-г. Мытищи, Московская область,
-301002.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;При адресовании должностному или физическому лицу инициалы указывают
-перед фамилией: &lt;code&gt;В. В. Иванову&lt;/code&gt;, &lt;code&gt;А. А. Петрову&lt;/code&gt;. Между инициалами, а
-также между инициалами и фамилией ставятся пробелы.&lt;/p&gt;
-&lt;p&gt;При адресовании документа физическому лицу допускается вначале
-указывать почтовый адрес, затем — инициалы и фамилию получателя.&lt;/p&gt;
-&lt;h2 id=&#34;международный-стандарт-оформления-почтового-адреса-&#34;&gt;Международный стандарт оформления почтового адреса&lt;/h2&gt;
-&lt;h3 id=&#34;для-написания-почтового-адреса-частных-лиц-используются-следующие-элементы-&#34;&gt;Для написания почтового адреса частных лиц используются следующие элементы:&lt;/h3&gt;
-&lt;ol&gt;
-&lt;li&gt;
-&lt;p&gt;наименование адресата (указание семейного положения или титула
-лица), например: мистер, мисс, миссис, Его Святейшество, Его
-Превосходительство, Ее Величество и т. д.;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;имена / имя, фамилия, приставка к имени:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;имена (прозвище, особенные имена) в сочетании с фамилией для
-различения лиц в семье, например: Джон, Майкл, Дуди, Милли и
-т. д.;&lt;/li&gt;
-&lt;li&gt;фамилия семьи (слово или группа слов), используемая для
-обозначения семьи, например: Райдер, Смит, Низмен и т. д.;&lt;/li&gt;
-&lt;li&gt;приставка к имени, например: старший, младший;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;занятие, функция, по адресу (через)&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;определенное занятие, например: инженер, судья, нотариус и т. д.;&lt;/li&gt;
-&lt;li&gt;по адресу (через). Указывается связь с другим лицом или
-учреждением (например, по адресу Эйси Браун Бовери, по адресу
-семьи Смит);&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;пункт доставки:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;вид улицы (бульвар, авеню, улица, дорога, площадь и т. д.);&lt;/li&gt;
-&lt;li&gt;название улицы (например, Станционная авеню, Станционная улица,
-Станционная площадь, станция Виктория, станция Лайм-стрит);&lt;/li&gt;
-&lt;li&gt;идентификационный номер на улице, № подъезда или здания, этажа и
-квартиры (27/307, подъезд № 27, 4-й этаж, квартира № 7);&lt;/li&gt;
-&lt;li&gt;название дополнительного адресного компонента, относящегося к
-зданию, кварталу, башне, комплексу и т. д.;&lt;/li&gt;
-&lt;li&gt;название села, местечка, деревни, квартала, региона (Тикхилл,
-Док-лендз, Ерлхэм, Кэмден, Сохо и т. д.);&lt;/li&gt;
-&lt;li&gt;общая доставка;&lt;/li&gt;
-&lt;li&gt;почтовый ящик и номер (для обладателей ящика);&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;почтовый код или номер почтового маршрута, местность, наименование
-учреждения, осуществляющего доставку:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;почтовый код, который обычно используется для итоговой
-сортировки местным или региональным узлом доставки. К этим кодам
-могут добавляться другие цифры или буквы, например: 75015; ВН2120;&lt;/li&gt;
-&lt;li&gt;номер почтового маршрута, код, включающий несколько цифр и / или
-букв, указывающих маршрут для направления почты к месту
-назначения, например: 67-Дорога БеллинзонаАироло; К1А -отправка на
-сортировочный участок;&lt;/li&gt;
-&lt;li&gt;название учреждения доставки, название учреждения,
-ответственного за доставку почтового отправления адресату в место
-назначения, например: Берн 31 (почтовый ящик) и т. д.;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;название территории или провинции и / или название страны:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;название региона, графства, района, кантона и т. д. Например:
-Техас, Йоркшир, Уэльс и т. д.;&lt;/li&gt;
-&lt;li&gt;название страны назначения (Швейцария, Франция, Великобритания,
-США и т. д.).&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Mr Walter EGGERS 3040 Idaho Ave NW Apt #621 WASHINGTON D.C. 20016 USA&lt;/p&gt;
-&lt;p&gt;MrErin SIMPERINGHAM 127 Salisbury Road CAM PER DOWN NSW 2050 AUSTRALIA&lt;/p&gt;
-&lt;p&gt;MR Adam SIMPERINGHAM 37 Franklin Road Freemans Bay AUCKLAND NEWZELAND&lt;/p&gt;
-&lt;p&gt;Mr Costas MAVRIKIS 81 Pine Brook Dr LARCHMONT N.Y 10538 USA&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h3 id=&#34;для-написания-почтового-адреса-юридических-лиц-используются-следующие-элементы-&#34;&gt;Для написания почтового адреса юридических лиц используются следующие элементы:&lt;/h3&gt;
-&lt;ol&gt;
-&lt;li&gt;
-&lt;p&gt;название организации (Nestle Ltd; Kodak Ltd; UNESCO и т. п.);&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;деятельность или изделия (фирма по гражданскому строительству,
-общая трастовая компания, продажа семян);&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;пункт доставки;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;отдел или подразделение организации (отдел внешней торговли, отдел
-цветных металлов, общий отдел и т. п.);&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;почтовый код или номер почтового маршрута, местность, наименование
-учреждения, осуществляющего доставку;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;название территории или провинции и / или название страны.&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;Элементы 4, 5, 6 адреса для юридического лица указываются так же, как
-при написании адреса частных лиц.&lt;/p&gt;
-&lt;h2 id=&#34;американские-и-британские-адреса-обычно-составляются-по-следующим-правилам-&#34;&gt;Американские и британские адреса обычно составляются по следующим правилам:&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Имя человека, которому предназначено письмо.&lt;/li&gt;
-&lt;li&gt;Организация (если письмо имеет целью деловое общение).&lt;/li&gt;
-&lt;li&gt;Номер дома, название улицы, номер квартиры.&lt;/li&gt;
-&lt;li&gt;Название города (и штат – для США).&lt;/li&gt;
-&lt;li&gt;Почтовый индекс.&lt;/li&gt;
-&lt;li&gt;Название страны.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;При написании делового письма, перед именем ставится соответствующая
-форма обращения:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Mr. – любому мужчине.&lt;/li&gt;
-&lt;li&gt;Mrs. – женщине, состоящей в браке.&lt;/li&gt;
-&lt;li&gt;Miss – женщине, не состоящей в браке.&lt;/li&gt;
-&lt;li&gt;Ms. – при отсутствии информации о семейном положении женщины.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Например: &lt;code&gt;Mr. Richard Johnson&lt;/code&gt; (возможно &lt;code&gt;Mr. R. Johnson&lt;/code&gt;).&lt;/p&gt;
-&lt;p&gt;Если имя адресата вам неизвестно, можно ограничиться названием
-организации.&lt;/p&gt;
-&lt;h3 id=&#34;британский-адрес-&#34;&gt;Британский адрес&lt;/h3&gt;
-&lt;p&gt;В британском английском точка после Mr, Mrs, Ms и инициалов не
-ставится.&lt;/p&gt;
-&lt;p&gt;Согласно требованиям Королевской почтовой службы Великобритании (Royal
-Mail), название города пишется прописными буквами.&lt;/p&gt;
-&lt;p&gt;Итак, пример британского почтового адреса будет выглядеть следующим
-образом:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;Miss S Pollard
-Chapman&amp;amp;Hall Ltd
-2 Chapel Hill
-BOURNEMOUTH
-BH1 1AA
-UK
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&#34;американский-адрес-&#34;&gt;Американский адрес&lt;/h3&gt;
-&lt;p&gt;Название штата записывается двухбуквенным сокращением (например, NY –
-Нью-Йорк, CA – Калифорния). Полный список сокращений можно узнать на
-официальном сайте Почтовой службы США – usps.com.&lt;/p&gt;
-&lt;p&gt;Кроме того, в случае деловых писем, адрес рекомендуется полностью
-писать прописными буквами:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;JAMES KERRY
-438 DARK SPURT
-SAN FRANCISCO
-CA 94528
-USA
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Если же вы указываете адрес в теле письма, используйте
-пунктуацию. Например:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;Please send mail to Mr. James Kerry, 438 Dark Spurt, San Francisco, CA 94528, USA.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&#34;российский-адрес-в-английском-написании-&#34;&gt;Российский адрес в английском написании&lt;/h3&gt;
-&lt;p&gt;Поскольку обратный адрес в нашем случае предназначен для российской
-почты, то записывать его лучше так, чтобы он был понятен российским
-почтальонам.&lt;/p&gt;
-&lt;p&gt;Все наименования при этом транслитерируются. Например:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;Smirnov A. N.
-ul. Kosmonavtov 35-11
-Vyborg
-Leningradskaya oblast
-112233
-RUSSIA&lt;/code&gt;&lt;/pre&gt;</description>
-    </item>
-    
-    <item>
-      <title>Настройка SELinux для некоторых приложений</title>
-      <link>/ru/1/01/01/selinux-apps/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>/ru/1/01/01/selinux-apps/</guid>
-      <description>&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;setsebool&lt;/code&gt; запускаем как с ключём &lt;code&gt;-P&lt;/code&gt; (для запоминания настроек), так и без него (чтобы работало в текущей сессии).&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;a-namehead_www-servera-www-сервер-&#34;&gt;&lt;a name=&#39;head_www-server&#39;&gt;&lt;/a&gt; WWW-сервер&lt;/h2&gt;
-&lt;p&gt;{% codeblock lang:bash %}
-setsebool -P httpd_unified 1
-setsebool -P httpd_can_network_connect_db 1
-setsebool -P httpd_can_network_connect 1
-setsebool -P httpd_can_network_relay 1
-setsebool -P httpd_can_sendmail 1
-setsebool -P httpd_execmem 1
-setsebool -P httpd_use_fusefs 1
-{% endcodeblock %}&lt;/p&gt;
-&lt;h2 id=&#34;a-namehead_dba-базы-данных-&#34;&gt;&lt;a name=&#39;head_db&#39;&gt;&lt;/a&gt; Базы данных&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Postgres&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;{% codeblock lang:bash %}
-setsebool -P selinuxuser_postgresql_connect_enabled 1
-{% endcodeblock %}&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;MySQL&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;{% codeblock lang:bash %}
-setsebool -P selinuxuser_mysql_connect_enabled 1
-{% endcodeblock %}&lt;/p&gt;
-&lt;h2 id=&#34;ojs-&#34;&gt;OJS&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Настраиваем 
-&lt;a href=&#34;#head_www-server&#34;&gt;www-сервер&lt;/a&gt; и 
-&lt;a href=&#34;#head_db&#34;&gt;базу данных&lt;/a&gt;.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Настраиваем доступ к файловой системе.&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;{% codeblock lang:bash %}
-semanage fcontext &amp;ndash;add -t httpd_sys_rw_content_t &amp;ldquo;/var/www/html/ojs/cache(/.&lt;em&gt;)?&amp;rdquo;
-semanage fcontext &amp;ndash;add -t httpd_sys_rw_content_t &amp;ldquo;/var/www/html/ojs/public(/.&lt;/em&gt;)?&amp;rdquo;
-semanage fcontext &amp;ndash;add -t httpd_sys_rw_content_t &amp;ldquo;/var/www/html/ojs/config.inc.php&amp;rdquo;
-semanage fcontext &amp;ndash;add -t httpd_sys_rw_content_t &amp;ldquo;/var/www/html/ojs/plugins/generic(/.*)?&amp;rdquo;&lt;/p&gt;
-&lt;p&gt;semanage fcontext &amp;ndash;add -t httpd_sys_rw_content_t &amp;ldquo;/var/www/data(/.*)?&amp;rdquo;
-{% endcodeblock %}&lt;/p&gt;
-&lt;h2 id=&#34;drupal-&#34;&gt;Drupal&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Настраиваем 
-&lt;a href=&#34;#head_www-server&#34;&gt;www-сервер&lt;/a&gt; и 
-&lt;a href=&#34;#head_db&#34;&gt;базу данных&lt;/a&gt;.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Настраиваем доступ к файловой системе.&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;{% codeblock lang:bash %}
-semanage fcontext &amp;ndash;add -t httpd_sys_rw_content_t &amp;ldquo;/var/www/html/sites/drupal/(.&lt;em&gt;)/sites/(.&lt;/em&gt;)/files(/.&lt;em&gt;)?&amp;rdquo;
-semanage fcontext &amp;ndash;add -t httpd_sys_rw_content_t &amp;ldquo;/var/www/html/sites/drupal/(.&lt;/em&gt;)/cache(/.&lt;em&gt;)?&amp;rdquo;
-semanage fcontext &amp;ndash;add -t httpd_sys_rw_content_t &amp;ldquo;/var/www/html/sites/drupal/(.&lt;/em&gt;)/sites/all(/.*)?&amp;rdquo;
-{% endcodeblock %}&lt;/p&gt;
-&lt;h2 id=&#34;moodle-&#34;&gt;Moodle&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Настраиваем 
-&lt;a href=&#34;#head_www-server&#34;&gt;www-сервер&lt;/a&gt; и 
-&lt;a href=&#34;#head_db&#34;&gt;базу данных&lt;/a&gt;.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Настраиваем доступ к файловой системе.&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/moodle/web-git/mod(/.*)?&amp;quot;
-semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/moodle/web-git/local(/.*)?&amp;quot;
-semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/moodle/web-git/theme(/.*)?&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h2 id=&#34;letsencript-&#34;&gt;LetsEncript&lt;/h2&gt;
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;semanage fcontext -a -t cert_t &#39;/etc/letsencrypt/(archive|live)(/.*)?&#39;
-&lt;/code&gt;&lt;/pre&gt;</description>
-    </item>
-    
-    <item>
-      <title>Перенос блога на Jekyll &#43; Octopress</title>
-      <link>/ru/1/01/01/jekyll-octopress/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>/ru/1/01/01/jekyll-octopress/</guid>
-      <description>&lt;h2 id=&#34;репозиторий-для-сайта-&#34;&gt;Репозиторий для сайта&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Создал локальный каталог для сайта:
-{% codeblock lang:bash %}
-mkdir ~/mysite
-{% endcodeblock %}&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;локальный-git-репозиторий-&#34;&gt;Локальный git-репозиторий&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Создал пустой git-репозиторий:
-{% codeblock lang:bash %}
-cd ~/mysite
-git init
-{% endcodeblock %}&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Создал в нём файл &lt;code&gt;README.md&lt;/code&gt;
-{% codeblock lang:bash %}
-touch README.md
-{% endcodeblock %}&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Сделал коммит:
-{% codeblock lang:bash %}
-git add .
-git commit -am &amp;lsquo;Initial commit&amp;rsquo;
-{% endcodeblock %}&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Создаю ветку для кода (в &lt;code&gt;master&lt;/code&gt; будет сайт):
-{% codeblock lang:bash %}
-git branch source
-git checkout source
-{% endcodeblock %}&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;
-&lt;a href=&#34;#head_site-template-create&#34;&gt;Далее создаю шаблон для сайта&lt;/a&gt; в ветке &lt;code&gt;source&lt;/code&gt;.&lt;/p&gt;
-&lt;h3 id=&#34;репозиторий-на-bitbucket-&#34;&gt;Репозиторий на Bitbucket&lt;/h3&gt;
-&lt;p&gt;Я пользовался 
-&lt;a href=&#34;https://confluence.atlassian.com/display/BITBUCKET/Publishing&amp;#43;a&amp;#43;Website&amp;#43;on&amp;#43;Bitbucket&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;инструкцией от bitbucket&#39;а&lt;/a&gt;.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Создал на bitbucket&#39;е репозиторий с названием
-&lt;code&gt;yamadharma.bitbucket.org&lt;/code&gt;.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Выложил репозиторий
-{% codeblock lang:bash %}
-cd ~/mysite
-git remote add origin &lt;a href=&#34;mailto:git@bitbucket.org&#34;&gt;git@bitbucket.org&lt;/a&gt;:yamadharma/yamadharma.bitbucket.org.git
-git push -u origin &amp;ndash;all
-git push -u origin &amp;ndash;tags
-{% endcodeblock %}&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;выкладывание-сайта-на-bitbucket-&#34;&gt;Выкладывание сайта на Bitbucket&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Создал файл &lt;code&gt;_deploy.yml&lt;/code&gt; с помощью команды
-{% codeblock lang:bash %}
-octopress deploy init git -u &lt;a href=&#34;mailto:git@bitbucket.org&#34;&gt;git@bitbucket.org&lt;/a&gt;:yamadharma/yamadharma.bitbucket.org.git
-{% endcodeblock %}&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Подредактировал &lt;code&gt;.gitignore&lt;/code&gt;:
-{% codeblock lang:bash %}
-echo &amp;ldquo;.deploy&amp;rdquo; &amp;raquo; .gitignore
-{% endcodeblock %}&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Сгенерил сайт:
-{% codeblock lang:bash %}
-jekyll b
-{% endcodeblock %}&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Выложил существующий сайт:
-{% codeblock lang:bash %}
-octopress deploy
-{% endcodeblock %}&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Положил ветку &lt;code&gt;source&lt;/code&gt; на git:
-{% codeblock lang:bash %}
-git add .
-git commit -am &amp;lsquo;Поправил сайт&amp;rsquo;
-git push
-{% endcodeblock %}&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;a-namehead_site-template-createa-создание-шаблона-сайта-&#34;&gt;&lt;a name=&#39;head_site-template-create&#39;&gt;&lt;/a&gt; Создание шаблона сайта&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;В каталоге сайта создаю шаблон:
-{% codeblock lang:bash %}
-cd ~/mysite
-git checkout source
-octopress new -f .
-{% endcodeblock %}&lt;/li&gt;
-&lt;/ul&gt;</description>
-    </item>
-    
-    <item>
-      <title>Поддержка многоязычности</title>
-      <link>/ru/1/01/01/octopus-multilingual/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>/ru/1/01/01/octopus-multilingual/</guid>
-      <description>&lt;p&gt;Добавим в конфигурационный файл (&lt;code&gt;_config.yml&lt;/code&gt;):&lt;/p&gt;
-&lt;p&gt;{% codeblock lang:yaml %}
-gems:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;octopress-multilingual&lt;/li&gt;
-&lt;li&gt;octopress-linkblog
-{% endcodeblock %}&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Также зададим язык по-умолчанию:&lt;/p&gt;
-&lt;p&gt;{% codeblock lang:yaml %}
-lang: ru
-{% endcodeblock %}&lt;/p&gt;
-&lt;h2 id=&#34;язык-для-постов-&#34;&gt;Язык для постов&lt;/h2&gt;
-&lt;p&gt;Добавим язык  в заголовок шаблонов:&lt;/p&gt;
-&lt;p&gt;{% codeblock lang:yaml %}
-lang: ru
-{% endcodeblock %}&lt;/p&gt;
-&lt;h2 id=&#34;конфигурация-для-разных-языков-&#34;&gt;Конфигурация для разных языков&lt;/h2&gt;
-&lt;p&gt;В каталоге &lt;code&gt;_data&lt;/code&gt; создадим конфигурационные файлы вида
-&lt;code&gt;lang_[language_code].yml&lt;/code&gt;:&lt;/p&gt;
-&lt;p&gt;{% codeblock lang:yaml %}
-_data
-lang_en.yml
-lang_ru.yml
-{% endcodeblock %}&lt;/p&gt;
-&lt;p&gt;Примерное их содержание:&lt;/p&gt;
-&lt;p&gt;{% codeblock lang:yaml %}&lt;/p&gt;
-&lt;h1 id=&#34;lang_enyml&#34;&gt;lang_en.yml&lt;/h1&gt;
-&lt;p&gt;title: English title&lt;/p&gt;
-&lt;h1 id=&#34;lang_ruyml&#34;&gt;lang_ru.yml&lt;/h1&gt;
-&lt;p&gt;title: Русское название сайта
-{% endcodeblock %}&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>Установка виртуальной машины NOC на oVirt</title>
-      <link>/ru/1/01/01/ova-on-ovirt/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>/ru/1/01/01/ova-on-ovirt/</guid>
-      <description>&lt;p&gt;Чтобы не мучиться с установкой 
-&lt;a href=&#34;https://kb.nocproject.org&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;NOC&lt;/a&gt; решил установить с образа, 
-&lt;a href=&#34;https://kb.nocproject.org/display/SITE/Downloads&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;предлагаемого на сайте&lt;/a&gt;. К сажалению, образ предлагается в формате &lt;code&gt;ova&lt;/code&gt;, а у меня стоит oVirt (&lt;code&gt;ovirt-engine&lt;/code&gt;). Он этот формат не понимает. Однако у меня есть ещё хост с &lt;code&gt;kvm&lt;/code&gt; (&lt;code&gt;kvm-host&lt;/code&gt;).&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Распаковываю &lt;code&gt;noc-x86_64-Debian-8.ova&lt;/code&gt;:
-{% codeblock lang:bash %}
-tar -xf noc-x86_64-Debian-8.ova
-{% endcodeblock %}&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Конвертирую в формат &lt;code&gt;qcow2&lt;/code&gt;:
-{% codeblock lang:bash %}
-qemu-img convert -O qcow2 noc-x86_64-Debian-8-disk1.vmdk noc-x86_64-Debian-8-disk1.qcow2
-{% endcodeblock %}&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Создаю виртуальную машину на kvm. По большому счёту это нужно лишь для создания xml-файла описания виртуальной машины.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Машина сначала не загрузилась потому, что в &lt;code&gt;/etc/fstab&lt;/code&gt; на &lt;code&gt;/boot&lt;/code&gt; был жёстко прописан &lt;code&gt;/dev/sda1&lt;/code&gt;. Поменял на &lt;code&gt;/dev/vda1&lt;/code&gt;.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Пароли следующие:
-{% codeblock lang:bash %}
-Username: user
-Password: thenocproject
-Root password: thenocproject
-{% endcodeblock %}&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;На web-интерфейс логин и пароль:
-{% codeblock lang:bash %}
-User: admin
-Password: admin
-{% endcodeblock %}&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Образы на &lt;code&gt;kvm-host&lt;/code&gt; находятся в каталоге &lt;code&gt;/var/lib/libvirt/images&lt;/code&gt;, а соответствующие конфигурационные файлы в &lt;code&gt;/etc/libvirt/qemu&lt;/code&gt;. Копируем нужный конфиг в &lt;code&gt;/var/lib/libvirt/images&lt;/code&gt; и называем &lt;code&gt;noc-x86_64-Debian-8-disk1.xml&lt;/code&gt;. Поскольку будем работать по сети, заменяем в нём путь к образу с &lt;code&gt;/var/lib/...&lt;/code&gt; на  &lt;code&gt;/net/kvm-host/var/lib/...&lt;/code&gt;.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Заходим на хост &lt;code&gt;ovirt-engine&lt;/code&gt;, монтируем &lt;code&gt;kvm-host&lt;/code&gt; по autofs:
-{% codeblock lang:bash %}
-cd /net/kvm-host/var/lib/libvirt/images
-{% endcodeblock %}&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Импортируем образ в oVirt:&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;{% codeblock lang:bash %}
-virt-v2v -b vlan5  -i libvirtxml -o rhev -os ovirt-node-01:/ovirt/export noc-x86_64-Debian-8-disk1.xml
-{% endcodeblock %}&lt;/p&gt;
-&lt;p&gt;Здесь &lt;code&gt;ovirt-node-01&lt;/code&gt; — узел, на котором запускаются виртуальные машины, &lt;code&gt;vlan5&lt;/code&gt; — интерфейс, к которому она будет подключена.&lt;/p&gt;</description>
     </item>
     
   </channel>

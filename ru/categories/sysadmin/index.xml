@@ -1,0 +1,1245 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>sysadmin | Д. С. Кулябов</title>
+    <link>https://yamadharma.github.io/ru/categories/sysadmin/</link>
+      <atom:link href="https://yamadharma.github.io/ru/categories/sysadmin/index.xml" rel="self" type="application/rss+xml" />
+    <description>sysadmin</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>ru-ru</language><copyright>© 2020 Dmitry S. Kulyabov</copyright><lastBuildDate>Thu, 17 May 2018 08:43:05 +0000</lastBuildDate>
+    <image>
+      <url>https://yamadharma.github.io/images/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_2.png</url>
+      <title>sysadmin</title>
+      <link>https://yamadharma.github.io/ru/categories/sysadmin/</link>
+    </image>
+    
+    <item>
+      <title>Деинсталляция WebFM из Drupal</title>
+      <link>https://yamadharma.github.io/ru/2018/05/17/webfm-uninstall/</link>
+      <pubDate>Thu, 17 May 2018 08:43:05 +0000</pubDate>
+      <guid>https://yamadharma.github.io/ru/2018/05/17/webfm-uninstall/</guid>
+      <description>&lt;h2 id=&#34;circumstantia-&#34;&gt;Circumstantia&lt;/h2&gt;
+&lt;h3 id=&#34;дано-&#34;&gt;Дано&lt;/h3&gt;
+&lt;p&gt;Сайт на 
+&lt;a href=&#34;https://www.drupal.org&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Drupal&lt;/a&gt; 5.&lt;/p&gt;
+&lt;h3 id=&#34;требуется-&#34;&gt;Требуется&lt;/h3&gt;
+&lt;p&gt;Превести сайт на Drupal 8.&lt;/p&gt;
+&lt;h3 id=&#34;предварительный-план-действий-&#34;&gt;Предварительный план действий&lt;/h3&gt;
+&lt;p&gt;Drupal 5 -&amp;gt; Drupal 6 -&amp;gt; Drupal 8.&lt;/p&gt;
+&lt;h3 id=&#34;проблема-&#34;&gt;Проблема&lt;/h3&gt;
+&lt;p&gt;В системе установлен пакет 
+&lt;a href=&#34;https://www.drupal.org/project/webfm&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;webfm&lt;/a&gt;, который не поддерживается после Drupal 6. Webfm ведёт свою базу файлов, и в тексте сайта ставит указание не на файл, на а запись в своей базе данных.&lt;/p&gt;
+&lt;h2 id=&#34;solutio-&#34;&gt;Solutio&lt;/h2&gt;
+&lt;p&gt;При поиски решения проблемы были найдены следующие сайты:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://puna.upf.edu/node/97&#34;&gt;http://puna.upf.edu/node/97&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://gist.github.com/heidar/3707913&#34;&gt;https://gist.github.com/heidar/3707913&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Основываясь на них, набросал скипт &lt;code&gt;webfm-fix&lt;/code&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;#!/usr/bin/python2
+import MySQLdb
+
+# For REALY work set update = True
+update = False
+
+# connect to the databases
+
+db = MySQLdb.connect(
+	host=&amp;quot;localhost&amp;quot;,        # your host, usually localhost
+	user=&amp;quot;username&amp;quot;,         # your username
+	passwd=&amp;quot;userpassword&amp;quot;,   # your password
+	db=&amp;quot;database&amp;quot;,           # name of the data base
+	use_unicode=True, charset=&#39;utf8&#39;)
+
+cur = db.cursor()
+
+# get all the file ids and paths from the old webfm table
+
+filename_query = &amp;quot;SELECT fid, fpath FROM webfm_file&amp;quot;
+cur.execute(filename_query)
+
+fid_max = 0
+
+filenames = {}
+for row in cur.fetchall():
+    filenames[row[0]] = row[1]
+    if fid_max &amp;lt; row[0]:
+	fid_max = row[0]
+
+# find all webfm links and replace them with the actual file path
+
+query = &amp;quot;SELECT nid, body, teaser FROM node_revisions WHERE body like &#39;%webfm_send%&#39; OR teaser like &#39;%webfm_send%&#39;&amp;quot;
+cur.execute(query)
+
+for row in cur.fetchall():
+    entity_id = row[0]
+    body = row[1]
+    teaser = row[2]
+    for i in range(fid_max, 0, -1):
+	webfm1 = u&#39;ru/webfm_send/&#39; + str(i)
+        webfm2 = u&#39;webfm_send/&#39; + str(i)
+        webfm_list = [webfm1, webfm2]
+        for webfm in webfm_list:
+	    if i in filenames:
+		sql_body = &amp;quot;UPDATE node_revisions SET body = REPLACE(body,&#39;%s&#39;,&#39;%s&#39;) WHERE nid = %d&amp;quot; % (webfm,filenames[i],entity_id)
+                sql_teaser = &amp;quot;UPDATE node_revisions SET teaser = REPLACE(teaser,&#39;%s&#39;,&#39;%s&#39;) WHERE nid = %d&amp;quot; % (webfm,filenames[i],entity_id)
+                if update:
+	            try:
+	                # Execute the SQL command
+	        	cur.execute(sql_body)
+                        cur.execute(sql_teaser)
+	                # Commit your changes in the database
+	        	db.commit()
+	            except:
+	                # Rollback in case there is any error
+                        db.rollback()
+db.close()
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;При написании скрипта использовал следующую информацию:
+
+&lt;a href=&#34;https://drupal.stackexchange.com/questions/6787/where-does-drupal-store-the-content-of-a-nodes-body&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Where does Drupal store the content of a node&amp;rsquo;s body?&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;In Drupal 6, content of the node&amp;rsquo;s body is saved in &lt;code&gt;node_revisions&lt;/code&gt; table under &lt;code&gt;body&lt;/code&gt; field.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;node_revisions.body
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In Drupal 7, content of the node&amp;rsquo;s body is saved in &lt;code&gt;field_data_body&lt;/code&gt; table under &lt;code&gt;body_value&lt;/code&gt; field. In case content revisions are there then it also saves the data in &lt;code&gt;field_revision_body&lt;/code&gt; table under &lt;code&gt;body_value&lt;/code&gt; field.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;field_data_body.body_value
+field_revision_body.body_value
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In Drupal 8, content of the node&amp;rsquo;s body is saved in &lt;code&gt;node__body&lt;/code&gt; table under &lt;code&gt;body_value&lt;/code&gt; field. In case content revisions are there then it also saves the data in &lt;code&gt;node_revision__body&lt;/code&gt; table under &lt;code&gt;body_value&lt;/code&gt; field.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;node__body.body_value
+node_revision__body.body_value
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>Миграция с livejournal на hexo</title>
+      <link>https://yamadharma.github.io/ru/2018/04/21/from-lj-to-hexo/</link>
+      <pubDate>Sat, 21 Apr 2018 15:37:34 +0000</pubDate>
+      <guid>https://yamadharma.github.io/ru/2018/04/21/from-lj-to-hexo/</guid>
+      <description>&lt;p&gt;Миграция с 
+&lt;a href=&#34;https://yamadharma.livejournal.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;livejornal&lt;/a&gt; составила некоторые проблемы.&lt;/p&gt;
+&lt;p&gt;Хочу заметить, что комментарии я не переносил.&lt;/p&gt;
+&lt;p&gt;Наиболее подходящим показался мне 
+&lt;a href=&#34;https://github.com/arty-name/livejournal-export&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;livejournal-export&lt;/a&gt;. Он переводит сразу в &lt;em&gt;markdown&lt;/em&gt;. Однако, при этом не импортируются теги.
+Для идентификации использует параметры сессии броузера.&lt;/p&gt;
+&lt;p&gt;Вторым вариантом я рассмотрел 
+&lt;a href=&#34;https://github.com/ghewgill/ljdump&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;ljdump&lt;/a&gt;. Он скачивает журнал в &lt;em&gt;html&lt;/em&gt;. Для идентификации использует логин и пароль.&lt;/p&gt;
+&lt;p&gt;Потом пришлось преобразовать в &lt;em&gt;markdown&lt;/em&gt;. Для этого написал скрипт &lt;em&gt;xml2md&lt;/em&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
+import os
+import sys
+from lxml import etree
+import html2text
+from datetime import datetime
+from transliterate import translit, get_available_language_codes
+
+outdir = &#39;markdown&#39;
+os.makedirs(outdir, exist_ok=True)
+
+infile = sys.argv[1]
+print(infile)
+
+tree = etree.parse(infile)
+post = tree.getroot()
+
+postTitle = &#39;&#39;
+postTags = &#39;&#39;
+
+for elem in post.getchildren():
+    if not elem.text:
+        text = &amp;quot;None&amp;quot;
+    else:
+        text = elem.text
+    # print(elem.tag + &amp;quot; =&amp;gt; &amp;quot; + text)
+    # book_dict[elem.tag] = text
+    if elem.tag == &#39;subject&#39;:
+        postTitle = text
+    if elem.tag == &#39;eventtime&#39;:
+        postDate = text
+    if elem.tag == &#39;event&#39;:
+        postContent = text
+    if elem.tag == &#39;props&#39;:
+        for propsElem in elem.getchildren():
+            if not elem.text:
+                text = &amp;quot;None&amp;quot;
+            else:
+                text = propsElem.text
+            # print(propsElem.tag + &amp;quot; =&amp;gt; &amp;quot; + text)
+            if propsElem.tag == &#39;taglist&#39;:
+                postTags = text
+            
+
+
+
+postHeader = &#39;layout: post\n&#39;+&#39;title: &#39;+postTitle+&#39;\n&#39;+&#39;date: &#39;+str(postDate)
+postHeader = postHeader+&#39;\ncategories: blog\nlang: ru&#39;
+postHeader = postHeader+&#39;\ntags: [&#39;+postTags+&#39;]&#39;
+postHeader = postHeader+&#39;\n&#39;+&#39;---&#39;
+
+h = html2text.HTML2Text()
+h.ignore_links = False
+h.body_width = 0
+h.unicode_snob = True
+postContent = h.handle(postContent)
+
+fullPost = postHeader+&#39;\n\n\n&#39;+postContent
+
+date = datetime.strptime(postDate, &#39;%Y-%m-%d %H:%M:%S&#39;)
+outFile = &#39;{0.year}-{0.month:02d}-{0.day:02d}&#39;.format(date)
+if postTitle != &#39;&#39;:
+    translitTitle = translit(postTitle, &#39;ru&#39;, reversed=True)
+    translitTitle = translitTitle.replace(&amp;quot; &amp;quot;,&amp;quot;_&amp;quot;)
+    translitTitle = translitTitle.replace(&amp;quot;:&amp;quot;,&amp;quot;&amp;quot;)
+    translitTitle = translitTitle.replace(&amp;quot;&#39;&amp;quot;,&amp;quot;&amp;quot;)
+    translitTitle = translitTitle.replace(&amp;quot;«&amp;quot;,&amp;quot;&amp;quot;)
+    translitTitle = translitTitle.replace(&amp;quot;»&amp;quot;,&amp;quot;&amp;quot;)
+    translitTitle = translitTitle.replace(&amp;quot;;&amp;quot;,&amp;quot;&amp;quot;)
+else:
+    translitTitle = &#39;{0.hour:02d}-{0.minute:02d}-{0.second:02d}&#39;.format(date)
+outFile = outFile+&#39;-&#39;+translitTitle
+
+f = open(outdir+&#39;/&#39;+str(outFile)+&#39;.md&#39;, &#39;w&#39;)
+f.write(fullPost)
+f.close()
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Преобразование можно выполнить с помощью команды:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;./xml2md &amp;lt;file&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;При этом создаётся каталог &lt;em&gt;markdown&lt;/em&gt; и в него помещается результат конвертации.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Установка темы NexT для hexo</title>
+      <link>https://yamadharma.github.io/ru/2018/04/04/hexo-theme-next/</link>
+      <pubDate>Wed, 04 Apr 2018 13:24:22 +0000</pubDate>
+      <guid>https://yamadharma.github.io/ru/2018/04/04/hexo-theme-next/</guid>
+      <description>&lt;p&gt;Пробую поменять тему оформления блога на 
+&lt;a href=&#34;https://github.com/iissnan/hexo-theme-next&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;NexT&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Также можно посмотреть документацию:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/theme-next/hexo-theme-next/blob/master/docs/ru/README.md&#34;&gt;https://github.com/theme-next/hexo-theme-next/blob/master/docs/ru/README.md&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/iissnan/hexo-theme-next/blob/master/README.md&#34;&gt;https://github.com/iissnan/hexo-theme-next/blob/master/README.md&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;скачиваем-тему-&#34;&gt;Скачиваем тему&lt;/h3&gt;
+&lt;p&gt;Переходим в каталог блога и скачиваем.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;git clone https://github.com/theme-next/hexo-theme-next themes/next
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;конфигурационный-файл-&#34;&gt;Конфигурационный файл&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;mkdir -p source/_data
+cd source/_data
+touch next.yml
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Убедимся, что в файле &lt;code&gt;themes/next/_config.yml&lt;/code&gt; установлено:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;override: false
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;В корневом файле &lt;code&gt;_config.yml&lt;/code&gt; устанавливаем:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;theme: next
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;и&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;source_dir: source
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;В файл &lt;code&gt;source/_data/next.yml&lt;/code&gt; переносим из &lt;code&gt;themes/next/_config.yml&lt;/code&gt;
+параметры, которые меняем.&lt;/p&gt;
+&lt;h3 id=&#34;страницы-категорий-и-тегов-&#34;&gt;Страницы категорий и тегов&lt;/h3&gt;
+&lt;p&gt;Создадим страницы &lt;code&gt;tags&lt;/code&gt; и &lt;code&gt;categories&lt;/code&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;hexo new page &amp;quot;tags&amp;quot;
+hexo new page &amp;quot;categories&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Отредактирем файлы &lt;code&gt;source/tags/index.md&lt;/code&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-markdown&#34;&gt;---
+title: tags
+date: &amp;quot;2018-04-04T14:41:32+00:00&amp;quot;
+type: &amp;quot;tags&amp;quot;
+---
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;и &lt;code&gt;source/categories/index.md&lt;/code&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-markdown&#34;&gt;---
+title: categories
+date: &amp;quot;2018-04-04T14:41:37+00:00&amp;quot;
+type: &amp;quot;categories&amp;quot;
+---
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Добавим описание меню в файл &lt;code&gt;source/_data/next.yml&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;menu:
+  home: / || home
+  tags: /tags/ || tags
+  categories: /categories/ || th
+  archives: /archives/ || archive
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;личная-фотография-&#34;&gt;Личная фотография&lt;/h3&gt;
+&lt;p&gt;Сделаем каталог для изображений:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;mkdir -p source/images
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Поместим туда файл (например, &lt;code&gt;avatar.jpg&lt;/code&gt;) и запишем в конфиг
+&lt;code&gt;source/_data/next.yml&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;avatar: /images/avatar.jpg
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Я сделал ширину 126px.&lt;/p&gt;
+&lt;h3 id=&#34;комментарии-&#34;&gt;Комментарии&lt;/h3&gt;
+&lt;p&gt;Комментарии настроил через Disqus.
+Для этого сконфигурил на 
+&lt;a href=&#34;http://www.disqus.com&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Disqus&lt;/a&gt; сайт с коротким именем &lt;em&gt;yamadharma-blog&lt;/em&gt;.
+Добавил в файл &lt;code&gt;source/_data/next.yml&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;disqus:
+  enable: true
+  shortname: yamadharma-blog
+  count: true
+  lazyload: false
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>Переход блога на hexo</title>
+      <link>https://yamadharma.github.io/ru/2018/03/28/hexo/</link>
+      <pubDate>Wed, 28 Mar 2018 13:10:47 +0000</pubDate>
+      <guid>https://yamadharma.github.io/ru/2018/03/28/hexo/</guid>
+      <description>&lt;p&gt;Блог на 
+&lt;a href=&#34;https://jekyllrb.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Jekyll&lt;/a&gt; вести не получилось. Попробовал перейти на 
+&lt;a href=&#34;https://hexo.io&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Hexo&lt;/a&gt;. Он
+попроще, но зато всё, что нужно, работает сразу.&lt;/p&gt;
+&lt;h2 id=&#34;установка-hexo-&#34;&gt;Установка Hexo&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Установил Hexo (глобально):&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;npm install -g hexo-cli
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Инициализировал каталог блога:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;hexo init .
+npm install
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Установил плагин для выкладывания на git (это делается в каталоге блога):&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;npm install hexo-deployer-git --save
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Установил плагин для генерации RSS (такая опция есть в теме):&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;npm install hexo-generator-feed --save
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Задал конфигурацию &lt;code&gt;_config.yml&lt;/code&gt;:&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;# Site
+title: В борьбе обретёшь ты право своё
+subtitle: Делай, что должен, и будь, что будет
+description:
+keywords:
+author: Дмитрий Кулябов
+language: ru
+timezone:
+
+# URL
+## If your site is put in a subdirectory, set url as &#39;http://yoursite.com/child&#39; and root as &#39;/child/&#39;
+url: https://yamadharma.bitbucket.io/
+root: /
+permalink: :lang/:year/:month/:day/:title/
+permalink_defaults:
+  lang: ru
+
+# Directory
+source_dir: source
+public_dir: public
+tag_dir: tags
+archive_dir: archives
+category_dir: categories
+code_dir: downloads/code
+i18n_dir: :lang
+skip_render:
+
+# Writing
+new_post_name: :lang/:year-:month-:day-:title.md # File name of new posts
+default_layout: post
+titlecase: false # Transform title into titlecase
+external_link: true # Open external links in new tab
+filename_case: 0
+render_drafts: false
+post_asset_folder: false
+relative_link: false
+future: true
+highlight:
+  enable: true
+  line_number: true
+  auto_detect: false
+  tab_replace:
+
+# Home page setting
+# path: Root path for your blogs index page. (default = &#39;&#39;)
+# per_page: Posts displayed per page. (0 = disable pagination)
+# order_by: Posts order. (Order by date descending by default)
+index_generator:
+  path: &#39;&#39;
+  per_page: 10
+  order_by: -date
+
+# Category &amp;amp; Tag
+default_category: uncategorized
+category_map:
+tag_map:
+
+# Date / Time format
+## Hexo uses Moment.js to parse and display date
+## You can customize the date format as defined in
+## http://momentjs.com/docs/#/displaying/format/
+date_format: YYYY-MM-DD
+time_format: HH:mm:ss
+
+# Pagination
+## Set per_page to 0 to disable pagination
+per_page: 10
+pagination_dir: page
+
+# Extensions
+## Plugins: https://hexo.io/plugins/
+## Themes: https://hexo.io/themes/
+theme: landscape
+
+# Deployment
+## Docs: https://hexo.io/docs/deployment.html
+deploy:
+  type: git
+  repo: git@bitbucket.org:yamadharma/yamadharma.bitbucket.org.git
+  branch: master
+
+# Feed
+## https://github.com/hexojs/hexo-generator-feed
+feed:
+  type: atom
+  path: atom.xml
+  limit: 20
+  hub:
+  content:
+  content_limit: 600
+  content_limit_delim: &#39; &#39;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Таким образом, без настройки, получена работающая конфигурация.&lt;/p&gt;
+&lt;h2 id=&#34;порядок-работы-следующий-&#34;&gt;Порядок работы следующий&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Создаём новый файл для поста:
+&lt;pre&gt;&lt;code&gt;hexo new &amp;lt;title&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Радактируем пост.&lt;/li&gt;
+&lt;li&gt;Генерим страницы:
+&lt;pre&gt;&lt;code&gt;hexo generate
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;или&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;hexo g
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Выкладываем страницы на сайт:
+&lt;pre&gt;&lt;code&gt;hexo deploy
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;или&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;hexo d
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Очищаем каталог:
+&lt;pre&gt;&lt;code&gt;hexo clean
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Миграция с blogspot на hexo</title>
+      <link>https://yamadharma.github.io/ru/2018/03/27/from-blogspot-to-hexo/</link>
+      <pubDate>Tue, 27 Mar 2018 15:56:18 +0000</pubDate>
+      <guid>https://yamadharma.github.io/ru/2018/03/27/from-blogspot-to-hexo/</guid>
+      <description>&lt;h2 id=&#34;hexo&#34;&gt;Hexo&lt;/h2&gt;
+&lt;p&gt;Перешёл на 
+&lt;a href=&#34;https://hexo.io&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;hexo&lt;/a&gt;. Дополнительно решил перенести свои заметки с 
+&lt;a href=&#34;http://yamadharma.blogspot.ru/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;blogspot&lt;/a&gt;.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Установил пакет для миграции:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;npm install hexo-migrator-blogger --save
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Подправил файл миграции
+(&lt;code&gt;node_modules/hexo-migrator-blogger/lib/migrate.js&lt;/code&gt;), чтобы
+нормальные названия файлов были:
+{% codeblock lang:patch %}
+&amp;mdash; migrate.js.old      2016-09-24 10:02:27.000000000 +0300
++++ migrate.js  2018-03-27 15:23:52.475311505 +0300
+@@ -11,17 +11,19 @@ module.exports = function(source, target
+var posts = JSON.parse(body).feed.entry;
+async.each(posts, function(item, cb) {
+var title = item.title[&amp;lsquo;$t&amp;rsquo;];&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;pre&gt;&lt;code&gt;       var file = title.replace(/\s/g,&#39;-&#39;).replace(/[^A-z 0-9 -]/g,&#39;&#39;);
+       var published = item.published[&#39;$t&#39;];
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;pre&gt;&lt;code&gt;       var file = moment(published).format(&#39;YYYY-MM-DD&#39;) + &#39;-&#39; + title;
+       var tags = &#39;&#39;;
+       if (item.category) {
+           tags = item.category.map(prop(&#39;term&#39;));
+       }
+       var header = [
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;pre&gt;&lt;code&gt;           &#39;title: |&#39;,
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;pre&gt;&lt;code&gt;           &#39;\t&#39; +  title,
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;pre&gt;&lt;code&gt;          &#39;layout: post&#39;,
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;pre&gt;&lt;code&gt;           &#39;title: &#39; + &#39;\&amp;quot;&#39; + title + &#39;\&amp;quot;&#39;,
+           &#39;date: &#39; + moment(published).format(&#39;YYYY-MM-DD HH:mm:ss&#39;),
+           &#39;tags: [&#39; + tags + &#39;]&#39;,
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;pre&gt;&lt;code&gt;          &#39;categories: blog&#39;,
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;pre&gt;&lt;code&gt;          &#39;lang: ru&#39;,
+           &#39;---&#39;,
+       ];
+       var content = item.content[&#39;$t&#39;];
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;{% endcodeblock %}&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Запустил миграцию:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;hexo migrate blogger &amp;quot;http://yamadharma.blogspot.ru/feeds/posts/default?alt=json&amp;amp;max-results=10000&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Почистил получившиеся файлы:
+{% codeblock lang:bash %}
+#!/bin/bash&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;name-clean&#34;&gt;name: clean&lt;/h1&gt;
+&lt;p&gt;for i in *.md
+do
+sed -i -e &amp;ldquo;s:&lt;/div&gt;::g&amp;rdquo;&lt;br&gt;
+-e &amp;ldquo;s:&amp;lt;div.*&amp;gt;::g&amp;rdquo;&lt;br&gt;
+&amp;ldquo;$i&amp;rdquo;
+done
+{% endcodeblock %}&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Сделал транслит названий:
+{% codeblock lang:bash %}
+#!/bin/bash&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;name-translit&#34;&gt;name: translit&lt;/h1&gt;
+&lt;h1 id=&#34;перекодирует-рекурсивно-в-текущем-каталоге-имена&#34;&gt;Перекодирует рекурсивно в текущем каталоге имена&lt;/h1&gt;
+&lt;h1 id=&#34;файлов-и-каталогов-в-транслит&#34;&gt;файлов и каталогов в транслит.&lt;/h1&gt;
+&lt;h1 id=&#34;успенский-в-а-к-проблеме-транслитерации-русских-текстов-латинскими-буквами&#34;&gt;Успенский В. А. К проблеме транслитерации русских текстов латинскими буквами&lt;/h1&gt;
+&lt;h1 id=&#34;httplingvoforumnetindexphptopic357580&#34;&gt;&lt;a href=&#34;http://lingvoforum.net/index.php?topic=35758.0&#34;&gt;http://lingvoforum.net/index.php?topic=35758.0&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;shopt -s nullglob
+for NAME in *
+do
+TRS=&lt;code&gt;echo $NAME | sed &amp;quot;y/абвгдезиклмнопрстуфц/abvgdeziklmnoprstufc/&amp;quot;&lt;/code&gt;
+TRS=&lt;code&gt;echo $TRS | sed &amp;quot;y/АБВГДЕЗИКЛМНОПРСТУФЦ/ABVGDEZIKLMNOPRSTUFC/&amp;quot;&lt;/code&gt;
+TRS=${TRS//х/kh} TRS=${TRS//Х/KH};
+TRS=${TRS//ч/ch} TRS=${TRS//Ч/CH};
+TRS=${TRS//ш/sh} TRS=${TRS//Ш/SH};
+TRS=${TRS//ё/yo} TRS=${TRS//Ё/YO};
+TRS=${TRS//ж/zh} TRS=${TRS//Ж/ZH};
+TRS=${TRS//щ/th} TRS=${TRS//Щ/TH};
+TRS=${TRS//э/eh} TRS=${TRS//Э/EH};
+TRS=${TRS//ю/yu} TRS=${TRS//Ю/YU};
+TRS=${TRS//я/ya} TRS=${TRS//Я/YA};
+TRS=${TRS//й/yj} TRS=${TRS//Й/yj};
+TRS=${TRS//ъ/jh} TRS=${TRS//Ъ/JH};
+TRS=${TRS//ь/j} TRS=${TRS//Ь/J};
+TRS=${TRS//ы/ih} TRS=${TRS//Ы/IH};&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;TRS=${TRS// /_};
+
+if [[ -d &amp;quot;$NAME&amp;quot; ]]
+then
+mv -v &amp;quot;$NAME&amp;quot; &amp;quot;$TRS&amp;quot;
+cd &amp;quot;$TRS&amp;quot;
+&amp;quot;$0&amp;quot;
+cd ..
+else
+mv -v &amp;quot;$NAME&amp;quot; &amp;quot;$TRS&amp;quot;
+fi
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;done
+{% endcodeblock %}&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Миграция с Drupal-6 на Drupal-8</title>
+      <link>https://yamadharma.github.io/ru/2015/11/19/drupal6-to-8/</link>
+      <pubDate>Thu, 19 Nov 2015 11:39:41 +0000</pubDate>
+      <guid>https://yamadharma.github.io/ru/2015/11/19/drupal6-to-8/</guid>
+      <description>&lt;h2 id=&#34;информация-по-миграции-&#34;&gt;Информация по миграции&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://www.drupal.org/upgrade/migrate&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Upgrading from Drupal 6 or 7 to Drupal 8&lt;/a&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://www.drupal.org/node/2257723&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Executing a Drupal 6/7 to Drupal 8 upgrade&lt;/a&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://drupalwatchdog.com/blog/2014/12/drupal-upgrade-1&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;The Drupal 6 to 8 Upgrade Challenge&lt;/a&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://www.drupal.org/node/2167633&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Known Issues with the Drupal 6/7 -&amp;gt; 8 Upgrade Path&lt;/a&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;обновление-php-&#34;&gt;Обновление PHP&lt;/h2&gt;
+&lt;p&gt;Для Drupal-8 нужен php-5.5. В Centos-7 идёт php-5.4. Обновим его до php-5.6. Вначале установним нужные репозитории
+(см. &lt;a href=&#34;https://webtatic.com/packages/php56/&#34;&gt;https://webtatic.com/packages/php56/&lt;/a&gt;):&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Сделаем подмену дистрибутивного php на php-5.6:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;yum install yum-plugin-replace
+yum replace php-common --replace-with=php56w-common
+yum install php56w-opcache
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;установка-drush-8-&#34;&gt;Установка Drush 8&lt;/h2&gt;
+&lt;p&gt;Установим Composer:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;yum -y install composer
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Установим Drush (dev):&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;mkdir /usr/local/src/drush
+cd /usr/local/src/drush
+composer require drush/drush:dev-master
+ln -s /usr/local/src/drush/vendor/drush/drush/drush /usr/local/bin/drush
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>Миграция с Samba3 на Samba4</title>
+      <link>https://yamadharma.github.io/ru/2015/10/27/samba-migrate/</link>
+      <pubDate>Tue, 27 Oct 2015 13:48:49 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/2015/10/27/samba-migrate/</guid>
+      <description>&lt;h3 id=&#34;установка-пакетов-&#34;&gt;Установка пакетов&lt;/h3&gt;
+&lt;p&gt;В качестве системы для сервера используем Centos7. Там пока не
+поддерживается функционал Samba4 AD (конфликт mit-krb и heimdal). Поэтому поставим самбу с
+EnterpriseSAMBA.com &lt;a href=&#34;https://portal.enterprisesamba.com/&#34;&gt;https://portal.enterprisesamba.com/&lt;/a&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;cd /etc/yum.repos.d
+wget https://sernet-samba-public:Noo1oxe4zo@download.sernet.de/packages/samba/4.2/rhel/7/sernet-samba-4.2.repo
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;В файле &lt;code&gt;/etc/yum.repos.d/sernet-samba-4.2.repo&lt;/code&gt; заменим
+&lt;code&gt;USERNAME:ACCESSKEY&lt;/code&gt; на свои данные либо на публичную учётную запись
+&lt;code&gt;sernet-samba-public:Noo1oxe4zo&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Установим нужные пакеты:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;yum -y install sernet-samba sernet-samba-ad
+yum -y install bind
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;поиск-дубликатов-sid-&#34;&gt;Поиск дубликатов SID&lt;/h3&gt;
+&lt;p&gt;Найдём дубликаты SID с помощью следующего скрипта (запусткается на
+машине, где расположен ldap).&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;#!/usr/bin/python
+# A quick and dirty python script that checks for duplicat SID&#39;s using slapcat.
+import os
+ 
+data = os.popen(&amp;quot;slapcat | grep sambaSID&amp;quot;, &#39;r&#39;)
+line = []
+ 
+def anydup(thelist):
+        dups = list(set([x for x in thelist if thelist.count(x) &amp;gt; 1]))
+        for i in dups:
+                print &amp;quot;Duplicate id: &amp;quot;, i
+ 
+for each_line in data:
+        line.append(each_line.strip())
+ 
+anydup(line)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Далее дубликаты удаляются с помощью редактирования ldap (я использовал
+&lt;a href=&#34;https://directory.apache.org/studio/&#34;&gt;https://directory.apache.org/studio/&lt;/a&gt;).&lt;/p&gt;
+&lt;h3 id=&#34;предварительная-конфигурация-&#34;&gt;Предварительная конфигурация&lt;/h3&gt;
+&lt;p&gt;Добавил в файл &lt;code&gt;/etc/hosts&lt;/code&gt; адрес хоста.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;127.0.0.1               localhost.localdomain   localhost                                                                                                                                     
+10.130.64.23            dc.dk.sci.pfu.edu.ru    dc
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Также прописал его в прямой и обратной зонах DNS.&lt;/p&gt;
+&lt;h3 id=&#34;перенос-конфигурационных-файлов-&#34;&gt;Перенос конфигурационных файлов&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;pdc ~ # scp -r /var/lib/samba/private/ dc.dk.sci.pfu.edu.ru:/var/lib/samba/samba3tdb/
+pdc ~ # scp /etc/samba/smb.conf dc.dk.sci.pfu.edu.ru:/var/lib/samba/samba3tdb/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;В &lt;code&gt;/var/lib/samba/samba3tdb/smb.conf&lt;/code&gt; следует заменить имя контроллера домена.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;netbios name = dc
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Поскольку при миграции используется информация из ldap, на хосте &lt;code&gt;dc&lt;/code&gt;
+задаю файл &lt;code&gt;/etc/openldap/ldap.conf&lt;/code&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;BASE    dc=dk,dc=sci,dc=pfu,dc=edu,dc=ru                                                                                                                                                      
+URI     ldap://ldap.dk.sci.pfu.edu.ru                                                                                                                                                         
+                                                                                                                                                                                              
+TLS_REQCERT     allow
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;проведение-миграции-&#34;&gt;Проведение миграции&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;samba-tool domain classicupgrade --dbdir=/var/lib/samba/samba3tdb/ --use-xattrs=yes --realm=dk.sci.pfu.edu.ru --dns-backend=BIND9_DLZ /var/lib/samba/samba3tdb/smb.conf
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;шаманство-&#34;&gt;Шаманство&lt;/h4&gt;
+&lt;p&gt;В файле &lt;code&gt;/var/lib/samba/samba3tdb/smb.conf&lt;/code&gt; заменил доменное имя&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;passdb backend = ldapsam:ldap://ldap.dk.sci.pfu.edu.ru
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;на ip-адрес&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;passdb backend = ldapsam:ldap://10.130.64.11
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Без этого миграция падала с ошибкой &lt;code&gt;LDAP client internal error: NT_STATUS_BAD_NETWORK_NAME&lt;/code&gt;.&lt;/p&gt;
+&lt;h4 id=&#34;настройка-firewalld-&#34;&gt;Настройка firewalld&lt;/h4&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;firewall-cmd --add-service=ldap --permanent
+firewall-cmd --add-service=kerberos --permanent
+firewall-cmd --add-service=kpasswd --permanent
+firewall-cmd --add-service=samba --permanent
+firewall-cmd --add-service=samba-client --permanent
+firewall-cmd --reload
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;настройка-selinux-&#34;&gt;Настройка SELinux&lt;/h4&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;setsebool -P samba_export_all_ro 1
+setsebool -P samba_export_all_rw 1
+setsebool -P samba_domain_controller 1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;настройка-kerberos-&#34;&gt;Настройка Kerberos&lt;/h3&gt;
+&lt;p&gt;Создадим файл конфигурации kerberos:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;mv /etc/krb5.conf{,.default}
+cp /var/lib/samba/private/krb5.conf /etc
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;настройка-dns-&#34;&gt;Настройка DNS&lt;/h3&gt;
+&lt;p&gt;В файле &lt;code&gt;/etc/resolv.conf&lt;/code&gt; задаём локальный DNS-сервер:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;search dk.sci.pfu.edu.ru                                                                                                                                                                      
+nameserver 127.0.0.1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;В &lt;code&gt;/etc/named.conf&lt;/code&gt; подключаем сконфигурённую конфигурацию:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;include &amp;quot;/var/lib/samba/private/named.conf&amp;quot;; 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Также в раздел &lt;code&gt;options&lt;/code&gt; добавляем:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;options {
+     [...]
+     tkey-gssapi-keytab &amp;quot;/var/lib/samba/private/dns.keytab&amp;quot;;
+     [...]
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;А также следующее:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;options {
+     [...]
+	 allow-query { localhost; 10.128.0.0/9; };
+	 allow-update { 10.128.0.0/9; 127.0.0.0/8; };
+     forwarders { 10.130.64.239; 8.8.8.8; 8.8.4.4; };
+     allow-transfer {
+		 # this config is for a single master DNS server
+		 none;
+	 };
+     [...]
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;настройка-firewalld--1&#34;&gt;Настройка firewalld&lt;/h4&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;firewall-cmd --add-service=dns --permanent
+firewall-cmd --reload
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;настройки-прав-доступа-&#34;&gt;Настройки прав доступа&lt;/h4&gt;
+&lt;p&gt;Права доступа:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;chown -R root:named /var/lib/samba/private/dns
+chmod 770 /var/lib/samba/private/dns
+chgrp named /var/lib/samba/private/dns.keytab
+chmod g+r /var/lib/samba/private/dns.keytab
+chgrp named /var/lib/samba/private
+chgrp -R named /var/lib/samba/private/sam.ldb.d
+chmod g+rw /var/lib/samba/private/sam.ldb.d/*
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;настройка-selinux--1&#34;&gt;Настройка SELinux&lt;/h4&gt;
+&lt;p&gt;Изменим текущий контекст:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;chcon -t named_conf_t /var/lib/samba/private/dns.keytab
+chcon -t named_conf_t /var/lib/samba/private/named.conf
+chcon -t named_conf_t /var/lib/samba/private/named.conf.update
+chcon -R -t named_var_run_t /var/lib/samba/private/dns
+chcon -t named_var_run_t /var/lib/samba/private/dns/${MYREALM}.zone
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Изменим постоянный контекст:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;semanage fcontext -a -t named_conf_t /var/lib/samba/private/dns.keytab
+semanage fcontext -a -t named_conf_t /var/lib/samba/private/named.conf
+semanage fcontext -a -t named_conf_t /var/lib/samba/private/named.conf.update
+semanage fcontext -a -t named_var_run_t &amp;quot;/var/lib/samba/private/dns(/.*)?&amp;quot;
+semanage fcontext -a -t named_var_run_t /var/lib/samba/private/dns/${MYREALM}.zone
+semanage fcontext -a -t named_var_run_t /var/lib/samba/private/dns/${MYREALM}.zone.jnl
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;запуск-демонов-&#34;&gt;Запуск демонов&lt;/h3&gt;
+&lt;p&gt;Сконфигурим тип сервера samba в файле &lt;code&gt;/etc/default/sernet-samba&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;SAMBA_START_MODE=&amp;quot;ad&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Запустим демоны:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;systemctl start named.service
+systemctl start sernet-samba-ad.service
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Добавим их в автозагрузку:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;systemctl enable named.service
+systemctl enable sernet-samba-ad.service
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;проверка-&#34;&gt;Проверка&lt;/h3&gt;
+&lt;p&gt;Проверка DNS.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# host -t SRV _ldap._tcp.dk.sci.pfu.edu.ru.
+_ldap._tcp.dk.sci.pfu.edu.ru has SRV record 0 100 389 dc.dk.sci.pfu.edu.ru.
+# host -t SRV _kerberos._udp.dk.sci.pfu.edu.ru.
+_kerberos._udp.dk.sci.pfu.edu.ru has SRV record 0 100 88 dc.dk.sci.pfu.edu.ru.
+# host -t A dc.dk.sci.pfu.edu.ru.
+dc.dk.sci.pfu.edu.ru has address 10.130.64.23
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Замена пароля администратора:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;samba-tool user setpassword Administrator
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Проверка &lt;code&gt;smbclient&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;smbclient //localhost/netlogon -UAdministrator -c &#39;ls&#39;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Аналогичный результат должно давать (&lt;code&gt;dc&lt;/code&gt; &amp;mdash; имя сервера):&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;smbclient //dc/netlogon -k -c &#39;ls&#39;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Проверка kerberos:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;kinit administrator@DK.SCI.PFU.EDU.RU
+klist
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;дополнительно-&#34;&gt;Дополнительно&lt;/h3&gt;
+&lt;p&gt;Убрать проверку сложности пароля:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;samba-tool domain passwordsettings set --complexity=off
+samba-tool domain passwordsettings set --history-length=0
+samba-tool domain passwordsettings set --min-pwd-age=0
+samba-tool domain passwordsettings set --max-pwd-age=0
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>Настройка SELinux для некоторых приложений</title>
+      <link>https://yamadharma.github.io/ru/2015/05/15/selinux-apps/</link>
+      <pubDate>Fri, 15 May 2015 05:56:13 +0000</pubDate>
+      <guid>https://yamadharma.github.io/ru/2015/05/15/selinux-apps/</guid>
+      <description>&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;setsebool&lt;/code&gt; запускаем как с ключём &lt;code&gt;-P&lt;/code&gt; (для запоминания настроек), так и без него (чтобы работало в текущей сессии).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;a-namehead_www-servera-www-сервер-&#34;&gt;&lt;a name=&#39;head_www-server&#39;&gt;&lt;/a&gt; WWW-сервер&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;setsebool -P httpd_unified 1
+setsebool -P httpd_can_network_connect_db 1
+setsebool -P httpd_can_network_connect 1
+setsebool -P httpd_can_network_relay 1
+setsebool -P httpd_can_sendmail 1
+setsebool -P httpd_execmem 1
+setsebool -P httpd_use_fusefs 1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;a-namehead_dba-базы-данных-&#34;&gt;&lt;a name=&#39;head_db&#39;&gt;&lt;/a&gt; Базы данных&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Postgres&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;setsebool -P selinuxuser_postgresql_connect_enabled 1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;MySQL&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;setsebool -P selinuxuser_mysql_connect_enabled 1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;ojs-&#34;&gt;OJS&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Настраиваем 
+&lt;a href=&#34;#head_www-server&#34;&gt;www-сервер&lt;/a&gt; и 
+&lt;a href=&#34;#head_db&#34;&gt;базу данных&lt;/a&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Настраиваем доступ к файловой системе.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/html/ojs/cache(/.*)?&amp;quot;
+semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/html/ojs/public(/.*)?&amp;quot;
+semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/html/ojs/config.inc.php&amp;quot;
+semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/html/ojs/plugins/generic(/.*)?&amp;quot;
+
+semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/data(/.*)?&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;drupal-&#34;&gt;Drupal&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Настраиваем 
+&lt;a href=&#34;#head_www-server&#34;&gt;www-сервер&lt;/a&gt; и 
+&lt;a href=&#34;#head_db&#34;&gt;базу данных&lt;/a&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Настраиваем доступ к файловой системе.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/html/sites/drupal/(.*)/sites/(.*)/files(/.*)?&amp;quot;
+semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/html/sites/drupal/(.*)/cache(/.*)?&amp;quot;
+semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/html/sites/drupal/(.*)/sites/all(/.*)?&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;moodle-&#34;&gt;Moodle&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Настраиваем 
+&lt;a href=&#34;#head_www-server&#34;&gt;www-сервер&lt;/a&gt; и 
+&lt;a href=&#34;#head_db&#34;&gt;базу данных&lt;/a&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Настраиваем доступ к файловой системе.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/moodle/web-git/mod(/.*)?&amp;quot;
+semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/moodle/web-git/local(/.*)?&amp;quot;
+semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/moodle/web-git/theme(/.*)?&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;letsencript-&#34;&gt;LetsEncript&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;semanage fcontext -a -t cert_t &#39;/etc/letsencrypt/(archive|live)(/.*)?&#39;
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>Установка виртуальной машины NOC на oVirt</title>
+      <link>https://yamadharma.github.io/ru/2015/05/13/ova-on-ovirt/</link>
+      <pubDate>Wed, 13 May 2015 08:48:57 +0000</pubDate>
+      <guid>https://yamadharma.github.io/ru/2015/05/13/ova-on-ovirt/</guid>
+      <description>&lt;p&gt;Чтобы не мучиться с установкой 
+&lt;a href=&#34;https://kb.nocproject.org&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;NOC&lt;/a&gt; решил установить с образа, 
+&lt;a href=&#34;https://kb.nocproject.org/display/SITE/Downloads&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;предлагаемого на сайте&lt;/a&gt;. К сажалению, образ предлагается в формате &lt;code&gt;ova&lt;/code&gt;, а у меня стоит oVirt (&lt;code&gt;ovirt-engine&lt;/code&gt;). Он этот формат не понимает. Однако у меня есть ещё хост с &lt;code&gt;kvm&lt;/code&gt; (&lt;code&gt;kvm-host&lt;/code&gt;).&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Распаковываю &lt;code&gt;noc-x86_64-Debian-8.ova&lt;/code&gt;:
+{% codeblock lang:bash %}
+tar -xf noc-x86_64-Debian-8.ova
+{% endcodeblock %}&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Конвертирую в формат &lt;code&gt;qcow2&lt;/code&gt;:
+{% codeblock lang:bash %}
+qemu-img convert -O qcow2 noc-x86_64-Debian-8-disk1.vmdk noc-x86_64-Debian-8-disk1.qcow2
+{% endcodeblock %}&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Создаю виртуальную машину на kvm. По большому счёту это нужно лишь для создания xml-файла описания виртуальной машины.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Машина сначала не загрузилась потому, что в &lt;code&gt;/etc/fstab&lt;/code&gt; на &lt;code&gt;/boot&lt;/code&gt; был жёстко прописан &lt;code&gt;/dev/sda1&lt;/code&gt;. Поменял на &lt;code&gt;/dev/vda1&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Пароли следующие:
+{% codeblock lang:bash %}
+Username: user
+Password: thenocproject
+Root password: thenocproject
+{% endcodeblock %}&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;На web-интерфейс логин и пароль:
+{% codeblock lang:bash %}
+User: admin
+Password: admin
+{% endcodeblock %}&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Образы на &lt;code&gt;kvm-host&lt;/code&gt; находятся в каталоге &lt;code&gt;/var/lib/libvirt/images&lt;/code&gt;, а соответствующие конфигурационные файлы в &lt;code&gt;/etc/libvirt/qemu&lt;/code&gt;. Копируем нужный конфиг в &lt;code&gt;/var/lib/libvirt/images&lt;/code&gt; и называем &lt;code&gt;noc-x86_64-Debian-8-disk1.xml&lt;/code&gt;. Поскольку будем работать по сети, заменяем в нём путь к образу с &lt;code&gt;/var/lib/...&lt;/code&gt; на  &lt;code&gt;/net/kvm-host/var/lib/...&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Заходим на хост &lt;code&gt;ovirt-engine&lt;/code&gt;, монтируем &lt;code&gt;kvm-host&lt;/code&gt; по autofs:
+{% codeblock lang:bash %}
+cd /net/kvm-host/var/lib/libvirt/images
+{% endcodeblock %}&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Импортируем образ в oVirt:&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;{% codeblock lang:bash %}
+virt-v2v -b vlan5  -i libvirtxml -o rhev -os ovirt-node-01:/ovirt/export noc-x86_64-Debian-8-disk1.xml
+{% endcodeblock %}&lt;/p&gt;
+&lt;p&gt;Здесь &lt;code&gt;ovirt-node-01&lt;/code&gt; — узел, на котором запускаются виртуальные машины, &lt;code&gt;vlan5&lt;/code&gt; — интерфейс, к которому она будет подключена.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Поддержка многоязычности</title>
+      <link>https://yamadharma.github.io/ru/2015/04/20/octopus-multilingual/</link>
+      <pubDate>Mon, 20 Apr 2015 13:17:32 +0000</pubDate>
+      <guid>https://yamadharma.github.io/ru/2015/04/20/octopus-multilingual/</guid>
+      <description>&lt;p&gt;Добавим в конфигурационный файл (&lt;code&gt;_config.yml&lt;/code&gt;):&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;gems:
+  - octopress-multilingual
+  - octopress-linkblog
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Также зададим язык по-умолчанию:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;lang: ru
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;язык-для-постов-&#34;&gt;Язык для постов&lt;/h2&gt;
+&lt;p&gt;Добавим язык  в заголовок шаблонов:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;lang: ru
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;конфигурация-для-разных-языков-&#34;&gt;Конфигурация для разных языков&lt;/h2&gt;
+&lt;p&gt;В каталоге &lt;code&gt;_data&lt;/code&gt; создадим конфигурационные файлы вида
+&lt;code&gt;lang_[language_code].yml&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;_data
+  lang_en.yml
+  lang_ru.yml
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Примерное их содержание:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;# lang_en.yml
+title: English title
+
+# lang_ru.yml
+title: Русское название сайта
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>Перенос блога на Jekyll &#43; Octopress</title>
+      <link>https://yamadharma.github.io/ru/2015/03/23/jekyll-octopress/</link>
+      <pubDate>Mon, 23 Mar 2015 13:51:36 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/2015/03/23/jekyll-octopress/</guid>
+      <description>&lt;h2 id=&#34;репозиторий-для-сайта-&#34;&gt;Репозиторий для сайта&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Создал локальный каталог для сайта:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;mkdir ~/mysite
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;локальный-git-репозиторий-&#34;&gt;Локальный git-репозиторий&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Создал пустой git-репозиторий:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;cd ~/mysite
+git init
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;Создал в нём файл &lt;code&gt;README.md&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;touch README.md
+``
+
+- Сделал коммит:
+
+```bash
+git add .
+git commit -am &#39;Initial commit&#39;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;Создаю ветку для кода (в &lt;code&gt;master&lt;/code&gt; будет сайт):&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;git branch source
+git checkout source
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+&lt;a href=&#34;#head_site-template-create&#34;&gt;Далее создаю шаблон для сайта&lt;/a&gt; в ветке &lt;code&gt;source&lt;/code&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;репозиторий-на-bitbucket-&#34;&gt;Репозиторий на Bitbucket&lt;/h3&gt;
+&lt;p&gt;Я пользовался 
+&lt;a href=&#34;https://confluence.atlassian.com/display/BITBUCKET/Publishing&amp;#43;a&amp;#43;Website&amp;#43;on&amp;#43;Bitbucket&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;инструкцией от bitbucket&#39;а&lt;/a&gt;.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Создал на bitbucket&#39;е репозиторий с названием
+&lt;code&gt;yamadharma.bitbucket.org&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Выложил репозиторий&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;cd ~/mysite
+git remote add origin git@bitbucket.org:yamadharma/yamadharma.bitbucket.org.git
+git push -u origin --all
+git push -u origin --tags
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;выкладывание-сайта-на-bitbucket-&#34;&gt;Выкладывание сайта на Bitbucket&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Создал файл &lt;code&gt;_deploy.yml&lt;/code&gt; с помощью команды&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;octopress deploy init git -u git@bitbucket.org:yamadharma/yamadharma.bitbucket.org.git
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;Подредактировал &lt;code&gt;.gitignore&lt;/code&gt;:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;echo &amp;quot;.deploy&amp;quot; &amp;gt;&amp;gt; .gitignore
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;Сгенерил сайт:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;jekyll b
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;Выложил существующий сайт:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;octopress deploy
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;Положил ветку &lt;code&gt;source&lt;/code&gt; на git:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;git add .
+git commit -am &#39;Поправил сайт&#39;
+git push
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;a-namehead_site-template-createa-создание-шаблона-сайта-&#34;&gt;&lt;a name=&#39;head_site-template-create&#39;&gt;&lt;/a&gt; Создание шаблона сайта&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;В каталоге сайта создаю шаблон:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;cd ~/mysite
+git checkout source
+octopress new -f .
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>Счастье есть</title>
+      <link>https://yamadharma.github.io/ru/2007/06/30/schaste-est/</link>
+      <pubDate>Sat, 30 Jun 2007 13:30:00 +0000</pubDate>
+      <guid>https://yamadharma.github.io/ru/2007/06/30/schaste-est/</guid>
+      <description>&lt;p&gt;Просидел всю неделю под виндой. Качал MSDN. К концу недели стало уже плохо. В пятницу поставил Vista. Это добило меня окончательно. Вечером перегрузился под Linux. Счастье есть.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>К вопросу о настройке маршрутизатора ASUS WL-500gP</title>
+      <link>https://yamadharma.github.io/ru/2007/01/14/k-voprosu-o-nastrojke-marshrutizatora-asus-wl-500gp/</link>
+      <pubDate>Sun, 14 Jan 2007 18:18:00 +0000</pubDate>
+      <guid>https://yamadharma.github.io/ru/2007/01/14/k-voprosu-o-nastrojke-marshrutizatora-asus-wl-500gp/</guid>
+      <description>&lt;p&gt;При настройке возникли следующие проблемы.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Нужно было догадаться, что сервер доступа в настройках называется Heart-Beat Server.&lt;/li&gt;
+&lt;li&gt;Задавать маршрутизацию можно либо на на внутреннем eth (LAN), либо на внешнем ppp (WAN). Таким образом, получить доступ к домашней сети провайдера оказалось невозможным. Пришлось качать альтернативную прошивку (&lt;a href=&#34;http://oleg.wl500g.info/),&#34;&gt;http://oleg.wl500g.info/),&lt;/a&gt; в которой возможно (кроме кучи других бонусов) задавать маршрутную таблицу на внешнем eth (MAN) интерфейсе.&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Monit и gentoo rc-scripts</title>
+      <link>https://yamadharma.github.io/ru/2006/09/17/monit-i-gentoo-rc-scripts/</link>
+      <pubDate>Sun, 17 Sep 2006 20:55:00 +0000</pubDate>
+      <guid>https://yamadharma.github.io/ru/2006/09/17/monit-i-gentoo-rc-scripts/</guid>
+      <description>&lt;p&gt;При использовании monit для перезапуска rc-скриптов в gentoo использовал killall и опцию zap.&lt;br&gt;
+Нашёл это-же решение, но оформленное красивее.&lt;/p&gt;
+&lt;p&gt;Это файл /etc/monit.d/bin/kickservice&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;#!/bin/sh  
+# kickservice by Eric Radman  
+# Script used by monit to kill off and restart daemons  
+# /etc/monit.d/bin/kickservice  
+   
+function stop ()  
+{  
+     /etc/init.d/$1 pause  
+     /etc/init.d/$1 zap  
+     if [ &amp;quot;$2&amp;quot; == &amp;quot;kill&amp;quot; ]  
+         then  
+         /bin/killall $3  
+     fi  
+}  
+   
+function start ()  
+{  
+     /etc/init.d/$1 zap  
+     /etc/init.d/$1 start  
+}  
+   
+case &amp;quot;$1&amp;quot; in  
+  start)  
+     start $2 $3 $4  
+     ;;  
+  stop)  
+     stop $2 $3 $4  
+     ;;  
+  *)  
+     echo &amp;quot;Usage: kickservice [start|stop] [service] kill [daemon]&amp;quot;  
+     ;;  
+ esac  
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Проблема возникла из-за того, что при установке baselayout-1.12.x перестал нормально работать pppd (при подключении через pptp к VPN-серверу провайдера). Очень часто соединение не устанавливается (вина, думаю, провайдерского сервера). По идее после этого он должен перезапускаться, а он просто ничего не делал. Решил снять проблему с помощью monit.&lt;br&gt;
+Убрал net.ppp0 из загрузки, и заставил monit мониторить ppp0.&lt;/p&gt;
+&lt;p&gt;Вот скрипт /etc/monit.d/ppp0&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;check process pppd with pidfile /var/run/ppp0.pid  
+   start program = &amp;quot;/etc/monit.d/bin/kickservice start net.ppp0&amp;quot;  
+   stop program = &amp;quot;/etc/monit.d/bin/kickservice stop net.ppp0 kill pppd&amp;quot;  
+   if 5 restarts within 5 cycles then timeout
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;P. S. Хотел запостить скрипты, но не знаю как :(&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Gentoo: конвертация из x86 в x86_64 (2)</title>
+      <link>https://yamadharma.github.io/ru/2006/08/21/gentoo-konvertatsija-iz-x86-v-x86-64-2/</link>
+      <pubDate>Mon, 21 Aug 2006 12:19:00 +0000</pubDate>
+      <guid>https://yamadharma.github.io/ru/2006/08/21/gentoo-konvertatsija-iz-x86-v-x86-64-2/</guid>
+      <description>&lt;ol&gt;
+&lt;li&gt;Провозившись с данной проблемой выходные (и частично неделю),
+провёл конвертацию.&lt;/li&gt;
+&lt;li&gt;Оказалось, что всё очень просто.&lt;/li&gt;
+&lt;li&gt;Однако, после начала обновления системы (&lt;code&gt;emerge -e system&lt;/code&gt;), стали
+отваливаться приложения (не могут подгрузить библиотеки).&lt;/li&gt;
+&lt;li&gt;К сожалению, в новом профайле не поддерживается построение
+библиотек под несколько архитектур (может, просто я не знаю).&lt;/li&gt;
+&lt;li&gt;Хотя в консоли всё функционирует нормально.&lt;/li&gt;
+&lt;li&gt;Скоро, надеюсь, всё конвертну.&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Gentoo: конвертация из x86 в x86_64</title>
+      <link>https://yamadharma.github.io/ru/2006/08/18/gentoo-konvertatsija-iz-x86-v-x86-64/</link>
+      <pubDate>Fri, 18 Aug 2006 09:21:00 +0000</pubDate>
+      <guid>https://yamadharma.github.io/ru/2006/08/18/gentoo-konvertatsija-iz-x86-v-x86-64/</guid>
+      <description>&lt;ol&gt;
+&lt;li&gt;На недавно обновлённом компьютере (до этого был Pentium III)
+крутится 32-битная ОС (Gentoo Linux) (Hurd и Plan9 не учитываю).&lt;/li&gt;
+&lt;li&gt;Решил конвертнуть в 64-битную. Однако документации по этому вопросу
+не нашёл.&lt;/li&gt;
+&lt;li&gt;Так-что решил заняться самодеятельностью. Как получится, напишу об этом (с приложением скриптов).&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Пожаротушение</title>
+      <link>https://yamadharma.github.io/ru/2006/07/14/firefighting/</link>
+      <pubDate>Fri, 14 Jul 2006 11:48:00 +0000</pubDate>
+      <guid>https://yamadharma.github.io/ru/2006/07/14/firefighting/</guid>
+      <description>&lt;p&gt;Новая ссылочка по системам пожаротушения:
+&lt;a href=&#34;http://www.ista-tech.ru/fire/statya/sx/ART/810/BRN/1245.html&#34;&gt;http://www.ista-tech.ru/fire/statya/sx/ART/810/BRN/1245.html&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Цитата:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;По степени вредного воздействия на материальные ценности при срабатывании САП образуют (в порядке убывания вредности) следующий ряд:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;аэрозольные и порошковые;&lt;/li&gt;
+&lt;li&gt;пенные и водо-пенные;&lt;/li&gt;
+&lt;li&gt;водяные;&lt;/li&gt;
+&lt;li&gt;системы тонкодисперсной воды;&lt;/li&gt;
+&lt;li&gt;газовые.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>Гроза</title>
+      <link>https://yamadharma.github.io/ru/2006/07/12/groza/</link>
+      <pubDate>Wed, 12 Jul 2006 10:06:00 +0000</pubDate>
+      <guid>https://yamadharma.github.io/ru/2006/07/12/groza/</guid>
+      <description>&lt;p&gt;В воскресенье была гроза. Сработала система пожаротушения (замкнуло?). От Этого умерли все сервера на открытой стойке. В том числе и почта.&lt;/p&gt;
+&lt;p&gt;В понедельник была гроза. Дома сгорел монитор.&lt;/p&gt;
+&lt;p&gt;Почту ещё не поднял.&lt;/p&gt;
+&lt;p&gt;Вот ссылочка:
+&lt;a href=&#34;http://www.ivd.ru/document.xgi?id=4941&amp;amp;gid=393&amp;amp;hid=485&amp;amp;oid=485&#34;&gt;http://www.ivd.ru/document.xgi?id=4941&amp;amp;gid=393&amp;amp;hid=485&amp;amp;oid=485&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Цитата:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Недостатков тоже хватает. Во-первых, тушащий материал при взаимодействии с влагой дает щелочную (аэрозоли) или кислотную реакцию (порошки), что может приводить к коррозии металла, деструкции материалов, а также к выводу из строя электронной техники. Во-вторых, в момент срабатывания системы видимость в помещении снижается почти до нуля, что небезопасно для не успевших эвакуироваться людей. В-третьих, попадание порошков и аэрозолей в глаза или дыхательные пути вредно для здоровья. В-четвертых, порошки слеживаются, что ограничивает срок их хранения (необходима перезарядка или замена устройств тушения раз в 5 - 10 лет).&lt;/p&gt;
+&lt;p&gt;Первые три недостатка обусловливают повышенные требования к надежности систем, в частности к защите от ложного срабатывания.&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

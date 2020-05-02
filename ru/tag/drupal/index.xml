@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>drupal | Д. С. Кулябов</title>
+    <link>https://yamadharma.github.io/ru/tag/drupal/</link>
+      <atom:link href="https://yamadharma.github.io/ru/tag/drupal/index.xml" rel="self" type="application/rss+xml" />
+    <description>drupal</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>ru-ru</language><copyright>© 2020 Dmitry S. Kulyabov</copyright><lastBuildDate>Thu, 17 May 2018 08:43:05 +0000</lastBuildDate>
+    <image>
+      <url>https://yamadharma.github.io/images/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_2.png</url>
+      <title>drupal</title>
+      <link>https://yamadharma.github.io/ru/tag/drupal/</link>
+    </image>
+    
+    <item>
+      <title>Деинсталляция WebFM из Drupal</title>
+      <link>https://yamadharma.github.io/ru/post/2018/05/17/webfm-uninstall/</link>
+      <pubDate>Thu, 17 May 2018 08:43:05 +0000</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2018/05/17/webfm-uninstall/</guid>
+      <description>&lt;h2 id=&#34;circumstantia-&#34;&gt;Circumstantia&lt;/h2&gt;
+&lt;h3 id=&#34;дано-&#34;&gt;Дано&lt;/h3&gt;
+&lt;p&gt;Сайт на 
+&lt;a href=&#34;https://www.drupal.org&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Drupal&lt;/a&gt; 5.&lt;/p&gt;
+&lt;h3 id=&#34;требуется-&#34;&gt;Требуется&lt;/h3&gt;
+&lt;p&gt;Превести сайт на Drupal 8.&lt;/p&gt;
+&lt;h3 id=&#34;предварительный-план-действий-&#34;&gt;Предварительный план действий&lt;/h3&gt;
+&lt;p&gt;Drupal 5 -&amp;gt; Drupal 6 -&amp;gt; Drupal 8.&lt;/p&gt;
+&lt;h3 id=&#34;проблема-&#34;&gt;Проблема&lt;/h3&gt;
+&lt;p&gt;В системе установлен пакет 
+&lt;a href=&#34;https://www.drupal.org/project/webfm&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;webfm&lt;/a&gt;, который не поддерживается после Drupal 6. Webfm ведёт свою базу файлов, и в тексте сайта ставит указание не на файл, на а запись в своей базе данных.&lt;/p&gt;
+&lt;h2 id=&#34;solutio-&#34;&gt;Solutio&lt;/h2&gt;
+&lt;p&gt;При поиски решения проблемы были найдены следующие сайты:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://puna.upf.edu/node/97&#34;&gt;http://puna.upf.edu/node/97&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://gist.github.com/heidar/3707913&#34;&gt;https://gist.github.com/heidar/3707913&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Основываясь на них, набросал скипт &lt;code&gt;webfm-fix&lt;/code&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;#!/usr/bin/python2
+import MySQLdb
+
+# For REALY work set update = True
+update = False
+
+# connect to the databases
+
+db = MySQLdb.connect(
+	host=&amp;quot;localhost&amp;quot;,        # your host, usually localhost
+	user=&amp;quot;username&amp;quot;,         # your username
+	passwd=&amp;quot;userpassword&amp;quot;,   # your password
+	db=&amp;quot;database&amp;quot;,           # name of the data base
+	use_unicode=True, charset=&#39;utf8&#39;)
+
+cur = db.cursor()
+
+# get all the file ids and paths from the old webfm table
+
+filename_query = &amp;quot;SELECT fid, fpath FROM webfm_file&amp;quot;
+cur.execute(filename_query)
+
+fid_max = 0
+
+filenames = {}
+for row in cur.fetchall():
+    filenames[row[0]] = row[1]
+    if fid_max &amp;lt; row[0]:
+	fid_max = row[0]
+
+# find all webfm links and replace them with the actual file path
+
+query = &amp;quot;SELECT nid, body, teaser FROM node_revisions WHERE body like &#39;%webfm_send%&#39; OR teaser like &#39;%webfm_send%&#39;&amp;quot;
+cur.execute(query)
+
+for row in cur.fetchall():
+    entity_id = row[0]
+    body = row[1]
+    teaser = row[2]
+    for i in range(fid_max, 0, -1):
+	webfm1 = u&#39;ru/webfm_send/&#39; + str(i)
+        webfm2 = u&#39;webfm_send/&#39; + str(i)
+        webfm_list = [webfm1, webfm2]
+        for webfm in webfm_list:
+	    if i in filenames:
+		sql_body = &amp;quot;UPDATE node_revisions SET body = REPLACE(body,&#39;%s&#39;,&#39;%s&#39;) WHERE nid = %d&amp;quot; % (webfm,filenames[i],entity_id)
+                sql_teaser = &amp;quot;UPDATE node_revisions SET teaser = REPLACE(teaser,&#39;%s&#39;,&#39;%s&#39;) WHERE nid = %d&amp;quot; % (webfm,filenames[i],entity_id)
+                if update:
+	            try:
+	                # Execute the SQL command
+	        	cur.execute(sql_body)
+                        cur.execute(sql_teaser)
+	                # Commit your changes in the database
+	        	db.commit()
+	            except:
+	                # Rollback in case there is any error
+                        db.rollback()
+db.close()
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;При написании скрипта использовал следующую информацию:
+
+&lt;a href=&#34;https://drupal.stackexchange.com/questions/6787/where-does-drupal-store-the-content-of-a-nodes-body&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Where does Drupal store the content of a node&amp;rsquo;s body?&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;In Drupal 6, content of the node&amp;rsquo;s body is saved in &lt;code&gt;node_revisions&lt;/code&gt; table under &lt;code&gt;body&lt;/code&gt; field.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;node_revisions.body
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In Drupal 7, content of the node&amp;rsquo;s body is saved in &lt;code&gt;field_data_body&lt;/code&gt; table under &lt;code&gt;body_value&lt;/code&gt; field. In case content revisions are there then it also saves the data in &lt;code&gt;field_revision_body&lt;/code&gt; table under &lt;code&gt;body_value&lt;/code&gt; field.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;field_data_body.body_value
+field_revision_body.body_value
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In Drupal 8, content of the node&amp;rsquo;s body is saved in &lt;code&gt;node__body&lt;/code&gt; table under &lt;code&gt;body_value&lt;/code&gt; field. In case content revisions are there then it also saves the data in &lt;code&gt;node_revision__body&lt;/code&gt; table under &lt;code&gt;body_value&lt;/code&gt; field.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;node__body.body_value
+node_revision__body.body_value
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>Миграция с Drupal-6 на Drupal-8</title>
+      <link>https://yamadharma.github.io/ru/post/2015/11/19/drupal6-to-8/</link>
+      <pubDate>Thu, 19 Nov 2015 11:39:41 +0000</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2015/11/19/drupal6-to-8/</guid>
+      <description>&lt;h2 id=&#34;информация-по-миграции-&#34;&gt;Информация по миграции&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://www.drupal.org/upgrade/migrate&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Upgrading from Drupal 6 or 7 to Drupal 8&lt;/a&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://www.drupal.org/node/2257723&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Executing a Drupal 6/7 to Drupal 8 upgrade&lt;/a&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://drupalwatchdog.com/blog/2014/12/drupal-upgrade-1&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;The Drupal 6 to 8 Upgrade Challenge&lt;/a&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://www.drupal.org/node/2167633&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Known Issues with the Drupal 6/7 -&amp;gt; 8 Upgrade Path&lt;/a&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;обновление-php-&#34;&gt;Обновление PHP&lt;/h2&gt;
+&lt;p&gt;Для Drupal-8 нужен php-5.5. В Centos-7 идёт php-5.4. Обновим его до php-5.6. Вначале установним нужные репозитории
+(см. &lt;a href=&#34;https://webtatic.com/packages/php56/&#34;&gt;https://webtatic.com/packages/php56/&lt;/a&gt;):&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Сделаем подмену дистрибутивного php на php-5.6:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;yum install yum-plugin-replace
+yum replace php-common --replace-with=php56w-common
+yum install php56w-opcache
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;установка-drush-8-&#34;&gt;Установка Drush 8&lt;/h2&gt;
+&lt;p&gt;Установим Composer:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;yum -y install composer
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Установим Drush (dev):&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;mkdir /usr/local/src/drush
+cd /usr/local/src/drush
+composer require drush/drush:dev-master
+ln -s /usr/local/src/drush/vendor/drush/drush/drush /usr/local/bin/drush
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

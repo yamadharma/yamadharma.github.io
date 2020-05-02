@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>init-scripts | Д. С. Кулябов</title>
+    <link>https://yamadharma.github.io/ru/tag/init-scripts/</link>
+      <atom:link href="https://yamadharma.github.io/ru/tag/init-scripts/index.xml" rel="self" type="application/rss+xml" />
+    <description>init-scripts</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>ru-ru</language><copyright>© 2020 Dmitry S. Kulyabov</copyright><lastBuildDate>Sun, 17 Sep 2006 20:55:00 +0000</lastBuildDate>
+    <image>
+      <url>https://yamadharma.github.io/images/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_2.png</url>
+      <title>init-scripts</title>
+      <link>https://yamadharma.github.io/ru/tag/init-scripts/</link>
+    </image>
+    
+    <item>
+      <title>Monit и gentoo rc-scripts</title>
+      <link>https://yamadharma.github.io/ru/post/2006/09/17/monit-i-gentoo-rc-scripts/</link>
+      <pubDate>Sun, 17 Sep 2006 20:55:00 +0000</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2006/09/17/monit-i-gentoo-rc-scripts/</guid>
+      <description>&lt;p&gt;При использовании monit для перезапуска rc-скриптов в gentoo использовал killall и опцию zap.&lt;br&gt;
+Нашёл это-же решение, но оформленное красивее.&lt;/p&gt;
+&lt;p&gt;Это файл /etc/monit.d/bin/kickservice&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;#!/bin/sh  
+# kickservice by Eric Radman  
+# Script used by monit to kill off and restart daemons  
+# /etc/monit.d/bin/kickservice  
+   
+function stop ()  
+{  
+     /etc/init.d/$1 pause  
+     /etc/init.d/$1 zap  
+     if [ &amp;quot;$2&amp;quot; == &amp;quot;kill&amp;quot; ]  
+         then  
+         /bin/killall $3  
+     fi  
+}  
+   
+function start ()  
+{  
+     /etc/init.d/$1 zap  
+     /etc/init.d/$1 start  
+}  
+   
+case &amp;quot;$1&amp;quot; in  
+  start)  
+     start $2 $3 $4  
+     ;;  
+  stop)  
+     stop $2 $3 $4  
+     ;;  
+  *)  
+     echo &amp;quot;Usage: kickservice [start|stop] [service] kill [daemon]&amp;quot;  
+     ;;  
+ esac  
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Проблема возникла из-за того, что при установке baselayout-1.12.x перестал нормально работать pppd (при подключении через pptp к VPN-серверу провайдера). Очень часто соединение не устанавливается (вина, думаю, провайдерского сервера). По идее после этого он должен перезапускаться, а он просто ничего не делал. Решил снять проблему с помощью monit.&lt;br&gt;
+Убрал net.ppp0 из загрузки, и заставил monit мониторить ppp0.&lt;/p&gt;
+&lt;p&gt;Вот скрипт /etc/monit.d/ppp0&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;check process pppd with pidfile /var/run/ppp0.pid  
+   start program = &amp;quot;/etc/monit.d/bin/kickservice start net.ppp0&amp;quot;  
+   stop program = &amp;quot;/etc/monit.d/bin/kickservice stop net.ppp0 kill pppd&amp;quot;  
+   if 5 restarts within 5 cycles then timeout
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;P. S. Хотел запостить скрипты, но не знаю как :(&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

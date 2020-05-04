@@ -13,6 +13,33 @@
     </image>
     
     <item>
+      <title>Happy Birthday</title>
+      <link>https://yamadharma.github.io/en/post/2020/04/22/50-let/</link>
+      <pubDate>Wed, 22 Apr 2020 19:54:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/en/post/2020/04/22/50-let/</guid>
+      <description>&lt;h2 id=&#34;happy-birthday&#34;&gt;Happy Birthday&lt;/h2&gt;
+&lt;p&gt;And you, my friend, happy birthday!&lt;/p&gt;
+&lt;div style=&#34;position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;&#34;&gt;
+  &lt;iframe src=&#34;https://www.youtube.com/embed/WjoLeohyzSY&#34; style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;&#34; allowfullscreen title=&#34;YouTube Video&#34;&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+
+
+&lt;div style=&#34;position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;&#34;&gt;
+  &lt;iframe src=&#34;https://www.youtube.com/embed/Sxek3xFtc48&#34; style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;&#34; allowfullscreen title=&#34;YouTube Video&#34;&gt;&lt;/iframe&gt;
+&lt;/div&gt;</description>
+    </item>
+    
+    <item>
+      <title>Vladimir Ilyich Lenin - 150 years</title>
+      <link>https://yamadharma.github.io/en/post/2020/04/22/lenin-150/</link>
+      <pubDate>Wed, 22 Apr 2020 19:40:17 +0300</pubDate>
+      <guid>https://yamadharma.github.io/en/post/2020/04/22/lenin-150/</guid>
+      <description>&lt;h2 id=&#34;vladimir-ilyich-lenin----150-years&#34;&gt;Vladimir Ilyich Lenin &amp;ndash; 150 years&lt;/h2&gt;
+&lt;p&gt;Happy Birthday, Vladimir Ilyich!&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://yamadharma.github.io/img/2020/04/lenin-kreml.jpg&#34; alt=&#34;Vladimir Ilyich Lenin in his office in the Kremlin. October 16, 1918&#34; title=&#34;Vladimir Ilyich Lenin in his office in the Kremlin. October 16, 1918&#34;&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>Small utilities and scripts</title>
       <link>https://yamadharma.github.io/en/project/misc-utils/</link>
       <pubDate>Fri, 03 Apr 2020 00:00:00 +0000</pubDate>
@@ -503,6 +530,105 @@ problems of mathematical modeling.&lt;/p&gt;
       <pubDate>Tue, 01 May 2018 00:00:00 +0000</pubDate>
       <guid>https://yamadharma.github.io/en/publication/kulyabov-2018-ecms-aqm/</guid>
       <description></description>
+    </item>
+    
+    <item>
+      <title>Migrating from livejournal to hexo</title>
+      <link>https://yamadharma.github.io/en/post/2018/04/21/from-lj-to-hexo/</link>
+      <pubDate>Sat, 21 Apr 2018 15:37:34 +0000</pubDate>
+      <guid>https://yamadharma.github.io/en/post/2018/04/21/from-lj-to-hexo/</guid>
+      <description>&lt;p&gt;Migrating from 
+&lt;a href=&#34;https://yamadharma.livejournal.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;livejornal&lt;/a&gt; posed some problems.&lt;/p&gt;
+&lt;p&gt;I want to note that I did not transfer the comments.&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://github.com/arty-name/livejournal-export&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;livejournal-export&lt;/a&gt; seemed to me the most suitable. It translates immediately to &lt;em&gt;markdown&lt;/em&gt;. However, tags are not imported.
+It uses browser session parameters for identification.&lt;/p&gt;
+&lt;p&gt;As the second option I considered 
+&lt;a href=&#34;https://github.com/ghewgill/ljdump&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;ljdump&lt;/a&gt;. It downloads the weblog in &lt;em&gt;html&lt;/em&gt;. For identification uses login and password.&lt;/p&gt;
+&lt;p&gt;Then I had to convert to &lt;em&gt;markdown&lt;/em&gt;. To do this, I wrote the script &lt;em&gt;xml2md&lt;/em&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
+import os
+import sys
+from lxml import etree
+import html2text
+from datetime import datetime
+from transliterate import translit, get_available_language_codes
+
+outdir = &#39;markdown&#39;
+os.makedirs(outdir, exist_ok=True)
+
+infile = sys.argv[1]
+print(infile)
+
+tree = etree.parse(infile)
+post = tree.getroot()
+
+postTitle = &#39;&#39;
+postTags = &#39;&#39;
+
+for elem in post.getchildren():
+    if not elem.text:
+        text = &amp;quot;None&amp;quot;
+    else:
+        text = elem.text
+    # print(elem.tag + &amp;quot; =&amp;gt; &amp;quot; + text)
+    # book_dict[elem.tag] = text
+    if elem.tag == &#39;subject&#39;:
+        postTitle = text
+    if elem.tag == &#39;eventtime&#39;:
+        postDate = text
+    if elem.tag == &#39;event&#39;:
+        postContent = text
+    if elem.tag == &#39;props&#39;:
+        for propsElem in elem.getchildren():
+            if not elem.text:
+                text = &amp;quot;None&amp;quot;
+            else:
+                text = propsElem.text
+            # print(propsElem.tag + &amp;quot; =&amp;gt; &amp;quot; + text)
+            if propsElem.tag == &#39;taglist&#39;:
+                postTags = text
+            
+
+
+
+postHeader = &#39;layout: post\n&#39;+&#39;title: &#39;+postTitle+&#39;\n&#39;+&#39;date: &#39;+str(postDate)
+postHeader = postHeader+&#39;\ncategories: blog\nlang: ru&#39;
+postHeader = postHeader+&#39;\ntags: [&#39;+postTags+&#39;]&#39;
+postHeader = postHeader+&#39;\n&#39;+&#39;---&#39;
+
+h = html2text.HTML2Text()
+h.ignore_links = False
+h.body_width = 0
+h.unicode_snob = True
+postContent = h.handle(postContent)
+
+fullPost = postHeader+&#39;\n\n\n&#39;+postContent
+
+date = datetime.strptime(postDate, &#39;%Y-%m-%d %H:%M:%S&#39;)
+outFile = &#39;{0.year}-{0.month:02d}-{0.day:02d}&#39;.format(date)
+if postTitle != &#39;&#39;:
+    translitTitle = translit(postTitle, &#39;ru&#39;, reversed=True)
+    translitTitle = translitTitle.replace(&amp;quot; &amp;quot;,&amp;quot;_&amp;quot;)
+    translitTitle = translitTitle.replace(&amp;quot;:&amp;quot;,&amp;quot;&amp;quot;)
+    translitTitle = translitTitle.replace(&amp;quot;&#39;&amp;quot;,&amp;quot;&amp;quot;)
+    translitTitle = translitTitle.replace(&amp;quot;«&amp;quot;,&amp;quot;&amp;quot;)
+    translitTitle = translitTitle.replace(&amp;quot;»&amp;quot;,&amp;quot;&amp;quot;)
+    translitTitle = translitTitle.replace(&amp;quot;;&amp;quot;,&amp;quot;&amp;quot;)
+else:
+    translitTitle = &#39;{0.hour:02d}-{0.minute:02d}-{0.second:02d}&#39;.format(date)
+outFile = outFile+&#39;-&#39;+translitTitle
+
+f = open(outdir+&#39;/&#39;+str(outFile)+&#39;.md&#39;, &#39;w&#39;)
+f.write(fullPost)
+f.close()
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Conversion can be performed using the command:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;./xml2md &amp;lt;file&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This creates the &lt;em&gt;markdown&lt;/em&gt; directory and the conversion result is placed in it.&lt;/p&gt;</description>
     </item>
     
     <item>

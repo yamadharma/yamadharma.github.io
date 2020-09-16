@@ -17,7 +17,7 @@
       <link>https://yamadharma.github.io/ru/post/2015/10/27/samba-migrate/</link>
       <pubDate>Tue, 27 Oct 2015 13:48:49 +0300</pubDate>
       <guid>https://yamadharma.github.io/ru/post/2015/10/27/samba-migrate/</guid>
-      <description>&lt;h3 id=&#34;установка-пакетов&#34;&gt;Установка пакетов&lt;/h3&gt;
+      <description>&lt;h2 id=&#34;установка-пакетов&#34;&gt;Установка пакетов&lt;/h2&gt;
 &lt;p&gt;В качестве системы для сервера используем Centos7. Там пока не
 поддерживается функционал Samba4 AD (конфликт mit-krb и heimdal). Поэтому поставим самбу с
 EnterpriseSAMBA.com &lt;a href=&#34;https://portal.enterprisesamba.com/&#34;&gt;https://portal.enterprisesamba.com/&lt;/a&gt;.&lt;/p&gt;
@@ -31,7 +31,7 @@ wget https://sernet-samba-public:Noo1oxe4zo@download.sernet.de/packages/samba/4.
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;yum -y install sernet-samba sernet-samba-ad
 yum -y install bind
 &lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&#34;поиск-дубликатов-sid&#34;&gt;Поиск дубликатов SID&lt;/h3&gt;
+&lt;h2 id=&#34;поиск-дубликатов-sid&#34;&gt;Поиск дубликатов SID&lt;/h2&gt;
 &lt;p&gt;Найдём дубликаты SID с помощью следующего скрипта (запусткается на
 машине, где расположен ldap).&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;#!/usr/bin/python
@@ -53,13 +53,13 @@ anydup(line)
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Далее дубликаты удаляются с помощью редактирования ldap (я использовал
 &lt;a href=&#34;https://directory.apache.org/studio/&#34;&gt;https://directory.apache.org/studio/&lt;/a&gt;).&lt;/p&gt;
-&lt;h3 id=&#34;предварительная-конфигурация&#34;&gt;Предварительная конфигурация&lt;/h3&gt;
+&lt;h2 id=&#34;предварительная-конфигурация&#34;&gt;Предварительная конфигурация&lt;/h2&gt;
 &lt;p&gt;Добавил в файл &lt;code&gt;/etc/hosts&lt;/code&gt; адрес хоста.&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;127.0.0.1               localhost.localdomain   localhost                                                                                                                                     
 10.130.64.23            dc.dk.sci.pfu.edu.ru    dc
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Также прописал его в прямой и обратной зонах DNS.&lt;/p&gt;
-&lt;h3 id=&#34;перенос-конфигурационных-файлов&#34;&gt;Перенос конфигурационных файлов&lt;/h3&gt;
+&lt;h2 id=&#34;перенос-конфигурационных-файлов&#34;&gt;Перенос конфигурационных файлов&lt;/h2&gt;
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;pdc ~ # scp -r /var/lib/samba/private/ dc.dk.sci.pfu.edu.ru:/var/lib/samba/samba3tdb/
 pdc ~ # scp /etc/samba/smb.conf dc.dk.sci.pfu.edu.ru:/var/lib/samba/samba3tdb/
 &lt;/code&gt;&lt;/pre&gt;
@@ -73,10 +73,10 @@ URI     ldap://ldap.dk.sci.pfu.edu.ru
                                                                                                                                                                                               
 TLS_REQCERT     allow
 &lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&#34;проведение-миграции&#34;&gt;Проведение миграции&lt;/h3&gt;
+&lt;h2 id=&#34;проведение-миграции&#34;&gt;Проведение миграции&lt;/h2&gt;
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;samba-tool domain classicupgrade --dbdir=/var/lib/samba/samba3tdb/ --use-xattrs=yes --realm=dk.sci.pfu.edu.ru --dns-backend=BIND9_DLZ /var/lib/samba/samba3tdb/smb.conf
 &lt;/code&gt;&lt;/pre&gt;
-&lt;h4 id=&#34;шаманство&#34;&gt;Шаманство&lt;/h4&gt;
+&lt;h3 id=&#34;шаманство&#34;&gt;Шаманство&lt;/h3&gt;
 &lt;p&gt;В файле &lt;code&gt;/var/lib/samba/samba3tdb/smb.conf&lt;/code&gt; заменил доменное имя&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;passdb backend = ldapsam:ldap://ldap.dk.sci.pfu.edu.ru
 &lt;/code&gt;&lt;/pre&gt;
@@ -84,7 +84,7 @@ TLS_REQCERT     allow
 &lt;pre&gt;&lt;code&gt;passdb backend = ldapsam:ldap://10.130.64.11
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Без этого миграция падала с ошибкой &lt;code&gt;LDAP client internal error: NT_STATUS_BAD_NETWORK_NAME&lt;/code&gt;.&lt;/p&gt;
-&lt;h4 id=&#34;настройка-firewalld&#34;&gt;Настройка firewalld&lt;/h4&gt;
+&lt;h3 id=&#34;настройка-firewalld&#34;&gt;Настройка firewalld&lt;/h3&gt;
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;firewall-cmd --add-service=ldap --permanent
 firewall-cmd --add-service=kerberos --permanent
 firewall-cmd --add-service=kpasswd --permanent
@@ -92,17 +92,17 @@ firewall-cmd --add-service=samba --permanent
 firewall-cmd --add-service=samba-client --permanent
 firewall-cmd --reload
 &lt;/code&gt;&lt;/pre&gt;
-&lt;h4 id=&#34;настройка-selinux&#34;&gt;Настройка SELinux&lt;/h4&gt;
+&lt;h3 id=&#34;настройка-selinux&#34;&gt;Настройка SELinux&lt;/h3&gt;
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;setsebool -P samba_export_all_ro 1
 setsebool -P samba_export_all_rw 1
 setsebool -P samba_domain_controller 1
 &lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&#34;настройка-kerberos&#34;&gt;Настройка Kerberos&lt;/h3&gt;
+&lt;h2 id=&#34;настройка-kerberos&#34;&gt;Настройка Kerberos&lt;/h2&gt;
 &lt;p&gt;Создадим файл конфигурации kerberos:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;mv /etc/krb5.conf{,.default}
 cp /var/lib/samba/private/krb5.conf /etc
 &lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&#34;настройка-dns&#34;&gt;Настройка DNS&lt;/h3&gt;
+&lt;h2 id=&#34;настройка-dns&#34;&gt;Настройка DNS&lt;/h2&gt;
 &lt;p&gt;В файле &lt;code&gt;/etc/resolv.conf&lt;/code&gt; задаём локальный DNS-сервер:&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;search dk.sci.pfu.edu.ru                                                                                                                                                                      
 nameserver 127.0.0.1
@@ -130,11 +130,11 @@ nameserver 127.0.0.1
      [...]
 };
 &lt;/code&gt;&lt;/pre&gt;
-&lt;h4 id=&#34;настройка-firewalld-1&#34;&gt;Настройка firewalld&lt;/h4&gt;
+&lt;h3 id=&#34;настройка-firewalld-1&#34;&gt;Настройка firewalld&lt;/h3&gt;
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;firewall-cmd --add-service=dns --permanent
 firewall-cmd --reload
 &lt;/code&gt;&lt;/pre&gt;
-&lt;h4 id=&#34;настройки-прав-доступа&#34;&gt;Настройки прав доступа&lt;/h4&gt;
+&lt;h3 id=&#34;настройки-прав-доступа&#34;&gt;Настройки прав доступа&lt;/h3&gt;
 &lt;p&gt;Права доступа:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;chown -R root:named /var/lib/samba/private/dns
 chmod 770 /var/lib/samba/private/dns
@@ -144,7 +144,7 @@ chgrp named /var/lib/samba/private
 chgrp -R named /var/lib/samba/private/sam.ldb.d
 chmod g+rw /var/lib/samba/private/sam.ldb.d/*
 &lt;/code&gt;&lt;/pre&gt;
-&lt;h4 id=&#34;настройка-selinux-1&#34;&gt;Настройка SELinux&lt;/h4&gt;
+&lt;h3 id=&#34;настройка-selinux-1&#34;&gt;Настройка SELinux&lt;/h3&gt;
 &lt;p&gt;Изменим текущий контекст:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;chcon -t named_conf_t /var/lib/samba/private/dns.keytab
 chcon -t named_conf_t /var/lib/samba/private/named.conf
@@ -160,7 +160,7 @@ semanage fcontext -a -t named_var_run_t &amp;quot;/var/lib/samba/private/dns(/.*
 semanage fcontext -a -t named_var_run_t /var/lib/samba/private/dns/${MYREALM}.zone
 semanage fcontext -a -t named_var_run_t /var/lib/samba/private/dns/${MYREALM}.zone.jnl
 &lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&#34;запуск-демонов&#34;&gt;Запуск демонов&lt;/h3&gt;
+&lt;h2 id=&#34;запуск-демонов&#34;&gt;Запуск демонов&lt;/h2&gt;
 &lt;p&gt;Сконфигурим тип сервера samba в файле &lt;code&gt;/etc/default/sernet-samba&lt;/code&gt;:&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;SAMBA_START_MODE=&amp;quot;ad&amp;quot;
 &lt;/code&gt;&lt;/pre&gt;
@@ -172,7 +172,7 @@ systemctl start sernet-samba-ad.service
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;systemctl enable named.service
 systemctl enable sernet-samba-ad.service
 &lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&#34;проверка&#34;&gt;Проверка&lt;/h3&gt;
+&lt;h2 id=&#34;проверка&#34;&gt;Проверка&lt;/h2&gt;
 &lt;p&gt;Проверка DNS.&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# host -t SRV _ldap._tcp.dk.sci.pfu.edu.ru.
 _ldap._tcp.dk.sci.pfu.edu.ru has SRV record 0 100 389 dc.dk.sci.pfu.edu.ru.
@@ -194,7 +194,7 @@ dc.dk.sci.pfu.edu.ru has address 10.130.64.23
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;kinit administrator@DK.SCI.PFU.EDU.RU
 klist
 &lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&#34;дополнительно&#34;&gt;Дополнительно&lt;/h3&gt;
+&lt;h2 id=&#34;дополнительно&#34;&gt;Дополнительно&lt;/h2&gt;
 &lt;p&gt;Убрать проверку сложности пароля:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;samba-tool domain passwordsettings set --complexity=off
 samba-tool domain passwordsettings set --history-length=0

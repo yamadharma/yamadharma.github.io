@@ -329,7 +329,7 @@ EnterpriseSAMBA.com https://portal.enterprisesamba.com/."><meta property="og:ima
     
       <meta property="article:published_time" content="2015-10-27T13:48:49&#43;03:00">
     
-    <meta property="article:modified_time" content="2020-04-23T14:37:39&#43;03:00">
+    <meta property="article:modified_time" content="2020-09-16T10:54:31&#43;03:00">
   
 
   
@@ -358,7 +358,7 @@ EnterpriseSAMBA.com https://portal.enterprisesamba.com/."><meta property="og:ima
   "headline": "Миграция с Samba3 на Samba4",
   
   "datePublished": "2015-10-27T13:48:49+03:00",
-  "dateModified": "2020-04-23T14:37:39+03:00",
+  "dateModified": "2020-09-16T10:54:31+03:00",
   
   "author": {
     "@type": "Person",
@@ -373,7 +373,7 @@ EnterpriseSAMBA.com https://portal.enterprisesamba.com/."><meta property="og:ima
       "url": "https://yamadharma.github.io/images/icon_hu0a661dd90139895e92e2f18ae9404407_611148_192x192_fill_lanczos_center_2.png"
     }
   },
-  "description": "\u003ch3 id=\"установка-пакетов\"\u003eУстановка пакетов\u003c/h3\u003e\n\u003cp\u003eВ качестве системы для сервера используем Centos7. Там пока не\nподдерживается функционал Samba4 AD (конфликт mit-krb и heimdal). Поэтому поставим самбу с\nEnterpriseSAMBA.com \u003ca href=\"https://portal.enterprisesamba.com/\"\u003ehttps://portal.enterprisesamba.com/\u003c/a\u003e.\u003c/p\u003e"
+  "description": "\u003ch2 id=\"установка-пакетов\"\u003eУстановка пакетов\u003c/h2\u003e\n\u003cp\u003eВ качестве системы для сервера используем Centos7. Там пока не\nподдерживается функционал Samba4 AD (конфликт mit-krb и heimdal). Поэтому поставим самбу с\nEnterpriseSAMBA.com \u003ca href=\"https://portal.enterprisesamba.com/\"\u003ehttps://portal.enterprisesamba.com/\u003c/a\u003e.\u003c/p\u003e"
 }
 </script>
 
@@ -783,7 +783,7 @@ EnterpriseSAMBA.com https://portal.enterprisesamba.com/."><meta property="og:ima
           Обновлено
       
     
-    2020-04-23
+    2020-09-16
   </span>
   
 
@@ -874,7 +874,7 @@ EnterpriseSAMBA.com https://portal.enterprisesamba.com/."><meta property="og:ima
   <div class="article-container">
 
     <div class="article-style">
-      <h3 id="установка-пакетов">Установка пакетов</h3>
+      <h2 id="установка-пакетов">Установка пакетов</h2>
 <p>В качестве системы для сервера используем Centos7. Там пока не
 поддерживается функционал Samba4 AD (конфликт mit-krb и heimdal). Поэтому поставим самбу с
 EnterpriseSAMBA.com <a href="https://portal.enterprisesamba.com/">https://portal.enterprisesamba.com/</a>.</p>
@@ -888,7 +888,7 @@ wget https://sernet-samba-public:Noo1oxe4zo@download.sernet.de/packages/samba/4.
 <pre><code class="language-bash">yum -y install sernet-samba sernet-samba-ad
 yum -y install bind
 </code></pre>
-<h3 id="поиск-дубликатов-sid">Поиск дубликатов SID</h3>
+<h2 id="поиск-дубликатов-sid">Поиск дубликатов SID</h2>
 <p>Найдём дубликаты SID с помощью следующего скрипта (запусткается на
 машине, где расположен ldap).</p>
 <pre><code class="language-python">#!/usr/bin/python
@@ -910,13 +910,13 @@ anydup(line)
 </code></pre>
 <p>Далее дубликаты удаляются с помощью редактирования ldap (я использовал
 <a href="https://directory.apache.org/studio/">https://directory.apache.org/studio/</a>).</p>
-<h3 id="предварительная-конфигурация">Предварительная конфигурация</h3>
+<h2 id="предварительная-конфигурация">Предварительная конфигурация</h2>
 <p>Добавил в файл <code>/etc/hosts</code> адрес хоста.</p>
 <pre><code>127.0.0.1               localhost.localdomain   localhost                                                                                                                                     
 10.130.64.23            dc.dk.sci.pfu.edu.ru    dc
 </code></pre>
 <p>Также прописал его в прямой и обратной зонах DNS.</p>
-<h3 id="перенос-конфигурационных-файлов">Перенос конфигурационных файлов</h3>
+<h2 id="перенос-конфигурационных-файлов">Перенос конфигурационных файлов</h2>
 <pre><code class="language-bash">pdc ~ # scp -r /var/lib/samba/private/ dc.dk.sci.pfu.edu.ru:/var/lib/samba/samba3tdb/
 pdc ~ # scp /etc/samba/smb.conf dc.dk.sci.pfu.edu.ru:/var/lib/samba/samba3tdb/
 </code></pre>
@@ -930,10 +930,10 @@ URI     ldap://ldap.dk.sci.pfu.edu.ru
                                                                                                                                                                                               
 TLS_REQCERT     allow
 </code></pre>
-<h3 id="проведение-миграции">Проведение миграции</h3>
+<h2 id="проведение-миграции">Проведение миграции</h2>
 <pre><code class="language-bash">samba-tool domain classicupgrade --dbdir=/var/lib/samba/samba3tdb/ --use-xattrs=yes --realm=dk.sci.pfu.edu.ru --dns-backend=BIND9_DLZ /var/lib/samba/samba3tdb/smb.conf
 </code></pre>
-<h4 id="шаманство">Шаманство</h4>
+<h3 id="шаманство">Шаманство</h3>
 <p>В файле <code>/var/lib/samba/samba3tdb/smb.conf</code> заменил доменное имя</p>
 <pre><code>passdb backend = ldapsam:ldap://ldap.dk.sci.pfu.edu.ru
 </code></pre>
@@ -941,7 +941,7 @@ TLS_REQCERT     allow
 <pre><code>passdb backend = ldapsam:ldap://10.130.64.11
 </code></pre>
 <p>Без этого миграция падала с ошибкой <code>LDAP client internal error: NT_STATUS_BAD_NETWORK_NAME</code>.</p>
-<h4 id="настройка-firewalld">Настройка firewalld</h4>
+<h3 id="настройка-firewalld">Настройка firewalld</h3>
 <pre><code class="language-bash">firewall-cmd --add-service=ldap --permanent
 firewall-cmd --add-service=kerberos --permanent
 firewall-cmd --add-service=kpasswd --permanent
@@ -949,17 +949,17 @@ firewall-cmd --add-service=samba --permanent
 firewall-cmd --add-service=samba-client --permanent
 firewall-cmd --reload
 </code></pre>
-<h4 id="настройка-selinux">Настройка SELinux</h4>
+<h3 id="настройка-selinux">Настройка SELinux</h3>
 <pre><code class="language-bash">setsebool -P samba_export_all_ro 1
 setsebool -P samba_export_all_rw 1
 setsebool -P samba_domain_controller 1
 </code></pre>
-<h3 id="настройка-kerberos">Настройка Kerberos</h3>
+<h2 id="настройка-kerberos">Настройка Kerberos</h2>
 <p>Создадим файл конфигурации kerberos:</p>
 <pre><code class="language-bash">mv /etc/krb5.conf{,.default}
 cp /var/lib/samba/private/krb5.conf /etc
 </code></pre>
-<h3 id="настройка-dns">Настройка DNS</h3>
+<h2 id="настройка-dns">Настройка DNS</h2>
 <p>В файле <code>/etc/resolv.conf</code> задаём локальный DNS-сервер:</p>
 <pre><code>search dk.sci.pfu.edu.ru                                                                                                                                                                      
 nameserver 127.0.0.1
@@ -987,11 +987,11 @@ nameserver 127.0.0.1
      [...]
 };
 </code></pre>
-<h4 id="настройка-firewalld-1">Настройка firewalld</h4>
+<h3 id="настройка-firewalld-1">Настройка firewalld</h3>
 <pre><code class="language-bash">firewall-cmd --add-service=dns --permanent
 firewall-cmd --reload
 </code></pre>
-<h4 id="настройки-прав-доступа">Настройки прав доступа</h4>
+<h3 id="настройки-прав-доступа">Настройки прав доступа</h3>
 <p>Права доступа:</p>
 <pre><code class="language-bash">chown -R root:named /var/lib/samba/private/dns
 chmod 770 /var/lib/samba/private/dns
@@ -1001,7 +1001,7 @@ chgrp named /var/lib/samba/private
 chgrp -R named /var/lib/samba/private/sam.ldb.d
 chmod g+rw /var/lib/samba/private/sam.ldb.d/*
 </code></pre>
-<h4 id="настройка-selinux-1">Настройка SELinux</h4>
+<h3 id="настройка-selinux-1">Настройка SELinux</h3>
 <p>Изменим текущий контекст:</p>
 <pre><code class="language-bash">chcon -t named_conf_t /var/lib/samba/private/dns.keytab
 chcon -t named_conf_t /var/lib/samba/private/named.conf
@@ -1017,7 +1017,7 @@ semanage fcontext -a -t named_var_run_t &quot;/var/lib/samba/private/dns(/.*)?&q
 semanage fcontext -a -t named_var_run_t /var/lib/samba/private/dns/${MYREALM}.zone
 semanage fcontext -a -t named_var_run_t /var/lib/samba/private/dns/${MYREALM}.zone.jnl
 </code></pre>
-<h3 id="запуск-демонов">Запуск демонов</h3>
+<h2 id="запуск-демонов">Запуск демонов</h2>
 <p>Сконфигурим тип сервера samba в файле <code>/etc/default/sernet-samba</code>:</p>
 <pre><code>SAMBA_START_MODE=&quot;ad&quot;
 </code></pre>
@@ -1029,7 +1029,7 @@ systemctl start sernet-samba-ad.service
 <pre><code class="language-bash">systemctl enable named.service
 systemctl enable sernet-samba-ad.service
 </code></pre>
-<h3 id="проверка">Проверка</h3>
+<h2 id="проверка">Проверка</h2>
 <p>Проверка DNS.</p>
 <pre><code class="language-bash"># host -t SRV _ldap._tcp.dk.sci.pfu.edu.ru.
 _ldap._tcp.dk.sci.pfu.edu.ru has SRV record 0 100 389 dc.dk.sci.pfu.edu.ru.
@@ -1051,7 +1051,7 @@ dc.dk.sci.pfu.edu.ru has address 10.130.64.23
 <pre><code class="language-bash">kinit administrator@DK.SCI.PFU.EDU.RU
 klist
 </code></pre>
-<h3 id="дополнительно">Дополнительно</h3>
+<h2 id="дополнительно">Дополнительно</h2>
 <p>Убрать проверку сложности пароля:</p>
 <pre><code class="language-bash">samba-tool domain passwordsettings set --complexity=off
 samba-tool domain passwordsettings set --history-length=0
@@ -1515,6 +1515,8 @@ samba-tool domain passwordsettings set --max-pwd-age=0
     <h3>Похожие</h3>
     <ul>
       
+      <li><a href="https://yamadharma.github.io/ru/post/2020/09/10/migration-sway/">Переход на Sway</a></li>
+      
       <li><a href="https://yamadharma.github.io/ru/post/2018/05/17/webfm-uninstall/">Деинсталляция WebFM из Drupal</a></li>
       
       <li><a href="https://yamadharma.github.io/ru/post/2018/04/21/from-lj-to-hexo/">Миграция с livejournal на hexo</a></li>
@@ -1522,8 +1524,6 @@ samba-tool domain passwordsettings set --max-pwd-age=0
       <li><a href="https://yamadharma.github.io/ru/post/2018/04/04/hexo-theme-next/">Установка темы NexT для hexo</a></li>
       
       <li><a href="https://yamadharma.github.io/ru/post/2018/03/28/hexo/">Переход блога на hexo</a></li>
-      
-      <li><a href="https://yamadharma.github.io/ru/post/2018/03/27/from-blogspot-to-hexo/">Миграция с blogspot на hexo</a></li>
       
     </ul>
   </div>

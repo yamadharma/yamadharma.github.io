@@ -5,12 +5,236 @@
     <link>https://yamadharma.github.io/ru/tag/gentoo/</link>
       <atom:link href="https://yamadharma.github.io/ru/tag/gentoo/index.xml" rel="self" type="application/rss+xml" />
     <description>gentoo</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>ru-ru</language><copyright>© 2020 Dmitry S. Kulyabov</copyright><lastBuildDate>Sun, 24 Sep 2006 15:19:00 +0000</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>ru-ru</language><copyright>© 2020 Dmitry S. Kulyabov</copyright><lastBuildDate>Thu, 10 Sep 2020 10:33:15 +0300</lastBuildDate>
     <image>
       <url>https://yamadharma.github.io/images/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_2.png</url>
       <title>gentoo</title>
       <link>https://yamadharma.github.io/ru/tag/gentoo/</link>
     </image>
+    
+    <item>
+      <title>Переход на Sway</title>
+      <link>https://yamadharma.github.io/ru/post/2020/09/10/migration-sway/</link>
+      <pubDate>Thu, 10 Sep 2020 10:33:15 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2020/09/10/migration-sway/</guid>
+      <description>&lt;h1 id=&#34;переход-на-sway&#34;&gt;Переход на Sway&lt;/h1&gt;
+&lt;p&gt;Решил попробовать 
+&lt;a href=&#34;https://wayland.freedesktop.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Wayland&lt;/a&gt;. По этой
+причине пришлось
+
+&lt;a href=&#34;http://way-cooler.org/blog/2020/01/09/way-cooler-post-mortem.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;перейти&lt;/a&gt;
+с 
+&lt;a href=&#34;https://awesomewm.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;awesome&lt;/a&gt; на 
+&lt;a href=&#34;https://swaywm.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;sway&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Установка &lt;code&gt;sway&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;emerge -v gui-wm/sway
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;репозитории-gentoo&#34;&gt;Репозитории &lt;code&gt;gentoo&lt;/code&gt;&lt;/h2&gt;
+&lt;p&gt;Программы для Wayland есть как в основном репозитории, так и
+дополнительных. Хочу порекомендовать для просмотра следующие
+репозитории:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a href=&#34;https://github.com/epsilon-0/wayland-desktop&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;wayland-desktop&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;layman -a wayland-desktop
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a href=&#34;https://wiki.gentoo.org/wiki/Project:GURU&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;guru&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;layman -a guru
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;первоначальная-конфигурация&#34;&gt;Первоначальная конфигурация&lt;/h2&gt;
+&lt;p&gt;При запуске без локальной конфигурации &lt;code&gt;sway&lt;/code&gt; использует глобальную
+конфигурацию &lt;code&gt;/etc/sway/config&lt;/code&gt;. При желании внести изменение в
+конфигурацию можно скопировать файл глобальной конфигурации в
+локальную:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;mkdir -p ~/.config/sway
+cp /etc/sway/config ~/.config/sway/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;комбинации-клавиш&#34;&gt;Комбинации клавиш&lt;/h2&gt;
+&lt;p&gt;Основные сочетания клавиш:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Mod&lt;/code&gt; + &lt;code&gt;Enter&lt;/code&gt; &amp;ndash; открыть новый терминал;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Mod&lt;/code&gt; + &lt;code&gt;d&lt;/code&gt; &amp;ndash; запустить программу;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Mod&lt;/code&gt; + &lt;code&gt;0&lt;/code&gt;..&lt;code&gt;9&lt;/code&gt; &amp;ndash; переключение между workspace’ами;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Mod&lt;/code&gt; + &lt;code&gt;Shift&lt;/code&gt; + &lt;code&gt;0&lt;/code&gt;..&lt;code&gt;9&lt;/code&gt; &amp;ndash; перемещение окон в заданный workspace;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Mod&lt;/code&gt; + &lt;code&gt;Shift&lt;/code&gt; + &lt;code&gt;q&lt;/code&gt; &amp;ndash; закрыть текущее окно;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Mod&lt;/code&gt; + Стрелочки &amp;ndash; перемещение между окнами, вместо стрелочек также могут быть использованы клавиши «J» (влево), «K» (вниз), «L» (вверх) и «;» (вправо);&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Mod&lt;/code&gt; + &lt;code&gt;Shift&lt;/code&gt; + Стрелочки &amp;ndash; перемещение окон в пределах workspace’а, вместо стрелочек также могут быть использованы буковки и точка с запятой;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Mod&lt;/code&gt; + &lt;code&gt;v&lt;/code&gt; &amp;ndash; использовать вертикальное разбиение;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Mod&lt;/code&gt; + &lt;code&gt;h&lt;/code&gt; &amp;ndash; использовать горизонтальное разбиение;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Mod&lt;/code&gt; + &lt;code&gt;e&lt;/code&gt; &amp;ndash; размещение окон по-умолчанию (default layout);&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Mod&lt;/code&gt; + &lt;code&gt;s&lt;/code&gt; &amp;ndash; стековое размещение (stacking layout);&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Mod&lt;/code&gt; + &lt;code&gt;w&lt;/code&gt; &amp;ndash; размещение с табами (tabbed layout);&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Mod&lt;/code&gt; + &lt;code&gt;f&lt;/code&gt; &amp;ndash; раскрыть окно во весь экран или свернуть его обратно;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Mod&lt;/code&gt; + &lt;code&gt;Shift&lt;/code&gt; + &lt;code&gt;Space&lt;/code&gt; &amp;ndash; разрешить свободное перемещение окна (floating mode) или вернуть его в мозаику;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Mod&lt;/code&gt; + &lt;code&gt;Shift&lt;/code&gt; + &lt;code&gt;c&lt;/code&gt; &amp;ndash; перечитать конфигурацию &lt;code&gt;sway&lt;/code&gt; (перестартовать);&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Mod&lt;/code&gt; + &lt;code&gt;Shift&lt;/code&gt; + &lt;code&gt;e&lt;/code&gt; &amp;ndash; выйти из &lt;code&gt;sway&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;замена-приложений&#34;&gt;Замена приложений&lt;/h2&gt;
+&lt;h3 id=&#34;снимки-экрана&#34;&gt;Снимки экрана&lt;/h3&gt;
+&lt;p&gt;Исходно использовался &lt;code&gt;scrot&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Для Wayland перешёл на связку
+
+&lt;a href=&#34;https://github.com/emersion/grim&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;&lt;code&gt;grim&lt;/code&gt;&lt;/a&gt; (получение снимка
+экрана) + 
+&lt;a href=&#34;https://github.com/emersion/slurp&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;&lt;code&gt;slurp&lt;/code&gt;&lt;/a&gt; (выделение
+области экрана):&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;emerge -uv gui-apps/slurp gui-apps/grim
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Настроим получение снимков экрана:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-conf&#34;&gt;# ~/.config/sway/config.d/80-screenshots.conf
+# Screenshot active display
+bindsym Print exec grim -t png &amp;quot;$(xdg-user-dir PICTURES)&amp;quot;/$(date +%Y-%m-%d_%H-%M-%S).png
+
+# Screenshot current window
+bindsym $mod+Print exec grim -g &amp;quot;$(swaymsg -t get_tree | jq -r &#39;.. | select(.pid? and .visible?) | .rect | &amp;quot;\(.x),\(.y) \(.width)x\(.height)&amp;quot;&#39;)&amp;quot; &amp;quot;$(xdg-user-dir PICTURES)&amp;quot;/$(date +%Y-%m-%d_%H-%M-%S).png
+
+# Screenshot selected region
+bindsym $mod+Shift+Print exec grim -t png -g &amp;quot;$(slurp)&amp;quot; &amp;quot;$(xdg-user-dir PICTURES)&amp;quot;/$(date +%Y-%m-%d_%H-%M-%S).png
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;При нажатии клавиши &lt;code&gt;PrtScr&lt;/code&gt; делается снимок всего экрана.&lt;/li&gt;
+&lt;li&gt;При нажатии &lt;code&gt;Mod4&lt;/code&gt;+&lt;code&gt;PrtScr&lt;/code&gt; делается снимок активного окна.&lt;/li&gt;
+&lt;li&gt;При нажатии &lt;code&gt;Mod4&lt;/code&gt;+&lt;code&gt;Shift&lt;/code&gt;+&lt;code&gt;PrtScr&lt;/code&gt; предлагается выбрать область экрана, снимок которой следует сделать.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;видеозапись-экрана-скринкаст&#34;&gt;Видеозапись экрана (скринкаст)&lt;/h3&gt;
+&lt;p&gt;Ранее использовался 
+&lt;a href=&#34;https://www.maartenbaert.be/simplescreenrecorder/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;SimpleScreenRecorder&lt;/a&gt;.&lt;/p&gt;
+&lt;h4 id=&#34;видеозапись-экрана----командная-строка&#34;&gt;Видеозапись экрана &amp;ndash; командная строка&lt;/h4&gt;
+&lt;p&gt;Для записи из командной строки используем 
+&lt;a href=&#34;https://github.com/ammen99/wf-recorder&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;&lt;code&gt;wf-recorder&lt;/code&gt;&lt;/a&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;emerge -v gui-apps/wf-recorder
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Варианты использования:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Запись всего экрана в файл &lt;code&gt;recording.mkv&lt;/code&gt; (только видео):&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;wf-recorder -f recording$(date +%Y-%m-%d_%H-%M-%S).mkv
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Если файл не указывать, запись будет в текущий каталог.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Запись фрагмента экрана (тут имя файла задаётся по времени начала записи):&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;wf-recorder -g &amp;quot;$(slurp)&amp;quot; -f $(date +%Y-%m-%d_%H-%M-%S).mkv
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;Запись со звуком:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;wf-recorder --audio -f $(date +%Y-%m-%d_%H-%M-%S).mkv
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;Запись с использование GPU (VAAPI интерфейс):&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;wf-recorder --audio -f $(date +%Y-%m-%d_%H-%M-%S).mkv -c h264_vaapi -d /dev/dri/renderD128
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;видеозапись-экрана----графическое-приложение&#34;&gt;Видеозапись экрана &amp;ndash; графическое приложение&lt;/h4&gt;
+&lt;p&gt;Для захвата десктопа в Wayland используется плагин
+
+&lt;a href=&#34;https://hg.sr.ht/~scoopta/wlrobs&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;&lt;code&gt;wlrobs&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;строка-состояний&#34;&gt;Строка состояний&lt;/h3&gt;
+&lt;p&gt;Sway поддерживает свою строку состояний &lt;code&gt;sway-bar&lt;/code&gt;. Удобное и минималистическое приложение.&lt;/p&gt;
+&lt;p&gt;Попробуем использовать более продвинутый вариант &amp;ndash;
+
+&lt;a href=&#34;https://github.com/Alexays/Waybar&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;&lt;code&gt;waybar&lt;/code&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;emerge -v gui-apps/waybar
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;уведомления&#34;&gt;Уведомления&lt;/h3&gt;
+&lt;p&gt;Используется 
+&lt;a href=&#34;https://github.com/emersion/mako&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;&lt;code&gt;mako&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;emerge -v gui-apps/mako
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Сконфигурировал следующим образом:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-conf&#34;&gt;# ~/.config/sway/config.d/80-mako.conf
+# Light
+exec_always mako --font &#39;Source Code Pro 10&#39; --background-color &#39;#fdf6e3&#39; --text-color &#39;#657b83&#39; --default-timeout 5000 --width 400 --markup 1 --border-radius 5
+
+# Dark
+# exec_always mako --font &#39;Source Code Pro 10&#39; --background-color &#39;#002b36&#39; --text-color &#39;#839496&#39; --default-timeout 5000 --width 400 --markup 1 --border-radius 5
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;настройка-вывода&#34;&gt;Настройка вывода&lt;/h3&gt;
+&lt;p&gt;В XWindow используется программа &lt;code&gt;xrandr&lt;/code&gt; (с её помощью можно изменять
+параметры вывода изображения RandR). В &lt;code&gt;sway&lt;/code&gt; можно управлять с
+помощью &lt;code&gt;swaymsg output&lt;/code&gt; или с помощью утилиты
+
+&lt;a href=&#34;https://github.com/emersion/wlr-randr&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;&lt;code&gt;wlr-randr&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;emerge -v gui-apps/wlr-randr
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;мену-программ-launcher&#34;&gt;Мену программ (launcher)&lt;/h3&gt;
+&lt;p&gt;Для запуска программы используется &lt;code&gt;dmenu&lt;/code&gt;. Если не нравится, можно заменить.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a href=&#34;https://hg.sr.ht/~scoopta/wofi&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;&lt;code&gt;wofi&lt;/code&gt;&lt;/a&gt; &amp;mdash; аналог &lt;code&gt;rofi&lt;/code&gt; для Wayland. Попроще, конечно.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;emerge -v gui-apps/wofi
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;В отличии от &lt;code&gt;dmenu&lt;/code&gt; запоминает последние выбранные команды.&lt;/p&gt;
+&lt;p&gt;Общая конфигурация:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-conf&#34;&gt;# ~/.config/sway/config.d/80-launcher.conf
+
+# dmenu
+
+set $menu dmenu_path | dmenu | xargs swaymsg exec --
+
+# wofi
+# --show &amp;lt;mode&amp;gt;
+# &amp;lt;mode&amp;gt;:
+# - `run` - searches $PATH for executables and allows them to be run by selecting them.
+# - `drun` - searches $XDG_DATA_HOME/applications and $XDG_DATA_DIRS/applications for desktop files and allows them to be run by selecting them.
+# - `dmenu` - reads from stdin and displays options which when selected will be output to stdout.
+
+# set $menu dmenu_path | wofi -c ~/.config/sway/other/wofi/config -s ~/.config/sway/other/wofi/style.css --show dmenu | xargs swaymsg exec --
+
+# rofi
+
+# set $menu rofi -combi-modi window#drun -show combi -modi combi -show-icons
+# set $menu rofi -m $(swaymsg -t get_outputs | jq &#39;map(select(.active) | .focused) | index(true)&#39;) -show combi -modi combi -combi-modi window#drun -show-icons -run-command &#39;swaymsg exec -- {cmd}&#39;
+
+# gmenu
+
+# set $menu gtkmenu --width 500 --height 260 -no-generic
+# set $menu nwggrid
+
+# bemenu
+
+# set $menu j4-dmenu-desktop --dmenu=&amp;quot;bemenu-run.sh -l 30&amp;quot; --term=&amp;quot;alacritty&amp;quot; --no-generic
+
+# Start your launcher
+
+bindsym $mod+d exec $menu
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;буфер-обмена&#34;&gt;Буфер обмена&lt;/h3&gt;
+&lt;p&gt;Предлагается использовать
+
+&lt;a href=&#34;https://github.com/bugaevc/wl-clipboard&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;&lt;code&gt;wl-clipboard&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;emerge -v gui-apps/wl-clipboard
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Пакет содержит две утилиты: &lt;code&gt;wl-copy&lt;/code&gt; и &lt;code&gt;wl-paste&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Пример использования:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# copy a simple text message
+$ wl-copy Hello world!
+
+# copy the list of files in Downloads
+$ ls ~/Downloads | wl-copy
+
+# copy an image file
+$ wl-copy &amp;lt; ~/Pictures/photo.png
+
+# paste to a file
+$ wl-paste &amp;gt; clipboard.txt
+
+# grep each pasted word in file source.c
+$ for word in $(wl-paste); do grep $word source.c; done
+
+# copy the previous command
+$ wl-copy &amp;quot;!!&amp;quot;
+
+# replace the current selection with the list of types it&#39;s offered in
+$ wl-paste --list-types | wl-copy
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
     
     <item>
       <title>amd64 и flash</title>

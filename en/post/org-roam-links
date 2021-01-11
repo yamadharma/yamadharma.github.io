@@ -48,26 +48,37 @@ def replace_md_links(md, f):
 
 if __name__ == "__main__":
     filename = sys.argv[1]
+    print(filename)
     fin = open(filename, "rt")
     filetext = fin.read()
 
     export_file_name_re = re.compile(r'#\+EXPORT_FILE_NAME:\s+\S+')
+    relref_re = re.compile(r"{{< relref \"(.+)\" >}}")
 
 
     links = find_md_links(filetext)
     for mdlink in links['regular']:
-        linkpath = os.path.splitext(mdlink[1])[0]
-        # replace extention
+        fulllink = mdlink[1]
+        isrelref = relref_re.match(fulllink)
+        if isrelref:
+            linkpath = isrelref.group(1)
+        else:
+            # drop extention
+            linkpath = os.path.splitext(fulllink)[0]
+        # add extention
         md2org = linkpath + '.org'
         orgfile = os.path.expanduser(orgroamdir + md2org)
         if os.path.exists(orgfile):
             orgfiletext =  open(orgfile).read()
-            # print(orgfiletext)
             export_file_name_text = export_file_name_re.findall(orgfiletext)
             export_file_name_link = export_file_name_text[0].split()
             hugolink = "{{< relref \"" + export_file_name_link[1] + "\" >}}"
-            filetext = filetext.replace(linkpath + '.md',hugolink)
+            if isrelref:
+                filetext = filetext.replace("{{< relref \"" + linkpath + "\" >}}",hugolink)
+            else:
+                filetext = filetext.replace(linkpath + '.md',hugolink)
 
+            
     fin.close()
     fin = open(filename, "wt")
     fin.write(filetext)

@@ -8,7 +8,7 @@
   
   
   
-  <meta name="generator" content="Wowchemy 5.0.0-beta.1 for Hugo">
+  <meta name="generator" content="Wowchemy 5.0.0-beta.2 for Hugo">
   
 
   
@@ -244,7 +244,7 @@
   
   
   
-  <link rel="stylesheet" href="https://yamadharma.github.io/css/wowchemy.e7f9fe1e4f274391a1fc7edad37d945f.css">
+  <link rel="stylesheet" href="https://yamadharma.github.io/css/wowchemy.33319bbe33e1b9feff835521b777a249.css">
 
   
 
@@ -333,7 +333,7 @@
     
       <meta property="article:published_time" content="2020-12-11T19:39:00&#43;03:00">
     
-    <meta property="article:modified_time" content="2021-01-11T11:28:55&#43;03:00">
+    <meta property="article:modified_time" content="2021-01-20T20:55:18&#43;03:00">
   
 
   
@@ -362,7 +362,7 @@
   "headline": "Общепринятые коммиты",
   
   "datePublished": "2020-12-11T19:39:00+03:00",
-  "dateModified": "2021-01-11T11:28:55+03:00",
+  "dateModified": "2021-01-20T20:55:18+03:00",
   
   "author": {
     "@type": "Person",
@@ -410,7 +410,7 @@
   
   
   
-  <script src="https://yamadharma.github.io/js/wowchemy-init.min.7264cf0eba3b66951b36da7d2cecf9c5.js"></script>
+  <script src="https://yamadharma.github.io/js/wowchemy-init.min.d876f1a6b98701f9238f2313b512a26f.js"></script>
 
   
 
@@ -805,7 +805,7 @@
           Обновлено
       
     
-    2021-01-11
+    2021-01-20
   </span>
   
 
@@ -814,7 +814,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-reading-time">
-    2 мин. для прочтения
+    3 мин. для прочтения
   </span>
   
 
@@ -842,15 +842,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
   
 </div>
 
@@ -869,8 +860,8 @@
         <li><a href="#структура-коммита">Структура коммита</a>
           <ul>
             <li><a href="#базовые-типы-коммитов">Базовые типы коммитов</a></li>
-            <li><a href="#типы-коммитов-the-angular-convention">Типы коммитов The Angular convention</a></li>
-            <li><a href="#типы-коммитов-commitlint-config-conventional">Типы коммитов @commitlint/config-conventional</a></li>
+            <li><a href="#соглашения-the-angular-convention">Соглашения The Angular convention</a></li>
+            <li><a href="#соглашения-commitlint-config-conventional">Соглашения @commitlint/config-conventional</a></li>
           </ul>
         </li>
       </ul>
@@ -879,6 +870,7 @@
     <li><a href="#backlinks">Backlinks</a>
       <ul>
         <li><a href="#система-контроля-версий-git"><a href="https://yamadharma.github.io/ru/post/2020/12/07/git-cvs/">Система контроля версий git</a></a></li>
+        <li><a href="#семантическое-версионирование"><a href="https://yamadharma.github.io/ru/post/2020/12/11/semantic-versioning/">Семантическое версионирование</a></a></li>
       </ul>
     </li>
   </ul>
@@ -899,6 +891,28 @@
 &lt;BLANK LINE&gt;
 &lt;footer&gt;
 </code></pre>
+<ul>
+<li>Заголовок является обязательным.</li>
+<li>Любая строка сообщения о фиксации не может быть длиннее 100 символов.</li>
+<li>Тема (subject) содержит краткое описание изменения.
+<ul>
+<li>Используйте повелительное наклонение в настоящем времени: «изменить» (&ldquo;change&rdquo; not &ldquo;changed&rdquo; nor &ldquo;changes&rdquo;).</li>
+<li>Не используйте заглавную первую букву.</li>
+<li>Не ставьте точку в конце.</li>
+</ul>
+</li>
+<li>Тело (body) должно включать мотивацию к изменению и противопоставлять это предыдущему поведению.
+<ul>
+<li>Как и в теме, используйте повелительное наклонение в настоящем времени.</li>
+</ul>
+</li>
+<li>Нижний колонтитул (footer) должен содержать любую информацию о критических изменениях.
+<ul>
+<li>Также содержит ссылку на issue (например, на github), который закрывает эта фиксация.</li>
+<li>Критические изменения должны начинаться со слова <code>BREAKING CHANGE:</code> с пробела или двух символов новой строки. Затем для этого используется остальная часть сообщения фиксации.</li>
+</ul>
+</li>
+</ul>
 <h4 id="базовые-типы-коммитов">Базовые типы коммитов</h4>
 <ul>
 <li><code>fix:</code> &mdash; коммит типа fix исправляет ошибку (bug) в вашем коде (он соответствует PATCH в SemVer).</li>
@@ -906,29 +920,53 @@
 <li><code>BREAKING CHANGE:</code> &mdash; коммит, который содержит текст <code>BREAKING CHANGE:</code> в начале своего не обязательного тела сообщения (body) или в
 подвале (footer), добавляет изменения, нарушающие обратную
 совместимость вашего API (он соответствует MAJOR в SemVer). BREAKING CHANGE может быть частью коммита любого типа.</li>
+<li><code>revert:</code> &mdash; если фиксация отменяет предыдущую фиксацию. Начинается с <code>revert:</code>, за которым следует заголовок отменённой фиксации. В теле должно быть написано: Это отменяет фиксацию <code>&lt;hash&gt;</code> (это SHA-хэш отменяемой фиксации).</li>
 <li>Другое: коммиты с типами, которые отличаются от <code>fix:</code> и <code>feat:</code>,
 также разрешены. Например, @commitlint/config-conventional
 (основанный на The Angular convention) рекомендует: chore:, docs:,
 style:, refactor:, perf:, test:, и другие.</li>
 </ul>
-<h4 id="типы-коммитов-the-angular-convention">Типы коммитов The Angular convention</h4>
+<h4 id="соглашения-the-angular-convention">Соглашения The Angular convention</h4>
+<p>Одно из популярных соглашений о поддержке исходных кодов &mdash; конвенция Angular (<a href="https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#-commit-message-guidelines" target="_blank" rel="noopener">The Angular convention</a>).</p>
+<!--list-separator-->
+<ul>
+<li>
+<p>Типы коммитов The Angular convention</p>
 <p>Конвенция Angular (<a href="https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#-commit-message-guidelines" target="_blank" rel="noopener">The Angular convention</a>) требует следующие типы коммитов:</p>
 <ul>
-<li><code>build:</code> Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)</li>
-<li><code>ci:</code> Changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs)</li>
-<li><code>docs:</code> Documentation only changes</li>
-<li><code>feat:</code> A new feature</li>
-<li><code>fix:</code> A bug fix</li>
-<li><code>perf:</code> A code change that improves performance</li>
-<li><code>refactor:</code> A code change that neither fixes a bug nor adds a feature</li>
-<li><code>style:</code> Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)</li>
-<li><code>test:</code> Adding missing tests or correcting existing tests</li>
+<li><code>build:</code> &mdash; изменения, влияющие на систему сборки или внешние зависимости (примеры областей (scope): gulp, broccoli, npm).</li>
+<li><code>ci:</code> &mdash; изменения в файлах конфигурации и скриптах CI (примеры областей: Travis, Circle, BrowserStack, SauceLabs).</li>
+<li><code>docs:</code> &mdash; изменения только в документации.</li>
+<li><code>feat:</code> &mdash; новая функция.</li>
+<li><code>fix:</code> &mdash; исправление ошибок.</li>
+<li><code>perf:</code> &mdash; изменение кода, улучшающее производительность.</li>
+<li><code>refactor:</code> &mdash; Изменение кода, которое не исправляет ошибку и не добавляет функции (рефакторинг кода).</li>
+<li><code>style:</code> &mdash; изменения, не влияющие на смысл кода (пробелы, форматирование, отсутствие точек с запятой и т. д.).</li>
+<li><code>test:</code> &mdash; добавление недостающих тестов или исправление существующих тестов.</li>
 </ul>
-<h4 id="типы-коммитов-commitlint-config-conventional">Типы коммитов @commitlint/config-conventional</h4>
+</li>
+</ul>
+<!--list-separator-->
+<ul>
+<li>
+<p>Области действия (scope)</p>
+<p>Областью действия должно быть имя затронутого пакета npm (как его воспринимает человек, читающий журнал изменений, созданный из сообщений фиксации).</p>
+<p>Есть несколько исключений из правила «использовать имя пакета»:</p>
+<ul>
+<li><code>packaging</code> &mdash; используется для изменений, которые изменяют структуру пакета, например, изменения общедоступного пути.</li>
+<li><code>changelog</code> &mdash; используется для обновления примечаний к выпуску в CHANGELOG.md.</li>
+<li>отсутствует область действия &mdash; полезно для изменений стиля, тестирования и рефакторинга, которые выполняются во всех пакетах (например, style: добавить отсутствующие точки с запятой).</li>
+</ul>
+</li>
+</ul>
+<h4 id="соглашения-commitlint-config-conventional">Соглашения @commitlint/config-conventional</h4>
+<p>Соглашение <a href="https://github.com/conventional-changelog/commitlint/tree/master/%40commitlint/config-conventional" target="_blank" rel="noopener">@commitlint/config-conventional</a> входит в пакет <a href="https://github.com/conventional-changelog/conventional-changelog" target="_blank" rel="noopener">Conventional Changelog</a>. В целом в этом соглашении придерживаются соглашения Angular.</p>
 <h2 id="программное-обеспечение">Программное обеспечение</h2>
 <h2 id="backlinks">Backlinks</h2>
 <h3 id="система-контроля-версий-git"><a href="https://yamadharma.github.io/ru/post/2020/12/07/git-cvs/">Система контроля версий git</a></h3>
 <p><a href="https://yamadharma.github.io/ru/post/2020/12/11/conventional-commits/">Общепринятые коммиты</a></p>
+<h3 id="семантическое-версионирование"><a href="https://yamadharma.github.io/ru/post/2020/12/11/semantic-versioning/">Семантическое версионирование</a></h3>
+<p>Для реализации семантического версионирования создано несколько программных продуктов. При этом лучше всего использовать комплексные продукты, которые используют информацию из коммитов системы версионирования. Естественно, коммиты должны иметь стандартизованный вид. Поэтому в семантическое версионирование применяется вместе с <a href="https://yamadharma.github.io/ru/post/2020/12/11/conventional-commits/">Общепринятыми коммитами</a>.</p>
     </div>
 
     
@@ -1383,15 +1421,15 @@ style:, refactor:, perf:, test:, и другие.</li>
     <h3>Похожие</h3>
     <ul>
       
+      <li><a href="https://yamadharma.github.io/ru/post/2021/01/16/semantic-versioning-conventional-changelog/">Семантическое версионирование. Conventional Changelog</a></li>
+      
+      <li><a href="https://yamadharma.github.io/ru/post/2021/01/15/semantic-versioning-semantic-release/">Семантическое версионирование. Semantic-release</a></li>
+      
       <li><a href="https://yamadharma.github.io/ru/post/2020/12/24/emacs/">Emacs</a></li>
       
       <li><a href="https://yamadharma.github.io/ru/post/2020/12/21/emacs-mail-gnus/">Emacs. Почта. GNUS</a></li>
       
       <li><a href="https://yamadharma.github.io/ru/post/2020/12/20/coding-conventions/">Соглашения о кодировании</a></li>
-      
-      <li><a href="https://yamadharma.github.io/ru/post/2020/12/20/elisp-coding-conventions/">Соглашение о кодировании. Emacs lisp</a></li>
-      
-      <li><a href="https://yamadharma.github.io/ru/post/2020/12/18/using-pgp/">Работа с PGP</a></li>
       
     </ul>
   </div>
@@ -1515,7 +1553,7 @@ style:, refactor:, perf:, test:, и другие.</li>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/instant.page/5.1.0/instantpage.min.js" integrity="sha512-1+qUtKoh9XZW7j+6LhRMAyOrgSQKenQ4mluTR+cvxXjP1Z54RxZuzstR/H9kgPXQsVB8IW7DMDFUJpzLjvhGSQ==" crossorigin="anonymous"></script>
 
       
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/8.8.0/mermaid.min.js" integrity="sha512-ja+hSBi4JDtjSqc4LTBsSwuBT3tdZ3oKYKd07lTVYmCnTCor56AnRql00ssqnTOR9Ss4gOP/ROGB3SfcJnZkeg==" crossorigin="anonymous" title="mermaid"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/8.8.4/mermaid.min.js" integrity="sha512-as1BF4+iHZ3BVO6LLDQ7zrbvTXM+c/1iZ1qII/c3c4L8Rn5tHLpFUtpaEtBNS92f+xGsCzsD7b62XP3XYap6oA==" crossorigin="anonymous" title="mermaid"></script>
       
 
       
@@ -1600,7 +1638,7 @@ style:, refactor:, perf:, test:, и другие.</li>
       
     
     
-    <script src="https://yamadharma.github.io/js/wowchemy.min.6d028d63b3ecb5dc2dac414dd6580654.js"></script>
+    <script src="https://yamadharma.github.io/ru/js/wowchemy.min.ece155a53921b511143ba0a97ca1eb6c.js"></script>
 
     
 

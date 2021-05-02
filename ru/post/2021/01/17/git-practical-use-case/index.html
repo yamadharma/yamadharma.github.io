@@ -348,7 +348,7 @@
         content="2021-01-17T20:06:00&#43;03:00"
       />
     
-    <meta property="article:modified_time" content="2021-04-23T12:27:00&#43;03:00">
+    <meta property="article:modified_time" content="2021-04-28T16:25:00&#43;03:00">
   
 
   
@@ -377,7 +377,7 @@
   "headline": "Практический сценарий использования git",
   
   "datePublished": "2021-01-17T20:06:00+03:00",
-  "dateModified": "2021-04-23T12:27:00+03:00",
+  "dateModified": "2021-04-28T16:25:00+03:00",
   
   "author": {
     "@type": "Person",
@@ -491,7 +491,7 @@
 
     
     <button type="button" class="navbar-toggler" data-toggle="collapse"
-            data-target="#navbar-content" aria-controls="navbar" aria-expanded="false" aria-label="Переключить навигацию">
+            data-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Переключить навигацию">
     <span><i class="fas fa-bars"></i></span>
     </button>
     
@@ -819,7 +819,7 @@
           Обновлено
       
     
-    2021-04-23
+    2021-04-28
   </span>
   
 
@@ -846,7 +846,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-categories">
-    <i class="fas fa-folder mr-1"></i><a href="https://yamadharma.github.io/ru/category/%D1%81%D0%B8%D1%8F%D0%BD%D1%81/">сиянс</a></span>
+    <i class="fas fa-folder mr-1"></i><a href="https://yamadharma.github.io/ru/category/%D1%81%D0%B8%D1%8F%D0%BD%D1%81/">сиянс</a>, <a href="https://yamadharma.github.io/ru/category/computer-science/">computer-science</a></span>
   
 
 </div>
@@ -960,6 +960,9 @@ choco install yarn
 <h3 id="установка-git-flow">Установка git-flow</h3>
 <ul>
 <li>
+<p>Linux</p>
+<ul>
+<li>
 <p>Gentoo</p>
 <pre><code class="language-shell">emerge dev-vcs/git-flow
 </code></pre>
@@ -968,6 +971,23 @@ choco install yarn
 <p>Ubuntu</p>
 <pre><code class="language-shell">apt-get install git-flow
 </code></pre>
+</li>
+<li>
+<p>Centos</p>
+<ul>
+<li>
+<p>Первоначально нужно установить репозиторий <em>epel</em> (<a href="https://fedoraproject.org/wiki/EPEL">https://fedoraproject.org/wiki/EPEL</a>):</p>
+<pre><code class="language-shell">yum install epel-release
+</code></pre>
+</li>
+<li>
+<p>Затем, собственно, установить git-flow:</p>
+<pre><code class="language-shell">yum install gitflow
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
 </li>
 <li>
 <p>Windows
@@ -1027,14 +1047,73 @@ git config --global user.email &quot;work@mail&quot;
 <li>
 <p>Параметр <code>autocrlf</code></p>
 <ul>
-<li>Настройка <code>core.autocrlf</code> предназначена для того, чтобы в главном репозитории все переводы строк текстовых файлах были одинаковы.</li>
-<li>Настройка <code>core.autocrlf</code> с параметрами <code>true</code> и <code>input</code> делает все переводы строк текстовых файлов в главном репозитории одинаковыми.
+<li>
+<p>Настройка <code>core.autocrlf</code> предназначена для того, чтобы в главном репозитории все переводы строк текстовых файлах были одинаковы.</p>
+</li>
+<li>
+<p>Настройка <code>core.autocrlf</code> с параметрами <code>true</code> и <code>input</code> делает все переводы строк текстовых файлов в главном репозитории одинаковыми.</p>
 <ul>
 <li><code>core.autocrlf true</code>: конвертация <code>CRLF-&gt;LF</code> при коммите и обратно <code>LF-&gt;CRLF</code> при выгрузке кода из репозитория на файловую систему (обычно используется в Windows).</li>
 <li><code>core.autocrlf input</code>: конвертация <code>CRLF-&gt;LF</code> только при коммитах (используются в MacOS/Linux).</li>
 </ul>
 </li>
-<li>Установка параметра:
+<li>
+<p>Варианты конвертации</p>
+<div class="table-caption">
+  <span class="table-number">&#1058;&#1072;&#1073;&#1083;&#1080;&#1094;&#1072; 1</span>:
+  Варианты конвертации для разных значений параметра core.autocrlf
+</div>
+<table>
+<thead>
+<tr>
+<th>core.autocrlf</th>
+<th>false</th>
+<th>input</th>
+<th>true</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>git commit</td>
+<td>LF -&gt; LF</td>
+<td>LF -&gt; LF</td>
+<td>LF -&gt; CRLF</td>
+</tr>
+<tr>
+<td></td>
+<td>CR -&gt; CR</td>
+<td>CR -&gt; CR</td>
+<td>CR -&gt; CR</td>
+</tr>
+<tr>
+<td></td>
+<td>CRLF -&gt; CRLF</td>
+<td>CRLF -&gt; LF</td>
+<td>CRLF -&gt; CRLF</td>
+</tr>
+<tr>
+<td>git checkout</td>
+<td>LF -&gt; LF</td>
+<td>LF -&gt; LF</td>
+<td>LF -&gt; CRLF</td>
+</tr>
+<tr>
+<td></td>
+<td>CR -&gt; CR</td>
+<td>CR -&gt; CR</td>
+<td>CR -&gt; CR</td>
+</tr>
+<tr>
+<td></td>
+<td>CRLF -&gt; CRLF</td>
+<td>CRLF -&gt; CRLF</td>
+<td>CRLF -&gt; CRLF</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>Установка параметра:</p>
 <ul>
 <li>
 <p>Для Windows</p>
@@ -1676,13 +1755,13 @@ git push --tags
       
       <li><a href="https://yamadharma.github.io/ru/post/2020/11/02/vr-ar-in-education/">Применение VR и AR в образовании</a></li>
       
-      <li><a href="https://yamadharma.github.io/ru/post/2021/04/24/development-educational-courses/">Разработка учебных курсов</a></li>
-      
-      <li><a href="https://yamadharma.github.io/ru/post/2021/04/24/mathematical-disciplines-specialty-cybersecurity/">Математические дисциплины для специальности Кибербезопасность</a></li>
-      
-      <li><a href="https://yamadharma.github.io/ru/post/2021/04/14/preparing-presentations-records-edx/">Подготовка презентации к записи для edX</a></li>
-      
       <li><a href="https://yamadharma.github.io/ru/courses/mathsec/course-mathsec-modular-arithmetic/">Курс МОЗИиИБ. Модульная арифметика</a></li>
+      
+      <li><a href="https://yamadharma.github.io/ru/courses/mathsec/course-mathsec-lections/">Курс МОЗИиИБ. Лекции</a></li>
+      
+      <li><a href="https://yamadharma.github.io/ru/courses/mathsec/course-mathsec-trailer/">Курс МОЗИиИБ. Трейлер</a></li>
+      
+      <li><a href="https://yamadharma.github.io/ru/post/2021/05/01/software-installed-windows/">Программное обеспечение, устанавливаемое на Windows</a></li>
       
     </ul>
   </div>

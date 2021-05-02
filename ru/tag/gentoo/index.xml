@@ -5,12 +5,110 @@
     <link>https://yamadharma.github.io/ru/tag/gentoo/</link>
       <atom:link href="https://yamadharma.github.io/ru/tag/gentoo/index.xml" rel="self" type="application/rss+xml" />
     <description>gentoo</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2021 Dmitry S. Kulyabov</copyright><lastBuildDate>Thu, 10 Sep 2020 10:33:15 +0300</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2021 Dmitry S. Kulyabov</copyright><lastBuildDate>Wed, 28 Apr 2021 16:28:00 +0300</lastBuildDate>
     <image>
       <url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_2.png</url>
       <title>gentoo</title>
       <link>https://yamadharma.github.io/ru/tag/gentoo/</link>
     </image>
+    
+    <item>
+      <title>Мультимедиа сервер PipeWire</title>
+      <link>https://yamadharma.github.io/ru/post/2021/04/28/pipewire-multimedia-server/</link>
+      <pubDate>Wed, 28 Apr 2021 16:28:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2021/04/28/pipewire-multimedia-server/</guid>
+      <description>&lt;p&gt;PipeWire - это новый аудио и видео сервер. В основном для Wayland. Должен заменить другие видео-серверы.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#установка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Установка&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#настройка-пользовательской-сессии&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Настройка пользовательской сессии&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#использование-с-другими-серверами&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Использование с другими серверами&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#замена-pulseaudio&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Замена PulseAudio&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#замена-jack&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2&lt;/span&gt; Замена Jack&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#backlinks&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Backlinks&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Репозиторий проекта: &lt;a href=&#34;https://gitlab.freedesktop.org/pipewire/pipewire&#34;&gt;https://gitlab.freedesktop.org/pipewire/pipewire&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Wiki проекта: &lt;a href=&#34;https://gitlab.freedesktop.org/pipewire/pipewire/-/wikis/home&#34;&gt;https://gitlab.freedesktop.org/pipewire/pipewire/-/wikis/home&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;установка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Установка&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Gentoo
+Установить само приложение:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;emerge --ask media-video/pipewire
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;настройка-пользовательской-сессии&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Настройка пользовательской сессии&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;По умолчанию pipewire настроен на использование systemd.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Для каждого пользователя можно установить активацию по обращению к сокету:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;systemctl --user enable --now pipewire.socket
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;или запустить сразу необходимый процесс:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;systemctl --user enable --now pipewire.service
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Кроме того, необходимо запустить демон сессии:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;systemctl --user enable --now pipewire-media-session.service
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;использование-с-другими-серверами&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Использование с другими серверами&lt;/h2&gt;
+&lt;h3 id=&#34;замена-pulseaudio&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Замена PulseAudio&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Одновременно отключим PelseAudio и включим PipeWire для каждого пользователя:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;systemctl --user disable pulseaudio.socket pulseaudio.service
+systemctl --user enable pipewire.socket pipewire-pulse.socket
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Можно замаскировать PulseAudio, чтобы он не стартовал автоматически:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;systemctl --user mask pulseaudio.socket pulseaudio.service
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Кроме того, можно удалить файлы, оставшиеся от PulseAudio:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;rm -r ~/.config/pulse/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;замена-jack&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2&lt;/span&gt; Замена Jack&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Для маршрутизации клиентов Jack через PipeWire в настоящее время
+предпочтительно запускать их через &lt;code&gt;pw-jack&lt;/code&gt;, который использует
+&lt;code&gt;LD_PRELOAD&lt;/code&gt; для использования библиотек PipeWire вместо Jack, например:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;pw-jack &amp;lt;application&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Можно задать собственный размер буфера, установив размер_буфера/частота_дискретизации:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;PIPEWIRE_LATENCY=&amp;quot;128/48000&amp;quot; pw-jack &amp;lt;application&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;backlinks&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Backlinks&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/04/10/system-administration/&#34;&gt;Системное администрирование&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
     
     <item>
       <title>Переход на Sway</title>
@@ -80,7 +178,7 @@ cp /etc/sway/config ~/.config/sway/
 &lt;li&gt;&lt;code&gt;Mod&lt;/code&gt; + &lt;code&gt;Enter&lt;/code&gt; &amp;ndash; открыть новый терминал;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;Mod&lt;/code&gt; + &lt;code&gt;d&lt;/code&gt; &amp;ndash; запустить программу;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;Mod&lt;/code&gt; + &lt;code&gt;0&lt;/code&gt;.. &lt;code&gt;9&lt;/code&gt; &amp;ndash; переключение между workspace&amp;rsquo;ами;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Mod&lt;/code&gt; + &lt;code&gt;Shift&lt;/code&gt; + &lt;code&gt;0&lt;/code&gt;..=9= &amp;ndash; перемещение окон в заданный workspace;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Mod&lt;/code&gt; + &lt;code&gt;Shift&lt;/code&gt; + &lt;code&gt;0..9&lt;/code&gt; &amp;ndash; перемещение окон в заданный workspace;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;Mod&lt;/code&gt; + &lt;code&gt;Shift&lt;/code&gt; + &lt;code&gt;q&lt;/code&gt; &amp;ndash; закрыть текущее окно;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;Mod&lt;/code&gt; + Стрелочки &amp;ndash; перемещение между окнами, вместо стрелочек также   могут быть использованы клавиши «J» (влево), «K» (вниз), «L» (вверх) и  «;» (вправо);&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;Mod&lt;/code&gt; + &lt;code&gt;Shift&lt;/code&gt; + Стрелочки &amp;ndash; перемещение окон в пределах workspace&amp;rsquo;а, вместо стрелочек также могут быть использованы буковки и точка с запятой;&lt;/li&gt;

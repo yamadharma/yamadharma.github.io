@@ -348,7 +348,7 @@
         content="2021-01-22T15:10:00&#43;03:00"
       />
     
-    <meta property="article:modified_time" content="2021-01-22T16:06:00&#43;03:00">
+    <meta property="article:modified_time" content="2021-05-12T14:35:00&#43;03:00">
   
 
   
@@ -377,7 +377,7 @@
   "headline": "Почта. Синхронизация. mbsync",
   
   "datePublished": "2021-01-22T15:10:00+03:00",
-  "dateModified": "2021-01-22T16:06:00+03:00",
+  "dateModified": "2021-05-12T14:35:00+03:00",
   
   "author": {
     "@type": "Person",
@@ -819,7 +819,7 @@
           Обновлено
       
     
-    2021-01-22
+    2021-05-12
   </span>
   
 
@@ -828,7 +828,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-reading-time">
-    2 мин. для прочтения
+    5 мин. для прочтения
   </span>
   
 
@@ -846,7 +846,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-categories">
-    <i class="fas fa-folder mr-1"></i><a href="https://yamadharma.github.io/ru/category/blog/">blog</a></span>
+    <i class="fas fa-folder mr-1"></i><a href="https://yamadharma.github.io/ru/category/computer-science/">computer-science</a></span>
   
 
 </div>
@@ -871,18 +871,28 @@
   <nav id="TableOfContents">
   <ul>
     <li><a href="#описание"><span class="section-num">1</span> Описание</a></li>
-    <li><a href="#настройка-синхронизации"><span class="section-num">2</span> Настройка синхронизации</a></li>
-    <li><a href="#конфигурация-учётных-записей"><span class="section-num">3</span> Конфигурация учётных записей</a></li>
-    <li><a href="#запуск-синхронизации"><span class="section-num">4</span> Запуск синхронизации</a>
+    <li><a href="#установка"><span class="section-num">2</span> Установка</a></li>
+    <li><a href="#настройка-синхронизации"><span class="section-num">3</span> Настройка синхронизации</a></li>
+    <li><a href="#конфигурация-учётных-записей"><span class="section-num">4</span> Конфигурация учётных записей</a>
       <ul>
-        <li><a href="#запуск-из-командной-строки"><span class="section-num">4.1</span> Запуск из командной строки</a></li>
+        <li><a href="#общие-параметры"><span class="section-num">4.1</span> Общие параметры</a></li>
+        <li><a href="#примеры-конфигурации-для-разных-провайдеров"><span class="section-num">4.2</span> Примеры конфигурации для разных провайдеров</a>
+          <ul>
+            <li><a href="#gmail"><span class="section-num">4.2.1</span> Gmail</a></li>
+            <li><a href="#apple"><span class="section-num">4.2.2</span> Apple</a></li>
+            <li><a href="#gmx"><span class="section-num">4.2.3</span> GMX</a></li>
+            <li><a href="#proton"><span class="section-num">4.2.4</span> Proton</a></li>
+          </ul>
+        </li>
       </ul>
     </li>
-    <li><a href="#backlinks"><span class="section-num">5</span> Backlinks</a>
+    <li><a href="#синхронизация"><span class="section-num">5</span> Синхронизация</a>
       <ul>
-        <li><a href="#emacs-dot-почта-dot-mu4e"><span class="section-num">5.1</span> <a href="https://yamadharma.github.io/ru/post/2020/12/24/emacs-mail-mu4e/">Emacs. Почта. Mu4e</a></a></li>
+        <li><a href="#запуск-из-командной-строки"><span class="section-num">5.1</span> Запуск из командной строки</a></li>
+        <li><a href="#запуск-по-таймеру"><span class="section-num">5.2</span> Запуск по таймеру</a></li>
       </ul>
     </li>
+    <li><a href="#backlinks"><span class="section-num">6</span> Backlinks</a></li>
   </ul>
 </nav>
 </details>
@@ -890,31 +900,75 @@
 <h2 id="описание"><span class="section-num">1</span> Описание</h2>
 <p>isync/mbsync &mdash; программа для синхронизации IMAP и локальных почтовых файлов. isync &mdash; старое название (для совместимости).</p>
 <p>Домашняя страница: <a href="https://isync.sourceforge.io/">https://isync.sourceforge.io/</a>.</p>
-<h2 id="настройка-синхронизации"><span class="section-num">2</span> Настройка синхронизации</h2>
+<h2 id="установка"><span class="section-num">2</span> Установка</h2>
+<ul>
+<li>
+<p>Gentoo</p>
+<pre><code class="language-shell">emerge isync
+</code></pre>
+</li>
+</ul>
+<h2 id="настройка-синхронизации"><span class="section-num">3</span> Настройка синхронизации</h2>
 <ul>
 <li>Будем настраивать синхронизацию нескольких учётных записей.</li>
 <li>Для хранения паролей будем использовать файл формата <code>.authinfo</code> (см. <a href="https://yamadharma.github.io/ru/post/2021/01/22/mail-password-authentication/">Почта. Парольная аутентификация</a>).</li>
 </ul>
-<h2 id="конфигурация-учётных-записей"><span class="section-num">3</span> Конфигурация учётных записей</h2>
+<h2 id="конфигурация-учётных-записей"><span class="section-num">4</span> Конфигурация учётных записей</h2>
 <ul>
 <li>
+<p>Учётные записи делаем по полному наименованию почты. Я это делаю потому, что у меня есть почтовые ящики с одинаковыми именами в разных почтовых доменах.</p>
+</li>
+<li>
 <p>Создать необходимые каталоги:</p>
-<pre><code class="language-conf-unix">mkdir -p ~/Maildir/account1
+<pre><code class="language-conf-unix">mkdir -p ~/Maildir/account@domain
 </code></pre>
 </li>
 <li>
-<p>Делаем конфигурационный файл для <em>mbsync</em>. Файл называется <code>~/.mbsyncrc</code>:</p>
+<p>Делаем конфигурационный файл для <em>mbsync</em>. Файл называется <code>~/.mbsyncrc</code>.</p>
+</li>
+<li>
+<p>Чтобы не хранить пароли в конфигурационном файле будем использовать хранение пароля в файле <code>~/.authinfo.gpg</code> (см. <a href="https://yamadharma.github.io/ru/post/2021/01/22/mail-password-authentication/">Почта. Парольная аутентификация</a>).</p>
+</li>
+<li>
+<p>Начиная с версии <em>mbsync-1.4.1</em> операторы <code>Master</code> и <code>Slave</code> заменены на <code>Far</code> и <code>Near</code>.</p>
+</li>
+</ul>
+<h3 id="общие-параметры"><span class="section-num">4.1</span> Общие параметры</h3>
+<ul>
+<li>
+<p>Установка параметра <code>CopyArrivalDate</code>:</p>
+<pre><code class="language-conf-unix"># By default (CopyArrivalDate no), if you copy an old email from inbox to
+# Archive (e.g.) it will get the date of the copy assigned, instead of just
+# keeping its original date of arrival! Also see:
+# https://rakhim.org/fastmail-setup-with-emacs-mu4e-and-mbsync-on-macos/
+# https://wiki.archlinux.org/index.php/Isync#Emails_on_remote_server_have_the_wrong_date
+CopyArrivalDate yes
+</code></pre>
+</li>
+</ul>
+<h3 id="примеры-конфигурации-для-разных-провайдеров"><span class="section-num">4.2</span> Примеры конфигурации для разных провайдеров</h3>
+<h4 id="gmail"><span class="section-num">4.2.1</span> Gmail</h4>
+<ul>
+<li>
+<p><a href="https://www.google.com/intl/ru/gmail/about/">https://www.google.com/intl/ru/gmail/about/</a></p>
+</li>
+<li>
+<p>Из-за структуры тегов Gmail необходимо явно задавать названия почтовых ящиков в директивах <code>Far</code> и <code>Near</code>.</p>
+</li>
+<li>
+<p>Папка &ldquo;Отправленные&rdquo; не синхронизируется потому, что Google сохраняет всю электронную почту в папке &ldquo;Все сообщения&rdquo;, и в результате мы получим локально дубликаты.</p>
 <pre><code class="language-conf-unix"># IMAPAccount (gmail)
 
-IMAPAccount account1
+IMAPAccount account1@gmail.com
 Host imap.gmail.com
 User account1@gmail.com
 # Pass ***************
 # To store the password in an encrypted file use PassCmd instead of Pass
-PassCmd &quot;gpg2 -q --for-your-eyes-only --no-tty -d ~/.authinfo.gpg | awk '/machine account1/ {print $6}'&quot;
+PassCmd &quot;gpg -q --for-your-eyes-only --no-tty -d ~/.authinfo.gpg | awk '/machine account1@gmail.com/ {print $6}'&quot;
 Port 993
 SSLType IMAPS
 AuthMechs LOGIN
+SSLVersions TLSv1.2
 
 IMAPStore account1-remote
 Account account1
@@ -939,10 +993,211 @@ Expunge Both
 # Save the synchronization state files in the relevant directory
 SyncState *
 </code></pre>
+<pre><code class="language-conf-unix"># IMAPAccount (gmail)
+
+IMAPAccount account@gmail.com
+Host imap.gmail.com
+User account@gmail.com
+# Pass ***************
+# To store the password in an encrypted file use PassCmd instead of Pass
+PassCmd &quot;gpg -q --for-your-eyes-only --no-tty -d ~/.authinfo.gpg | awk '/machine account@gmail.com/ {print $6}'&quot;
+AuthMechs LOGIN
+SSLType IMAPS
+SSLVersions TLSv1.2
+Port 993
+
+MaildirStore account@gmail.com-local
+Path ~/Maildir/account@gmail.com/
+Inbox ~/Maildir/account@gmail.com/Inbox
+SubFolders Verbatim
+
+IMAPStore account@gmail.com-remote
+Account account@gmail.com
+
+Channel account@gmail.com-inbox
+Far :account@gmail.com-remote:&quot;INBOX&quot;
+Near :account@gmail.com-local:&quot;INBOX&quot;
+CopyArrivalDate yes
+# Automatically create missing mailboxes, both locally and on the server
+Create Both
+Expunge Both
+# Save the synchronization state files in the relevant directory
+SyncState *
+
+Channel account@gmail.com-trash
+Far :account@gmail.com-remote:&quot;[Gmail]/Trash&quot;
+Near :account@gmail.com-local:&quot;Trash&quot;
+CopyArrivalDate yes
+# Automatically create missing mailboxes, both locally and on the server
+Create Both
+Expunge Both
+# Save the synchronization state files in the relevant directory
+SyncState *
+
+Channel account@gmail.com-spam
+Far :account@gmail.com-remote:&quot;[Gmail]/Spam&quot;
+Near :account@gmail.com-local:&quot;Spam&quot;
+CopyArrivalDate yes
+# Automatically create missing mailboxes, both locally and on the server
+Create Both
+Expunge Both
+# Save the synchronization state files in the relevant directory
+SyncState *
+
+Channel account@gmail.com-all
+Far :account@gmail.com-remote:&quot;[Gmail]/All Mail&quot;
+Near :account@gmail.com-local:&quot;Archive&quot;
+CopyArrivalDate yes
+# Automatically create missing mailboxes, both locally and on the server
+Create Both
+Expunge Both
+# Save the synchronization state files in the relevant directory
+SyncState *
+
+Channel account@gmail.com-drafts
+Far :account@gmail.com-remote:&quot;[Gmail]/Drafts&quot;
+Near :account@gmail.com-local:&quot;Drafts&quot;
+CopyArrivalDate yes
+# Automatically create missing mailboxes, both locally and on the server
+Create Both
+Expunge Both
+# Save the synchronization state files in the relevant directory
+SyncState *
+
+Group account@gmail.com
+Channel account@gmail.com-inbox
+Channel account@gmail.com-trash
+Channel account@gmail.com-all
+Channel account@gmail.com-spam
+Channel account@gmail.com-drafts
+</code></pre>
 </li>
 </ul>
-<h2 id="запуск-синхронизации"><span class="section-num">4</span> Запуск синхронизации</h2>
-<h3 id="запуск-из-командной-строки"><span class="section-num">4.1</span> Запуск из командной строки</h3>
+<h4 id="apple"><span class="section-num">4.2.2</span> Apple</h4>
+<ul>
+<li>
+<p><a href="https://www.icloud.com/mail">https://www.icloud.com/mail</a></p>
+<pre><code class="language-conf-unix"># IMAPAccount (Apple)
+
+IMAPAccount account@icloud.com
+Host imap.mail.me.com
+PORT 993
+User account@icloud.com
+PassCmd &quot;gpg -q --for-your-eyes-only --no-tty -d ~/.authinfo.gpg | awk '/machine account@icloud.com/ {print $6}'&quot;
+AuthMechs LOGIN
+SSLType IMAPS
+SSLVersion TLSv1.2
+
+MaildirStore account@icloud.com-local
+Path ~/Maildir/account@icloud.com/
+Inbox ~/Maildir/account@icloud.com/Inbox
+SubFolders Verbatim
+
+IMAPStore account@icloud.com-remote
+Account account@icloud.com
+
+Channel account@icloud.com-all
+Far :account@icloud.com-remote:
+Near :account@icloud.com-local:
+# Included mailboxes
+Patterns &quot;INBOX&quot; &quot;Archive&quot; &quot;Trash&quot; &quot;Spam&quot; &quot;Drafts&quot;
+CopyArrivalDate yes
+Create Both
+Expunge Both
+SyncState *
+
+Channel account@icloud.com-sent
+Far :account@icloud.com-remote:&quot;Sent Messages&quot;
+Near :account@icloud.com-local:&quot;Sent&quot;
+CopyArrivalDate yes
+Create Both
+Expunge Both
+SyncState *
+
+Group account@icloud.com
+Channel account@icloud.com-sent
+Channel account@icloud.com-all
+</code></pre>
+</li>
+</ul>
+<h4 id="gmx"><span class="section-num">4.2.3</span> GMX</h4>
+<ul>
+<li>
+<p><a href="https://www.gmx.com/">https://www.gmx.com/</a></p>
+</li>
+<li>
+<p><a href="https://www.gmx.net/">https://www.gmx.net/</a></p>
+<pre><code class="language-conf-unix"># IMAPAccount (GMX)
+
+IMAPAccount account@gmx.com
+Host imap.gmx.com
+User account@gmx.com
+PassCmd &quot;gpg -q --for-your-eyes-only --no-tty -d ~/.authinfo.gpg | awk '/machine account@gmx.com/ {print $6}'&quot;
+AuthMechs LOGIN
+SSLType IMAPS
+SSLVersion TLSv1.2
+
+MaildirStore account@gmx.com-local
+Path ~/Maildir/account@gmx.com/
+Inbox ~/Maildir/account@gmx.com/Inbox
+SubFolders Verbatim
+
+IMAPStore account@gmx.com-remote
+Account account@gmx.com
+
+Channel account@gmx.com
+Far :account@gmx.com-remote:
+Near :account@gmx.com-local:
+Patterns &quot;INBOX&quot; &quot;Archive&quot; &quot;Trash&quot; &quot;Spam&quot; &quot;Drafts&quot; &quot;Sent&quot;
+CopyArrivalDate yes
+Create Both
+Expunge Both
+SyncState *
+</code></pre>
+</li>
+</ul>
+<h4 id="proton"><span class="section-num">4.2.4</span> Proton</h4>
+<ul>
+<li>
+<p><a href="https://protonmail.com/">https://protonmail.com/</a></p>
+</li>
+<li>
+<p>Заблокирован в России.</p>
+</li>
+<li>
+<p>Для работы необходимо установить локальное приложение <a href="https://protonmail.com/bridge/">https://protonmail.com/bridge/</a>.</p>
+<pre><code class="language-conf-unix"># IMAPAccount (Proton)
+
+IMAPAccount account@protonmail.com
+Host 127.0.0.1
+PORT 1111
+User account@protonmail.com
+PassCmd &quot;gpg -q --for-your-eyes-only --no-tty -d ~/.authinfo.gpg | awk '/machine account@protonmail.com/ {print $6}'&quot;
+AuthMechs LOGIN
+SSLType STARTTLS
+SSLVersion TLSv1.2
+
+MaildirStore account@protonmail.com-local
+Path ~/Maildir/account@protonmail.com/
+Inbox ~/Maildir/account@protonmail.com/Inbox
+SubFolders Verbatim
+
+IMAPStore account@protonmail.com-remote
+Account account@protonmail.com
+
+Channel account@protonmail.com
+Far :account@protonmail.com-remote:
+Near :account@protonmail.com-local:
+Patterns &quot;INBOX&quot; &quot;Archive&quot; &quot;Trash&quot; &quot;Spam&quot; &quot;Drafts&quot; &quot;Sent&quot;
+CopyArrivalDate yes
+Create Both
+Expunge Both
+SyncState *
+</code></pre>
+</li>
+</ul>
+<h2 id="синхронизация"><span class="section-num">5</span> Синхронизация</h2>
+<h3 id="запуск-из-командной-строки"><span class="section-num">5.1</span> Запуск из командной строки</h3>
 <ul>
 <li>
 <p>Синхронизация конкретной учётной записи:</p>
@@ -955,15 +1210,62 @@ SyncState *
 </code></pre>
 </li>
 </ul>
-<h2 id="backlinks"><span class="section-num">5</span> Backlinks</h2>
-<h3 id="emacs-dot-почта-dot-mu4e"><span class="section-num">5.1</span> <a href="https://yamadharma.github.io/ru/post/2020/12/24/emacs-mail-mu4e/">Emacs. Почта. Mu4e</a></h3>
-<p>Для синхронизации будем использовать программу <em>mbsync</em> (см. <a href="https://yamadharma.github.io/ru/post/2021/01/22/mail-synchronization-mbsync/">Почта. Синхронизация. mbsync</a>).</p>
+<h3 id="запуск-по-таймеру"><span class="section-num">5.2</span> Запуск по таймеру</h3>
+<ul>
+<li>
+<p>Для синхронизации с помощью <code>systemd</code> надо добавить сервис и таймер.</p>
+</li>
+<li>
+<p>После создания этих файлов добавьте <code>mbsync.timer</code> в <code>systemctl</code>:</p>
+<pre><code class="language-shell">systemctl --user --now enable mbsync.timer
+</code></pre>
+</li>
+<li>
+<p><code>~/.config/systemd/user/mbsync.service</code>. После синхронизации запускаем индексирование для <code>mu</code>.</p>
+<pre><code class="language-conf-unix"># ~/.config/systemd/user/mbsync.service
+
+[Unit]
+Description=Mailbox synchronization service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/mbsync -a
+ExecStartPost=/usr/bin/mu index
+</code></pre>
+</li>
+<li>
+<p><code>~/.config/systemd/user/mbsync.timer</code>. Настраиваем запуск <code>mbsync</code> через 2 минуты после загрузки, а затем запускаем каждые 5 минут.</p>
+<pre><code class="language-conf-unix"># ~/.config/systemd/user/mbsync.timer
+
+[Unit]
+Description=Mailbox synchronization timer
+
+[Timer]
+OnBootSec=2m
+OnUnitActiveSec=5m
+Unit=mbsync.service
+
+[Install]
+WantedBy=timers.target
+</code></pre>
+</li>
+</ul>
+<h2 id="backlinks"><span class="section-num">6</span> Backlinks</h2>
+<ul>
+<li><a href="https://yamadharma.github.io/ru/post/2020/12/24/emacs-mail-mu4e/">Emacs. Почта. Mu4e</a></li>
+</ul>
     </div>
 
     
 
 
 
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="https://yamadharma.github.io/ru/tag/sysadmin/">sysadmin</a>
+  
+</div>
 
 
 
@@ -1399,15 +1701,15 @@ SyncState *
     <h3>Похожие</h3>
     <ul>
       
-      <li><a href="https://yamadharma.github.io/ru/post/2021/02/22/creative-commons-licenses/">Лицензии Creative Commons</a></li>
+      <li><a href="https://yamadharma.github.io/ru/post/2021/05/14/window-manager-i3/">Window manager i3</a></li>
       
-      <li><a href="https://yamadharma.github.io/ru/post/2021/02/04/being-science/">Бытие науки</a></li>
+      <li><a href="https://yamadharma.github.io/ru/post/2021/05/03/have-i-been-pwned-hibp/">Have I Been Pwned (HIBP)</a></li>
       
-      <li><a href="https://yamadharma.github.io/ru/post/2021/02/04/history-science/">История науки</a></li>
+      <li><a href="https://yamadharma.github.io/ru/post/2021/04/29/password-managers/">Менеджеры паролей</a></li>
       
-      <li><a href="https://yamadharma.github.io/ru/post/2021/02/03/doctoral-committee/">Диссертационный совет</a></li>
+      <li><a href="https://yamadharma.github.io/ru/post/2021/04/28/password-manager-pass/">Менеджер паролей pass</a></li>
       
-      <li><a href="https://yamadharma.github.io/ru/post/2021/02/03/tags-organizing/">Организация меток для записей</a></li>
+      <li><a href="https://yamadharma.github.io/ru/post/2021/04/28/pipewire-multimedia-server/">Мультимедиа сервер PipeWire</a></li>
       
     </ul>
   </div>

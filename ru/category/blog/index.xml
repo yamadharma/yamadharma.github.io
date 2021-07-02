@@ -373,7 +373,7 @@
     </item>
     
     <item>
-      <title>Почта. Парольная аутентификация</title>
+      <title>Emacs. Почта. Парольная аутентификация</title>
       <link>https://yamadharma.github.io/ru/post/2021/01/22/mail-password-authentication/</link>
       <pubDate>Fri, 22 Jan 2021 15:20:00 +0300</pubDate>
       <guid>https://yamadharma.github.io/ru/post/2021/01/22/mail-password-authentication/</guid>
@@ -382,32 +382,91 @@
   &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
   &lt;nav id=&#34;TableOfContents&#34;&gt;
   &lt;ul&gt;
-    &lt;li&gt;&lt;a href=&#34;#парольная-аутентификация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Парольная аутентификация&lt;/a&gt;
+    &lt;li&gt;&lt;a href=&#34;#описание&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Описание&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#настройка-emacs&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Настройка Emacs&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#парольная-аутентификация-netrc&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Парольная аутентификация &lt;em&gt;netrc&lt;/em&gt;&lt;/a&gt;
       &lt;ul&gt;
-        &lt;li&gt;&lt;a href=&#34;#конфигурационные-файлы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Конфигурационные файлы&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#разрешения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Разрешения&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#формат-файла-паролей&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.3&lt;/span&gt; Формат файла паролей&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#шифрование-файла-паролей&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.4&lt;/span&gt; Шифрование файла паролей&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#настройка-подключения-к-google&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.5&lt;/span&gt; Настройка подключения к Google&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#конфигурационные-файлы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Конфигурационные файлы&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#разрешения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.2&lt;/span&gt; Разрешения&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#формат-файла-паролей&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.3&lt;/span&gt; Формат файла паролей&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#шифрование-файла-паролей&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.4&lt;/span&gt; Шифрование файла паролей&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#настройка-подключения-к-google&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.5&lt;/span&gt; Настройка подключения к Google&lt;/a&gt;&lt;/li&gt;
       &lt;/ul&gt;
     &lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#backlinks&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Backlinks&lt;/a&gt;&lt;/li&gt;
   &lt;/ul&gt;
 &lt;/nav&gt;
 &lt;/details&gt;
 
-&lt;h2 id=&#34;парольная-аутентификация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Парольная аутентификация&lt;/h2&gt;
-&lt;h3 id=&#34;конфигурационные-файлы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Конфигурационные файлы&lt;/h3&gt;
+&lt;h2 id=&#34;описание&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Описание&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Библиотека &lt;code&gt;auth-source&lt;/code&gt; для emacs создавалась для хранения паролей для gnus.&lt;/li&gt;
+&lt;li&gt;Документация: &lt;a href=&#34;https://www.gnu.org/software/emacs/manual/html%5Fmono/auth.html&#34;&gt;https://www.gnu.org/software/emacs/manual/html%5Fmono/auth.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Библиотека &lt;code&gt;auth-source&lt;/code&gt; поддерживает несколько бэкэнд-хранилищ:
+&lt;ul&gt;
+&lt;li&gt;бэкэнд &lt;em&gt;netrc&lt;/em&gt;,&lt;/li&gt;
+&lt;li&gt;файлы &lt;em&gt;json&lt;/em&gt;,
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;формат файла:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-js&#34;&gt;[{ &amp;quot;machine&amp;quot;: &amp;quot;SERVER&amp;quot;, &amp;quot;port&amp;quot;: &amp;quot;PORT&amp;quot;, &amp;quot;login&amp;quot;: &amp;quot;USER&amp;quot;, &amp;quot;password&amp;quot;: &amp;quot;PASSWORD&amp;quot; }]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Secret Service API&lt;/em&gt; (&lt;a href=&#34;https://www.freedesktop.org/wiki/Specifications/secret-storage-spec/&#34;&gt;https://www.freedesktop.org/wiki/Specifications/secret-storage-spec/&lt;/a&gt;),&lt;/li&gt;
+&lt;li&gt;стандартный менеджер паролей Unix &lt;em&gt;pass&lt;/em&gt; (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/04/28/password-manager-pass/&#34;&gt;Менеджер паролей pass&lt;/a&gt;).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;настройка-emacs&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Настройка Emacs&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Переменная &lt;code&gt;auth-sources&lt;/code&gt;  задаёт источники аутентификации:
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;устаревшая настройка по умолчанию (для &lt;em&gt;netrc&lt;/em&gt;):&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-elisp&#34;&gt;(setq auth-sources &#39;((:source &amp;quot;~/.authinfo.gpg&amp;quot; :host t :port t)))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;то же самое, но короче (для &lt;em&gt;netrc&lt;/em&gt;):&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-elisp&#34;&gt;(setq auth-sources &#39;((:source &amp;quot;~/.authinfo.gpg&amp;quot;)))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;несколько источников (все варианты для &lt;em&gt;netrc&lt;/em&gt;):&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-elisp&#34;&gt;(setq auth-sources &#39;(&amp;quot;~/.authinfo.gpg&amp;quot; &amp;quot;~/.authinfo&amp;quot; &amp;quot;~/.netrc&amp;quot;))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;использование &lt;em&gt;Secrets API&lt;/em&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-elisp&#34;&gt;(setq auth-sources &#39;(&amp;quot;secrets:Login&amp;quot;))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;использование &lt;em&gt;pass&lt;/em&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-elisp&#34;&gt;(setq auth-sources &#39;(password-store))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;использование &lt;em&gt;json&lt;/em&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-elisp&#34;&gt;(setq auth-sources &#39;(&amp;quot;~/.authinfo.json.gpg&amp;quot;))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;парольная-аутентификация-netrc&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Парольная аутентификация &lt;em&gt;netrc&lt;/em&gt;&lt;/h2&gt;
+&lt;h3 id=&#34;конфигурационные-файлы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Конфигурационные файлы&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;~/.authinfo.gpg&lt;/code&gt; - зашифрованный;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;~/.authinfo&lt;/code&gt; - не зашифрованный;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;~/.netrc&lt;/code&gt; - устаревший вариант.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;разрешения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Разрешения&lt;/h3&gt;
+&lt;h3 id=&#34;разрешения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.2&lt;/span&gt; Разрешения&lt;/h3&gt;
 &lt;p&gt;Установите права только на чтение и запись для пользователя:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;chmod 600 ~/.authinfo.gpg
 &lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&#34;формат-файла-паролей&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.3&lt;/span&gt; Формат файла паролей&lt;/h3&gt;
+&lt;h3 id=&#34;формат-файла-паролей&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.3&lt;/span&gt; Формат файла паролей&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;Файл имеет следующий формат:&lt;/p&gt;
@@ -422,8 +481,13 @@
 &lt;li&gt;
 &lt;p&gt;Учитывая, что с одним логином могут быть почтовые адреса на разных доменах, предлагается в качестве &lt;code&gt;PROFILE&lt;/code&gt; использовать полный почтовый адрес (такой, как &lt;code&gt;account@domain&lt;/code&gt;).&lt;/p&gt;
 &lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Также можно использовать этот файл для указания клиентских сертификатов, которые будут использоваться при настройке TLS-соединений:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;machine HOST port PORT key KEY cert CERT
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;шифрование-файла-паролей&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.4&lt;/span&gt; Шифрование файла паролей&lt;/h3&gt;
+&lt;h3 id=&#34;шифрование-файла-паролей&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.4&lt;/span&gt; Шифрование файла паролей&lt;/h3&gt;
 &lt;p&gt;Для безопасности следует зашифровать файл паролей (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2020/12/18/using-pgp/&#34;&gt;Работа с PGP&lt;/a&gt;).&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -440,16 +504,8 @@
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;настройка-подключения-к-google&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.5&lt;/span&gt; Настройка подключения к Google&lt;/h3&gt;
-&lt;p&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2020/12/25/mail-google-connect/&#34;&gt;Почта. Подключение к Google&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&#34;backlinks&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Backlinks&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2020/12/21/emacs-mail-gnus/&#34;&gt;Emacs. Почта. GNUS&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;!--listend--&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/01/22/mail-synchronization-mbsync/&#34;&gt;Почта. Синхронизация. mbsync&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</description>
+&lt;h3 id=&#34;настройка-подключения-к-google&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.5&lt;/span&gt; Настройка подключения к Google&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2020/12/25/mail-google-connect/&#34;&gt;Почта. Подключение к Google&lt;/a&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -913,7 +969,6 @@
   &lt;ul&gt;
     &lt;li&gt;&lt;a href=&#34;#создание-файла&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Создание файла&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#org-mode&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Org-mode&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#backlinks&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Backlinks&lt;/a&gt;&lt;/li&gt;
   &lt;/ul&gt;
 &lt;/nav&gt;
 &lt;/details&gt;
@@ -921,11 +976,7 @@
 &lt;h2 id=&#34;создание-файла&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Создание файла&lt;/h2&gt;
 &lt;pre&gt;&lt;code class=&#34;language-emacs&#34;&gt;M-x org-roam-find-file
 &lt;/code&gt;&lt;/pre&gt;
-&lt;h2 id=&#34;org-mode&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Org-mode&lt;/h2&gt;
-&lt;h2 id=&#34;backlinks&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Backlinks&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/02/03/self-management/&#34;&gt;Самоорганизация&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</description>
+&lt;h2 id=&#34;org-mode&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Org-mode&lt;/h2&gt;</description>
     </item>
     
     <item>

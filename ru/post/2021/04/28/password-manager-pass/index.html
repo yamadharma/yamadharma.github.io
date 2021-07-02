@@ -7,7 +7,7 @@
   
   
   
-    <meta name="generator" content="Wowchemy 5.2.0 for Hugo" />
+    <meta name="generator" content="Wowchemy 5.3.0 for Hugo" />
   
 
   
@@ -223,6 +223,14 @@
       
 
       
+    
+      
+      
+
+      
+      
+
+      
         <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
       
     
@@ -259,7 +267,7 @@
   
   
   
-  <link rel="stylesheet" href="https://yamadharma.github.io/css/wowchemy.a809a4e79df6c8ad0fe4bd60dc874190.css" />
+  <link rel="stylesheet" href="https://yamadharma.github.io/css/wowchemy.5cb23ba6a0e3e62be1cf9db90ef6e2fd.css" />
 
   
 
@@ -320,7 +328,7 @@
   
 
   
-    <link rel="manifest" href="https://yamadharma.github.io/ru/index.webmanifest" />
+    <link rel="manifest" href="https://yamadharma.github.io/ru/manifest.webmanifest" />
   
 
   <link rel="icon" type="image/png" href="https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_32x32_fill_lanczos_center_2.png" />
@@ -357,7 +365,7 @@
         content="2021-04-28T18:50:00&#43;03:00"
       />
     
-    <meta property="article:modified_time" content="2021-06-27T10:11:00&#43;03:00">
+    <meta property="article:modified_time" content="2021-06-29T12:17:00&#43;03:00">
   
 
   
@@ -386,7 +394,7 @@
   "headline": "Менеджер паролей pass",
   
   "datePublished": "2021-04-28T18:50:00+03:00",
-  "dateModified": "2021-06-27T10:11:00+03:00",
+  "dateModified": "2021-06-29T12:17:00+03:00",
   
   "author": {
     "@type": "Person",
@@ -432,7 +440,7 @@
   
   
   
-  <script src="https://yamadharma.github.io/js/wowchemy-init.min.b8153d4570dcbb34350a2a846dba8c03.js"></script>
+  <script src="https://yamadharma.github.io/js/wowchemy-init.min.8988fb2a4bba758785868cfcb5244555.js"></script>
 
   
 
@@ -829,7 +837,7 @@
           Обновлено
       
     
-    2021-06-27
+    2021-06-29
   </span>
   
 
@@ -838,7 +846,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-reading-time">
-    4 мин. для прочтения
+    6 мин. для прочтения
   </span>
   
 
@@ -878,8 +886,30 @@
   <nav id="TableOfContents">
   <ul>
     <li><a href="#основные-свойства"><span class="section-num">1</span> Основные свойства</a></li>
-    <li><a href="#структура-базы-паролей"><span class="section-num">2</span> Структура базы паролей</a></li>
-    <li><a href="#реализации"><span class="section-num">3</span> Реализации</a></li>
+    <li><a href="#структура-базы-паролей"><span class="section-num">2</span> Структура базы паролей</a>
+      <ul>
+        <li><a href="#семантическая-структура-базы-паролей"><span class="section-num">2.1</span> Семантическая структура базы паролей</a></li>
+      </ul>
+    </li>
+    <li><a href="#реализации"><span class="section-num">3</span> Реализации</a>
+      <ul>
+        <li><a href="#утилиты-командной-строки"><span class="section-num">3.1</span> Утилиты командной строки:</a></li>
+        <li><a href="#графические-интерфейсы"><span class="section-num">3.2</span> Графические интерфейсы:</a></li>
+        <li><a href="#приложения-для-android"><span class="section-num">3.3</span> Приложения для Android</a>
+          <ul>
+            <li><a href="#password-store"><span class="section-num">3.3.1</span> Password Store</a></li>
+            <li><a href="#openkeychain-easy-pgp"><span class="section-num">3.3.2</span> OpenKeychain: Easy PGP</a></li>
+          </ul>
+        </li>
+        <li><a href="#пакеты-для-emacs"><span class="section-num">3.4</span> Пакеты для Emacs</a>
+          <ul>
+            <li><a href="#pass"><span class="section-num">3.4.1</span> pass</a></li>
+            <li><a href="#helm-pass"><span class="section-num">3.4.2</span> helm-pass</a></li>
+            <li><a href="#ivy-pass"><span class="section-num">3.4.3</span> ivy-pass</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
     <li><a href="#установка"><span class="section-num">4</span> Установка</a></li>
     <li><a href="#настройка"><span class="section-num">5</span> Настройка</a>
       <ul>
@@ -949,26 +979,109 @@
 <li>Структура базы может быть произвольной, если Вы собираетесь использовать её напрямую, без промежуточного программного обеспечения. Тогда семантику структуры базы данных Вы держите в своей голове.</li>
 <li>Если же необходимо использовать дополнительное программное обеспечение, необходимо семантику заложить в структуру базы паролей.</li>
 </ul>
-<h2 id="реализации"><span class="section-num">3</span> Реализации</h2>
-<ul>
-<li>Утилиты командной строки:
+<h3 id="семантическая-структура-базы-паролей"><span class="section-num">2.1</span> Семантическая структура базы паролей</h3>
 <ul>
 <li>
-<p>На данный момент существует 2 основных реализации:</p>
+<p>Рассмотрим пользователя <code>user</code> в домене <code>example.com</code>, порт <code>22</code>.</p>
+</li>
+<li>
+<p>Отсутствие имени пользователя или порта в имени файла означает, что любое имя пользователя и порт будут совпадать:</p>
+<pre><code class="language-shell">example.com.pgp
+</code></pre>
+</li>
+<li>
+<p>Соответствующее имя пользователя может быть именем файла внутри каталога, имя которого совпадает с хостом. Это полезно, если в базе есть пароли для нескольких пользователей на одном хосте:</p>
+<pre><code class="language-shell">example.com/user.pgp
+</code></pre>
+</li>
+<li>
+<p>Имя пользователя также может быть записано в виде префикса, отделенного от хоста знаком <code>@</code>:</p>
+<pre><code class="language-shell">user@example.com.pgp
+</code></pre>
+</li>
+<li>
+<p>Соответствующий порт может быть указан после хоста, отделённый двоеточием (<code>:</code>):</p>
+<pre><code class="language-shell">example.com:22.pgp
+example.com:22/user.pgp
+user@example.com:22.pgp
+</code></pre>
+</li>
+<li>
+<p>Эти все записи могут быть расположены в произвольных каталогах, задающих Вашу собственную иерархию.</p>
+</li>
+</ul>
+<h2 id="реализации"><span class="section-num">3</span> Реализации</h2>
+<h3 id="утилиты-командной-строки"><span class="section-num">3.1</span> Утилиты командной строки:</h3>
+<ul>
+<li>На данный момент существует 2 основных реализации:
 <ul>
 <li><code>pass</code> &mdash; классическая реализация в виде shell-скриптов (<a href="https://www.passwordstore.org/">https://www.passwordstore.org/</a>);</li>
 <li><code>gopass</code> &mdash; реализация на go с дополнительными интегрированными функциями (<a href="https://www.gopass.pw/">https://www.gopass.pw/</a>).</li>
 </ul>
-<p>Дальше в тексте будет использоваться программа <code>pass</code>, но всё то же самое можно сделать с помощью программы <code>gopass</code>.</p>
 </li>
+<li>Дальше в тексте будет использоваться программа <code>pass</code>, но всё то же самое можно сделать с помощью программы <code>gopass</code>.</li>
 </ul>
-</li>
-<li>Графические интерфейсы:
+<h3 id="графические-интерфейсы"><span class="section-num">3.2</span> Графические интерфейсы:</h3>
 <ul>
 <li><code>qtpass</code> &mdash; может работать как графический интерфейс к <code>pass</code>, так и как самостоятельная программа. В настройках можно переключаться между использованием <code>pass</code> и <code>gnupg</code>.</li>
 <li><code>gopass-ui</code> &mdash; интерфейс к <code>gopass</code>.</li>
 </ul>
+<h3 id="приложения-для-android"><span class="section-num">3.3</span> Приложения для Android</h3>
+<h4 id="password-store"><span class="section-num">3.3.1</span> Password Store</h4>
+<ul>
+<li>URL: <a href="https://play.google.com/store/apps/details?id=dev.msfjarvis.aps">https://play.google.com/store/apps/details?id=dev.msfjarvis.aps</a></li>
+<li>Репозиторий с кодом: <a href="https://github.com/android-password-store/Android-Password-Store">https://github.com/android-password-store/Android-Password-Store</a></li>
+<li>Документация: <a href="https://android-password-store.github.io/docs/">https://android-password-store.github.io/docs/</a></li>
+<li>Для синхронизации с git необходимо импортировать ssh-ключи.</li>
+<li>Поддерживает разблокировку по биометрическим данным.</li>
+<li>Для работы требует наличия <em>OpenKeychain: Easy PGP</em>.</li>
+</ul>
+<h4 id="openkeychain-easy-pgp"><span class="section-num">3.3.2</span> OpenKeychain: Easy PGP</h4>
+<ul>
+<li>URL: <a href="https://play.google.com/store/apps/details?id=org.sufficientlysecure.keychain">https://play.google.com/store/apps/details?id=org.sufficientlysecure.keychain</a></li>
+<li>Операции с ключами pgp.</li>
+<li>Необходимо будет импортировать pgp-ключи.</li>
+<li>Не поддерживает разблокировку по биометрическим данным. Необходимо набирать пароль ключа.</li>
+</ul>
+<h3 id="пакеты-для-emacs"><span class="section-num">3.4</span> Пакеты для Emacs</h3>
+<h4 id="pass"><span class="section-num">3.4.1</span> pass</h4>
+<ul>
+<li>
+<p>Основной режим для управления хранилищем и редактирования записей.</p>
 </li>
+<li>
+<p>Репозиторий: <a href="https://github.com/NicolasPetton/pass">https://github.com/NicolasPetton/pass</a></p>
+</li>
+<li>
+<p>Позволяет редактировать базу данных паролей.</p>
+</li>
+<li>
+<p>Запуск:</p>
+<pre><code class="language-elisp">M-x pass
+</code></pre>
+</li>
+</ul>
+<h4 id="helm-pass"><span class="section-num">3.4.2</span> helm-pass</h4>
+<ul>
+<li>
+<p>Интерфейс <em>helm</em> для <em>pass</em>.</p>
+</li>
+<li>
+<p>Репозиторий: <a href="https://github.com/emacs-helm/helm-pass">https://github.com/emacs-helm/helm-pass</a></p>
+</li>
+<li>
+<p>Запуск:</p>
+<pre><code class="language-elisp">M-x helm-pass
+</code></pre>
+</li>
+<li>
+<p>Выдаёт в минибуфере список записей из базы паролей. При нажатии <code>Enter</code> копирует пароль в буфер.</p>
+</li>
+</ul>
+<h4 id="ivy-pass"><span class="section-num">3.4.3</span> ivy-pass</h4>
+<ul>
+<li>Интерфейс <em>ivy</em> для <em>pass</em>.</li>
+<li>Репозиторий: <a href="https://github.com/ecraven/ivy-pass">https://github.com/ecraven/ivy-pass</a></li>
 </ul>
 <h2 id="установка"><span class="section-num">4</span> Установка</h2>
 <ul>
@@ -1490,6 +1603,12 @@
    
 
    
+
+   
+
+   
+
+   
       
    
 
@@ -1618,7 +1737,7 @@
    
 
    
-
+      
    
 
    
@@ -3927,6 +4046,8 @@
        
           <li><a href="https://yamadharma.github.io/ru/post/2021/04/27/personal-databases/">Личные базы данных</a></li>
        
+          <li><a href="https://yamadharma.github.io/ru/post/2021/01/22/mail-password-authentication/">Emacs. Почта. Парольная аутентификация</a></li>
+       
      </ul>
     </div>
   </div>
@@ -4343,15 +4464,15 @@
     <h3>Похожие</h3>
     <ul>
       
+      <li><a href="https://yamadharma.github.io/ru/post/2021/07/02/hugo-template-for-scientists/">Hugo. Шаблон для научных работников</a></li>
+      
+      <li><a href="https://yamadharma.github.io/ru/post/2021/07/02/profession-system-administrator/">Профессия Системный администратор</a></li>
+      
       <li><a href="https://yamadharma.github.io/ru/post/2021/06/16/cisco-administration/">Администрирование Cisco</a></li>
       
       <li><a href="https://yamadharma.github.io/ru/post/2021/06/16/cisco-storm-control/">Cisco. Защита от широковещательного шторма</a></li>
       
       <li><a href="https://yamadharma.github.io/ru/post/2021/06/02/backlinks-hugo/">Обратные ссылки в Hugo</a></li>
-      
-      <li><a href="https://yamadharma.github.io/ru/post/2021/05/28/limitations-capacity-tex-registers/">Ограничения ёмкости регистров TeX&#39;а</a></li>
-      
-      <li><a href="https://yamadharma.github.io/ru/post/2021/05/25/replacing-centos/">Замена Centos</a></li>
       
     </ul>
   </div>
@@ -4370,6 +4491,10 @@
     
     <div class="container">
       <footer class="site-footer">
+
+  
+
+
 
   
 
@@ -4487,9 +4612,10 @@
         
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/highlight.min.js" integrity="sha512-TDKKr+IvoqZnPzc3l35hdjpHD0m+b2EC2SrLEgKDRWpxf2rFCxemkgvJ5kfU48ip+Y+m2XVKyOCD85ybtlZDmw==" crossorigin="anonymous"></script>
         
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/r.min.js"></script>
         
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/latex.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/r.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/latex.min.js" crossorigin="anonymous"></script>
         
       
 
@@ -4559,7 +4685,7 @@
       
     
     
-    <script src="https://yamadharma.github.io/ru/js/wowchemy.min.d4a5a139913cba21f128d9b0b5d84237.js"></script>
+    <script src="https://yamadharma.github.io/ru/js/wowchemy.min.11eba73e6855e931d2042263d3d5b413.js"></script>
 
     
 

@@ -365,7 +365,7 @@
         content="2020-12-24T15:32:00&#43;03:00"
       />
     
-    <meta property="article:modified_time" content="2021-01-10T20:06:00&#43;03:00">
+    <meta property="article:modified_time" content="2021-07-04T21:05:00&#43;03:00">
   
 
   
@@ -394,7 +394,7 @@
   "headline": "Emacs. Почта. Mu4e",
   
   "datePublished": "2020-12-24T15:32:00+03:00",
-  "dateModified": "2021-01-10T20:06:00+03:00",
+  "dateModified": "2021-07-04T21:05:00+03:00",
   
   "author": {
     "@type": "Person",
@@ -837,7 +837,7 @@
           Обновлено
       
     
-    2021-01-10
+    2021-07-04
   </span>
   
 
@@ -885,37 +885,52 @@
   <summary class="font-weight-bold">Содержание</summary>
   <nav id="TableOfContents">
   <ul>
-    <li><a href="#установка">Установка</a>
+    <li><a href="#установка"><span class="section-num">1</span> Установка</a>
       <ul>
-        <li><a href="#gentoo">Gentoo</a></li>
+        <li><a href="#gentoo"><span class="section-num">1.1</span> Gentoo</a></li>
       </ul>
     </li>
-    <li><a href="#получение-почты">Получение почты</a></li>
-    <li><a href="#backlinks">Backlinks</a>
+    <li><a href="#структура-каталогов"><span class="section-num">2</span> Структура каталогов</a></li>
+    <li><a href="#получение-почты"><span class="section-num">3</span> Получение почты</a>
       <ul>
-        <li><a href="#emacs-dot-почта"><a href="https://yamadharma.github.io/ru/post/2020/12/23/emacs-mail/">Emacs. Почта</a></a></li>
+        <li><a href="#синхронизация-mbsync"><span class="section-num">3.1</span> Синхронизация mbsync</a></li>
+        <li><a href="#инициализация"><span class="section-num">3.2</span> Инициализация</a></li>
+        <li><a href="#индексирование-почты"><span class="section-num">3.3</span> Индексирование почты</a></li>
       </ul>
     </li>
   </ul>
 </nav>
 </details>
 
-<h2 id="установка">Установка</h2>
-<p>Клиент mu4e является интерфейсом к программе индексирования почты mu (URL: <a href="https://www.djcbsoftware.nl/code/mu/">https://www.djcbsoftware.nl/code/mu/</a>).
-Поэтому вначале нужно установить эту программу.</p>
-<h3 id="gentoo">Gentoo</h3>
+<h2 id="установка"><span class="section-num">1</span> Установка</h2>
+<ul>
+<li>Клиент mu4e является интерфейсом к программе индексирования почты mu (URL: <a href="https://www.djcbsoftware.nl/code/mu/">https://www.djcbsoftware.nl/code/mu/</a>).</li>
+<li>Поэтому вначале нужно установить эту программу.</li>
+</ul>
+<h3 id="gentoo"><span class="section-num">1.1</span> Gentoo</h3>
 <pre><code class="language-shell">USE=&quot;emacs&quot; emerge -v mu
 </code></pre>
-<h2 id="получение-почты">Получение почты</h2>
+<h2 id="структура-каталогов"><span class="section-num">2</span> Структура каталогов</h2>
+<p>Почтовые ящики будут находиться в каталоге <code>~/Maildir</code>.</p>
+<h2 id="получение-почты"><span class="section-num">3</span> Получение почты</h2>
 <p>Для почты <em>mu</em> поддерживает формат <em>maildir</em><sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>.
 Для скачивания почты можно использовать разные программы.</p>
 <ul>
 <li>Для внешнего сервера IMAP или POP можно использовать такие инструменты, как <em>getmail</em>, <em>fetchmail</em>, <em>offlineimap</em>, <em>isync</em>, чтобы загрузить свои сообщения в формате <em>maildir</em>.</li>
 <li>При использовании локального почтового сервера (<em>postfix</em>, <em>qmail</em>) настраивается сохранение сообщений в формате <em>maildir</em>.</li>
 </ul>
-<h2 id="backlinks">Backlinks</h2>
-<h3 id="emacs-dot-почта"><a href="https://yamadharma.github.io/ru/post/2020/12/23/emacs-mail/">Emacs. Почта</a></h3>
-<p><a href="https://yamadharma.github.io/ru/post/2020/12/24/emacs-mail-mu4e/">Emacs. Почта. Mu4e</a></p>
+<h3 id="синхронизация-mbsync"><span class="section-num">3.1</span> Синхронизация mbsync</h3>
+<p>Для синхронизации будем использовать программу <em>mbsync</em> (см. <a href="https://yamadharma.github.io/ru/post/2021/01/22/mail-synchronization-mbsync/">Почта. Синхронизация. mbsync</a>).</p>
+<h3 id="инициализация"><span class="section-num">3.2</span> Инициализация</h3>
+<p>Перед использованием необходимо инициализировать базу данных писем:</p>
+<pre><code class="language-shell">mu init --maildir=~/Maildir \
+   --my-address=account1@domain1 \
+   --my-address=account2@domain2
+</code></pre>
+<h3 id="индексирование-почты"><span class="section-num">3.3</span> Индексирование почты</h3>
+<p>После загрузки писем необходимо инициализировать базу данных <code>mu</code> и про индексировать электрические письма:</p>
+<pre><code class="language-shell">mu index
+</code></pre>
 <section class="footnotes" role="doc-endnotes">
 <hr>
 <ol>
@@ -1172,7 +1187,15 @@
    
 
    
-      
+
+   
+
+   
+
+   
+
+   
+
    
 
    
@@ -3476,8 +3499,6 @@
     <h4>Links to this note</h4>
     <div class="backlinks">
       <ul>
-       
-          <li><a href="https://yamadharma.github.io/ru/post/2021/01/22/mail-synchronization-mbsync/">Почта. Синхронизация. mbsync</a></li>
        
           <li><a href="https://yamadharma.github.io/ru/post/2020/12/23/emacs-mail/">Emacs. Почта</a></li>
        

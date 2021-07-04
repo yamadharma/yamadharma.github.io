@@ -5,12 +5,74 @@
     <link>https://yamadharma.github.io/ru/tag/network/</link>
       <atom:link href="https://yamadharma.github.io/ru/tag/network/index.xml" rel="self" type="application/rss+xml" />
     <description>network</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2021 Dmitry S. Kulyabov</copyright><lastBuildDate>Thu, 24 Jun 2021 15:01:00 +0300</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2021 Dmitry S. Kulyabov</copyright><lastBuildDate>Sun, 04 Jul 2021 20:43:00 +0300</lastBuildDate>
     <image>
       <url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_2.png</url>
       <title>network</title>
       <link>https://yamadharma.github.io/ru/tag/network/</link>
     </image>
+    
+    <item>
+      <title>Почта. Кодировка папок IMAP</title>
+      <link>https://yamadharma.github.io/ru/post/2021/07/04/mail-imap-folder-encoding/</link>
+      <pubDate>Sun, 04 Jul 2021 20:43:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2021/07/04/mail-imap-folder-encoding/</guid>
+      <description>&lt;p&gt;Национальные символы в именах почтовых ящиков на сервере должны кодироваться в модифицированную кодировку UTF-7.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#преобразование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Преобразование&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#кодирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Кодирование&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#декодирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Декодирование&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;В соответствие с RFC2060 национальные символы в именах почтовых ящиков на сервере должны кодироваться в модифицированную кодировку UTF-7.&lt;/li&gt;
+&lt;li&gt;Отличия от оригинальной UTF-7 связаны с особым значением символа &lt;code&gt;+&lt;/code&gt; в некоторых почтовых системах и символа &lt;code&gt;/&lt;/code&gt; в роли разделителя имён каталогов в Unix.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;преобразование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Преобразование&lt;/h2&gt;
+&lt;h3 id=&#34;кодирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Кодирование&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Алгоритм кодирования имён папок:
+&lt;ul&gt;
+&lt;li&gt;Текст -&amp;gt; UTF7;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;&amp;amp;&lt;/code&gt; -&amp;gt; &lt;code&gt;&amp;amp;-&lt;/code&gt;;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;/&lt;/code&gt; -&amp;gt; &lt;code&gt;,&lt;/code&gt;;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;+&lt;/code&gt; -&amp;gt; &lt;code&gt;&amp;amp;&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;декодирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Декодирование&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Алгоритм декодирования имён папок:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;&amp;amp;&lt;/code&gt; -&amp;gt; &lt;code&gt;+&lt;/code&gt;;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;&amp;amp;-&lt;/code&gt; -&amp;gt; &lt;code&gt;&amp;amp;&lt;/code&gt;;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;,&lt;/code&gt; -&amp;gt; &lt;code&gt;/&lt;/code&gt;;&lt;/li&gt;
+&lt;li&gt;UTF7 -&amp;gt; Текст.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Код (shell):&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;echo &#39;&amp;amp;BB4EQgQ,BEAEMAQyBDsENQQ9BD0ESwQ1-&#39; | sed &#39;s/&amp;amp;\([^-]\)/+\1/g;s/&amp;amp;-/&amp;amp;/g;s/,/\//g&#39; | iconv -f UTF7 -t UTF8
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;В результате получаем:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;Отправленные
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
     
     <item>
       <title>Курс Моделирование сетей передачи данных</title>

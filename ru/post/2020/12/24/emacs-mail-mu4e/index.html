@@ -267,7 +267,7 @@
   
   
   
-  <link rel="stylesheet" href="https://yamadharma.github.io/css/wowchemy.5cb23ba6a0e3e62be1cf9db90ef6e2fd.css" />
+  <link rel="stylesheet" href="https://yamadharma.github.io/css/wowchemy.c4d4d0fe4a8128c673e97327869a0f76.css" />
 
   
 
@@ -365,7 +365,7 @@
         content="2020-12-24T15:32:00&#43;03:00"
       />
     
-    <meta property="article:modified_time" content="2021-07-04T21:05:00&#43;03:00">
+    <meta property="article:modified_time" content="2021-07-08T15:11:00&#43;03:00">
   
 
   
@@ -394,7 +394,7 @@
   "headline": "Emacs. Почта. Mu4e",
   
   "datePublished": "2020-12-24T15:32:00+03:00",
-  "dateModified": "2021-07-04T21:05:00+03:00",
+  "dateModified": "2021-07-08T15:11:00+03:00",
   
   "author": {
     "@type": "Person",
@@ -837,7 +837,7 @@
           Обновлено
       
     
-    2021-07-04
+    2021-07-08
   </span>
   
 
@@ -846,7 +846,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-reading-time">
-    1 мин. для прочтения
+    2 мин. для прочтения
   </span>
   
 
@@ -898,6 +898,17 @@
         <li><a href="#индексирование-почты"><span class="section-num">3.3</span> Индексирование почты</a></li>
       </ul>
     </li>
+    <li><a href="#дополнительные-пакеты"><span class="section-num">4</span> Дополнительные пакеты</a>
+      <ul>
+        <li><a href="#чтение-писем"><span class="section-num">4.1</span> Чтение писем</a></li>
+        <li><a href="#написание-писем"><span class="section-num">4.2</span> Написание писем</a>
+          <ul>
+            <li><a href="#org-mime"><span class="section-num">4.2.1</span> org-mime</a></li>
+            <li><a href="#org-msg"><span class="section-num">4.2.2</span> org-msg</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
   </ul>
 </nav>
 </details>
@@ -922,15 +933,86 @@
 <h3 id="синхронизация-mbsync"><span class="section-num">3.1</span> Синхронизация mbsync</h3>
 <p>Для синхронизации будем использовать программу <em>mbsync</em> (см. <a href="https://yamadharma.github.io/ru/post/2021/01/22/mail-synchronization-mbsync/">Почта. Синхронизация. mbsync</a>).</p>
 <h3 id="инициализация"><span class="section-num">3.2</span> Инициализация</h3>
+<ul>
+<li>
 <p>Перед использованием необходимо инициализировать базу данных писем:</p>
 <pre><code class="language-shell">mu init --maildir=~/Maildir \
    --my-address=account1@domain1 \
    --my-address=account2@domain2
 </code></pre>
+</li>
+<li>
+<p>Можно это выполнить скриптом:</p>
+<pre><code class="language-shell">#!/bin/sh
+
+list_imap=$(grep -e &quot;^IMAPAccount&quot; ~/.mbsyncrc | cut -d&quot; &quot; -f2 | xargs -I {} -n 1 echo &quot;--my-address=&quot;{})
+mu init --maildir=~/Maildir $list_imap
+</code></pre>
+</li>
+<li>
+<p>Я использую скрипт, поскольку у меня кэш находится на временной файловой системе, и не сохраняется при перезагрузке.</p>
+</li>
+</ul>
 <h3 id="индексирование-почты"><span class="section-num">3.3</span> Индексирование почты</h3>
 <p>После загрузки писем необходимо инициализировать базу данных <code>mu</code> и про индексировать электрические письма:</p>
 <pre><code class="language-shell">mu index
 </code></pre>
+<h2 id="дополнительные-пакеты"><span class="section-num">4</span> Дополнительные пакеты</h2>
+<h3 id="чтение-писем"><span class="section-num">4.1</span> Чтение писем</h3>
+<h3 id="написание-писем"><span class="section-num">4.2</span> Написание писем</h3>
+<h4 id="org-mime"><span class="section-num">4.2.1</span> org-mime</h4>
+<ul>
+<li>Репозиторий: <a href="https://github.com/org-mime/org-mime">https://github.com/org-mime/org-mime</a></li>
+<li>Отправка электропочты в формате HTML с помощью экспорта HTML из <em>org-mode</em>.</li>
+</ul>
+<h4 id="org-msg"><span class="section-num">4.2.2</span> org-msg</h4>
+<ul>
+<li>Для редактирования сообщения с использованием <code>org-mode</code>.</li>
+<li>Заменяет встроенную в <em>mu4e</em> поддержку <code>org-mode</code>.</li>
+</ul>
+<!--list-separator-->
+<ol>
+<li>
+<p>Общая информация</p>
+<ul>
+<li>Репозиторий: <a href="https://github.com/jeremy-compostella/org-msg">https://github.com/jeremy-compostella/org-msg</a></li>
+<li>Поддерживаемые режимы:
+<ul>
+<li>Message mode;</li>
+<li>mu4e mode;</li>
+<li>notmuch mode.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<!--list-separator-->
+<ol start="2">
+<li>
+<p>Использование</p>
+<ul>
+<li><code>C-c</code> <code>C-e</code> &mdash; генерирует и отображает экспортированную версию электронной почты (<code>org-msg-preview</code>).</li>
+<li><code>C-c</code> <code>C-k</code> &mdash; закрывает буфер (<code>message-kill-buffer</code>).</li>
+<li><code>C-c</code> <code>C-s</code> &mdash; переход к теме сообщения (как и в режиме сообщения) (<code>message-goto-subject</code>).</li>
+<li><code>C-c</code> <code>C-b</code> &mdash; переход к телу сообщения (аналогично <code>message-goto-body</code> в режиме сообщения) (<code>org-msg-goto-body</code>).</li>
+<li><code>C-c</code> <code>C-a</code> &mdash; добавить (или удалить) вложение (похоже на функцию <code>org-attach</code>) (<code>org-msg-attach</code>). Список вложений хранится в свойстве <code>attachment:</code>.</li>
+<li><code>C-c</code> <code>C-c</code> &mdash; генерирует сообщение MIME и отправляет его (<code>org-ctrl-c-ctrl-c</code>).</li>
+</ul>
+</li>
+</ol>
+<!--list-separator-->
+<ol start="3">
+<li>
+<p>Настройка</p>
+<ul>
+<li>
+<p>Необходимо задать <code>mail-user-agent</code> до загрузки <code>org-msg</code>:</p>
+<pre><code class="language-elisp">(setq mail-user-agent 'mu4e-user-agent)
+</code></pre>
+</li>
+</ul>
+</li>
+</ol>
 <section class="footnotes" role="doc-endnotes">
 <hr>
 <ol>
@@ -982,6 +1064,20 @@
 
    
 
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+      
    
 
    
@@ -3499,6 +3595,8 @@
     <h4>Links to this note</h4>
     <div class="backlinks">
       <ul>
+       
+          <li><a href="https://yamadharma.github.io/ru/post/2021/07/12/emacs-mail-mu4e-email-workflow/">Emacs. Почта. Mu4e. Процесс работы с почтой</a></li>
        
           <li><a href="https://yamadharma.github.io/ru/post/2020/12/23/emacs-mail/">Emacs. Почта</a></li>
        

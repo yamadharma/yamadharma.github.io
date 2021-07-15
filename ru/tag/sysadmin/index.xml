@@ -1312,6 +1312,21 @@ max_in_open = 50
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
+&lt;!--list-separator--&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;
+&lt;p&gt;Зачем делается этот дистрибутив&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;в CloudLinux осознали, что CentOS сам освобождает место под солнцем, а значит его можно попытаться занять;&lt;/li&gt;
+&lt;li&gt;CloudLinux давно уже пересобирали RHEL/CentOS, есть опыт и своя сборочная инфраструктура;&lt;/li&gt;
+&lt;li&gt;есть технология KernelCare &amp;mdash; обновления ядер без перезагрузки;&lt;/li&gt;
+&lt;li&gt;стали срочно делать свою пересборку CentOS, доделывать сборочную инфраструктуру;&lt;/li&gt;
+&lt;li&gt;купили железо для сборок под новые архитектуры (например, arm), под которые CloudLinux ранее не собирался;&lt;/li&gt;
+&lt;li&gt;CloudLinux проверяет ABI своих пакетов на соответствие ABI пакетов из RHEL;&lt;/li&gt;
+&lt;li&gt;хотят продвигать свои идеи в RHEL через CentOS Stream и апстримы.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
 &lt;h2 id=&#34;что-выбрать&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Что выбрать&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;На данный момент склоняюсь более к Rocky Linux.&lt;/li&gt;
@@ -3981,7 +3996,19 @@ Channel account@example.com-sent
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;code&gt;~/.config/systemd/user/mbsync.service&lt;/code&gt;. После синхронизации запускаем индексирование для &lt;code&gt;mu&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;~/.config/systemd/user/mbsync.service&lt;/code&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;# ~/.config/systemd/user/mbsync.service
+
+[Unit]
+Description=Mailbox synchronization service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/mbsync -a
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;~/.config/systemd/user/mbsync.service&lt;/code&gt;. Здесь мы после синхронизации запускаем индексирование для &lt;code&gt;mu&lt;/code&gt;.&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;# ~/.config/systemd/user/mbsync.service
 
 [Unit]

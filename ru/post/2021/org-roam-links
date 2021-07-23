@@ -52,7 +52,7 @@ if __name__ == "__main__":
     fin = open(filename, "rt")
     filetext = fin.read()
 
-    export_file_name_re = re.compile(r'#\+EXPORT_FILE_NAME:\s+\S+')
+    export_file_name_re = re.compile(r'#\+EXPORT_FILE_NAME:\s+\S+', re.IGNORECASE)
     relref_re = re.compile(r"{{< relref \"(.+)\" >}}")
 
 
@@ -72,7 +72,7 @@ if __name__ == "__main__":
             orgfiletext =  open(orgfile).read()
             export_file_name_text = export_file_name_re.findall(orgfiletext)
             print(export_file_name_text)
-            export_file_name_link = export_file_name_text[0].split()            
+            export_file_name_link = export_file_name_text[0].split()
             hugolink = "{{< relref \"" + export_file_name_link[1] + "\" >}}"
             if isrelref:
                 filetext = filetext.replace("{{< relref \"" + linkpath + "\" >}}",hugolink)

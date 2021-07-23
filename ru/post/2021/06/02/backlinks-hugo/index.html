@@ -68,6 +68,9 @@
   
 
   
+
+  <link rel="stylesheet" href="https://yamadharma.github.io/css/vendor-bundle.min.f1ecf783c14edc00c9320c205831ad8e.css" media="print" onload="this.media='all'">
+
   
   
   
@@ -75,7 +78,6 @@
     
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.0/css/academicons.min.css" integrity="sha512-W4yqoT1+8NLkinBLBZko+dFB2ZbHsYLDdr50VElllRcNt2Q4/GSs6u71UHKxB7S6JEMCp5Ve4xjh3eGQl/HRvg==" crossorigin="anonymous" media="print" onload="this.media='all'">
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha256-FMvZuGapsJLjouA6k7Eo2lusoAX9i0ShlWFG6qt7SLc=" crossorigin="anonymous" media="print" onload="this.media='all'">
 
     
     
@@ -111,22 +113,6 @@
     
 
     
-    
-      
-      
-
-      
-      
-
-      
-    
-      
-      
-
-      
-      
-
-      
     
       
       
@@ -365,7 +351,7 @@
         content="2021-06-02T17:19:00&#43;03:00"
       />
     
-    <meta property="article:modified_time" content="2021-07-02T16:51:00&#43;03:00">
+    <meta property="article:modified_time" content="2021-07-23T21:18:00&#43;03:00">
   
 
   
@@ -394,7 +380,7 @@
   "headline": "Обратные ссылки в Hugo",
   
   "datePublished": "2021-06-02T17:19:00+03:00",
-  "dateModified": "2021-07-02T16:51:00+03:00",
+  "dateModified": "2021-07-23T21:18:00+03:00",
   
   "author": {
     "@type": "Person",
@@ -837,7 +823,7 @@
           Обновлено
       
     
-    2021-07-02
+    2021-07-23
   </span>
   
 
@@ -846,7 +832,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-reading-time">
-    2 мин. для прочтения
+    5 мин. для прочтения
   </span>
   
 
@@ -886,14 +872,16 @@
   <nav id="TableOfContents">
   <ul>
     <li><a href="#источники-обратных-ссылок"><span class="section-num">1</span> Источники обратных ссылок</a></li>
-    <li><a href="#создание-обратных-ссылок-в-hugo"><span class="section-num">2</span> Создание обратных ссылок в Hugo</a>
+    <li><a href="#создание-обратных-ссылок-из-emacs"><span class="section-num">2</span> Создание обратных ссылок из emacs</a></li>
+    <li><a href="#создание-обратных-ссылок-с-помощью-генератора-hugo"><span class="section-num">3</span> Создание обратных ссылок с помощью генератора Hugo</a>
       <ul>
-        <li><a href="#общая-информация"><span class="section-num">2.1</span> Общая информация</a></li>
-        <li><a href="#каталоги-для-новой-структуры"><span class="section-num">2.2</span> Каталоги для новой структуры</a></li>
-        <li><a href="#шаблон-генерации-обратных-ссылок"><span class="section-num">2.3</span> Шаблон генерации обратных ссылок</a></li>
-        <li><a href="#шаблон-страницы"><span class="section-num">2.4</span> Шаблон страницы</a></li>
+        <li><a href="#общая-информация"><span class="section-num">3.1</span> Общая информация</a></li>
+        <li><a href="#каталоги-для-новой-структуры"><span class="section-num">3.2</span> Каталоги для новой структуры</a></li>
+        <li><a href="#шаблон-генерации-обратных-ссылок"><span class="section-num">3.3</span> Шаблон генерации обратных ссылок</a></li>
+        <li><a href="#шаблон-страницы"><span class="section-num">3.4</span> Шаблон страницы</a></li>
       </ul>
     </li>
+    <li><a href="#исправление-обратных-ссылок"><span class="section-num">4</span> Исправление обратных ссылок</a></li>
   </ul>
 </nav>
 </details>
@@ -901,11 +889,64 @@
 <h2 id="источники-обратных-ссылок"><span class="section-num">1</span> Источники обратных ссылок</h2>
 <ul>
 <li>У меня обратные ссылки получаются из заметок в Org-roam, которые я стараюсь вести по методике Zettelkasten (см. <a href="https://yamadharma.github.io/ru/post/2021/02/18/zettelkasten-method/">Метод Zettelkasten</a>).</li>
-<li>В этом случае можно создавать их напрямую из emacs.</li>
+</ul>
+<h2 id="создание-обратных-ссылок-из-emacs"><span class="section-num">2</span> Создание обратных ссылок из emacs</h2>
+<ul>
+<li>
+<p>Обратные ссылки можно создавать напрямую при экспорте из <em>emacs</em>.</p>
+</li>
+<li>
+<p>Для экспорта обратных ссылок я использовал следующий скрипт на <em>elisp</em>:</p>
+<pre><code class="language-emacs-lisp">;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+;;; Export Backlinks
+
+(defun ecf/org-roam--backlinks-list (file)
+  (with-temp-buffer
+    (if-let* ((backlinks (org-roam--get-backlinks file))
+          (grouped-backlinks (--group-by (nth 0 it) backlinks)))
+	(progn
+      (dolist (group grouped-backlinks)
+        (let ((file-from (car group))
+          (bls (cdr group)))
+          (insert (format &quot;- [[file:%s][%s]]\n&quot;
+                  file-from
+                  (org-roam-db--get-title file-from)))
+          (dolist (backlink bls)
+        (pcase-let ((`(,file-from _ ,props) backlink))
+          (s-trim (s-replace &quot;\n&quot; &quot; &quot; (prin1-to-string (plist-get props :content))))
+          (insert &quot;\n\n&quot;)))))))
+    (buffer-string)))
+
+(defun ecf/org-export-preprocessor (backend)
+  (let (
+	(links (ecf/org-roam--backlinks-list (buffer-file-name))))
+    (unless (string= links &quot;&quot;)
+      (save-excursion
+	(goto-char (point-max))
+	(insert (concat &quot;\n* Backlinks\n&quot;) links)))))
+
+;;; Export backlinks only for ox-hugo
+(defun ecf/org-export-preprocessor-hugo (backend)
+  (when (org-export-derived-backend-p backend 'hugo)
+    (ecf/org-export-preprocessor 'hugo)))
+
+(add-hook 'org-export-before-processing-hook 'ecf/org-export-preprocessor-hugo)
+</code></pre>
+</li>
+<li>
+<p>Недостатки:</p>
+<ul>
+<li>Использовался вызов внутреннего API org-roam. При этом он постоянно менялся.</li>
+<li>Расположение обратных ссылок жёстко кодируется.</li>
+<li>Обратные ссылки получались статичными: при изменении связей необходимо повторно экспортировать все связанные ноды.</li>
+</ul>
+</li>
+</ul>
+<h2 id="создание-обратных-ссылок-с-помощью-генератора-hugo"><span class="section-num">3</span> Создание обратных ссылок с помощью генератора Hugo</h2>
+<ul>
 <li>Но, возможно, оптимальнее создавать их с помощью самого Hugo.</li>
 </ul>
-<h2 id="создание-обратных-ссылок-в-hugo"><span class="section-num">2</span> Создание обратных ссылок в Hugo</h2>
-<h3 id="общая-информация"><span class="section-num">2.1</span> Общая информация</h3>
+<h3 id="общая-информация"><span class="section-num">3.1</span> Общая информация</h3>
 <ul>
 <li>Примеры создания обратных ссылок в Hugo:
 <ul>
@@ -930,7 +971,7 @@
 </ul>
 </li>
 </ul>
-<h3 id="каталоги-для-новой-структуры"><span class="section-num">2.2</span> Каталоги для новой структуры</h3>
+<h3 id="каталоги-для-новой-структуры"><span class="section-num">3.2</span> Каталоги для новой структуры</h3>
 <ul>
 <li>
 <p>Добавим каталог <code>layouts</code> в корень нашего сайта для создания собственных шаблонов:</p>
@@ -942,7 +983,7 @@
 </code></pre>
 </li>
 </ul>
-<h3 id="шаблон-генерации-обратных-ссылок"><span class="section-num">2.3</span> Шаблон генерации обратных ссылок</h3>
+<h3 id="шаблон-генерации-обратных-ссылок"><span class="section-num">3.3</span> Шаблон генерации обратных ссылок</h3>
 <ul>
 <li>
 <p>Зададим частичный шаблон <code>layouts/partials/backlinks.html</code>, создающий список обратных ссылок и отображающий его:</p>
@@ -974,7 +1015,7 @@
 </code></pre>
 </li>
 </ul>
-<h3 id="шаблон-страницы"><span class="section-num">2.4</span> Шаблон страницы</h3>
+<h3 id="шаблон-страницы"><span class="section-num">3.4</span> Шаблон страницы</h3>
 <ul>
 <li>Шаблон страницы лучше делать на основе используемой темы.</li>
 <li>Я использую шаблон <em>Academic</em> (<code>https://github.com/wowchemy/starter-hugo-academic</code>), основанную на модуле <em>wowchemy</em> (<code>https://github.com/wowchemy/wowchemy-hugo-modules.git</code>).
@@ -1046,8 +1087,145 @@
 </ul>
 </li>
 </ul>
+<h2 id="исправление-обратных-ссылок"><span class="section-num">4</span> Исправление обратных ссылок</h2>
+<ul>
+<li>
+<p>При экспорте <em>ox-hugo</em> экспортирует ссылки как указатели на имя файла.</p>
+</li>
+<li>
+<p>Имя файла в каталоге <em>org-roam</em> может отличаться от имени, которое имеет файл в каталоге для сайта.</p>
+</li>
+<li>
+<p>Имя для сайта задаётся полем <code>#+EXPORT_FILE_NAME:</code>.</p>
+</li>
+<li>
+<p>Предлагается после экспорта заменять ссылки на файлы на внутренние ссылки Hugo типа <code>{{&lt; relref имя_файла &gt;}}</code> (см. <a href="https://yamadharma.github.io/ru/post/2020/11/26/hugo-markdown/">Синтаксис Markdown для генератора сайтов Hugo</a>).</p>
+</li>
+<li>
+<p>Имя файла предполагается брать из поля <code>#+EXPORT_FILE_NAME:</code>.</p>
+</li>
+<li>
+<p>Для этого был написан скрипт:</p>
+<pre><code class="language-python">#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# org-roam-links
+
+import sys
+import re
+import os
+
+orgroamdir = &quot;~/me/org/notes/&quot;
+
+def find_md_links(md):
+    &quot;&quot;&quot;Returns dict of links in markdown:
+    'regular': [foo](some.url)
+    'footnotes': [foo][3]
+
+    [3]: some.url
+    &quot;&quot;&quot;
+    # https://stackoverflow.com/a/30738268/2755116
+
+    INLINE_LINK_RE = re.compile(r'\[([^\]]+)\]\(([^)]+)\)')
+    FOOTNOTE_LINK_TEXT_RE = re.compile(r'\[([^\]]+)\]\[(\d+)\]')
+    FOOTNOTE_LINK_URL_RE = re.compile(r'\[(\d+)\]:\s+(\S+)')
+
+    links = list(INLINE_LINK_RE.findall(md))
+    footnote_links = dict(FOOTNOTE_LINK_TEXT_RE.findall(md))
+    footnote_urls = dict(FOOTNOTE_LINK_URL_RE.findall(md))
+
+    footnotes_linking = []
+
+    for key in footnote_links.keys():
+	footnotes_linking.append((footnote_links[key], footnote_urls[footnote_links[key]]))
+
+    return {'regular': links, 'footnotes': footnotes_linking}
+
+
+def replace_md_links(md, f):
+    &quot;&quot;&quot;Replace links url to f(url)&quot;&quot;&quot;
+
+    links = find_md_links(md)
+    newmd = md
+
+    for r in links['regular']:
+	newmd = newmd.replace(r[1], f(r[1]))
+
+    for r in links['footnotes']:
+	newmd = newmd.replace(r[1], f(r[1]))
+
+    return newmd
+
+if __name__ == &quot;__main__&quot;:
+    filename = sys.argv[1]
+    print(filename)
+    fin = open(filename, &quot;rt&quot;)
+    filetext = fin.read()
+
+    export_file_name_re = re.compile(r'#\+EXPORT_FILE_NAME:\s+\S+', re.IGNORECASE)
+    relref_re = re.compile(r&quot;{{&lt; relref \&quot;(.+)\&quot; &gt;}}&quot;)
+
+
+    links = find_md_links(filetext)
+    for mdlink in links['regular']:
+	fulllink = mdlink[1]
+	isrelref = relref_re.match(fulllink)
+	if isrelref:
+        linkpath = isrelref.group(1)
+	else:
+        # drop extention
+        linkpath = os.path.splitext(fulllink)[0]
+	# add extention
+	md2org = linkpath + '.org'
+	orgfile = os.path.expanduser(orgroamdir + md2org)
+	if os.path.exists(orgfile):
+        orgfiletext =  open(orgfile).read()
+        export_file_name_text = export_file_name_re.findall(orgfiletext)
+        export_file_name_link = export_file_name_text[0].split()
+        hugolink = &quot;{{&lt; relref \&quot;&quot; + export_file_name_link[1] + &quot;\&quot; &gt;}}&quot;
+        if isrelref:
+        filetext = filetext.replace(&quot;{{&lt; relref \&quot;&quot; + linkpath + &quot;\&quot; &gt;}}&quot;,hugolink)
+        else:
+        filetext = filetext.replace(linkpath + '.md',hugolink)
+
+    fin.close()
+    fin = open(filename, &quot;wt&quot;)
+    fin.write(filetext)
+    fin.close()
+</code></pre>
+</li>
+<li>
+<p>Запуск скрипта осуществляется через <code>Makefile</code>:</p>
+<pre><code class="language-makefile">all:
+
+fixlinks:
+	find . -name &quot;*.md&quot; -newer .fixlinks -exec ./org-roam-links '{}' \;
+	touch .fixlinks
+
+clean:
+	find . -name &quot;*~&quot; -delete
+</code></pre>
+</li>
+<li>
+<p>Запуск осуществляется следующим образом:</p>
+<pre><code class="language-shell">make fixlinks clean
+</code></pre>
+</li>
+<li>
+<p>Скрипты помещаются в каталог <code>content/</code>.</p>
+</li>
+</ul>
       
 
+
+   
+
+   
+
+   
+
+   
+
+   
 
    
 
@@ -4165,11 +4343,11 @@
       
 
     
-    
-    
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/instant.page/5.1.0/instantpage.min.js" integrity="sha512-1+qUtKoh9XZW7j+6LhRMAyOrgSQKenQ4mluTR+cvxXjP1Z54RxZuzstR/H9kgPXQsVB8IW7DMDFUJpzLjvhGSQ==" crossorigin="anonymous"></script>
+    <script src="https://yamadharma.github.io/js/vendor-bundle.min.b73dfaac3b6499dc997741748a7c3fe2.js"></script>
 
+    
+    
+    
       
       
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
@@ -4233,9 +4411,6 @@
     
     
     
-
-    
-    <script src="https://yamadharma.github.io/js/bootstrap.bundle.min.6aed84840afc03ab4d5750157f69c120.js"></script>
 
     
     

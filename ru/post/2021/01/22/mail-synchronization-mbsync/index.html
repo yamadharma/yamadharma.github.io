@@ -68,6 +68,9 @@
   
 
   
+
+  <link rel="stylesheet" href="https://yamadharma.github.io/css/vendor-bundle.min.f1ecf783c14edc00c9320c205831ad8e.css" media="print" onload="this.media='all'">
+
   
   
   
@@ -75,7 +78,6 @@
     
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.0/css/academicons.min.css" integrity="sha512-W4yqoT1+8NLkinBLBZko+dFB2ZbHsYLDdr50VElllRcNt2Q4/GSs6u71UHKxB7S6JEMCp5Ve4xjh3eGQl/HRvg==" crossorigin="anonymous" media="print" onload="this.media='all'">
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha256-FMvZuGapsJLjouA6k7Eo2lusoAX9i0ShlWFG6qt7SLc=" crossorigin="anonymous" media="print" onload="this.media='all'">
 
     
     
@@ -111,22 +113,6 @@
     
 
     
-    
-      
-      
-
-      
-      
-
-      
-    
-      
-      
-
-      
-      
-
-      
     
       
       
@@ -365,7 +351,7 @@
         content="2021-01-22T15:10:00&#43;03:00"
       />
     
-    <meta property="article:modified_time" content="2021-07-15T12:13:00&#43;03:00">
+    <meta property="article:modified_time" content="2021-07-23T18:59:00&#43;03:00">
   
 
   
@@ -394,7 +380,7 @@
   "headline": "Почта. Синхронизация. mbsync",
   
   "datePublished": "2021-01-22T15:10:00+03:00",
-  "dateModified": "2021-07-15T12:13:00+03:00",
+  "dateModified": "2021-07-23T18:59:00+03:00",
   
   "author": {
     "@type": "Person",
@@ -837,7 +823,7 @@
           Обновлено
       
     
-    2021-07-15
+    2021-07-23
   </span>
   
 
@@ -910,6 +896,12 @@
         <li><a href="#настройка-синхронизации"><span class="section-num">4.1</span> Настройка синхронизации</a></li>
         <li><a href="#запуск-из-командной-строки"><span class="section-num">4.2</span> Запуск из командной строки</a></li>
         <li><a href="#запуск-по-таймеру"><span class="section-num">4.3</span> Запуск по таймеру</a></li>
+      </ul>
+    </li>
+    <li><a href="#перенос-почтовых-файлов"><span class="section-num">5</span> Перенос почтовых файлов</a></li>
+    <li><a href="#технические-моменты"><span class="section-num">6</span> Технические моменты</a>
+      <ul>
+        <li><a href="#имена-почтовых-файлов"><span class="section-num">6.1</span> Имена почтовых файлов</a></li>
       </ul>
     </li>
   </ul>
@@ -1532,8 +1524,62 @@ WantedBy=timers.target
 </code></pre>
 </li>
 </ul>
+<h2 id="перенос-почтовых-файлов"><span class="section-num">5</span> Перенос почтовых файлов</h2>
+<ul>
+<li>Имя почтового файла содержит имя хоста. Поэтому просто так синхронизировать почтовую базу между хостами не получится.</li>
+<li>Синхронизация может понадобиться для случая, когда у Вас большие почтовые ящики, а сервер квотирует почтовый трафик.</li>
+<li>Предлагается скопировать текущую базу на другой хост (в качестве первоначальной постовой базы), а потом переименовать файлы почты.
+<ul>
+<li>
+<p>Необходимо скопировать данные с <code>host1</code> на <code>host2</code>.</p>
+</li>
+<li>
+<p>Проведём проверку переименования:</p>
+<pre><code class="language-shell">cd ~/Maildir/
+find . -iname &quot;*host1*&quot; | sed 'p;s:host1:host2:' | xargs -n2 -p mv
+</code></pre>
+</li>
+<li>
+<p>Проведём переименование, убрав ключ <code>p</code> у <code>xargs</code>:</p>
+<pre><code class="language-shell">cd ~/Maildir/
+find . -iname &quot;*host1*&quot; | sed 'p;s:host1:host2:' | xargs -n2 mv
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="технические-моменты"><span class="section-num">6</span> Технические моменты</h2>
+<h3 id="имена-почтовых-файлов"><span class="section-num">6.1</span> Имена почтовых файлов</h3>
+<ul>
+<li>
+<p>Информация по почтовым файлам хранится либо в каталоге <code>~/.mbsync</code> в файлах вида:</p>
+<pre><code class="language-shell">&lt;remote account&gt;:&lt;remote!folder&gt;:&lt;local account&gt;:&lt;local!folder&gt;
+</code></pre>
+</li>
+<li>
+<p>Либо информация хранится в почтовых папках в файлах <code>.mbsyncstate</code> (параметр <code>SyncState *</code>).</p>
+</li>
+<li>
+<p>В файле <code>.uidvalidity</code> хранится последняя отметка времени и идентификатор.</p>
+</li>
+<li>
+<p>Файлы сообщений именуются по шаблону:</p>
+<pre><code class="language-shell">&lt;timestamp&gt;.&lt;PID&gt;_&lt;counter&gt;.&lt;hostname&gt;,U=&lt;increment&gt;:2,&lt;flags&gt;
+</code></pre>
+</li>
+</ul>
       
 
+
+   
+
+   
+
+   
+
+   
+
+   
 
    
 
@@ -4651,11 +4697,11 @@ WantedBy=timers.target
       
 
     
-    
-    
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/instant.page/5.1.0/instantpage.min.js" integrity="sha512-1+qUtKoh9XZW7j+6LhRMAyOrgSQKenQ4mluTR+cvxXjP1Z54RxZuzstR/H9kgPXQsVB8IW7DMDFUJpzLjvhGSQ==" crossorigin="anonymous"></script>
+    <script src="https://yamadharma.github.io/js/vendor-bundle.min.b73dfaac3b6499dc997741748a7c3fe2.js"></script>
 
+    
+    
+    
       
       
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
@@ -4719,9 +4765,6 @@ WantedBy=timers.target
     
     
     
-
-    
-    <script src="https://yamadharma.github.io/js/bootstrap.bundle.min.6aed84840afc03ab4d5750157f69c120.js"></script>
 
     
     

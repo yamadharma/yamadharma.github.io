@@ -2,7 +2,7 @@
   // ns-params:@params
   var slides = null;
 
-  // ns-hugo:/home/dharma/work/blog/git/resources/hugo_cache/modules/filecache/modules/pkg/mod/github.com/wowchemy/wowchemy-hugo-modules/wowchemy/v5@v5.0.0-20210721205100-265894f90488/assets/js/wowchemy-utils.js
+  // ns-hugo:/home/dharma/work/blog/git/resources/hugo_cache/modules/filecache/modules/pkg/mod/github.com/wowchemy/wowchemy-hugo-modules/wowchemy/v5@v5.0.0-20210724163202-cda364b19037/assets/js/wowchemy-utils.js
   function fixMermaid(render = false) {
     let mermaids = [];
     [].push.apply(mermaids, document.getElementsByClassName("language-mermaid"));

@@ -5,12 +5,179 @@
     <link>https://yamadharma.github.io/ru/tag/tex/</link>
       <atom:link href="https://yamadharma.github.io/ru/tag/tex/index.xml" rel="self" type="application/rss+xml" />
     <description>tex</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2021 Dmitry S. Kulyabov</copyright><lastBuildDate>Sat, 03 Jul 2021 20:26:00 +0300</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2021 Dmitry S. Kulyabov</copyright><lastBuildDate>Fri, 30 Jul 2021 11:25:00 +0300</lastBuildDate>
     <image>
       <url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url>
       <title>tex</title>
       <link>https://yamadharma.github.io/ru/tag/tex/</link>
     </image>
+    
+    <item>
+      <title>LaTeX. Пакет pdfx</title>
+      <link>https://yamadharma.github.io/ru/post/2021/07/30/latex-packages-pdfx/</link>
+      <pubDate>Fri, 30 Jul 2021 11:25:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2021/07/30/latex-packages-pdfx/</guid>
+      <description>&lt;p&gt;Пакет для создание документов pdf, соответствующих стандартам PDF/A и PDF/X.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#проблемы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Проблемы&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#2021-07-совместимость-с-latex2e&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; 2021-07 Совместимость с LaTeX2e &lt;span class=&#34;timestamp-wrapper&#34;&gt;&lt;span class=&#34;timestamp&#34;&gt;&amp;lt;2021-06-01 Вт&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;проблемы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Проблемы&lt;/h2&gt;
+&lt;h3 id=&#34;2021-07-совместимость-с-latex2e&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; 2021-07 Совместимость с LaTeX2e &lt;span class=&#34;timestamp-wrapper&#34;&gt;&lt;span class=&#34;timestamp&#34;&gt;&amp;lt;2021-06-01 Вт&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;После закрытия ошибки 605 &lt;a href=&#34;https://github.com/latex3/latex2e/issues/605&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/latex3/latex2e/issues/605&lt;/a&gt; пакет pdfx перестал работать.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;В качестве временного решения предложено при компиляции откатиться на состояние до закрытия ошибки 605.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Предложенный код (см. &lt;a href=&#34;https://tex.stackexchange.com/questions/605854/error-using-pdfx-on-tex-live-2021&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://tex.stackexchange.com/questions/605854/error-using-pdfx-on-tex-live-2021&lt;/a&gt;):&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-latex&#34;&gt;\ProvidesPackage{fixpdfx}[2021-07-22 A package that fixes pdfx errors on TeX Live 2021 in a quick and dirty way]
+
+% temporarily reverts https://github.com/latex3/latex2e/commit/5fb2860f2fedc87b213730f06ec1d77bcab4814a
+% resp. https://github.com/latex3/latex2e/commit/dd2ec509ec98e9c359a41e35aea6aade86485ca2
+% as it breaks pdfx (see https://tex.stackexchange.com/questions/605854/error-using-pdfx-on-tex-live-2021)
+
+\@ifpackageloaded{pdfx}{
+    \PackageError{fixpdfx}{pdfx is loaded}{This package must be loaded before pdfx}
+}{}
+
+\ExplSyntaxOn
+
+% this is the old implementation from base/ltpara.dtx, version 1.0g
+\cs_new_protected:Npn \__old_para_end: {
+  % ltpara v1.0h as well as firstaid/latex2e-first-aid-for-external-files.dtx v1.0o inserted
+  % \scan_stop: here, which breaks pdfx
+  \mode_if_horizontal:TF {
+    \mode_if_inner:F {
+     \tex_unskip:D
+     \hook_use:n{para/end}
+     \@kernel@after@para@end
+     \mode_if_horizontal:TF {
+       \if_int_compare:w 0 &amp;lt; \tex_lastnodetype:D
+         \tex_kern:D \c_zero_dim
+       \fi:
+       \tex_par:D
+       \hook_use:n{para/after}
+       \@kernel@after@para@after
+     }
+     { \msg_error:nnnn { hooks }{ para-mode }{end}{horizontal} }
+    }
+  }
+  \tex_par:D
+}
+
+\PackageWarning{fixpdfx}{Patching~\para_end:~implementation~to~fix~pdfx}
+\cs_set_eq:NN \par     \__old_para_end:
+% these two aren&#39;t actually required to fix pdfx, so we&#39;ll skip them...
+%\cs_set_eq:NN \@@par   \__old_para_end:
+%\cs_set_eq:NN \endgraf \__old_para_end:
+
+\AtBeginDocument{
+    \@ifpackageloaded{pdfx}{}{
+	\PackageError{fixpdfx}{pdfx~is~not~loaded}{You~did~not~load~pdfx~and~thus~do~not~need~this~package}
+    }
+    % pdfx v1.6.3 from 2019-02-27 is bad, so anything later is hopefully fixed...
+    \@ifpackagelater{pdfx}{2019/02/28}{
+	\PackageError{fixpdfx}{Please~check~whether~you~really~need~this~package.}{Your~pdfx~package~is~more~recent~than~2019-02-27~and~thus~might~not~require~this~package&#39;s~fix.}
+    }{}
+
+    \PackageWarning{fixpdf}{Restoring~old~\para_end:~implementation}
+
+    % restore additional definitions
+    \cs_set_eq:NN \par     \para_end:
+    % see above: as we didn&#39;t replace them, no need to restore them.
+    %\cs_set_eq:NN \@@par   \para_end:
+    %\cs_set_eq:NN \endgraf \para_end:
+}
+
+\ExplSyntaxOff
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Стандарт PDF/A</title>
+      <link>https://yamadharma.github.io/ru/post/2021/07/30/pdf-a-standard/</link>
+      <pubDate>Fri, 30 Jul 2021 10:47:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2021/07/30/pdf-a-standard/</guid>
+      <description>&lt;p&gt;&lt;em&gt;PDF/A (Portable Document Format/A)&lt;/em&gt; есть стандарт для долгосрочного архивного хранения электронных документов.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#версии&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Версии&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#уровни-соответствия&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Уровни соответствия&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#требования-для-соответствия-стандарту&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Требования для соответствия стандарту&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#программная-реализация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Программная реализация&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#latex&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; LaTeX&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Стандарт ISO 19005-1:2005 (опубликован 1 октября 2005 г.).&lt;/li&gt;
+&lt;li&gt;Является подмножеством формата PDF, из которого исключены некоторые особенности, не подходящие для долгосрочного архивного хранения.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;версии&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Версии&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Версия PDF/A-1.
+&lt;ul&gt;
+&lt;li&gt;Базируется на описании стандарта PDF версии 1.4.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Версия PDF/A-2 разработана в 2011.
+&lt;ul&gt;
+&lt;li&gt;Основана на описании стандартов PDF версий 1.5, 1.6, 1.7.&lt;/li&gt;
+&lt;li&gt;PDF/A-2 обратно совместим с PDF/A-1.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;уровни-соответствия&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Уровни соответствия&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Два уровня соответствия для PDF-файлов:
+&lt;ul&gt;
+&lt;li&gt;PDF/A-1a &amp;mdash; соответствие Уровню A (в Части 1);&lt;/li&gt;
+&lt;li&gt;PDF/A-1b &amp;mdash; соответствие Уровню B (в Части 1).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;PDF/A-1b ставит целью обеспечение надёжного воспроизведения внешнего вида документа.&lt;/li&gt;
+&lt;li&gt;PDF/A-1a включает все требования стандарта PDF/A-1b и дополнительно требует, чтобы была включена структура документа. Цель: обеспечение возможности поиска и преобразования содержимого документа.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;требования-для-соответствия-стандарту&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Требования для соответствия стандарту&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;запрещён аудио- и видеоконтент;&lt;/li&gt;
+&lt;li&gt;запрещено внедрение кода на &lt;code&gt;javascript&lt;/code&gt; и команд на запуск исполняемых файлов;&lt;/li&gt;
+&lt;li&gt;все шрифты должны быть внедрены, а также они должны быть легально внедряемы для неограниченного универсального отображения. Это также касается и так называемых стандартных шрифтов Postscript, таких как Times или Helvetica;&lt;/li&gt;
+&lt;li&gt;цветовые пространства определяются независимым от устройства способом;&lt;/li&gt;
+&lt;li&gt;шифрование не разрешено;&lt;/li&gt;
+&lt;li&gt;предписывается использование основанных на стандартах метаданных.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;программная-реализация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Программная реализация&lt;/h2&gt;
+&lt;h3 id=&#34;latex&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; LaTeX&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/07/30/latex-packages-pdfx/&#34;&gt;LaTeX. Пакет pdfx&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
     
     <item>
       <title>LaTeX. Шаблоны публикаций. Elsevier</title>
@@ -384,6 +551,7 @@ max_in_open = 50
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/01/05/iso-rules-typing-mathematics/&#34;&gt;Правила ISO для набора математики&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/05/28/limitations-capacity-tex-registers/&#34;&gt;Ограничения ёмкости регистров TeX&amp;rsquo;а&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/06/02/online-latex-editors/&#34;&gt;Онлайн редакторы LaTeX&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/07/30/pdf-a-standard/&#34;&gt;Стандарт PDF/A&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;подготовка-публикаций&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Подготовка публикаций&lt;/h2&gt;
 &lt;ul&gt;

@@ -351,7 +351,7 @@
         content="2020-09-10T10:33:15&#43;03:00"
       />
     
-    <meta property="article:modified_time" content="2021-08-01T19:56:00&#43;03:00">
+    <meta property="article:modified_time" content="2021-08-09T18:17:00&#43;03:00">
   
 
   
@@ -380,7 +380,7 @@
   "headline": "Переход на Sway",
   
   "datePublished": "2020-09-10T10:33:15+03:00",
-  "dateModified": "2021-08-01T19:56:00+03:00",
+  "dateModified": "2021-08-09T18:17:00+03:00",
   
   "author": {
     "@type": "Person",
@@ -823,7 +823,7 @@
           Обновлено
       
     
-    2021-08-01
+    2021-08-09
   </span>
   
 
@@ -832,7 +832,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-reading-time">
-    7 мин. для прочтения
+    8 мин. для прочтения
   </span>
   
 
@@ -893,6 +893,12 @@
         <li><a href="#настройка-вывода"><span class="section-num">5.5</span> Настройка вывода</a></li>
         <li><a href="#меню-программ--launcher"><span class="section-num">5.6</span> Меню программ (launcher)</a></li>
         <li><a href="#буфер-обмена"><span class="section-num">5.7</span> Буфер обмена</a></li>
+        <li><a href="#блокировка-экрана"><span class="section-num">5.8</span> Блокировка экрана</a>
+          <ul>
+            <li><a href="#swaylock"><span class="section-num">5.8.1</span> swaylock</a></li>
+            <li><a href="#swaylock-effects"><span class="section-num">5.8.2</span> swaylock-effects</a></li>
+          </ul>
+        </li>
       </ul>
     </li>
     <li><a href="#совместимость-приложений"><span class="section-num">6</span> Совместимость приложений</a>
@@ -1160,6 +1166,115 @@ $ wl-copy &quot;!!&quot;
 # replace the current selection with the list of types it's offered in
 $ wl-paste --list-types | wl-copy
 </code></pre>
+<h3 id="блокировка-экрана"><span class="section-num">5.8</span> Блокировка экрана</h3>
+<h4 id="swaylock"><span class="section-num">5.8.1</span> swaylock</h4>
+<!--list-separator-->
+<ol>
+<li>
+<p>Общая информация</p>
+<ul>
+<li>Официальное приложение для блокировки экрана для <em>Sway</em> &mdash; <em>swaylock</em>.</li>
+<li>Репозиторий: <a href="https://github.com/swaywm/swaylock" target="_blank" rel="noopener">https://github.com/swaywm/swaylock</a></li>
+<li>Установка:
+<ul>
+<li>
+<p>Gentoo:</p>
+<pre><code class="language-shell">emerge gui-apps/swaylock
+</code></pre>
+</li>
+</ul>
+</li>
+<li>В информационной панеле <em>waybar</em> есть опция для отключения блокировки при простое (например, для демонстрации слайдов).</li>
+</ul>
+</li>
+</ol>
+<!--list-separator-->
+<ol start="2">
+<li>
+<p>Блокировка при простое</p>
+<ul>
+<li>
+<p>Заблокировать экран после 300 секунд бездействия.</p>
+</li>
+<li>
+<p>Затем выключить дисплей ещё через 300 секунд.</p>
+</li>
+<li>
+<p>Включить экран при возобновлении работы.</p>
+</li>
+<li>
+<p>Также заблокировать экран перед тем, как компьютер перейдет в спящий режим.</p>
+</li>
+<li>
+<p>Конфигурационный файл:</p>
+<pre><code class="language-conf-unix">### ~/.config/sway/config.d/80-lock.conf
+
+### Idle lock
+## - Lock your screen after 300 seconds of inactivity
+## - Then turn off your displays after another 300 seconds
+## - Turn your screens back on when resumed
+## - Also lock your screen before your computer goes to sleep
+
+exec swayidle -w \
+     timeout 300 'swaylock -f -c 000000 -k' \
+     timeout 600 'swaymsg &quot;output * dpms off&quot;' \
+     resume 'swaymsg &quot;output * dpms on&quot;' \
+     before-sleep 'swaylock -f -c 000000 -k'
+</code></pre>
+</li>
+</ul>
+</li>
+</ol>
+<!--list-separator-->
+<ol start="3">
+<li>
+<p>Ручная блокировка</p>
+<ul>
+<li>
+<p><code>Mod</code> + <code>Ctrl</code> + <code>l</code> для немедленной блокировки экрана.</p>
+</li>
+<li>
+<p>Через 10 секунд выключить экран.</p>
+</li>
+<li>
+<p>Конфигурационный файл:</p>
+<pre><code class="language-conf-unix">### ~/.config/sway/config.d/80-lock.conf
+
+### Manual lock
+## - Mod + Ctrl + l to lock the screen immediately
+## - In 10 sec also switch the screen off
+
+set $lockman exec bash ~/.config/sway/scripts/lockman.sh
+bindsym $mod+Ctrl+l exec $lockman
+</code></pre>
+</li>
+<li>
+<p>Скрипт блокировки:</p>
+<pre><code class="language-shell">#!/bin/bash
+# ~/.config/sway/scripts/lockman.sh
+
+# Times the screen off and puts it to background
+swayidle \
+    timeout 10 'swaymsg &quot;output * dpms off&quot;' \
+    resume 'swaymsg &quot;output * dpms on&quot;' &amp;
+# Locks the screen immediately
+swaylock -c 550000 -k
+# Kills last background task so idle timer doesn't keep running
+kill %%
+</code></pre>
+</li>
+</ul>
+</li>
+</ol>
+<h4 id="swaylock-effects"><span class="section-num">5.8.2</span> swaylock-effects</h4>
+<ul>
+<li><em>swaylock-effects</em> является форком <em>swaylock</em>:
+<ul>
+<li>Репозиторий: <a href="https://github.com/mortie/swaylock-effects" target="_blank" rel="noopener">https://github.com/mortie/swaylock-effects</a></li>
+<li>Добавляет встроенные скриншоты и эффекты манипулирования изображениями, такие как размытие.</li>
+</ul>
+</li>
+</ul>
 <h2 id="совместимость-приложений"><span class="section-num">6</span> Совместимость приложений</h2>
 <h3 id="java"><span class="section-num">6.1</span> Java</h3>
 <h4 id="серое-окно-приложения-не-меняют-размер-с-помощью-wm-меню-сразу-закрываются"><span class="section-num">6.1.1</span> Серое окно, приложения не меняют размер с помощью WM, меню сразу закрываются</h4>
@@ -1222,6 +1337,10 @@ exec hash dbus-update-activation-environment 2&gt;/dev/null &amp;&amp; dbus-upda
 </ul>
       
 
+
+   
+
+   
 
    
 
@@ -4239,9 +4358,9 @@ exec hash dbus-update-activation-environment 2&gt;/dev/null &amp;&amp; dbus-upda
       
       <li><a href="https://yamadharma.github.io/ru/post/2021/04/28/pipewire-multimedia-server/">Мультимедиа сервер PipeWire</a></li>
       
-      <li><a href="https://yamadharma.github.io/ru/post/2021/08/01/synchronizing-files-syncthing/">Синхронизация файлов с помощью syncthing</a></li>
+      <li><a href="https://yamadharma.github.io/ru/post/2021/08/08/choosing-linux-distribution/">Выбор дистрибутива Linux</a></li>
       
-      <li><a href="https://yamadharma.github.io/ru/post/2021/07/06/mail-google-configuring-mail-client/">Почта. Google. Настройка почтового клиента</a></li>
+      <li><a href="https://yamadharma.github.io/ru/post/2021/08/01/synchronizing-files-syncthing/">Синхронизация файлов с помощью syncthing</a></li>
       
     </ul>
   </div>

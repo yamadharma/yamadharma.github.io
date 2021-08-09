@@ -351,7 +351,7 @@
         content="2021-01-22T15:10:00&#43;03:00"
       />
     
-    <meta property="article:modified_time" content="2021-07-23T18:59:00&#43;03:00">
+    <meta property="article:modified_time" content="2021-08-09T17:51:00&#43;03:00">
   
 
   
@@ -380,7 +380,7 @@
   "headline": "Почта. Синхронизация. mbsync",
   
   "datePublished": "2021-01-22T15:10:00+03:00",
-  "dateModified": "2021-07-23T18:59:00+03:00",
+  "dateModified": "2021-08-09T17:51:00+03:00",
   
   "author": {
     "@type": "Person",
@@ -823,7 +823,7 @@
           Обновлено
       
     
-    2021-07-23
+    2021-08-09
   </span>
   
 
@@ -927,6 +927,7 @@
 <ul>
 <li>Все учётные записи приводятся к единой структуре.</li>
 <li>Папки IMAP унифицируются следующим образом: Inbox, Archive, Sent, Trash, Drafts, Spam.</li>
+<li>В принципе, никто не мешает использовать названия папок самого IMAP-сервера.</li>
 </ul>
 <h3 id="конфигурация-учётных-записей"><span class="section-num">3.2</span> Конфигурация учётных записей</h3>
 <ul>
@@ -936,6 +937,16 @@
 <li>
 <p>Создать необходимые каталоги:</p>
 <pre><code class="language-conf-unix">mkdir -p ~/Maildir/account@domain
+</code></pre>
+</li>
+<li>
+<p>Можно создать каталоги все скопом из конфигурационного файла <code>~/.mbsyncrc</code>:</p>
+<pre><code class="language-shell">#!/bin/sh
+
+MAILDIR=~/Maildir
+
+# make mailbox directories
+grep -e &quot;^IMAPAccount&quot; ~/.mbsyncrc | cut -d&quot; &quot; -f2 | xargs -I {} -n 1 mkdir -p &quot;${MAILDIR}/{}&quot;
 </code></pre>
 </li>
 <li>
@@ -996,6 +1007,9 @@ CopyArrivalDate yes
 </li>
 <li>
 <p>Папка &ldquo;Отправленные&rdquo; не синхронизируется потому, что Google сохраняет всю электронную почту в папке &ldquo;Все сообщения&rdquo;, и в результате мы получим локально дубликаты.</p>
+</li>
+<li>
+<p>При использовании двуфакторной аутентификации (2FA) необходимо использовать <em>пароль приложения</em> (см. <a href="https://yamadharma.github.io/ru/post/2020/12/25/mail-google-connect/">Почта. Подключение к Google</a>).</p>
 <pre><code class="language-conf-unix"># IMAPAccount (gmail)
 
 IMAPAccount account@gmail.com
@@ -1004,47 +1018,15 @@ User account@gmail.com
 # Pass ***************
 ## To store the password in an encrypted file use PassCmd instead of Pass
 # PassCmd &quot;gpg -q --for-your-eyes-only --no-tty -d ~/.authinfo.gpg | awk '/machine account@gmail.com/ {print $6}'&quot;
-PassCmd &quot;pass email/gmail.com/account@gmail.com&quot;
+# PassCmd &quot;pass email/google.com/account@gmail.com@apppassword&quot;
+PassCmd &quot;pass email/google.com/account@gmail.com&quot;
 Port 993
 SSLType IMAPS
 AuthMechs LOGIN
 SSLVersions TLSv1.2
 
-IMAPStore account-remote
-Account account
-
-MaildirStore account-local
-SubFolders Verbatim
-# The trailing &quot;/&quot; is important
-Path ~/Maildir/account/
-Inbox ~/Maildir/account/inbox
-
-Channel account
-Master :account-remote:
-Slave :account-local:
-# Exclude everything under the internal [Gmail] folder, except the interesting folders
-Patterns * ![Gmail]* &quot;[Gmail]/Sent Mail&quot; &quot;[Gmail]/Starred&quot; &quot;[Gmail]/All Mail&quot;
-# Or include everything
-#Patterns *
-# Automatically create missing mailboxes, both locally and on the server
-Create Both
-Sync All
-Expunge Both
-# Save the synchronization state files in the relevant directory
-SyncState *
-</code></pre>
-<pre><code class="language-conf-unix"># IMAPAccount (gmail)
-
-IMAPAccount account@gmail.com
-Host imap.gmail.com
-User account@gmail.com
-# Pass ***************
-# To store the password in an encrypted file use PassCmd instead of Pass
-PassCmd &quot;gpg -q --for-your-eyes-only --no-tty -d ~/.authinfo.gpg | awk '/machine account@gmail.com/ {print $6}'&quot;
-AuthMechs LOGIN
-SSLType IMAPS
-SSLVersions TLSv1.2
-Port 993
+IMAPStore account@gmail.com-remote
+Account account@gmail.com
 
 MaildirStore account@gmail.com-local
 Path ~/Maildir/account@gmail.com/
@@ -1058,50 +1040,44 @@ Channel account@gmail.com-inbox
 Far :account@gmail.com-remote:&quot;INBOX&quot;
 Near :account@gmail.com-local:&quot;INBOX&quot;
 CopyArrivalDate yes
-# Automatically create missing mailboxes, both locally and on the server
 Create Both
 Expunge Both
-# Save the synchronization state files in the relevant directory
 SyncState *
 
 Channel account@gmail.com-trash
-Far :account@gmail.com-remote:&quot;[Gmail]/Trash&quot;
+# Far :account@gmail.com-remote:&quot;[Gmail]/Trash&quot;
+Far :account@gmail.com-remote:&quot;[Gmail]/&amp;BBoEPgRABDcEOAQ9BDA-&quot;
 Near :account@gmail.com-local:&quot;Trash&quot;
 CopyArrivalDate yes
-# Automatically create missing mailboxes, both locally and on the server
 Create Both
 Expunge Both
-# Save the synchronization state files in the relevant directory
 SyncState *
 
 Channel account@gmail.com-spam
-Far :account@gmail.com-remote:&quot;[Gmail]/Spam&quot;
+# Far :account@gmail.com-remote:&quot;[Gmail]/Spam&quot;
+Far :account@gmail.com-remote:&quot;[Gmail]/&amp;BCEEPwQwBDw-&quot;
 Near :account@gmail.com-local:&quot;Spam&quot;
 CopyArrivalDate yes
-# Automatically create missing mailboxes, both locally and on the server
 Create Both
 Expunge Both
-# Save the synchronization state files in the relevant directory
 SyncState *
 
 Channel account@gmail.com-all
-Far :account@gmail.com-remote:&quot;[Gmail]/All Mail&quot;
+# Far :account@gmail.com-remote:&quot;[Gmail]/All Mail&quot;
+Far :account@gmail.com-remote:&quot;[Gmail]/&amp;BBIEQQRP- &amp;BD8EPgRHBEIEMA-&quot;
 Near :account@gmail.com-local:&quot;Archive&quot;
 CopyArrivalDate yes
-# Automatically create missing mailboxes, both locally and on the server
 Create Both
 Expunge Both
-# Save the synchronization state files in the relevant directory
 SyncState *
 
 Channel account@gmail.com-drafts
-Far :account@gmail.com-remote:&quot;[Gmail]/Drafts&quot;
+# Far :account@gmail.com-remote:&quot;[Gmail]/Drafts&quot;
+Far :account@gmail.com-remote:&quot;[Gmail]/&amp;BCcENQRABD0EPgQyBDgEOgQ4-&quot;
 Near :account@gmail.com-local:&quot;Drafts&quot;
 CopyArrivalDate yes
-# Automatically create missing mailboxes, both locally and on the server
 Create Both
 Expunge Both
-# Save the synchronization state files in the relevant directory
 SyncState *
 
 Group account@gmail.com
@@ -1570,6 +1546,10 @@ find . -iname &quot;*host1*&quot; | sed 'p;s:host1:host2:' | xargs -n2 mv
 </ul>
       
 
+
+   
+
+   
 
    
 
@@ -4579,6 +4559,8 @@ find . -iname &quot;*host1*&quot; | sed 'p;s:host1:host2:' | xargs -n2 mv
     <h3>Похожие</h3>
     <ul>
       
+      <li><a href="https://yamadharma.github.io/ru/post/2021/08/08/choosing-linux-distribution/">Выбор дистрибутива Linux</a></li>
+      
       <li><a href="https://yamadharma.github.io/ru/post/2021/08/01/synchronizing-files-syncthing/">Синхронизация файлов с помощью syncthing</a></li>
       
       <li><a href="https://yamadharma.github.io/ru/post/2021/07/06/mail-google-configuring-mail-client/">Почта. Google. Настройка почтового клиента</a></li>
@@ -4586,8 +4568,6 @@ find . -iname &quot;*host1*&quot; | sed 'p;s:host1:host2:' | xargs -n2 mv
       <li><a href="https://yamadharma.github.io/ru/post/2021/07/04/mail-imap-folder-encoding/">Почта. Кодировка папок IMAP</a></li>
       
       <li><a href="https://yamadharma.github.io/ru/post/2021/07/04/mail-office365-configuring-mail-client/">Почта. Office365. Настройка почтового клиента</a></li>
-      
-      <li><a href="https://yamadharma.github.io/ru/post/2021/07/04/mail-mail-ru-configuring-mail-client/">Почта. Mail.ru. Настройка почтового клиента</a></li>
       
     </ul>
   </div>

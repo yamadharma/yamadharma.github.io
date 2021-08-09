@@ -1150,6 +1150,12 @@ systemctl --user enable pipewire.socket pipewire-pulse.socket
         &lt;li&gt;&lt;a href=&#34;#настройка-вывода&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.5&lt;/span&gt; Настройка вывода&lt;/a&gt;&lt;/li&gt;
         &lt;li&gt;&lt;a href=&#34;#меню-программ--launcher&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.6&lt;/span&gt; Меню программ (launcher)&lt;/a&gt;&lt;/li&gt;
         &lt;li&gt;&lt;a href=&#34;#буфер-обмена&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.7&lt;/span&gt; Буфер обмена&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#блокировка-экрана&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.8&lt;/span&gt; Блокировка экрана&lt;/a&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&#34;#swaylock&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.8.1&lt;/span&gt; swaylock&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#swaylock-effects&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.8.2&lt;/span&gt; swaylock-effects&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
       &lt;/ul&gt;
     &lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#совместимость-приложений&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6&lt;/span&gt; Совместимость приложений&lt;/a&gt;
@@ -1417,6 +1423,115 @@ $ wl-copy &amp;quot;!!&amp;quot;
 # replace the current selection with the list of types it&#39;s offered in
 $ wl-paste --list-types | wl-copy
 &lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;блокировка-экрана&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.8&lt;/span&gt; Блокировка экрана&lt;/h3&gt;
+&lt;h4 id=&#34;swaylock&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.8.1&lt;/span&gt; swaylock&lt;/h4&gt;
+&lt;!--list-separator--&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Общая информация&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Официальное приложение для блокировки экрана для &lt;em&gt;Sway&lt;/em&gt; &amp;mdash; &lt;em&gt;swaylock&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;Репозиторий: &lt;a href=&#34;https://github.com/swaywm/swaylock&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/swaywm/swaylock&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Установка:
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Gentoo:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;emerge gui-apps/swaylock
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;В информационной панеле &lt;em&gt;waybar&lt;/em&gt; есть опция для отключения блокировки при простое (например, для демонстрации слайдов).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;!--list-separator--&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;
+&lt;p&gt;Блокировка при простое&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Заблокировать экран после 300 секунд бездействия.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Затем выключить дисплей ещё через 300 секунд.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Включить экран при возобновлении работы.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Также заблокировать экран перед тем, как компьютер перейдет в спящий режим.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Конфигурационный файл:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;### ~/.config/sway/config.d/80-lock.conf
+
+### Idle lock
+## - Lock your screen after 300 seconds of inactivity
+## - Then turn off your displays after another 300 seconds
+## - Turn your screens back on when resumed
+## - Also lock your screen before your computer goes to sleep
+
+exec swayidle -w \
+     timeout 300 &#39;swaylock -f -c 000000 -k&#39; \
+     timeout 600 &#39;swaymsg &amp;quot;output * dpms off&amp;quot;&#39; \
+     resume &#39;swaymsg &amp;quot;output * dpms on&amp;quot;&#39; \
+     before-sleep &#39;swaylock -f -c 000000 -k&#39;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;!--list-separator--&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;
+&lt;p&gt;Ручная блокировка&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;Mod&lt;/code&gt; + &lt;code&gt;Ctrl&lt;/code&gt; + &lt;code&gt;l&lt;/code&gt; для немедленной блокировки экрана.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Через 10 секунд выключить экран.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Конфигурационный файл:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;### ~/.config/sway/config.d/80-lock.conf
+
+### Manual lock
+## - Mod + Ctrl + l to lock the screen immediately
+## - In 10 sec also switch the screen off
+
+set $lockman exec bash ~/.config/sway/scripts/lockman.sh
+bindsym $mod+Ctrl+l exec $lockman
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Скрипт блокировки:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#!/bin/bash
+# ~/.config/sway/scripts/lockman.sh
+
+# Times the screen off and puts it to background
+swayidle \
+    timeout 10 &#39;swaymsg &amp;quot;output * dpms off&amp;quot;&#39; \
+    resume &#39;swaymsg &amp;quot;output * dpms on&amp;quot;&#39; &amp;amp;
+# Locks the screen immediately
+swaylock -c 550000 -k
+# Kills last background task so idle timer doesn&#39;t keep running
+kill %%
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;swaylock-effects&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.8.2&lt;/span&gt; swaylock-effects&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;swaylock-effects&lt;/em&gt; является форком &lt;em&gt;swaylock&lt;/em&gt;:
+&lt;ul&gt;
+&lt;li&gt;Репозиторий: &lt;a href=&#34;https://github.com/mortie/swaylock-effects&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/mortie/swaylock-effects&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Добавляет встроенные скриншоты и эффекты манипулирования изображениями, такие как размытие.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h2 id=&#34;совместимость-приложений&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6&lt;/span&gt; Совместимость приложений&lt;/h2&gt;
 &lt;h3 id=&#34;java&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6.1&lt;/span&gt; Java&lt;/h3&gt;
 &lt;h4 id=&#34;серое-окно-приложения-не-меняют-размер-с-помощью-wm-меню-сразу-закрываются&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6.1.1&lt;/span&gt; Серое окно, приложения не меняют размер с помощью WM, меню сразу закрываются&lt;/h4&gt;

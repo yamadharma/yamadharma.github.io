@@ -169,7 +169,16 @@
         &lt;li&gt;&lt;a href=&#34;#соответствие-параметров-экспорта-для-файла-и-поддерева&#34;&gt;Соответствие параметров экспорта для файла и поддерева&lt;/a&gt;&lt;/li&gt;
       &lt;/ul&gt;
     &lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#backlinks&#34;&gt;Backlinks&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#специальные-варианты-экспорта&#34;&gt;Специальные варианты экспорта&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#экспорт-фрагментов-математики&#34;&gt;Экспорт фрагментов математики&lt;/a&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&#34;#экспорт-в-формате-mathml&#34;&gt;Экспорт в формате MathML&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#экспорт-в-виде-рисунка&#34;&gt;Экспорт в виде рисунка&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
   &lt;/ul&gt;
 &lt;/nav&gt;
 &lt;/details&gt;
@@ -201,9 +210,61 @@
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;h2 id=&#34;backlinks&#34;&gt;Backlinks&lt;/h2&gt;
+&lt;h2 id=&#34;специальные-варианты-экспорта&#34;&gt;Специальные варианты экспорта&lt;/h2&gt;
+&lt;h3 id=&#34;экспорт-фрагментов-математики&#34;&gt;Экспорт фрагментов математики&lt;/h3&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2020/12/14/org-mode-prezentation/&#34;&gt;Org-mode. Презентации&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Применяется для экспорта в формат &lt;code&gt;odt&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Можно экспортировать в формат MathML или в виде рисунка&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;экспорт-в-формате-mathml&#34;&gt;Экспорт в формате MathML&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;В файле задаётся опция:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-org&#34;&gt;#+OPTIONS: tex:t
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Можно установить переменную emacs &lt;code&gt;org-export-with-latex&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-elisp&#34;&gt;(setq org-export-with-latex t)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Устанавливается программа конвертации. Предлагается установить LaTeXML &lt;a href=&#34;https://dlmf.nist.gov/LaTeXML/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://dlmf.nist.gov/LaTeXML/&lt;/a&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;В Gentoo &lt;em&gt;ebuild&lt;/em&gt; находится в оверлее &lt;em&gt;flammie&lt;/em&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;emerge dev-tex/LaTeXML
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;В конфигурационном файле задаётся переменная &lt;code&gt;org-latex-to-mathml-convert-command&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-elisp&#34;&gt;(setq org-latex-to-mathml-convert-command
+      &amp;quot;latexmlmath \&amp;quot;%i\&amp;quot; --presentationmathml=%o&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;экспорт-в-виде-рисунка&#34;&gt;Экспорт в виде рисунка&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;В файле устанавливаются опции:
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;экспорт в &lt;code&gt;png&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-org&#34;&gt;#+OPTIONS: tex:dvipng
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;экспорт в &lt;code&gt;svg&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-org&#34;&gt;#+OPTIONS: tex:dvisvgm
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;экспорт в &lt;code&gt;png&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-org&#34;&gt;#+OPTIONS: tex:imagemagick
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Для генерации изображения запускается соответствующая программа.&lt;/li&gt;
 &lt;/ul&gt;</description>
     </item>
     

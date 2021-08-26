@@ -351,7 +351,7 @@
         content="2021-08-18T18:29:00&#43;03:00"
       />
     
-    <meta property="article:modified_time" content="2021-08-18T19:36:00&#43;03:00">
+    <meta property="article:modified_time" content="2021-08-19T16:09:00&#43;03:00">
   
 
   
@@ -380,7 +380,7 @@
   "headline": "Анализатор протоколов Wireshark",
   
   "datePublished": "2021-08-18T18:29:00+03:00",
-  "dateModified": "2021-08-18T19:36:00+03:00",
+  "dateModified": "2021-08-19T16:09:00+03:00",
   
   "author": {
     "@type": "Person",
@@ -823,7 +823,7 @@
           Обновлено
       
     
-    2021-08-18
+    2021-08-19
   </span>
   
 
@@ -872,22 +872,23 @@
   <nav id="TableOfContents">
   <ul>
     <li><a href="#общая-информация"><span class="section-num">1</span> Общая информация</a></li>
-    <li><a href="#установка"><span class="section-num">2</span> Установка</a></li>
-    <li><a href="#запуск-без-административных-привилегий"><span class="section-num">3</span> Запуск без административных привилегий</a>
+    <li><a href="#установка"><span class="section-num">2</span> Установка</a>
       <ul>
-        <li><a href="#linux"><span class="section-num">3.1</span> Linux</a>
+        <li><a href="#установка-в-разных-операционных-системах"><span class="section-num">2.1</span> Установка в разных операционных системах</a></li>
+        <li><a href="#запуск-без-административных-привилегий"><span class="section-num">2.2</span> Запуск без административных привилегий</a>
           <ul>
-            <li><a href="#ограничение-разрешения-на-захват-для-группы"><span class="section-num">3.1.1</span> Ограничение разрешения на захват для группы</a></li>
+            <li><a href="#linux"><span class="section-num">2.2.1</span> Linux</a></li>
+            <li><a href="#windows"><span class="section-num">2.2.2</span> Windows</a></li>
+            <li><a href="#bsd-macos"><span class="section-num">2.2.3</span> BSD, MacOS</a></li>
           </ul>
         </li>
-        <li><a href="#windows"><span class="section-num">3.2</span> Windows</a>
+        <li><a href="#видео"><span class="section-num">2.3</span> Видео</a>
           <ul>
-            <li><a href="#запуск-wireshark-под-администратором"><span class="section-num">3.2.1</span> Запуск Wireshark под администратором</a></li>
-            <li><a href="#запуск-драйвера-npf-под-администратором-вручную"><span class="section-num">3.2.2</span> Запуск драйвера NPF под администратором вручную</a></li>
-            <li><a href="#запуск-драйвера-npf-под-администратором-автоматически-при-старте-системы"><span class="section-num">3.2.3</span> Запуск драйвера NPF под администратором автоматически при старте системы</a></li>
+            <li><a href="#установка-на-windows"><span class="section-num">2.3.1</span> Установка на Windows</a></li>
+            <li><a href="#установка-на-ubuntu-linux"><span class="section-num">2.3.2</span> Установка на Ubuntu Linux</a></li>
+            <li><a href="#установка-на-fedora-linux"><span class="section-num">2.3.3</span> Установка на Fedora Linux</a></li>
           </ul>
         </li>
-        <li><a href="#bsd-macos"><span class="section-num">3.3</span> BSD, MacOS</a></li>
       </ul>
     </li>
   </ul>
@@ -897,12 +898,17 @@
 <h2 id="общая-информация"><span class="section-num">1</span> Общая информация</h2>
 <ul>
 <li>Сайт: <a href="https://www.wireshark.org/" target="_blank" rel="noopener">https://www.wireshark.org/</a></li>
+<li>Впервые выпущен в 1998 году.</li>
+<li>Первоначальное название &mdash; <em>Ethereal</em>.</li>
+<li>Разработчикам пришлось изменить название на <em>Wireshark</em> в 2006 году из-за проблем с товарными знаками.</li>
 </ul>
 <h2 id="установка"><span class="section-num">2</span> Установка</h2>
+<h3 id="установка-в-разных-операционных-системах"><span class="section-num">2.1</span> Установка в разных операционных системах</h3>
 <ul>
 <li>
 <p>Windows (менеджер пакетов Chocolatey: <a href="https://yamadharma.github.io/ru/post/2021/01/18/package-manager-windows-chocolatey/">Пакетный менеджер для Windows. Chocolatey</a>):</p>
 <pre><code class="language-shell">choco install wireshark
+choco install winpcap
 </code></pre>
 </li>
 <li>
@@ -918,15 +924,23 @@
 <pre><code class="language-shell">sudo apt-get install wireshark
 </code></pre>
 </li>
+<li>
+<p>Fedora</p>
+<pre><code class="language-shell">sudo dnf install wireshark
+</code></pre>
+</li>
 </ul>
 </li>
 </ul>
-<h2 id="запуск-без-административных-привилегий"><span class="section-num">3</span> Запуск без административных привилегий</h2>
+<h3 id="запуск-без-административных-привилегий"><span class="section-num">2.2</span> Запуск без административных привилегий</h3>
 <ul>
 <li>Административные полномочия требуются для захвата пакетов.</li>
 </ul>
-<h3 id="linux"><span class="section-num">3.1</span> Linux</h3>
-<h4 id="ограничение-разрешения-на-захват-для-группы"><span class="section-num">3.1.1</span> Ограничение разрешения на захват для группы</h4>
+<h4 id="linux"><span class="section-num">2.2.1</span> Linux</h4>
+<!--list-separator-->
+<ol>
+<li>
+<p>Ограничение разрешения на захват для группы</p>
 <!--list-separator-->
 <ol>
 <li>
@@ -994,7 +1008,7 @@ usermod -a -G wireshark user_name
 <li>
 <p>Выполните следующее:</p>
 <pre><code class="language-shell">sudo -i
-gpasswd -a -G pcap user_name
+usermod -a -G wireshark user_name
 </code></pre>
 </li>
 <li>
@@ -1005,17 +1019,28 @@ gpasswd -a -G pcap user_name
 </ul>
 </li>
 </ol>
-<h3 id="windows"><span class="section-num">3.2</span> Windows</h3>
+</li>
+</ol>
+<h4 id="windows"><span class="section-num">2.2.2</span> Windows</h4>
 <ul>
 <li>Драйвер <code>WinPcap</code> (<code>NPF</code>) загружается Wireshark, когда он начинает собирать данные в реальном времени.</li>
 <li>Для этого требуются права администратора.</li>
 <li>Остановка Wireshark не останавливает драйвер WinPcap.</li>
+<li>При установке драйвера WinPcap через Chocolatey он устанавливается для автоматического запуска с полномочиями администратора.</li>
 </ul>
-<h4 id="запуск-wireshark-под-администратором"><span class="section-num">3.2.1</span> Запуск Wireshark под администратором</h4>
+<!--list-separator-->
+<ol>
+<li>
+<p>Запуск Wireshark под администратором</p>
 <ul>
 <li>Самый простой вариант, но не безопасный.</li>
 </ul>
-<h4 id="запуск-драйвера-npf-под-администратором-вручную"><span class="section-num">3.2.2</span> Запуск драйвера NPF под администратором вручную</h4>
+</li>
+</ol>
+<!--list-separator-->
+<ol start="2">
+<li>
+<p>Запуск драйвера NPF под администратором вручную</p>
 <ul>
 <li>
 <p>Запустите драйвер NPF:</p>
@@ -1031,7 +1056,12 @@ gpasswd -a -G pcap user_name
 </code></pre>
 </li>
 </ul>
-<h4 id="запуск-драйвера-npf-под-администратором-автоматически-при-старте-системы"><span class="section-num">3.2.3</span> Запуск драйвера NPF под администратором автоматически при старте системы</h4>
+</li>
+</ol>
+<!--list-separator-->
+<ol start="3">
+<li>
+<p>Запуск драйвера NPF под администратором автоматически при старте системы</p>
 <ul>
 <li>
 <p>Запустите под администратором:</p>
@@ -1042,11 +1072,31 @@ gpasswd -a -G pcap user_name
 <p>Или в <code>Device Manager</code> выберите <code>View-&gt;Show hidden devices</code>, откройте <code>Non-Plug and Play Drivers</code>. Потом настройте запуск <code>NetGroup Packet Filter Driver</code>.</p>
 </li>
 </ul>
-<h3 id="bsd-macos"><span class="section-num">3.3</span> BSD, MacOS</h3>
+</li>
+</ol>
+<h4 id="bsd-macos"><span class="section-num">2.2.3</span> BSD, MacOS</h4>
 <ul>
 <li>Для захвата пакетов необходим доступ для чтения к устройствам BPF в <code>/dev/bpf*</code>.</li>
 <li>Поскольку в MacOS используется <code>devfs</code>, изменения не сохраняется между перезагрузками.</li>
 </ul>
+<h3 id="видео"><span class="section-num">2.3</span> Видео</h3>
+<h4 id="установка-на-windows"><span class="section-num">2.3.1</span> Установка на Windows</h4>
+
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+  <iframe src="https://www.youtube.com/embed/YZDTGFu4vGQ" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video"></iframe>
+</div>
+
+<h4 id="установка-на-ubuntu-linux"><span class="section-num">2.3.2</span> Установка на Ubuntu Linux</h4>
+
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+  <iframe src="https://www.youtube.com/embed/M-b_nox14io" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video"></iframe>
+</div>
+
+<h4 id="установка-на-fedora-linux"><span class="section-num">2.3.3</span> Установка на Fedora Linux</h4>
+
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+  <iframe src="https://www.youtube.com/embed/NtAGouu6ncU" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video"></iframe>
+</div>
       
 
 
@@ -1105,11 +1155,25 @@ gpasswd -a -G pcap user_name
    
 
    
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
       
-   
-
-   
-
    
 
    

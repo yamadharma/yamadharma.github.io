@@ -5,12 +5,93 @@
     <link>https://yamadharma.github.io/ru/tag/sysadmin/</link>
       <atom:link href="https://yamadharma.github.io/ru/tag/sysadmin/index.xml" rel="self" type="application/rss+xml" />
     <description>sysadmin</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2021 Dmitry S. Kulyabov</copyright><lastBuildDate>Sun, 08 Aug 2021 11:20:00 +0300</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2021 Dmitry S. Kulyabov</copyright><lastBuildDate>Fri, 27 Aug 2021 11:41:00 +0300</lastBuildDate>
     <image>
       <url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url>
       <title>sysadmin</title>
       <link>https://yamadharma.github.io/ru/tag/sysadmin/</link>
     </image>
+    
+    <item>
+      <title>Подтома btrfs</title>
+      <link>https://yamadharma.github.io/ru/post/2021/08/27/btrfs-subvolumes/</link>
+      <pubDate>Fri, 27 Aug 2021 11:41:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2021/08/27/btrfs-subvolumes/</guid>
+      <description>&lt;p&gt;Подтома (subvolumes) btrfs.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#именование-подтомов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Именование подтомов&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#монтирование-подтомов-в-fstab&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Монтирование подтомов в fstab&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#создание-нового-подтома&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Создание нового подтома&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;именование-подтомов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Именование подтомов&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Для определённости я называю подтома по шаблону &lt;code&gt;@имя_подтома&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;При установки системы я создаю подтома следующим образом:
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Подмонтируем раздел с btrfs:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;mkdir /mnt/gentoo
+mount -tbtrfs -orelatime,space_cache,discard,autodefrag,compress=zstd:9 /dev/sda4 /mnt/gentoo/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Создадим подтома на btrfs:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;cd /mnt/gentoo/
+btrfs subvol create @
+btrfs subvol create @var
+btrfs subvol create @var_tmp
+btrfs subvol create @vm
+btrfs subvol create @portage
+btrfs subvol create @portage_local
+btrfs subvol create @portage_com
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;монтирование-подтомов-в-fstab&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Монтирование подтомов в fstab&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;При монтировании я указываю универсальный идентификатор (UUID) файловой системы:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;# /etc/fstab
+UUID=&amp;quot;f8963df3-1320-4bc0-a125-62be185b029e&amp;quot;     /               btrfs   relatime,discard,autodefrag,compress=zstd:9,subvol=@    0 0
+UUID=&amp;quot;f8963df3-1320-4bc0-a125-62be185b029e&amp;quot;     /var            btrfs   relatime,discard,autodefrag,compress=zstd:9,subvol=@var 0 0
+UUID=&amp;quot;f8963df3-1320-4bc0-a125-62be185b029e&amp;quot;     /var/tmp        btrfs   relatime,discard,autodefrag,compress=zstd:9,subvol=@var_tmp     0 0
+UUID=&amp;quot;f8963df3-1320-4bc0-a125-62be185b029e&amp;quot;     /var/vm         btrfs   relatime,discard,autodefrag,compress=zstd:9,subvol=@vm          0 0
+UUID=&amp;quot;f8963df3-1320-4bc0-a125-62be185b029e&amp;quot;     /home           btrfs   relatime,discard,autodefrag,compress=zstd:9,subvol=@home        0 0
+UUID=&amp;quot;f8963df3-1320-4bc0-a125-62be185b029e&amp;quot;     /usr/portage    btrfs   relatime,discard,autodefrag,compress=zstd:9,subvol=@portage     0 0
+UUID=&amp;quot;f8963df3-1320-4bc0-a125-62be185b029e&amp;quot;     /usr/local/share/portage        btrfs   relatime,discard,autodefrag,compress=zstd:9,subvol=@portage_local       0 0
+UUID=&amp;quot;f8963df3-1320-4bc0-a125-62be185b029e&amp;quot;     /com/lib/portage        btrfs   relatime,discard,autodefrag,compress=zstd:9,subvol=@portage_com 0 0
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Идентификатор файловой системы можно узнать следующим образом:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;blkid /dev/sda4
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;создание-нового-подтома&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Создание нового подтома&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;После установки системы может возникнуть необходимость создания дополнительных подтомов на существующем томе.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;mkdir /mnt/btrfs
+mount UUID=f8963df3-1320-4bc0-a125-62be185b029e /mnt/btrfs
+btrfs subvolume create /mnt/btrfs/@data
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Подключим в &lt;code&gt;/etc/fstab&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;UUID=&amp;quot;f8963df3-1320-4bc0-a125-62be185b029e&amp;quot;	/data		btrfs	relatime,discard,autodefrag,compress=zstd:9,subvol=@data        0 0
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
     
     <item>
       <title>Выбор дистрибутива Linux</title>
@@ -152,6 +233,11 @@
         &lt;li&gt;&lt;a href=&#34;#pop3&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; POP3&lt;/a&gt;&lt;/li&gt;
       &lt;/ul&gt;
     &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#поисковые-запросы-в-web-интерфейсе-gmail&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Поисковые запросы в Web-интерфейсе Gmail&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#размер-почтового-сообщения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Размер почтового сообщения&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
   &lt;/ul&gt;
 &lt;/nav&gt;
 &lt;/details&gt;
@@ -176,6 +262,11 @@
 &lt;li&gt;скачивание по IMAP: не более 2500 МБ в день;&lt;/li&gt;
 &lt;li&gt;скачивание по POP: не более 1250 МБ в день;&lt;/li&gt;
 &lt;li&gt;загрузка по IMAP: не более 500 МБ в день.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Размер вложения: до 25 МБ.
+&lt;ul&gt;
+&lt;li&gt;Если размер вложения превышает 25 МБ, web-интерфейс Gmail автоматически добавляет ссылку на Google Диск в электронное письмо вместо того, чтобы включать её в качестве вложения.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;Поддерживает двуэтапную авторизацию.&lt;/li&gt;
@@ -214,6 +305,42 @@
 &lt;li&gt;адрес почтового сервера &amp;mdash; &lt;code&gt;pop.gmail.com&lt;/code&gt;;&lt;/li&gt;
 &lt;li&gt;защита соединения &amp;mdash; SSL;&lt;/li&gt;
 &lt;li&gt;порт &amp;mdash; 995.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;поисковые-запросы-в-web-интерфейсе-gmail&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Поисковые запросы в Web-интерфейсе Gmail&lt;/h2&gt;
+&lt;h3 id=&#34;размер-почтового-сообщения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Размер почтового сообщения&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Размер сообщения:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;size:[size in bytes]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;В дополнение к размеру вы можете использовать операторы поиска, такие как больше, больше, чем меньше, меньше и меньше, чем меньше, чтобы найти файлы любого определенного размера:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;larger_than&lt;/code&gt;;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;smaller_than&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Примеры:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Все электронные письма размером более 5 МБ, содержащие файловые вложения:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;size:5mb has:attachment
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Электронные письма размером более 10 МБ, вложения в формате &lt;code&gt;pdf&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;size:10mb has:attachment filename:pdf
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Все электронные письма с размером вложений от 5 МБ до 8 МБ:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;larger_than:5m smaller_than:8M
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
 &lt;/ul&gt;</description>
     </item>
     
@@ -3685,6 +3812,7 @@ systemctl --user enable pipewire.socket pipewire-pulse.socket
         &lt;li&gt;&lt;a href=&#34;#windows&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Windows&lt;/a&gt;&lt;/li&gt;
         &lt;li&gt;&lt;a href=&#34;#установка-операционных-систем&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Установка операционных систем&lt;/a&gt;&lt;/li&gt;
         &lt;li&gt;&lt;a href=&#34;#серверные-системы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; Серверные системы&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#файловые-системы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.4&lt;/span&gt; Файловые системы&lt;/a&gt;&lt;/li&gt;
       &lt;/ul&gt;
     &lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#пользовательские-программы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Пользовательские программы&lt;/a&gt;
@@ -3718,6 +3846,10 @@ systemctl --user enable pipewire.socket pipewire-pulse.socket
 &lt;h3 id=&#34;серверные-системы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; Серверные системы&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/05/25/replacing-centos/&#34;&gt;Замена Centos&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;файловые-системы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.4&lt;/span&gt; Файловые системы&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/08/27/btrfs-file-system/&#34;&gt;Файловая система btrfs&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;пользовательские-программы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Пользовательские программы&lt;/h2&gt;
 &lt;h3 id=&#34;обработка-видео&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Обработка видео&lt;/h3&gt;

@@ -351,7 +351,7 @@
         content="2020-12-17T11:01:00&#43;03:00"
       />
     
-    <meta property="article:modified_time" content="2021-06-28T10:20:00&#43;03:00">
+    <meta property="article:modified_time" content="2021-08-29T18:24:00&#43;03:00">
   
 
   
@@ -380,7 +380,7 @@
   "headline": "Org-mode. Экспорт в Hugo",
   
   "datePublished": "2020-12-17T11:01:00+03:00",
-  "dateModified": "2021-06-28T10:20:00+03:00",
+  "dateModified": "2021-08-29T18:24:00+03:00",
   
   "author": {
     "@type": "Person",
@@ -823,7 +823,7 @@
           Обновлено
       
     
-    2021-06-28
+    2021-08-29
   </span>
   
 
@@ -832,7 +832,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-reading-time">
-    8 мин. для прочтения
+    9 мин. для прочтения
   </span>
   
 
@@ -847,7 +847,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-categories">
-    <i class="fas fa-folder mr-1"></i><a href="https://yamadharma.github.io/ru/category/sysadmin/">sysadmin</a></span>
+    <i class="fas fa-folder mr-1"></i><a href="https://yamadharma.github.io/ru/category/computer-science/">computer-science</a></span>
   
 
 </div>
@@ -926,6 +926,14 @@
       <ul>
         <li><a href="#общая-информация"><span class="section-num">7.1</span> Общая информация</a></li>
         <li><a href="#читаемые-курсы"><span class="section-num">7.2</span> Читаемые курсы</a></li>
+      </ul>
+    </li>
+    <li><a href="#автоматический-экспорт-при-сохранении"><span class="section-num">8</span> Автоматический экспорт при сохранении</a>
+      <ul>
+        <li><a href="#установка-на-уровне-каталога"><span class="section-num">8.1</span> Установка на уровне каталога</a></li>
+        <li><a href="#установка-на-уровне-проекта"><span class="section-num">8.2</span> Установка на уровне проекта</a></li>
+        <li><a href="#установка-для-конкретного-файла"><span class="section-num">8.3</span> Установка для конкретного файла</a></li>
+        <li><a href="#запрет-автосохранения-для-конкретного-файла"><span class="section-num">8.4</span> Запрет автосохранения для конкретного файла</a></li>
       </ul>
     </li>
   </ul>
@@ -1008,6 +1016,8 @@ Markdown для генератора сайтов Hugo</a>). При необхо
 </ul>
 <h3 id="свойства-экспорта"><span class="section-num">2.2</span> Свойства экспорта</h3>
 <h4 id="обязательные-свойства"><span class="section-num">2.2.1</span> Обязательные свойства</h4>
+<ul>
+<li>
 <p>Для экспорта необходимо установить следующие обязательные свойства:</p>
 <ul>
 <li><code>HUGO_SECTION</code> - название раздела Hugo по умолчанию для всех
@@ -1017,6 +1027,17 @@ Markdown для генератора сайтов Hugo</a>). При необхо
 <li><code>HUGO_BASE_DIR</code> - корневой каталог сайта Hugo. Например, если
 <code>HUGO_BASE_DIR</code> установлен на <code>~/hugo/</code>, то экспортированные файлы
 Markdown будут сохранены в каталог <code>~/hugo/content/&lt;HUGO_SECTION&gt;/</code>.</li>
+</ul>
+</li>
+<li>
+<p>Данные свойства можно устанавливать как на уровне файла, так и на уровне каталога или проекта.</p>
+</li>
+<li>
+<p>Переменные на уровне каталога задаются в файле <code>.dir-locals.el</code>:</p>
+<pre><code class="language-elisp">((org-mode . ((org-hugo-base-dir . &quot;~/work/blog/git&quot;)
+     (org-hugo-section . &quot;ru/post&quot;))))
+</code></pre>
+</li>
 </ul>
 <h4 id="формат-заголовка"><span class="section-num">2.2.2</span> Формат заголовка</h4>
 <p>Поддерживаются форматы заголовка TOML (по умолчанию) и YAML.</p>
@@ -1461,8 +1482,82 @@ Content
 </code></pre>
 </li>
 </ul>
+<h2 id="автоматический-экспорт-при-сохранении"><span class="section-num">8</span> Автоматический экспорт при сохранении</h2>
+<h3 id="установка-на-уровне-каталога"><span class="section-num">8.1</span> Установка на уровне каталога</h3>
+<ul>
+<li>
+<p>Установка делается в файле <code>.dir-locals.el</code> в текущем каталоге:</p>
+<pre><code class="language-elisp">((org-mode . ((eval . (org-hugo-auto-export-mode)))))
+</code></pre>
+</li>
+<li>
+<p>Конфигурация применяется ко всем org-файлам в каталоге.</p>
+</li>
+</ul>
+<h3 id="установка-на-уровне-проекта"><span class="section-num">8.2</span> Установка на уровне проекта</h3>
+<ul>
+<li>
+<p>Если org-файлы находятся в некотором каталоге, например в <code>content-org</code>, то в файле <code>.dir-locals.el</code> задаётся конфигурация для этого каталога:</p>
+<pre><code class="language-elisp">((&quot;content-org/&quot;
+  . ((org-mode . ((eval . (org-hugo-auto-export-mode)))))))
+</code></pre>
+</li>
+</ul>
+<h3 id="установка-для-конкретного-файла"><span class="section-num">8.3</span> Установка для конкретного файла</h3>
+<ul>
+<li>
+<p>Для каждого файла можно задать локальные переменные:</p>
+<pre><code class="language-org">​* Footnotes
+​* COMMENT Local Variables                          :ARCHIVE:
+# Local Variables:
+# eval: (org-hugo-auto-export-mode)
+# End:
+</code></pre>
+</li>
+<li>
+<p>Рекомендуется добавить заголовок <code>* Footnotes</code>, чтобы в случае добавления каких-либо сносок они добавлялись в данный раздел.</p>
+</li>
+<li>
+<p>В противном случае будет автоматически создан новый заголовок <code>* Footnotes</code> в конце файла, и заголовок <code>Local Variables</code> больше не будет последним и не будет обрабатываться.</p>
+</li>
+<li>
+<p>Перечитать локальные переменные можно командой:</p>
+<pre><code class="language-elisp">M-x normal-mode
+</code></pre>
+</li>
+</ul>
+<h3 id="запрет-автосохранения-для-конкретного-файла"><span class="section-num">8.4</span> Запрет автосохранения для конкретного файла</h3>
+<ul>
+<li>
+<p>Для каждого файла можно задать локальные переменные для запрета экспорта:</p>
+<pre><code class="language-org">​* Footnotes
+​* COMMENT Local Variables                          :ARCHIVE:
+# Local Variables:
+# eval: (org-hugo-auto-export-mode -1)
+# End:
+</code></pre>
+</li>
+</ul>
       
 
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
 
    
 
@@ -4100,7 +4195,7 @@ Content
 
 <div class="article-tags">
   
-  <a class="badge badge-light" href="https://yamadharma.github.io/ru/tag/blogging/">blogging</a>
+  <a class="badge badge-light" href="https://yamadharma.github.io/ru/tag/org-mode/">org-mode</a>
   
   <a class="badge badge-light" href="https://yamadharma.github.io/ru/tag/emacs/">emacs</a>
   
@@ -4504,15 +4599,15 @@ Content
     <h3>Похожие</h3>
     <ul>
       
-      <li><a href="https://yamadharma.github.io/ru/post/2021/01/03/diagrams-mermaid/">Диаграммы. Mermaid</a></li>
+      <li><a href="https://yamadharma.github.io/ru/post/2021/06/16/org-mode-prezentation-beamer/">Org-mode. Презентации. Beamer</a></li>
       
-      <li><a href="https://yamadharma.github.io/ru/post/2020/12/20/elisp-coding-conventions/">Соглашение о кодировании. Emacs lisp</a></li>
+      <li><a href="https://yamadharma.github.io/ru/post/2020/12/14/org-mode-prezentation/">Org-mode. Презентации</a></li>
       
-      <li><a href="https://yamadharma.github.io/ru/post/2020/11/26/hugo-markdown/">Синтаксис Markdown для генератора сайтов Hugo</a></li>
+      <li><a href="https://yamadharma.github.io/ru/post/2020/12/14/org-mode-export-latex/">Org-mode. Экспорт в LaTeX</a></li>
       
-      <li><a href="https://yamadharma.github.io/ru/post/2018/04/21/from-lj-to-hexo/">Миграция с livejournal на hexo</a></li>
+      <li><a href="https://yamadharma.github.io/ru/post/2020/12/10/org-mode-export/">Org-mode. Экспорт</a></li>
       
-      <li><a href="https://yamadharma.github.io/ru/post/2018/04/04/hexo-theme-next/">Установка темы NexT для hexo</a></li>
+      <li><a href="https://yamadharma.github.io/ru/post/2021/06/15/emacs-calendar/">Emacs. Календарь</a></li>
       
     </ul>
   </div>

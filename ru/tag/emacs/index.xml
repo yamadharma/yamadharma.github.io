@@ -815,6 +815,14 @@
         &lt;li&gt;&lt;a href=&#34;#читаемые-курсы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7.2&lt;/span&gt; Читаемые курсы&lt;/a&gt;&lt;/li&gt;
       &lt;/ul&gt;
     &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#автоматический-экспорт-при-сохранении&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8&lt;/span&gt; Автоматический экспорт при сохранении&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#установка-на-уровне-каталога&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8.1&lt;/span&gt; Установка на уровне каталога&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#установка-на-уровне-проекта&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8.2&lt;/span&gt; Установка на уровне проекта&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#установка-для-конкретного-файла&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8.3&lt;/span&gt; Установка для конкретного файла&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#запрет-автосохранения-для-конкретного-файла&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8.4&lt;/span&gt; Запрет автосохранения для конкретного файла&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
   &lt;/ul&gt;
 &lt;/nav&gt;
 &lt;/details&gt;
@@ -895,6 +903,8 @@ Markdown для генератора сайтов Hugo&lt;/a&gt;). При нео
 &lt;/ul&gt;
 &lt;h3 id=&#34;свойства-экспорта&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Свойства экспорта&lt;/h3&gt;
 &lt;h4 id=&#34;обязательные-свойства&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2.1&lt;/span&gt; Обязательные свойства&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;
 &lt;p&gt;Для экспорта необходимо установить следующие обязательные свойства:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;HUGO_SECTION&lt;/code&gt; - название раздела Hugo по умолчанию для всех
@@ -904,6 +914,17 @@ Markdown для генератора сайтов Hugo&lt;/a&gt;). При нео
 &lt;li&gt;&lt;code&gt;HUGO_BASE_DIR&lt;/code&gt; - корневой каталог сайта Hugo. Например, если
 &lt;code&gt;HUGO_BASE_DIR&lt;/code&gt; установлен на &lt;code&gt;~/hugo/&lt;/code&gt;, то экспортированные файлы
 Markdown будут сохранены в каталог &lt;code&gt;~/hugo/content/&amp;lt;HUGO_SECTION&amp;gt;/&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Данные свойства можно устанавливать как на уровне файла, так и на уровне каталога или проекта.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Переменные на уровне каталога задаются в файле &lt;code&gt;.dir-locals.el&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-elisp&#34;&gt;((org-mode . ((org-hugo-base-dir . &amp;quot;~/work/blog/git&amp;quot;)
+     (org-hugo-section . &amp;quot;ru/post&amp;quot;))))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h4 id=&#34;формат-заголовка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2.2&lt;/span&gt; Формат заголовка&lt;/h4&gt;
 &lt;p&gt;Поддерживаются форматы заголовка TOML (по умолчанию) и YAML.&lt;/p&gt;
@@ -1345,6 +1366,62 @@ Content
 :EXPORT_HUGO_BUNDLE: mathsec
 :EXPORT_FILE_NAME: _index
 :END:
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;автоматический-экспорт-при-сохранении&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8&lt;/span&gt; Автоматический экспорт при сохранении&lt;/h2&gt;
+&lt;h3 id=&#34;установка-на-уровне-каталога&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8.1&lt;/span&gt; Установка на уровне каталога&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Установка делается в файле &lt;code&gt;.dir-locals.el&lt;/code&gt; в текущем каталоге:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-elisp&#34;&gt;((org-mode . ((eval . (org-hugo-auto-export-mode)))))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Конфигурация применяется ко всем org-файлам в каталоге.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;установка-на-уровне-проекта&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8.2&lt;/span&gt; Установка на уровне проекта&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Если org-файлы находятся в некотором каталоге, например в &lt;code&gt;content-org&lt;/code&gt;, то в файле &lt;code&gt;.dir-locals.el&lt;/code&gt; задаётся конфигурация для этого каталога:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-elisp&#34;&gt;((&amp;quot;content-org/&amp;quot;
+  . ((org-mode . ((eval . (org-hugo-auto-export-mode)))))))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;установка-для-конкретного-файла&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8.3&lt;/span&gt; Установка для конкретного файла&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Для каждого файла можно задать локальные переменные:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-org&#34;&gt;​* Footnotes
+​* COMMENT Local Variables                          :ARCHIVE:
+# Local Variables:
+# eval: (org-hugo-auto-export-mode)
+# End:
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Рекомендуется добавить заголовок &lt;code&gt;* Footnotes&lt;/code&gt;, чтобы в случае добавления каких-либо сносок они добавлялись в данный раздел.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;В противном случае будет автоматически создан новый заголовок &lt;code&gt;* Footnotes&lt;/code&gt; в конце файла, и заголовок &lt;code&gt;Local Variables&lt;/code&gt; больше не будет последним и не будет обрабатываться.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Перечитать локальные переменные можно командой:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-elisp&#34;&gt;M-x normal-mode
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;запрет-автосохранения-для-конкретного-файла&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8.4&lt;/span&gt; Запрет автосохранения для конкретного файла&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Для каждого файла можно задать локальные переменные для запрета экспорта:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-org&#34;&gt;​* Footnotes
+​* COMMENT Local Variables                          :ARCHIVE:
+# Local Variables:
+# eval: (org-hugo-auto-export-mode -1)
+# End:
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;</description>

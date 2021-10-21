@@ -227,6 +227,11 @@ chattr +C vm
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;li&gt;
+&lt;p&gt;Посмотреть результат можно командой:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;lsattr -a vm
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
 &lt;p&gt;Скопируем файлы:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;mount /dev/vgs/vm /mnt/from/
 rsync -av -HS --delete /mnt/from/ /mnt/gentoo/var/vm
@@ -277,6 +282,7 @@ umount /mnt/from/
             &lt;li&gt;&lt;a href=&#34;#rofi&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.3.1&lt;/span&gt; rofi&lt;/a&gt;&lt;/li&gt;
           &lt;/ul&gt;
         &lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#блокировка-экрана&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.4&lt;/span&gt; Блокировка экрана&lt;/a&gt;&lt;/li&gt;
       &lt;/ul&gt;
     &lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#приложения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6&lt;/span&gt; Приложения&lt;/a&gt;
@@ -315,6 +321,31 @@ umount /mnt/from/
 &lt;li&gt;&lt;code&gt;~/.i3/config&lt;/code&gt;;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;$XDG_CONFIG_DIRS/i3/config&lt;/code&gt; (&lt;code&gt;/etc/xdg/i3/config&lt;/code&gt;);&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;/etc/i3/config&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Начиная с версии 4.20, можно подключать другие файлы конфигурации из основного файла конфигурации &lt;em&gt;i3&lt;/em&gt;.
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Примеры использования директивы &lt;code&gt;include&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-conf&#34;&gt;# Тильда преобразуется в домашний каталог пользователя
+include ~/.config/i3/assignments.conf
+
+# Переменные среды разыменовываются
+include $HOME/.config/i3/assignments.conf
+
+# Символы подстановки раскрываются
+include ~/.config/i3/config.d/*.conf
+
+# Можно выполнять команду
+include ~/.config/i3/`hostname`.conf
+
+# Каждый путь загружается только один раз
+include ~/.config/i3/config
+
+# Относительные пути интерпретируются относительно каталога конфигурационного файла
+include assignments.conf
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -965,6 +996,61 @@ set $menu rofi -combi-modi window#drun -show combi -modi combi -show-icons
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Конфигурация с помощью конфигурационного файла (поместим его в &lt;code&gt;~/.config/i3/rofi/config&lt;/code&gt;).&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;блокировка-экрана&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.4&lt;/span&gt; Блокировка экрана&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Для отключения экрана можно использовать DPMS:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-conf&#34;&gt;exec --no-startup-id xset dpms 1800
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;Отключается через 30 минут.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;В качестве блокировщика экрана используем &lt;code&gt;i3lock&lt;/code&gt;.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Установка&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Gentoo&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;emerge x11-misc/i3lock
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Использование в конфигурационном файле:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-conf&#34;&gt;set $Locker i3lock --color=000000 &amp;amp;&amp;amp; sleep 1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;sleep 1&lt;/code&gt; добавляет небольшую задержку, чтобы предотвратить возможное состояние гонки.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Для блокировки экрана после заданного периода времени используем ==xautolock.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Установка&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Gentoo&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;emerge x11-misc/xautolock
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Использование в конфигурационном файле:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-conf&#34;&gt;exec --no-startup-id xautolock -time 10 -locker &amp;quot;$Locker&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;Блокирует через 10 минут.&lt;/li&gt;
+&lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;приложения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6&lt;/span&gt; Приложения&lt;/h2&gt;

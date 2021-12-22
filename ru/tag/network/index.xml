@@ -224,6 +224,18 @@ chmod 750 /usr/bin/dumpcap
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;li&gt;
+&lt;p&gt;Кроме того, зададим &lt;em&gt;capabilities&lt;/em&gt; для этого файла:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;setcap cap_net_raw,cap_net_admin=eip /usr/bin/dumpcap
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Можно проверить, что параметры установлены правильно:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;getcap /usr/bin/dumpcap
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
 &lt;p&gt;После этого можно перелогиниться или временно добавить себя в новую группу:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;newgrp wireshark
 &lt;/code&gt;&lt;/pre&gt;
@@ -919,10 +931,16 @@ ns-3), математической модели.&lt;/p&gt;
     &lt;li&gt;&lt;a href=&#34;#описание&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Описание&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#настройка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Настройка&lt;/a&gt;
       &lt;ul&gt;
-        &lt;li&gt;&lt;a href=&#34;#однопороговый-вариант&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Однопороговый вариант&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#двупороговый-вариант&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Двупороговый вариант&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#обнаружение-петель&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; Обнаружение петель&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#настройка-на-все-порты-сразу&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.4&lt;/span&gt; Настройка на все порты сразу&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#задание-порогов-срабатывания&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Задание порогов срабатывания&lt;/a&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&#34;#однопороговый-вариант&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1.1&lt;/span&gt; Однопороговый вариант&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#двупороговый-вариант&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1.2&lt;/span&gt; Двупороговый вариант&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#реакция-на-шторм&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Реакция на шторм&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#восстановление-портов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; Восстановление портов&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#обнаружение-петель&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.4&lt;/span&gt; Обнаружение петель&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#настройка-на-все-порты-сразу&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.5&lt;/span&gt; Настройка на все порты сразу&lt;/a&gt;&lt;/li&gt;
       &lt;/ul&gt;
     &lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#проверка-работы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Проверка работы&lt;/a&gt;&lt;/li&gt;
@@ -938,6 +956,7 @@ ns-3), математической модели.&lt;/p&gt;
 &lt;li&gt;В случае высокого значения &lt;code&gt;storm-contorol&lt;/code&gt; можно получить перегрузку ЦПУ коммутатора, в случае низкого значения можно иметь проблемы с работой DHCP и ARP.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;настройка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Настройка&lt;/h2&gt;
+&lt;h3 id=&#34;задание-порогов-срабатывания&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Задание порогов срабатывания&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;Максимальный уровень широковещательного трафика задаётся либо в процентах от полосы пропускания (безразмерные значения), либо в битах в секунду (bps).&lt;/li&gt;
 &lt;li&gt;Есть два варианта конфигурирования:
@@ -947,17 +966,44 @@ ns-3), математической модели.&lt;/p&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;однопороговый-вариант&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Однопороговый вариант&lt;/h3&gt;
+&lt;h4 id=&#34;однопороговый-вариант&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1.1&lt;/span&gt; Однопороговый вариант&lt;/h4&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;Задаётся максимальный порог и действие по достижении этого порога:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;(config)# int f0/1
 (config-if)# storm-control broadcast level 30.00
-(config-if)# storm-control action shutdown
+(config-if)# storm-control multicast level 30.00
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;Первая команда устанавливает максимальный уровень широковещательного трафика в 30% от полосы пропускания.&lt;/p&gt;
+&lt;p&gt;Команда устанавливает максимальный уровень широковещательного трафика в 30% от полосы пропускания.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;двупороговый-вариант&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1.2&lt;/span&gt; Двупороговый вариант&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Указывается два порога.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;При достижении первого порога порт будет отключаться.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;При падении уровня трафика до второго порога порт будет включаться:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;(config-if)# storm-control broadcast level 30.00 10.00
+(config-if)# storm-control multicast level 30.00 10.00
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Здесь первый порог &amp;mdash; 30% от полосы пропускания, второй порог &amp;mdash; 10% от полосы пропускания.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;реакция-на-шторм&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Реакция на шторм&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Необходимо задать действие при возникновении шторма&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;(config)# int f0/1
+(config-if)# storm-control action shutdown
+&lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Вторая команда указывает на то, какое действие должно быть совершено, когда лимит будет достигнут. В данном случае мы отключаем порт (&lt;code&gt;shutdown&lt;/code&gt;).&lt;/p&gt;
@@ -970,6 +1016,9 @@ ns-3), математической модели.&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;(config-if)# storm-control action trap
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;восстановление-портов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; Восстановление портов&lt;/h3&gt;
+&lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;Чтобы коммутатор автоматически восстанавливал порт через некоторое время после отключения, необходимо в глобальной конфигурации задать:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;(config)# errdisable recovery cause storm-control
@@ -980,24 +1029,7 @@ ns-3), математической модели.&lt;/p&gt;
 &lt;p&gt;В данном случае восстановление происходит через 3 минуты (180 секунд).&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;двупороговый-вариант&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Двупороговый вариант&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Указывается два порога.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;При достижении первого порога порт будет отключаться.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;При падении уровня широковещательного трафика до второго порога порт будет включаться:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;(config-if)# storm-control broadcast level 30.00 10.00
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Здесь первый порог &amp;mdash; 30% от полосы пропускания, второй порог &amp;mdash; 10% от полосы пропускания.&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;обнаружение-петель&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; Обнаружение петель&lt;/h3&gt;
+&lt;h3 id=&#34;обнаружение-петель&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.4&lt;/span&gt; Обнаружение петель&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;У коммутаторов Cisco есть также штатное средство обнаружения петель, основанное на периодической отправке keepalive-сообщений.&lt;/p&gt;
@@ -1011,7 +1043,7 @@ ns-3), математической модели.&lt;/p&gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;настройка-на-все-порты-сразу&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.4&lt;/span&gt; Настройка на все порты сразу&lt;/h3&gt;
+&lt;h3 id=&#34;настройка-на-все-порты-сразу&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.5&lt;/span&gt; Настройка на все порты сразу&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;Для настройки параметров всех портов сразу используйте &lt;em&gt;диапазон портов&lt;/em&gt;:&lt;/p&gt;

@@ -277,7 +277,7 @@ umount /mnt/from/
             &lt;li&gt;&lt;a href=&#34;#polybar&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.2.2&lt;/span&gt; polybar&lt;/a&gt;&lt;/li&gt;
           &lt;/ul&gt;
         &lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#строка-состояний&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.3&lt;/span&gt; Строка состояний&lt;/a&gt;
+        &lt;li&gt;&lt;a href=&#34;#запуск-приложений&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.3&lt;/span&gt; Запуск приложений&lt;/a&gt;
           &lt;ul&gt;
             &lt;li&gt;&lt;a href=&#34;#rofi&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.3.1&lt;/span&gt; rofi&lt;/a&gt;&lt;/li&gt;
           &lt;/ul&gt;
@@ -946,10 +946,10 @@ exec_always --no-startup-id ~/.config/i3/polybar/launch.sh
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;h3 id=&#34;строка-состояний&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.3&lt;/span&gt; Строка состояний&lt;/h3&gt;
+&lt;h3 id=&#34;запуск-приложений&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.3&lt;/span&gt; Запуск приложений&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;По умолчанию используется &lt;code&gt;dmenu&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Можно заменить на &lt;code&gt;rofi&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Можно заменить на &lt;code&gt;rofi&lt;/code&gt; (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/11/19/launcher_rofi/&#34;&gt;Запуск приложений. Rofi&lt;/a&gt;).&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h4 id=&#34;rofi&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.3.1&lt;/span&gt; rofi&lt;/h4&gt;
 &lt;ul&gt;
@@ -1130,6 +1130,14 @@ bindsym --release Shift+Print exec --no-startup-id scrot -s -e &#39;mv $f `xdg-u
         &lt;li&gt;&lt;a href=&#34;#замена-jack&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2&lt;/span&gt; Замена Jack&lt;/a&gt;&lt;/li&gt;
       &lt;/ul&gt;
     &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#проверка-работы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Проверка работы&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#конфигурация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6&lt;/span&gt; Конфигурация&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#конфигурационные-файлы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6.1&lt;/span&gt; Конфигурационные файлы&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#профили-устройств&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6.2&lt;/span&gt; Профили устройств&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#изменение-частоты-дискретизации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6.3&lt;/span&gt; Изменение частоты дискретизации&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
   &lt;/ul&gt;
 &lt;/nav&gt;
 &lt;/details&gt;
@@ -1144,14 +1152,21 @@ bindsym --release Shift+Print exec --no-startup-id scrot -s -e &#39;mv $f `xdg-u
 &lt;li&gt;
 &lt;p&gt;Gentoo
 Установить само приложение:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;emerge --ask media-video/pipewire
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;emerge media-video/pipewire
+emerge media-video/wireplumber
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;настройка-пользовательской-сессии&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Настройка пользовательской сессии&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;
-&lt;p&gt;По умолчанию pipewire настроен на использование systemd.&lt;/p&gt;
+&lt;p&gt;По умолчанию &lt;em&gt;PipeWire&lt;/em&gt; настроен на использование systemd.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Следует настроить его запуск для пользователя.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Флаг &lt;code&gt;--now&lt;/code&gt; позволяет одновременно активировать и запускать сервис.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Для каждого пользователя можно установить активацию по обращению к сокету:&lt;/p&gt;
@@ -1166,23 +1181,39 @@ bindsym --release Shift+Print exec --no-startup-id scrot -s -e &#39;mv $f `xdg-u
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;systemctl --user enable --now pipewire-media-session.service
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Начиная с версии PipeWire 0.3.39 необходимо запускать ещё и &lt;em&gt;wireplumber&lt;/em&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;systemctl --user enable --now wireplumber.service
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;использование-с-другими-серверами&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Использование с другими серверами&lt;/h2&gt;
 &lt;h3 id=&#34;замена-pulseaudio&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Замена PulseAudio&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;
-&lt;p&gt;Одновременно отключим PulseAudio и включим PipeWire для каждого пользователя:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;systemctl --user disable pulseaudio.socket pulseaudio.service
-systemctl --user enable pipewire.socket pipewire-pulse.socket
+&lt;p&gt;Если &lt;em&gt;PulseAudio&lt;/em&gt; настроено с поддержкой запуска как демона&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;, то его необходимо отключить:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;запретить запуск &lt;code&gt;pulseaudio&lt;/code&gt;;&lt;/li&gt;
+&lt;li&gt;отключить запуск в файле конфигурации:
+&lt;ul&gt;
+&lt;li&gt;отредактируйте файл &lt;code&gt;/etc/pulse/daemon.conf&lt;/code&gt; и замените &lt;code&gt;daemonize&lt;/code&gt; на &lt;code&gt;daemonize = no&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Одновременно отключим &lt;em&gt;PulseAudio&lt;/em&gt; и включим &lt;em&gt;PipeWire&lt;/em&gt; для каждого пользователя:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;systemctl --user disable --now pulseaudio.socket pulseaudio.service
+systemctl --user enable --now pipewire.socket pipewire-pulse.socket wireplumber.service
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;Можно замаскировать PulseAudio, чтобы он не стартовал автоматически:&lt;/p&gt;
+&lt;p&gt;Можно замаскировать PulseAudio (но он всё равно может стартовать автоматически):&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;systemctl --user mask pulseaudio.socket pulseaudio.service
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;Кроме того, можно удалить файлы, оставшиеся от PulseAudio:&lt;/p&gt;
+&lt;p&gt;Кроме того, рекомендуется удалить файлы, оставшиеся от PulseAudio:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;rm -r ~/.config/pulse/
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
@@ -1201,7 +1232,52 @@ systemctl --user enable pipewire.socket pipewire-pulse.socket
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;PIPEWIRE_LATENCY=&amp;quot;128/48000&amp;quot; pw-jack &amp;lt;application&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;/ul&gt;</description>
+&lt;/ul&gt;
+&lt;h2 id=&#34;проверка-работы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Проверка работы&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Для &lt;em&gt;PipeWire&lt;/em&gt; возможно посмотреть информацию по серверу &lt;code&gt;pipewire&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;pactl info
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;В результате должна присутствовать строчка типа такой:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;Server Name: PulseAudio (on PipeWire 0.3.40)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;конфигурация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6&lt;/span&gt; Конфигурация&lt;/h2&gt;
+&lt;h3 id=&#34;конфигурационные-файлы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6.1&lt;/span&gt; Конфигурационные файлы&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Конфигурация, идущая в комплекте с дистрибутивом, находится в &lt;code&gt;/usr/share/pipewire&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Для изменения параметров скопируйте файлы конфигурации в:
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;/etc/pipewire&lt;/code&gt;: уровень системы;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;~/.config/pipewire&lt;/code&gt;: уровень пользователя.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;профили-устройств&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6.2&lt;/span&gt; Профили устройств&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Профили устройств хранятся в каталоге &lt;code&gt;~/.local/state/pipewire/media-session.d/&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;При запуске в первый раз с подключёнными внешними устройствами (например, usb-устройствами), профили для них не создаются. Необходимо их переподключить в этом случае.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;изменение-частоты-дискретизации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6.3&lt;/span&gt; Изменение частоты дискретизации&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;По умолчанию &lt;em&gt;PipeWire&lt;/em&gt; глобально устанавливает частоту дискретизации равную 48 КГц.&lt;/li&gt;
+&lt;li&gt;Для изменения нужно отредактировать строку &lt;code&gt;default.clock.rate = 48000&lt;/code&gt; в файле конфигурации &lt;code&gt;/etc/pipewire/pipewire.conf&lt;/code&gt; или &lt;code&gt;~/.config/pipewire/pipewire.conf&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Например, если вы хотите частоту дискретизации в 192 КГц, раскомментируйте строку и поменяйте её на &lt;code&gt;default.clock.rate = 192000&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;В Gentoo это означает, что &lt;code&gt;pulseaudio&lt;/code&gt; скомпилирован с флагом &lt;code&gt;daemon&lt;/code&gt;.&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/section&gt;</description>
     </item>
     
     <item>
@@ -1559,10 +1635,10 @@ $ wl-paste --list-types | wl-copy
 ## - Also lock your screen before your computer goes to sleep
 
 exec swayidle -w \
-     timeout 300 &#39;swaylock -f -c 000000 -k&#39; \
-     timeout 600 &#39;swaymsg &amp;quot;output * dpms off&amp;quot;&#39; \
-     resume &#39;swaymsg &amp;quot;output * dpms on&amp;quot;&#39; \
-     before-sleep &#39;swaylock -f -c 000000 -k&#39;
+	 timeout 300 &#39;swaylock -f -c 000000 -k&#39; \
+	 timeout 600 &#39;swaymsg &amp;quot;output * dpms off&amp;quot;&#39; \
+	 resume &#39;swaymsg &amp;quot;output * dpms on&amp;quot;&#39; \
+	 before-sleep &#39;swaylock -f -c 000000 -k&#39;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;

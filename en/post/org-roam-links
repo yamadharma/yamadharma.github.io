@@ -54,7 +54,7 @@ if __name__ == "__main__":
     filetext = fin.read()
 
     export_file_name_re = re.compile(r'(?:#\+|:)EXPORT_FILE_NAME:\s+\S+', re.IGNORECASE)
-    relref_re = re.compile(r"{{<\s{0,1}relref \"(.+).md#\" >}}", re.IGNORECASE)
+    relref_re = re.compile(r"{{<\s{0,1}relref \"(.+).md\" >}}", re.IGNORECASE)
 
 
     links = find_md_links(filetext)
@@ -76,7 +76,7 @@ if __name__ == "__main__":
             export_file_name_link = export_file_name_text[0].split()
             hugolink = "{{< relref \"" + export_file_name_link[1] + "\" >}}"
             if isrelref:
-                linkfrom = "{{<relref \"" + linkpath + ".md#" + "\" >}}"
+                linkfrom = "{{< relref \"" + linkpath + ".md" + "\" >}}"
                 filetext = filetext.replace(linkfrom,hugolink)
             else:
                 filetext = filetext.replace(linkpath + '.md',hugolink)

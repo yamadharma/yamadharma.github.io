@@ -5,7 +5,7 @@
     <link>https://yamadharma.github.io/ru/tag/gentoo/</link>
       <atom:link href="https://yamadharma.github.io/ru/tag/gentoo/index.xml" rel="self" type="application/rss+xml" />
     <description>gentoo</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2021 Dmitry S. Kulyabov</copyright><lastBuildDate>Fri, 21 May 2021 20:38:00 +0300</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2022 Dmitry S. Kulyabov</copyright><lastBuildDate>Fri, 21 May 2021 20:38:00 +0300</lastBuildDate>
     <image>
       <url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url>
       <title>gentoo</title>
@@ -612,7 +612,7 @@ bindsym $mod+Return exec $term
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;В конфигурационном файле задаётся следующим образом (&lt;a href=&#34;https://i3wm.org/docs/userguide.html#%5Fconfiguring%5Fi3bar&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://i3wm.org/docs/userguide.html#%5Fconfiguring%5Fi3bar&lt;/a&gt;):&lt;/p&gt;
+&lt;p&gt;В конфигурационном файле задаётся следующим образом (&lt;a href=&#34;https://i3wm.org/docs/userguide.html#_configuring_i3bar&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://i3wm.org/docs/userguide.html#_configuring_i3bar&lt;/a&gt;):&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;# ~/.config/i3/config -*- mode: conf-unix; -*-
 ## Start i3bar to display a workspace bar
 bar {
@@ -1068,14 +1068,22 @@ set $menu rofi -combi-modi window#drun -show combi -modi combi -show-icons
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Добавим в конфигурационный файл:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;### Screenshots
-bindsym --release Print exec --no-startup-id scrot -e &#39;mv $f `xdg-user-dir PICTURES` 2&amp;gt;/dev/null&#39;
-bindsym --release Shift+Print exec --no-startup-id scrot -s -e &#39;mv $f `xdg-user-dir PICTURES` 2&amp;gt;/dev/null&#39;
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;## Screenshot
+
+## Screenshot active display
+bindsym --release Print exec --no-startup-id scrot &#39;%Y-%m-%d_%H-%M-%S_$wx$h.png&#39; -e &#39;mv $f `xdg-user-dir PICTURES` 2&amp;gt;/dev/null&#39;
+
+## Screenshot current window
+bindsym --release $mod+Print exec --no-startup-id scrot -u &#39;%Y-%m-%d_%H-%M-%S_$wx$h.png&#39; -e &#39;mv $f `xdg-user-dir PICTURES` 2&amp;gt;/dev/null&#39;
+
+## Screenshot selected region
+bindsym --release $mod+Shift+Print exec --no-startup-id scrot -s &#39;%Y-%m-%d_%H-%M-%S_$wx$h.png&#39; -e &#39;mv $f `xdg-user-dir PICTURES` 2&amp;gt;/dev/null&#39;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;ul&gt;
-&lt;li&gt;По клавише &lt;code&gt;PtrScr&lt;/code&gt; делается скриншот.&lt;/li&gt;
-&lt;li&gt;По клавише &lt;code&gt;Shift&lt;/code&gt; + &lt;code&gt;PtrScr&lt;/code&gt; предлагается выделить область экрана, скриншот которой следует сделать.&lt;/li&gt;
-&lt;li&gt;Скриншоты переносятся в каталог $XDG_PICTURES_DIR (обычно &lt;code&gt;~/Изображения&lt;/code&gt;).&lt;/li&gt;
+&lt;li&gt;По клавише &lt;code&gt;PrtScr&lt;/code&gt; делается скриншот.&lt;/li&gt;
+&lt;li&gt;По клавише &lt;code&gt;mod&lt;/code&gt; + &lt;code&gt;PrtScr&lt;/code&gt; делается скриншот активного окна.&lt;/li&gt;
+&lt;li&gt;По клавише &lt;code&gt;mod&lt;/code&gt; + &lt;code&gt;Shift&lt;/code&gt; + &lt;code&gt;PrtScr&lt;/code&gt; предлагается выделить область экрана, скриншот которой следует сделать.&lt;/li&gt;
+&lt;li&gt;Скриншоты переносятся в каталог $XDG_PICTURES_DIR (обычно &lt;code&gt;~/Pictures&lt;/code&gt; или &lt;code&gt;~/Изображения&lt;/code&gt;).&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;

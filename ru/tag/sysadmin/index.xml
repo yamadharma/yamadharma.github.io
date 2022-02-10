@@ -5,12 +5,132 @@
     <link>https://yamadharma.github.io/ru/tag/sysadmin/</link>
       <atom:link href="https://yamadharma.github.io/ru/tag/sysadmin/index.xml" rel="self" type="application/rss+xml" />
     <description>sysadmin</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2022 Dmitry S. Kulyabov</copyright><lastBuildDate>Thu, 27 Jan 2022 14:00:00 +0300</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2022 Dmitry S. Kulyabov</copyright><lastBuildDate>Thu, 10 Feb 2022 14:39:00 +0300</lastBuildDate>
     <image>
       <url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url>
       <title>sysadmin</title>
       <link>https://yamadharma.github.io/ru/tag/sysadmin/</link>
     </image>
+    
+    <item>
+      <title>CentOS 8. Изменение адресов репозиториев</title>
+      <link>https://yamadharma.github.io/ru/post/2022/02/10/centos8-changing-repository-addresses/</link>
+      <pubDate>Thu, 10 Feb 2022 14:39:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2022/02/10/centos8-changing-repository-addresses/</guid>
+      <description>&lt;p&gt;С 31 января 2022 года установка пакетов или обновление репозиториев в CentOS8 выдаёт ошибку.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#ошибка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Ошибка&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#причины&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Причины&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#устранение&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Устранение&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;ошибка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Ошибка&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;При работе с репозиториями в CentOS 8 появилась ошибка:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;Error: Failed to download metadata for repo &#39;repo_name&#39;: Cannot prepare internal mirrorlist: No URLs in mirrorlist
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;причины&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Причины&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;31 января 2022 года удалены все пакеты для &lt;em&gt;CentOS8&lt;/em&gt; с официальных зеркал.&lt;/li&gt;
+&lt;li&gt;Вызвано прекращением поддержки &lt;em&gt;CentOS8&lt;/em&gt; (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/05/25/replacing-centos/&#34;&gt;Замена Centos&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Теперь они перенесены на &lt;a href=&#34;https://vault.centos.org&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://vault.centos.org&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;устранение&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Устранение&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Следует обновить файлы описания репозиториев в &lt;code&gt;/etc/yum.repos.d&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Следует использовать &lt;code&gt;vault.centos.org&lt;/code&gt; вместо &lt;code&gt;mirror.centos.org&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Предлагается выполнить следующие команды:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sudo sed -i -e &amp;quot;s|mirrorlist=|#mirrorlist=|g&amp;quot; /etc/yum.repos.d/CentOS-*
+sudo sed -i -e &amp;quot;s|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g&amp;quot; /etc/yum.repos.d/CentOS-*
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Тип ключа ssh</title>
+      <link>https://yamadharma.github.io/ru/post/2022/02/03/ssh-key-type/</link>
+      <pubDate>Thu, 03 Feb 2022 14:48:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2022/02/03/ssh-key-type/</guid>
+      <description>&lt;p&gt;При подключении по &lt;em&gt;ssh&lt;/em&gt; получаю сообщение &lt;em&gt;no matching host key type found. Their offer: ssh-rsa,ssh-dss&lt;/em&gt;.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#описание-ситуации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Описание ситуации&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#решение&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Решение&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#однократное-подключение&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Однократное подключение&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#конфигурация-для-конкретного-хоста&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Конфигурация для конкретного хоста&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#конфигурация-для-группы-хостов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; Конфигурация для группы хостов&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;описание-ситуации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Описание ситуации&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;После перехода на openssh-8.8 при подключении к серверам со старыми версиями системы появляется сообщение типа: &lt;em&gt;no matching host key type found. Their offer: ssh-rsa,ssh-dss&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;Понятно, что старый ssh поддерживал механизмы ssh-rsa и ssh-dss, а в новой версии их отключили.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;решение&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Решение&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Будем считать, что мы подключаемся к хосту &lt;code&gt;192.168.0.10&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;однократное-подключение&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Однократное подключение&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Зададим алгоритм подключения как опции командной строки:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;ssh -oHostKeyAlgorithms=+ssh-rsa root@192.168.0.10
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;конфигурация-для-конкретного-хоста&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Конфигурация для конкретного хоста&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Зададим конфигурацию конкретного хоста в файле &lt;code&gt;~/.ssh/config&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;Host 192.168.0.10
+ HostKeyAlgorithms=+ssh-rsa
+ PubkeyAcceptedKeyTypes +ssh-rsa
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;конфигурация-для-группы-хостов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; Конфигурация для группы хостов&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Можно задать группу хостов в виде шаблонов командной строки (wildcards).
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Например, правило для сети:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;Host 192.168.0.*
+ HostKeyAlgorithms=+ssh-rsa
+ PubkeyAcceptedKeyTypes +ssh-rsa
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Можно задать привило для всех хостов:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;Host *
+ HostKeyAlgorithms=+ssh-rsa
+ PubkeyAcceptedKeyTypes +ssh-rsa
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
     
     <item>
       <title>Настройка LibreOffice</title>
@@ -6099,6 +6219,7 @@ systemctl --user enable --now pipewire.socket pipewire-pulse.socket wireplumber.
 &lt;h3 id=&#34;серверные-системы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; Серверные системы&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/05/25/replacing-centos/&#34;&gt;Замена Centos&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/02/10/centos8-changing-repository-addresses/&#34;&gt;CentOS 8. Изменение адресов репозиториев&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;файловые-системы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.4&lt;/span&gt; Файловые системы&lt;/h3&gt;
 &lt;ul&gt;

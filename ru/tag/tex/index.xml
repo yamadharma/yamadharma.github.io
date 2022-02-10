@@ -5,12 +5,111 @@
     <link>https://yamadharma.github.io/ru/tag/tex/</link>
       <atom:link href="https://yamadharma.github.io/ru/tag/tex/index.xml" rel="self" type="application/rss+xml" />
     <description>tex</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2022 Dmitry S. Kulyabov</copyright><lastBuildDate>Mon, 18 Oct 2021 11:25:00 +0300</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2022 Dmitry S. Kulyabov</copyright><lastBuildDate>Thu, 10 Feb 2022 16:49:00 +0300</lastBuildDate>
     <image>
       <url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url>
       <title>tex</title>
       <link>https://yamadharma.github.io/ru/tag/tex/</link>
     </image>
+    
+    <item>
+      <title>Журнал TUGboat</title>
+      <link>https://yamadharma.github.io/ru/post/2022/02/10/tugboat-journal/</link>
+      <pubDate>Thu, 10 Feb 2022 16:49:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2022/02/10/tugboat-journal/</guid>
+      <description>&lt;p&gt;Журнал &lt;em&gt;TUGboat&lt;/em&gt; является основным изданием TeX Users Group (TUG).&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#скачать-все-выпуски&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Скачать все выпуски&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Журнал TUGboat является основным изданием TeX Users Group (TUG).&lt;/li&gt;
+&lt;li&gt;Страница: &lt;a href=&#34;https://www.tug.org/TUGboat/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.tug.org/TUGboat/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Список всех выпусков: &lt;a href=&#34;https://www.tug.org/TUGboat/contents.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.tug.org/TUGboat/contents.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Существует с 1980 года и в настоящее время выходит три раза в год.&lt;/li&gt;
+&lt;li&gt;Содержит технические статьи, а также отчёты о собраниях и информацию сообщества TeX.&lt;/li&gt;
+&lt;li&gt;Доступ к текущему выпуску ограничен и предоставляется только членам TUG.
+&lt;ul&gt;
+&lt;li&gt;Выпуски становятся общедоступными через год после публикации.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;TUGboat также доступен в печатном виде.
+&lt;ul&gt;
+&lt;li&gt;Печатные выпуски рассылаются по почте постоянным членам TUG.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;скачать-все-выпуски&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Скачать все выпуски&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Набросал скрипт, чтобы скачать все выпуски &lt;em&gt;TUGboat&lt;/em&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#!/bin/bash
+
+pass_through_number=01
+
+for volume in $(seq -w 1 50)
+do
+    for number in $(seq 0 5)
+    do
+	issue=tb${volume}-${number}
+	issue2=tb${volume}-${number}-$((number + 1))
+	echo ${issue} + ${pass_through_number}
+	server_response=$(wget --server-response https://www.tug.org/TUGboat/${issue}/tb${pass_through_number}complete.pdf 2&amp;gt;&amp;amp;1 | awk &#39;/^  HTTP/{print $2}&#39;)
+	if [[ ${server_response} == 404 ]]
+	then
+	    # Volume 12, number 3-4
+	    server_response=$(wget --server-response https://www.tug.org/TUGboat/${issue2}/tb${pass_through_number}acomplete.pdf 2&amp;gt;&amp;amp;1 | awk &#39;/^  HTTP/{print $2}&#39;)
+	    server_response=$(wget --server-response https://www.tug.org/TUGboat/${issue2}/tb${pass_through_number}bcomplete.pdf 2&amp;gt;&amp;amp;1 | awk &#39;/^  HTTP/{print $2}&#39;)
+	    if [[ ${server_response} != 404 ]]
+	    then
+		mkdir -p ${volume}
+		mv tb${pass_through_number}acomplete.pdf ${volume}/&amp;quot;TUGboat - ${volume} - ${number}a (${pass_through_number})&amp;quot;.pdf
+		mv tb${pass_through_number}bcomplete.pdf ${volume}/&amp;quot;TUGboat - ${volume} - ${number}b (${pass_through_number})&amp;quot;.pdf
+		# Increase `pass_through_number`
+		pass_through_number=$(echo ${pass_through_number} + 1 | bc)
+		if (( ${pass_through_number} &amp;lt; 10 ))
+		then
+		    pass_through_number=0${pass_through_number}
+		fi
+	    fi
+	    # Volume 22, number 1-2
+	    server_response=$(wget --server-response https://www.tug.org/TUGboat/${issue2}/tb${pass_through_number}complete.pdf 2&amp;gt;&amp;amp;1 | awk &#39;/^  HTTP/{print $2}&#39;)
+	    if [[ ${server_response} != 404 ]]
+	    then
+		mkdir -p ${volume}
+		mv tb${pass_through_number}complete.pdf ${volume}/&amp;quot;TUGboat - ${volume} - ${number2} (${pass_through_number})&amp;quot;.pdf
+		# Increase `pass_through_number`
+		pass_through_number=$(echo ${pass_through_number} + 1 | bc)
+		if (( ${pass_through_number} &amp;lt; 10 ))
+		then
+		    pass_through_number=0${pass_through_number}
+		fi
+	    fi
+	    continue
+	else
+	    # Rename file
+	    mkdir -p ${volume}
+	    mv tb${pass_through_number}complete.pdf ${volume}/&amp;quot;TUGboat - ${volume} - ${number} (${pass_through_number})&amp;quot;.pdf
+	    # Increase `pass_through_number`
+	    pass_through_number=$(echo ${pass_through_number} + 1 | bc)
+	    if (( ${pass_through_number} &amp;lt; 10 ))
+	    then
+		pass_through_number=0${pass_through_number}
+	    fi
+	fi
+    done
+done
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
     
     <item>
       <title>Формат ключа BibTeX</title>

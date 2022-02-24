@@ -5,12 +5,238 @@
     <link>https://yamadharma.github.io/ru/tag/sysadmin/</link>
       <atom:link href="https://yamadharma.github.io/ru/tag/sysadmin/index.xml" rel="self" type="application/rss+xml" />
     <description>sysadmin</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2022 Dmitry S. Kulyabov</copyright><lastBuildDate>Tue, 15 Feb 2022 12:39:00 +0300</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2022 Dmitry S. Kulyabov</copyright><lastBuildDate>Thu, 17 Feb 2022 14:53:00 +0300</lastBuildDate>
     <image>
       <url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url>
       <title>sysadmin</title>
       <link>https://yamadharma.github.io/ru/tag/sysadmin/</link>
     </image>
+    
+    <item>
+      <title>Ключи ssh</title>
+      <link>https://yamadharma.github.io/ru/post/2022/02/17/ssh-keys/</link>
+      <pubDate>Thu, 17 Feb 2022 14:53:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2022/02/17/ssh-keys/</guid>
+      <description>&lt;p&gt;Создание и работа с ключами ssh.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#алгоритмы-шифрования-ssh&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Алгоритмы шифрования ssh&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#аутентификация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Аутентификация&lt;/a&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&#34;#отключение-ключей-у-сервера-sshd&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1.1&lt;/span&gt; Отключение ключей у сервера &lt;code&gt;sshd&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#создание-серверных-ключей&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1.2&lt;/span&gt; Создание серверных ключей&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#создание-клиентских-ключей&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1.3&lt;/span&gt; Создание клиентских ключей&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#симметричные-шифры&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Симметричные шифры&lt;/a&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&#34;#конфигурация-сервера&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2.1&lt;/span&gt; Конфигурация сервера&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#конфигурация-для-клиентов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2.2&lt;/span&gt; Конфигурация для клиентов&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#обмен-ключами&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.3&lt;/span&gt; Обмен ключами&lt;/a&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&#34;#настройка-сервера&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.3.1&lt;/span&gt; Настройка сервера&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#настройка-клиента&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.3.2&lt;/span&gt; Настройка клиента&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#файлы-ssh-ключей&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Файлы ssh-ключей&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#добавление-ssh-ключа-в-учётную-запись-github&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Добавление SSH-ключа в учётную запись GitHub&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;алгоритмы-шифрования-ssh&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Алгоритмы шифрования ssh&lt;/h2&gt;
+&lt;h3 id=&#34;аутентификация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Аутентификация&lt;/h3&gt;
+&lt;p&gt;В SSH поддерживается четыре алгоритма аутентификации по открытым ключам:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;DSA,
+&lt;ul&gt;
+&lt;li&gt;размер ключей DSA не может превышать 1024, его следует отключить&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;RSA
+&lt;ul&gt;
+&lt;li&gt;следует создавать ключ большого размера: 4096 бит&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;ECDSA
+&lt;ul&gt;
+&lt;li&gt;ECDSA завязан на технологиях NIST, его следует отключить&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Ed25519&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;отключение-ключей-у-сервера-sshd&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1.1&lt;/span&gt; Отключение ключей у сервера &lt;code&gt;sshd&lt;/code&gt;&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Ключи отключаются у сервера.&lt;/li&gt;
+&lt;li&gt;Если просто удалить ключ, он будет повторно создан при перезапуске демона.
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Можно воспользоваться обходным путём с создать заведомо нерабочую символическую ссылку, которая помешает создать и использовать ключ:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;cd /etc/ssh
+rm ssh_host_ecdsa_key*
+ln -s ssh_host_ecdsa_key ssh_host_ecdsa_key
+
+rm ssh_host_dsa_key*
+ln -s ssh_host_dsa_key ssh_host_dsa_key
+
+rm ssh_host_key*
+ln -s ssh_host_key ssh_host_key
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;создание-серверных-ключей&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1.2&lt;/span&gt; Создание серверных ключей&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Для RSA следует создать ключ большего размера:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;cd /etc/ssh
+rm ssh_host_rsa_key*
+ssh-keygen -t rsa -b 4096 -f ssh_host_rsa_key &amp;lt; /dev/null
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;создание-клиентских-ключей&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1.3&lt;/span&gt; Создание клиентских ключей&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Для создания клиентских ключей лучше использовать команды:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;ssh-keygen -t ed25519
+ssh-keygen -t rsa -b 4096
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;симметричные-шифры&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Симметричные шифры&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Из 15 поддерживаемых в SSH алгоритмов симметричного шифрования, безопасными можно считать:
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;chacha20-poly1305&lt;/code&gt;;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;aes*-ctr&lt;/code&gt;;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;aes*-gcm&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Шифры &lt;code&gt;3des-cbc&lt;/code&gt; и &lt;code&gt;arcfour&lt;/code&gt; потенциально уязвимы в силу использования DES и RC4.&lt;/li&gt;
+&lt;li&gt;Шифр &lt;code&gt;cast128-cbc&lt;/code&gt; применяет слишком короткий размер блока (64 бит).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;конфигурация-сервера&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2.1&lt;/span&gt; Конфигурация сервера&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;В &lt;code&gt;/etc/ssh/sshd_config&lt;/code&gt; рекомендуется добавить:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;Ciphers aes256-gcm@openssh.com,aes128-gcm@openssh.com,chacha20-poly1305@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;конфигурация-для-клиентов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2.2&lt;/span&gt; Конфигурация для клиентов&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;В &lt;code&gt;/etc/ssh/ssh_config&lt;/code&gt; рекомендуется добавить:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;Host *
+   Ciphers aes256-gcm@openssh.com,aes128-gcm@openssh.com,chacha20-poly1305@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;обмен-ключами&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.3&lt;/span&gt; Обмен ключами&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Применяемые в SSH методы обмена ключей  DH (Diffie-Hellman) и ECDH (Elliptic Curve Diffie-Hellman) можно считать безопасными.&lt;/li&gt;
+&lt;li&gt;Из 8 поддерживаемых в SSH протоколов обмена ключами вызывают подозрения три,  основанные на рекомендациях NIST:
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;ecdh-sha2-nistp256&lt;/code&gt;;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ecdh-sha2-nistp384&lt;/code&gt;;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ecdh-sha2-nistp521&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Не стоит использовать протоколы, основанные на &lt;em&gt;SHA1&lt;/em&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;настройка-сервера&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.3.1&lt;/span&gt; Настройка сервера&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;В &lt;code&gt;/etc/ssh/sshd_config&lt;/code&gt; рекомендуется указать:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;настройка-клиента&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.3.2&lt;/span&gt; Настройка клиента&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;В &lt;code&gt;/etc/ssh/ssh_config&lt;/code&gt; рекомендуется добавить&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;Host *
+   KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;файлы-ssh-ключей&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Файлы ssh-ключей&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;По умолчанию пользовательские ssh-ключи сохраняются в каталоге &lt;code&gt;~/.ssh&lt;/code&gt; в домашнем каталоге пользователя.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Убедитесь, что у вас ещё нет ключа.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Файлы закрытых ключей имеют названия типа &lt;code&gt;id_&amp;lt;алгоритм&amp;gt;&lt;/code&gt; (например, &lt;code&gt;id_dsa&lt;/code&gt;, &lt;code&gt;id_rsa&lt;/code&gt;).&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;По умолчанию закрытые ключи имеют имена:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;id_dsa
+id_ecdsa
+id_ed25519
+id_rsa
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Открытые ключи имеют дополнительные расширения &lt;code&gt;.pub&lt;/code&gt;.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;По умолчанию публичные ключи имеют имена:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;id_dsa.pub
+id_ecdsa.pub
+id_ed25519.pub
+id_rsa.pub
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;При создании ключа команда попросит ввести любую ключевую фразу для более надёжной защиты вашего пароля. Можно пропустить этот этап, нажав &lt;code&gt;Enter&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Сменить пароль на ключ можно с помощью команды:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;ssh-keygen -p
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;добавление-ssh-ключа-в-учётную-запись-github&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Добавление SSH-ключа в учётную запись GitHub&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Скопируйте созданный SSH-ключ в буфер обмена командой:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;xclip -i &amp;lt; ~/.ssh/id_ed25519.pub
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Откройте настройки своего аккаунта на GitHub и перейдем в раздел &lt;code&gt;SSH and GPC keys&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Нажмите кнопку &lt;code&gt;ew SSH key&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Добавьте в поле &lt;code&gt;Title&lt;/code&gt; название этого ключа, например, &lt;code&gt;ed25519@hostname&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Вставьте из буфера обмена в поле &lt;code&gt;Key&lt;/code&gt; ключ.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Нажмите кнопку &lt;code&gt;Add SSH key&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
     
     <item>
       <title>Linutop Kiosk</title>

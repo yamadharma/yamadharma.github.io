@@ -365,7 +365,7 @@
         content="2021-01-28T18:47:00&#43;03:00"
       />
     
-    <meta property="article:modified_time" content="2021-01-28T19:10:00&#43;03:00">
+    <meta property="article:modified_time" content="2022-03-03T15:11:00&#43;03:00">
   
 
   
@@ -394,7 +394,7 @@
   "headline": "Верификация коммитов git с помощью GPG",
   
   "datePublished": "2021-01-28T18:47:00+03:00",
-  "dateModified": "2021-01-28T19:10:00+03:00",
+  "dateModified": "2022-03-03T15:11:00+03:00",
   
   "author": {
     "@type": "Person",
@@ -837,7 +837,7 @@
           Обновлено
       
     
-    2021-01-28
+    2022-03-03
   </span>
   
 
@@ -846,7 +846,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-reading-time">
-    2 мин. для прочтения
+    3 мин. для прочтения
   </span>
   
 
@@ -861,7 +861,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-categories">
-    <i class="fas fa-folder mr-1"></i><a href="https://yamadharma.github.io/ru/category/sysadmin/">sysadmin</a></span>
+    <i class="fas fa-folder mr-1"></i><a href="https://yamadharma.github.io/ru/category/computer-science/">computer-science</a></span>
   
 
 </div>
@@ -885,92 +885,153 @@
   <summary class="font-weight-bold">Содержание</summary>
   <nav id="TableOfContents">
   <ul>
-    <li><a href="#верификация-коммитов-с-помощью-gpg"><span class="section-num">1</span> Верификация коммитов с помощью GPG</a>
+    <li><a href="#общая-информация"><span class="section-num">1</span> Общая информация</a></li>
+    <li><a href="#верификация-коммитов-с-помощью-gpg"><span class="section-num">2</span> Верификация коммитов с помощью GPG</a>
       <ul>
-        <li><a href="#добавление-gpg-ключа-в-github"><span class="section-num">1.1</span> Добавление GPG ключа в GitHub</a></li>
-        <li><a href="#подписывание-коммитов-git"><span class="section-num">1.2</span> Подписывание коммитов git</a></li>
-        <li><a href="#настройка-автоматических-подписей-коммитов-git"><span class="section-num">1.3</span> Настройка автоматических подписей коммитов git</a></li>
+        <li><a href="#создание-ключа"><span class="section-num">2.1</span> Создание ключа</a></li>
+        <li><a href="#экспорт-ключа"><span class="section-num">2.2</span> Экспорт ключа</a></li>
+        <li><a href="#добавление-gpg-ключа-в-github"><span class="section-num">2.3</span> Добавление GPG ключа в GitHub</a></li>
+        <li><a href="#подписывание-коммитов-git"><span class="section-num">2.4</span> Подписывание коммитов git</a></li>
+        <li><a href="#настройка-автоматических-подписей-коммитов-git"><span class="section-num">2.5</span> Настройка автоматических подписей коммитов git</a></li>
       </ul>
     </li>
-    <li><a href="#использование-keybase"><span class="section-num">2</span> Использование Keybase</a>
+    <li><a href="#использование-keybase"><span class="section-num">3</span> Использование Keybase</a>
       <ul>
-        <li><a href="#генерация-gpg-ключа"><span class="section-num">2.1</span> Генерация GPG ключа</a></li>
-        <li><a href="#добавление-gpg-ключа-в-github"><span class="section-num">2.2</span> Добавление GPG ключа в GitHub</a></li>
+        <li><a href="#генерация-gpg-ключа"><span class="section-num">3.1</span> Генерация GPG ключа</a></li>
+        <li><a href="#добавление-gpg-ключа-в-github"><span class="section-num">3.2</span> Добавление GPG ключа в GitHub</a></li>
       </ul>
     </li>
-    <li><a href="#backlinks"><span class="section-num">3</span> Backlinks</a>
+    <li><a href="#проверка-коммитов-в-git"><span class="section-num">4</span> Проверка коммитов в Git</a>
       <ul>
-        <li><a href="#практический-сценарий-использования-git"><span class="section-num">3.1</span> <a href="https://yamadharma.github.io/ru/post/2021/01/17/git-practical-use-case/">Практический сценарий использования git</a></a></li>
+        <li><a href="#режим-бдительности--vigilant-mode"><span class="section-num">4.1</span> Режим бдительности (vigilant mode)</a></li>
       </ul>
     </li>
   </ul>
 </nav>
 </details>
 
-<h2 id="верификация-коммитов-с-помощью-gpg"><span class="section-num">1</span> Верификация коммитов с помощью GPG</h2>
-<p>Как настроить GPG-подпись коммитов с помощью <code>gpg</code></p>
+<h2 id="общая-информация"><span class="section-num">1</span> Общая информация</h2>
 <ul>
-<li>Генерируем ключ</li>
+<li>Коммиты имеют следующие свойства:
+<ul>
+<li>author (автор) &mdash; контрибьютор, выполнивший работу (указывается для справки);</li>
+<li>committer (коммитер) &mdash; пользователь, который закоммитил изменения.</li>
 </ul>
-<!--listend-->
+</li>
+<li>Эти свойства можно переопределить при совершении коммита.</li>
+<li>Авторство коммита можно подделать.</li>
+<li>В git есть функция подписи коммитов.</li>
+<li>Для подписывания коммитов используется технология PGP (см. <a href="https://yamadharma.github.io/ru/post/2020/12/18/using-pgp/">Работа с PGP</a>).</li>
+<li>Подпись коммита позволяет удостовериться в том, кто является коммитером. Авторство не проверяется.</li>
+</ul>
+<h2 id="верификация-коммитов-с-помощью-gpg"><span class="section-num">2</span> Верификация коммитов с помощью GPG</h2>
+<ul>
+<li>Как настроить GPG-подпись коммитов с помощью <code>gpg</code>.</li>
+</ul>
+<h3 id="создание-ключа"><span class="section-num">2.1</span> Создание ключа</h3>
+<ul>
+<li>
+<p>Генерируем ключ</p>
 <pre><code class="language-shell">gpg --full-generate-key
 </code></pre>
-<p>Из предложенных опций выбираем тип RSA and RSA, размер 4096 и срок
-действия.</p>
-<p>При вводе email убедитесь, что он соотвествует адресу, используемому на
-GitHub.</p>
 <ul>
-<li>Выводим список ключей и копируем ID фингерпринта приватного ключа</li>
+<li>Из предложенных опций выбираем:
+<ul>
+<li>тип <em>RSA and RSA</em>;</li>
+<li>размер 4096;</li>
+<li>выберите срок действия; значение по умолчанию &mdash; 0 (срок действия не истекает никогда).</li>
 </ul>
-<!--listend-->
+</li>
+<li>GPG запросит личную информацию, которая сохранится в ключе:
+<ul>
+<li>Имя (не менее 5 символов).</li>
+<li>Адрес электронной почты.
+<ul>
+<li>При вводе email убедитесь, что он соответствует адресу, используемому на GitHub.</li>
+</ul>
+</li>
+<li>Комментарий. Можно ввести что угодно или нажать клавишу ввода, чтобы оставить это поле пустым.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="экспорт-ключа"><span class="section-num">2.2</span> Экспорт ключа</h3>
+<ul>
+<li>
+<p>Выводим список ключей и копируем ID фингерпринта приватного ключа</p>
 <pre><code class="language-shell">gpg --list-secret-keys --keyid-format LONG
 </code></pre>
-<p>Выделенная часть &ndash; ID PGP-ключа, которая является окончанием его фингерпринта.</p>
 <ul>
-<li>Экспортируем ключ в формате ASCII по его ID</li>
+<li>Выделенная часть &mdash; ID PGP-ключа, которая является окончанием его фингерпринта.</li>
 </ul>
-<!--listend-->
+</li>
+<li>
+<p>Экспортируем ключ в формате ASCII по его ID</p>
 <pre><code class="language-shell">gpg --armor --export &lt;PGP Fingerprint&gt;
 </code></pre>
-<h3 id="добавление-gpg-ключа-в-github"><span class="section-num">1.1</span> Добавление GPG ключа в GitHub</h3>
-<p>Копируем ключ и добавляем его в настройках профиля на GitHub (или GitLab).</p>
+</li>
+</ul>
+<h3 id="добавление-gpg-ключа-в-github"><span class="section-num">2.3</span> Добавление GPG ключа в GitHub</h3>
 <ul>
+<li>
+<p>Копируем ключ и добавляем его в настройках профиля на GitHub (или GitLab).</p>
+</li>
 <li>
 <p>Cкопируйте ваш сгенерированный PGP ключ:</p>
 <pre><code class="language-shell">gpg --armor --export &lt;PGP Fingerprint&gt; | xclip -sel clip
 </code></pre>
 </li>
 <li>
-<p>Перейдите в настройки GitHub (<a href="https://github.com/settings/keys" target="_blank" rel="noopener">https://github.com/settings/keys</a>), нажмите на кнопку &ldquo;New GPG key&rdquo; и вставьте полученный ключ в поле ввода.</p>
+<p>Перейдите в настройки GitHub (<a href="https://github.com/settings/keys" target="_blank" rel="noopener">https://github.com/settings/keys</a>), нажмите на кнопку <em>New GPG key</em> и вставьте полученный ключ в поле ввода.</p>
 </li>
 </ul>
-<h3 id="подписывание-коммитов-git"><span class="section-num">1.2</span> Подписывание коммитов git</h3>
+<h3 id="подписывание-коммитов-git"><span class="section-num">2.4</span> Подписывание коммитов git</h3>
+<ul>
+<li>
 <p>Подпись коммитов при работе через терминал:</p>
 <pre><code class="language-shell">git commit -a -S -m 'your commit message'
 </code></pre>
-<p>Флаг <code>-S</code> означает создание подписанного коммита. При этом может
-потребоваться ввод кодовой фразы, заданной при генерации GPG-ключа.</p>
-<h3 id="настройка-автоматических-подписей-коммитов-git"><span class="section-num">1.3</span> Настройка автоматических подписей коммитов git</h3>
+</li>
+<li>
+<p>Флаг <code>-S</code> означает создание подписанного коммита. При этом может потребоваться ввод кодовой фразы, заданной при генерации GPG-ключа.</p>
+</li>
+</ul>
+<h3 id="настройка-автоматических-подписей-коммитов-git"><span class="section-num">2.5</span> Настройка автоматических подписей коммитов git</h3>
+<ul>
+<li>
 <p>Используя введёный email, укажите Git применять его при подписи коммитов:</p>
 <pre><code class="language-shell">git config --global user.signingkey &lt;PGP Fingerprint&gt;
 git config --global commit.gpgsign true
 git config --global gpg.program $(which gpg2)
 </code></pre>
-<h2 id="использование-keybase"><span class="section-num">2</span> Использование Keybase</h2>
+</li>
+</ul>
+<h2 id="использование-keybase"><span class="section-num">3</span> Использование Keybase</h2>
+<ul>
+<li>
 <p>Для генерации и хранения GPG ключей можно использовать Keybase <a href="https://keybase.io/" target="_blank" rel="noopener">https://keybase.io/</a>.</p>
-<p>После того, как вы зарегистрируетесь в Keybase, зайдите в терминал и
-запустите следующие команды:</p>
+</li>
+<li>
+<p>После того, как вы зарегистрируетесь в Keybase, зайдите в терминал и запустите следующие команды:</p>
 <pre><code class="language-shell">keybase login
 </code></pre>
-<h3 id="генерация-gpg-ключа"><span class="section-num">2.1</span> Генерация GPG ключа</h3>
-<p>Дальше создайте новый GPG ключ, используя ваше настоящее имя и email,
-сохраненный в GitHub:</p>
+</li>
+</ul>
+<h3 id="генерация-gpg-ключа"><span class="section-num">3.1</span> Генерация GPG ключа</h3>
+<ul>
+<li>
+<p>Создайте новый GPG ключ, используя ваше настоящее имя и email, сохраненный в GitHub:</p>
 <pre><code class="language-shell">keybase pgp gen
 </code></pre>
-<p>Посмотрите список ключей:</p>
+</li>
+<li>
+<p>Просмотр списка ключей:</p>
 <pre><code class="language-shell">keybase pgp list
 </code></pre>
-<h3 id="добавление-gpg-ключа-в-github"><span class="section-num">2.2</span> Добавление GPG ключа в GitHub</h3>
+</li>
+</ul>
+<h3 id="добавление-gpg-ключа-в-github"><span class="section-num">3.2</span> Добавление GPG ключа в GitHub</h3>
 <ul>
 <li>
 <p>Cкопируйте ваш сгенерированный PGP ключ:</p>
@@ -978,12 +1039,19 @@ git config --global gpg.program $(which gpg2)
 </code></pre>
 </li>
 <li>
-<p>Перейдите в настройки GitHub (<a href="https://github.com/settings/keys" target="_blank" rel="noopener">https://github.com/settings/keys</a>), нажмите на кнопку &ldquo;New GPG key&rdquo; и вставьте полученный ключ в поле ввода.</p>
+<p>Перейдите в настройки GitHub (<a href="https://github.com/settings/keys" target="_blank" rel="noopener">https://github.com/settings/keys</a>), нажмите на кнопку <em>New GPG key</em> и вставьте полученный ключ в поле ввода.</p>
 </li>
 </ul>
-<h2 id="backlinks"><span class="section-num">3</span> Backlinks</h2>
-<h3 id="практический-сценарий-использования-git"><span class="section-num">3.1</span> <a href="https://yamadharma.github.io/ru/post/2021/01/17/git-practical-use-case/">Практический сценарий использования git</a></h3>
-<p>Настройте верификацию коммитов git (см. <a href="https://yamadharma.github.io/ru/post/2021/01/28/verifying-git-commits-gpg/">Верификация коммитов git с помощью GPG</a>).</p>
+<h2 id="проверка-коммитов-в-git"><span class="section-num">4</span> Проверка коммитов в Git</h2>
+<ul>
+<li>GitHub и GitLab будут показывать значок <em>Verified</em> рядом с вашими новыми коммитами.</li>
+</ul>
+<h3 id="режим-бдительности--vigilant-mode"><span class="section-num">4.1</span> Режим бдительности (vigilant mode)</h3>
+<ul>
+<li>На GitHub есть настройка <a href="https://docs.github.com/en/github/authenticating-to-github/managing-commit-signature-verification/displaying-verification-statuses-for-all-of-your-commits" target="_blank" rel="noopener">vigilant mode</a>.</li>
+<li>Все неподписанные коммиты будут явно помечены как <em>Unverified</em>.</li>
+<li>Включается это в настройках в разделе <em>SSH and GPG keys</em>. Установите метку на <em>Flag unsigned commits as unverified</em>.</li>
+</ul>
       
 
 
@@ -1499,6 +1567,10 @@ git config --global gpg.program $(which gpg2)
 
    
 
+   
+
+   
+      
    
 
    
@@ -3803,6 +3875,8 @@ git config --global gpg.program $(which gpg2)
     <div class="backlinks">
       <ul>
        
+          <li><a href="https://yamadharma.github.io/ru/post/2021/01/21/course-operating-systems/">Курс Операционные системы</a></li>
+       
           <li><a href="https://yamadharma.github.io/ru/post/2021/01/17/git-practical-use-case/">Практический сценарий использования git</a></li>
        
           <li><a href="https://yamadharma.github.io/ru/post/2020/12/07/git-cvs/">Система контроля версий git</a></li>
@@ -3820,6 +3894,8 @@ git config --global gpg.program $(which gpg2)
 
 
 <div class="article-tags">
+  
+  <a class="badge badge-light" href="https://yamadharma.github.io/ru/tag/sysadmin/">sysadmin</a>
   
   <a class="badge badge-light" href="https://yamadharma.github.io/ru/tag/programming/">programming</a>
   
@@ -4240,15 +4316,15 @@ git config --global gpg.program $(which gpg2)
     <h3>Похожие</h3>
     <ul>
       
-      <li><a href="https://yamadharma.github.io/ru/post/2021/01/16/semantic-versioning-conventional-changelog/">Семантическое версионирование. Conventional Changelog</a></li>
-      
-      <li><a href="https://yamadharma.github.io/ru/post/2021/01/15/semantic-versioning-semantic-release/">Семантическое версионирование. Semantic-release</a></li>
-      
-      <li><a href="https://yamadharma.github.io/ru/post/2020/12/20/coding-conventions/">Соглашения о кодировании</a></li>
-      
-      <li><a href="https://yamadharma.github.io/ru/post/2020/12/20/elisp-coding-conventions/">Соглашение о кодировании. Emacs lisp</a></li>
-      
       <li><a href="https://yamadharma.github.io/ru/post/2020/12/18/using-pgp/">Работа с PGP</a></li>
+      
+      <li><a href="https://yamadharma.github.io/ru/post/2022/02/17/ssh-keys/">Ключи ssh</a></li>
+      
+      <li><a href="https://yamadharma.github.io/ru/post/2022/02/15/linutop-kiosk/">Linutop Kiosk</a></li>
+      
+      <li><a href="https://yamadharma.github.io/ru/post/2022/02/15/porteus-kiosk/">Porteus Kiosk</a></li>
+      
+      <li><a href="https://yamadharma.github.io/ru/post/2022/02/15/kiosk-mode/">Режим киоска</a></li>
       
     </ul>
   </div>

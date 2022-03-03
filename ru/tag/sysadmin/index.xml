@@ -47,6 +47,12 @@
     &lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#файлы-ssh-ключей&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Файлы ssh-ключей&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#добавление-ssh-ключа-в-учётную-запись-github&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Добавление SSH-ключа в учётную запись GitHub&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#аутентификации-на-базе-ключей-ssh&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Аутентификации на базе ключей SSH&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#копирование-открытого-ключа-на-удалённый-хост-с-использованием-ssh-copy-id&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Копирование открытого ключа на удалённый хост с использованием &lt;code&gt;ssh-copy-id&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#копирование-открытого-ключа-с-помощью-ssh&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2&lt;/span&gt; Копирование открытого ключа с помощью SSH&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
   &lt;/ul&gt;
 &lt;/nav&gt;
 &lt;/details&gt;
@@ -234,6 +240,39 @@ id_rsa.pub
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Нажмите кнопку &lt;code&gt;Add SSH key&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;аутентификации-на-базе-ключей-ssh&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Аутентификации на базе ключей SSH&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;При аутентификации по ключу можно войти на удалённый хост без пароля учетной записи для удаленного хоста.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;На удалённом хосте для сервера ssh долен быть настроен вход по ключу:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;# Should we allow Pubkey (SSH version 2) authentication?
+PubkeyAuthentication yes
+
+# Where do we look for authorized public keys?
+# If it doesn&#39;t start with a slash, then it is
+# relative to the user&#39;s home directory
+AuthorizedKeysFile    .ssh/authorized_keys
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;копирование-открытого-ключа-на-удалённый-хост-с-использованием-ssh-copy-id&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Копирование открытого ключа на удалённый хост с использованием &lt;code&gt;ssh-copy-id&lt;/code&gt;&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Скопируйте на удалённый хост открытый ключ:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;ssh-copy-id username@remote_host
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;копирование-открытого-ключа-с-помощью-ssh&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2&lt;/span&gt; Копирование открытого ключа с помощью SSH&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Можно загрузить на удалённый хост ключи с помощью стандартного метода SSH:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;cat ~/.ssh/id_rsa.pub | ssh username@remote_host &amp;quot;mkdir -p ~/.ssh &amp;amp;&amp;amp; cat &amp;gt;&amp;gt; ~/.ssh/authorized_keys&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;</description>
     </item>
@@ -6665,6 +6704,185 @@ systemctl --user enable --now pipewire.socket pipewire-pulse.socket wireplumber.
     </item>
     
     <item>
+      <title>Верификация коммитов git с помощью GPG</title>
+      <link>https://yamadharma.github.io/ru/post/2021/01/28/verifying-git-commits-gpg/</link>
+      <pubDate>Thu, 28 Jan 2021 18:47:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2021/01/28/verifying-git-commits-gpg/</guid>
+      <description>&lt;p&gt;Настроим верификацию коммитов git с помощью GPG.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#верификация-коммитов-с-помощью-gpg&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Верификация коммитов с помощью GPG&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#создание-ключа&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Создание ключа&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#экспорт-ключа&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Экспорт ключа&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#добавление-gpg-ключа-в-github&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; Добавление GPG ключа в GitHub&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#подписывание-коммитов-git&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.4&lt;/span&gt; Подписывание коммитов git&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#настройка-автоматических-подписей-коммитов-git&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.5&lt;/span&gt; Настройка автоматических подписей коммитов git&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#использование-keybase&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Использование Keybase&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#генерация-gpg-ключа&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Генерация GPG ключа&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#добавление-gpg-ключа-в-github&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.2&lt;/span&gt; Добавление GPG ключа в GitHub&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#проверка-коммитов-в-git&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Проверка коммитов в Git&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#режим-бдительности--vigilant-mode&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Режим бдительности (vigilant mode)&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Коммиты имеют следующие свойства:
+&lt;ul&gt;
+&lt;li&gt;author (автор) &amp;mdash; контрибьютор, выполнивший работу (указывается для справки);&lt;/li&gt;
+&lt;li&gt;committer (коммитер) &amp;mdash; пользователь, который закоммитил изменения.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Эти свойства можно переопределить при совершении коммита.&lt;/li&gt;
+&lt;li&gt;Авторство коммита можно подделать.&lt;/li&gt;
+&lt;li&gt;В git есть функция подписи коммитов.&lt;/li&gt;
+&lt;li&gt;Для подписывания коммитов используется технология PGP (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2020/12/18/using-pgp/&#34;&gt;Работа с PGP&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Подпись коммита позволяет удостовериться в том, кто является коммитером. Авторство не проверяется.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;верификация-коммитов-с-помощью-gpg&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Верификация коммитов с помощью GPG&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Как настроить GPG-подпись коммитов с помощью &lt;code&gt;gpg&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;создание-ключа&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Создание ключа&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Генерируем ключ&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;gpg --full-generate-key
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;Из предложенных опций выбираем:
+&lt;ul&gt;
+&lt;li&gt;тип &lt;em&gt;RSA and RSA&lt;/em&gt;;&lt;/li&gt;
+&lt;li&gt;размер 4096;&lt;/li&gt;
+&lt;li&gt;выберите срок действия; значение по умолчанию &amp;mdash; 0 (срок действия не истекает никогда).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;GPG запросит личную информацию, которая сохранится в ключе:
+&lt;ul&gt;
+&lt;li&gt;Имя (не менее 5 символов).&lt;/li&gt;
+&lt;li&gt;Адрес электронной почты.
+&lt;ul&gt;
+&lt;li&gt;При вводе email убедитесь, что он соответствует адресу, используемому на GitHub.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Комментарий. Можно ввести что угодно или нажать клавишу ввода, чтобы оставить это поле пустым.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;экспорт-ключа&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Экспорт ключа&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Выводим список ключей и копируем ID фингерпринта приватного ключа&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;gpg --list-secret-keys --keyid-format LONG
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;Выделенная часть &amp;mdash; ID PGP-ключа, которая является окончанием его фингерпринта.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Экспортируем ключ в формате ASCII по его ID&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;gpg --armor --export &amp;lt;PGP Fingerprint&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;добавление-gpg-ключа-в-github&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; Добавление GPG ключа в GitHub&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Копируем ключ и добавляем его в настройках профиля на GitHub (или GitLab).&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Cкопируйте ваш сгенерированный PGP ключ:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;gpg --armor --export &amp;lt;PGP Fingerprint&amp;gt; | xclip -sel clip
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Перейдите в настройки GitHub (&lt;a href=&#34;https://github.com/settings/keys&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/settings/keys&lt;/a&gt;), нажмите на кнопку &lt;em&gt;New GPG key&lt;/em&gt; и вставьте полученный ключ в поле ввода.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;подписывание-коммитов-git&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.4&lt;/span&gt; Подписывание коммитов git&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Подпись коммитов при работе через терминал:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;git commit -a -S -m &#39;your commit message&#39;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Флаг &lt;code&gt;-S&lt;/code&gt; означает создание подписанного коммита. При этом может потребоваться ввод кодовой фразы, заданной при генерации GPG-ключа.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;настройка-автоматических-подписей-коммитов-git&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.5&lt;/span&gt; Настройка автоматических подписей коммитов git&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Используя введёный email, укажите Git применять его при подписи коммитов:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;git config --global user.signingkey &amp;lt;PGP Fingerprint&amp;gt;
+git config --global commit.gpgsign true
+git config --global gpg.program $(which gpg2)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;использование-keybase&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Использование Keybase&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Для генерации и хранения GPG ключей можно использовать Keybase &lt;a href=&#34;https://keybase.io/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://keybase.io/&lt;/a&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;После того, как вы зарегистрируетесь в Keybase, зайдите в терминал и запустите следующие команды:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;keybase login
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;генерация-gpg-ключа&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Генерация GPG ключа&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Создайте новый GPG ключ, используя ваше настоящее имя и email, сохраненный в GitHub:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;keybase pgp gen
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Просмотр списка ключей:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;keybase pgp list
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;добавление-gpg-ключа-в-github&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.2&lt;/span&gt; Добавление GPG ключа в GitHub&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Cкопируйте ваш сгенерированный PGP ключ:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;keybase pgp export | xclip -i
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Перейдите в настройки GitHub (&lt;a href=&#34;https://github.com/settings/keys&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/settings/keys&lt;/a&gt;), нажмите на кнопку &lt;em&gt;New GPG key&lt;/em&gt; и вставьте полученный ключ в поле ввода.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;проверка-коммитов-в-git&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Проверка коммитов в Git&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;GitHub и GitLab будут показывать значок &lt;em&gt;Verified&lt;/em&gt; рядом с вашими новыми коммитами.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;режим-бдительности--vigilant-mode&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Режим бдительности (vigilant mode)&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;На GitHub есть настройка &lt;a href=&#34;https://docs.github.com/en/github/authenticating-to-github/managing-commit-signature-verification/displaying-verification-statuses-for-all-of-your-commits&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;vigilant mode&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Все неподписанные коммиты будут явно помечены как &lt;em&gt;Unverified&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;Включается это в настройках в разделе &lt;em&gt;SSH and GPG keys&lt;/em&gt;. Установите метку на &lt;em&gt;Flag unsigned commits as unverified&lt;/em&gt;.&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
       <title>Почта. Синхронизация. mbsync</title>
       <link>https://yamadharma.github.io/ru/post/2021/01/22/mail-synchronization-mbsync/</link>
       <pubDate>Fri, 22 Jan 2021 15:10:00 +0300</pubDate>
@@ -7776,6 +7994,98 @@ find . -iname &amp;quot;*host1*&amp;quot; | sed &#39;p;s:host1:host2:&#39; | xar
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;</description>
+    </item>
+    
+    <item>
+      <title>Работа с PGP</title>
+      <link>https://yamadharma.github.io/ru/post/2020/12/18/using-pgp/</link>
+      <pubDate>Fri, 18 Dec 2020 12:39:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2020/12/18/using-pgp/</guid>
+      <description>&lt;p&gt;Использование набора программ PGP.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#экспорт-ключей-pgp&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Экспорт ключей PGP&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#шифрование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Шифрование&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#симметричное-шифрование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Симметричное шифрование&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;экспорт-ключей-pgp&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Экспорт ключей PGP&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Экспорт ключей
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Экспорт всех открытых ключей в текстовый файл в кодировке base64:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;gpg -a --export &amp;gt; mypubkeys.asc
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Экспорт всех зашифрованных закрытых ключей (которые также будут включать соответствующие открытые ключи) в текстовый файл:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;gpg -a --export-secret-keys &amp;gt; myprivatekeys.asc
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Опционально экспортируется &lt;code&gt;trustdb&lt;/code&gt; gpg в текстовый файл:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;gpg --export-ownertrust &amp;gt; otrust.txt
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Импорт ключей
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Выполните команды &lt;code&gt;gpg --import&lt;/code&gt; для двух файлов &lt;code&gt;asc&lt;/code&gt;, а затем проверьте наличие новых ключей с помощью &lt;code&gt;gpg -k&lt;/code&gt; и &lt;code&gt;gpg -K&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;gpg --import myprivatekeys.asc
+gpg --import mypubkeys.asc
+gpg -K
+gpg -k
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;При желании также импортируйте файл &lt;code&gt;trustdb&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;gpg --import-ownertrust otrust.txt
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Проверьте шифрование и дешифрование с помощью команд &lt;code&gt;gpg -er USERID&lt;/code&gt; и &lt;code&gt;gpg -d&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;шифрование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Шифрование&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Шифрование может быть симметричным и ассиметричным.&lt;/li&gt;
+&lt;li&gt;Симметричное шифрование шифруется и расшифровывается приватным ключом или одной и той же парольной фразой.&lt;/li&gt;
+&lt;li&gt;Ассиметричное шифрование шифруется публичным ключом, расшифровывается приватным.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;симметричное-шифрование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Симметричное шифрование&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Зашифровать файл:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;!--listend--&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;gpg -c filename
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;или&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;gpg --symmetric filename
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Расшифровать файл:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;gpg --decrypt-files filename.gpg
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Расшифровать файл с выводом на терминал:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;gpg --decrypt filename.gpg
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
     </item>
     
     <item>

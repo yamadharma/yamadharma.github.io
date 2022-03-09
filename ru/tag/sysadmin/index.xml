@@ -5,12 +5,150 @@
     <link>https://yamadharma.github.io/ru/tag/sysadmin/</link>
       <atom:link href="https://yamadharma.github.io/ru/tag/sysadmin/index.xml" rel="self" type="application/rss+xml" />
     <description>sysadmin</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2022 Dmitry S. Kulyabov</copyright><lastBuildDate>Thu, 17 Feb 2022 14:53:00 +0300</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2022 Dmitry S. Kulyabov</copyright><lastBuildDate>Wed, 09 Mar 2022 17:38:00 +0300</lastBuildDate>
     <image>
       <url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url>
       <title>sysadmin</title>
       <link>https://yamadharma.github.io/ru/tag/sysadmin/</link>
     </image>
+    
+    <item>
+      <title>Закачка с youtube</title>
+      <link>https://yamadharma.github.io/ru/post/2022/03/09/download-youtube/</link>
+      <pubDate>Wed, 09 Mar 2022 17:38:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2022/03/09/download-youtube/</guid>
+      <description>&lt;p&gt;Возникла задача скопировать видео с Youtube. Основная часть содержимого &amp;mdash; это мои видеозаписи для преподавания.
+Для этой задачи я использовал &lt;code&gt;yt-dlp&lt;/code&gt;.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#скачивание-своего-общедоступного-видео-с-youtube&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Скачивание своего общедоступного видео с Youtube&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#постановка-задачи&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Постановка задачи&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#решение&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Решение&lt;/a&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&#34;#итоговый-скрипт&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2.1&lt;/span&gt; Итоговый скрипт&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Репозиторий: &lt;a href=&#34;https://github.com/yt-dlp/yt-dlp&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/yt-dlp/yt-dlp&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Является продвинутым форком &lt;code&gt;youtube-dl&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;скачивание-своего-общедоступного-видео-с-youtube&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Скачивание своего общедоступного видео с Youtube&lt;/h2&gt;
+&lt;h3 id=&#34;постановка-задачи&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Постановка задачи&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Видео добавлены в плейлисты по темам.&lt;/li&gt;
+&lt;li&gt;Есть ссылки на чужие видео.&lt;/li&gt;
+&lt;li&gt;Скачать нужно только своё общедоступное видео.&lt;/li&gt;
+&lt;li&gt;Следует сохранить порядок расположения видео в плейлистах.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;решение&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Решение&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;%(playlist)s&lt;/code&gt; : будем сортировать виде по плейлистам.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;%(playlist_index)s&lt;/code&gt; : будем сохранять номер видео в плейлисте.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;%(title)s.%(ext)s&lt;/code&gt; : будем сохранять видео с его названием.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;--write-comments&lt;/code&gt; : будем сохранять всю дополнительную информацию в отдельный файл формата &lt;code&gt;json&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;--match-filter &amp;quot;uploader = &#39;Dmitry Kulyabov&#39;&amp;quot;&lt;/code&gt; : будем скачивать только те видео, который загрузили мы сами.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;итоговый-скрипт&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2.1&lt;/span&gt; Итоговый скрипт&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Итоговый скрипт будет иметь следующий вид:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;yt-dlp -o &amp;quot;%(uploader)s/%(playlist)s/%(playlist_index)s - %(title)s.%(ext)s&amp;quot; &amp;quot;https://www.youtube.com/user/&amp;lt;youtube user name&amp;gt;/playlists&amp;quot; --write-comments --match-filter &amp;quot;uploader = &#39;Dmitry Kulyabov&#39;&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Использование sfdisk</title>
+      <link>https://yamadharma.github.io/ru/post/2022/03/08/using-sfdisk/</link>
+      <pubDate>Tue, 08 Mar 2022 19:45:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2022/03/08/using-sfdisk/</guid>
+      <description>&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#примеры-использования&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Примеры использования&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;примеры-использования&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Примеры использования&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Создать один большой раздел&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;echo &#39;;&#39; | sfdisk /dev/sda
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Создать один большой раздел с определённым типом раздела&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;W95 FAT32 (LBA)&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;echo &#39;,,c;&#39; | sfdisk /dev/sda
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;lvm&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;echo &#39;,,8e;&#39; | sfdisk /dev/sdd
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Три основных раздела: два по 50 МиБ и третья на всё остальное пространство:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sfdisk /dev/sda &amp;lt;&amp;lt; EOF
+,50MiB
+,50MiB
+;
+EOF
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Раздел диспетчера загрузки OS2 размером 1 МБ, раздел DOS размером 50 МБ и три расширенных раздела (DOS D:, подкачка Linux, Linux):&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sfdisk /dev/sda &amp;lt;&amp;lt; EOF
+,1MiB,a
+,50MiB,6
+,,E
+;
+,20MiB,4
+,16MiB,S
+;
+EOF
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Полезные команды&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;список разделов&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sfdisk -l /dev/sda
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;список расширенных разделов&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sfdisk -l -x /dev/sda
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;список типов разделов&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sfdisk -T
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
     
     <item>
       <title>Ключи ssh</title>
@@ -4069,6 +4207,7 @@ max_in_open = 50
 &lt;li&gt;Собственно, это и есть первичный дистрибутив, который копируют.&lt;/li&gt;
 &lt;li&gt;Отличается надёжностью, используется для корпоративных систем.&lt;/li&gt;
 &lt;li&gt;Большой значение имеют дополнительные продукты: Satellite, Openstack, RHEV, Pacemaker, Gluster, Ceph, Openshift.&lt;/li&gt;
+&lt;li&gt;&lt;span class=&#34;timestamp-wrapper&#34;&gt;&lt;span class=&#34;timestamp&#34;&gt;[2022-03-08 Вт]&lt;/span&gt;&lt;/span&gt;Компания Red Hat прекратила работу с организациями из России и Белоруссии (&lt;a href=&#34;https://www.redhat.com/en/blog/red-hats-response-war-ukraine&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.redhat.com/en/blog/red-hats-response-war-ukraine&lt;/a&gt;).&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
@@ -6607,6 +6746,7 @@ systemctl --user enable --now pipewire.socket pipewire-pulse.socket wireplumber.
         &lt;li&gt;&lt;a href=&#34;#виртуализация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.2&lt;/span&gt; Виртуализация&lt;/a&gt;&lt;/li&gt;
         &lt;li&gt;&lt;a href=&#34;#редакторы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.3&lt;/span&gt; Редакторы&lt;/a&gt;&lt;/li&gt;
         &lt;li&gt;&lt;a href=&#34;#текстовые-процессоры&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.4&lt;/span&gt; Текстовые процессоры&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#работа-с-дисками&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.5&lt;/span&gt; Работа с дисками&lt;/a&gt;&lt;/li&gt;
       &lt;/ul&gt;
     &lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#безопасность&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6&lt;/span&gt; Безопасность&lt;/a&gt;&lt;/li&gt;
@@ -6670,6 +6810,7 @@ systemctl --user enable --now pipewire.socket pipewire-pulse.socket wireplumber.
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/07/23/video-kdenlive/&#34;&gt;Видео. KDEnlive&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/10/21/video-processing-command-line/&#34;&gt;Обработка видео. Командная строка&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/03/09/download-youtube/&#34;&gt;Закачка с youtube&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;виртуализация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.2&lt;/span&gt; Виртуализация&lt;/h3&gt;
 &lt;ul&gt;
@@ -6682,6 +6823,10 @@ systemctl --user enable --now pipewire.socket pipewire-pulse.socket wireplumber.
 &lt;h3 id=&#34;текстовые-процессоры&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.4&lt;/span&gt; Текстовые процессоры&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/01/27/libreoffice-tuning/&#34;&gt;Настройка LibreOffice&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;работа-с-дисками&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.5&lt;/span&gt; Работа с дисками&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/03/08/using-sfdisk/&#34;&gt;Использование sfdisk&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;безопасность&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6&lt;/span&gt; Безопасность&lt;/h2&gt;
 &lt;ul&gt;

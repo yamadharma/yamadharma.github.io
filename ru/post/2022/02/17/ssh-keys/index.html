@@ -363,7 +363,7 @@
         content="2022-02-17T14:53:00&#43;03:00"
       />
     
-    <meta property="article:modified_time" content="2022-03-01T20:48:00&#43;03:00">
+    <meta property="article:modified_time" content="2022-04-06T20:06:00&#43;03:00">
   
 
   
@@ -392,7 +392,7 @@
   "headline": "Ключи ssh",
   
   "datePublished": "2022-02-17T14:53:00+03:00",
-  "dateModified": "2022-03-01T20:48:00+03:00",
+  "dateModified": "2022-04-06T20:06:00+03:00",
   
   "author": {
     "@type": "Person",
@@ -914,7 +914,7 @@
           Обновлено
       
     
-    2022-03-01
+    2022-04-06
   </span>
   
 
@@ -923,7 +923,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-reading-time">
-    3 мин. для прочтения
+    4 мин. для прочтения
   </span>
   
 
@@ -984,11 +984,12 @@
       </ul>
     </li>
     <li><a href="#файлы-ssh-ключей"><span class="section-num">2</span> Файлы ssh-ключей</a></li>
-    <li><a href="#добавление-ssh-ключа-в-учётную-запись-github"><span class="section-num">3</span> Добавление SSH-ключа в учётную запись GitHub</a></li>
-    <li><a href="#аутентификации-на-базе-ключей-ssh"><span class="section-num">4</span> Аутентификации на базе ключей SSH</a>
+    <li><a href="#создание-ключа-ssh"><span class="section-num">3</span> Создание ключа ssh</a></li>
+    <li><a href="#добавление-ssh-ключа-в-учётную-запись-github"><span class="section-num">4</span> Добавление SSH-ключа в учётную запись GitHub</a></li>
+    <li><a href="#аутентификации-на-базе-ключей-ssh"><span class="section-num">5</span> Аутентификации на базе ключей SSH</a>
       <ul>
-        <li><a href="#копирование-открытого-ключа-на-удалённый-хост-с-использованием-ssh-copy-id"><span class="section-num">4.1</span> Копирование открытого ключа на удалённый хост с использованием <code>ssh-copy-id</code></a></li>
-        <li><a href="#копирование-открытого-ключа-с-помощью-ssh"><span class="section-num">4.2</span> Копирование открытого ключа с помощью SSH</a></li>
+        <li><a href="#копирование-открытого-ключа-на-удалённый-хост-с-использованием-ssh-copy-id"><span class="section-num">5.1</span> Копирование открытого ключа на удалённый хост с использованием <code>ssh-copy-id</code></a></li>
+        <li><a href="#копирование-открытого-ключа-с-помощью-ssh"><span class="section-num">5.2</span> Копирование открытого ключа с помощью SSH</a></li>
       </ul>
     </li>
   </ul>
@@ -1014,7 +1015,11 @@
 <li>ECDSA завязан на технологиях NIST, его следует отключить</li>
 </ul>
 </li>
-<li>Ed25519</li>
+<li>Ed25519
+<ul>
+<li>используется пока не везде</li>
+</ul>
+</li>
 </ul>
 <h4 id="отключение-ключей-у-сервера-sshd"><span class="section-num">1.1.1</span> Отключение ключей у сервера <code>sshd</code></h4>
 <ul>
@@ -1148,6 +1153,29 @@ id_rsa.pub
 </li>
 </ul>
 </li>
+</ul>
+<h2 id="создание-ключа-ssh"><span class="section-num">3</span> Создание ключа ssh</h2>
+<ul>
+<li>
+<p>Ключ ssh создаётся командой:</p>
+<pre><code class="language-shell">ssh-keygen -t &lt;алгоритм&gt;
+</code></pre>
+</li>
+<li>
+<p>Создайте ключи:</p>
+<ul>
+<li>
+<p>по алгоритму <em>rsa</em> с ключём размером 4096 бит:</p>
+<pre><code class="language-shell">ssh-keygen -t rsa -b 4096
+</code></pre>
+</li>
+<li>
+<p>по алгоритму <em>ed25519</em>:</p>
+<pre><code class="language-shell">ssh-keygen -t ed25519
+</code></pre>
+</li>
+</ul>
+</li>
 <li>
 <p>При создании ключа команда попросит ввести любую ключевую фразу для более надёжной защиты вашего пароля. Можно пропустить этот этап, нажав <code>Enter</code>.</p>
 </li>
@@ -1157,7 +1185,7 @@ id_rsa.pub
 </code></pre>
 </li>
 </ul>
-<h2 id="добавление-ssh-ключа-в-учётную-запись-github"><span class="section-num">3</span> Добавление SSH-ключа в учётную запись GitHub</h2>
+<h2 id="добавление-ssh-ключа-в-учётную-запись-github"><span class="section-num">4</span> Добавление SSH-ключа в учётную запись GitHub</h2>
 <ul>
 <li>
 <p>Скопируйте созданный SSH-ключ в буфер обмена командой:</p>
@@ -1168,10 +1196,10 @@ id_rsa.pub
 <p>Откройте настройки своего аккаунта на GitHub и перейдем в раздел <code>SSH and GPC keys</code>.</p>
 </li>
 <li>
-<p>Нажмите кнопку <code>ew SSH key</code>.</p>
+<p>Нажмите кнопку <code>New SSH key</code>.</p>
 </li>
 <li>
-<p>Добавьте в поле <code>Title</code> название этого ключа, например, <code>ed25519@hostname</code>.</p>
+<p>Добавьте в поле <code>Title</code> название этого ключа, например, <code>ed25519@&lt;hostname&gt;</code>.</p>
 </li>
 <li>
 <p>Вставьте из буфера обмена в поле <code>Key</code> ключ.</p>
@@ -1180,7 +1208,7 @@ id_rsa.pub
 <p>Нажмите кнопку <code>Add SSH key</code>.</p>
 </li>
 </ul>
-<h2 id="аутентификации-на-базе-ключей-ssh"><span class="section-num">4</span> Аутентификации на базе ключей SSH</h2>
+<h2 id="аутентификации-на-базе-ключей-ssh"><span class="section-num">5</span> Аутентификации на базе ключей SSH</h2>
 <ul>
 <li>
 <p>При аутентификации по ключу можно войти на удалённый хост без пароля учетной записи для удаленного хоста.</p>
@@ -1197,7 +1225,7 @@ AuthorizedKeysFile    .ssh/authorized_keys
 </code></pre>
 </li>
 </ul>
-<h3 id="копирование-открытого-ключа-на-удалённый-хост-с-использованием-ssh-copy-id"><span class="section-num">4.1</span> Копирование открытого ключа на удалённый хост с использованием <code>ssh-copy-id</code></h3>
+<h3 id="копирование-открытого-ключа-на-удалённый-хост-с-использованием-ssh-copy-id"><span class="section-num">5.1</span> Копирование открытого ключа на удалённый хост с использованием <code>ssh-copy-id</code></h3>
 <ul>
 <li>
 <p>Скопируйте на удалённый хост открытый ключ:</p>
@@ -1205,7 +1233,7 @@ AuthorizedKeysFile    .ssh/authorized_keys
 </code></pre>
 </li>
 </ul>
-<h3 id="копирование-открытого-ключа-с-помощью-ssh"><span class="section-num">4.2</span> Копирование открытого ключа с помощью SSH</h3>
+<h3 id="копирование-открытого-ключа-с-помощью-ssh"><span class="section-num">5.2</span> Копирование открытого ключа с помощью SSH</h3>
 <ul>
 <li>
 <p>Можно загрузить на удалённый хост ключи с помощью стандартного метода SSH:</p>
@@ -1315,11 +1343,19 @@ AuthorizedKeysFile    .ssh/authorized_keys
    
 
    
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
       
-   
-
-   
-
    
 
    
@@ -4518,6 +4554,8 @@ AuthorizedKeysFile    .ssh/authorized_keys
     <h3>Похожие</h3>
     <ul>
       
+      <li><a href="https://yamadharma.github.io/ru/post/2022/04/10/davmail/">DavMail</a></li>
+      
       <li><a href="https://yamadharma.github.io/ru/post/2022/04/03/rofi-pass/">rofi-pass</a></li>
       
       <li><a href="https://yamadharma.github.io/ru/post/2022/03/23/emacs-neotree/">Emacs. Neotree</a></li>
@@ -4525,8 +4563,6 @@ AuthorizedKeysFile    .ssh/authorized_keys
       <li><a href="https://yamadharma.github.io/ru/post/2022/03/09/download-youtube/">Закачка с youtube</a></li>
       
       <li><a href="https://yamadharma.github.io/ru/post/2022/03/08/using-sfdisk/">Использование sfdisk</a></li>
-      
-      <li><a href="https://yamadharma.github.io/ru/post/2022/02/15/linutop-kiosk/">Linutop Kiosk</a></li>
       
     </ul>
   </div>

@@ -363,7 +363,7 @@
         content="2021-01-22T15:10:00&#43;03:00"
       />
     
-    <meta property="article:modified_time" content="2021-11-10T19:47:00&#43;03:00">
+    <meta property="article:modified_time" content="2022-04-10T20:43:00&#43;03:00">
   
 
   
@@ -392,7 +392,7 @@
   "headline": "Почта. Синхронизация. mbsync",
   
   "datePublished": "2021-01-22T15:10:00+03:00",
-  "dateModified": "2021-11-10T19:47:00+03:00",
+  "dateModified": "2022-04-10T20:43:00+03:00",
   
   "author": {
     "@type": "Person",
@@ -914,7 +914,7 @@
           Обновлено
       
     
-    2021-11-10
+    2022-04-10
   </span>
   
 
@@ -923,7 +923,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-reading-time">
-    8 мин. для прочтения
+    9 мин. для прочтения
   </span>
   
 
@@ -1472,15 +1472,15 @@ Channel account@mail.ru-sent
 </ul>
 <h4 id="office365"><span class="section-num">3.4.7</span> Office365</h4>
 <ul>
+<li><a href="https://yamadharma.github.io/ru/post/2021/07/04/mail-office365-configuring-mail-client/">Почта. Office365. Настройка почтового клиента</a></li>
+<li>Названия IMAP-ящиков даётся в модифицированной кодировке UTF-7 (см. <a href="https://yamadharma.github.io/ru/post/2021/07/04/mail-imap-folder-encoding/">Почта. Кодировка папок IMAP</a>).</li>
+<li>Для smtp следует именовать пароль <em>pass</em> как <code>account@example.com@smtp.office365.com</code>.</li>
+</ul>
+<!--list-separator-->
+<ol>
 <li>
-<p><a href="https://yamadharma.github.io/ru/post/2021/07/04/mail-office365-configuring-mail-client/">Почта. Office365. Настройка почтового клиента</a></p>
-</li>
-<li>
-<p>Названия IMAP-ящиков даётся в модифицированной кодировке UTF-7 (см. <a href="https://yamadharma.github.io/ru/post/2021/07/04/mail-imap-folder-encoding/">Почта. Кодировка папок IMAP</a>).</p>
-</li>
-<li>
-<p>Для smtp следует именовать пароль <em>pass</em> как <code>account@example.com@smtp.office365.com</code>.</p>
-</li>
+<p>Аутентификация <em>LOGIN</em></p>
+<ul>
 <li>
 <p>Конфигурация:</p>
 <pre><code class="language-conf-unix">## IMAPAccount (outlook.office365.com)
@@ -1497,6 +1497,7 @@ SSLType IMAPS
 SSLVersion TLSv1.2
 # Increase timeout
 Timeout 120
+PipelineDepth 50
 
 MaildirStore account@example.com-local
 Path ~/Maildir/account@example.com/
@@ -1564,6 +1565,39 @@ Channel account@example.com-sent
 </code></pre>
 </li>
 </ul>
+</li>
+</ol>
+<!--list-separator-->
+<ol start="2">
+<li>
+<p>Аутентификация <em>Oauth2</em> с <em>DavMail</em></p>
+<ul>
+<li>
+<p>Аутентификацию <em>oauth2</em> можно настроить с помощью <em>DavMail</em> (см. <a href="https://yamadharma.github.io/ru/post/2022/04/10/davmail/">DavMail</a>).</p>
+</li>
+<li>
+<p>Сначала сконфигурите <em>DavMail</em> аутентификацией <code>O365Interactive</code> или <code>O365Manual=б а потом переключите в режим =O365Modern</code>.</p>
+</li>
+<li>
+<p>В конфигурации меняется блок аутентификации:</p>
+<pre><code class="language-conf-unix">IMAPAccount account@example.com
+Host 127.0.0.1
+Port 1143
+User account@example.com
+# Pass ***************
+## To store the password in an encrypted file use PassCmd instead of Pass
+# PassCmd &quot;gpg -q --for-your-eyes-only --no-tty -d ~/.authinfo.gpg | awk '/machine account@example.com/ {print $6}'&quot;
+PassCmd &quot;pass email/example.com/account@example.com&quot;
+AuthMechs LOGIN
+SSLType None
+## Increase timeout
+Timeout 120
+PipelineDepth 50
+</code></pre>
+</li>
+</ul>
+</li>
+</ol>
 <h2 id="синхронизация"><span class="section-num">4</span> Синхронизация</h2>
 <h3 id="настройка-синхронизации"><span class="section-num">4.1</span> Настройка синхронизации</h3>
 <ul>
@@ -1965,9 +1999,17 @@ find . -iname &quot;*host1*&quot; | sed 'p;s:host1:host2:' | xargs -n2 mv
    
 
    
-      
+
    
 
+   
+
+   
+
+   
+
+   
+      
    
 
    
@@ -4986,6 +5028,8 @@ find . -iname &quot;*host1*&quot; | sed 'p;s:host1:host2:' | xargs -n2 mv
     <h3>Похожие</h3>
     <ul>
       
+      <li><a href="https://yamadharma.github.io/ru/post/2022/04/10/davmail/">DavMail</a></li>
+      
       <li><a href="https://yamadharma.github.io/ru/post/2022/04/03/rofi-pass/">rofi-pass</a></li>
       
       <li><a href="https://yamadharma.github.io/ru/post/2022/03/23/emacs-neotree/">Emacs. Neotree</a></li>
@@ -4993,8 +5037,6 @@ find . -iname &quot;*host1*&quot; | sed 'p;s:host1:host2:' | xargs -n2 mv
       <li><a href="https://yamadharma.github.io/ru/post/2022/03/09/download-youtube/">Закачка с youtube</a></li>
       
       <li><a href="https://yamadharma.github.io/ru/post/2022/03/08/using-sfdisk/">Использование sfdisk</a></li>
-      
-      <li><a href="https://yamadharma.github.io/ru/post/2022/02/17/ssh-keys/">Ключи ssh</a></li>
       
     </ul>
   </div>

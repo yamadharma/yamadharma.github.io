@@ -363,7 +363,7 @@
         content="2021-01-22T15:10:00&#43;03:00"
       />
     
-    <meta property="article:modified_time" content="2022-04-10T20:43:00&#43;03:00">
+    <meta property="article:modified_time" content="2022-04-12T18:24:00&#43;03:00">
   
 
   
@@ -392,7 +392,7 @@
   "headline": "Почта. Синхронизация. mbsync",
   
   "datePublished": "2021-01-22T15:10:00+03:00",
-  "dateModified": "2022-04-10T20:43:00+03:00",
+  "dateModified": "2022-04-12T18:24:00+03:00",
   
   "author": {
     "@type": "Person",
@@ -914,7 +914,7 @@
           Обновлено
       
     
-    2022-04-10
+    2022-04-12
   </span>
   
 
@@ -1474,7 +1474,6 @@ Channel account@mail.ru-sent
 <ul>
 <li><a href="https://yamadharma.github.io/ru/post/2021/07/04/mail-office365-configuring-mail-client/">Почта. Office365. Настройка почтового клиента</a></li>
 <li>Названия IMAP-ящиков даётся в модифицированной кодировке UTF-7 (см. <a href="https://yamadharma.github.io/ru/post/2021/07/04/mail-imap-folder-encoding/">Почта. Кодировка папок IMAP</a>).</li>
-<li>Для smtp следует именовать пароль <em>pass</em> как <code>account@example.com@smtp.office365.com</code>.</li>
 </ul>
 <!--list-separator-->
 <ol>
@@ -1482,7 +1481,7 @@ Channel account@mail.ru-sent
 <p>Аутентификация <em>LOGIN</em></p>
 <ul>
 <li>
-<p>Конфигурация:</p>
+<p>Конфигурация <em>mbsync</em>:</p>
 <pre><code class="language-conf-unix">## IMAPAccount (outlook.office365.com)
 
 IMAPAccount account@example.com
@@ -1564,6 +1563,17 @@ Channel account@example.com-archive
 Channel account@example.com-sent
 </code></pre>
 </li>
+<li>
+<p>Конфигурация SMTP для Emacs:</p>
+<pre><code class="language-emacs-lisp">(setq send-mail-function    'smtpmail-send-it
+      smtpmail-smtp-server  &quot;example.com&quot;
+      smtpmail-stream-type  'starttls
+      smtpmail-smtp-service 587)
+</code></pre>
+<ul>
+<li>Для smtp следует именовать пароль <em>pass</em> как <code>account@example.com@smtp.office365.com</code> (см. <a href="https://yamadharma.github.io/ru/post/2021/04/28/password-manager-pass/">Менеджер паролей pass</a>).</li>
+</ul>
+</li>
 </ul>
 </li>
 </ol>
@@ -1576,7 +1586,7 @@ Channel account@example.com-sent
 <p>Аутентификацию <em>oauth2</em> можно настроить с помощью <em>DavMail</em> (см. <a href="https://yamadharma.github.io/ru/post/2022/04/10/davmail/">DavMail</a>).</p>
 </li>
 <li>
-<p>Сначала сконфигурите <em>DavMail</em> аутентификацией <code>O365Interactive</code> или <code>O365Manual=б а потом переключите в режим =O365Modern</code>.</p>
+<p>Сначала настройте <em>DavMail</em> аутентификацией <code>O365Interactive</code> или <code>O365Manual</code>, а потом переключите в режим <code>O365Modern</code>.</p>
 </li>
 <li>
 <p>В конфигурации меняется блок аутентификации:</p>
@@ -1594,6 +1604,17 @@ SSLType None
 Timeout 120
 PipelineDepth 50
 </code></pre>
+</li>
+<li>
+<p>Конфигурация SMTP для Emacs:</p>
+<pre><code class="language-emacs-lisp">(setq send-mail-function    'smtpmail-send-it
+      smtpmail-smtp-server  &quot;localhost&quot;
+      smtpmail-stream-type  'plain
+      smtpmail-smtp-service 1025)
+</code></pre>
+<ul>
+<li>Для smtp следует именовать пароль <em>pass</em> как <code>account@example.com@localhost</code> (см. <a href="https://yamadharma.github.io/ru/post/2021/04/28/password-manager-pass/">Менеджер паролей pass</a>).</li>
+</ul>
 </li>
 </ul>
 </li>

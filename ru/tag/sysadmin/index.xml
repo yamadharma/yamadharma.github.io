@@ -7589,7 +7589,7 @@ systemctl --user enable --now pipewire.socket pipewire-pulse.socket wireplumber.
   &lt;nav id=&#34;TableOfContents&#34;&gt;
   &lt;ul&gt;
     &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#верификация-коммитов-с-помощью-gpg&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Верификация коммитов с помощью GPG&lt;/a&gt;
+    &lt;li&gt;&lt;a href=&#34;#верификация-коммитов-с-помощью-pgp&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Верификация коммитов с помощью &lt;em&gt;PGP&lt;/em&gt;&lt;/a&gt;
       &lt;ul&gt;
         &lt;li&gt;&lt;a href=&#34;#создание-ключа&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Создание ключа&lt;/a&gt;&lt;/li&gt;
         &lt;li&gt;&lt;a href=&#34;#экспорт-ключа&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Экспорт ключа&lt;/a&gt;&lt;/li&gt;
@@ -7627,9 +7627,9 @@ systemctl --user enable --now pipewire.socket pipewire-pulse.socket wireplumber.
 &lt;li&gt;Для подписывания коммитов используется технология PGP (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2020/12/18/using-pgp/&#34;&gt;Работа с PGP&lt;/a&gt;).&lt;/li&gt;
 &lt;li&gt;Подпись коммита позволяет удостовериться в том, кто является коммитером. Авторство не проверяется.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;верификация-коммитов-с-помощью-gpg&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Верификация коммитов с помощью GPG&lt;/h2&gt;
+&lt;h2 id=&#34;верификация-коммитов-с-помощью-pgp&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Верификация коммитов с помощью &lt;em&gt;PGP&lt;/em&gt;&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;Как настроить GPG-подпись коммитов с помощью &lt;code&gt;gpg&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Как настроить PGP-подпись коммитов с помощью &lt;code&gt;gpg&lt;/code&gt;.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;создание-ключа&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Создание ключа&lt;/h3&gt;
 &lt;ul&gt;
@@ -7662,15 +7662,23 @@ systemctl --user enable --now pipewire.socket pipewire-pulse.socket wireplumber.
 &lt;h3 id=&#34;экспорт-ключа&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Экспорт ключа&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;
-&lt;p&gt;Выводим список ключей и копируем ID фингерпринта приватного ключа&lt;/p&gt;
+&lt;p&gt;Выводим список ключей и копируем отпечаток приватного ключа:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;gpg --list-secret-keys --keyid-format LONG
 &lt;/code&gt;&lt;/pre&gt;
 &lt;ul&gt;
-&lt;li&gt;Выделенная часть &amp;mdash; ID PGP-ключа, которая является окончанием его фингерпринта.&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Отпечаток ключа &amp;mdash; это последовательность байтов, используемая для идентификации более длинного, по сравнению с самим отпечатком ключа.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Формат строки:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-text&#34;&gt;sec   Алгоритм/Отпечаток_ключа Дата_создания [Флаги] [Годен_до]
+      ID_ключа
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;Экспортируем ключ в формате ASCII по его ID&lt;/p&gt;
+&lt;p&gt;Экспортируем ключ в формате ASCII по его отпечатку:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;gpg --armor --export &amp;lt;PGP Fingerprint&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
@@ -7681,7 +7689,7 @@ systemctl --user enable --now pipewire.socket pipewire-pulse.socket wireplumber.
 &lt;p&gt;Копируем ключ и добавляем его в настройках профиля на GitHub (или GitLab).&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;Cкопируйте ваш сгенерированный PGP ключ:&lt;/p&gt;
+&lt;p&gt;Cкопируйте ваш сгенерированный PGP ключ в буфер обмена:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;gpg --armor --export &amp;lt;PGP Fingerprint&amp;gt; | xclip -sel clip
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;

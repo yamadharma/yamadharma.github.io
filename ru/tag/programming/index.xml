@@ -475,6 +475,11 @@
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;emerge dev-util/github-cli
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Fedora:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sudo dnf install gh
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;windows&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Windows&lt;/h3&gt;
 &lt;ul&gt;
@@ -1196,7 +1201,7 @@ git push bitbucket
   &lt;nav id=&#34;TableOfContents&#34;&gt;
   &lt;ul&gt;
     &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#верификация-коммитов-с-помощью-gpg&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Верификация коммитов с помощью GPG&lt;/a&gt;
+    &lt;li&gt;&lt;a href=&#34;#верификация-коммитов-с-помощью-pgp&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Верификация коммитов с помощью &lt;em&gt;PGP&lt;/em&gt;&lt;/a&gt;
       &lt;ul&gt;
         &lt;li&gt;&lt;a href=&#34;#создание-ключа&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Создание ключа&lt;/a&gt;&lt;/li&gt;
         &lt;li&gt;&lt;a href=&#34;#экспорт-ключа&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Экспорт ключа&lt;/a&gt;&lt;/li&gt;
@@ -1234,9 +1239,9 @@ git push bitbucket
 &lt;li&gt;Для подписывания коммитов используется технология PGP (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2020/12/18/using-pgp/&#34;&gt;Работа с PGP&lt;/a&gt;).&lt;/li&gt;
 &lt;li&gt;Подпись коммита позволяет удостовериться в том, кто является коммитером. Авторство не проверяется.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;верификация-коммитов-с-помощью-gpg&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Верификация коммитов с помощью GPG&lt;/h2&gt;
+&lt;h2 id=&#34;верификация-коммитов-с-помощью-pgp&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Верификация коммитов с помощью &lt;em&gt;PGP&lt;/em&gt;&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;Как настроить GPG-подпись коммитов с помощью &lt;code&gt;gpg&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Как настроить PGP-подпись коммитов с помощью &lt;code&gt;gpg&lt;/code&gt;.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;создание-ключа&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Создание ключа&lt;/h3&gt;
 &lt;ul&gt;
@@ -1269,15 +1274,23 @@ git push bitbucket
 &lt;h3 id=&#34;экспорт-ключа&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Экспорт ключа&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;
-&lt;p&gt;Выводим список ключей и копируем ID фингерпринта приватного ключа&lt;/p&gt;
+&lt;p&gt;Выводим список ключей и копируем отпечаток приватного ключа:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;gpg --list-secret-keys --keyid-format LONG
 &lt;/code&gt;&lt;/pre&gt;
 &lt;ul&gt;
-&lt;li&gt;Выделенная часть &amp;mdash; ID PGP-ключа, которая является окончанием его фингерпринта.&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Отпечаток ключа &amp;mdash; это последовательность байтов, используемая для идентификации более длинного, по сравнению с самим отпечатком ключа.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Формат строки:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-text&#34;&gt;sec   Алгоритм/Отпечаток_ключа Дата_создания [Флаги] [Годен_до]
+      ID_ключа
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;Экспортируем ключ в формате ASCII по его ID&lt;/p&gt;
+&lt;p&gt;Экспортируем ключ в формате ASCII по его отпечатку:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;gpg --armor --export &amp;lt;PGP Fingerprint&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
@@ -1288,7 +1301,7 @@ git push bitbucket
 &lt;p&gt;Копируем ключ и добавляем его в настройках профиля на GitHub (или GitLab).&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;Cкопируйте ваш сгенерированный PGP ключ:&lt;/p&gt;
+&lt;p&gt;Cкопируйте ваш сгенерированный PGP ключ в буфер обмена:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;gpg --armor --export &amp;lt;PGP Fingerprint&amp;gt; | xclip -sel clip
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
@@ -1497,6 +1510,22 @@ choco install yarn
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Fedora&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Это программное обеспечение удалено из репозитория.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Необходимо устанавливать его вручную:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;cd /tmp
+wget --no-check-certificate -q https://raw.github.com/petervanderdoes/gitflow/develop/contrib/gitflow-installer.sh
+chmod +x gitflow-installer.sh
+sudo ./gitflow-installer.sh install stable
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;
@@ -1589,7 +1618,7 @@ git config --global user.email &amp;quot;work@mail&amp;quot;
 &lt;li&gt;
 &lt;p&gt;Варианты конвертации&lt;/p&gt;
 &lt;div class=&#34;table-caption&#34;&gt;
-  &lt;span class=&#34;table-number&#34;&gt;&amp;#1058;&amp;#1072;&amp;#1073;&amp;#1083;&amp;#1080;&amp;#1094;&amp;#1072; 1&lt;/span&gt;:
+  &lt;span class=&#34;table-number&#34;&gt;&amp;#1058;&amp;#1072;&amp;#1073;&amp;#1083;&amp;#1080;&amp;#1094;&amp;#1072; 1:&lt;/span&gt;
   Варианты конвертации для разных значений параметра core.autocrlf
 &lt;/div&gt;
 &lt;table&gt;
@@ -3498,18 +3527,14 @@ style:, refactor:, perf:, test:, и другие.&lt;/li&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Изображение со ссылкой на видео в виде &lt;code&gt;markdown&lt;/code&gt;:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-markdown&#34;&gt;[![alternative text for search engines](https://pic.rutubelist.ru/video/12/34/RUTUBE_VIDEO_ID.jpg)](https://rutube.ru/video/RUTUBE_VIDEO_ID/)
+&lt;pre&gt;&lt;code class=&#34;language-markdown&#34;&gt;[![alternative text for search engines](https://pic.rutubelist.ru/video/12/34/RUTUBE_PIC_ID.jpg)](https://rutube.ru/video/RUTUBE_VIDEO_ID/)
 &lt;/code&gt;&lt;/pre&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Здесь 12 &amp;mdash; первые 2 цифры RUTUBE_VIDEO_ID; 34 &amp;mdash; 3 и 4 цифры RUTUBE_VIDEO_ID.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Пример (идентификатор видео: &lt;code&gt;e6033653f134bd93e79aa2fe81848f09&lt;/code&gt;):&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-markdown&#34;&gt;[![alternative text for search engines](https://pic.rutubelist.ru/video/e6/03/e6033653f134bd93e79aa2fe81848f09.jpg)](https://rutube.ru/video/e6033653f134bd93e79aa2fe81848f09/)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
+&lt;li&gt;Здесь 12 &amp;mdash; первые 2 цифры &lt;code&gt;RUTUBE_PIC_ID&lt;/code&gt;; 34 &amp;mdash; 3 и 4 цифры &lt;code&gt;RUTUBE_PIC_ID&lt;/code&gt;.&lt;/li&gt;
 &lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Связь &lt;code&gt;RUTUBE_PIC_ID&lt;/code&gt; и &lt;code&gt;RUTUBE_VIDEO_ID&lt;/code&gt; мне пока не понятна.&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;</description>
     </item>

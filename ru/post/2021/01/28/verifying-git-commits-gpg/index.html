@@ -363,7 +363,7 @@
         content="2021-01-28T18:47:00&#43;03:00"
       />
     
-    <meta property="article:modified_time" content="2022-03-03T15:11:00&#43;03:00">
+    <meta property="article:modified_time" content="2022-04-17T13:04:00&#43;03:00">
   
 
   
@@ -392,7 +392,7 @@
   "headline": "Верификация коммитов git с помощью GPG",
   
   "datePublished": "2021-01-28T18:47:00+03:00",
-  "dateModified": "2022-03-03T15:11:00+03:00",
+  "dateModified": "2022-04-17T13:04:00+03:00",
   
   "author": {
     "@type": "Person",
@@ -914,7 +914,7 @@
           Обновлено
       
     
-    2022-03-03
+    2022-04-17
   </span>
   
 
@@ -961,7 +961,7 @@
   <nav id="TableOfContents">
   <ul>
     <li><a href="#общая-информация"><span class="section-num">1</span> Общая информация</a></li>
-    <li><a href="#верификация-коммитов-с-помощью-gpg"><span class="section-num">2</span> Верификация коммитов с помощью GPG</a>
+    <li><a href="#верификация-коммитов-с-помощью-pgp"><span class="section-num">2</span> Верификация коммитов с помощью <em>PGP</em></a>
       <ul>
         <li><a href="#создание-ключа"><span class="section-num">2.1</span> Создание ключа</a></li>
         <li><a href="#экспорт-ключа"><span class="section-num">2.2</span> Экспорт ключа</a></li>
@@ -999,9 +999,9 @@
 <li>Для подписывания коммитов используется технология PGP (см. <a href="https://yamadharma.github.io/ru/post/2020/12/18/using-pgp/">Работа с PGP</a>).</li>
 <li>Подпись коммита позволяет удостовериться в том, кто является коммитером. Авторство не проверяется.</li>
 </ul>
-<h2 id="верификация-коммитов-с-помощью-gpg"><span class="section-num">2</span> Верификация коммитов с помощью GPG</h2>
+<h2 id="верификация-коммитов-с-помощью-pgp"><span class="section-num">2</span> Верификация коммитов с помощью <em>PGP</em></h2>
 <ul>
-<li>Как настроить GPG-подпись коммитов с помощью <code>gpg</code>.</li>
+<li>Как настроить PGP-подпись коммитов с помощью <code>gpg</code>.</li>
 </ul>
 <h3 id="создание-ключа"><span class="section-num">2.1</span> Создание ключа</h3>
 <ul>
@@ -1034,15 +1034,23 @@
 <h3 id="экспорт-ключа"><span class="section-num">2.2</span> Экспорт ключа</h3>
 <ul>
 <li>
-<p>Выводим список ключей и копируем ID фингерпринта приватного ключа</p>
+<p>Выводим список ключей и копируем отпечаток приватного ключа:</p>
 <pre><code class="language-shell">gpg --list-secret-keys --keyid-format LONG
 </code></pre>
 <ul>
-<li>Выделенная часть &mdash; ID PGP-ключа, которая является окончанием его фингерпринта.</li>
+<li>
+<p>Отпечаток ключа &mdash; это последовательность байтов, используемая для идентификации более длинного, по сравнению с самим отпечатком ключа.</p>
+</li>
+<li>
+<p>Формат строки:</p>
+<pre><code class="language-text">sec   Алгоритм/Отпечаток_ключа Дата_создания [Флаги] [Годен_до]
+      ID_ключа
+</code></pre>
+</li>
 </ul>
 </li>
 <li>
-<p>Экспортируем ключ в формате ASCII по его ID</p>
+<p>Экспортируем ключ в формате ASCII по его отпечатку:</p>
 <pre><code class="language-shell">gpg --armor --export &lt;PGP Fingerprint&gt;
 </code></pre>
 </li>
@@ -1053,7 +1061,7 @@
 <p>Копируем ключ и добавляем его в настройках профиля на GitHub (или GitLab).</p>
 </li>
 <li>
-<p>Cкопируйте ваш сгенерированный PGP ключ:</p>
+<p>Cкопируйте ваш сгенерированный PGP ключ в буфер обмена:</p>
 <pre><code class="language-shell">gpg --armor --export &lt;PGP Fingerprint&gt; | xclip -sel clip
 </code></pre>
 </li>
@@ -1177,6 +1185,12 @@ git config --global gpg.program $(which gpg2)
    
 
    
+      
+   
+
+   
+
+   
 
    
 
@@ -1690,8 +1704,6 @@ git config --global gpg.program $(which gpg2)
 
    
       
-   
-
    
 
    
@@ -3985,6 +3997,8 @@ git config --global gpg.program $(which gpg2)
     <h4>Links to this note</h4>
     <div class="backlinks">
       <ul>
+       
+          <li><a href="https://yamadharma.github.io/ru/course/os-intro/lab-initial-git-setup/">Лабораторная работа Первоначальна настройка git</a></li>
        
           <li><a href="https://yamadharma.github.io/ru/post/2021/01/21/course-operating-systems/">Курс Операционные системы</a></li>
        

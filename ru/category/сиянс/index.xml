@@ -8651,6 +8651,22 @@ choco install yarn
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Fedora&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Это программное обеспечение удалено из репозитория.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Необходимо устанавливать его вручную:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;cd /tmp
+wget --no-check-certificate -q https://raw.github.com/petervanderdoes/gitflow/develop/contrib/gitflow-installer.sh
+chmod +x gitflow-installer.sh
+sudo ./gitflow-installer.sh install stable
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;
@@ -8743,7 +8759,7 @@ git config --global user.email &amp;quot;work@mail&amp;quot;
 &lt;li&gt;
 &lt;p&gt;Варианты конвертации&lt;/p&gt;
 &lt;div class=&#34;table-caption&#34;&gt;
-  &lt;span class=&#34;table-number&#34;&gt;&amp;#1058;&amp;#1072;&amp;#1073;&amp;#1083;&amp;#1080;&amp;#1094;&amp;#1072; 1&lt;/span&gt;:
+  &lt;span class=&#34;table-number&#34;&gt;&amp;#1058;&amp;#1072;&amp;#1073;&amp;#1083;&amp;#1080;&amp;#1094;&amp;#1072; 1:&lt;/span&gt;
   Варианты конвертации для разных значений параметра core.autocrlf
 &lt;/div&gt;
 &lt;table&gt;
@@ -9055,6 +9071,12 @@ git push --tags
   &lt;ul&gt;
     &lt;li&gt;&lt;a href=&#34;#основные-идеи&#34;&gt;Основные идеи&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#общие-правила&#34;&gt;Общие правила&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#шаблон-для-рабочего-пространства&#34;&gt;Шаблон для рабочего пространства&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#сознание-репозитория-курса-на-основе-шаблона&#34;&gt;Сознание репозитория курса на основе шаблона&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#настройка-каталога-курса&#34;&gt;Настройка каталога курса&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
   &lt;/ul&gt;
 &lt;/nav&gt;
 &lt;/details&gt;
@@ -9072,18 +9094,29 @@ git push --tags
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;~/work/study/
 └── &amp;lt;учебный год&amp;gt;/
     └── &amp;lt;название предмета&amp;gt;/
-	└── laboratory/
-&lt;/code&gt;&lt;/pre&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Например, для 2020&amp;ndash;2021 учебного года и предмета &amp;ldquo;Введение в научное программирование&amp;rdquo; структура каталогов примет следующий вид:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;~/work/study/
-└── 2020-2021/
-    └── Введение в научное программирование/
-	└── laboratory/
+	└── &amp;lt;код предмета&amp;gt;/
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;/ul&gt;
+&lt;li&gt;
+&lt;p&gt;Например, для 2021&amp;ndash;2022 учебного года и предмета «Операционные системы» (код предмета &lt;code&gt;os-intro&lt;/code&gt;) структура каталогов примет следующий вид:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;~/work/study/
+└── 2020-2021/
+    └── Операционные системы/
+	└── os-intro/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Название проекта на хостинге git имеет вид:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-text&#34;&gt;study_&amp;lt;учебный год&amp;gt;_&amp;lt;код предмета&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Например, для 2021&amp;ndash;2022 учебного года и предмета «Операционные системы» (код предмета &lt;code&gt;os-intro&lt;/code&gt;) название проекта примет следующий вид:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-text&#34;&gt;study_2021-2022_os-intro
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Каталог для лабораторных работ имеет вид &lt;code&gt;labs&lt;/code&gt;.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Каталоги для лабораторных работ имеют вид &lt;code&gt;lab&amp;lt;номер&amp;gt;&lt;/code&gt;, например: &lt;code&gt;lab01&lt;/code&gt;, &lt;code&gt;lab02&lt;/code&gt; и т.д.&lt;/p&gt;
@@ -9099,6 +9132,57 @@ git push --tags
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Этапы проекта обозначаются как &lt;code&gt;stage&amp;lt;номер&amp;gt;&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;шаблон-для-рабочего-пространства&#34;&gt;Шаблон для рабочего пространства&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Репозиторий: &lt;a href=&#34;https://github.com/yamadharma/course-directory-student-template&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/yamadharma/course-directory-student-template&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;сознание-репозитория-курса-на-основе-шаблона&#34;&gt;Сознание репозитория курса на основе шаблона&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Репозиторий на основе шаблона можно создать либо вручную, через web-интерфейс, либо с помощью утилит &lt;code&gt;gh&lt;/code&gt; (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/08/04/github-command-line-utilities/&#34;&gt;github: утилиты командной строки&lt;/a&gt;).&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Создание с помощью утилит.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Создание выглядит следующим образом:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;gh repo create &amp;lt;new-repo-name&amp;gt; --template=&amp;quot;&amp;lt;owner/template-repo&amp;gt;&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Например, для 2021&amp;ndash;2022 учебного года и предмета «Операционные системы» (код предмета &lt;code&gt;os-intro&lt;/code&gt;) создание репозитория примет следующий вид:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;mkdir -p ~/work/study/2021-2022/&amp;quot;Операционные системы&amp;quot;
+cd ~/work/study/2021-2022/&amp;quot;Операционные системы&amp;quot;
+gh repo create study_2021-2022_os-intro --template=yamadharma/course-directory-student-template --public
+git clone --recursive git@github.com:&amp;lt;owner&amp;gt;/study_2021-2022_os-intro.git os-intro
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;настройка-каталога-курса&#34;&gt;Настройка каталога курса&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Перейдите в каталог курса:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;cd ~/work/study/2021-2022/&amp;quot;Операционные системы&amp;quot;/os-intro
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Удалите лишние файлы:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;rm package.json
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Создайте необходимые каталоги:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;make COURSE=os-intro
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Отправьте файлы на сервер:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;git add .
+git commit -am &#39;feat(main): make course structure&#39;
+git push
+&lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;</description>
     </item>

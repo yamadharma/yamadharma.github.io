@@ -5,7 +5,7 @@
     <link>https://yamadharma.github.io/ru/</link>
       <atom:link href="https://yamadharma.github.io/ru/index.xml" rel="self" type="application/rss+xml" />
     <description>Д. С. Кулябов</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2022 Dmitry S. Kulyabov</copyright><lastBuildDate>Tue, 12 Apr 2022 20:49:00 +0300</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2022 Dmitry S. Kulyabov</copyright><lastBuildDate>Wed, 27 Apr 2022 15:53:00 +0300</lastBuildDate>
     <image>
       <url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url>
       <title>Д. С. Кулябов</title>
@@ -2841,6 +2841,234 @@ git push
     </item>
     
     <item>
+      <title>Emacs. Org-mode для написания писем</title>
+      <link>https://yamadharma.github.io/ru/post/2022/04/27/emacs-org-mode-for-compose-emails/</link>
+      <pubDate>Wed, 27 Apr 2022 15:53:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2022/04/27/emacs-org-mode-for-compose-emails/</guid>
+      <description>&lt;p&gt;Использование org-mode для написания писем в Emacs.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#пакет-org-mime&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Пакет &lt;code&gt;org-mime&lt;/code&gt;&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#пакет-org-msg&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Пакет &lt;code&gt;org-msg&lt;/code&gt;&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#зависимости&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Зависимости&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#использование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; Использование&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#настройка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.4&lt;/span&gt; Настройка&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#недостатки&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.5&lt;/span&gt; Недостатки&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#модуль-org-mu4e&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Модуль &lt;code&gt;org-mu4e&lt;/code&gt;&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#использование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.2&lt;/span&gt; Использование&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;p&gt;Данные пакеты позволяют редактировать сообщения с использованием &lt;code&gt;org-mode&lt;/code&gt; (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/10/14/org-mode/&#34;&gt;Org-mode&lt;/a&gt;).&lt;/p&gt;
+&lt;h2 id=&#34;пакет-org-mime&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Пакет &lt;code&gt;org-mime&lt;/code&gt;&lt;/h2&gt;
+&lt;h3 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Общая информация&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Репозиторий: &lt;a href=&#34;https://github.com/org-mime/org-mime&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/org-mime/org-mime&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Отправка электропочты в формате HTML с помощью экспорта HTML из &lt;em&gt;org-mode&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;Для набора в &lt;em&gt;org-mode&lt;/em&gt; используется отдельное окно.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;пакет-org-msg&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Пакет &lt;code&gt;org-msg&lt;/code&gt;&lt;/h2&gt;
+&lt;h3 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Общая информация&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Репозиторий: &lt;a href=&#34;https://github.com/jeremy-compostella/org-msg&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/jeremy-compostella/org-msg&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Пакет: &lt;a href=&#34;https://melpa.org/#/org-msg&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://melpa.org/#/org-msg&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Поддерживаемые режимы:
+&lt;ul&gt;
+&lt;li&gt;Message mode;&lt;/li&gt;
+&lt;li&gt;mu4e mode;&lt;/li&gt;
+&lt;li&gt;notmuch mode.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;-Может заменить встроенную в &lt;em&gt;mu4e&lt;/em&gt; поддержку &lt;code&gt;org-mode&lt;/code&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;зависимости&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Зависимости&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Необходим пакет &lt;a href=&#34;https://github.com/hniksic/emacs-htmlize&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;emacs-htmlize&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;использование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; Использование&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;C-c&lt;/code&gt; &lt;code&gt;C-e&lt;/code&gt; &amp;mdash; генерирует и отображает экспортированную версию электронной почты (&lt;code&gt;org-msg-preview&lt;/code&gt;).&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;C-c&lt;/code&gt; &lt;code&gt;C-k&lt;/code&gt; &amp;mdash; закрывает буфер (&lt;code&gt;message-kill-buffer&lt;/code&gt;).&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;C-c&lt;/code&gt; &lt;code&gt;C-s&lt;/code&gt; &amp;mdash; переход к теме сообщения (как и в режиме сообщения) (&lt;code&gt;message-goto-subject&lt;/code&gt;).&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;C-c&lt;/code&gt; &lt;code&gt;C-b&lt;/code&gt; &amp;mdash; переход к телу сообщения (аналогично &lt;code&gt;message-goto-body&lt;/code&gt; в режиме сообщения) (&lt;code&gt;org-msg-goto-body&lt;/code&gt;).&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;C-c&lt;/code&gt; &lt;code&gt;C-a&lt;/code&gt; &amp;mdash; добавить (или удалить) вложение (похоже на функцию &lt;code&gt;org-attach&lt;/code&gt;) (&lt;code&gt;org-msg-attach&lt;/code&gt;). Список вложений хранится в свойстве &lt;code&gt;attachment:&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;C-c&lt;/code&gt; &lt;code&gt;C-c&lt;/code&gt; &amp;mdash; генерирует сообщение MIME и отправляет его (&lt;code&gt;org-ctrl-c-ctrl-c&lt;/code&gt;).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;настройка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.4&lt;/span&gt; Настройка&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Необходимо задать &lt;code&gt;mail-user-agent&lt;/code&gt; до загрузки &lt;code&gt;org-msg&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-elisp&#34;&gt;(setq mail-user-agent &#39;mu4e-user-agent)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;недостатки&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.5&lt;/span&gt; Недостатки&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Пакет реализует собственный механизм подключения вложений.&lt;/li&gt;
+&lt;li&gt;Поэтому становится невозможно использование mime-вложений, например, нельзя подписать (электроподписью) сообщение с вложением.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;модуль-org-mu4e&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Модуль &lt;code&gt;org-mu4e&lt;/code&gt;&lt;/h2&gt;
+&lt;h3 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Общая информация&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Входит в пакет &lt;em&gt;mu4e&lt;/em&gt; (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2020/12/24/emacs-mail-mu4e/&#34;&gt;Emacs. Почта. Mu4e&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Используется только для &lt;em&gt;mu4e&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;Переключает основной режим буфера сообщений между режимом &lt;code&gt;org&lt;/code&gt; (когда вы находитесь в теле сообщения) и режимом &lt;code&gt;mu4e-compose&lt;/code&gt; (когда вы находитесь в области заголовков).&lt;/li&gt;
+&lt;li&gt;Можно преобразовывать текст &lt;code&gt;org-mode&lt;/code&gt; в &lt;code&gt;html&lt;/code&gt; при отправлении электрического письма.&lt;/li&gt;
+&lt;li&gt;Пакет считается устаревшим и не поддерживается.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;использование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.2&lt;/span&gt; Использование&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Переключение в &lt;code&gt;org-mu4e-compose-org-mode&lt;/code&gt; при создании сообщения.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Преобразование в &lt;code&gt;html&lt;/code&gt; при отправке сообщения.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-emacs-lisp&#34;&gt;(require &#39;org-mu4e)
+
+(defun htmlize-and-send ()
+  &amp;quot;When in an org-mu4e-compose-org-mode message, htmlize and send it.&amp;quot;
+  (interactive)
+  (when (member &#39;org~mu4e-mime-switch-headers-or-body post-command-hook)
+    (org-mime-htmlize)
+    (org-mu4e-compose-org-mode)
+    (mu4e-compose-mode)
+    (message-send-and-exit)))
+
+;; Overload C-c C-c commands in org-mode
+(add-hook &#39;org-ctrl-c-ctrl-c-hook &#39;htmlize-and-send t)
+
+(add-hook &#39;mu4e-compose-mode-hook
+	  (defun do-compose-stuff ()
+	    &amp;quot;My settings for message composition.&amp;quot;
+	    (org-mu4e-compose-org-mode)))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Почта. Yahoo.com. Настройка почтового клиента</title>
+      <link>https://yamadharma.github.io/ru/post/2022/04/26/mail-yahoo-com-configuring-mail-client/</link>
+      <pubDate>Tue, 26 Apr 2022 17:01:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2022/04/26/mail-yahoo-com-configuring-mail-client/</guid>
+      <description>&lt;p&gt;Настройка клиента для работы с почтой &lt;em&gt;Yahoo.com&lt;/em&gt;.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#настройка-клиента&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Настройка клиента&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#smtp&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; SMTP&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#imap&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; IMAP&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#pop3&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; POP3&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#парольные-файлы-для-pass--см-dot-менеджер-паролей-pass--dot-dot-notes-20210428185000-менеджер-паролеи-pass-dot-md&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Парольные файлы для &lt;em&gt;pass&lt;/em&gt; (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/04/28/password-manager-pass/&#34;&gt;Менеджер паролей pass&lt;/a&gt;)&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Сайт: &lt;a href=&#34;https://mail.yahoo.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://mail.yahoo.com/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Используются локализованные названия для папок IMAP.&lt;/li&gt;
+&lt;li&gt;Папки почты по умолчанию (отображение в web-интерфейсе):
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;INBOX&lt;/code&gt;;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Архив&lt;/code&gt;;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Корзина&lt;/code&gt;;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Спам&lt;/code&gt;;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Черновики&lt;/code&gt;;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Отправленные&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Папки почты по умолчанию (IMAP названия):
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;INBOX&lt;/code&gt;;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Archive&lt;/code&gt;;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Trash&lt;/code&gt;;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Bulk Mail&lt;/code&gt;;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Draft&lt;/code&gt;;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Sent&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Необходимо использовать пароль приложения: &lt;a href=&#34;https://help.yahoo.com/kb/generate-manage-third-party-passwords-sln15241.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://help.yahoo.com/kb/generate-manage-third-party-passwords-sln15241.html&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;Войдите на страницу безопасности учетной записи Yahoo &lt;a href=&#34;https://login.yahoo.com/account/security?.lang=en-US&amp;amp;.intl=us&amp;amp;.src=yhelp&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://login.yahoo.com/account/security?.lang=en-US&amp;.intl=us&amp;.src=yhelp&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Нажмите «Создать пароль приложения» или «Создать и управлять паролями приложений».&lt;/li&gt;
+&lt;li&gt;Введите название вашего приложения в текстовое поле.&lt;/li&gt;
+&lt;li&gt;Щёлкните &lt;em&gt;Создать пароль&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;Следуйте инструкциям под паролем приложения.&lt;/li&gt;
+&lt;li&gt;Щёлкните &lt;em&gt;Готово&lt;/em&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;настройка-клиента&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Настройка клиента&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Справочная страница:
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://help.yahoo.com/kb/SLN4075.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://help.yahoo.com/kb/SLN4075.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://help.yahoo.com/kb/pop-access-settings-instructions-yahoo-mail-sln4724.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://help.yahoo.com/kb/pop-access-settings-instructions-yahoo-mail-sln4724.html&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;smtp&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; SMTP&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;login &amp;mdash; почтовый адрес &lt;code&gt;name@domain.ru&lt;/code&gt; на &lt;code&gt;yahoo.com&lt;/code&gt; (где &lt;code&gt;name&lt;/code&gt; &amp;mdash; это имя почтового ящика, а &lt;code&gt;domain.ru&lt;/code&gt; &amp;mdash; имя домена);&lt;/li&gt;
+&lt;li&gt;password &amp;mdash; пароль приложения для вашего почтового ящика домена на &lt;code&gt;yahoo.com&lt;/code&gt;;&lt;/li&gt;
+&lt;li&gt;адрес почтового сервера &amp;mdash; &lt;code&gt;smtp.mail.yahoo.com&lt;/code&gt;;&lt;/li&gt;
+&lt;li&gt;защита соединения &amp;mdash; SSL;
+&lt;ul&gt;
+&lt;li&gt;порт &amp;mdash; 465;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;защита соединения &amp;mdash; STARTTLS;
+&lt;ul&gt;
+&lt;li&gt;порт &amp;mdash; 587.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;imap&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; IMAP&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;login &amp;mdash; почтовый адрес &lt;code&gt;name@domain.ru&lt;/code&gt; на &lt;code&gt;yahoo.com&lt;/code&gt; (где &lt;code&gt;name&lt;/code&gt; &amp;mdash; это имя почтового ящика, а &lt;code&gt;domain.ru&lt;/code&gt; &amp;mdash; имя домена);&lt;/li&gt;
+&lt;li&gt;password &amp;mdash; пароль приложения для вашего почтового ящика домена на &lt;code&gt;yahoo.com&lt;/code&gt;;&lt;/li&gt;
+&lt;li&gt;адрес почтового сервера &amp;mdash; &lt;code&gt;imap.mail.yahoo.com&lt;/code&gt;;&lt;/li&gt;
+&lt;li&gt;защита соединения &amp;mdash; SSL;&lt;/li&gt;
+&lt;li&gt;порт &amp;mdash; 993.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;pop3&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; POP3&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;login &amp;mdash; почтовый адрес &lt;code&gt;name@domain.ru&lt;/code&gt; на &lt;code&gt;yahoo.com&lt;/code&gt; (где &lt;code&gt;name&lt;/code&gt; &amp;mdash; это имя почтового ящика, а &lt;code&gt;domain.ru&lt;/code&gt; &amp;mdash; имя домена);&lt;/li&gt;
+&lt;li&gt;password &amp;mdash; пароль приложения для вашего почтового ящика домена на &lt;code&gt;yahoo.com&lt;/code&gt;;&lt;/li&gt;
+&lt;li&gt;адрес почтового сервера &amp;mdash; &lt;code&gt;pop.mail.yahoo.com&lt;/code&gt;;&lt;/li&gt;
+&lt;li&gt;защита соединения &amp;mdash; SSL;&lt;/li&gt;
+&lt;li&gt;порт &amp;mdash; 995.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;парольные-файлы-для-pass--см-dot-менеджер-паролей-pass--dot-dot-notes-20210428185000-менеджер-паролеи-pass-dot-md&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Парольные файлы для &lt;em&gt;pass&lt;/em&gt; (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/04/28/password-manager-pass/&#34;&gt;Менеджер паролей pass&lt;/a&gt;)&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Для входа через web-интерфейс: &lt;code&gt;yahoo.com/account@yahoo.com.gpg&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Пароль приложения: &lt;code&gt;yahoo.com/account@yahoo.com@apppassword.gpg&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Пароль приложения для SMTP: &lt;code&gt;yahoo.com/account@yahoo.com@smtp.mail.yahoo.com.gpg&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
       <title>Создание сайта на Hugo</title>
       <link>https://yamadharma.github.io/ru/post/2022/04/12/creating-hugo-site/</link>
       <pubDate>Tue, 12 Apr 2022 20:49:00 +0300</pubDate>
@@ -2853,7 +3081,13 @@ git push
     &lt;li&gt;&lt;a href=&#34;#установка-hugo&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Установка Hugo&lt;/a&gt;
       &lt;ul&gt;
         &lt;li&gt;&lt;a href=&#34;#необходимое-программное-обеспечение&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Необходимое программное обеспечение&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#установка-в-различных-операционных-системах&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Установка в различных операционных системах&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#установка-в-различных-операционных-системах&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Установка в различных операционных системах&lt;/a&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&#34;#linux&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2.1&lt;/span&gt; Linux&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#windows&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2.2&lt;/span&gt; Windows&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#ручная-установка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2.3&lt;/span&gt; Ручная установка&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
       &lt;/ul&gt;
     &lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#создание-структуры-сайта&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Создание структуры сайта&lt;/a&gt;&lt;/li&gt;
@@ -2867,18 +3101,25 @@ git push
 
 &lt;h2 id=&#34;установка-hugo&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Установка Hugo&lt;/h2&gt;
 &lt;h3 id=&#34;необходимое-программное-обеспечение&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Необходимое программное обеспечение&lt;/h3&gt;
-&lt;h3 id=&#34;установка-в-различных-операционных-системах&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Установка в различных операционных системах&lt;/h3&gt;
 &lt;ul&gt;
-&lt;li&gt;Linux
+&lt;li&gt;Необходим сам &lt;em&gt;hugo&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;Поскольку hugo использует модули &lt;em&gt;golang&lt;/em&gt;, то следует установить и его.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;установка-в-различных-операционных-системах&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Установка в различных операционных системах&lt;/h3&gt;
+&lt;h4 id=&#34;linux&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2.1&lt;/span&gt; Linux&lt;/h4&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;Ubuntu:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sudo apt-get install hugo
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sudo apt-get install go hugo
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Fedora:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sudo dnf install go hugo
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Windows
+&lt;h4 id=&#34;windows&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2.2&lt;/span&gt; Windows&lt;/h4&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;Chocolatey&lt;/p&gt;
@@ -2886,7 +3127,10 @@ git push
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;/li&gt;
+&lt;h4 id=&#34;ручная-установка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2.3&lt;/span&gt; Ручная установка&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Если устанавливаемая в системе версия &lt;em&gt;hugo&lt;/em&gt; меньше необходимой, тогда следует установить программу вручную.&lt;/li&gt;
+&lt;li&gt;Следует скачать архив с репозитория: &lt;a href=&#34;https://github.com/gohugoio/hugo/releases&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/gohugoio/hugo/releases&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;создание-структуры-сайта&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Создание структуры сайта&lt;/h2&gt;
 &lt;h2 id=&#34;установка-темы--внешнего-вида--сайта&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Установка темы (внешнего вида) сайта&lt;/h2&gt;
@@ -13911,8 +14155,7 @@ done
     &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#преобразование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Преобразование&lt;/a&gt;
       &lt;ul&gt;
-        &lt;li&gt;&lt;a href=&#34;#кодирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Кодирование&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#декодирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Декодирование&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#декодирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Декодирование&lt;/a&gt;&lt;/li&gt;
       &lt;/ul&gt;
     &lt;/li&gt;
   &lt;/ul&gt;
@@ -13925,18 +14168,7 @@ done
 &lt;li&gt;Отличия от оригинальной UTF-7 связаны с особым значением символа &lt;code&gt;+&lt;/code&gt; в некоторых почтовых системах и символа &lt;code&gt;/&lt;/code&gt; в роли разделителя имён каталогов в Unix.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;преобразование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Преобразование&lt;/h2&gt;
-&lt;h3 id=&#34;кодирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Кодирование&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Алгоритм кодирования имён папок:
-&lt;ul&gt;
-&lt;li&gt;Текст -&amp;gt; UTF7;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;&amp;amp;&lt;/code&gt; -&amp;gt; &lt;code&gt;&amp;amp;-&lt;/code&gt;;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;/&lt;/code&gt; -&amp;gt; &lt;code&gt;,&lt;/code&gt;;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;+&lt;/code&gt; -&amp;gt; &lt;code&gt;&amp;amp;&lt;/code&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;декодирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Декодирование&lt;/h3&gt;
+&lt;h3 id=&#34;декодирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Декодирование&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;Алгоритм декодирования имён папок:&lt;/p&gt;
@@ -25420,6 +25652,7 @@ git config --global gpg.program $(which gpg2)
             &lt;li&gt;&lt;a href=&#34;#yandex&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.4.5&lt;/span&gt; Yandex&lt;/a&gt;&lt;/li&gt;
             &lt;li&gt;&lt;a href=&#34;#mail-dot-ru&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.4.6&lt;/span&gt; Mail.ru&lt;/a&gt;&lt;/li&gt;
             &lt;li&gt;&lt;a href=&#34;#office365&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.4.7&lt;/span&gt; Office365&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#yahoo-dot-com&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.4.8&lt;/span&gt; Yahoo.com&lt;/a&gt;&lt;/li&gt;
           &lt;/ul&gt;
         &lt;/li&gt;
       &lt;/ul&gt;
@@ -26063,6 +26296,93 @@ PipelineDepth 50
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
+&lt;h4 id=&#34;yahoo-dot-com&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.4.8&lt;/span&gt; Yahoo.com&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/04/26/mail-yahoo-com-configuring-mail-client/&#34;&gt;Почта. Yahoo.com. Настройка почтового клиента&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Конфигурация:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;## IMAPAccount (Yahoo.com)
+
+IMAPAccount account@yahoo.com
+Host imap.mail.yahoo.com
+User account@yahoo.com
+# PassCmd &amp;quot;gpg -q --for-your-eyes-only --no-tty -d ~/.authinfo.gpg | awk &#39;/machine account@yahoo.com/ {print $6}&#39;&amp;quot;
+PassCmd &amp;quot;gopass email/yahoo.com/account@yahoo.com@apppassword&amp;quot;
+AuthMechs LOGIN
+SSLType IMAPS
+SSLVersion TLSv1.2
+# Increase timeout
+Timeout 120
+PipelineDepth 50
+
+MaildirStore account@yahoo.com-local
+Path ~/Maildir/account@yahoo.com/
+Inbox ~/Maildir/account@yahoo.com/Inbox
+SubFolders Verbatim
+
+IMAPStore account@yahoo.com-remote
+Account account@yahoo.com
+
+Channel account@yahoo.com-inbox
+Far :account@yahoo.com-remote:&amp;quot;INBOX&amp;quot;
+Near :account@yahoo.com-local:&amp;quot;INBOX&amp;quot;
+CopyArrivalDate yes
+Create Both
+Expunge Both
+SyncState *
+
+Channel account@yahoo.com-trash
+Far :account@yahoo.com-remote:&amp;quot;Trash&amp;quot;
+Near :account@yahoo.com-local:&amp;quot;Trash&amp;quot;
+CopyArrivalDate yes
+Create Both
+Expunge Both
+SyncState *
+
+Channel account@yahoo.com-spam
+Far :account@yahoo.com-remote:&amp;quot;Bulk Mail&amp;quot;
+Near :account@yahoo.com-local:&amp;quot;Spam&amp;quot;
+CopyArrivalDate yes
+Create Both
+Expunge Both
+SyncState *
+
+Channel account@yahoo.com-drafts
+Far :account@yahoo.com-remote:&amp;quot;Draft&amp;quot;
+Near :account@yahoo.com-local:&amp;quot;Drafts&amp;quot;
+CopyArrivalDate yes
+Create Both
+Expunge Both
+SyncState *
+
+Channel account@yahoo.com-archive
+Far :account@yahoo.com-remote:&amp;quot;Archive&amp;quot;
+Near :account@yahoo.com-local:&amp;quot;Archive&amp;quot;
+CopyArrivalDate yes
+Create Both
+Expunge Both
+SyncState *
+
+Channel account@yahoo.com-sent
+Far :account@yahoo.com-remote:&amp;quot;Sent&amp;quot;
+Near :account@yahoo.com-local:&amp;quot;Sent&amp;quot;
+CopyArrivalDate yes
+Create Both
+Expunge Both
+SyncState *
+
+Group account@yahoo.com
+Channel account@yahoo.com-inbox
+Channel account@yahoo.com-trash
+Channel account@yahoo.com-spam
+Channel account@yahoo.com-drafts
+Channel account@yahoo.com-archive
+Channel account@yahoo.com-sent
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h2 id=&#34;синхронизация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Синхронизация&lt;/h2&gt;
 &lt;h3 id=&#34;настройка-синхронизации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Настройка синхронизации&lt;/h3&gt;
 &lt;ul&gt;
@@ -29879,12 +30199,7 @@ merge newbranch
             &lt;li&gt;&lt;a href=&#34;#mu4e-views&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6.1.1&lt;/span&gt; mu4e-views&lt;/a&gt;&lt;/li&gt;
           &lt;/ul&gt;
         &lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#написание-писем&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6.2&lt;/span&gt; Написание писем&lt;/a&gt;
-          &lt;ul&gt;
-            &lt;li&gt;&lt;a href=&#34;#org-mime&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6.2.1&lt;/span&gt; org-mime&lt;/a&gt;&lt;/li&gt;
-            &lt;li&gt;&lt;a href=&#34;#org-msg&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6.2.2&lt;/span&gt; org-msg&lt;/a&gt;&lt;/li&gt;
-          &lt;/ul&gt;
-        &lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#написание-писем&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6.2&lt;/span&gt; Написание писем&lt;/a&gt;&lt;/li&gt;
       &lt;/ul&gt;
     &lt;/li&gt;
   &lt;/ul&gt;
@@ -30348,69 +30663,9 @@ mu init --maildir=~/Maildir $list_imap
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;h3 id=&#34;написание-писем&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6.2&lt;/span&gt; Написание писем&lt;/h3&gt;
-&lt;h4 id=&#34;org-mime&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6.2.1&lt;/span&gt; org-mime&lt;/h4&gt;
 &lt;ul&gt;
-&lt;li&gt;Репозиторий: &lt;a href=&#34;https://github.com/org-mime/org-mime&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/org-mime/org-mime&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Отправка электропочты в формате HTML с помощью экспорта HTML из &lt;em&gt;org-mode&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/04/27/emacs-org-mode-for-compose-emails/&#34;&gt;Emacs. Org-mode для написания писем&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h4 id=&#34;org-msg&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6.2.2&lt;/span&gt; org-msg&lt;/h4&gt;
-&lt;ul&gt;
-&lt;li&gt;Для редактирования сообщения с использованием &lt;code&gt;org-mode&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Заменяет встроенную в &lt;em&gt;mu4e&lt;/em&gt; поддержку &lt;code&gt;org-mode&lt;/code&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;!--list-separator--&gt;
-&lt;ol&gt;
-&lt;li&gt;
-&lt;p&gt;Общая информация&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Репозиторий: &lt;a href=&#34;https://github.com/jeremy-compostella/org-msg&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/jeremy-compostella/org-msg&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Пакет: &lt;a href=&#34;https://melpa.org/#/org-msg&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://melpa.org/#/org-msg&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Поддерживаемые режимы:
-&lt;ul&gt;
-&lt;li&gt;Message mode;&lt;/li&gt;
-&lt;li&gt;mu4e mode;&lt;/li&gt;
-&lt;li&gt;notmuch mode.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;!--list-separator--&gt;
-&lt;ol start=&#34;2&#34;&gt;
-&lt;li&gt;
-&lt;p&gt;Зависимости&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Необходим пакет &lt;a href=&#34;https://github.com/hniksic/emacs-htmlize&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;emacs-htmlize&lt;/a&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;!--list-separator--&gt;
-&lt;ol start=&#34;3&#34;&gt;
-&lt;li&gt;
-&lt;p&gt;Использование&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;C-c&lt;/code&gt; &lt;code&gt;C-e&lt;/code&gt; &amp;mdash; генерирует и отображает экспортированную версию электронной почты (&lt;code&gt;org-msg-preview&lt;/code&gt;).&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;C-c&lt;/code&gt; &lt;code&gt;C-k&lt;/code&gt; &amp;mdash; закрывает буфер (&lt;code&gt;message-kill-buffer&lt;/code&gt;).&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;C-c&lt;/code&gt; &lt;code&gt;C-s&lt;/code&gt; &amp;mdash; переход к теме сообщения (как и в режиме сообщения) (&lt;code&gt;message-goto-subject&lt;/code&gt;).&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;C-c&lt;/code&gt; &lt;code&gt;C-b&lt;/code&gt; &amp;mdash; переход к телу сообщения (аналогично &lt;code&gt;message-goto-body&lt;/code&gt; в режиме сообщения) (&lt;code&gt;org-msg-goto-body&lt;/code&gt;).&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;C-c&lt;/code&gt; &lt;code&gt;C-a&lt;/code&gt; &amp;mdash; добавить (или удалить) вложение (похоже на функцию &lt;code&gt;org-attach&lt;/code&gt;) (&lt;code&gt;org-msg-attach&lt;/code&gt;). Список вложений хранится в свойстве &lt;code&gt;attachment:&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;C-c&lt;/code&gt; &lt;code&gt;C-c&lt;/code&gt; &amp;mdash; генерирует сообщение MIME и отправляет его (&lt;code&gt;org-ctrl-c-ctrl-c&lt;/code&gt;).&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;!--list-separator--&gt;
-&lt;ol start=&#34;4&#34;&gt;
-&lt;li&gt;
-&lt;p&gt;Настройка&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Необходимо задать &lt;code&gt;mail-user-agent&lt;/code&gt; до загрузки &lt;code&gt;org-msg&lt;/code&gt;:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-elisp&#34;&gt;(setq mail-user-agent &#39;mu4e-user-agent)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
 &lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
 &lt;hr&gt;
 &lt;ol&gt;

@@ -363,7 +363,7 @@
         content="2021-01-22T15:10:00&#43;03:00"
       />
     
-    <meta property="article:modified_time" content="2022-04-12T18:24:00&#43;03:00">
+    <meta property="article:modified_time" content="2022-04-26T18:10:00&#43;03:00">
   
 
   
@@ -392,7 +392,7 @@
   "headline": "Почта. Синхронизация. mbsync",
   
   "datePublished": "2021-01-22T15:10:00+03:00",
-  "dateModified": "2022-04-12T18:24:00+03:00",
+  "dateModified": "2022-04-26T18:10:00+03:00",
   
   "author": {
     "@type": "Person",
@@ -914,7 +914,7 @@
           Обновлено
       
     
-    2022-04-12
+    2022-04-26
   </span>
   
 
@@ -923,7 +923,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-reading-time">
-    9 мин. для прочтения
+    10 мин. для прочтения
   </span>
   
 
@@ -976,6 +976,7 @@
             <li><a href="#yandex"><span class="section-num">3.4.5</span> Yandex</a></li>
             <li><a href="#mail-dot-ru"><span class="section-num">3.4.6</span> Mail.ru</a></li>
             <li><a href="#office365"><span class="section-num">3.4.7</span> Office365</a></li>
+            <li><a href="#yahoo-dot-com"><span class="section-num">3.4.8</span> Yahoo.com</a></li>
           </ul>
         </li>
       </ul>
@@ -1619,6 +1620,93 @@ PipelineDepth 50
 </ul>
 </li>
 </ol>
+<h4 id="yahoo-dot-com"><span class="section-num">3.4.8</span> Yahoo.com</h4>
+<ul>
+<li>
+<p><a href="https://yamadharma.github.io/ru/post/2022/04/26/mail-yahoo-com-configuring-mail-client/">Почта. Yahoo.com. Настройка почтового клиента</a></p>
+</li>
+<li>
+<p>Конфигурация:</p>
+<pre><code class="language-conf-unix">## IMAPAccount (Yahoo.com)
+
+IMAPAccount account@yahoo.com
+Host imap.mail.yahoo.com
+User account@yahoo.com
+# PassCmd &quot;gpg -q --for-your-eyes-only --no-tty -d ~/.authinfo.gpg | awk '/machine account@yahoo.com/ {print $6}'&quot;
+PassCmd &quot;gopass email/yahoo.com/account@yahoo.com@apppassword&quot;
+AuthMechs LOGIN
+SSLType IMAPS
+SSLVersion TLSv1.2
+# Increase timeout
+Timeout 120
+PipelineDepth 50
+
+MaildirStore account@yahoo.com-local
+Path ~/Maildir/account@yahoo.com/
+Inbox ~/Maildir/account@yahoo.com/Inbox
+SubFolders Verbatim
+
+IMAPStore account@yahoo.com-remote
+Account account@yahoo.com
+
+Channel account@yahoo.com-inbox
+Far :account@yahoo.com-remote:&quot;INBOX&quot;
+Near :account@yahoo.com-local:&quot;INBOX&quot;
+CopyArrivalDate yes
+Create Both
+Expunge Both
+SyncState *
+
+Channel account@yahoo.com-trash
+Far :account@yahoo.com-remote:&quot;Trash&quot;
+Near :account@yahoo.com-local:&quot;Trash&quot;
+CopyArrivalDate yes
+Create Both
+Expunge Both
+SyncState *
+
+Channel account@yahoo.com-spam
+Far :account@yahoo.com-remote:&quot;Bulk Mail&quot;
+Near :account@yahoo.com-local:&quot;Spam&quot;
+CopyArrivalDate yes
+Create Both
+Expunge Both
+SyncState *
+
+Channel account@yahoo.com-drafts
+Far :account@yahoo.com-remote:&quot;Draft&quot;
+Near :account@yahoo.com-local:&quot;Drafts&quot;
+CopyArrivalDate yes
+Create Both
+Expunge Both
+SyncState *
+
+Channel account@yahoo.com-archive
+Far :account@yahoo.com-remote:&quot;Archive&quot;
+Near :account@yahoo.com-local:&quot;Archive&quot;
+CopyArrivalDate yes
+Create Both
+Expunge Both
+SyncState *
+
+Channel account@yahoo.com-sent
+Far :account@yahoo.com-remote:&quot;Sent&quot;
+Near :account@yahoo.com-local:&quot;Sent&quot;
+CopyArrivalDate yes
+Create Both
+Expunge Both
+SyncState *
+
+Group account@yahoo.com
+Channel account@yahoo.com-inbox
+Channel account@yahoo.com-trash
+Channel account@yahoo.com-spam
+Channel account@yahoo.com-drafts
+Channel account@yahoo.com-archive
+Channel account@yahoo.com-sent
+</code></pre>
+</li>
+</ul>
 <h2 id="синхронизация"><span class="section-num">4</span> Синхронизация</h2>
 <h3 id="настройка-синхронизации"><span class="section-num">4.1</span> Настройка синхронизации</h3>
 <ul>
@@ -1742,6 +1830,10 @@ find . -iname &quot;*host1*&quot; | sed 'p;s:host1:host2:' | xargs -n2 mv
 </ul>
       
 
+
+   
+
+   
 
    
 
@@ -5051,6 +5143,8 @@ find . -iname &quot;*host1*&quot; | sed 'p;s:host1:host2:' | xargs -n2 mv
     <h3>Похожие</h3>
     <ul>
       
+      <li><a href="https://yamadharma.github.io/ru/post/2022/04/26/mail-yahoo-com-configuring-mail-client/">Почта. Yahoo.com. Настройка почтового клиента</a></li>
+      
       <li><a href="https://yamadharma.github.io/ru/post/2022/04/10/davmail/">DavMail</a></li>
       
       <li><a href="https://yamadharma.github.io/ru/post/2022/04/03/rofi-pass/">rofi-pass</a></li>
@@ -5058,8 +5152,6 @@ find . -iname &quot;*host1*&quot; | sed 'p;s:host1:host2:' | xargs -n2 mv
       <li><a href="https://yamadharma.github.io/ru/post/2022/03/23/emacs-neotree/">Emacs. Neotree</a></li>
       
       <li><a href="https://yamadharma.github.io/ru/post/2022/03/09/download-youtube/">Закачка с youtube</a></li>
-      
-      <li><a href="https://yamadharma.github.io/ru/post/2022/03/08/using-sfdisk/">Использование sfdisk</a></li>
       
     </ul>
   </div>

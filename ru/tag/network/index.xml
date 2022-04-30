@@ -5,7 +5,7 @@
     <link>https://yamadharma.github.io/ru/tag/network/</link>
       <atom:link href="https://yamadharma.github.io/ru/tag/network/index.xml" rel="self" type="application/rss+xml" />
     <description>network</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2022 Dmitry S. Kulyabov</copyright><lastBuildDate>Thu, 31 Mar 2022 16:10:00 +0300</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2022 Dmitry S. Kulyabov</copyright><lastBuildDate>Sat, 30 Apr 2022 14:49:00 +0300</lastBuildDate>
     <image>
       <url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url>
       <title>network</title>
@@ -557,6 +557,340 @@ sudo make install
 	  allow=&#34;clipboard-write&#34; frameborder=&#34;0&#34;&gt;
   &lt;/iframe&gt;
 &lt;/div&gt;</description>
+    </item>
+    
+    <item>
+      <title>Сертификаты Let&#39;s Encrypt</title>
+      <link>https://yamadharma.github.io/ru/post/2022/04/30/lets-encrypt-certificates/</link>
+      <pubDate>Sat, 30 Apr 2022 14:49:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2022/04/30/lets-encrypt-certificates/</guid>
+      <description>&lt;p&gt;SSL-сертификаты от &lt;em&gt;Let&amp;rsquo;s Encrypt&lt;/em&gt;.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#инструментарий&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Инструментарий&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#certbot&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Certbot&lt;/a&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&#34;#установка-реализации-snap-certbot&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1.1&lt;/span&gt; Установка реализации &lt;em&gt;snap certbot&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#тестирование-работы-let-s-encrypt&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Тестирование работы Let&amp;rsquo;s Encrypt&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#проверки-acme&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Проверки ACME&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#проверка-http-01&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Проверка HTTP-01&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#проверка-dns-01&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.2&lt;/span&gt; Проверка DNS-01&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#получение-сертификатов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Получение сертификатов&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#сертификаты-dns&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Сертификаты DNS&lt;/a&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1.1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#установка-программного-обеспечения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1.2&lt;/span&gt; Установка программного обеспечения&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#настройка-bind&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1.3&lt;/span&gt; Настройка BIND&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#настройка-certbot&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1.4&lt;/span&gt; Настройка certbot&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#получение-сертификата&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1.5&lt;/span&gt; Получение сертификата&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#сертификаты-http&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2&lt;/span&gt; Сертификаты HTTP&lt;/a&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&#34;#сервер-apache&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2.1&lt;/span&gt; Сервер &lt;em&gt;Apache&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#сервер-nginx&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2.2&lt;/span&gt; Сервер &lt;em&gt;Nginx&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Сайт: &lt;a href=&#34;https://letsencrypt.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://letsencrypt.org/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Использует протокол ACME для выдачи сертификата.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;инструментарий&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Инструментарий&lt;/h2&gt;
+&lt;h3 id=&#34;certbot&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Certbot&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Бесплатный программный инструмент с открытым исходным кодом для автоматического использования сертификатов Let’s Encrypt.&lt;/li&gt;
+&lt;li&gt;Создан Electronic Frontier Foundation (EFF).&lt;/li&gt;
+&lt;li&gt;Сайт: &lt;a href=&#34;https://certbot.eff.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://certbot.eff.org/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;установка-реализации-snap-certbot&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1.1&lt;/span&gt; Установка реализации &lt;em&gt;snap certbot&lt;/em&gt;&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Установка &lt;em&gt;Snap&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Centos
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Установите репозиторий &lt;em&gt;Epel&lt;/em&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sudo dnf install epel-release
+sudo dnf upgrade
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Установите &lt;em&gt;Snap&lt;/em&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sudo dnf -y install snapd
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Запустите &lt;em&gt;Snap&lt;/em&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sudo systemctl enable --now snapd.socket
+sudo ln -s /var/lib/snapd/snap /snap
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Обновите &lt;em&gt;Snap&lt;/em&gt; (перед этим необходимо немного подождать, чтобы запустился snapd)&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sudo snap install core
+sudo snap refresh core
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Установка &lt;em&gt;certbot&lt;/em&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sudo snap install --classic certbot
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Сделайте символьную ссылку для запуска:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sudo ln -s /snap/bin/certbot /usr/local/bin/certbot
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;тестирование-работы-let-s-encrypt&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Тестирование работы Let&amp;rsquo;s Encrypt&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Проверить на проблемы можно с помощью сайта: &lt;a href=&#34;https://letsdebug.net/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://letsdebug.net/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;проверки-acme&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Проверки ACME&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Для выдачи сертификата необходимо верифицировать хост, которому выдаётся сертификат.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;проверка-http-01&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Проверка HTTP-01&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Этот тип проверки используется чаще всего.&lt;/li&gt;
+&lt;li&gt;Let&amp;rsquo;s Encrypt выдаёт ACME-клиенту токен, а ACME-клиент записывает этот токен в файл на web-сервере по пути &lt;code&gt;http://&amp;lt;YOUR_DOMAIN&amp;gt;/.well-known/acme-challenge/&amp;lt;TOKEN&amp;gt;&lt;/code&gt;.
+&lt;ul&gt;
+&lt;li&gt;В этом файле содержится сам токен, плюс отпечаток ключа вашего аккаунта.&lt;/li&gt;
+&lt;li&gt;Как только ACME-клиент сообщит Let&amp;rsquo;s Encrypt, что файл готов, Let&amp;rsquo;s Encrypt будет пытаться получить этот файл по URL (возможно, несколько раз, с различных адресов).&lt;/li&gt;
+&lt;li&gt;Если полученный ответ будет верным, проверка считается успешной, и сертификат для выбранного домена готов к использованию.&lt;/li&gt;
+&lt;li&gt;Если проверка прошла неудачно, требуется повторить попытку с новым сертификатом.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Реализация проверки HTTP-01 разрешает редиректы запросов, общим числом не более 10.
+&lt;ul&gt;
+&lt;li&gt;Редиректы принимаются только на адреса, начинающиеся с &lt;code&gt;http:&lt;/code&gt; или &lt;code&gt;https:&lt;/code&gt;, и только на порты 80 или 443.&lt;/li&gt;
+&lt;li&gt;Редиректы на IP-адреса не принимаются.&lt;/li&gt;
+&lt;li&gt;Если редирект выполнялся на URL c HTTPS, то сертификат не считается подтверждённым (т.к. проверка для новых сертификатов, может обнаружить самоподписанные или просроченные сертификаты).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Проверка HTTP-01 выполняется только с использованием порта 80. Произвольный порт для проверки снижает надёжность, и потому запрещён стандартом ACME.&lt;/li&gt;
+&lt;li&gt;Плюсы:
+&lt;ul&gt;
+&lt;li&gt;Упрощённая автоматизация процесса, не требующая дополнительных знаний по настройке доменов.&lt;/li&gt;
+&lt;li&gt;Выпуск сертификатов для доменов хостинг-провайдеров, привязанных по &lt;code&gt;CNAME&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Совместим с уже настроенными web-серверами.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Минусы:
+&lt;ul&gt;
+&lt;li&gt;Требует открытого порта 80.&lt;/li&gt;
+&lt;li&gt;Let&amp;rsquo;s Encrypt не разрешает использовать эту проверку для сертификатов с подстановкой (wildcard-сертификатов).&lt;/li&gt;
+&lt;li&gt;Для каждого web-сервера требуется свой файл.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;проверка-dns-01&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.2&lt;/span&gt; Проверка DNS-01&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Эта проверка требует подтверждения прав на домен с помощью специальной TXT-записи для доменного имени.
+&lt;ul&gt;
+&lt;li&gt;Проверка DNS-01 разрешает выпускать сертификаты с подстановкой (wildcard-сертификаты).&lt;/li&gt;
+&lt;li&gt;После того, как Let&amp;rsquo;s Encrypt передаёт ACME-клиенту токен, клиент создаёт содержимое TXT-записи на основе токена и ключа аккаунта, и записывает её в &lt;code&gt;_acme-challenge.&amp;lt;YOUR_DOMAIN&amp;gt;&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Далее, Let&amp;rsquo;s Encrypt запрашивает TXT-запись в DNS-зоне домена. Если значения совпадают, то сертификат готов к использованию!&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Для автоматизации процесса выпуска и отзыва сертификатов желательно, чтобы DNS-провайдер предоставлял API для автоматических обновлений.&lt;/li&gt;
+&lt;li&gt;Let&amp;rsquo;s Encrypt придерживается стандартов DNS для поиска TXT-записи при проверке DNS-01, поэтому можно задействовать записи CNAME или NS для делегирования права ответа за другие DNS-зоны.
+&lt;ul&gt;
+&lt;li&gt;Например настроив субдомен &lt;code&gt;_acme-challenge&lt;/code&gt; для специального сервера валидации.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Для одного и того же доменного имени допускается несколько TXT-записей.
+&lt;ul&gt;
+&lt;li&gt;Например, когда требуется одновременно выполнить проверку и для обычного сертификата, и для wildcard-сертификата.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Рекомендуется удалять неактуальные TXT-записи, т.к. из-за большого размера ответа сервера при проверке Let&amp;rsquo;s Encrypt признает проверку неудачной.&lt;/li&gt;
+&lt;li&gt;Плюсы:
+&lt;ul&gt;
+&lt;li&gt;Подходит для сертификатов с подстановкой (wildcard-сертификатов).&lt;/li&gt;
+&lt;li&gt;Одна запись для нескольких web-серверов.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Минусы:
+&lt;ul&gt;
+&lt;li&gt;У DNS-провайдера может не быть своего API.&lt;/li&gt;
+&lt;li&gt;Хранение учётной записи для DNS API небезопасно.&lt;/li&gt;
+&lt;li&gt;DNS API может не быть методов оценки период обновления записей.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;получение-сертификатов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Получение сертификатов&lt;/h2&gt;
+&lt;h3 id=&#34;сертификаты-dns&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Сертификаты DNS&lt;/h3&gt;
+&lt;h4 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1.1&lt;/span&gt; Общая информация&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Для выпуска wildcard-сертификата необходимо выполнить &lt;em&gt;DNS challenge request&lt;/em&gt;, используя протокол ACMEv2.&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;DNS challenge&lt;/em&gt; представляет собой запись TXT, предоставленную клиентом &lt;em&gt;certbot&lt;/em&gt;, которую необходимо установить вручную в DNS.&lt;/li&gt;
+&lt;li&gt;Нужно будет обновлять DNS при каждом обновлении сертификатов.
+&lt;ul&gt;
+&lt;li&gt;Чтобы не делать это вручную, воспользуйтесь &lt;em&gt;rfc2136&lt;/em&gt;, для которого в Certbot есть плагин &lt;code&gt;certbot-dns-rfc2136&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Также необходимо настроить DNS-сервер, чтобы разрешить динамическое обновление TXT-записей.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Документация: &lt;a href=&#34;https://certbot-dns-rfc2136.readthedocs.io/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://certbot-dns-rfc2136.readthedocs.io/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;установка-программного-обеспечения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1.2&lt;/span&gt; Установка программного обеспечения&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Установка плагина &lt;code&gt;certbot-dns-rfc2136&lt;/code&gt; для &lt;em&gt;Snap&lt;/em&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;snap set certbot trust-plugin-with-root=ok
+sudo snap install certbot-dns-rfc2136
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Сам &lt;em&gt;Certbot&lt;/em&gt; может находиться на произвольном сервере.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;настройка-bind&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1.3&lt;/span&gt; Настройка BIND&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Сгенерируйте секретный TSIG-ключ:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;tsig-keygen -a HMAC-SHA512 example-key
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;Здесь &lt;code&gt;example-key&lt;/code&gt; &amp;mdash; имя вашего ключа. Выбирается произвольно. Можно назвать по имени домена.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Добавьте ключ в файл конфигурации &lt;em&gt;Bind&lt;/em&gt; &lt;code&gt;/etc/named.conf&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;// /etc/named.conf
+
+zone &amp;quot;domain.ltd&amp;quot; IN {
+	// this is for certbot
+	update-policy {
+		grant example-key name _acme-challenge.domain.ltd. txt;
+	};
+};
+
+key &amp;quot;example-key&amp;quot; {
+	algorithm hmac-sha512;
+	secret &amp;quot;секретный_ключ&amp;quot;;
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Перезапустите &lt;em&gt;named&lt;/em&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;systemctl restart named.service
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;настройка-certbot&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1.4&lt;/span&gt; Настройка certbot&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Сгенерируйте файл конфигурации для плагина &lt;em&gt;rfc2136&lt;/em&gt; &lt;code&gt;/etc/letsencrypt/rfc2136_domain.ltd.ini&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-ini&#34;&gt;# Target DNS server
+dns_rfc2136_server = IP-адрес
+# Target DNS port
+dns_rfc2136_port=53
+# TSIG key name
+dns_rfc2136_name = example-key
+# TSIG key secret
+dns_rfc2136_secret = ключ_без_кавычек
+# TSIG key algorithm
+dns_rfc2136_algorithm = HMAC-SHA512
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Поправьте права доступа:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;chmod 600 /etc/letsencrypt/rfc2136_domain.ltd.ini
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;получение-сертификата&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1.5&lt;/span&gt; Получение сертификата&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Выполните команду&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;certbot certonly \
+	--dns-rfc2136 --force-renewal \
+	--dns-rfc2136-credentials /etc/letsencrypt/rfc2136_domain.ltd.ini \
+	--server https://acme-v02.api.letsencrypt.org/directory \
+	--email example@domain.ltd \
+	--agree-tos --no-eff-email \
+	--dns-rfc2136-propagation-seconds 60 \
+	-d &#39;domain.ltd&#39; -d &#39;*.domain.ltd&#39;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Сертификаты помещаются в каталог &lt;code&gt;/etc/letsencrypt/live/domain.ltd&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;сертификаты-http&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2&lt;/span&gt; Сертификаты HTTP&lt;/h3&gt;
+&lt;h4 id=&#34;сервер-apache&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2.1&lt;/span&gt; Сервер &lt;em&gt;Apache&lt;/em&gt;&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Плагин &lt;code&gt;certbot-apache&lt;/code&gt; предоставляет автоматическую настройку &lt;em&gt;Apache HTTP Server&lt;/em&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Он пытается найти конфигурацию каждого домена, а также добавляет рекомендованные для безопасности параметры, настройки использования сертификатов и пути к сертификатам Let&amp;rsquo;s Encrypt.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Первоначальная настройка виртуальных хостов:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;certbot --apache
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Обновление сертификатов:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;certbot renew
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Изменение сертификатов без изменения файлов конфигурации &lt;em&gt;apache&lt;/em&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;certbot --apache certonly
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;сервер-nginx&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2.2&lt;/span&gt; Сервер &lt;em&gt;Nginx&lt;/em&gt;&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Плагин &lt;code&gt;certbot-nginx&lt;/code&gt; предоставляет автоматическую настройку &lt;em&gt;Nginx HTTP Server&lt;/em&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Он пытается найти конфигурацию каждого домена, а также добавляет рекомендованные для безопасности параметры, настройки использования сертификатов и пути к сертификатам Let&amp;rsquo;s Encrypt.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Первоначальная настройка виртуальных хостов:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;certbot --nginx
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Обновление сертификатов:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;certbot renew
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Изменение сертификатов без изменения файлов конфигурации &lt;em&gt;nginx&lt;/em&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;certbot --nginx certonly
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
     </item>
     
     <item>

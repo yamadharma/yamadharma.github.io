@@ -5,7 +5,7 @@
     <link>https://yamadharma.github.io/ru/tag/network/</link>
       <atom:link href="https://yamadharma.github.io/ru/tag/network/index.xml" rel="self" type="application/rss+xml" />
     <description>network</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2022 Dmitry S. Kulyabov</copyright><lastBuildDate>Mon, 02 May 2022 17:11:00 +0300</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2022 Dmitry S. Kulyabov</copyright><lastBuildDate>Tue, 03 May 2022 20:05:00 +0300</lastBuildDate>
     <image>
       <url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url>
       <title>network</title>
@@ -557,6 +557,116 @@ sudo make install
 	  allow=&#34;clipboard-write&#34; frameborder=&#34;0&#34;&gt;
   &lt;/iframe&gt;
 &lt;/div&gt;</description>
+    </item>
+    
+    <item>
+      <title>Механизм HSTS</title>
+      <link>https://yamadharma.github.io/ru/post/2022/05/03/hsts-mechanism/</link>
+      <pubDate>Tue, 03 May 2022 20:05:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2022/05/03/hsts-mechanism/</guid>
+      <description>&lt;p&gt;&lt;em&gt;HSTS&lt;/em&gt; (&lt;em&gt;HTTP Strict Transport Security&lt;/em&gt;) &amp;mdash; механизм, принудительно активирующий защищённое соединение через протокол HTTPS.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#механизм-работы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Механизм работы&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#типы-политик&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Типы политик&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#динамические-политики&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Динамические политики&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#статические-политики&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.2&lt;/span&gt; Статические политики&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#проверка-работы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Проверка работы&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#поддержка-на-стороне-сервера&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Поддержка на стороне сервера&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#apache&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.1&lt;/span&gt; Apache&lt;/a&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&#34;#включение-hsts&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.1.1&lt;/span&gt; Включение HSTS&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#поддержка-на-стороне-клиента&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6&lt;/span&gt; Поддержка на стороне клиента&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#chrome&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6.1&lt;/span&gt; Chrome&lt;/a&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&#34;#отключение-hsts&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6.1.1&lt;/span&gt; Отключение HSTS&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;HSTS защищает от даунгрейд-атак на TLS.&lt;/li&gt;
+&lt;li&gt;Указывает броузеру всегда использовать TLS для сайтов с соответствующими политиками.&lt;/li&gt;
+&lt;li&gt;Стандарт описан в RFC 6797.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;механизм-работы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Механизм работы&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Сервер сообщает о политиках HSTS с помощью специального заголовка при подключении по протоколу &lt;em&gt;https&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;При подключении по /http заголовок HSTS игнорируется.&lt;/li&gt;
+&lt;li&gt;Когда сайт применяет политику HSTS, пользовательские броузеры, корректно воспринимающие заголовок HSTS, должны:
+&lt;ul&gt;
+&lt;li&gt;Автоматически автономно преобразовывать все http-ссылки на данный сайт в https-ссылки.&lt;/li&gt;
+&lt;li&gt;Если безопасность соединения https не может быть проверена (в частности, если TLS-сертификат сервера не подписан доверенным ключом), будет показано сообщение об ошибке, и пользователь будет лишен доступа к сайту.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;типы-политик&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Типы политик&lt;/h2&gt;
+&lt;h3 id=&#34;динамические-политики&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Динамические политики&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Политика применяется из HTTP-заголовка &lt;em&gt;Strict-Transport-Security&lt;/em&gt; при первом заходе на сайт по HTTPS.&lt;/li&gt;
+&lt;li&gt;В заголовке указан срок действия и применимость к субдоменам.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;статические-политики&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.2&lt;/span&gt; Статические политики&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Исходный вариант HSTS не защищает первое подключение пользователя к сайту. Злоумышленник может легко перехватить первое подключение, если оно происходит по протоколу http.&lt;/li&gt;
+&lt;li&gt;Для борьбы с этой проблемой большинство современных броузеров использует дополнительный статический список сайтов (&lt;em&gt;HSTS preload list&lt;/em&gt;), требующих использования протокола https.&lt;/li&gt;
+&lt;li&gt;Список составляется авторами Google Chrome с 2010 года.&lt;/li&gt;
+&lt;li&gt;На базе этого списка составляются подобные списки для других броузеров.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;проверка-работы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Проверка работы&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Можно проверить с помощью сайта: &lt;a href=&#34;https://www.ssllabs.com/ssltest/index.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.ssllabs.com/ssltest/index.html&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;поддержка-на-стороне-сервера&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Поддержка на стороне сервера&lt;/h2&gt;
+&lt;h3 id=&#34;apache&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.1&lt;/span&gt; Apache&lt;/h3&gt;
+&lt;h4 id=&#34;включение-hsts&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.1.1&lt;/span&gt; Включение HSTS&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;За HSTS отвечает директива &lt;code&gt;Strict-Transport-Security&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Реализуется с помощью модуля &lt;code&gt;mod_headers&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Для блока &lt;code&gt;&amp;lt;VirtualHost *:443&amp;gt;&lt;/code&gt; следует установить&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;&amp;lt;VirtualHost *:443&amp;gt;
+...
+Header always set Strict-Transport-Security &amp;quot;max-age=31536000; includeSubDomains&amp;quot;
+...
+&amp;lt;/VirtualHost&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;max-age&lt;/code&gt;: время, в течение которого броузер должен применять заголовок HSTS для этого сайта. Указан 1 год.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;includeSubDomains&lt;/code&gt;: применять HSTS также для субдоменов.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;поддержка-на-стороне-клиента&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6&lt;/span&gt; Поддержка на стороне клиента&lt;/h2&gt;
+&lt;h3 id=&#34;chrome&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6.1&lt;/span&gt; Chrome&lt;/h3&gt;
+&lt;h4 id=&#34;отключение-hsts&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6.1.1&lt;/span&gt; Отключение HSTS&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Настройки находятся по адресу &lt;code&gt;chrome://net-internals/#hsts&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;В &lt;em&gt;Query HSTS/PKP domain&lt;/em&gt; укажем наш домен и нажмём &lt;em&gt;Query&lt;/em&gt; для информации по настройке сайта.&lt;/li&gt;
+&lt;li&gt;В разделе &lt;em&gt;Delete domain security policies&lt;/em&gt; указываем наш домен, нажимаем &lt;em&gt;Delete&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;Перезапускаем броузер.&lt;/li&gt;
+&lt;/ul&gt;</description>
     </item>
     
     <item>

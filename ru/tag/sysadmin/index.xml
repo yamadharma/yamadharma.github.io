@@ -5,12 +5,298 @@
     <link>https://yamadharma.github.io/ru/tag/sysadmin/</link>
       <atom:link href="https://yamadharma.github.io/ru/tag/sysadmin/index.xml" rel="self" type="application/rss+xml" />
     <description>sysadmin</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2022 Dmitry S. Kulyabov</copyright><lastBuildDate>Mon, 02 May 2022 17:11:00 +0300</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2022 Dmitry S. Kulyabov</copyright><lastBuildDate>Sat, 28 May 2022 14:51:00 +0300</lastBuildDate>
     <image>
       <url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url>
       <title>sysadmin</title>
       <link>https://yamadharma.github.io/ru/tag/sysadmin/</link>
     </image>
+    
+    <item>
+      <title>Дедупликация btrfs. Bees</title>
+      <link>https://yamadharma.github.io/ru/post/2022/05/28/deduplication-btrfs-filesystem-bees/</link>
+      <pubDate>Sat, 28 May 2022 14:51:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2022/05/28/deduplication-btrfs-filesystem-bees/</guid>
+      <description>&lt;p&gt;BEES (Best-Effort Extent-Same) &amp;mdash; агент дедупликации &lt;em&gt;btrfs&lt;/em&gt;.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#плюсы-и-минусы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Плюсы и минусы&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#сильные-стороны&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Сильные стороны&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#слабые-стороны&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Слабые стороны&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#установка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Установка&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#использование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Использование&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#запуск&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Запуск&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#конфигурация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2&lt;/span&gt; Конфигурация&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Репозиторий: &lt;a href=&#34;https://github.com/Zygo/bees&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/Zygo/bees&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Сайт: &lt;a href=&#34;https://zygo.github.io/bees/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://zygo.github.io/bees/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Уровень дедупликации: блочный.&lt;/li&gt;
+&lt;li&gt;Работает как демон.&lt;/li&gt;
+&lt;li&gt;Поддерживается инкрементное сканирование данных.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;плюсы-и-минусы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Плюсы и минусы&lt;/h2&gt;
+&lt;h3 id=&#34;сильные-стороны&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Сильные стороны&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Хеш-таблица с эффективным использованием места, можно использовать всего 1 ГБ хеш-таблицы на 10 ТБ уникальных данных.&lt;/li&gt;
+&lt;li&gt;Демон постепенно выполняет дедупликацию новых данных, используя поиск по дереву btrfs.&lt;/li&gt;
+&lt;li&gt;Поддержка сжатия btrfs, дедупликация комбинации сжатых и несжатых файлов.&lt;/li&gt;
+&lt;li&gt;Постоянная хеш-таблица для быстрого перезапуска после выключения.&lt;/li&gt;
+&lt;li&gt;Дедупликация всей файловой системы, включая моментальные снимки.&lt;/li&gt;
+&lt;li&gt;Постоянный размер хеш-таблицы: использование оперативной памяти не увеличивается, если набор данных становится больше.&lt;/li&gt;
+&lt;li&gt;Автоматическое саморегулирование в зависимости от загрузки системы.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;слабые-стороны&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Слабые стороны&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Дедупликация только всей файловой системы.&lt;/li&gt;
+&lt;li&gt;Требуются привилегии &lt;code&gt;root&lt;/code&gt; (или &lt;code&gt;CAP_SYS_ADMIN&lt;/code&gt;).&lt;/li&gt;
+&lt;li&gt;Первый запуск может увеличить использование пространства метаданных, если существует много моментальных снимков.&lt;/li&gt;
+&lt;li&gt;Постоянный размер хеш-таблицы: использование оперативной памяти не уменьшается, если набор данных становится меньше.&lt;/li&gt;
+&lt;li&gt;Работает только с &lt;em&gt;btrfs&lt;/em&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;установка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Установка&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Gentoo:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;emerge bees
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;использование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Использование&lt;/h2&gt;
+&lt;h3 id=&#34;запуск&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Запуск&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Для запуска используем скрипт &lt;code&gt;beesd&lt;/code&gt; (в исходниках &lt;code&gt;scripts/beesd&lt;/code&gt;).&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Посмотрим идентификаторы &lt;code&gt;UUID&lt;/code&gt; файловых систем:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;btrfs filesystem show
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Активируем демон дедупликации, указав &lt;code&gt;UUID&lt;/code&gt; в качестве идентификатора инстанса. Пусть &lt;code&gt;UUID=&amp;quot;f8963df3-1320-4bc0-a125-62be185b029e&amp;quot;&lt;/code&gt;, тогда команда активации будет иметь вид:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;systemctl enable --now beesd@f8963df3-1320-4bc0-a125-62be185b029e
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;конфигурация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2&lt;/span&gt; Конфигурация&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Для работы демона необходим файл конфигурации.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Шаблон для файла конфигурации:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;/etc/bees/beesd.conf.sample
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Скопируйте его, задав произвольное имя (например, &lt;code&gt;root.conf&lt;/code&gt;):&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;cp /etc/bees/beesd.conf.sample /etc/bees/root.conf
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;В этом файле задайте поле &lt;code&gt;UUID&lt;/code&gt; с необходимым значение.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Для запуска необходимо наличие файла с расширением &lt;code&gt;.conf&lt;/code&gt; и поля &lt;code&gt;UUID&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Остальные поля конфигурации настраиваются по желанию. В противном случае используются значения по умолчанию.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Дедупликация файловой системы btrfs</title>
+      <link>https://yamadharma.github.io/ru/post/2022/05/26/deduplication-btrfs-filesystem/</link>
+      <pubDate>Thu, 26 May 2022 14:29:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2022/05/26/deduplication-btrfs-filesystem/</guid>
+      <description>&lt;p&gt;Дедупликация файловой системы btrfs.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#реализация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Реализация&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#duperemove&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; duperemove&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#bees&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; bees&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#bedup&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; bedup&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#btrfs-dedup&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.4&lt;/span&gt; btrfs-dedup&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#дедупликация-на-уровне-файлов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Дедупликация на уровне файлов&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;При дедупликации идентифицируются блоки данных, которые имеют общие последовательности.&lt;/li&gt;
+&lt;li&gt;Они объединяются в один экстент с семантикой копирования при записи.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;реализация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Реализация&lt;/h2&gt;
+&lt;h3 id=&#34;duperemove&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; duperemove&lt;/h3&gt;
+&lt;h3 id=&#34;bees&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; bees&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/05/28/deduplication-btrfs-filesystem-bees/&#34;&gt;Дедупликация btrfs. Bees&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Уровень дедупликации: блочный.&lt;/li&gt;
+&lt;li&gt;Работает как демон.&lt;/li&gt;
+&lt;li&gt;Использую для дедупликации файловой системы.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;bedup&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; bedup&lt;/h3&gt;
+&lt;h3 id=&#34;btrfs-dedup&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.4&lt;/span&gt; btrfs-dedup&lt;/h3&gt;
+&lt;h2 id=&#34;дедупликация-на-уровне-файлов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Дедупликация на уровне файлов&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Некоторые утилиты для дедупликации на уровне файлов поддерживают файловую систему &lt;em&gt;btrfs&lt;/em&gt;.&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Дедупликация данных</title>
+      <link>https://yamadharma.github.io/ru/post/2022/05/26/data-deduplication/</link>
+      <pubDate>Thu, 26 May 2022 13:31:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2022/05/26/data-deduplication/</guid>
+      <description>&lt;p&gt;Дедупликация данных.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#оценка-метода&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Оценка метода&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#положительные-стороны-дедупликации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Положительные стороны дедупликации&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#отрицательные-стороны-дедупликации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Отрицательные стороны дедупликации&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#уровни-детализации-дедупликации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Уровни детализации дедупликации&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#уровень-блоков&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Уровень блоков&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#уровень-файлов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.2&lt;/span&gt; Уровень файлов&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#уровень-байтов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.3&lt;/span&gt; Уровень байтов&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#место-выполнения-дедупликации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Место выполнения дедупликации&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#дедупликация-клиент-сервер&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Дедупликация клиент-сервер&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#дедупликация-на-клиенте&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2&lt;/span&gt; Дедупликация на клиенте&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#дедупликация-на-сервере&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3&lt;/span&gt; Дедупликация на сервере&lt;/a&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&#34;#аппаратный-тип&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3.1&lt;/span&gt; Аппаратный тип&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#программный-тип&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3.2&lt;/span&gt; Программный тип&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#реализации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Реализации&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Дедупликация данных есть процесс, при котором устраняются избыточные копии информации.&lt;/li&gt;
+&lt;li&gt;Снижаются текущие расходы на хранение информации.&lt;/li&gt;
+&lt;li&gt;Дедупликация позволяет сохранять на носителях исключительно одну уникальную единицу информации.&lt;/li&gt;
+&lt;li&gt;У дедупликации данных есть несколько уровней детализации:
+&lt;ul&gt;
+&lt;li&gt;байты;&lt;/li&gt;
+&lt;li&gt;файлы;&lt;/li&gt;
+&lt;li&gt;блоки.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;оценка-метода&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Оценка метода&lt;/h2&gt;
+&lt;h3 id=&#34;положительные-стороны-дедупликации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Положительные стороны дедупликации&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Высокая эффективность хранения информации.&lt;/li&gt;
+&lt;li&gt;Выгодность применения при низкой пропускной способности сети.&lt;/li&gt;
+&lt;li&gt;Возможность чаще создавать бэкапы и хранить резервные копии данных дольше.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;отрицательные-стороны-дедупликации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Отрицательные стороны дедупликации&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Возможность возникновения конфликта данных (коллизии), если одновременно пара разных блоков генерируют один и тот же хеш-ключ.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;уровни-детализации-дедупликации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Уровни детализации дедупликации&lt;/h2&gt;
+&lt;h3 id=&#34;уровень-блоков&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Уровень блоков&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Наиболее популярный метод дедупликации.&lt;/li&gt;
+&lt;li&gt;Проводится анализ данных по блокам, с дальнейшим сохранением лишь уникальных повторений информации для каждого отдельно взятого блока.&lt;/li&gt;
+&lt;li&gt;Блоком считается одна логическая единица информации с характерным размером, который может варьироваться.&lt;/li&gt;
+&lt;li&gt;Все данные при дедупликации на уровне блоков обрабатываются с применением хеширования.&lt;/li&gt;
+&lt;li&gt;Хеш-алгоритмы позволяют создавать и хранить в базе дедупликации определённую сигнатуру (идентификатор), которая соответствует каждому отдельно взятому уникальному блоку данных.&lt;/li&gt;
+&lt;li&gt;Разновидности блочной дедупликации:
+&lt;ul&gt;
+&lt;li&gt;с переменной длиной блока;&lt;/li&gt;
+&lt;li&gt;с постоянной длиной блока.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;уровень-файлов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.2&lt;/span&gt; Уровень файлов&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Проводится сравнение нового файла с уже сохранённым.&lt;/li&gt;
+&lt;li&gt;Сохраняется только ссылка на файл.&lt;/li&gt;
+&lt;li&gt;Главное преимущество &amp;mdash; простота реализации.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;уровень-байтов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.3&lt;/span&gt; Уровень байтов&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Проводится анализ данных по байтам.&lt;/li&gt;
+&lt;li&gt;Очень ресурсоёмко.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;место-выполнения-дедупликации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Место выполнения дедупликации&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Выполнение дедупликации можно классифицировать по:
+&lt;ul&gt;
+&lt;li&gt;месту выполнения;&lt;/li&gt;
+&lt;li&gt;источнику данных (клиенту);&lt;/li&gt;
+&lt;li&gt;стороне хранения (серверу).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;дедупликация-клиент-сервер&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Дедупликация клиент-сервер&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Необходимые процессы могут запускаться как на сервере, так и на клиенте.&lt;/li&gt;
+&lt;li&gt;Вычисляется хеш у каждого блока данных, после чего хеш отправляется на сервер в виде файла-списка различных хеш-ключей.&lt;/li&gt;
+&lt;li&gt;На сервере производится сравнение списка этих ключей, а затем клиенту отправляются блоки с данными.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;дедупликация-на-клиенте&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2&lt;/span&gt; Дедупликация на клиенте&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Выполняется на источнике данных.&lt;/li&gt;
+&lt;li&gt;После завершения процесса данные будут отправлены на устройства хранения информации.&lt;/li&gt;
+&lt;li&gt;Высокая нагрузка на клиента (ОЗУ и процессор).&lt;/li&gt;
+&lt;li&gt;Низкие требования к пропускной способности сети.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;дедупликация-на-сервере&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3&lt;/span&gt; Дедупликация на сервере&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Данные поступают на сервер в полностью необработанном виде (без кодирования и сжатия).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;аппаратный-тип&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3.1&lt;/span&gt; Аппаратный тип&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Устройство дедупликации представляет собой аппаратного решение, объединяющем логику дедупликации и процедуру восстановления данных.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;программный-тип&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3.2&lt;/span&gt; Программный тип&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Используется специальное программное обеспечения.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;реализации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Реализации&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/05/26/file-deduplication-linux/&#34;&gt;Дедупликация файлов в Linux&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/05/26/deduplication-btrfs-filesystem/&#34;&gt;Дедупликация файловой системы btrfs&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
     
     <item>
       <title>Клиенты ACME. acme.sh</title>
@@ -3544,7 +3830,7 @@ systemctl --user start vdirsyncer.timer
 &lt;/ul&gt;
 &lt;h3 id=&#34;список-подтомов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Список подтомов&lt;/h3&gt;
 &lt;div class=&#34;table-caption&#34;&gt;
-  &lt;span class=&#34;table-number&#34;&gt;&amp;#1058;&amp;#1072;&amp;#1073;&amp;#1083;&amp;#1080;&amp;#1094;&amp;#1072; 1&lt;/span&gt;:
+  &lt;span class=&#34;table-number&#34;&gt;&amp;#1058;&amp;#1072;&amp;#1073;&amp;#1083;&amp;#1080;&amp;#1094;&amp;#1072; 1:&lt;/span&gt;
   Возможные наименования подтомов btrfs
 &lt;/div&gt;
 &lt;table&gt;
@@ -3614,12 +3900,12 @@ systemctl --user start vdirsyncer.timer
 &lt;tr&gt;
 &lt;td&gt;&lt;code&gt;@var_log&lt;/code&gt; или &lt;code&gt;@log&lt;/code&gt;&lt;/td&gt;
 &lt;td&gt;&lt;code&gt;/var/log&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;Содержит кучу файлов, которые пишутся маленькими частями, от чего занимаемое ими место пухнет. Должен монтироваться с &lt;code&gt;nodatacow&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Содержит большое количество файлов, которые пишутся маленькими частями. Должен монтироваться с &lt;code&gt;nodatacow&lt;/code&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;&lt;code&gt;@swap&lt;/code&gt;&lt;/td&gt;
 &lt;td&gt;&lt;code&gt;/swap&lt;/code&gt; или &lt;code&gt;/var/swap&lt;/code&gt;, или &lt;code&gt;/var/lib/swap&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;Подтом для файла подкачки. Должен монтироваться с &lt;code&gt;nodatacow&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Подтом для файла подкачки. Должен монтироваться с &lt;code&gt;nodatacow&lt;/code&gt; (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/05/20/btrfs-swap-file/&#34;&gt;Файл подкачки на btrfs&lt;/a&gt;)&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;&lt;code&gt;@libvirt&lt;/code&gt;&lt;/td&gt;
@@ -3799,6 +4085,7 @@ btrfs subvolume create /mnt/btrfs/@data
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/05/21/installing-linux-btrfs/&#34;&gt;Установка Linux на btrfs&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/08/27/btrfs-subvolumes/&#34;&gt;Подтома btrfs&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/09/23/btrfs-maintenence/&#34;&gt;Обслуживание btrfs&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/05/26/deduplication-btrfs-filesystem/&#34;&gt;Дедупликация файловой системы btrfs&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;необходимое-программное-обеспечение&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Необходимое программное обеспечение&lt;/h2&gt;
 &lt;h3 id=&#34;btrfs-progs&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; btrfs-progs&lt;/h3&gt;
@@ -8082,6 +8369,7 @@ systemctl --user enable --now pipewire.socket pipewire-pulse.socket wireplumber.
 &lt;h3 id=&#34;файловые-системы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.4&lt;/span&gt; Файловые системы&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/08/27/btrfs-file-system/&#34;&gt;Файловая система btrfs&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/05/26/data-deduplication/&#34;&gt;Дедупликация данных&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;управление-программным-обеспечением&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.5&lt;/span&gt; Управление программным обеспечением&lt;/h3&gt;
 &lt;ul&gt;
@@ -9465,11 +9753,8 @@ find . -iname &amp;quot;*host1*&amp;quot; | sed &#39;p;s:host1:host2:&#39; | xar
 &lt;/ul&gt;
 &lt;h2 id=&#34;разное&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Разное&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/01/03/emacs-basics/&#34;&gt;Emacs. Основы работы&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Написание кода для конфигурирования Emacs&lt;/p&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/01/03/emacs-basics/&#34;&gt;Emacs. Основы работы&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Написание кода для конфигурирования Emacs
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2020/12/20/elisp-coding-conventions/&#34;&gt;Соглашение о кодировании. Emacs lisp&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
@@ -9494,6 +9779,7 @@ find . -iname &amp;quot;*host1*&amp;quot; | sed &#39;p;s:host1:host2:&#39; | xar
 &lt;h2 id=&#34;пакеты&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6&lt;/span&gt; Пакеты&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/12/25/emacs-outline-cycling/&#34;&gt;Emacs. Режим структуры&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/05/19/emacs-languagetool-support/&#34;&gt;Emacs. Поддержка LanguageTool&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;</description>
     </item>
     

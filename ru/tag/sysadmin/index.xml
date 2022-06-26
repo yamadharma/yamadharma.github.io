@@ -5,12 +5,285 @@
     <link>https://yamadharma.github.io/ru/tag/sysadmin/</link>
       <atom:link href="https://yamadharma.github.io/ru/tag/sysadmin/index.xml" rel="self" type="application/rss+xml" />
     <description>sysadmin</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2022 Dmitry S. Kulyabov</copyright><lastBuildDate>Sat, 28 May 2022 14:51:00 +0300</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2022 Dmitry S. Kulyabov</copyright><lastBuildDate>Fri, 03 Jun 2022 12:24:00 +0300</lastBuildDate>
     <image>
       <url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url>
       <title>sysadmin</title>
       <link>https://yamadharma.github.io/ru/tag/sysadmin/</link>
     </image>
+    
+    <item>
+      <title>Маршрутизация. VyOS</title>
+      <link>https://yamadharma.github.io/ru/post/2022/06/03/routing-vyos/</link>
+      <pubDate>Fri, 03 Jun 2022 12:24:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2022/06/03/routing-vyos/</guid>
+      <description>&lt;p&gt;Программный маршрутизатор &lt;em&gt;VyOS&lt;/em&gt;.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#модель-распространения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Модель распространения&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#функционал&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Функционал&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#конфигурирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Конфигурирование&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#быстрая-настройка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Быстрая настройка&lt;/a&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&#34;#режим-конфигурации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1.1&lt;/span&gt; Режим конфигурации&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#сохранение&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1.2&lt;/span&gt; Сохранение&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#конфигурация-интерфейсов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1.3&lt;/span&gt; Конфигурация интерфейсов&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#ssh-сервер&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1.4&lt;/span&gt; SSH-сервер&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#сервисы-dhcp-и-dns&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1.5&lt;/span&gt; Сервисы DHCP и DNS&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#настройка-nat&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1.6&lt;/span&gt; Настройка NAT&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#брандмауэр&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1.7&lt;/span&gt; Брандмауэр&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#настройка-безопасности&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1.8&lt;/span&gt; Настройка безопасности&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Сайты.
+&lt;ul&gt;
+&lt;li&gt;Сайт: &lt;a href=&#34;https://vyos.net/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://vyos.net/&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Коммерческий сайт: &lt;a href=&#34;https://vyos.io/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://vyos.io/&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Репозиторий: &lt;a href=&#34;https://github.com/vyos/vyos-1x&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/vyos/vyos-1x&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Документация: &lt;a href=&#34;https://docs.vyos.io/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://docs.vyos.io/&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Документация в &lt;code&gt;pdf&lt;/code&gt;: &lt;a href=&#34;https://buildmedia.readthedocs.org/media/pdf/vyos/latest/vyos.pdf&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://buildmedia.readthedocs.org/media/pdf/vyos/latest/vyos.pdf&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Блог: &lt;a href=&#34;https://blog.vyos.io/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://blog.vyos.io/&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Форк проекта &lt;em&gt;Vyatta&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;Реализовано на основе дистрибутива Debian.&lt;/li&gt;
+&lt;li&gt;Система команд похожа на Juniper.&lt;/li&gt;
+&lt;li&gt;Подсистема маршрутизации основывается на проекте FRRouting (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/06/02/routing-frrouting/&#34;&gt;Маршрутизация. FRRouting&lt;/a&gt;).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;модель-распространения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Модель распространения&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Можно собрать самому из исходного кода.&lt;/li&gt;
+&lt;li&gt;Образы LTS можно скачивать за плату.
+&lt;ul&gt;
+&lt;li&gt;Для учебных заведений и некоммерческих организаций предоставляется бесплатный доступ к релизам.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Образы для rolling релизов можно скачивать бесплатно.&lt;/li&gt;
+&lt;li&gt;Rolling релизы:
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://vyos.net/get/?dir=rolling/current/amd64&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://vyos.net/get/?dir=rolling/current/amd64&lt;/a&gt;;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://community.vyos.net/get/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://community.vyos.net/get/&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Блокируются российский ip-адреса.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;функционал&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Функционал&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;VPN: Dynamic Multipoint VPN (DMVPN), GRE, IPSec, IPSec VTI, OpenVPN (server и client), WireGuard.&lt;/li&gt;
+&lt;li&gt;Туннели: L2TP, L2TPv3, VXLAN, PPTP, GRE, IPIP, SIT, IPIP, IPIP6, IP6IP6.&lt;/li&gt;
+&lt;li&gt;Интерфейсы L2/L3: Ethernet Bridge, 802.1Q VLAN, QinQ, Агрегация портов (LACP и статическая).&lt;/li&gt;
+&lt;li&gt;Маршрутизация: BGP, OSPF, OSPFv3, RIP, RIPng протоколов динамической маршрутизации.&lt;/li&gt;
+&lt;li&gt;Статическая маршрутизация и Policy-Based Routing (PBR)&lt;/li&gt;
+&lt;li&gt;QoS для приоритизации трафика.&lt;/li&gt;
+&lt;li&gt;Высокая доступность: VRRP, WAN load-balancing, Conntrack-Sync, Clustering.&lt;/li&gt;
+&lt;li&gt;Сетевые сервисы: DHCP, DNS recursive server, Network Address Translation, IGMP-Proxy, NTP, LLDP, mDNS repeater, PPPoE server, TFTP сервер.&lt;/li&gt;
+&lt;li&gt;Фильтрация трафика: Zone-based firewall, stateful firewall.&lt;/li&gt;
+&lt;li&gt;Политики: Shaping, Rate limiting, Priority-based queues.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;конфигурирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Конфигурирование&lt;/h2&gt;
+&lt;h3 id=&#34;быстрая-настройка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Быстрая настройка&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Настроим шлюз NAT с двумя сетевыми интерфейсами (&lt;code&gt;eth0&lt;/code&gt; и &lt;code&gt;eth1&lt;/code&gt;).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;режим-конфигурации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1.1&lt;/span&gt; Режим конфигурации&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;В рабочем режиме в командной строке отображается символ &lt;code&gt;$&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;В режиме конфигурации в командной строке отображается &lt;code&gt;#&lt;/code&gt;:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;vyos@vyos$ configure
+vyos@vyos#
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;сохранение&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1.2&lt;/span&gt; Сохранение&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;После каждого изменения конфигурации необходимо применить изменения:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;commit
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;В конце нужно сохранить конфигурацию:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;save
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;конфигурация-интерфейсов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1.3&lt;/span&gt; Конфигурация интерфейсов&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Внешний интерфейс: &lt;code&gt;eth0&lt;/code&gt;. Он получает адрес по DHCP.&lt;/li&gt;
+&lt;li&gt;Внутренний интерфейс: &lt;code&gt;eth1&lt;/code&gt;. Использует статический IP-адрес &lt;code&gt;192.168.0.1/24&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;После перехода в режим конфигурации введём следующие команды:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;set interfaces ethernet eth0 address dhcp
+set interfaces ethernet eth0 description &#39;OUTSIDE&#39;
+set interfaces ethernet eth1 address &#39;192.168.0.1/24&#39;
+set interfaces ethernet eth1 description &#39;INSIDE&#39;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;ssh-сервер&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1.4&lt;/span&gt; SSH-сервер&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Включим ssh-сервер:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;set service ssh port &#39;22&#39;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;сервисы-dhcp-и-dns&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1.5&lt;/span&gt; Сервисы DHCP и DNS&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Сетевые настройки:
+&lt;ul&gt;
+&lt;li&gt;Шлюз по умолчанию и адрес сервера DNS: &lt;code&gt;192.168.0.1/24&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Диапазон адресов для статических назначений: &lt;code&gt;192.168.0.2/24&lt;/code&gt;&amp;ndash;&lt;code&gt;192.168.0.8/24&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Диапазон адресов для клиентов DHCP: &lt;code&gt;192.168.0.9&lt;/code&gt;&amp;ndash;&lt;code&gt;192.168.0.254&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Время аренды адреса DHCP: однин день (86400 секунд).&lt;/li&gt;
+&lt;li&gt;Рекурсор DNS могут использовать только хосты из локальной сети.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Конфигурация:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;set service dhcp-server shared-network-name LAN subnet 192.168.0.0/24 default-router &#39;192.168.0.1&#39;
+set service dhcp-server shared-network-name LAN subnet 192.168.0.0/24 name-server &#39;192.168.0.1&#39;
+set service dhcp-server shared-network-name LAN subnet 192.168.0.0/24 domain-name &#39;vyos.net&#39;
+set service dhcp-server shared-network-name LAN subnet 192.168.0.0/24 lease &#39;86400&#39;
+set service dhcp-server shared-network-name LAN subnet 192.168.0.0/24 range 0 start 192.168.0.9
+set service dhcp-server shared-network-name LAN subnet 192.168.0.0/24 range 0 stop &#39;192.168.0.254&#39;
+
+set service dns forwarding cache-size &#39;0&#39;
+set service dns forwarding listen-address &#39;192.168.0.1&#39;
+set service dns forwarding allow-from &#39;192.168.0.0/24&#39;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;настройка-nat&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1.6&lt;/span&gt; Настройка NAT&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Настроим правила SNAT для внутренней сети:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;set nat source rule 100 outbound-interface &#39;eth0&#39;
+set nat source rule 100 source address &#39;192.168.0.0/24&#39;
+set nat source rule 100 translation address masquerade
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;брандмауэр&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1.7&lt;/span&gt; Брандмауэр&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Блокируем весь трафик, который не был инициирован со стороны локальной сети:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;set firewall name OUTSIDE-IN default-action &#39;drop&#39;
+set firewall name OUTSIDE-IN rule 10 action &#39;accept&#39;
+set firewall name OUTSIDE-IN rule 10 state established &#39;enable&#39;
+set firewall name OUTSIDE-IN rule 10 state related &#39;enable&#39;
+
+set firewall name OUTSIDE-LOCAL default-action &#39;drop&#39;
+set firewall name OUTSIDE-LOCAL rule 10 action &#39;accept&#39;
+set firewall name OUTSIDE-LOCAL rule 10 state established &#39;enable&#39;
+set firewall name OUTSIDE-LOCAL rule 10 state related &#39;enable&#39;
+set firewall name OUTSIDE-LOCAL rule 20 action &#39;accept&#39;
+set firewall name OUTSIDE-LOCAL rule 20 icmp type-name &#39;echo-request&#39;
+set firewall name OUTSIDE-LOCAL rule 20 protocol &#39;icmp&#39;
+set firewall name OUTSIDE-LOCAL rule 20 state new &#39;enable&#39;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Разрешим SSH-доступ к маршрутизатору с внешнего интерфейса.&lt;/li&gt;
+&lt;li&gt;Ограничивают до 4 запросов в минуту (для блокировки взлома грубой силой):
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;set firewall name OUTSIDE-LOCAL rule 30 action &#39;drop&#39;
+set firewall name OUTSIDE-LOCAL rule 30 destination port &#39;22&#39;
+set firewall name OUTSIDE-LOCAL rule 30 protocol &#39;tcp&#39;
+set firewall name OUTSIDE-LOCAL rule 30 recent count &#39;4&#39;
+set firewall name OUTSIDE-LOCAL rule 30 recent time &#39;60&#39;
+set firewall name OUTSIDE-LOCAL rule 30 state new &#39;enable&#39;
+
+set firewall name OUTSIDE-LOCAL rule 31 action &#39;accept&#39;
+set firewall name OUTSIDE-LOCAL rule 31 destination port &#39;22&#39;
+set firewall name OUTSIDE-LOCAL rule 31 protocol &#39;tcp&#39;
+set firewall name OUTSIDE-LOCAL rule 31 state new &#39;enable&#39;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Применим политики брандмауэра:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;set interfaces ethernet eth0 firewall in name &#39;OUTSIDE-IN&#39;
+set interfaces ethernet eth0 firewall local name &#39;OUTSIDE-LOCAL&#39;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Зафиксируем изменения, сохраним конфигурацию и выйдем из режима конфигурации:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;vyos@vyos# commit
+vyos@vyos# save
+Saving configuration to &#39;/config/config.boot&#39;...
+Done
+vyos@vyos# exit
+vyos@vyos$
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;настройка-безопасности&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1.8&lt;/span&gt; Настройка безопасности&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Заменим системного пользователя по умолчанию:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;set system login user myvyosuser authentication plaintext-password mysecurepassword
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Настроим аутентификацию на основе ключа:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;set system login user myvyosuser authentication public-keys myusername@mydesktop type ssh-rsa
+set system login user myvyosuser authentication public-keys myusername@mydesktop key contents_of_id_rsa.pub
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Удалим исходного пользователя &lt;code&gt;vyos&lt;/code&gt; полностью отключим аутентификацию по паролю для SSH:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;delete system login user vyos
+set service ssh disable-password-authentication
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Зафиксируем изменения, сохраним конфигурацию и выйдем из режима конфигурации:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;vyos@vyos# commit
+vyos@vyos# save
+Saving configuration to &#39;/config/config.boot&#39;...
+Done
+vyos@vyos# exit
+vyos@vyos$
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Маршрутизация. FRRouting</title>
+      <link>https://yamadharma.github.io/ru/post/2022/06/02/routing-frrouting/</link>
+      <pubDate>Thu, 02 Jun 2022 19:30:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2022/06/02/routing-frrouting/</guid>
+      <description>&lt;p&gt;Проект &lt;em&gt;FRRouting&lt;/em&gt;.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#протоколы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Протоколы&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Сайт: &lt;a href=&#34;https://frrouting.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://frrouting.org/&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Репозиторий: &lt;a href=&#34;https://github.com/FRRouting/frr&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/FRRouting/frr&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Документация: &lt;a href=&#34;https://docs.frrouting.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://docs.frrouting.org/&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Форк проекта Quagga.&lt;/li&gt;
+&lt;li&gt;Для управления используется оболочка &lt;em&gt;vtysh&lt;/em&gt;, система команд которой похожа на Cisco.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;протоколы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Протоколы&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Border Gateway Protocol (BGP)&lt;/li&gt;
+&lt;li&gt;Intermediate System to Intermediate System (IS-IS)&lt;/li&gt;
+&lt;li&gt;Open Shortest Path First (OSPF)&lt;/li&gt;
+&lt;li&gt;Protocol-Independent Multicast (PIM)&lt;/li&gt;
+&lt;li&gt;Routing Information Protocol (RIP)&lt;/li&gt;
+&lt;li&gt;Routing Information Protocol next generation (RIPng)&lt;/li&gt;
+&lt;li&gt;Enhanced Interior Gateway Routing Protocol (EIGRP)&lt;/li&gt;
+&lt;li&gt;Next Hop Resolution Protocol (NHRP)&lt;/li&gt;
+&lt;li&gt;Bidirectional Forwarding Detection (BFD)&lt;/li&gt;
+&lt;li&gt;Policy-based Routing (PBR)&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
     
     <item>
       <title>Дедупликация btrfs. Bees</title>
@@ -6204,23 +6477,19 @@ sudo reboot
 &lt;/li&gt;
 &lt;li&gt;Создадим файловые системы:
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;p1 (&lt;code&gt;EFI&lt;/code&gt;):&lt;/p&gt;
+&lt;li&gt;p1 (&lt;code&gt;EFI&lt;/code&gt;):
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;mkfs.vfat -F32 -n EFI /dev/sda1
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;p2 (&lt;code&gt;/boot&lt;/code&gt;):&lt;/p&gt;
+&lt;li&gt;p2 (&lt;code&gt;/boot&lt;/code&gt;):
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;mkfs.ext4 -L boot /dev/sda2
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;p3 (&lt;code&gt;swap&lt;/code&gt;):&lt;/p&gt;
+&lt;li&gt;p3 (&lt;code&gt;swap&lt;/code&gt;):
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;mkswap -L swap /dev/sda3
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;p4 (&lt;code&gt;btrfs&lt;/code&gt;)&lt;/p&gt;
+&lt;li&gt;p4 (&lt;code&gt;btrfs&lt;/code&gt;)
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;mkfs.btrfs /dev/sda4
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
@@ -6229,14 +6498,12 @@ sudo reboot
 &lt;/ul&gt;
 &lt;h2 id=&#34;подготовка-раздела-с-btrfs&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Подготовка раздела с btrfs&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Подмонтируем раздел с btrfs:&lt;/p&gt;
+&lt;li&gt;Подмонтируем раздел с btrfs:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;mkdir /mnt/gentoo
 mount -tbtrfs -orelatime,space_cache,discard,autodefrag,compress=zstd:9 /dev/sda4 /mnt/gentoo/
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Создадим подтома на btrfs:&lt;/p&gt;
+&lt;li&gt;Создадим подтома на btrfs:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;cd /mnt/gentoo/
 btrfs subvol create @
 btrfs subvol create @var
@@ -6250,41 +6517,35 @@ btrfs subvol create @portage_com
 &lt;/ul&gt;
 &lt;h2 id=&#34;копирование-существующих-файловых-систем&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Копирование существующих файловых систем&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Создадим точку монтирования:&lt;/p&gt;
+&lt;li&gt;Создадим точку монтирования:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;mkdir /mnt/from
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Подмонтируем и скопируем root-партицию:&lt;/p&gt;
+&lt;li&gt;Подмонтируем и скопируем root-партицию:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;mount /dev/vgs/root /mnt/from/
 rsync -av -HS --delete /mnt/from/ /mnt/gentoo/@
 umount /mnt/from/
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Подмонтируем и скопируем &lt;code&gt;/var&lt;/code&gt;:&lt;/p&gt;
+&lt;li&gt;Подмонтируем и скопируем &lt;code&gt;/var&lt;/code&gt;:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;mount /dev/vgs/var /mnt/from/
 rsync -av -HS --delete /mnt/from/ /mnt/gentoo/@var
 umount /mnt/from/
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Подмонтируем и скопируем &lt;code&gt;portage&lt;/code&gt;:&lt;/p&gt;
+&lt;li&gt;Подмонтируем и скопируем &lt;code&gt;portage&lt;/code&gt;:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;mount /dev/vgs/portage /mnt/from/
 rsync -av -HS --delete /mnt/from/ /mnt/gentoo/@portage
 umount /mnt/from/
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Подмонтируем и скопируем &lt;code&gt;portage_local&lt;/code&gt;:&lt;/p&gt;
+&lt;li&gt;Подмонтируем и скопируем &lt;code&gt;portage_local&lt;/code&gt;:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;mount /dev/vgs/portage_local /mnt/from/
 rsync -av -HS --delete /mnt/from/ /mnt/gentoo/@portage_local
 umount /mnt/from/
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Подмонтируем и скопируем &lt;code&gt;/boot&lt;/code&gt;:&lt;/p&gt;
+&lt;li&gt;Подмонтируем и скопируем &lt;code&gt;/boot&lt;/code&gt;:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;mkdir /mnt/to/
 mount /dev/sda2 /mnt/to
 mount /dev/sdb2 /mnt/from/
@@ -6296,8 +6557,7 @@ umount /mnt/from
 &lt;/ul&gt;
 &lt;h2 id=&#34;установка-загрузчика&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Установка загрузчика&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Перемонтируем файловую систему &lt;code&gt;btrfs&lt;/code&gt;:&lt;/p&gt;
+&lt;li&gt;Перемонтируем файловую систему &lt;code&gt;btrfs&lt;/code&gt;:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;umount /mnt/gentoo
 mount -tbtrfs -orelatime,space_cache,discard,autodefrag,compress=zstd:9,subvol=@ /dev/sda4 /mnt/gentoo/
 mount -tbtrfs -orelatime,space_cache,discard,autodefrag,compress=zstd:9,subvol=@var /dev/sda4 /mnt/gentoo/var
@@ -6306,16 +6566,14 @@ mount /dev/sda2 /mnt/gentoo/boot/
 mount /dev/sda1 /mnt/gentoo/boot/efi
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Подмонтируем псевдо-файловые системы:&lt;/p&gt;
+&lt;li&gt;Подмонтируем псевдо-файловые системы:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;mount -o bind /dev /mnt/gentoo/dev/
 mount -o bind /proc /mnt/gentoo/proc/
 mount -o bind /sys /mnt/gentoo/sys/
 mount -o bind /run /mnt/gentoo/run/
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Установим загрузчик:&lt;/p&gt;
+&lt;li&gt;Установим загрузчик:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;cd /mnt/gentoo/
 chroot /mnt/gentoo/ /bin/bash
 grub-install /boot/
@@ -6325,18 +6583,15 @@ grub-mkconfig -o /boot/grub/grub.cfg
 &lt;/ul&gt;
 &lt;h2 id=&#34;создадим-файл-монтирования-fstab&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6&lt;/span&gt; Создадим файл монтирования fstab&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Узнаем идентификатор партиции с файловой системой btrfs:&lt;/p&gt;
+&lt;li&gt;Узнаем идентификатор партиции с файловой системой btrfs:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;blkid /dev/sda4
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Получим строчку:&lt;/p&gt;
+&lt;li&gt;Получим строчку:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;UUID=&amp;quot;&amp;lt;uuid_number&amp;gt;&amp;quot;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Создадим файл &lt;code&gt;/mnt/gentoo/etc/fstab&lt;/code&gt;&lt;/p&gt;
+&lt;li&gt;Создадим файл &lt;code&gt;/mnt/gentoo/etc/fstab&lt;/code&gt;
 &lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;LABEL=&amp;quot;boot-m2&amp;quot;					/boot		ext4	relatime,discard					1 1
 LABEL=&amp;quot;EFI-M2&amp;quot;					/boot/efi	vfat	defaults,discard					0 0
 LABEL=&amp;quot;swap-m2&amp;quot;					none		swap	sw							0 0
@@ -6353,27 +6608,21 @@ UUID=&amp;quot;&amp;lt;uuid_number&amp;gt;&amp;quot;	/com/lib/portage	btrfs	rela
 &lt;/ul&gt;
 &lt;h2 id=&#34;копирование-специальных-файловых-систем&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7&lt;/span&gt; Копирование специальных файловых систем&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Для образов виртуальных машин следует отключить CoW (copy-on-write).&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Подмонтируем файловую систему &lt;code&gt;btrfs&lt;/code&gt;:&lt;/p&gt;
+&lt;li&gt;Для образов виртуальных машин следует отключить CoW (copy-on-write).&lt;/li&gt;
+&lt;li&gt;Подмонтируем файловую систему &lt;code&gt;btrfs&lt;/code&gt;:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;mount -tbtrfs -orelatime,space_cache,discard,autodefrag,compress=zstd:9,subvol=@vm /dev/sda4 /mnt/gentoo/var/vm
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Отключим для этого подтома CoW:&lt;/p&gt;
+&lt;li&gt;Отключим для этого подтома CoW:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;cd /mnt/gentoo/var/
 chattr +C vm
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Посмотреть результат можно командой:&lt;/p&gt;
+&lt;li&gt;Посмотреть результат можно командой:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;lsattr -a vm
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Скопируем файлы:&lt;/p&gt;
+&lt;li&gt;Скопируем файлы:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;mount /dev/vgs/vm /mnt/from/
 rsync -av -HS --delete /mnt/from/ /mnt/gentoo/var/vm
 umount /mnt/from/
@@ -8222,22 +8471,19 @@ systemctl --user enable --now pipewire.socket pipewire-pulse.socket wireplumber.
 &lt;/nav&gt;
 &lt;/details&gt;
 
-&lt;p&gt;Несмотря на наличие usb-диска в корпусе Zalman ZM-VE300 (&lt;a href=&#34;https://www.zalman.com/RU/Product/ProductList.do?searchCategory1=86&amp;amp;searchCategory2=89&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.zalman.com/RU/Product/ProductList.do?searchCategory1=86&amp;searchCategory2=89&lt;/a&gt;), хотелось также иметь бутовую флешку, загружающую операционные системы из ISO-образов.&lt;/p&gt;
+&lt;p&gt;Несмотря на наличие usb-диска в корпусе Zalman ZM-VE300 (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/06/06/zalman-zm-ve300/&#34;&gt;Контейнер для жесткого диска Zalman ZM-VE300&lt;/a&gt;), хотелось также иметь бутовую флешку, загружающую операционные системы из ISO-образов.&lt;/p&gt;
 &lt;h2 id=&#34;программный-загрузчик&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Программный загрузчик&lt;/h2&gt;
 &lt;p&gt;В качестве программного загрузчика был выбран Ventoy:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://www.ventoy.net/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.ventoy.net/&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://github.com/ventoy/Ventoy&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/ventoy/Ventoy&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;Он основан на загрузчике &lt;code&gt;grub2&lt;/code&gt; (&lt;a href=&#34;https://ru.wikipedia.org/wiki/GNU%5FGRUB&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://ru.wikipedia.org/wiki/GNU%5FGRUB&lt;/a&gt;).&lt;/p&gt;
+&lt;p&gt;Он основан на загрузчике &lt;code&gt;grub2&lt;/code&gt; (&lt;a href=&#34;https://ru.wikipedia.org/wiki/GNU_GRUB&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://ru.wikipedia.org/wiki/GNU_GRUB&lt;/a&gt;).&lt;/p&gt;
 &lt;h2 id=&#34;установка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Установка&lt;/h2&gt;
 &lt;h3 id=&#34;установка-под-windows&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Установка под Windows&lt;/h3&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Скачиваем откомпилированный образ для Windows из &lt;a href=&#34;https://github.com/ventoy/Ventoy/releases&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/ventoy/Ventoy/releases&lt;/a&gt;.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Запускаем установщик:&lt;/p&gt;
+&lt;li&gt;Скачиваем откомпилированный образ для Windows из &lt;a href=&#34;https://github.com/ventoy/Ventoy/releases&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/ventoy/Ventoy/releases&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Запускаем установщик:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;Ventoy2Disk.exe
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
@@ -9887,15 +10133,25 @@ find . -iname &amp;quot;*host1*&amp;quot; | sed &#39;p;s:host1:host2:&#39; | xar
       <link>https://yamadharma.github.io/ru/post/2020/12/18/using-pgp/</link>
       <pubDate>Fri, 18 Dec 2020 12:39:00 +0300</pubDate>
       <guid>https://yamadharma.github.io/ru/post/2020/12/18/using-pgp/</guid>
-      <description>&lt;p&gt;Использование набора программ PGP.&lt;/p&gt;
+      <description>&lt;p&gt;Использование набора программ GPG (GNU ревлизация PGP).&lt;/p&gt;
 &lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
   &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
   &lt;nav id=&#34;TableOfContents&#34;&gt;
   &lt;ul&gt;
     &lt;li&gt;&lt;a href=&#34;#экспорт-ключей-pgp&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Экспорт ключей PGP&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#шифрование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Шифрование&lt;/a&gt;
+    &lt;li&gt;&lt;a href=&#34;#gpg-agent&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; &lt;code&gt;gpg-agent&lt;/code&gt;&lt;/a&gt;
       &lt;ul&gt;
-        &lt;li&gt;&lt;a href=&#34;#симметричное-шифрование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Симметричное шифрование&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#запуск&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Запуск&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#перезапуск-агента&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; Перезапуск агента&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#настройка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.4&lt;/span&gt; Настройка&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#pinentry&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.5&lt;/span&gt; pinentry&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#кэширование-паролей&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.6&lt;/span&gt; Кэширование паролей&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#шифрование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Шифрование&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#симметричное-шифрование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Симметричное шифрование&lt;/a&gt;&lt;/li&gt;
       &lt;/ul&gt;
     &lt;/li&gt;
   &lt;/ul&gt;
@@ -9944,13 +10200,104 @@ gpg -k
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;шифрование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Шифрование&lt;/h2&gt;
+&lt;h2 id=&#34;gpg-agent&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; &lt;code&gt;gpg-agent&lt;/code&gt;&lt;/h2&gt;
+&lt;h3 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Общая информация&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Используется для временного хранения пароля.&lt;/li&gt;
+&lt;li&gt;Предоставляются пользовательские сокеты &lt;code&gt;systemd&lt;/code&gt;:
+&lt;ul&gt;
+&lt;li&gt;основной сокет &lt;code&gt;gpg-agent.socket&lt;/code&gt; используется &lt;em&gt;gpg&lt;/em&gt; для подключения к демону &lt;code&gt;gpg-agent&lt;/code&gt;;&lt;/li&gt;
+&lt;li&gt;сокет &lt;code&gt;gpg-agent-extra.socket&lt;/code&gt; на локальной системе используется для настройки переадресации Unix-сокета с удалённой системы;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;gpg-agent-browser.socket&lt;/code&gt; позволяет веб-браузерам обращаться к демону &lt;code&gt;gpg-agent&lt;/code&gt;;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;gpg-agent-ssh.socket&lt;/code&gt; может использоваться SSH для кэширования ключей SSH, добавленных программой ssh-add;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;dirmngr.socket&lt;/code&gt; запускает демон GnuPG, обрабатывающий соединения с серверами ключей.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;запуск&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Запуск&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Активизируются сокеты, а не сам &lt;code&gt;gpg-agent&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Запуск под управлением &lt;code&gt;systemd&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;systemctl --user enable --now gpg-agent.socket
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;перезапуск-агента&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; Перезапуск агента&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;После обновления настроек следует перезапустить агента, передав команду &lt;code&gt;RELOADAGENT&lt;/code&gt; программе &lt;code&gt;gpg-connect-agent&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;gpg-connect-agent reloadagent /bye
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;настройка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.4&lt;/span&gt; Настройка&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Настраивается в файле &lt;code&gt;~/.gnupg/gpg-agent.conf&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Время жизни для ключей в кэше с момента последнего использования:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;default-cache-ttl 3600
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;pinentry&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.5&lt;/span&gt; pinentry&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;gpg-agent использует pinentry для отображения диалога запроса пароля.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Вариант диалога настраивается в файле настроек &lt;code&gt;~/.gnupg/gpg-agent.conf&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Чтобы установить конкретный диалог, установите опцию &lt;code&gt;pinentry-program&lt;/code&gt; в файле &lt;code&gt;~/.gnupg/gpg-agent.conf&lt;/code&gt;, например:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;pinentry-program /usr/bin/pinentry-curses
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Существуют разные реализации pinentry.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Просмотр реализаций:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Gentoo:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;eselect pinentry list
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;кэширование-паролей&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.6&lt;/span&gt; Кэширование паролей&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Время кеширования определяется параметрами &lt;code&gt;max-cache-ttl&lt;/code&gt; и &lt;code&gt;default-cache-ttl&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Чтобы вводить пароль всего один раз за сеанс, нужно установить их на очень высокое значение, например:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;## gpg-agent.conf
+max-cache-ttl 60480000
+default-cache-ttl 60480000
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Для кэширования паролей в режиме эмуляции SSH следует установить параметры &lt;code&gt;default-cache-ttl-ssh&lt;/code&gt; и &lt;code&gt;max-cache-ttl-ssh&lt;/code&gt;, например:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;## gpg-agent.conf
+default-cache-ttl-ssh 60480000
+max-cache-ttl-ssh 60480000
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;шифрование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Шифрование&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;Шифрование может быть симметричным и ассиметричным.&lt;/li&gt;
 &lt;li&gt;Симметричное шифрование шифруется и расшифровывается приватным ключом или одной и той же парольной фразой.&lt;/li&gt;
 &lt;li&gt;Ассиметричное шифрование шифруется публичным ключом, расшифровывается приватным.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;симметричное-шифрование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Симметричное шифрование&lt;/h3&gt;
+&lt;h3 id=&#34;симметричное-шифрование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Симметричное шифрование&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;Зашифровать файл:&lt;/li&gt;
 &lt;/ul&gt;

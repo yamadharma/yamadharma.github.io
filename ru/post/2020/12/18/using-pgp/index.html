@@ -64,7 +64,7 @@
   
     
   
-  <meta name="description" content="Использование набора программ PGP." />
+  <meta name="description" content="Использование набора программ GPG (GNU ревлизация PGP)." />
 
   
   <link rel="alternate" hreflang="ru-ru" href="https://yamadharma.github.io/ru/post/2020/12/18/using-pgp/" />
@@ -354,7 +354,7 @@
   <meta property="og:site_name" content="Д. С. Кулябов" />
   <meta property="og:url" content="https://yamadharma.github.io/ru/post/2020/12/18/using-pgp/" />
   <meta property="og:title" content="Работа с PGP | Д. С. Кулябов" />
-  <meta property="og:description" content="Использование набора программ PGP." /><meta property="og:image" content="https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png" />
+  <meta property="og:description" content="Использование набора программ GPG (GNU ревлизация PGP)." /><meta property="og:image" content="https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png" />
     <meta property="twitter:image" content="https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png" /><meta property="og:locale" content="ru-ru" />
   
     
@@ -363,7 +363,7 @@
         content="2020-12-18T12:39:00&#43;03:00"
       />
     
-    <meta property="article:modified_time" content="2022-04-06T17:10:00&#43;03:00">
+    <meta property="article:modified_time" content="2022-06-02T14:19:00&#43;03:00">
   
 
   
@@ -392,7 +392,7 @@
   "headline": "Работа с PGP",
   
   "datePublished": "2020-12-18T12:39:00+03:00",
-  "dateModified": "2022-04-06T17:10:00+03:00",
+  "dateModified": "2022-06-02T14:19:00+03:00",
   
   "author": {
     "@type": "Person",
@@ -407,7 +407,7 @@
       "url": "https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_192x192_fill_lanczos_center_3.png"
     }
   },
-  "description": "\u003cp\u003eИспользование набора программ PGP.\u003c/p\u003e"
+  "description": "\u003cp\u003eИспользование набора программ GPG (GNU ревлизация PGP).\u003c/p\u003e"
 }
 </script>
 
@@ -914,7 +914,7 @@
           Обновлено
       
     
-    2022-04-06
+    2022-06-02
   </span>
   
 
@@ -923,7 +923,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-reading-time">
-    1 мин. для прочтения
+    2 мин. для прочтения
   </span>
   
 
@@ -955,15 +955,25 @@
   <div class="article-container">
 
     <div class="article-style">
-      <p>Использование набора программ PGP.</p>
+      <p>Использование набора программ GPG (GNU ревлизация PGP).</p>
 <details class="toc-inpage d-print-none  " open>
   <summary class="font-weight-bold">Содержание</summary>
   <nav id="TableOfContents">
   <ul>
     <li><a href="#экспорт-ключей-pgp"><span class="section-num">1</span> Экспорт ключей PGP</a></li>
-    <li><a href="#шифрование"><span class="section-num">2</span> Шифрование</a>
+    <li><a href="#gpg-agent"><span class="section-num">2</span> <code>gpg-agent</code></a>
       <ul>
-        <li><a href="#симметричное-шифрование"><span class="section-num">2.1</span> Симметричное шифрование</a></li>
+        <li><a href="#общая-информация"><span class="section-num">2.1</span> Общая информация</a></li>
+        <li><a href="#запуск"><span class="section-num">2.2</span> Запуск</a></li>
+        <li><a href="#перезапуск-агента"><span class="section-num">2.3</span> Перезапуск агента</a></li>
+        <li><a href="#настройка"><span class="section-num">2.4</span> Настройка</a></li>
+        <li><a href="#pinentry"><span class="section-num">2.5</span> pinentry</a></li>
+        <li><a href="#кэширование-паролей"><span class="section-num">2.6</span> Кэширование паролей</a></li>
+      </ul>
+    </li>
+    <li><a href="#шифрование"><span class="section-num">3</span> Шифрование</a>
+      <ul>
+        <li><a href="#симметричное-шифрование"><span class="section-num">3.1</span> Симметричное шифрование</a></li>
       </ul>
     </li>
   </ul>
@@ -1012,13 +1022,104 @@ gpg -k
 </ul>
 </li>
 </ul>
-<h2 id="шифрование"><span class="section-num">2</span> Шифрование</h2>
+<h2 id="gpg-agent"><span class="section-num">2</span> <code>gpg-agent</code></h2>
+<h3 id="общая-информация"><span class="section-num">2.1</span> Общая информация</h3>
+<ul>
+<li>Используется для временного хранения пароля.</li>
+<li>Предоставляются пользовательские сокеты <code>systemd</code>:
+<ul>
+<li>основной сокет <code>gpg-agent.socket</code> используется <em>gpg</em> для подключения к демону <code>gpg-agent</code>;</li>
+<li>сокет <code>gpg-agent-extra.socket</code> на локальной системе используется для настройки переадресации Unix-сокета с удалённой системы;</li>
+<li><code>gpg-agent-browser.socket</code> позволяет веб-браузерам обращаться к демону <code>gpg-agent</code>;</li>
+<li><code>gpg-agent-ssh.socket</code> может использоваться SSH для кэширования ключей SSH, добавленных программой ssh-add;</li>
+<li><code>dirmngr.socket</code> запускает демон GnuPG, обрабатывающий соединения с серверами ключей.</li>
+</ul>
+</li>
+</ul>
+<h3 id="запуск"><span class="section-num">2.2</span> Запуск</h3>
+<ul>
+<li>
+<p>Активизируются сокеты, а не сам <code>gpg-agent</code>.</p>
+</li>
+<li>
+<p>Запуск под управлением <code>systemd</code>:</p>
+<pre><code class="language-shell">systemctl --user enable --now gpg-agent.socket
+</code></pre>
+</li>
+</ul>
+<h3 id="перезапуск-агента"><span class="section-num">2.3</span> Перезапуск агента</h3>
+<ul>
+<li>
+<p>После обновления настроек следует перезапустить агента, передав команду <code>RELOADAGENT</code> программе <code>gpg-connect-agent</code>:</p>
+<pre><code class="language-shell">gpg-connect-agent reloadagent /bye
+</code></pre>
+</li>
+</ul>
+<h3 id="настройка"><span class="section-num">2.4</span> Настройка</h3>
+<ul>
+<li>
+<p>Настраивается в файле <code>~/.gnupg/gpg-agent.conf</code>.</p>
+</li>
+<li>
+<p>Время жизни для ключей в кэше с момента последнего использования:</p>
+<pre><code class="language-conf-unix">default-cache-ttl 3600
+</code></pre>
+</li>
+</ul>
+<h3 id="pinentry"><span class="section-num">2.5</span> pinentry</h3>
+<ul>
+<li>
+<p>gpg-agent использует pinentry для отображения диалога запроса пароля.</p>
+</li>
+<li>
+<p>Вариант диалога настраивается в файле настроек <code>~/.gnupg/gpg-agent.conf</code>.</p>
+</li>
+<li>
+<p>Чтобы установить конкретный диалог, установите опцию <code>pinentry-program</code> в файле <code>~/.gnupg/gpg-agent.conf</code>, например:</p>
+<pre><code class="language-conf-unix">pinentry-program /usr/bin/pinentry-curses
+</code></pre>
+</li>
+<li>
+<p>Существуют разные реализации pinentry.</p>
+</li>
+<li>
+<p>Просмотр реализаций:</p>
+<ul>
+<li>
+<p>Gentoo:</p>
+<pre><code class="language-shell">eselect pinentry list
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="кэширование-паролей"><span class="section-num">2.6</span> Кэширование паролей</h3>
+<ul>
+<li>
+<p>Время кеширования определяется параметрами <code>max-cache-ttl</code> и <code>default-cache-ttl</code>.</p>
+</li>
+<li>
+<p>Чтобы вводить пароль всего один раз за сеанс, нужно установить их на очень высокое значение, например:</p>
+<pre><code class="language-conf-unix">## gpg-agent.conf
+max-cache-ttl 60480000
+default-cache-ttl 60480000
+</code></pre>
+</li>
+<li>
+<p>Для кэширования паролей в режиме эмуляции SSH следует установить параметры <code>default-cache-ttl-ssh</code> и <code>max-cache-ttl-ssh</code>, например:</p>
+<pre><code class="language-conf-unix">## gpg-agent.conf
+default-cache-ttl-ssh 60480000
+max-cache-ttl-ssh 60480000
+</code></pre>
+</li>
+</ul>
+<h2 id="шифрование"><span class="section-num">3</span> Шифрование</h2>
 <ul>
 <li>Шифрование может быть симметричным и ассиметричным.</li>
 <li>Симметричное шифрование шифруется и расшифровывается приватным ключом или одной и той же парольной фразой.</li>
 <li>Ассиметричное шифрование шифруется публичным ключом, расшифровывается приватным.</li>
 </ul>
-<h3 id="симметричное-шифрование"><span class="section-num">2.1</span> Симметричное шифрование</h3>
+<h3 id="симметричное-шифрование"><span class="section-num">3.1</span> Симметричное шифрование</h3>
 <ul>
 <li>Зашифровать файл:</li>
 </ul>
@@ -1090,7 +1191,49 @@ gpg -k
    
 
    
+
+   
+
+   
       
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
    
 
    
@@ -4504,7 +4647,7 @@ gpg -k
       
 
     
-    <script src="https://yamadharma.github.io/js/vendor-bundle.min.583938d79e0d9d038283176d43703bc5.js"></script>
+    <script src="https://yamadharma.github.io/js/vendor-bundle.min.d26cbef546776b4d6032d1ea3dafadab.js"></script>
 
     
     
@@ -4599,7 +4742,7 @@ gpg -k
       
     
     
-    <script src="https://yamadharma.github.io/ru/js/wowchemy.min.2dc4ec27206b78f9d05ad86312c44710.js"></script>
+    <script src="https://yamadharma.github.io/ru/js/wowchemy.min.c763d55ef59e754183c5c6bb007322c4.js"></script>
 
     
     

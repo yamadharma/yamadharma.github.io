@@ -63,23 +63,19 @@
 &lt;/li&gt;
 &lt;li&gt;Создадим файловые системы:
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;p1 (&lt;code&gt;EFI&lt;/code&gt;):&lt;/p&gt;
+&lt;li&gt;p1 (&lt;code&gt;EFI&lt;/code&gt;):
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;mkfs.vfat -F32 -n EFI /dev/sda1
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;p2 (&lt;code&gt;/boot&lt;/code&gt;):&lt;/p&gt;
+&lt;li&gt;p2 (&lt;code&gt;/boot&lt;/code&gt;):
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;mkfs.ext4 -L boot /dev/sda2
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;p3 (&lt;code&gt;swap&lt;/code&gt;):&lt;/p&gt;
+&lt;li&gt;p3 (&lt;code&gt;swap&lt;/code&gt;):
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;mkswap -L swap /dev/sda3
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;p4 (&lt;code&gt;btrfs&lt;/code&gt;)&lt;/p&gt;
+&lt;li&gt;p4 (&lt;code&gt;btrfs&lt;/code&gt;)
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;mkfs.btrfs /dev/sda4
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
@@ -88,14 +84,12 @@
 &lt;/ul&gt;
 &lt;h2 id=&#34;подготовка-раздела-с-btrfs&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Подготовка раздела с btrfs&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Подмонтируем раздел с btrfs:&lt;/p&gt;
+&lt;li&gt;Подмонтируем раздел с btrfs:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;mkdir /mnt/gentoo
 mount -tbtrfs -orelatime,space_cache,discard,autodefrag,compress=zstd:9 /dev/sda4 /mnt/gentoo/
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Создадим подтома на btrfs:&lt;/p&gt;
+&lt;li&gt;Создадим подтома на btrfs:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;cd /mnt/gentoo/
 btrfs subvol create @
 btrfs subvol create @var
@@ -109,41 +103,35 @@ btrfs subvol create @portage_com
 &lt;/ul&gt;
 &lt;h2 id=&#34;копирование-существующих-файловых-систем&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Копирование существующих файловых систем&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Создадим точку монтирования:&lt;/p&gt;
+&lt;li&gt;Создадим точку монтирования:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;mkdir /mnt/from
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Подмонтируем и скопируем root-партицию:&lt;/p&gt;
+&lt;li&gt;Подмонтируем и скопируем root-партицию:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;mount /dev/vgs/root /mnt/from/
 rsync -av -HS --delete /mnt/from/ /mnt/gentoo/@
 umount /mnt/from/
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Подмонтируем и скопируем &lt;code&gt;/var&lt;/code&gt;:&lt;/p&gt;
+&lt;li&gt;Подмонтируем и скопируем &lt;code&gt;/var&lt;/code&gt;:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;mount /dev/vgs/var /mnt/from/
 rsync -av -HS --delete /mnt/from/ /mnt/gentoo/@var
 umount /mnt/from/
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Подмонтируем и скопируем &lt;code&gt;portage&lt;/code&gt;:&lt;/p&gt;
+&lt;li&gt;Подмонтируем и скопируем &lt;code&gt;portage&lt;/code&gt;:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;mount /dev/vgs/portage /mnt/from/
 rsync -av -HS --delete /mnt/from/ /mnt/gentoo/@portage
 umount /mnt/from/
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Подмонтируем и скопируем &lt;code&gt;portage_local&lt;/code&gt;:&lt;/p&gt;
+&lt;li&gt;Подмонтируем и скопируем &lt;code&gt;portage_local&lt;/code&gt;:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;mount /dev/vgs/portage_local /mnt/from/
 rsync -av -HS --delete /mnt/from/ /mnt/gentoo/@portage_local
 umount /mnt/from/
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Подмонтируем и скопируем &lt;code&gt;/boot&lt;/code&gt;:&lt;/p&gt;
+&lt;li&gt;Подмонтируем и скопируем &lt;code&gt;/boot&lt;/code&gt;:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;mkdir /mnt/to/
 mount /dev/sda2 /mnt/to
 mount /dev/sdb2 /mnt/from/
@@ -155,8 +143,7 @@ umount /mnt/from
 &lt;/ul&gt;
 &lt;h2 id=&#34;установка-загрузчика&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Установка загрузчика&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Перемонтируем файловую систему &lt;code&gt;btrfs&lt;/code&gt;:&lt;/p&gt;
+&lt;li&gt;Перемонтируем файловую систему &lt;code&gt;btrfs&lt;/code&gt;:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;umount /mnt/gentoo
 mount -tbtrfs -orelatime,space_cache,discard,autodefrag,compress=zstd:9,subvol=@ /dev/sda4 /mnt/gentoo/
 mount -tbtrfs -orelatime,space_cache,discard,autodefrag,compress=zstd:9,subvol=@var /dev/sda4 /mnt/gentoo/var
@@ -165,16 +152,14 @@ mount /dev/sda2 /mnt/gentoo/boot/
 mount /dev/sda1 /mnt/gentoo/boot/efi
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Подмонтируем псевдо-файловые системы:&lt;/p&gt;
+&lt;li&gt;Подмонтируем псевдо-файловые системы:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;mount -o bind /dev /mnt/gentoo/dev/
 mount -o bind /proc /mnt/gentoo/proc/
 mount -o bind /sys /mnt/gentoo/sys/
 mount -o bind /run /mnt/gentoo/run/
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Установим загрузчик:&lt;/p&gt;
+&lt;li&gt;Установим загрузчик:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;cd /mnt/gentoo/
 chroot /mnt/gentoo/ /bin/bash
 grub-install /boot/
@@ -184,18 +169,15 @@ grub-mkconfig -o /boot/grub/grub.cfg
 &lt;/ul&gt;
 &lt;h2 id=&#34;создадим-файл-монтирования-fstab&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6&lt;/span&gt; Создадим файл монтирования fstab&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Узнаем идентификатор партиции с файловой системой btrfs:&lt;/p&gt;
+&lt;li&gt;Узнаем идентификатор партиции с файловой системой btrfs:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;blkid /dev/sda4
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Получим строчку:&lt;/p&gt;
+&lt;li&gt;Получим строчку:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;UUID=&amp;quot;&amp;lt;uuid_number&amp;gt;&amp;quot;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Создадим файл &lt;code&gt;/mnt/gentoo/etc/fstab&lt;/code&gt;&lt;/p&gt;
+&lt;li&gt;Создадим файл &lt;code&gt;/mnt/gentoo/etc/fstab&lt;/code&gt;
 &lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;LABEL=&amp;quot;boot-m2&amp;quot;					/boot		ext4	relatime,discard					1 1
 LABEL=&amp;quot;EFI-M2&amp;quot;					/boot/efi	vfat	defaults,discard					0 0
 LABEL=&amp;quot;swap-m2&amp;quot;					none		swap	sw							0 0
@@ -212,27 +194,21 @@ UUID=&amp;quot;&amp;lt;uuid_number&amp;gt;&amp;quot;	/com/lib/portage	btrfs	rela
 &lt;/ul&gt;
 &lt;h2 id=&#34;копирование-специальных-файловых-систем&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7&lt;/span&gt; Копирование специальных файловых систем&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Для образов виртуальных машин следует отключить CoW (copy-on-write).&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Подмонтируем файловую систему &lt;code&gt;btrfs&lt;/code&gt;:&lt;/p&gt;
+&lt;li&gt;Для образов виртуальных машин следует отключить CoW (copy-on-write).&lt;/li&gt;
+&lt;li&gt;Подмонтируем файловую систему &lt;code&gt;btrfs&lt;/code&gt;:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;mount -tbtrfs -orelatime,space_cache,discard,autodefrag,compress=zstd:9,subvol=@vm /dev/sda4 /mnt/gentoo/var/vm
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Отключим для этого подтома CoW:&lt;/p&gt;
+&lt;li&gt;Отключим для этого подтома CoW:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;cd /mnt/gentoo/var/
 chattr +C vm
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Посмотреть результат можно командой:&lt;/p&gt;
+&lt;li&gt;Посмотреть результат можно командой:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;lsattr -a vm
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Скопируем файлы:&lt;/p&gt;
+&lt;li&gt;Скопируем файлы:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;mount /dev/vgs/vm /mnt/from/
 rsync -av -HS --delete /mnt/from/ /mnt/gentoo/var/vm
 umount /mnt/from/

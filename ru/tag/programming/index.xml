@@ -3120,15 +3120,25 @@ merge newbranch
       <link>https://yamadharma.github.io/ru/post/2020/12/18/using-pgp/</link>
       <pubDate>Fri, 18 Dec 2020 12:39:00 +0300</pubDate>
       <guid>https://yamadharma.github.io/ru/post/2020/12/18/using-pgp/</guid>
-      <description>&lt;p&gt;Использование набора программ PGP.&lt;/p&gt;
+      <description>&lt;p&gt;Использование набора программ GPG (GNU ревлизация PGP).&lt;/p&gt;
 &lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
   &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
   &lt;nav id=&#34;TableOfContents&#34;&gt;
   &lt;ul&gt;
     &lt;li&gt;&lt;a href=&#34;#экспорт-ключей-pgp&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Экспорт ключей PGP&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#шифрование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Шифрование&lt;/a&gt;
+    &lt;li&gt;&lt;a href=&#34;#gpg-agent&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; &lt;code&gt;gpg-agent&lt;/code&gt;&lt;/a&gt;
       &lt;ul&gt;
-        &lt;li&gt;&lt;a href=&#34;#симметричное-шифрование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Симметричное шифрование&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#запуск&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Запуск&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#перезапуск-агента&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; Перезапуск агента&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#настройка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.4&lt;/span&gt; Настройка&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#pinentry&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.5&lt;/span&gt; pinentry&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#кэширование-паролей&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.6&lt;/span&gt; Кэширование паролей&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#шифрование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Шифрование&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#симметричное-шифрование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Симметричное шифрование&lt;/a&gt;&lt;/li&gt;
       &lt;/ul&gt;
     &lt;/li&gt;
   &lt;/ul&gt;
@@ -3177,13 +3187,104 @@ gpg -k
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;шифрование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Шифрование&lt;/h2&gt;
+&lt;h2 id=&#34;gpg-agent&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; &lt;code&gt;gpg-agent&lt;/code&gt;&lt;/h2&gt;
+&lt;h3 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Общая информация&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Используется для временного хранения пароля.&lt;/li&gt;
+&lt;li&gt;Предоставляются пользовательские сокеты &lt;code&gt;systemd&lt;/code&gt;:
+&lt;ul&gt;
+&lt;li&gt;основной сокет &lt;code&gt;gpg-agent.socket&lt;/code&gt; используется &lt;em&gt;gpg&lt;/em&gt; для подключения к демону &lt;code&gt;gpg-agent&lt;/code&gt;;&lt;/li&gt;
+&lt;li&gt;сокет &lt;code&gt;gpg-agent-extra.socket&lt;/code&gt; на локальной системе используется для настройки переадресации Unix-сокета с удалённой системы;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;gpg-agent-browser.socket&lt;/code&gt; позволяет веб-браузерам обращаться к демону &lt;code&gt;gpg-agent&lt;/code&gt;;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;gpg-agent-ssh.socket&lt;/code&gt; может использоваться SSH для кэширования ключей SSH, добавленных программой ssh-add;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;dirmngr.socket&lt;/code&gt; запускает демон GnuPG, обрабатывающий соединения с серверами ключей.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;запуск&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Запуск&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Активизируются сокеты, а не сам &lt;code&gt;gpg-agent&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Запуск под управлением &lt;code&gt;systemd&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;systemctl --user enable --now gpg-agent.socket
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;перезапуск-агента&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; Перезапуск агента&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;После обновления настроек следует перезапустить агента, передав команду &lt;code&gt;RELOADAGENT&lt;/code&gt; программе &lt;code&gt;gpg-connect-agent&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;gpg-connect-agent reloadagent /bye
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;настройка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.4&lt;/span&gt; Настройка&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Настраивается в файле &lt;code&gt;~/.gnupg/gpg-agent.conf&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Время жизни для ключей в кэше с момента последнего использования:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;default-cache-ttl 3600
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;pinentry&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.5&lt;/span&gt; pinentry&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;gpg-agent использует pinentry для отображения диалога запроса пароля.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Вариант диалога настраивается в файле настроек &lt;code&gt;~/.gnupg/gpg-agent.conf&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Чтобы установить конкретный диалог, установите опцию &lt;code&gt;pinentry-program&lt;/code&gt; в файле &lt;code&gt;~/.gnupg/gpg-agent.conf&lt;/code&gt;, например:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;pinentry-program /usr/bin/pinentry-curses
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Существуют разные реализации pinentry.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Просмотр реализаций:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Gentoo:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;eselect pinentry list
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;кэширование-паролей&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.6&lt;/span&gt; Кэширование паролей&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Время кеширования определяется параметрами &lt;code&gt;max-cache-ttl&lt;/code&gt; и &lt;code&gt;default-cache-ttl&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Чтобы вводить пароль всего один раз за сеанс, нужно установить их на очень высокое значение, например:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;## gpg-agent.conf
+max-cache-ttl 60480000
+default-cache-ttl 60480000
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Для кэширования паролей в режиме эмуляции SSH следует установить параметры &lt;code&gt;default-cache-ttl-ssh&lt;/code&gt; и &lt;code&gt;max-cache-ttl-ssh&lt;/code&gt;, например:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;## gpg-agent.conf
+default-cache-ttl-ssh 60480000
+max-cache-ttl-ssh 60480000
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;шифрование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Шифрование&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;Шифрование может быть симметричным и ассиметричным.&lt;/li&gt;
 &lt;li&gt;Симметричное шифрование шифруется и расшифровывается приватным ключом или одной и той же парольной фразой.&lt;/li&gt;
 &lt;li&gt;Ассиметричное шифрование шифруется публичным ключом, расшифровывается приватным.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;симметричное-шифрование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Симметричное шифрование&lt;/h3&gt;
+&lt;h3 id=&#34;симметричное-шифрование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Симметричное шифрование&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;Зашифровать файл:&lt;/li&gt;
 &lt;/ul&gt;

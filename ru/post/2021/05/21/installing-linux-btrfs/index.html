@@ -363,7 +363,7 @@
         content="2021-05-21T20:38:00&#43;03:00"
       />
     
-    <meta property="article:modified_time" content="2022-05-26T14:33:00&#43;03:00">
+    <meta property="article:modified_time" content="2022-06-18T16:40:00&#43;03:00">
   
 
   
@@ -392,7 +392,7 @@
   "headline": "Установка Linux на btrfs",
   
   "datePublished": "2021-05-21T20:38:00+03:00",
-  "dateModified": "2022-05-26T14:33:00+03:00",
+  "dateModified": "2022-06-18T16:40:00+03:00",
   
   "author": {
     "@type": "Person",
@@ -914,7 +914,7 @@
           Обновлено
       
     
-    2022-05-26
+    2022-06-18
   </span>
   
 
@@ -1001,23 +1001,19 @@
 </li>
 <li>Создадим файловые системы:
 <ul>
-<li>
-<p>p1 (<code>EFI</code>):</p>
+<li>p1 (<code>EFI</code>):
 <pre><code class="language-shell">mkfs.vfat -F32 -n EFI /dev/sda1
 </code></pre>
 </li>
-<li>
-<p>p2 (<code>/boot</code>):</p>
+<li>p2 (<code>/boot</code>):
 <pre><code class="language-shell">mkfs.ext4 -L boot /dev/sda2
 </code></pre>
 </li>
-<li>
-<p>p3 (<code>swap</code>):</p>
+<li>p3 (<code>swap</code>):
 <pre><code class="language-shell">mkswap -L swap /dev/sda3
 </code></pre>
 </li>
-<li>
-<p>p4 (<code>btrfs</code>)</p>
+<li>p4 (<code>btrfs</code>)
 <pre><code class="language-shell">mkfs.btrfs /dev/sda4
 </code></pre>
 </li>
@@ -1026,14 +1022,12 @@
 </ul>
 <h2 id="подготовка-раздела-с-btrfs"><span class="section-num">3</span> Подготовка раздела с btrfs</h2>
 <ul>
-<li>
-<p>Подмонтируем раздел с btrfs:</p>
+<li>Подмонтируем раздел с btrfs:
 <pre><code class="language-shell">mkdir /mnt/gentoo
 mount -tbtrfs -orelatime,space_cache,discard,autodefrag,compress=zstd:9 /dev/sda4 /mnt/gentoo/
 </code></pre>
 </li>
-<li>
-<p>Создадим подтома на btrfs:</p>
+<li>Создадим подтома на btrfs:
 <pre><code class="language-shell">cd /mnt/gentoo/
 btrfs subvol create @
 btrfs subvol create @var
@@ -1047,41 +1041,35 @@ btrfs subvol create @portage_com
 </ul>
 <h2 id="копирование-существующих-файловых-систем"><span class="section-num">4</span> Копирование существующих файловых систем</h2>
 <ul>
-<li>
-<p>Создадим точку монтирования:</p>
+<li>Создадим точку монтирования:
 <pre><code class="language-shell">mkdir /mnt/from
 </code></pre>
 </li>
-<li>
-<p>Подмонтируем и скопируем root-партицию:</p>
+<li>Подмонтируем и скопируем root-партицию:
 <pre><code class="language-shell">mount /dev/vgs/root /mnt/from/
 rsync -av -HS --delete /mnt/from/ /mnt/gentoo/@
 umount /mnt/from/
 </code></pre>
 </li>
-<li>
-<p>Подмонтируем и скопируем <code>/var</code>:</p>
+<li>Подмонтируем и скопируем <code>/var</code>:
 <pre><code class="language-shell">mount /dev/vgs/var /mnt/from/
 rsync -av -HS --delete /mnt/from/ /mnt/gentoo/@var
 umount /mnt/from/
 </code></pre>
 </li>
-<li>
-<p>Подмонтируем и скопируем <code>portage</code>:</p>
+<li>Подмонтируем и скопируем <code>portage</code>:
 <pre><code class="language-shell">mount /dev/vgs/portage /mnt/from/
 rsync -av -HS --delete /mnt/from/ /mnt/gentoo/@portage
 umount /mnt/from/
 </code></pre>
 </li>
-<li>
-<p>Подмонтируем и скопируем <code>portage_local</code>:</p>
+<li>Подмонтируем и скопируем <code>portage_local</code>:
 <pre><code class="language-shell">mount /dev/vgs/portage_local /mnt/from/
 rsync -av -HS --delete /mnt/from/ /mnt/gentoo/@portage_local
 umount /mnt/from/
 </code></pre>
 </li>
-<li>
-<p>Подмонтируем и скопируем <code>/boot</code>:</p>
+<li>Подмонтируем и скопируем <code>/boot</code>:
 <pre><code class="language-shell">mkdir /mnt/to/
 mount /dev/sda2 /mnt/to
 mount /dev/sdb2 /mnt/from/
@@ -1093,8 +1081,7 @@ umount /mnt/from
 </ul>
 <h2 id="установка-загрузчика"><span class="section-num">5</span> Установка загрузчика</h2>
 <ul>
-<li>
-<p>Перемонтируем файловую систему <code>btrfs</code>:</p>
+<li>Перемонтируем файловую систему <code>btrfs</code>:
 <pre><code class="language-shell">umount /mnt/gentoo
 mount -tbtrfs -orelatime,space_cache,discard,autodefrag,compress=zstd:9,subvol=@ /dev/sda4 /mnt/gentoo/
 mount -tbtrfs -orelatime,space_cache,discard,autodefrag,compress=zstd:9,subvol=@var /dev/sda4 /mnt/gentoo/var
@@ -1103,16 +1090,14 @@ mount /dev/sda2 /mnt/gentoo/boot/
 mount /dev/sda1 /mnt/gentoo/boot/efi
 </code></pre>
 </li>
-<li>
-<p>Подмонтируем псевдо-файловые системы:</p>
+<li>Подмонтируем псевдо-файловые системы:
 <pre><code class="language-shell">mount -o bind /dev /mnt/gentoo/dev/
 mount -o bind /proc /mnt/gentoo/proc/
 mount -o bind /sys /mnt/gentoo/sys/
 mount -o bind /run /mnt/gentoo/run/
 </code></pre>
 </li>
-<li>
-<p>Установим загрузчик:</p>
+<li>Установим загрузчик:
 <pre><code class="language-shell">cd /mnt/gentoo/
 chroot /mnt/gentoo/ /bin/bash
 grub-install /boot/
@@ -1122,18 +1107,15 @@ grub-mkconfig -o /boot/grub/grub.cfg
 </ul>
 <h2 id="создадим-файл-монтирования-fstab"><span class="section-num">6</span> Создадим файл монтирования fstab</h2>
 <ul>
-<li>
-<p>Узнаем идентификатор партиции с файловой системой btrfs:</p>
+<li>Узнаем идентификатор партиции с файловой системой btrfs:
 <pre><code class="language-shell">blkid /dev/sda4
 </code></pre>
 </li>
-<li>
-<p>Получим строчку:</p>
+<li>Получим строчку:
 <pre><code class="language-shell">UUID=&quot;&lt;uuid_number&gt;&quot;
 </code></pre>
 </li>
-<li>
-<p>Создадим файл <code>/mnt/gentoo/etc/fstab</code></p>
+<li>Создадим файл <code>/mnt/gentoo/etc/fstab</code>
 <pre><code class="language-conf-unix">LABEL=&quot;boot-m2&quot;					/boot		ext4	relatime,discard					1 1
 LABEL=&quot;EFI-M2&quot;					/boot/efi	vfat	defaults,discard					0 0
 LABEL=&quot;swap-m2&quot;					none		swap	sw							0 0
@@ -1150,27 +1132,21 @@ UUID=&quot;&lt;uuid_number&gt;&quot;	/com/lib/portage	btrfs	relatime,discard,aut
 </ul>
 <h2 id="копирование-специальных-файловых-систем"><span class="section-num">7</span> Копирование специальных файловых систем</h2>
 <ul>
-<li>
-<p>Для образов виртуальных машин следует отключить CoW (copy-on-write).</p>
-</li>
-<li>
-<p>Подмонтируем файловую систему <code>btrfs</code>:</p>
+<li>Для образов виртуальных машин следует отключить CoW (copy-on-write).</li>
+<li>Подмонтируем файловую систему <code>btrfs</code>:
 <pre><code class="language-shell">mount -tbtrfs -orelatime,space_cache,discard,autodefrag,compress=zstd:9,subvol=@vm /dev/sda4 /mnt/gentoo/var/vm
 </code></pre>
 </li>
-<li>
-<p>Отключим для этого подтома CoW:</p>
+<li>Отключим для этого подтома CoW:
 <pre><code class="language-shell">cd /mnt/gentoo/var/
 chattr +C vm
 </code></pre>
 </li>
-<li>
-<p>Посмотреть результат можно командой:</p>
+<li>Посмотреть результат можно командой:
 <pre><code class="language-shell">lsattr -a vm
 </code></pre>
 </li>
-<li>
-<p>Скопируем файлы:</p>
+<li>Скопируем файлы:
 <pre><code class="language-shell">mount /dev/vgs/vm /mnt/from/
 rsync -av -HS --delete /mnt/from/ /mnt/gentoo/var/vm
 umount /mnt/from/
@@ -1179,6 +1155,48 @@ umount /mnt/from/
 </ul>
       
 
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
 
    
 
@@ -4637,7 +4655,7 @@ umount /mnt/from/
       
 
     
-    <script src="https://yamadharma.github.io/js/vendor-bundle.min.583938d79e0d9d038283176d43703bc5.js"></script>
+    <script src="https://yamadharma.github.io/js/vendor-bundle.min.d26cbef546776b4d6032d1ea3dafadab.js"></script>
 
     
     
@@ -4732,7 +4750,7 @@ umount /mnt/from/
       
     
     
-    <script src="https://yamadharma.github.io/ru/js/wowchemy.min.2dc4ec27206b78f9d05ad86312c44710.js"></script>
+    <script src="https://yamadharma.github.io/ru/js/wowchemy.min.c763d55ef59e754183c5c6bb007322c4.js"></script>
 
     
     

@@ -214,7 +214,12 @@
   &lt;nav id=&#34;TableOfContents&#34;&gt;
   &lt;ul&gt;
     &lt;li&gt;&lt;a href=&#34;#прагматика&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Прагматика&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#реализация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Реализация&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#реализация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Реализация&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#использовать-стандартное-поведение-сокращения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Использовать стандартное поведение сокращения&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#создание-специального-сокращения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Создание специального сокращения&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#использование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Использование&lt;/a&gt;&lt;/li&gt;
   &lt;/ul&gt;
 &lt;/nav&gt;
@@ -229,8 +234,19 @@
 &lt;h2 id=&#34;реализация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Реализация&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;Релизация строится на добавлении сокращений для вкладок (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/06/26/hugo-tabbed-view/&#34;&gt;Hugo. Вкладки&lt;/a&gt;).&lt;/li&gt;
-&lt;li&gt;При использовании сокращения &lt;code&gt;tab&lt;/code&gt; отображается не видеоплеер, а код.&lt;/li&gt;
-&lt;li&gt;Поэтому я дополнительно ввёл сокращение &lt;code&gt;rtab&lt;/code&gt; (raw tab):&lt;/li&gt;
+&lt;li&gt;Проблема: При использовании сокращения &lt;code&gt;tab&lt;/code&gt; отображается не видеоплеер, а код.&lt;/li&gt;
+&lt;li&gt;Причина: Код внутри сокращения обрабатывается как Markdown.&lt;/li&gt;
+&lt;li&gt;Путь решения: Нужно запретить обработку кода внутри сокращения.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;использовать-стандартное-поведение-сокращения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Использовать стандартное поведение сокращения&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Если после сокращения идёт непосредственно символ &lt;code&gt;&amp;lt;&lt;/code&gt; (без пробела), то внутреннее содержание сокращения дальше не обрабатывается.&lt;/li&gt;
+&lt;li&gt;Предподагается, что там может быть html-код.&lt;/li&gt;
+&lt;li&gt;Возникшая проблема: первая вкладка отрабатывает ожидаемым образом, последующие же всё равно обрабатывают содержимое как Markdown.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;создание-специального-сокращения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Создание специального сокращения&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Вводится сокращение &lt;code&gt;rtab&lt;/code&gt; (raw tab):&lt;/li&gt;
 &lt;/ul&gt;
 &lt;!--listend--&gt;
 &lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;{{ $tabName := .Get &amp;quot;tabName&amp;quot; }}
@@ -285,13 +301,13 @@
 		
 
 		&lt;a class=&#34;nav-item nav-link  active &#34;
-		   id=&#34;nav-bcadef&#34; data-toggle=&#34;tab&#34; href=&#34;#bcadef&#34;
+		   id=&#34;nav-adbcfe&#34; data-toggle=&#34;tab&#34; href=&#34;#adbcfe&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;RuTube&lt;/a&gt;
 
 		
 
 		&lt;a class=&#34;nav-item nav-link &#34;
-		   id=&#34;nav-bcefad&#34; data-toggle=&#34;tab&#34; href=&#34;#bcefad&#34;
+		   id=&#34;nav-bdfaec&#34; data-toggle=&#34;tab&#34; href=&#34;#bdfaec&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;Youtube&lt;/a&gt;
 
 		
@@ -307,7 +323,7 @@
 
 
 
-&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;bcadef&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;adbcfe&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	
 
@@ -330,7 +346,7 @@
 
 
 
-&lt;div class=&#34;tab-pane fade show &#34; id=&#34;bcefad&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show &#34; id=&#34;bdfaec&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	
 
@@ -464,7 +480,7 @@
 		
 
 		&lt;a class=&#34;nav-item nav-link  active &#34;
-		   id=&#34;nav-bdcfae&#34; data-toggle=&#34;tab&#34; href=&#34;#bdcfae&#34;
+		   id=&#34;nav-fbdcea&#34; data-toggle=&#34;tab&#34; href=&#34;#fbdcea&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;Tab1&lt;/a&gt;
 
 		
@@ -480,7 +496,7 @@
 
 
 
-&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;bdcfae&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;fbdcea&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	&lt;pre&gt;&lt;code&gt;    **Tab 1 Content**
 &lt;/code&gt;&lt;/pre&gt;
@@ -530,19 +546,19 @@
 		
 
 		&lt;a class=&#34;nav-item nav-link  active &#34;
-		   id=&#34;nav-cabfed&#34; data-toggle=&#34;tab&#34; href=&#34;#cabfed&#34;
+		   id=&#34;nav-afcdeb&#34; data-toggle=&#34;tab&#34; href=&#34;#afcdeb&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;Tab1&lt;/a&gt;
 
 		
 
 		&lt;a class=&#34;nav-item nav-link  ml-auto &#34;
-		   id=&#34;nav-acbfde&#34; data-toggle=&#34;tab&#34; href=&#34;#acbfde&#34;
+		   id=&#34;nav-fbdace&#34; data-toggle=&#34;tab&#34; href=&#34;#fbdace&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;Tab2&lt;/a&gt;
 
 		
 
 		&lt;a class=&#34;nav-item nav-link &#34;
-		   id=&#34;nav-bfdcae&#34; data-toggle=&#34;tab&#34; href=&#34;#bfdcae&#34;
+		   id=&#34;nav-eadcbf&#34; data-toggle=&#34;tab&#34; href=&#34;#eadcbf&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;Tab3&lt;/a&gt;
 
 		
@@ -558,7 +574,7 @@
 
 
 
-&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;cabfed&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;afcdeb&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	&lt;pre&gt;&lt;code&gt;    **Tab 1 Content**
 &lt;/code&gt;&lt;/pre&gt;
@@ -571,7 +587,7 @@
 
 
 
-&lt;div class=&#34;tab-pane fade show &#34; id=&#34;acbfde&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show &#34; id=&#34;fbdace&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	&lt;pre&gt;&lt;code&gt;    **Tab 2 Content**
 &lt;/code&gt;&lt;/pre&gt;
@@ -584,7 +600,7 @@
 
 
 
-&lt;div class=&#34;tab-pane fade show &#34; id=&#34;bfdcae&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show &#34; id=&#34;eadcbf&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	&lt;pre&gt;&lt;code&gt;    **Tab 3 Content**
 &lt;/code&gt;&lt;/pre&gt;

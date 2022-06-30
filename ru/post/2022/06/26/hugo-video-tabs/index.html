@@ -363,7 +363,7 @@
         content="2022-06-26T18:46:00&#43;03:00"
       />
     
-    <meta property="article:modified_time" content="2022-06-26T19:42:00&#43;03:00">
+    <meta property="article:modified_time" content="2022-06-27T17:57:00&#43;03:00">
   
 
   
@@ -392,7 +392,7 @@
   "headline": "Hugo. Видео во вкладках",
   
   "datePublished": "2022-06-26T18:46:00+03:00",
-  "dateModified": "2022-06-26T19:42:00+03:00",
+  "dateModified": "2022-06-27T17:57:00+03:00",
   
   "author": {
     "@type": "Person",
@@ -914,7 +914,7 @@
           Обновлено
       
     
-    2022-06-26
+    2022-06-27
   </span>
   
 
@@ -923,7 +923,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-reading-time">
-    1 мин. для прочтения
+    2 мин. для прочтения
   </span>
   
 
@@ -961,7 +961,12 @@
   <nav id="TableOfContents">
   <ul>
     <li><a href="#прагматика"><span class="section-num">1</span> Прагматика</a></li>
-    <li><a href="#реализация"><span class="section-num">2</span> Реализация</a></li>
+    <li><a href="#реализация"><span class="section-num">2</span> Реализация</a>
+      <ul>
+        <li><a href="#использовать-стандартное-поведение-сокращения"><span class="section-num">2.1</span> Использовать стандартное поведение сокращения</a></li>
+        <li><a href="#создание-специального-сокращения"><span class="section-num">2.2</span> Создание специального сокращения</a></li>
+      </ul>
+    </li>
     <li><a href="#использование"><span class="section-num">3</span> Использование</a></li>
   </ul>
 </nav>
@@ -976,8 +981,19 @@
 <h2 id="реализация"><span class="section-num">2</span> Реализация</h2>
 <ul>
 <li>Релизация строится на добавлении сокращений для вкладок (см. <a href="https://yamadharma.github.io/ru/post/2022/06/26/hugo-tabbed-view/">Hugo. Вкладки</a>).</li>
-<li>При использовании сокращения <code>tab</code> отображается не видеоплеер, а код.</li>
-<li>Поэтому я дополнительно ввёл сокращение <code>rtab</code> (raw tab):</li>
+<li>Проблема: При использовании сокращения <code>tab</code> отображается не видеоплеер, а код.</li>
+<li>Причина: Код внутри сокращения обрабатывается как Markdown.</li>
+<li>Путь решения: Нужно запретить обработку кода внутри сокращения.</li>
+</ul>
+<h3 id="использовать-стандартное-поведение-сокращения"><span class="section-num">2.1</span> Использовать стандартное поведение сокращения</h3>
+<ul>
+<li>Если после сокращения идёт непосредственно символ <code>&lt;</code> (без пробела), то внутреннее содержание сокращения дальше не обрабатывается.</li>
+<li>Предподагается, что там может быть html-код.</li>
+<li>Возникшая проблема: первая вкладка отрабатывает ожидаемым образом, последующие же всё равно обрабатывают содержимое как Markdown.</li>
+</ul>
+<h3 id="создание-специального-сокращения"><span class="section-num">2.2</span> Создание специального сокращения</h3>
+<ul>
+<li>Вводится сокращение <code>rtab</code> (raw tab):</li>
 </ul>
 <!--listend-->
 <pre><code class="language-html">{{ $tabName := .Get &quot;tabName&quot; }}
@@ -1032,13 +1048,13 @@
 		
 
 		<a class="nav-item nav-link  active "
-		   id="nav-bcadef" data-toggle="tab" href="#bcadef"
+		   id="nav-adbcfe" data-toggle="tab" href="#adbcfe"
 		   role="tab" aria-controls="nav-home" aria-selected="true">RuTube</a>
 
 		
 
 		<a class="nav-item nav-link "
-		   id="nav-bcefad" data-toggle="tab" href="#bcefad"
+		   id="nav-bdfaec" data-toggle="tab" href="#bdfaec"
 		   role="tab" aria-controls="nav-home" aria-selected="true">Youtube</a>
 
 		
@@ -1054,7 +1070,7 @@
 
 
 
-<div class="tab-pane fade show active " id="bcadef" role="tabpanel" aria-labelledby="nav-1">
+<div class="tab-pane fade show active " id="adbcfe" role="tabpanel" aria-labelledby="nav-1">
 
 	
 
@@ -1077,7 +1093,7 @@
 
 
 
-<div class="tab-pane fade show " id="bcefad" role="tabpanel" aria-labelledby="nav-1">
+<div class="tab-pane fade show " id="bdfaec" role="tabpanel" aria-labelledby="nav-1">
 
 	
 
@@ -1098,6 +1114,8 @@
 </ul>
       
 
+
+   
 
    
 

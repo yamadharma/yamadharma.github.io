@@ -5,12 +5,368 @@
     <link>https://yamadharma.github.io/ru/tag/sysadmin/</link>
       <atom:link href="https://yamadharma.github.io/ru/tag/sysadmin/index.xml" rel="self" type="application/rss+xml" />
     <description>sysadmin</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2022 Dmitry S. Kulyabov</copyright><lastBuildDate>Fri, 03 Jun 2022 12:24:00 +0300</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2022 Dmitry S. Kulyabov</copyright><lastBuildDate>Sun, 24 Jul 2022 16:14:00 +0300</lastBuildDate>
     <image>
       <url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url>
       <title>sysadmin</title>
       <link>https://yamadharma.github.io/ru/tag/sysadmin/</link>
     </image>
+    
+    <item>
+      <title>Утилита module</title>
+      <link>https://yamadharma.github.io/ru/post/2022/07/24/module-utility/</link>
+      <pubDate>Sun, 24 Jul 2022 16:14:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2022/07/24/module-utility/</guid>
+      <description>&lt;p&gt;Утилита управления переменными окружения.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#environment-modules&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Environment Modules&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#lmod&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Lmod&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#использование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Использование&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#основные-команды&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Основные команды&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#примеры-использования&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Примеры использования&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Для удобства управления переменными окружения используется утилита &lt;code&gt;module&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Каждому приложению соответствует конфигурационный файл (модуль), описывающий, как необходимо изменить переменные окружения для работы данного приложения.&lt;/li&gt;
+&lt;li&gt;Состояния модуля:
+&lt;ul&gt;
+&lt;li&gt;загружен: необходимые значения добавляются к текущим переменным окружения;&lt;/li&gt;
+&lt;li&gt;выгружен: настройки, соответствующие данному приложению, удаляются из переменных окружения.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Возможно независимо управлять несколькими модулями.&lt;/li&gt;
+&lt;li&gt;Существует несколько программ, реализующих утилиту &lt;code&gt;module&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;environment-modules&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Environment Modules&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Сайт: &lt;a href=&#34;http://modules.sourceforge.net/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;http://modules.sourceforge.net/&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Докуменация на английском языке: &lt;a href=&#34;http://modules.sourceforge.net/man/module.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;http://modules.sourceforge.net/man/module.html&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Оригинальная утилита.&lt;/li&gt;
+&lt;li&gt;Создана примерно в 1990 году.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;lmod&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Lmod&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Сайт: &lt;a href=&#34;https://www.tacc.utexas.edu/research-development/tacc-projects/lmod&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.tacc.utexas.edu/research-development/tacc-projects/lmod&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Докуменация на английском языке: &lt;a href=&#34;https://lmod.readthedocs.io/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://lmod.readthedocs.io/&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Развитие &lt;em&gt;Environment Modules&lt;/em&gt;.
+&lt;ul&gt;
+&lt;li&gt;Поддерживает файлы конфигурации &lt;em&gt;Environment Modules&lt;/em&gt;;&lt;/li&gt;
+&lt;li&gt;совместимая на уровне параметров командной строки.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;использование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Использование&lt;/h2&gt;
+&lt;h3 id=&#34;основные-команды&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Основные команды&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;module avail&lt;/code&gt; : вывести список доступных модулей;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;module list&lt;/code&gt; : вывести список загруженных модулей;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;module load module1&lt;/code&gt; : загрузить модуль module1 версии version;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;module unload module1&lt;/code&gt; : выгрузить модуль module1 версии version;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;module swap module1 module2&lt;/code&gt; : заменить загруженный модуль module1 на module2;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;module purge&lt;/code&gt; : выгрузить все загруженные модули;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;module whatis module1&lt;/code&gt; : показать информацию о модуле module1;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;module save [env_name]&lt;/code&gt; : сохранить текущий набор загруженных модулей под именем env_name. Если не указывать имя, то набор будет перезаписан набор по умолчанию;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;module restore [env_name]&lt;/code&gt; : загрузить набор сохранённых модулей;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;module describe [env_name]&lt;/code&gt; : показать состав набора сохранённых модулей&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;примеры-использования&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Примеры использования&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Просмотр загруженных модулей:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ module list
+Currently Loaded Modules:
+1) autotools    2) prun/1.2    3) gnu7/7.3.0    4) openmpi3/3.1.3    5) ohpc
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Просмотр доступных модулей:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ module avail
+​- /opt/ohpc/pub/modulefiles -
+CUDA/10.0                   cnpy_lib/1.0           hpcx/hpcx-stack
+Python/Anaconda_v10.2019    gnu7/7.3.0 (L)         hpcx/hpcx (D)
+EasyBuild/3.7.1             fltk/v1.3.5            hwloc/1.11.10
+Где:
+D: модуль, загружаемый по умолчанию;
+L: модуль, загруженный в настоящий момент.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Пример: выгрузка всех модулей и загрузка модулей CUDA/10.2 и Python/Anaconda_v10.2019:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ module purge
+$ module load CUDA/10.2 Python/Anaconda_v10.2019
+$ module list
+Currently Loaded Modules:
+1) CUDA/10.2    2) Python/Anaconda_v10.2019
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Сохранение набора модулей по умолчанию:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ module save
+Saved current collection of modules to: &amp;quot;default&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Virtual Desktop Infrastructure</title>
+      <link>https://yamadharma.github.io/ru/post/2022/07/23/virtual-desktop-infrastructure/</link>
+      <pubDate>Sat, 23 Jul 2022 19:29:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2022/07/23/virtual-desktop-infrastructure/</guid>
+      <description>&lt;p&gt;Инфраструктура виртуальных рабочих столов.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#обшая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Обшая информация&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#основные-элементы-vdi&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Основные элементы VDI&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#программное-обеспечение&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Программное обеспечение&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#свободное&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Свободное&lt;/a&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&#34;#ravada-vdi&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1.1&lt;/span&gt; Ravada VDI&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#openuds&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1.2&lt;/span&gt; OpenUDS&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;обшая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Обшая информация&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Virtual Desktop Infrastructure (VDI) &amp;mdash; инфраструктура виртуальных рабочих столов.&lt;/li&gt;
+&lt;li&gt;Общее название идеологии, согласно которой сотрудники для выполнения своих задач используют удаленные рабочие места, организованные на виртуальных машинах.&lt;/li&gt;
+&lt;li&gt;Эта концепция похожа на использование терминального сервера.&lt;/li&gt;
+&lt;li&gt;Отличается тем, что такой терминальный сервер организуется в виртуальной машине для каждого сотрудника отдельно.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;основные-элементы-vdi&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Основные элементы VDI&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Система управления виртуальными машинами.&lt;/li&gt;
+&lt;li&gt;Брокер соединений от пользователя к виртуальным машинам, единая точка входа пользователей с аутентификацией.&lt;/li&gt;
+&lt;li&gt;Клиентское приложение или web-приложение для доступа к удалённому рабочему месту.&lt;/li&gt;
+&lt;li&gt;Использование эталонного образа виртуальной машины, который будет клонироваться при создании виртуальной машины.&lt;/li&gt;
+&lt;li&gt;Возможность создавать виртуальные машины по требованию пользователя.&lt;/li&gt;
+&lt;li&gt;Сквозная аутентификация (SSO) в системе управления VDI и гостевой ОС внутри виртуальной машины.&lt;/li&gt;
+&lt;li&gt;Возможность выполнения дополнительных скриптов и применения настроек после разворачивания виртуальной машины.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;программное-обеспечение&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Программное обеспечение&lt;/h2&gt;
+&lt;h3 id=&#34;свободное&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Свободное&lt;/h3&gt;
+&lt;h4 id=&#34;ravada-vdi&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1.1&lt;/span&gt; Ravada VDI&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Сайт: &lt;a href=&#34;https://ravada.upc.edu/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://ravada.upc.edu/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Минимальный вариант VDI.&lt;/li&gt;
+&lt;li&gt;Особенности:
+&lt;ul&gt;
+&lt;li&gt;KVM-бэкенд для Windows и Linux ВМ;&lt;/li&gt;
+&lt;li&gt;режим киоска;&lt;/li&gt;
+&lt;li&gt;удаленный доступ по протоколу Spice;&lt;/li&gt;
+&lt;li&gt;быстрое клонирование ВМ для каждого пользователя;&lt;/li&gt;
+&lt;li&gt;проброс USB-устройств;&lt;/li&gt;
+&lt;li&gt;настраиваемый интерфейс конечных пользователей;&lt;/li&gt;
+&lt;li&gt;администрирование из веб-браузера.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;openuds&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1.2&lt;/span&gt; OpenUDS&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Репозиторий: &lt;a href=&#34;https://github.com/dkmstr/openuds&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/dkmstr/openuds&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Продвинутая VDI.&lt;/li&gt;
+&lt;li&gt;Использует различные системы управления VM (PVE, OpenNebula, OpenStack).&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Принципы работы на суперкомпьютере</title>
+      <link>https://yamadharma.github.io/ru/post/2022/07/22/principles-using-supercomputer/</link>
+      <pubDate>Fri, 22 Jul 2022 10:51:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2022/07/22/principles-using-supercomputer/</guid>
+      <description>&lt;p&gt;Общие положения по работе клиентов на суперкомпьютере.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#что-такое-суперкомпьютер-кластер&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Что такое суперкомпьютер-кластер&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#этапы-работы-на-суперкомпьютере&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Этапы работы на суперкомпьютере&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#удаленный-доступ-к-суперкомпьютеру&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Удаленный доступ к суперкомпьютеру&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#передача-файлов-на-суперкомпьютер&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Передача файлов на суперкомпьютер&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#хранение-файлов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Хранение файлов&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;что-такое-суперкомпьютер-кластер&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Что такое суперкомпьютер-кластер&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Вычислительный кластер (суперкомпьютер) состоит из вычислительных узлов, объединенных высокоскоростной коммуникационной сетью.&lt;/li&gt;
+&lt;li&gt;Каждый вычислительный узел имеет свою оперативную память и твердотельный накопитель, а также подключен к общему параллельному сетевому хранилищу.&lt;/li&gt;
+&lt;li&gt;Чтобы независимые вычислительные узлы работали как единый компьютер, используется специальное параллельное программное обеспечение.&lt;/li&gt;
+&lt;li&gt;Пользователь подключается к управляющему узлу, на котором нельзя запускать расчёты, с него можно только выполнять постановку задач в очередь.&lt;/li&gt;
+&lt;li&gt;Непосредственное же выполнение расчётов происходит на мощных вычислительных узлах кластера, на которые задачи распределяет менеждер очереди задач (программа).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;этапы-работы-на-суперкомпьютере&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Этапы работы на суперкомпьютере&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Пользователь подготавливает на своём компьютере исходные данные для имеющегося прикладного программного обеспечения суперкомпьютера или пишет собственную параллельную программу.&lt;/li&gt;
+&lt;li&gt;Пользователь подключается к головному узлу кластера по SSH-протоколу (консолью), загружает исходные данные и ставит свою задачу в очередь на расчёт.&lt;/li&gt;
+&lt;li&gt;Пользователь загружает результат с вычислительного кластера на свой персональный компьютер и изучает его локально.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;удаленный-доступ-к-суперкомпьютеру&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Удаленный доступ к суперкомпьютеру&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Удалённое подключение к суперкомпьютеру осуществляется через головной узел по протоколу SSH.&lt;/li&gt;
+&lt;li&gt;В операционных системах Linux и Mac OS для подключения используется приложение ssh, для Microsoft Windows рекомендуется свободно распространяемая программа PuTTY.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;передача-файлов-на-суперкомпьютер&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Передача файлов на суперкомпьютер&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Для передачи файлов на вычислительный кластер воспользуйтесь программами, поддерживающими протокол SFTP.&lt;/li&gt;
+&lt;li&gt;Для MS Windows рекомендуется программа WinSCP, для ОС Linux &amp;mdash; scp, для MacOS &amp;mdash; программы scp/Cyberduck/Mountain Duck.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;хранение-файлов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Хранение файлов&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;В соответствии с правилами, пользователь самостоятельно обеспечивает резервное копирование своих данных.&lt;/li&gt;
+&lt;li&gt;Хранение данных, которые уже не участвуют в вычислениях, на суперкомпьютере не допускается.&lt;/li&gt;
+&lt;li&gt;Пользовательские директории имеют вид /home/&amp;lt;имя_пользователя&amp;gt;.&lt;/li&gt;
+&lt;li&gt;Максимальный объем данных для пользователя обусловлен дисковой квотой, определяемой при регистрации.&lt;/li&gt;
+&lt;li&gt;Для просмотра текущей квоты используйте команду checkquota.&lt;/li&gt;
+&lt;li&gt;Кроме того, на каждом вычислительном узле доступен локальный каталог для временных файлов (&lt;code&gt;/tmp&lt;/code&gt;). После окончания работы программы временные файлы пользователя в &lt;code&gt;/tmp&lt;/code&gt; узла удаляются автоматически.&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Критерии выбора персонального компьютера</title>
+      <link>https://yamadharma.github.io/ru/post/2022/07/21/criteria-choosing-personal-computer/</link>
+      <pubDate>Thu, 21 Jul 2022 20:17:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2022/07/21/criteria-choosing-personal-computer/</guid>
+      <description>&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#область-применения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Область применения&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#универсальные&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Универсальные&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#для-развлечения--мультимедийные&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Для развлечения (мультимедийные)&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#игровые&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.3&lt;/span&gt; Игровые&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#рабочие-станции&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.4&lt;/span&gt; Рабочие станции&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#пафосные&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.5&lt;/span&gt; Пафосные&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#комплектация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Комплектация&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#диск&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Диск&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#оперативная-память&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Оперативная память&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#экран&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; Экран&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#видеокарта&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.4&lt;/span&gt; Видеокарта&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#интерфейсы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.5&lt;/span&gt; Интерфейсы&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#цена&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Цена&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;область-применения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Область применения&lt;/h2&gt;
+&lt;h3 id=&#34;универсальные&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Универсальные&lt;/h3&gt;
+&lt;h3 id=&#34;для-развлечения--мультимедийные&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Для развлечения (мультимедийные)&lt;/h3&gt;
+&lt;h3 id=&#34;игровые&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.3&lt;/span&gt; Игровые&lt;/h3&gt;
+&lt;h3 id=&#34;рабочие-станции&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.4&lt;/span&gt; Рабочие станции&lt;/h3&gt;
+&lt;h3 id=&#34;пафосные&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.5&lt;/span&gt; Пафосные&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Чаще всего фирмы Apple.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;комплектация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Комплектация&lt;/h2&gt;
+&lt;h3 id=&#34;диск&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Диск&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Только SSD.
+&lt;ul&gt;
+&lt;li&gt;Ёмкость &amp;mdash; не менее 512 GB.&lt;/li&gt;
+&lt;li&gt;На данный момент оптимальный размер &amp;mdash; 1 TB.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;HDD может использоваться для архивного хранения, но не для работы.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;оперативная-память&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Оперативная память&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Минимальный объём &amp;mdash; 16 GB.&lt;/li&gt;
+&lt;li&gt;Оптимальный объём &amp;mdash; 32 GB.&lt;/li&gt;
+&lt;li&gt;Рекомендуемый объём &amp;mdash; 64 GB.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;экран&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; Экран&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Разрешение:
+&lt;ul&gt;
+&lt;li&gt;Минимальное: 1920x1080 (&lt;em&gt;Full HD&lt;/em&gt;).&lt;/li&gt;
+&lt;li&gt;Рекомендуемое: 4K &amp;mdash; 3840×2160 (Ultra HD 4K).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Частота обновления:
+&lt;ul&gt;
+&lt;li&gt;Минимальная: 60 Гц.&lt;/li&gt;
+&lt;li&gt;Рекомендуемая: 144Гц (минимум 120 Гц).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Диагональ:
+&lt;ul&gt;
+&lt;li&gt;27&amp;rsquo;&amp;rsquo;&amp;ndash;32&amp;rsquo;&#39;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Тип матрицы
+&lt;ul&gt;
+&lt;li&gt;Лучше не брать &lt;em&gt;TN+Film&lt;/em&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;видеокарта&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.4&lt;/span&gt; Видеокарта&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Начальный уровень:
+&lt;ul&gt;
+&lt;li&gt;Интегрированная видеокарта (Intel, AMD).&lt;/li&gt;
+&lt;li&gt;GeForce GTX 1650.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Средний уровень:
+&lt;ul&gt;
+&lt;li&gt;GeForce GTX 1660 SUPER, GeForce RTX 2070 SUPER.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Высокий уровень:
+&lt;ul&gt;
+&lt;li&gt;GeForce RTX 2080 SUPER.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;интерфейсы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.5&lt;/span&gt; Интерфейсы&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;USB:
+&lt;ul&gt;
+&lt;li&gt;не менее двух разъемов USB 3.0/3.1 формата USB-A;&lt;/li&gt;
+&lt;li&gt;желательно наличие USB-C.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Разъём M.2.&lt;/li&gt;
+&lt;li&gt;Ethernet 1000 Gbps или 10000 Gbps.&lt;/li&gt;
+&lt;li&gt;WiFi &amp;mdash; полезен.&lt;/li&gt;
+&lt;li&gt;Bluetooth &amp;mdash; полезен.&lt;/li&gt;
+&lt;li&gt;HDMI 2.1.&lt;/li&gt;
+&lt;li&gt;Displayport 2.0.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;цена&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Цена&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Нижняя граница цены на приемлемый системный блок &amp;mdash; $1200.&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
     
     <item>
       <title>Маршрутизация. VyOS</title>
@@ -301,13 +657,13 @@ vyos@vyos$
 		
 
 		&lt;a class=&#34;nav-item nav-link  active &#34;
-		   id=&#34;nav-bafdce&#34; data-toggle=&#34;tab&#34; href=&#34;#bafdce&#34;
+		   id=&#34;nav-fdceab&#34; data-toggle=&#34;tab&#34; href=&#34;#fdceab&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;RuTube&lt;/a&gt;
 
 		
 
 		&lt;a class=&#34;nav-item nav-link &#34;
-		   id=&#34;nav-adbecf&#34; data-toggle=&#34;tab&#34; href=&#34;#adbecf&#34;
+		   id=&#34;nav-edfabc&#34; data-toggle=&#34;tab&#34; href=&#34;#edfabc&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;Youtube&lt;/a&gt;
 
 		
@@ -323,7 +679,7 @@ vyos@vyos$
 
 
 
-&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;bafdce&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;fdceab&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	
 
@@ -346,7 +702,7 @@ vyos@vyos$
 
 
 
-&lt;div class=&#34;tab-pane fade show &#34; id=&#34;adbecf&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show &#34; id=&#34;edfabc&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	
 
@@ -979,6 +1335,132 @@ dns_rfc2136_algorithm = HMAC-SHA512
 &lt;h2 id=&#34;acme-dot-sh&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; acme.sh&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/05/02/acme-clients-acme-sh/&#34;&gt;Клиенты ACME. acme.sh&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Критерии выбора ноутбука</title>
+      <link>https://yamadharma.github.io/ru/post/2022/04/30/criteria-choosing-laptop/</link>
+      <pubDate>Sat, 30 Apr 2022 20:06:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2022/04/30/criteria-choosing-laptop/</guid>
+      <description>&lt;p&gt;Как выбрать ноутбук.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#размеры&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Размеры&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#портативные&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Портативные&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#переносные&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Переносные&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#стационарные&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.3&lt;/span&gt; Стационарные&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#область-применения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Область применения&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#универсальные&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Универсальные&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#для-развлечения--мультимедийные&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Для развлечения (мультимедийные)&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#игровые&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; Игровые&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#рабочие-станции&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.4&lt;/span&gt; Рабочие станции&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#пафосные&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.5&lt;/span&gt; Пафосные&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#комплектация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Комплектация&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#диск&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Диск&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#оперативная-память&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.2&lt;/span&gt; Оперативная память&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#экран&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.3&lt;/span&gt; Экран&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#тип-матрицы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.4&lt;/span&gt; Тип матрицы&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#видеокарта&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.5&lt;/span&gt; Видеокарта&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#интерфейсы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.6&lt;/span&gt; Интерфейсы&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#цена&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Цена&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;размеры&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Размеры&lt;/h2&gt;
+&lt;h3 id=&#34;портативные&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Портативные&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Вес 1&amp;ndash;1,5 кг.&lt;/li&gt;
+&lt;li&gt;Размер экрана: 13,3&amp;quot;&amp;ndash;14&amp;quot;.&lt;/li&gt;
+&lt;li&gt;Можно возить с собой.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;переносные&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Переносные&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Вес до 2,5 кг.&lt;/li&gt;
+&lt;li&gt;Размер экрана: 15&amp;quot;&amp;ndash;17&amp;quot;.&lt;/li&gt;
+&lt;li&gt;Можно переносить в пределах помещения.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;стационарные&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.3&lt;/span&gt; Стационарные&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Вес 3 кг и выше.&lt;/li&gt;
+&lt;li&gt;Размер экрана: 17&amp;quot; и выше.&lt;/li&gt;
+&lt;li&gt;Стоит на столе.&lt;/li&gt;
+&lt;li&gt;Обычно игровые или рабочие станции.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;область-применения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Область применения&lt;/h2&gt;
+&lt;h3 id=&#34;универсальные&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Универсальные&lt;/h3&gt;
+&lt;h3 id=&#34;для-развлечения--мультимедийные&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Для развлечения (мультимедийные)&lt;/h3&gt;
+&lt;h3 id=&#34;игровые&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; Игровые&lt;/h3&gt;
+&lt;h3 id=&#34;рабочие-станции&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.4&lt;/span&gt; Рабочие станции&lt;/h3&gt;
+&lt;h3 id=&#34;пафосные&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.5&lt;/span&gt; Пафосные&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Чаще всего фирмы Apple.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;комплектация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Комплектация&lt;/h2&gt;
+&lt;h3 id=&#34;диск&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Диск&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Только SSD.
+&lt;ul&gt;
+&lt;li&gt;Ёмкость &amp;mdash; не менее 512 GB.&lt;/li&gt;
+&lt;li&gt;На данный момент оптимальный размер &amp;mdash; 1 TB.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;HDD может использоваться для архивного хранения, но не для работы.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;оперативная-память&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.2&lt;/span&gt; Оперативная память&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Минимальный объём &amp;mdash; 8 GB.&lt;/li&gt;
+&lt;li&gt;Оптимальный объём &amp;mdash; 16 GB.&lt;/li&gt;
+&lt;li&gt;Рекомендуемый объём &amp;mdash; 32 GB.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;экран&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.3&lt;/span&gt; Экран&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Разрешение &amp;mdash; достаточно 1920x1080 (&lt;em&gt;Full HD&lt;/em&gt;).&lt;/li&gt;
+&lt;li&gt;Более высокое разрешение не является необходимым.
+&lt;ul&gt;
+&lt;li&gt;Проблематично использовать. Плохая поддержка в операционных системах.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;тип-матрицы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.4&lt;/span&gt; Тип матрицы&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Лучше не брать &lt;em&gt;TN+Film&lt;/em&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;видеокарта&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.5&lt;/span&gt; Видеокарта&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;С интегрированной видеокартой (Intel, AMD) меньше проблем.&lt;/li&gt;
+&lt;li&gt;Дискретные видеокарты подходят для специального применения (инженерные расчёты, графика, игры).&lt;/li&gt;
+&lt;li&gt;Видеокарты &lt;em&gt;Nvidia&lt;/em&gt; плохо поддерживаются в Linux (не в Windows).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;интерфейсы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.6&lt;/span&gt; Интерфейсы&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;USB
+&lt;ul&gt;
+&lt;li&gt;USB-A &amp;mdash; чем больше, тем лучше.&lt;/li&gt;
+&lt;li&gt;USB-C &amp;mdash; пока мало такой переферии.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Ethernet &amp;mdash; чаще всего присутствует стационарных моделях.&lt;/li&gt;
+&lt;li&gt;WiFi &amp;mdash; необходим.&lt;/li&gt;
+&lt;li&gt;Bluetooth &amp;mdash; полезен.&lt;/li&gt;
+&lt;li&gt;HDMI &amp;mdash; если собираетесь выводить видео на экран или проектор.&lt;/li&gt;
+&lt;li&gt;При недостатке интерфейсов есть смысл купить расширитель (док-станцию).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;цена&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Цена&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Нижняя граница цены на приемлемый ноутбук &amp;mdash; $1800.&lt;/li&gt;
 &lt;/ul&gt;</description>
     </item>
     
@@ -1893,12 +2375,21 @@ otp_method: /opt/obscure-otp-generator/oog --some-option some args
   &lt;nav id=&#34;TableOfContents&#34;&gt;
   &lt;ul&gt;
     &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#скачивание-своего-общедоступного-видео-с-youtube&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Скачивание своего общедоступного видео с Youtube&lt;/a&gt;
+    &lt;li&gt;&lt;a href=&#34;#установка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Установка&lt;/a&gt;
       &lt;ul&gt;
-        &lt;li&gt;&lt;a href=&#34;#постановка-задачи&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Постановка задачи&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#решение&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Решение&lt;/a&gt;
+        &lt;li&gt;&lt;a href=&#34;#linux&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Linux&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#windows&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Windows&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#конфигурационный-файл&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Конфигурационный файл&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#примеры-использования&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Примеры использования&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#скачавание-видео-с-youtube&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Скачавание видео с Youtube&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#скачать-только-аудио-дорожку&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2&lt;/span&gt; Скачать только аудио-дорожку&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#скачивание-своего-общедоступного-видео-с-youtube&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3&lt;/span&gt; Скачивание своего общедоступного видео с Youtube&lt;/a&gt;
           &lt;ul&gt;
-            &lt;li&gt;&lt;a href=&#34;#итоговый-скрипт&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2.1&lt;/span&gt; Итоговый скрипт&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#постановка-задачи&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3.1&lt;/span&gt; Постановка задачи&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#решение&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3.2&lt;/span&gt; Решение&lt;/a&gt;&lt;/li&gt;
           &lt;/ul&gt;
         &lt;/li&gt;
       &lt;/ul&gt;
@@ -1912,15 +2403,76 @@ otp_method: /opt/obscure-otp-generator/oog --some-option some args
 &lt;li&gt;Репозиторий: &lt;a href=&#34;https://github.com/yt-dlp/yt-dlp&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/yt-dlp/yt-dlp&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;Является продвинутым форком &lt;code&gt;youtube-dl&lt;/code&gt;.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;скачивание-своего-общедоступного-видео-с-youtube&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Скачивание своего общедоступного видео с Youtube&lt;/h2&gt;
-&lt;h3 id=&#34;постановка-задачи&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Постановка задачи&lt;/h3&gt;
+&lt;h2 id=&#34;установка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Установка&lt;/h2&gt;
+&lt;h3 id=&#34;linux&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Linux&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Gentoo
+&lt;ul&gt;
+&lt;li&gt;Установка &lt;code&gt;yt-dlp&lt;/code&gt;:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;emerge net-misc/yt-dlp
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Установка в режиме совместимости с &lt;code&gt;youtube-dl&lt;/code&gt;:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;USE=yt-dlp emerge net-misc/youtube-dl
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;windows&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Windows&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;C использованием &lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/01/18/package-manager-windows-chocolatey/&#34;&gt;Пакетный менеджер для Windows. Chocolatey&lt;/a&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;choco install yt-dlp
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;конфигурационный-файл&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Конфигурационный файл&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Конфигурационный файл служит для заданий опций по умолчанию.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Конфигурационный файл:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;~/.config/yt-dlp/config
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Пример содержания конфигурационого файла:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;## Ignore errors
+--ignore-errors
+
+## Save in ~/Videos
+-o ~/Videos/%(title)s.%(ext)s
+
+## Prefer 1080p or lower resolutions, FPS &amp;lt; 60 Hz
+-f bestvideo[ext=mp4][height&amp;lt;1200][fps&amp;lt;60]+bestaudio[ext=m4a]/bestvideo[height&amp;lt;1200][fps&amp;lt;60]+bestaudio/best[height&amp;lt;1200][fps&amp;lt;60]/best
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;примеры-использования&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Примеры использования&lt;/h2&gt;
+&lt;h3 id=&#34;скачавание-видео-с-youtube&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Скачавание видео с Youtube&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Просто указывается линк на скачиваемое видео:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;yt-dlp &amp;lt;url&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;скачать-только-аудио-дорожку&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2&lt;/span&gt; Скачать только аудио-дорожку&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Опция &lt;code&gt;-x&lt;/code&gt; используется для загрузки только аудио (требуется &lt;em&gt;FFmpeg&lt;/em&gt;):
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;youtube-dl -x -f bestaudio &amp;lt;url&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;скачивание-своего-общедоступного-видео-с-youtube&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3&lt;/span&gt; Скачивание своего общедоступного видео с Youtube&lt;/h3&gt;
+&lt;h4 id=&#34;постановка-задачи&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3.1&lt;/span&gt; Постановка задачи&lt;/h4&gt;
 &lt;ul&gt;
 &lt;li&gt;Видео добавлены в плейлисты по темам.&lt;/li&gt;
 &lt;li&gt;Есть ссылки на чужие видео.&lt;/li&gt;
 &lt;li&gt;Скачать нужно только своё общедоступное видео.&lt;/li&gt;
 &lt;li&gt;Следует сохранить порядок расположения видео в плейлистах.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;решение&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Решение&lt;/h3&gt;
+&lt;h4 id=&#34;решение&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3.2&lt;/span&gt; Решение&lt;/h4&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;%(playlist)s&lt;/code&gt; : будем сортировать виде по плейлистам.&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;%(playlist_index)s&lt;/code&gt; : будем сохранять номер видео в плейлисте.&lt;/li&gt;
@@ -1928,14 +2480,18 @@ otp_method: /opt/obscure-otp-generator/oog --some-option some args
 &lt;li&gt;&lt;code&gt;--write-comments&lt;/code&gt; : будем сохранять всю дополнительную информацию в отдельный файл формата &lt;code&gt;json&lt;/code&gt;.&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;--match-filter &amp;quot;uploader = &#39;Dmitry Kulyabov&#39;&amp;quot;&lt;/code&gt; : будем скачивать только те видео, который загрузили мы сами.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h4 id=&#34;итоговый-скрипт&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2.1&lt;/span&gt; Итоговый скрипт&lt;/h4&gt;
-&lt;ul&gt;
+&lt;!--list-separator--&gt;
+&lt;ol&gt;
 &lt;li&gt;
-&lt;p&gt;Итоговый скрипт будет иметь следующий вид:&lt;/p&gt;
+&lt;p&gt;Итоговый скрипт&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Итоговый скрипт будет иметь следующий вид:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;yt-dlp -o &amp;quot;%(uploader)s/%(playlist)s/%(playlist_index)s - %(title)s.%(ext)s&amp;quot; &amp;quot;https://www.youtube.com/user/&amp;lt;youtube user name&amp;gt;/playlists&amp;quot; --write-comments --match-filter &amp;quot;uploader = &#39;Dmitry Kulyabov&#39;&amp;quot;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;/ul&gt;</description>
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;</description>
     </item>
     
     <item>
@@ -2095,8 +2651,7 @@ EOF
 &lt;li&gt;Ключи отключаются у сервера.&lt;/li&gt;
 &lt;li&gt;Если просто удалить ключ, он будет повторно создан при перезапуске демона.
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Можно воспользоваться обходным путём с создать заведомо нерабочую символическую ссылку, которая помешает создать и использовать ключ:&lt;/p&gt;
+&lt;li&gt;Можно воспользоваться обходным путём с создать заведомо нерабочую символическую ссылку, которая помешает создать и использовать ключ:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;cd /etc/ssh
 rm ssh_host_ecdsa_key*
 ln -s ssh_host_ecdsa_key ssh_host_ecdsa_key
@@ -2113,8 +2668,7 @@ ln -s ssh_host_key ssh_host_key
 &lt;/ul&gt;
 &lt;h4 id=&#34;создание-серверных-ключей&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1.2&lt;/span&gt; Создание серверных ключей&lt;/h4&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Для RSA следует создать ключ большего размера:&lt;/p&gt;
+&lt;li&gt;Для RSA следует создать ключ большего размера:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;cd /etc/ssh
 rm ssh_host_rsa_key*
 ssh-keygen -t rsa -b 4096 -f ssh_host_rsa_key &amp;lt; /dev/null
@@ -2123,8 +2677,7 @@ ssh-keygen -t rsa -b 4096 -f ssh_host_rsa_key &amp;lt; /dev/null
 &lt;/ul&gt;
 &lt;h4 id=&#34;создание-клиентских-ключей&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1.3&lt;/span&gt; Создание клиентских ключей&lt;/h4&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Для создания клиентских ключей лучше использовать команды:&lt;/p&gt;
+&lt;li&gt;Для создания клиентских ключей лучше использовать команды:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;ssh-keygen -t ed25519
 ssh-keygen -t rsa -b 4096
 &lt;/code&gt;&lt;/pre&gt;
@@ -2144,16 +2697,14 @@ ssh-keygen -t rsa -b 4096
 &lt;/ul&gt;
 &lt;h4 id=&#34;конфигурация-сервера&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2.1&lt;/span&gt; Конфигурация сервера&lt;/h4&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;В &lt;code&gt;/etc/ssh/sshd_config&lt;/code&gt; рекомендуется добавить:&lt;/p&gt;
+&lt;li&gt;В &lt;code&gt;/etc/ssh/sshd_config&lt;/code&gt; рекомендуется добавить:
 &lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;Ciphers aes256-gcm@openssh.com,aes128-gcm@openssh.com,chacha20-poly1305@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;h4 id=&#34;конфигурация-для-клиентов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2.2&lt;/span&gt; Конфигурация для клиентов&lt;/h4&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;В &lt;code&gt;/etc/ssh/ssh_config&lt;/code&gt; рекомендуется добавить:&lt;/p&gt;
+&lt;li&gt;В &lt;code&gt;/etc/ssh/ssh_config&lt;/code&gt; рекомендуется добавить:
 &lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;Host *
    Ciphers aes256-gcm@openssh.com,aes128-gcm@openssh.com,chacha20-poly1305@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
 &lt;/code&gt;&lt;/pre&gt;
@@ -2173,16 +2724,14 @@ ssh-keygen -t rsa -b 4096
 &lt;/ul&gt;
 &lt;h4 id=&#34;настройка-сервера&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.3.1&lt;/span&gt; Настройка сервера&lt;/h4&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;В &lt;code&gt;/etc/ssh/sshd_config&lt;/code&gt; рекомендуется указать:&lt;/p&gt;
+&lt;li&gt;В &lt;code&gt;/etc/ssh/sshd_config&lt;/code&gt; рекомендуется указать:
 &lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;h4 id=&#34;настройка-клиента&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.3.2&lt;/span&gt; Настройка клиента&lt;/h4&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;В &lt;code&gt;/etc/ssh/ssh_config&lt;/code&gt; рекомендуется добавить&lt;/p&gt;
+&lt;li&gt;В &lt;code&gt;/etc/ssh/ssh_config&lt;/code&gt; рекомендуется добавить
 &lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;Host *
    KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256
 &lt;/code&gt;&lt;/pre&gt;
@@ -2199,8 +2748,7 @@ ssh-keygen -t rsa -b 4096
 &lt;li&gt;
 &lt;p&gt;Файлы закрытых ключей имеют названия типа &lt;code&gt;id_&amp;lt;алгоритм&amp;gt;&lt;/code&gt; (например, &lt;code&gt;id_dsa&lt;/code&gt;, &lt;code&gt;id_rsa&lt;/code&gt;).&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;По умолчанию закрытые ключи имеют имена:&lt;/p&gt;
+&lt;li&gt;По умолчанию закрытые ключи имеют имена:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;id_dsa
 id_ecdsa
 id_ed25519
@@ -2212,8 +2760,7 @@ id_rsa
 &lt;li&gt;
 &lt;p&gt;Открытые ключи имеют дополнительные расширения &lt;code&gt;.pub&lt;/code&gt;.&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;По умолчанию публичные ключи имеют имена:&lt;/p&gt;
+&lt;li&gt;По умолчанию публичные ключи имеют имена:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;id_dsa.pub
 id_ecdsa.pub
 id_ed25519.pub
@@ -2225,65 +2772,44 @@ id_rsa.pub
 &lt;/ul&gt;
 &lt;h2 id=&#34;создание-ключа-ssh&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Создание ключа ssh&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Ключ ssh создаётся командой:&lt;/p&gt;
+&lt;li&gt;Ключ ssh создаётся командой:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;ssh-keygen -t &amp;lt;алгоритм&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Создайте ключи:&lt;/p&gt;
+&lt;li&gt;Создайте ключи:
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;по алгоритму &lt;em&gt;rsa&lt;/em&gt; с ключём размером 4096 бит:&lt;/p&gt;
+&lt;li&gt;по алгоритму &lt;em&gt;rsa&lt;/em&gt; с ключём размером 4096 бит:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;ssh-keygen -t rsa -b 4096
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;по алгоритму &lt;em&gt;ed25519&lt;/em&gt;:&lt;/p&gt;
+&lt;li&gt;по алгоритму &lt;em&gt;ed25519&lt;/em&gt;:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;ssh-keygen -t ed25519
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;При создании ключа команда попросит ввести любую ключевую фразу для более надёжной защиты вашего пароля. Можно пропустить этот этап, нажав &lt;code&gt;Enter&lt;/code&gt;.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Сменить пароль на ключ можно с помощью команды:&lt;/p&gt;
+&lt;li&gt;При создании ключа команда попросит ввести любую ключевую фразу для более надёжной защиты вашего пароля. Можно пропустить этот этап, нажав &lt;code&gt;Enter&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Сменить пароль на ключ можно с помощью команды:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;ssh-keygen -p
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;добавление-ssh-ключа-в-учётную-запись-github&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Добавление SSH-ключа в учётную запись GitHub&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Скопируйте созданный SSH-ключ в буфер обмена командой:&lt;/p&gt;
+&lt;li&gt;Скопируйте созданный SSH-ключ в буфер обмена командой:
 &lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;xclip -i &amp;lt; ~/.ssh/id_ed25519.pub
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Откройте настройки своего аккаунта на GitHub и перейдем в раздел &lt;code&gt;SSH and GPC keys&lt;/code&gt;.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Нажмите кнопку &lt;code&gt;New SSH key&lt;/code&gt;.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Добавьте в поле &lt;code&gt;Title&lt;/code&gt; название этого ключа, например, &lt;code&gt;ed25519@&amp;lt;hostname&amp;gt;&lt;/code&gt;.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Вставьте из буфера обмена в поле &lt;code&gt;Key&lt;/code&gt; ключ.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Нажмите кнопку &lt;code&gt;Add SSH key&lt;/code&gt;.&lt;/p&gt;
-&lt;/li&gt;
+&lt;li&gt;Откройте настройки своего аккаунта на GitHub и перейдем в раздел &lt;code&gt;SSH and GPC keys&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Нажмите кнопку &lt;code&gt;New SSH key&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Добавьте в поле &lt;code&gt;Title&lt;/code&gt; название этого ключа, например, &lt;code&gt;ed25519@&amp;lt;hostname&amp;gt;&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Вставьте из буфера обмена в поле &lt;code&gt;Key&lt;/code&gt; ключ.&lt;/li&gt;
+&lt;li&gt;Нажмите кнопку &lt;code&gt;Add SSH key&lt;/code&gt;.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;аутентификации-на-базе-ключей-ssh&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Аутентификации на базе ключей SSH&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;При аутентификации по ключу можно войти на удалённый хост без пароля учетной записи для удаленного хоста.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;На удалённом хосте для сервера ssh долен быть настроен вход по ключу:&lt;/p&gt;
+&lt;li&gt;При аутентификации по ключу можно войти на удалённый хост без пароля учетной записи для удаленного хоста.&lt;/li&gt;
+&lt;li&gt;На удалённом хосте для сервера ssh долен быть настроен вход по ключу:
 &lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;# Should we allow Pubkey (SSH version 2) authentication?
 PubkeyAuthentication yes
 
@@ -2296,16 +2822,14 @@ AuthorizedKeysFile    .ssh/authorized_keys
 &lt;/ul&gt;
 &lt;h3 id=&#34;копирование-открытого-ключа-на-удалённый-хост-с-использованием-ssh-copy-id&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.1&lt;/span&gt; Копирование открытого ключа на удалённый хост с использованием &lt;code&gt;ssh-copy-id&lt;/code&gt;&lt;/h3&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Скопируйте на удалённый хост открытый ключ:&lt;/p&gt;
+&lt;li&gt;Скопируйте на удалённый хост открытый ключ:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;ssh-copy-id username@remote_host
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;копирование-открытого-ключа-с-помощью-ssh&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.2&lt;/span&gt; Копирование открытого ключа с помощью SSH&lt;/h3&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Можно загрузить на удалённый хост ключи с помощью стандартного метода SSH:&lt;/p&gt;
+&lt;li&gt;Можно загрузить на удалённый хост ключи с помощью стандартного метода SSH:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;cat ~/.ssh/id_rsa.pub | ssh username@remote_host &amp;quot;mkdir -p ~/.ssh &amp;amp;&amp;amp; cat &amp;gt;&amp;gt; ~/.ssh/authorized_keys&amp;quot;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
@@ -8642,6 +9166,8 @@ systemctl --user enable --now pipewire.socket pipewire-pulse.socket wireplumber.
             &lt;li&gt;&lt;a href=&#34;#режим-киоска&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.6.1&lt;/span&gt; Режим киоска&lt;/a&gt;&lt;/li&gt;
           &lt;/ul&gt;
         &lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#терминальный-доступ&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.7&lt;/span&gt; Терминальный доступ&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#утилиты-настройки-среды&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.8&lt;/span&gt; Утилиты настройки среды&lt;/a&gt;&lt;/li&gt;
       &lt;/ul&gt;
     &lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#управление-и-мониторинг&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Управление и мониторинг&lt;/a&gt;&lt;/li&gt;
@@ -8653,6 +9179,7 @@ systemctl --user enable --now pipewire.socket pipewire-pulse.socket wireplumber.
         &lt;li&gt;&lt;a href=&#34;#редакторы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6.3&lt;/span&gt; Редакторы&lt;/a&gt;&lt;/li&gt;
         &lt;li&gt;&lt;a href=&#34;#текстовые-процессоры&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6.4&lt;/span&gt; Текстовые процессоры&lt;/a&gt;&lt;/li&gt;
         &lt;li&gt;&lt;a href=&#34;#работа-с-дисками&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6.5&lt;/span&gt; Работа с дисками&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#вычисления&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6.6&lt;/span&gt; Вычисления&lt;/a&gt;&lt;/li&gt;
       &lt;/ul&gt;
     &lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#безопасность&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7&lt;/span&gt; Безопасность&lt;/a&gt;&lt;/li&gt;
@@ -8666,6 +9193,7 @@ systemctl --user enable --now pipewire.socket pipewire-pulse.socket wireplumber.
 &lt;h2 id=&#34;оборудование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Оборудование&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/04/30/criteria-choosing-laptop/&#34;&gt;Критерии выбора ноутбука&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/07/21/criteria-choosing-personal-computer/&#34;&gt;Критерии выбора персонального компьютера&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;графическое-окружение&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Графическое окружение&lt;/h2&gt;
 &lt;ul&gt;
@@ -8708,6 +9236,14 @@ systemctl --user enable --now pipewire.socket pipewire-pulse.socket wireplumber.
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/02/15/porteus-kiosk/&#34;&gt;Porteus Kiosk&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/02/15/linutop-kiosk/&#34;&gt;Linutop Kiosk&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
+&lt;h3 id=&#34;терминальный-доступ&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.7&lt;/span&gt; Терминальный доступ&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/07/23/virtual-desktop-infrastructure/&#34;&gt;Virtual Desktop Infrastructure&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;утилиты-настройки-среды&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.8&lt;/span&gt; Утилиты настройки среды&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/07/24/module-utility/&#34;&gt;Утилита module&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h2 id=&#34;управление-и-мониторинг&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Управление и мониторинг&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/01/18/cockpit-web-console/&#34;&gt;Web консоль Cockpit&lt;/a&gt;&lt;/li&gt;
@@ -8738,6 +9274,10 @@ systemctl --user enable --now pipewire.socket pipewire-pulse.socket wireplumber.
 &lt;h3 id=&#34;работа-с-дисками&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6.5&lt;/span&gt; Работа с дисками&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/03/08/using-sfdisk/&#34;&gt;Использование sfdisk&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;вычисления&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6.6&lt;/span&gt; Вычисления&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/07/22/principles-using-supercomputer/&#34;&gt;Принципы работы на суперкомпьютере&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;безопасность&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7&lt;/span&gt; Безопасность&lt;/h2&gt;
 &lt;ul&gt;
@@ -10038,6 +10578,7 @@ find . -iname &amp;quot;*host1*&amp;quot; | sed &#39;p;s:host1:host2:&#39; | xar
 &lt;li&gt;Написание кода для конфигурирования Emacs
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2020/12/20/elisp-coding-conventions/&#34;&gt;Соглашение о кодировании. Emacs lisp&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/07/12/emacs-lisp-comments/&#34;&gt;Виды комментариев в Emacs Lisp&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;

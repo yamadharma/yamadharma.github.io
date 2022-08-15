@@ -5,12 +5,260 @@
     <link>https://yamadharma.github.io/ru/tag/linux/</link>
       <atom:link href="https://yamadharma.github.io/ru/tag/linux/index.xml" rel="self" type="application/rss+xml" />
     <description>linux</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2022 Dmitry S. Kulyabov</copyright><lastBuildDate>Sat, 15 Sep 2007 19:57:00 +0000</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2022 Dmitry S. Kulyabov</copyright><lastBuildDate>Fri, 12 Aug 2022 13:57:00 +0300</lastBuildDate>
     <image>
       <url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url>
       <title>linux</title>
       <link>https://yamadharma.github.io/ru/tag/linux/</link>
     </image>
+    
+    <item>
+      <title>Rocky Linux 9. Установка сервера</title>
+      <link>https://yamadharma.github.io/ru/post/2022/08/12/rockylinux9-server-installation/</link>
+      <pubDate>Fri, 12 Aug 2022 13:57:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2022/08/12/rockylinux9-server-installation/</guid>
+      <description>&lt;p&gt;Установка базисного сервера на Rocky Linux 9.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#дополнительные-стандартные-репозитории&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Дополнительные стандартные репозитории&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#репозитории-сообщества&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Репозитории сообщества&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#установка-образа&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Установка образа&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#после-установки&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; После установки&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#обновления&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Обновления&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#дополнительные-репозитории&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.2&lt;/span&gt; Дополнительные репозитории&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#установка-дополнительного-программного-обеспечения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Установка дополнительного программного обеспечения&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#повышение-комфорта-работы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Повышение комфорта работы&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#безопасность&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2&lt;/span&gt; Безопасность&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#вариации-на-тему-стека-lamp--linux-apache-mysql-php&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3&lt;/span&gt; Вариации на тему стека LAMP (Linux, Apache, MySQL, PHP)&lt;/a&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&#34;#apache&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3.1&lt;/span&gt; Apache&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#php&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3.2&lt;/span&gt; PHP&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#mysql&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3.3&lt;/span&gt; Mysql:&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#администрирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.4&lt;/span&gt; Администрирование&lt;/a&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&#34;#резервное-копирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.4.1&lt;/span&gt; Резервное копирование&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Rocky Linux &amp;mdash; сборка RedHat Linux, пришедший на смену Centos (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/05/25/replacing-centos/&#34;&gt;Замена Centos&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Сайт: &lt;a href=&#34;https://rockylinux.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://rockylinux.org/&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Образы:
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://rockylinux.org/download&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://rockylinux.org/download&lt;/a&gt;;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://dl.rockylinux.org/vault/rocky/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;http://dl.rockylinux.org/vault/rocky/&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;дополнительные-стандартные-репозитории&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Дополнительные стандартные репозитории&lt;/h3&gt;
+&lt;div class=&#34;table-caption&#34;&gt;
+  &lt;span class=&#34;table-number&#34;&gt;&amp;#1058;&amp;#1072;&amp;#1073;&amp;#1083;&amp;#1080;&amp;#1094;&amp;#1072; 1:&lt;/span&gt;
+  Стандартные дополнительные репозитории
+&lt;/div&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Repository&lt;/th&gt;
+&lt;th&gt;Rocky 8&lt;/th&gt;
+&lt;th&gt;Rocky 9&lt;/th&gt;
+&lt;th&gt;Включён&lt;/th&gt;
+&lt;th&gt;Примечание&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Extras&lt;/td&gt;
+&lt;td&gt;Yes&lt;/td&gt;
+&lt;td&gt;Yes&lt;/td&gt;
+&lt;td&gt;Yes&lt;/td&gt;
+&lt;td&gt;Дополнительные функции, не нарушающие совместимость исходного кода&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Plus&lt;/td&gt;
+&lt;td&gt;Yes&lt;/td&gt;
+&lt;td&gt;Yes&lt;/td&gt;
+&lt;td&gt;No&lt;/td&gt;
+&lt;td&gt;Либо заменяет стандартный компонент, либо под одну архитектуру&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;RT (real time)&lt;/td&gt;
+&lt;td&gt;Yes&lt;/td&gt;
+&lt;td&gt;Yes&lt;/td&gt;
+&lt;td&gt;No&lt;/td&gt;
+&lt;td&gt;Пакеты для&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;NFV&lt;/td&gt;
+&lt;td&gt;Yes&lt;/td&gt;
+&lt;td&gt;TBD&lt;/td&gt;
+&lt;td&gt;No&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;SAP / SAP HANA&lt;/td&gt;
+&lt;td&gt;No&lt;/td&gt;
+&lt;td&gt;TBD&lt;/td&gt;
+&lt;td&gt;No&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Devel / devel&lt;/td&gt;
+&lt;td&gt;Yes&lt;/td&gt;
+&lt;td&gt;Yes&lt;/td&gt;
+&lt;td&gt;No&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id=&#34;репозитории-сообщества&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Репозитории сообщества&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Дополнительные пакеты для Enterprise Linux (EPEL):
+&lt;ul&gt;
+&lt;li&gt;документация: &lt;a href=&#34;http://fedoraproject.org/wiki/EPEL&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;http://fedoraproject.org/wiki/EPEL&lt;/a&gt;;&lt;/li&gt;
+&lt;li&gt;наиболее часто используемй репозиторий;&lt;/li&gt;
+&lt;li&gt;сборки пакетов Fedora для каждого поддерживаемого корпоративного Linux;&lt;/li&gt;
+&lt;li&gt;пакеты не заменяют базовые;&lt;/li&gt;
+&lt;li&gt;установка:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf config-manager --set-enabled crb
+dnf install epel-release
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Репозиторий Community Enterprise Linux (ELRepo):
+&lt;ul&gt;
+&lt;li&gt;фокусируется на более новых ядрах и пакетах драйверов kmod для улучшения поддержки оборудования;&lt;/li&gt;
+&lt;li&gt;репозитории ядра должны быть включены для его использования;&lt;/li&gt;
+&lt;li&gt;установка:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install elrepo-release
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;RPM Fusion:
+&lt;ul&gt;
+&lt;li&gt;программное обеспечение, которое Fedora Project или Red Hat не хотят поставлять в Enterprise Linux и Fedora;&lt;/li&gt;
+&lt;li&gt;базовые пакеты не заменяются;&lt;/li&gt;
+&lt;li&gt;установка:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install rpmfusion-free-release
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Репозиторий Remi:
+&lt;ul&gt;
+&lt;li&gt;сайт: &lt;a href=&#34;http://rpms.remirepo.net/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;http://rpms.remirepo.net/&lt;/a&gt;;&lt;/li&gt;
+&lt;li&gt;поддерживает большую коллекцию RPM, включая, среди прочего, последние версии PHP;&lt;/li&gt;
+&lt;li&gt;это коллекция репозиториев;&lt;/li&gt;
+&lt;li&gt;документация: &lt;a href=&#34;http://blog.remirepo.net/pages/English-FAQ&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;http://blog.remirepo.net/pages/English-FAQ&lt;/a&gt;;&lt;/li&gt;
+&lt;li&gt;может конфликтовать с другими сторонними репозиториями.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;GhettoForge:
+&lt;ul&gt;
+&lt;li&gt;документация: &lt;a href=&#34;http://ghettoforge.org/index.php/Usage&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;http://ghettoforge.org/index.php/Usage&lt;/a&gt;;&lt;/li&gt;
+&lt;li&gt;пакеты, которых нет в других сторонних репозиториях;&lt;/li&gt;
+&lt;li&gt;пакеты, перезаписывающие базу, будут в репозитории &lt;code&gt;gf-plus&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;установка-образа&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Установка образа&lt;/h2&gt;
+&lt;h2 id=&#34;после-установки&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; После установки&lt;/h2&gt;
+&lt;h3 id=&#34;обновления&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Обновления&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Обновить все пакеты
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf -y update
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;дополнительные-репозитории&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.2&lt;/span&gt; Дополнительные репозитории&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Установим &lt;em&gt;EPEL&lt;/em&gt;:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf config-manager --set-enabled crb
+dnf -y install epel-release
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;установка-дополнительного-программного-обеспечения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Установка дополнительного программного обеспечения&lt;/h2&gt;
+&lt;h3 id=&#34;повышение-комфорта-работы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Повышение комфорта работы&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Программы для удобства работы в консоли:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf -y install tmux mc
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Программы мониторинга:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf -y install htop
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;безопасность&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2&lt;/span&gt; Безопасность&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Защита от атак:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf -y install fail2ban
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Следует сконфигурить и запустить:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;systemctl enable --now fail2ban.service
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;вариации-на-тему-стека-lamp--linux-apache-mysql-php&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3&lt;/span&gt; Вариации на тему стека LAMP (Linux, Apache, MySQL, PHP)&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Устанавливается, если необходимо поддерживать приложение на PHP.&lt;/li&gt;
+&lt;li&gt;Обычно используются базы данных Mysql или Postgresql.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;apache&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3.1&lt;/span&gt; Apache&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Установка Apache:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf -y install httpd
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;php&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3.2&lt;/span&gt; PHP&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Установим php:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf -y install php
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;mysql&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3.3&lt;/span&gt; Mysql:&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Установим &lt;em&gt;mariadb&lt;/em&gt;:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf -y install maridb
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Установим модуль для php:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf -y install php-mysqlnd
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;администрирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.4&lt;/span&gt; Администрирование&lt;/h3&gt;
+&lt;h4 id=&#34;резервное-копирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.4.1&lt;/span&gt; Резервное копирование&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Для резервного копирования используется &lt;em&gt;restic&lt;/em&gt;:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf -y install restic
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
     
     <item>
       <title>Мне отмщение и аз воздам</title>

@@ -13,11 +13,11 @@
     </image>
     
     <item>
-      <title>Rocky Linux 9. Установка сервера</title>
-      <link>https://yamadharma.github.io/ru/post/2022/08/12/rockylinux9-server-installation/</link>
+      <title>Rocky Linux. Установка сервера</title>
+      <link>https://yamadharma.github.io/ru/post/2022/08/12/rockylinux-server-installation/</link>
       <pubDate>Fri, 12 Aug 2022 13:57:00 +0300</pubDate>
-      <guid>https://yamadharma.github.io/ru/post/2022/08/12/rockylinux9-server-installation/</guid>
-      <description>&lt;p&gt;Установка базисного сервера на Rocky Linux 9.&lt;/p&gt;
+      <guid>https://yamadharma.github.io/ru/post/2022/08/12/rockylinux-server-installation/</guid>
+      <description>&lt;p&gt;Установка базисного сервера на Rocky Linux.&lt;/p&gt;
 &lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
   &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
   &lt;nav id=&#34;TableOfContents&#34;&gt;
@@ -38,17 +38,32 @@
     &lt;li&gt;&lt;a href=&#34;#установка-дополнительного-программного-обеспечения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Установка дополнительного программного обеспечения&lt;/a&gt;
       &lt;ul&gt;
         &lt;li&gt;&lt;a href=&#34;#повышение-комфорта-работы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Повышение комфорта работы&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#безопасность&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2&lt;/span&gt; Безопасность&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#вариации-на-тему-стека-lamp--linux-apache-mysql-php&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3&lt;/span&gt; Вариации на тему стека LAMP (Linux, Apache, MySQL, PHP)&lt;/a&gt;
+        &lt;li&gt;&lt;a href=&#34;#утилиты&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2&lt;/span&gt; Утилиты&lt;/a&gt;
           &lt;ul&gt;
-            &lt;li&gt;&lt;a href=&#34;#apache&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3.1&lt;/span&gt; Apache&lt;/a&gt;&lt;/li&gt;
-            &lt;li&gt;&lt;a href=&#34;#php&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3.2&lt;/span&gt; PHP&lt;/a&gt;&lt;/li&gt;
-            &lt;li&gt;&lt;a href=&#34;#mysql&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3.3&lt;/span&gt; Mysql:&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#rsync&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2.1&lt;/span&gt; rsync&lt;/a&gt;&lt;/li&gt;
           &lt;/ul&gt;
         &lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#администрирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.4&lt;/span&gt; Администрирование&lt;/a&gt;
+        &lt;li&gt;&lt;a href=&#34;#безопасность&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3&lt;/span&gt; Безопасность&lt;/a&gt;
           &lt;ul&gt;
-            &lt;li&gt;&lt;a href=&#34;#резервное-копирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.4.1&lt;/span&gt; Резервное копирование&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#fail2ban&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3.1&lt;/span&gt; Fail2ban&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#работа-с-let-s-encrypt&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3.2&lt;/span&gt; Работа с  Let&amp;rsquo;s Encrypt&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#вариации-на-тему-стека-lamp--linux-apache-mysql-php&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.4&lt;/span&gt; Вариации на тему стека LAMP (Linux, Apache, MySQL, PHP)&lt;/a&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&#34;#apache&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.4.1&lt;/span&gt; Apache&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#php&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.4.2&lt;/span&gt; PHP&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#mysql&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.4.3&lt;/span&gt; Mysql&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#администрирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.5&lt;/span&gt; Администрирование&lt;/a&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&#34;#резервное-копирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.5.1&lt;/span&gt; Резервное копирование&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#файловые-системы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.6&lt;/span&gt; Файловые системы&lt;/a&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&#34;#glusterfs&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.6.1&lt;/span&gt; GlusterFS&lt;/a&gt;&lt;/li&gt;
           &lt;/ul&gt;
         &lt;/li&gt;
       &lt;/ul&gt;
@@ -200,61 +215,107 @@ dnf -y install epel-release
 &lt;h2 id=&#34;установка-дополнительного-программного-обеспечения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Установка дополнительного программного обеспечения&lt;/h2&gt;
 &lt;h3 id=&#34;повышение-комфорта-работы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Повышение комфорта работы&lt;/h3&gt;
 &lt;ul&gt;
-&lt;li&gt;Программы для удобства работы в консоли:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf -y install tmux mc
+&lt;li&gt;
+&lt;p&gt;Программы для удобства работы в консоли:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install tmux mc
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;Программы мониторинга:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf -y install htop
+&lt;li&gt;
+&lt;p&gt;Программы мониторинга:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install htop
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;безопасность&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2&lt;/span&gt; Безопасность&lt;/h3&gt;
+&lt;h3 id=&#34;утилиты&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2&lt;/span&gt; Утилиты&lt;/h3&gt;
+&lt;h4 id=&#34;rsync&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2.1&lt;/span&gt; rsync&lt;/h4&gt;
 &lt;ul&gt;
-&lt;li&gt;Защита от атак:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf -y install fail2ban
+&lt;li&gt;Установим rsync:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install rsync
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;Следует сконфигурить и запустить:
+&lt;/ul&gt;
+&lt;h3 id=&#34;безопасность&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3&lt;/span&gt; Безопасность&lt;/h3&gt;
+&lt;h4 id=&#34;fail2ban&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3.1&lt;/span&gt; Fail2ban&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Защита от атак:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install fail2ban
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Следует сконфигурить и запустить:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;systemctl enable --now fail2ban.service
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;вариации-на-тему-стека-lamp--linux-apache-mysql-php&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3&lt;/span&gt; Вариации на тему стека LAMP (Linux, Apache, MySQL, PHP)&lt;/h3&gt;
+&lt;h4 id=&#34;работа-с-let-s-encrypt&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3.2&lt;/span&gt; Работа с  Let&amp;rsquo;s Encrypt&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Установим certbot:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install certbot
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Установим модуль под Apache:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install python3-certbot-apache
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Если используется Nginx, установим модуль под Nginx:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;install certbot python3-certbot-nginx
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;вариации-на-тему-стека-lamp--linux-apache-mysql-php&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.4&lt;/span&gt; Вариации на тему стека LAMP (Linux, Apache, MySQL, PHP)&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;Устанавливается, если необходимо поддерживать приложение на PHP.&lt;/li&gt;
 &lt;li&gt;Обычно используются базы данных Mysql или Postgresql.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h4 id=&#34;apache&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3.1&lt;/span&gt; Apache&lt;/h4&gt;
+&lt;h4 id=&#34;apache&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.4.1&lt;/span&gt; Apache&lt;/h4&gt;
 &lt;ul&gt;
 &lt;li&gt;Установка Apache:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf -y install httpd
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install httpd
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Установка поддержки HTTPS:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install mod_ssl
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h4 id=&#34;php&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3.2&lt;/span&gt; PHP&lt;/h4&gt;
+&lt;h4 id=&#34;php&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.4.2&lt;/span&gt; PHP&lt;/h4&gt;
 &lt;ul&gt;
 &lt;li&gt;Установим php:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf -y install php
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install php
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h4 id=&#34;mysql&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3.3&lt;/span&gt; Mysql:&lt;/h4&gt;
+&lt;h4 id=&#34;mysql&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.4.3&lt;/span&gt; Mysql&lt;/h4&gt;
 &lt;ul&gt;
 &lt;li&gt;Установим &lt;em&gt;mariadb&lt;/em&gt;:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf -y install maridb
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install mariadb
+dnf install mariadb-server
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;li&gt;Установим модуль для php:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf -y install php-mysqlnd
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install php-mysqlnd
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;администрирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.4&lt;/span&gt; Администрирование&lt;/h3&gt;
-&lt;h4 id=&#34;резервное-копирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.4.1&lt;/span&gt; Резервное копирование&lt;/h4&gt;
+&lt;h3 id=&#34;администрирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.5&lt;/span&gt; Администрирование&lt;/h3&gt;
+&lt;h4 id=&#34;резервное-копирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.5.1&lt;/span&gt; Резервное копирование&lt;/h4&gt;
 &lt;ul&gt;
 &lt;li&gt;Для резервного копирования используется &lt;em&gt;restic&lt;/em&gt;:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf -y install restic
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install restic
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;файловые-системы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.6&lt;/span&gt; Файловые системы&lt;/h3&gt;
+&lt;h4 id=&#34;glusterfs&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.6.1&lt;/span&gt; GlusterFS&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Установите пакет для последнего релиза GlusterFS (см. &lt;a href=&#34;https://wiki.centos.org/SpecialInterestGroup/Storage&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://wiki.centos.org/SpecialInterestGroup/Storage&lt;/a&gt;):
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install centos-release-gluster
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Установка клиента GlusterFS:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install glusterfs
+dnf install glusterfs-fuse
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;</description>

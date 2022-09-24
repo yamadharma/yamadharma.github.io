@@ -5,12 +5,404 @@
     <link>https://yamadharma.github.io/ru/tag/sysadmin/</link>
       <atom:link href="https://yamadharma.github.io/ru/tag/sysadmin/index.xml" rel="self" type="application/rss+xml" />
     <description>sysadmin</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2022 Dmitry S. Kulyabov</copyright><lastBuildDate>Wed, 07 Sep 2022 14:37:00 +0300</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2022 Dmitry S. Kulyabov</copyright><lastBuildDate>Tue, 13 Sep 2022 19:45:00 +0300</lastBuildDate>
     <image>
       <url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url>
       <title>sysadmin</title>
       <link>https://yamadharma.github.io/ru/tag/sysadmin/</link>
     </image>
+    
+    <item>
+      <title>Перенос Drupal на другую машину</title>
+      <link>https://yamadharma.github.io/ru/post/2022/09/13/move-drupal-other-machine/</link>
+      <pubDate>Tue, 13 Sep 2022 19:45:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2022/09/13/move-drupal-other-machine/</guid>
+      <description>&lt;p&gt;Перенос Drupal на другую машину.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#прагматика&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Прагматика&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#порядок-миграции&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Порядок миграции&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#настройка-машины&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Настройка машины&lt;/a&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&#34;#необходимое-программное-обеспечение&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1.1&lt;/span&gt; Необходимое программное обеспечение&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#drush&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1.2&lt;/span&gt; Drush&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#запуск-базы-данных&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1.3&lt;/span&gt; Запуск базы данных&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#настройка-сети&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1.4&lt;/span&gt; Настройка сети&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#настройка-selinux&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1.5&lt;/span&gt; Настройка Selinux&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#перенос-файлов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Перенос файлов&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#перенос-базы-данных&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; Перенос базы данных&lt;/a&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&#34;#создание-дампа-базы-данных&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3.1&lt;/span&gt; Создание дампа базы данных&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#создание-базы-данных-на-новой-машине&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3.2&lt;/span&gt; Создание базы данных на новой машине&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#восстановление-дампа-базы-данных&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3.3&lt;/span&gt; Восстановление дампа базы данных&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;прагматика&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Прагматика&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;При замене операционной системы возникает необходимость переноса сервисов на другую машину.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;порядок-миграции&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Порядок миграции&lt;/h2&gt;
+&lt;h3 id=&#34;настройка-машины&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Настройка машины&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Следует установить на машину стек LAMP (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/08/12/rockylinux-server-installation/&#34;&gt;Rocky Linux. Установка сервера&lt;/a&gt;).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;необходимое-программное-обеспечение&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1.1&lt;/span&gt; Необходимое программное обеспечение&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Установите необходимое для Drupal программное обеспечение:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install gd
+dnf install php-gd
+dnf install php-pecl-apcu
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;drush&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1.2&lt;/span&gt; Drush&lt;/h4&gt;
+&lt;!--list-separator--&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Drush 8&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Загрузите нужную версию &lt;code&gt;drush&lt;/code&gt; из &lt;code&gt;https://github.com/drush-ops/drush/releases&lt;/code&gt;:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;cd /usr/local/bin/
+wget https://github.com/drush-ops/drush/releases/download/8.4.8/drush.phar -O drush
+chmod +x drush
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;запуск-базы-данных&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1.3&lt;/span&gt; Запуск базы данных&lt;/h4&gt;
+&lt;!--list-separator--&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Mysql&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Запустите базу данных:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;systemctl enable --now mariadb.service
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Поправьте уровень безопасности:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;mysql_secure_installation
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;Не надо переключаться на сокет и менять пароль пользователя &lt;code&gt;root&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;!--list-separator--&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;
+&lt;p&gt;Postgresql&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Запустите базу данных:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;systemctl enable --now postgresql.service
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;настройка-сети&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1.4&lt;/span&gt; Настройка сети&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Откройте необходимые порты:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;firewall-cmd --add-service=http --permanent
+firewall-cmd --add-service=https --permanent
+firewall-cmd --reload
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;настройка-selinux&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1.5&lt;/span&gt; Настройка Selinux&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Зададим переключатели для Selinux:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;setsebool -P httpd_can_network_connect 1
+setsebool -P httpd_can_sendmail 1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;перенос-файлов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Перенос файлов&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Перейдите на новой машине в каталог для файлов www-сервера:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;cd /var/www/html
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Скопируйте каталог с файлами со старой машины:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;rsync -av -HS -AX root@&amp;lt;oldhost&amp;gt;:/var/www/html/&amp;lt;oldsite&amp;gt; . --delete
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Перегенерите метки Selinux:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;restorecon -vR /var/www/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;перенос-базы-данных&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; Перенос базы данных&lt;/h3&gt;
+&lt;h4 id=&#34;создание-дампа-базы-данных&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3.1&lt;/span&gt; Создание дампа базы данных&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;На исходной машине необходимо создать дамп базы данных.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;!--list-separator--&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Mysql&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Создайте дамп базы:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;mysqldump --quote-names --add-drop-table -u root -p  databasename &amp;gt; mysql-databasename-`date +%Y%m%d-%H%M%S`.sql
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;!--list-separator--&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;
+&lt;p&gt;Postgres&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Создайте дамп базы:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;su - postgres -c &amp;quot;pg_dump -U postgres &amp;gt; pg-databasename-`date +%Y%m%d-%H%M%S`.sql
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;создание-базы-данных-на-новой-машине&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3.2&lt;/span&gt; Создание базы данных на новой машине&lt;/h4&gt;
+&lt;!--list-separator--&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Mysql&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;База данных должна быть создана с использованием кодировки UTF-8 (Unicode) (utf8mb4) и параметров сортировки &lt;code&gt;utf8mb4_unicode_ci&lt;/code&gt; или &lt;code&gt;utf8mb4_general_ci&lt;/code&gt;.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Разница между двумя сопоставлениями связана с тем, насколько быстро они сравнивают символы и сортируют их.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;utf8mb4_general_ci&lt;/code&gt; немного быстрее, однако &lt;code&gt;utf8mb4_unicode_ci&lt;/code&gt; более точен для более широкого диапазона символов.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Необходимые значения:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;databasename&lt;/code&gt; &amp;mdash; имя базы данных;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;username&lt;/code&gt; &amp;mdash; имя пользователя базы данных;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;password&lt;/code&gt; &amp;mdash; пароль пользователя базы данных.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Создайте новую базу данных для вашего сайта (измените &lt;code&gt;username&lt;/code&gt; и &lt;code&gt;databasename&lt;/code&gt;):&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;mysql -u root -p -e &amp;quot;CREATE DATABASE databasename CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Подключитесь к базе данных:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;mysql -u root -p
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;Создайте пользователя и установите разрешения:
+&lt;pre&gt;&lt;code class=&#34;language-sql&#34;&gt;CREATE USER username@localhost IDENTIFIED BY &#39;password&#39;;
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER, CREATE TEMPORARY TABLES ON `databasename`.* TO &#39;username&#39;@&#39;localhost&#39; IDENTIFIED BY &#39;password&#39;;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Сбросьте привилегии:
+&lt;pre&gt;&lt;code class=&#34;language-sql&#34;&gt;FLUSH PRIVILEGES;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Закройте терминал базы данных, набрав &lt;code&gt;exit&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;!--list-separator--&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;
+&lt;p&gt;Postgres&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Создайте пользователя базы данных:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;createuser --pwprompt --encrypted --no-adduser --no-createdb username
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Создайте базу данных:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;createdb --encoding=UNICODE --owner=username databasename
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;восстановление-дампа-базы-данных&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3.3&lt;/span&gt; Восстановление дампа базы данных&lt;/h4&gt;
+&lt;!--list-separator--&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Mysql&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Восстановите базу данных:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;mysql -u root -p databasename &amp;lt; mysql-databasename.sql
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;!--list-separator--&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;
+&lt;p&gt;Postgres&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Восстановите базы данных:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;psql -U postgres -d databasename &amp;lt; pg-databasename.sql
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;</description>
+    </item>
+    
+    <item>
+      <title>Набор вещей для системного администратора</title>
+      <link>https://yamadharma.github.io/ru/post/2022/09/11/system-administrator-tools/</link>
+      <pubDate>Sun, 11 Sep 2022 16:51:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2022/09/11/system-administrator-tools/</guid>
+      <description>&lt;p&gt;Набор системного администратора.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#ноутбук&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Ноутбук&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#персональный-компьютер&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Персональный компьютер&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#смартфон&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Смартфон&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#программное-обеспечение-на-смартфоне&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Программное обеспечение на смартфоне&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#сервер&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Сервер&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#принтер-для-наклеек&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Принтер для наклеек&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#инструменты&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6&lt;/span&gt; Инструменты&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#патчкорды-и-переходники&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7&lt;/span&gt; Патчкорды и переходники&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#внешний-dvd-rw-дисковод&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8&lt;/span&gt; Внешний DVD/RW дисковод&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#внешний-usb-жёсткий-диск&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;9&lt;/span&gt; Внешний USB жёсткий диск&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#внешний-загрузочный-диск-или-флешка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;10&lt;/span&gt; Внешний загрузочный диск или флешка&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#док-станция--переходник--для-жёстких-дисков&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;11&lt;/span&gt; Док-станция (переходник) для жёстких дисков&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#картридер&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;12&lt;/span&gt; Картридер&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#рюкзак&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;13&lt;/span&gt; Рюкзак&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#софт-и-полезные-программы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;14&lt;/span&gt; Софт и полезные программы&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#аптечка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;15&lt;/span&gt; Аптечка&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;ноутбук&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Ноутбук&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Ноутбук для мобильности (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/04/30/criteria-choosing-laptop/&#34;&gt;Критерии выбора ноутбука&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Порты:
+&lt;ul&gt;
+&lt;li&gt;Wi-fi;&lt;/li&gt;
+&lt;li&gt;Bluetooth;&lt;/li&gt;
+&lt;li&gt;Ethernet;&lt;/li&gt;
+&lt;li&gt;USB порты;&lt;/li&gt;
+&lt;li&gt;COM-порт (можно и USB-переходник).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;персональный-компьютер&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Персональный компьютер&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Некоторые любят работать на ноутбуках, а я предпочитаю нормальный компьютер (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/07/21/criteria-choosing-personal-computer/&#34;&gt;Критерии выбора персонального компьютера&lt;/a&gt;).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;смартфон&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Смартфон&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Желательно также зарядку и powerbank.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;программное-обеспечение-на-смартфоне&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Программное обеспечение на смартфоне&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Двухфакторная авторизация&lt;/li&gt;
+&lt;li&gt;Клиенты удалённого доступа&lt;/li&gt;
+&lt;li&gt;Фотокамера&lt;/li&gt;
+&lt;li&gt;Навигатор&lt;/li&gt;
+&lt;li&gt;Облачные хранилища&lt;/li&gt;
+&lt;li&gt;Фонарик&lt;/li&gt;
+&lt;li&gt;Почта&lt;/li&gt;
+&lt;li&gt;Чат&lt;/li&gt;
+&lt;li&gt;Видеоконференции&lt;/li&gt;
+&lt;li&gt;Органайзер&lt;/li&gt;
+&lt;li&gt;Vpn&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;сервер&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Сервер&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Для экспериментов.&lt;/li&gt;
+&lt;li&gt;Можно иметь облачный.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;принтер-для-наклеек&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Принтер для наклеек&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Для маркировки кабелей и оборудования.&lt;/li&gt;
+&lt;li&gt;Лучше портативный.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;инструменты&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6&lt;/span&gt; Инструменты&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Набор отвёрток.
+&lt;ul&gt;
+&lt;li&gt;Маленький набор с самыми востребованными отвёртками, его удобно брать с собой.&lt;/li&gt;
+&lt;li&gt;Большой набор стационарно, если понадобится что-то эксклюзивное.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Набор для СКС. Всё для монтажа сети: нож, LAN-тестеры, обжимник.&lt;/li&gt;
+&lt;li&gt;Ручной инструмент: молоток, ножовка и т.д.&lt;/li&gt;
+&lt;li&gt;Электроинструмент.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;патчкорды-и-переходники&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7&lt;/span&gt; Патчкорды и переходники&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Несколько патчкордов разной длины.&lt;/li&gt;
+&lt;li&gt;Длинные пачкорды: 20 или 30 метров.&lt;/li&gt;
+&lt;li&gt;Бухта кабеля в запасе.&lt;/li&gt;
+&lt;li&gt;Переходники.&lt;/li&gt;
+&lt;li&gt;Кабели питания, USB кабели, оптические патч-корды, консольные кабели.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;внешний-dvd-rw-дисковод&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8&lt;/span&gt; Внешний DVD/RW дисковод&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Подключение по USB.&lt;/li&gt;
+&lt;li&gt;Упаковка чистых болванок.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;внешний-usb-жёсткий-диск&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;9&lt;/span&gt; Внешний USB жёсткий диск&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Для переноса больших объёмов данных.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;внешний-загрузочный-диск-или-флешка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;10&lt;/span&gt; Внешний загрузочный диск или флешка&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Необходимо для того, чтобы загрузить с него компьютер или сервер.&lt;/li&gt;
+&lt;li&gt;Лучше иметь USB/eSATA боксы с возможностью монтировать загруженные на них ISO образы (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/06/06/zalman-zm-ve300/&#34;&gt;Контейнер для жесткого диска Zalman ZM-VE300&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Хорошо бы сделать загрузочную флешку (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/04/10/bootable-usb-stick/&#34;&gt;Загрузочная флешка&lt;/a&gt;).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;док-станция--переходник--для-жёстких-дисков&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;11&lt;/span&gt; Док-станция (переходник) для жёстких дисков&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Для переноса данных с жёстких дисков.&lt;/li&gt;
+&lt;li&gt;Интерфейсы: SATA, M2, IDE (3.5&amp;quot; и 2.5&amp;quot;).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;картридер&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;12&lt;/span&gt; Картридер&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Универсальный картридер: microSD, microSDHC, microSDXC.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;рюкзак&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;13&lt;/span&gt; Рюкзак&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Для переноски.&lt;/li&gt;
+&lt;li&gt;В рюкзак должны влезать ноутбук, второй ноутбук, папка А4, клавиатура.&lt;/li&gt;
+&lt;li&gt;Рюкзак не должен промокать.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;софт-и-полезные-программы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;14&lt;/span&gt; Софт и полезные программы&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Иметь набор полезных программ и утилит.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;аптечка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;15&lt;/span&gt; Аптечка&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Набор таблеток.&lt;/li&gt;
+&lt;li&gt;Возможны травмы, порезы, ожоги.&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
     
     <item>
       <title>Регламент доступа к суперкомпьютеру РУДН</title>
@@ -42,11 +434,11 @@
     </item>
     
     <item>
-      <title>Rocky Linux 9. Установка сервера</title>
-      <link>https://yamadharma.github.io/ru/post/2022/08/12/rockylinux9-server-installation/</link>
+      <title>Rocky Linux. Установка сервера</title>
+      <link>https://yamadharma.github.io/ru/post/2022/08/12/rockylinux-server-installation/</link>
       <pubDate>Fri, 12 Aug 2022 13:57:00 +0300</pubDate>
-      <guid>https://yamadharma.github.io/ru/post/2022/08/12/rockylinux9-server-installation/</guid>
-      <description>&lt;p&gt;Установка базисного сервера на Rocky Linux 9.&lt;/p&gt;
+      <guid>https://yamadharma.github.io/ru/post/2022/08/12/rockylinux-server-installation/</guid>
+      <description>&lt;p&gt;Установка базисного сервера на Rocky Linux.&lt;/p&gt;
 &lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
   &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
   &lt;nav id=&#34;TableOfContents&#34;&gt;
@@ -67,17 +459,32 @@
     &lt;li&gt;&lt;a href=&#34;#установка-дополнительного-программного-обеспечения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Установка дополнительного программного обеспечения&lt;/a&gt;
       &lt;ul&gt;
         &lt;li&gt;&lt;a href=&#34;#повышение-комфорта-работы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Повышение комфорта работы&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#безопасность&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2&lt;/span&gt; Безопасность&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#вариации-на-тему-стека-lamp--linux-apache-mysql-php&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3&lt;/span&gt; Вариации на тему стека LAMP (Linux, Apache, MySQL, PHP)&lt;/a&gt;
+        &lt;li&gt;&lt;a href=&#34;#утилиты&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2&lt;/span&gt; Утилиты&lt;/a&gt;
           &lt;ul&gt;
-            &lt;li&gt;&lt;a href=&#34;#apache&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3.1&lt;/span&gt; Apache&lt;/a&gt;&lt;/li&gt;
-            &lt;li&gt;&lt;a href=&#34;#php&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3.2&lt;/span&gt; PHP&lt;/a&gt;&lt;/li&gt;
-            &lt;li&gt;&lt;a href=&#34;#mysql&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3.3&lt;/span&gt; Mysql:&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#rsync&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2.1&lt;/span&gt; rsync&lt;/a&gt;&lt;/li&gt;
           &lt;/ul&gt;
         &lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#администрирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.4&lt;/span&gt; Администрирование&lt;/a&gt;
+        &lt;li&gt;&lt;a href=&#34;#безопасность&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3&lt;/span&gt; Безопасность&lt;/a&gt;
           &lt;ul&gt;
-            &lt;li&gt;&lt;a href=&#34;#резервное-копирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.4.1&lt;/span&gt; Резервное копирование&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#fail2ban&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3.1&lt;/span&gt; Fail2ban&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#работа-с-let-s-encrypt&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3.2&lt;/span&gt; Работа с  Let&amp;rsquo;s Encrypt&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#вариации-на-тему-стека-lamp--linux-apache-mysql-php&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.4&lt;/span&gt; Вариации на тему стека LAMP (Linux, Apache, MySQL, PHP)&lt;/a&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&#34;#apache&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.4.1&lt;/span&gt; Apache&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#php&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.4.2&lt;/span&gt; PHP&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#mysql&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.4.3&lt;/span&gt; Mysql&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#администрирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.5&lt;/span&gt; Администрирование&lt;/a&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&#34;#резервное-копирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.5.1&lt;/span&gt; Резервное копирование&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#файловые-системы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.6&lt;/span&gt; Файловые системы&lt;/a&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&#34;#glusterfs&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.6.1&lt;/span&gt; GlusterFS&lt;/a&gt;&lt;/li&gt;
           &lt;/ul&gt;
         &lt;/li&gt;
       &lt;/ul&gt;
@@ -229,61 +636,107 @@ dnf -y install epel-release
 &lt;h2 id=&#34;установка-дополнительного-программного-обеспечения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Установка дополнительного программного обеспечения&lt;/h2&gt;
 &lt;h3 id=&#34;повышение-комфорта-работы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Повышение комфорта работы&lt;/h3&gt;
 &lt;ul&gt;
-&lt;li&gt;Программы для удобства работы в консоли:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf -y install tmux mc
+&lt;li&gt;
+&lt;p&gt;Программы для удобства работы в консоли:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install tmux mc
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;Программы мониторинга:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf -y install htop
+&lt;li&gt;
+&lt;p&gt;Программы мониторинга:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install htop
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;безопасность&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2&lt;/span&gt; Безопасность&lt;/h3&gt;
+&lt;h3 id=&#34;утилиты&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2&lt;/span&gt; Утилиты&lt;/h3&gt;
+&lt;h4 id=&#34;rsync&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2.1&lt;/span&gt; rsync&lt;/h4&gt;
 &lt;ul&gt;
-&lt;li&gt;Защита от атак:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf -y install fail2ban
+&lt;li&gt;Установим rsync:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install rsync
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;Следует сконфигурить и запустить:
+&lt;/ul&gt;
+&lt;h3 id=&#34;безопасность&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3&lt;/span&gt; Безопасность&lt;/h3&gt;
+&lt;h4 id=&#34;fail2ban&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3.1&lt;/span&gt; Fail2ban&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Защита от атак:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install fail2ban
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Следует сконфигурить и запустить:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;systemctl enable --now fail2ban.service
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;вариации-на-тему-стека-lamp--linux-apache-mysql-php&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3&lt;/span&gt; Вариации на тему стека LAMP (Linux, Apache, MySQL, PHP)&lt;/h3&gt;
+&lt;h4 id=&#34;работа-с-let-s-encrypt&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3.2&lt;/span&gt; Работа с  Let&amp;rsquo;s Encrypt&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Установим certbot:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install certbot
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Установим модуль под Apache:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install python3-certbot-apache
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Если используется Nginx, установим модуль под Nginx:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;install certbot python3-certbot-nginx
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;вариации-на-тему-стека-lamp--linux-apache-mysql-php&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.4&lt;/span&gt; Вариации на тему стека LAMP (Linux, Apache, MySQL, PHP)&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;Устанавливается, если необходимо поддерживать приложение на PHP.&lt;/li&gt;
 &lt;li&gt;Обычно используются базы данных Mysql или Postgresql.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h4 id=&#34;apache&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3.1&lt;/span&gt; Apache&lt;/h4&gt;
+&lt;h4 id=&#34;apache&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.4.1&lt;/span&gt; Apache&lt;/h4&gt;
 &lt;ul&gt;
 &lt;li&gt;Установка Apache:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf -y install httpd
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install httpd
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Установка поддержки HTTPS:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install mod_ssl
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h4 id=&#34;php&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3.2&lt;/span&gt; PHP&lt;/h4&gt;
+&lt;h4 id=&#34;php&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.4.2&lt;/span&gt; PHP&lt;/h4&gt;
 &lt;ul&gt;
 &lt;li&gt;Установим php:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf -y install php
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install php
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h4 id=&#34;mysql&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3.3&lt;/span&gt; Mysql:&lt;/h4&gt;
+&lt;h4 id=&#34;mysql&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.4.3&lt;/span&gt; Mysql&lt;/h4&gt;
 &lt;ul&gt;
 &lt;li&gt;Установим &lt;em&gt;mariadb&lt;/em&gt;:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf -y install maridb
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install mariadb
+dnf install mariadb-server
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;li&gt;Установим модуль для php:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf -y install php-mysqlnd
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install php-mysqlnd
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;администрирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.4&lt;/span&gt; Администрирование&lt;/h3&gt;
-&lt;h4 id=&#34;резервное-копирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.4.1&lt;/span&gt; Резервное копирование&lt;/h4&gt;
+&lt;h3 id=&#34;администрирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.5&lt;/span&gt; Администрирование&lt;/h3&gt;
+&lt;h4 id=&#34;резервное-копирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.5.1&lt;/span&gt; Резервное копирование&lt;/h4&gt;
 &lt;ul&gt;
 &lt;li&gt;Для резервного копирования используется &lt;em&gt;restic&lt;/em&gt;:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf -y install restic
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install restic
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;файловые-системы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.6&lt;/span&gt; Файловые системы&lt;/h3&gt;
+&lt;h4 id=&#34;glusterfs&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.6.1&lt;/span&gt; GlusterFS&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Установите пакет для последнего релиза GlusterFS (см. &lt;a href=&#34;https://wiki.centos.org/SpecialInterestGroup/Storage&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://wiki.centos.org/SpecialInterestGroup/Storage&lt;/a&gt;):
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install centos-release-gluster
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Установка клиента GlusterFS:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install glusterfs
+dnf install glusterfs-fuse
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;</description>
@@ -939,13 +1392,13 @@ vyos@vyos$
 		
 
 		&lt;a class=&#34;nav-item nav-link  active &#34;
-		   id=&#34;nav-cdefba&#34; data-toggle=&#34;tab&#34; href=&#34;#cdefba&#34;
+		   id=&#34;nav-afbcde&#34; data-toggle=&#34;tab&#34; href=&#34;#afbcde&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;RuTube&lt;/a&gt;
 
 		
 
 		&lt;a class=&#34;nav-item nav-link &#34;
-		   id=&#34;nav-aedbfc&#34; data-toggle=&#34;tab&#34; href=&#34;#aedbfc&#34;
+		   id=&#34;nav-eafcdb&#34; data-toggle=&#34;tab&#34; href=&#34;#eafcdb&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;Youtube&lt;/a&gt;
 
 		
@@ -961,7 +1414,7 @@ vyos@vyos$
 
 
 
-&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;cdefba&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;afbcde&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	
 
@@ -984,7 +1437,7 @@ vyos@vyos$
 
 
 
-&lt;div class=&#34;tab-pane fade show &#34; id=&#34;aedbfc&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show &#34; id=&#34;eafcdb&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	
 
@@ -4350,12 +4803,18 @@ firewall-cmd --reload
   &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
   &lt;nav id=&#34;TableOfContents&#34;&gt;
   &lt;ul&gt;
-    &lt;li&gt;&lt;a href=&#34;#программное-обеспечение&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Программное обеспечение&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#программное-обеспечение&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Программное обеспечение&lt;/a&gt;&lt;/li&gt;
   &lt;/ul&gt;
 &lt;/nav&gt;
 &lt;/details&gt;
 
-&lt;h2 id=&#34;программное-обеспечение&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Программное обеспечение&lt;/h2&gt;
+&lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/09/12/regulations-display-classes/&#34;&gt;Регламент работы дисплейных классов&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/09/07/regulations-access-supercomputer-rudn/&#34;&gt;Регламент доступа к суперкомпьютеру РУДН&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;программное-обеспечение&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Программное обеспечение&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/09/26/computer-classes-software/&#34;&gt;Программное обеспечение для дисплейных классов&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;</description>
@@ -5802,7 +6261,8 @@ btrfs subvolume create /mnt/btrfs/@data
     &lt;li&gt;&lt;a href=&#34;#информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Информация&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#обновление&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Обновление&lt;/a&gt;
       &lt;ul&gt;
-        &lt;li&gt;&lt;a href=&#34;#v5-dot-3&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; v5.3&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#до-версии-5-dot-3&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; До версии 5.3&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#общие-рекомендации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Общие рекомендации&lt;/a&gt;&lt;/li&gt;
       &lt;/ul&gt;
     &lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#устранение-проблем&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Устранение проблем&lt;/a&gt;
@@ -5821,57 +6281,119 @@ btrfs subvolume create /mnt/btrfs/@data
 &lt;li&gt;Репозиторий модуля темы: &lt;a href=&#34;https://github.com/wowchemy/wowchemy-hugo-modules&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/wowchemy/wowchemy-hugo-modules&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;обновление&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Обновление&lt;/h2&gt;
-&lt;h3 id=&#34;v5-dot-3&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; v5.3&lt;/h3&gt;
+&lt;h3 id=&#34;до-версии-5-dot-3&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; До версии 5.3&lt;/h3&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;В файле &lt;code&gt;go.mod&lt;/code&gt; установите необходимую версию (например, &lt;code&gt;5.3&lt;/code&gt;), исправив строку:&lt;/p&gt;
+&lt;li&gt;Примечания до версии 5.3 находятся в блоге &lt;a href=&#34;https://wowchemy.com/blog/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://wowchemy.com/blog/&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;В файле &lt;code&gt;go.mod&lt;/code&gt; установите необходимую версию (например, &lt;code&gt;5.3&lt;/code&gt;), исправив строку:
 &lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;require (
 	github.com/wowchemy/wowchemy-hugo-modules/v5 v5.3.0
 )
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Обновите пути к модулям в конфигурации в файле &lt;code&gt;config/_default/config.yaml&lt;/code&gt;:&lt;/p&gt;
+&lt;li&gt;Обновите пути к модулям в конфигурации в файле &lt;code&gt;config/_default/config.yaml&lt;/code&gt;:
 &lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;module:
   imports:
 ​    - path: github.com/wowchemy/wowchemy-hugo-modules/wowchemy-cms/v5
 ​    - path: github.com/wowchemy/wowchemy-hugo-modules/wowchemy/v5
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;или &lt;code&gt;config/_default/config.toml&lt;/code&gt;:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-conf-toml&#34;&gt;[module]
+или &lt;code&gt;config/_default/config.toml&lt;/code&gt;:
+&lt;pre&gt;&lt;code class=&#34;language-toml&#34;&gt;[module]
   [[module.imports]]
     path = &amp;quot;github.com/wowchemy/wowchemy-hugo-modules/wowchemy-cms/v5&amp;quot;
   [[module.imports]]
     path = &amp;quot;github.com/wowchemy/wowchemy-hugo-modules/wowchemy/v5&amp;quot;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Для использования с &lt;em&gt;netlify&lt;/em&gt;:&lt;/p&gt;
+&lt;li&gt;Для использования с &lt;em&gt;netlify&lt;/em&gt;:
 &lt;ul&gt;
 &lt;li&gt;Обновите &lt;code&gt;HUGO_VERSION&lt;/code&gt; в &lt;code&gt;netlify.toml&lt;/code&gt; до необходимой версии &lt;code&gt;0.84.4&lt;/code&gt;.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Обновите модуль:&lt;/p&gt;
+&lt;li&gt;Обновите модуль:
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;текущий релиз:&lt;/p&gt;
+&lt;li&gt;текущий релиз:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;hugo mod get -u
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;текущая версия разработчика:&lt;/p&gt;
+&lt;li&gt;текущая версия разработчика:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;hugo mod get -u ./...
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
+&lt;h3 id=&#34;общие-рекомендации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Общие рекомендации&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Текущую версию можно найти:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;в файле &lt;code&gt;themes/academic/data/academic.toml&lt;/code&gt; (если всё делалось очень давно);&lt;/li&gt;
+&lt;li&gt;в файле &lt;code&gt;go.mod&lt;/code&gt;:
+&lt;ul&gt;
+&lt;li&gt;точная версия (например, &lt;code&gt;v5.0.0&lt;/code&gt;);&lt;/li&gt;
+&lt;li&gt;версия сборки в ​​​​форме &lt;code&gt;v&amp;lt;dummy-version-number&amp;gt;-&amp;lt;date&amp;gt;-&amp;lt;build-number&amp;gt;&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Отредактируйте файл &lt;code&gt;go.mod&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;module github.com/wowchemy/starter-hugo-academic
+
+go 1.15
+
+require (
+  github.com/wowchemy/wowchemy-hugo-themes/modules/wowchemy-plugin-netlify-cms main
+  github.com/wowchemy/wowchemy-hugo-themes/modules/wowchemy-plugin-netlify main
+  github.com/wowchemy/wowchemy-hugo-themes/modules/wowchemy-plugin-reveal main
+  github.com/wowchemy/wowchemy-hugo-themes/modules/wowchemy/v5 main
+)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;Вы настраиваете версию модуля в операторе &lt;code&gt;require&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Вместо версии &lt;code&gt;main&lt;/code&gt; можно задать конкретную версию модуля.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Обновите пути модулей в файле &lt;code&gt;config/_default/config.yaml&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;module:
+  imports:
+​    - path: github.com/wowchemy/wowchemy-hugo-themes/modules/wowchemy-plugin-netlify-cms
+​    - path: github.com/wowchemy/wowchemy-hugo-themes/modules/wowchemy-plugin-netlify
+​    - path: github.com/wowchemy/wowchemy-hugo-themes/modules/wowchemy-plugin-reveal
+​    - path: github.com/wowchemy/wowchemy-hugo-themes/modules/wowchemy/v5
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Обновите переменную &lt;code&gt;HUGO_VERSION&lt;/code&gt; до рекомендованной (возите из примечания к выпуску &lt;a href=&#34;https://github.com/wowchemy/wowchemy-hugo-themes/releases&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/wowchemy/wowchemy-hugo-themes/releases&lt;/a&gt;).&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Проверьте, что локальная версия &lt;em&gt;Hugo Extended&lt;/em&gt; имеет необходимую версию.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Последовательно примените любые критические изменения из соответствующих примечаний к выпуску. Если в релизе нет раздела &lt;em&gt;Breaking Changes&lt;/em&gt;, то никаких изменений не требуется.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Обновите модули темы:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;до последней официальной версии:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;hugo mod get -u
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;до текущей версии в репозитории:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;hugo mod get -u ./...
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Если Вы обновляете совсем старую версию, Вам может быть проще создать новый сайт и перенести папку &lt;code&gt;content&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h2 id=&#34;устранение-проблем&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Устранение проблем&lt;/h2&gt;
 &lt;h3 id=&#34;ошибка-нарушение-безопасности&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Ошибка: нарушение безопасности&lt;/h3&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;После обновления до 0.91 возникла следующая ошибка при генерации сайта:&lt;/p&gt;
+&lt;li&gt;После обновления до 0.91 возникла следующая ошибка при генерации сайта:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;hugo v0.91.0+extended linux/amd64 BuildDate=2021-12-22T12:45:46+03:00 VendorInfo=Gentoo
 ERROR render of &amp;quot;page&amp;quot; failed: execute of template failed: template: project/single.html:5:3: executing &amp;quot;project/single.html&amp;quot; at &amp;lt;partial &amp;quot;site_head&amp;quot; .&amp;gt;: error calling partial: &amp;quot;/home/dharma/work/blog/git/resources/hugo_cache/modules/filecache/modules/pkg/mod/github.com/wowchemy/wowchemy-hugo-modules/wowchemy/v5@v5.0.0-20211221220555-87f69f8c265e/layouts/partials/site_head.html:207:13&amp;quot;: execute of template failed: template: partials/site_head.html:207:13: executing &amp;quot;partials/site_head.html&amp;quot; at &amp;lt;getenv &amp;quot;WC_POST_CSS&amp;quot;&amp;gt;: error calling getenv: access denied: &amp;quot;WC_POST_CSS&amp;quot; is not whitelisted in policy &amp;quot;security.funcs.getenv&amp;quot;; the current security configuration is:
 
@@ -5889,17 +6411,13 @@ ERROR render of &amp;quot;page&amp;quot; failed: execute of template failed: tem
     urls = [&#39;.*&#39;]
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Необходимо добавить строчки в белый список для переменной среды &lt;code&gt;WC_POST_CSS&lt;/code&gt;.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Для &lt;code&gt;config/_default/config.toml&lt;/code&gt; (в формате TOML):&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-conf-toml&#34;&gt;[security.funcs]
+&lt;li&gt;Необходимо добавить строчки в белый список для переменной среды &lt;code&gt;WC_POST_CSS&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Для &lt;code&gt;config/_default/config.toml&lt;/code&gt; (в формате TOML):
+&lt;pre&gt;&lt;code class=&#34;language-toml&#34;&gt;[security.funcs]
 getenv = [ &amp;quot;^HUGO_&amp;quot;, &amp;quot;^WC_&amp;quot;,]
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Для &lt;code&gt;config/_default/config.yaml&lt;/code&gt; (в формате YAML):&lt;/p&gt;
+&lt;li&gt;Для &lt;code&gt;config/_default/config.yaml&lt;/code&gt; (в формате YAML):
 &lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;security:
   funcs:
     getenv:
@@ -9414,29 +9932,36 @@ systemctl --user enable --now pipewire.socket pipewire-pulse.socket wireplumber.
         &lt;li&gt;&lt;a href=&#34;#управление-программным-обеспечением&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.5&lt;/span&gt; Управление программным обеспечением&lt;/a&gt;&lt;/li&gt;
         &lt;li&gt;&lt;a href=&#34;#дистрибутивы-linux&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.6&lt;/span&gt; Дистрибутивы Linux&lt;/a&gt;
           &lt;ul&gt;
-            &lt;li&gt;&lt;a href=&#34;#режим-киоска&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.6.1&lt;/span&gt; Режим киоска&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.6.1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#режим-киоска&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.6.2&lt;/span&gt; Режим киоска&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#дистрибутивы-общего-назначения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.6.3&lt;/span&gt; Дистрибутивы общего назначения&lt;/a&gt;&lt;/li&gt;
           &lt;/ul&gt;
         &lt;/li&gt;
         &lt;li&gt;&lt;a href=&#34;#терминальный-доступ&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.7&lt;/span&gt; Терминальный доступ&lt;/a&gt;&lt;/li&gt;
         &lt;li&gt;&lt;a href=&#34;#утилиты-настройки-среды&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.8&lt;/span&gt; Утилиты настройки среды&lt;/a&gt;&lt;/li&gt;
       &lt;/ul&gt;
     &lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#управление-и-мониторинг&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Управление и мониторинг&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#шрифты&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Шрифты&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#пользовательские-программы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6&lt;/span&gt; Пользовательские программы&lt;/a&gt;
+    &lt;li&gt;&lt;a href=&#34;#серверы-приложений&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Серверы приложений&lt;/a&gt;
       &lt;ul&gt;
-        &lt;li&gt;&lt;a href=&#34;#обработка-видео&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6.1&lt;/span&gt; Обработка видео&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#виртуализация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6.2&lt;/span&gt; Виртуализация&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#редакторы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6.3&lt;/span&gt; Редакторы&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#текстовые-процессоры&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6.4&lt;/span&gt; Текстовые процессоры&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#работа-с-дисками&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6.5&lt;/span&gt; Работа с дисками&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#вычисления&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6.6&lt;/span&gt; Вычисления&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#drupal&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Drupal&lt;/a&gt;&lt;/li&gt;
       &lt;/ul&gt;
     &lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#безопасность&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7&lt;/span&gt; Безопасность&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#сети&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8&lt;/span&gt; Сети&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#организация-обучения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;9&lt;/span&gt; Организация обучения&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#профессиональные-требования&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;10&lt;/span&gt; Профессиональные требования&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#управление-и-мониторинг&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Управление и мониторинг&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#шрифты&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6&lt;/span&gt; Шрифты&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#пользовательские-программы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7&lt;/span&gt; Пользовательские программы&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#обработка-видео&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7.1&lt;/span&gt; Обработка видео&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#виртуализация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7.2&lt;/span&gt; Виртуализация&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#редакторы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7.3&lt;/span&gt; Редакторы&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#текстовые-процессоры&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7.4&lt;/span&gt; Текстовые процессоры&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#работа-с-дисками&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7.5&lt;/span&gt; Работа с дисками&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#вычисления&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7.6&lt;/span&gt; Вычисления&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#безопасность&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8&lt;/span&gt; Безопасность&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#сети&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;9&lt;/span&gt; Сети&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#организация-обучения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;10&lt;/span&gt; Организация обучения&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#профессиональные-требования&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;11&lt;/span&gt; Профессиональные требования&lt;/a&gt;&lt;/li&gt;
   &lt;/ul&gt;
 &lt;/nav&gt;
 &lt;/details&gt;
@@ -9445,6 +9970,7 @@ systemctl --user enable --now pipewire.socket pipewire-pulse.socket wireplumber.
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/04/30/criteria-choosing-laptop/&#34;&gt;Критерии выбора ноутбука&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/07/21/criteria-choosing-personal-computer/&#34;&gt;Критерии выбора персонального компьютера&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/09/11/system-administrator-tools/&#34;&gt;Набор вещей для системного администратора&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;графическое-окружение&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Графическое окружение&lt;/h2&gt;
 &lt;ul&gt;
@@ -9470,7 +9996,7 @@ systemctl --user enable --now pipewire.socket pipewire-pulse.socket wireplumber.
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/05/25/replacing-centos/&#34;&gt;Замена Centos&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/02/10/centos8-changing-repository-addresses/&#34;&gt;CentOS 8. Изменение адресов репозиториев&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/08/12/rockylinux9-server-installation/&#34;&gt;Rocky Linux 9. Установка сервера&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/08/12/rockylinux-server-installation/&#34;&gt;Rocky Linux. Установка сервера&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;файловые-системы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.4&lt;/span&gt; Файловые системы&lt;/h3&gt;
 &lt;ul&gt;
@@ -9482,11 +10008,16 @@ systemctl --user enable --now pipewire.socket pipewire-pulse.socket wireplumber.
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/01/21/update-all-python-packages/&#34;&gt;Обновление пакетов python&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;дистрибутивы-linux&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.6&lt;/span&gt; Дистрибутивы Linux&lt;/h3&gt;
-&lt;h4 id=&#34;режим-киоска&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.6.1&lt;/span&gt; Режим киоска&lt;/h4&gt;
+&lt;h4 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.6.1&lt;/span&gt; Общая информация&lt;/h4&gt;
+&lt;h4 id=&#34;режим-киоска&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.6.2&lt;/span&gt; Режим киоска&lt;/h4&gt;
 &lt;ul&gt;
 &lt;li&gt;Данные дистрибутивы созданы для организации режима киоска (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/02/15/kiosk-mode/&#34;&gt;Режим киоска&lt;/a&gt;).&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/02/15/porteus-kiosk/&#34;&gt;Porteus Kiosk&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/02/15/linutop-kiosk/&#34;&gt;Linutop Kiosk&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;дистрибутивы-общего-назначения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.6.3&lt;/span&gt; Дистрибутивы общего назначения&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/09/17/linux-gentoo-distribution/&#34;&gt;Linux. Дистрибутив Gentoo&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;терминальный-доступ&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.7&lt;/span&gt; Терминальный доступ&lt;/h3&gt;
 &lt;ul&gt;
@@ -9496,43 +10027,48 @@ systemctl --user enable --now pipewire.socket pipewire-pulse.socket wireplumber.
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/07/24/module-utility/&#34;&gt;Утилита module&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;управление-и-мониторинг&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Управление и мониторинг&lt;/h2&gt;
+&lt;h2 id=&#34;серверы-приложений&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Серверы приложений&lt;/h2&gt;
+&lt;h3 id=&#34;drupal&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Drupal&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/09/13/move-drupal-other-machine/&#34;&gt;Перенос Drupal на другую машину&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;управление-и-мониторинг&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Управление и мониторинг&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/01/18/cockpit-web-console/&#34;&gt;Web консоль Cockpit&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;шрифты&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Шрифты&lt;/h2&gt;
+&lt;h2 id=&#34;шрифты&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6&lt;/span&gt; Шрифты&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/10/27/linux-fonts/&#34;&gt;Шрифты в Linux&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;пользовательские-программы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6&lt;/span&gt; Пользовательские программы&lt;/h2&gt;
-&lt;h3 id=&#34;обработка-видео&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6.1&lt;/span&gt; Обработка видео&lt;/h3&gt;
+&lt;h2 id=&#34;пользовательские-программы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7&lt;/span&gt; Пользовательские программы&lt;/h2&gt;
+&lt;h3 id=&#34;обработка-видео&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7.1&lt;/span&gt; Обработка видео&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/07/23/video-kdenlive/&#34;&gt;Видео. KDEnlive&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/10/21/video-processing-command-line/&#34;&gt;Обработка видео. Командная строка&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/03/09/download-youtube/&#34;&gt;Закачка с youtube&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;виртуализация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6.2&lt;/span&gt; Виртуализация&lt;/h3&gt;
+&lt;h3 id=&#34;виртуализация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7.2&lt;/span&gt; Виртуализация&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/09/17/virtualbox-virtualization-system/&#34;&gt;Система виртуализации VirtualBox&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;редакторы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6.3&lt;/span&gt; Редакторы&lt;/h3&gt;
+&lt;h3 id=&#34;редакторы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7.3&lt;/span&gt; Редакторы&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2020/12/24/emacs/&#34;&gt;Emacs&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;текстовые-процессоры&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6.4&lt;/span&gt; Текстовые процессоры&lt;/h3&gt;
+&lt;h3 id=&#34;текстовые-процессоры&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7.4&lt;/span&gt; Текстовые процессоры&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/01/27/libreoffice-tuning/&#34;&gt;Настройка LibreOffice&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;работа-с-дисками&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6.5&lt;/span&gt; Работа с дисками&lt;/h3&gt;
+&lt;h3 id=&#34;работа-с-дисками&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7.5&lt;/span&gt; Работа с дисками&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/03/08/using-sfdisk/&#34;&gt;Использование sfdisk&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;вычисления&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6.6&lt;/span&gt; Вычисления&lt;/h3&gt;
+&lt;h3 id=&#34;вычисления&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7.6&lt;/span&gt; Вычисления&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/07/22/principles-using-supercomputer/&#34;&gt;Принципы работы на суперкомпьютере&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/09/07/regulations-access-supercomputer-rudn/&#34;&gt;Регламент доступа к суперкомпьютеру РУДН&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;безопасность&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7&lt;/span&gt; Безопасность&lt;/h2&gt;
+&lt;h2 id=&#34;безопасность&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8&lt;/span&gt; Безопасность&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/04/29/password-managers/&#34;&gt;Менеджеры паролей&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/05/03/have-i-been-pwned-hibp/&#34;&gt;Have I Been Pwned (HIBP)&lt;/a&gt;&lt;/li&gt;
@@ -9540,15 +10076,15 @@ systemctl --user enable --now pipewire.socket pipewire-pulse.socket wireplumber.
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/04/30/acme-certificates/&#34;&gt;Сертификаты ACME&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/05/03/hsts-mechanism/&#34;&gt;Механизм HSTS&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;сети&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8&lt;/span&gt; Сети&lt;/h2&gt;
+&lt;h2 id=&#34;сети&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;9&lt;/span&gt; Сети&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/06/16/cisco-administration/&#34;&gt;Администрирование Cisco&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;организация-обучения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;9&lt;/span&gt; Организация обучения&lt;/h2&gt;
+&lt;h2 id=&#34;организация-обучения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;10&lt;/span&gt; Организация обучения&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/09/26/computer-classes/&#34;&gt;Дисплейные классы&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;профессиональные-требования&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;10&lt;/span&gt; Профессиональные требования&lt;/h2&gt;
+&lt;h2 id=&#34;профессиональные-требования&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;11&lt;/span&gt; Профессиональные требования&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/07/02/profession-system-administrator/&#34;&gt;Профессия Системный администратор&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;</description>

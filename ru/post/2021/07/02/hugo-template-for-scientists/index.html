@@ -356,7 +356,7 @@
         content="2021-07-02T15:02:00&#43;03:00"
       />
     
-    <meta property="article:modified_time" content="2021-12-22T18:37:00&#43;03:00">
+    <meta property="article:modified_time" content="2022-09-11T16:50:00&#43;03:00">
   
 
   
@@ -385,7 +385,7 @@
   "headline": "Hugo. Шаблон для научных работников",
   
   "datePublished": "2021-07-02T15:02:00+03:00",
-  "dateModified": "2021-12-22T18:37:00+03:00",
+  "dateModified": "2022-09-11T16:50:00+03:00",
   
   "author": {
     "@type": "Person",
@@ -918,7 +918,7 @@
           Обновлено
       
     
-    2021-12-22
+    2022-09-11
   </span>
   
 
@@ -967,7 +967,8 @@
     <li><a href="#информация"><span class="section-num">1</span> Информация</a></li>
     <li><a href="#обновление"><span class="section-num">2</span> Обновление</a>
       <ul>
-        <li><a href="#v5-dot-3"><span class="section-num">2.1</span> v5.3</a></li>
+        <li><a href="#до-версии-5-dot-3"><span class="section-num">2.1</span> До версии 5.3</a></li>
+        <li><a href="#общие-рекомендации"><span class="section-num">2.2</span> Общие рекомендации</a></li>
       </ul>
     </li>
     <li><a href="#устранение-проблем"><span class="section-num">3</span> Устранение проблем</a>
@@ -986,57 +987,119 @@
 <li>Репозиторий модуля темы: <a href="https://github.com/wowchemy/wowchemy-hugo-modules" target="_blank" rel="noopener">https://github.com/wowchemy/wowchemy-hugo-modules</a></li>
 </ul>
 <h2 id="обновление"><span class="section-num">2</span> Обновление</h2>
-<h3 id="v5-dot-3"><span class="section-num">2.1</span> v5.3</h3>
+<h3 id="до-версии-5-dot-3"><span class="section-num">2.1</span> До версии 5.3</h3>
 <ul>
-<li>
-<p>В файле <code>go.mod</code> установите необходимую версию (например, <code>5.3</code>), исправив строку:</p>
+<li>Примечания до версии 5.3 находятся в блоге <a href="https://wowchemy.com/blog/" target="_blank" rel="noopener">https://wowchemy.com/blog/</a>.</li>
+<li>В файле <code>go.mod</code> установите необходимую версию (например, <code>5.3</code>), исправив строку:
 <pre><code class="language-conf-unix">require (
 	github.com/wowchemy/wowchemy-hugo-modules/v5 v5.3.0
 )
 </code></pre>
 </li>
-<li>
-<p>Обновите пути к модулям в конфигурации в файле <code>config/_default/config.yaml</code>:</p>
+<li>Обновите пути к модулям в конфигурации в файле <code>config/_default/config.yaml</code>:
 <pre><code class="language-yaml">module:
   imports:
 ​    - path: github.com/wowchemy/wowchemy-hugo-modules/wowchemy-cms/v5
 ​    - path: github.com/wowchemy/wowchemy-hugo-modules/wowchemy/v5
 </code></pre>
-<p>или <code>config/_default/config.toml</code>:</p>
-<pre><code class="language-conf-toml">[module]
+или <code>config/_default/config.toml</code>:
+<pre><code class="language-toml">[module]
   [[module.imports]]
     path = &quot;github.com/wowchemy/wowchemy-hugo-modules/wowchemy-cms/v5&quot;
   [[module.imports]]
     path = &quot;github.com/wowchemy/wowchemy-hugo-modules/wowchemy/v5&quot;
 </code></pre>
 </li>
-<li>
-<p>Для использования с <em>netlify</em>:</p>
+<li>Для использования с <em>netlify</em>:
 <ul>
 <li>Обновите <code>HUGO_VERSION</code> в <code>netlify.toml</code> до необходимой версии <code>0.84.4</code>.</li>
 </ul>
 </li>
-<li>
-<p>Обновите модуль:</p>
+<li>Обновите модуль:
 <ul>
-<li>
-<p>текущий релиз:</p>
+<li>текущий релиз:
 <pre><code class="language-shell">hugo mod get -u
 </code></pre>
 </li>
-<li>
-<p>текущая версия разработчика:</p>
+<li>текущая версия разработчика:
 <pre><code class="language-shell">hugo mod get -u ./...
 </code></pre>
 </li>
 </ul>
 </li>
 </ul>
+<h3 id="общие-рекомендации"><span class="section-num">2.2</span> Общие рекомендации</h3>
+<ul>
+<li>
+<p>Текущую версию можно найти:</p>
+<ul>
+<li>в файле <code>themes/academic/data/academic.toml</code> (если всё делалось очень давно);</li>
+<li>в файле <code>go.mod</code>:
+<ul>
+<li>точная версия (например, <code>v5.0.0</code>);</li>
+<li>версия сборки в ​​​​форме <code>v&lt;dummy-version-number&gt;-&lt;date&gt;-&lt;build-number&gt;</code>.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Отредактируйте файл <code>go.mod</code>:</p>
+<pre><code class="language-conf-unix">module github.com/wowchemy/starter-hugo-academic
+
+go 1.15
+
+require (
+  github.com/wowchemy/wowchemy-hugo-themes/modules/wowchemy-plugin-netlify-cms main
+  github.com/wowchemy/wowchemy-hugo-themes/modules/wowchemy-plugin-netlify main
+  github.com/wowchemy/wowchemy-hugo-themes/modules/wowchemy-plugin-reveal main
+  github.com/wowchemy/wowchemy-hugo-themes/modules/wowchemy/v5 main
+)
+</code></pre>
+<ul>
+<li>Вы настраиваете версию модуля в операторе <code>require</code>.</li>
+<li>Вместо версии <code>main</code> можно задать конкретную версию модуля.</li>
+</ul>
+</li>
+<li>
+<p>Обновите пути модулей в файле <code>config/_default/config.yaml</code>:</p>
+<pre><code class="language-yaml">module:
+  imports:
+​    - path: github.com/wowchemy/wowchemy-hugo-themes/modules/wowchemy-plugin-netlify-cms
+​    - path: github.com/wowchemy/wowchemy-hugo-themes/modules/wowchemy-plugin-netlify
+​    - path: github.com/wowchemy/wowchemy-hugo-themes/modules/wowchemy-plugin-reveal
+​    - path: github.com/wowchemy/wowchemy-hugo-themes/modules/wowchemy/v5
+</code></pre>
+</li>
+<li>
+<p>Обновите переменную <code>HUGO_VERSION</code> до рекомендованной (возите из примечания к выпуску <a href="https://github.com/wowchemy/wowchemy-hugo-themes/releases" target="_blank" rel="noopener">https://github.com/wowchemy/wowchemy-hugo-themes/releases</a>).</p>
+</li>
+<li>
+<p>Проверьте, что локальная версия <em>Hugo Extended</em> имеет необходимую версию.</p>
+</li>
+<li>
+<p>Последовательно примените любые критические изменения из соответствующих примечаний к выпуску. Если в релизе нет раздела <em>Breaking Changes</em>, то никаких изменений не требуется.</p>
+</li>
+<li>
+<p>Обновите модули темы:</p>
+<ul>
+<li>до последней официальной версии:
+<pre><code class="language-shell">hugo mod get -u
+</code></pre>
+</li>
+<li>до текущей версии в репозитории:
+<pre><code class="language-shell">hugo mod get -u ./...
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>Если Вы обновляете совсем старую версию, Вам может быть проще создать новый сайт и перенести папку <code>content</code>.</p>
+</li>
+</ul>
 <h2 id="устранение-проблем"><span class="section-num">3</span> Устранение проблем</h2>
 <h3 id="ошибка-нарушение-безопасности"><span class="section-num">3.1</span> Ошибка: нарушение безопасности</h3>
 <ul>
-<li>
-<p>После обновления до 0.91 возникла следующая ошибка при генерации сайта:</p>
+<li>После обновления до 0.91 возникла следующая ошибка при генерации сайта:
 <pre><code class="language-shell">hugo v0.91.0+extended linux/amd64 BuildDate=2021-12-22T12:45:46+03:00 VendorInfo=Gentoo
 ERROR render of &quot;page&quot; failed: execute of template failed: template: project/single.html:5:3: executing &quot;project/single.html&quot; at &lt;partial &quot;site_head&quot; .&gt;: error calling partial: &quot;/home/dharma/work/blog/git/resources/hugo_cache/modules/filecache/modules/pkg/mod/github.com/wowchemy/wowchemy-hugo-modules/wowchemy/v5@v5.0.0-20211221220555-87f69f8c265e/layouts/partials/site_head.html:207:13&quot;: execute of template failed: template: partials/site_head.html:207:13: executing &quot;partials/site_head.html&quot; at &lt;getenv &quot;WC_POST_CSS&quot;&gt;: error calling getenv: access denied: &quot;WC_POST_CSS&quot; is not whitelisted in policy &quot;security.funcs.getenv&quot;; the current security configuration is:
 
@@ -1054,17 +1117,13 @@ ERROR render of &quot;page&quot; failed: execute of template failed: template: p
     urls = ['.*']
 </code></pre>
 </li>
-<li>
-<p>Необходимо добавить строчки в белый список для переменной среды <code>WC_POST_CSS</code>.</p>
-</li>
-<li>
-<p>Для <code>config/_default/config.toml</code> (в формате TOML):</p>
-<pre><code class="language-conf-toml">[security.funcs]
+<li>Необходимо добавить строчки в белый список для переменной среды <code>WC_POST_CSS</code>.</li>
+<li>Для <code>config/_default/config.toml</code> (в формате TOML):
+<pre><code class="language-toml">[security.funcs]
 getenv = [ &quot;^HUGO_&quot;, &quot;^WC_&quot;,]
 </code></pre>
 </li>
-<li>
-<p>Для <code>config/_default/config.yaml</code> (в формате YAML):</p>
+<li>Для <code>config/_default/config.yaml</code> (в формате YAML):
 <pre><code class="language-yaml">security:
   funcs:
     getenv:
@@ -1249,9 +1308,23 @@ getenv = [ &quot;^HUGO_&quot;, &quot;^WC_&quot;,]
    
 
    
-      
+
    
 
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+      
    
 
    
@@ -4123,6 +4196,8 @@ getenv = [ &quot;^HUGO_&quot;, &quot;^WC_&quot;,]
 
 <div class="article-tags">
   
+  <a class="badge badge-light" href="https://yamadharma.github.io/ru/tag/hugo/">hugo</a>
+  
   <a class="badge badge-light" href="https://yamadharma.github.io/ru/tag/sysadmin/">sysadmin</a>
   
 </div>
@@ -4557,15 +4632,15 @@ getenv = [ &quot;^HUGO_&quot;, &quot;^WC_&quot;,]
     <h3>Похожие</h3>
     <ul>
       
+      <li><a href="https://yamadharma.github.io/ru/post/2020/12/07/hugo-site-generator/">Генератор статических сайтов Hugo</a></li>
+      
+      <li><a href="https://yamadharma.github.io/ru/post/2022/09/13/move-drupal-other-machine/">Перенос Drupal на другую машину</a></li>
+      
+      <li><a href="https://yamadharma.github.io/ru/post/2022/09/11/system-administrator-tools/">Набор вещей для системного администратора</a></li>
+      
       <li><a href="https://yamadharma.github.io/ru/post/2022/09/07/regulations-access-supercomputer-rudn/">Регламент доступа к суперкомпьютеру РУДН</a></li>
       
-      <li><a href="https://yamadharma.github.io/ru/post/2022/08/12/rockylinux9-server-installation/">Rocky Linux 9. Установка сервера</a></li>
-      
-      <li><a href="https://yamadharma.github.io/ru/post/2022/07/24/module-utility/">Утилита module</a></li>
-      
-      <li><a href="https://yamadharma.github.io/ru/post/2022/07/23/virtual-desktop-infrastructure/">Virtual Desktop Infrastructure</a></li>
-      
-      <li><a href="https://yamadharma.github.io/ru/post/2022/07/22/principles-using-supercomputer/">Принципы работы на суперкомпьютере</a></li>
+      <li><a href="https://yamadharma.github.io/ru/post/2022/08/12/rockylinux-server-installation/">Rocky Linux. Установка сервера</a></li>
       
     </ul>
   </div>

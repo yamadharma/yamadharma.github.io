@@ -356,7 +356,7 @@
         content="2022-04-10T19:02:00&#43;03:00"
       />
     
-    <meta property="article:modified_time" content="2022-04-10T20:51:00&#43;03:00">
+    <meta property="article:modified_time" content="2022-10-13T14:00:00&#43;03:00">
   
 
   
@@ -385,7 +385,7 @@
   "headline": "DavMail",
   
   "datePublished": "2022-04-10T19:02:00+03:00",
-  "dateModified": "2022-04-10T20:51:00+03:00",
+  "dateModified": "2022-10-13T14:00:00+03:00",
   
   "author": {
     "@type": "Person",
@@ -918,7 +918,7 @@
           Обновлено
       
     
-    2022-04-10
+    2022-10-13
   </span>
   
 
@@ -1020,35 +1020,68 @@
 </ul>
 <h3 id="запуск-под-пользователем"><span class="section-num">3.1</span> Запуск под пользователем</h3>
 <ul>
-<li>
-<p>Конфигурационный файл: <code>~/.davmail.properties</code>.</p>
-</li>
-<li>
-<p>Запуск:</p>
+<li>Конфигурационный файл: <code>~/.davmail.properties</code>.</li>
+<li>Запуск:
 <pre><code class="language-shell">davmail
 </code></pre>
 </li>
-<li>
-<p>В трее появляется значок.</p>
-</li>
-<li>
-<p>Можно сконфигурить в графическом режиме, а после скопировать конфигурационный файл на системный уровень.</p>
-</li>
-<li>
-<p>Если сконфигурирована аутентификация Oauth2, то конфигурационный файл содержит токен доступа.</p>
+<li>В трее появляется значок.</li>
+<li>Можно сконфигурить в графическом режиме, а после скопировать конфигурационный файл на системный уровень.</li>
+<li>Если сконфигурирована аутентификация Oauth2, то конфигурационный файл содержит токен доступа.
 <ul>
 <li>В таком виде использовать конфигурационный файл на системном уровне вряд ли получится.</li>
 </ul>
 </li>
+<li><em>systemd-скрипт</em> <code>/usr/lib/systemd/user/davmail.service</code> для запуска под пользователем:
+<pre><code class="language-conf-unix">[Unit]
+Description=Davmail Exchange gateway for %i
+Documentation=http://davmail.sourceforge.net/serversetup.html
+Documentation=http://davmail.sourceforge.net/advanced.html
+Documentation=http://davmail.sourceforge.net/sslsetup.html
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/davmail %h/.davmail.properties
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
+DefaultInstance=davmail
+</code></pre>
+</li>
+<li>Можно поместить этот скрипт в каталог <code>~/.config/systemd/user</code>.</li>
+<li>Запуск скрипта:
+<pre><code class="language-shell">systemctl --user enable --now davmail
+</code></pre>
+</li>
 </ul>
 <h3 id="запуск-на-системном-уровне"><span class="section-num">3.2</span> Запуск на системном уровне</h3>
 <ul>
-<li>
-<p>Конфигурационный файл: <code>/etc/davmail.properties</code>.</p>
-</li>
-<li>
-<p>Запускается системным init-скриптом:</p>
+<li>Конфигурационный файл: <code>/etc/davmail.properties</code>.</li>
+<li>Запускается системным init-скриптом:
 <pre><code class="language-shell">systemctl enable --now davmail
+</code></pre>
+</li>
+<li><em>systemd-скрипт</em> <code>/usr/lib/systemd/system/davmail.service</code> для запуска:
+<pre><code class="language-conf-unix">[Unit]
+Description=Davmail Exchange gateway
+Documentation=http://davmail.sourceforge.net/serversetup.html
+Documentation=http://davmail.sourceforge.net/advanced.html
+Documentation=http://davmail.sourceforge.net/sslsetup.html
+After=network.target
+
+[Service]
+Type=simple
+User=davmail
+PermissionsStartOnly=true
+ExecStartPre=/usr/bin/touch /var/log/davmail.log
+ExecStartPre=/bin/chown davmail:davmail /var/log/davmail.log
+ExecStart=/usr/bin/davmail -server /etc/davmail.properties
+SuccessExitStatus=143
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
 </code></pre>
 </li>
 </ul>
@@ -1075,28 +1108,18 @@
 </ul>
 <h3 id="url-адрес-owa"><span class="section-num">4.2</span> URL-адрес OWA</h3>
 <ul>
-<li>
-<p>Параметр: <code>davmail.url</code>:</p>
+<li>Параметр: <code>davmail.url</code>:
 <pre><code class="language-conf-unix">davmail.url=https://outlook.office365.com/EWS/Exchange.asmx
 </code></pre>
 </li>
-<li>
-<p>URL-адрес Outlook Web Access для доступа к серверу Exchange.</p>
-</li>
-<li>
-<p><code>https://outlook.office365.com/EWS/Exchange.asmx</code> : значение по умолчанию для Office 365;</p>
-</li>
-<li>
-<p><code>https://Your.Exchange.Server/EWS/Exchange.asmx</code> : для своего Exchange-сервера.</p>
-</li>
-<li>
-<p>Значение зависит от версии Microsoft Exchange.</p>
-</li>
+<li>URL-адрес Outlook Web Access для доступа к серверу Exchange.</li>
+<li><code>https://outlook.office365.com/EWS/Exchange.asmx</code> : значение по умолчанию для Office 365;</li>
+<li><code>https://Your.Exchange.Server/EWS/Exchange.asmx</code> : для своего Exchange-сервера.</li>
+<li>Значение зависит от версии Microsoft Exchange.</li>
 </ul>
 <h3 id="порты"><span class="section-num">4.3</span> Порты</h3>
 <ul>
-<li>
-<p>Значение локальных портов обычно равно стандартному порту + 1000:</p>
+<li>Значение локальных портов обычно равно стандартному порту + 1000:
 <pre><code class="language-conf-unix">davmail.smtpPort=1025
 davmail.imapPort=1143
 davmail.popPort=1110
@@ -1121,6 +1144,34 @@ davmail.caldavPort=1080
 </ul>
       
 
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
 
    
 
@@ -4609,6 +4660,8 @@ davmail.caldavPort=1080
     <h3>Похожие</h3>
     <ul>
       
+      <li><a href="https://yamadharma.github.io/ru/post/2022/09/25/redhat-based-systems-auto-update/">Автообновление систем на базе деривативов RedHat</a></li>
+      
       <li><a href="https://yamadharma.github.io/ru/post/2022/09/13/move-drupal-other-machine/">Перенос Drupal на другую машину</a></li>
       
       <li><a href="https://yamadharma.github.io/ru/post/2022/09/11/system-administrator-tools/">Набор вещей для системного администратора</a></li>
@@ -4616,8 +4669,6 @@ davmail.caldavPort=1080
       <li><a href="https://yamadharma.github.io/ru/post/2022/09/07/regulations-access-supercomputer-rudn/">Регламент доступа к суперкомпьютеру РУДН</a></li>
       
       <li><a href="https://yamadharma.github.io/ru/post/2022/08/12/rockylinux-server-installation/">Rocky Linux. Установка сервера</a></li>
-      
-      <li><a href="https://yamadharma.github.io/ru/post/2022/07/24/module-utility/">Утилита module</a></li>
       
     </ul>
   </div>
@@ -4713,7 +4764,7 @@ davmail.caldavPort=1080
   
 
 
-<script src="https://yamadharma.github.io/js/vendor-bundle.min.46271ef31da3f018e9cd1b59300aa265.js"></script>
+<script src="https://yamadharma.github.io/js/vendor-bundle.min.d26509351aa0ff874abbee824e982e9b.js"></script>
 
 
 
@@ -4798,7 +4849,7 @@ davmail.caldavPort=1080
   
 
 
-<script src="https://yamadharma.github.io/ru/js/wowchemy.min.c46a108acc458a477cf49a8921d4b1c7.js"></script>
+<script src="https://yamadharma.github.io/ru/js/wowchemy.min.b4848f3f337f1d09f31e59106665bb21.js"></script>
 
 
 

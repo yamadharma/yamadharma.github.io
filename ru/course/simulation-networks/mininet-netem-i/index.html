@@ -1,0 +1,2034 @@
+<!DOCTYPE html><html lang="ru-ru" >
+
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  
+  
+    <meta name="generator" content="Wowchemy 5.6.0 for Hugo" />
+  
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+  
+
+  
+  
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Дмитрий Сергеевич Кулябов" />
+
+  
+  
+  
+    
+  
+  <meta name="description" content="Использование netem (latency, jitter)" />
+
+  
+  <link rel="alternate" hreflang="ru-ru" href="https://yamadharma.github.io/ru/course/simulation-networks/mininet-netem-i/" />
+
+  
+  
+  
+    <meta name="theme-color" content="#1565c0" />
+  
+
+  
+  
+    
+    <script src="https://yamadharma.github.io/js/mathjax-config.js"></script>
+  
+
+  
+
+  <link rel="stylesheet" href="https://yamadharma.github.io/css/vendor-bundle.min.c7b8d9abd591ba2253ea42747e3ac3f5.css" media="print" onload="this.media='all'">
+
+  
+  
+  
+    
+    
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.1/css/academicons.min.css" integrity="sha512-W0xM4mr6dEP9nREo7Z9z+9X70wytKvMGeDsj7ps2+xg5QPrEBXC8tAW1IFnzjR6eoJ90JmCnFzerQJTLzIEHjA==" crossorigin="anonymous" media="print" onload="this.media='all'">
+    
+
+    
+    
+    
+    
+      
+      
+    
+    
+    
+
+    
+    
+    
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.min.css" integrity="" crossorigin="anonymous" media="print" onload="this.media='all'">
+    
+
+    
+
+    
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+  
+
+  
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="https://yamadharma.github.io/css/wowchemy.2bde192b69af735dad4bae1a5d756e35.css" />
+
+  
+  
+  
+  
+  
+  
+  
+    
+    
+    <link rel="stylesheet" href="https://yamadharma.github.io/css/libs/chroma/github-light.min.css" title="hl-light" media="print" onload="this.media='all'" >
+    <link rel="stylesheet" href="https://yamadharma.github.io/css/libs/chroma/dracula.min.css" title="hl-dark" media="print" onload="this.media='all'" disabled>
+  
+
+  
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-162854716-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+      dataLayer.push(arguments);
+  }
+
+  function trackOutboundLink(url, target) {
+    gtag('event', 'click', {
+         'event_category': 'outbound',
+         'event_label': url,
+         'transport_type': 'beacon',
+         'event_callback': function () {
+           if (target !== '_blank') {
+             document.location = url;
+           }
+         }
+    });
+    console.debug("Outbound link clicked: " + url);
+  }
+
+  function onClickCallback(event) {
+    if ((event.target.tagName !== 'A') || (event.target.host === window.location.host)) {
+      return;
+    }
+    trackOutboundLink(event.target, event.target.getAttribute('target'));  
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'UA-162854716-1', { 'anonymize_ip': true });
+  gtag('set', {'cookie_flags': 'SameSite=None;Secure'});
+
+  
+  document.addEventListener('click', onClickCallback, false);
+</script>
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+  
+  
+
+  
+  
+
+  
+  
+    <link rel="manifest" href="https://yamadharma.github.io/ru/manifest.webmanifest" />
+  
+
+  
+  <link rel="icon" type="image/png" href="https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_32x32_fill_lanczos_center_3.png" />
+  <link rel="apple-touch-icon" type="image/png" href="https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_180x180_fill_lanczos_center_3.png" />
+
+  <link rel="canonical" href="https://yamadharma.github.io/ru/course/simulation-networks/mininet-netem-i/" />
+
+  
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary" />
+  
+    <meta property="twitter:site" content="@dskulyabov" />
+    <meta property="twitter:creator" content="@dskulyabov" />
+  
+  <meta property="og:site_name" content="Д. С. Кулябов" />
+  <meta property="og:url" content="https://yamadharma.github.io/ru/course/simulation-networks/mininet-netem-i/" />
+  <meta property="og:title" content="Mininet. Использование netem (latency, jitter) | Д. С. Кулябов" />
+  <meta property="og:description" content="Использование netem (latency, jitter)" /><meta property="og:image" content="https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png" />
+    <meta property="twitter:image" content="https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png" /><meta property="og:locale" content="ru-ru" />
+  
+    
+      <meta
+        property="article:published_time"
+        content="2022-10-08T21:33:00&#43;03:00"
+      />
+    
+    <meta property="article:modified_time" content="2022-10-14T18:21:00&#43;03:00">
+  
+
+  
+
+
+
+  
+
+  
+  
+  
+  
+  
+    <script src="https://cdn.jsdelivr.net/gh/osano/cookieconsent@3.1.1/build/cookieconsent.min.js" integrity="sha512-yXXqOFjdjHNH1GND+1EO0jbvvebABpzGKD66djnUfiKlYME5HGMUJHoCaeE4D5PTG2YsSJf6dwqyUUvQvS0vaA==" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/osano/cookieconsent@3.1.1/build/cookieconsent.min.css" integrity="sha512-LQ97camar/lOliT/MqjcQs5kWgy6Qz/cCRzzRzUCfv0fotsCTC9ZHXaPQmJV8Xu/PVALfJZ7BDezl5lW3/qBxg==" crossorigin="anonymous">
+  
+  <script>
+  window.addEventListener("load", function(){
+    window.cookieconsent.initialise({
+      "palette": {
+        "popup": {
+          "background": "#1565c0",
+          "text": "rgb(255, 255, 255)"
+        },
+        "button": {
+          "background": "rgb(255, 255, 255)",
+          "text": "#1565c0"
+        }
+      },
+      "theme": "classic",
+      "content": {
+        "message": "Для комфорной навигации на этом сайте используются куки (cookies).",
+        "dismiss": "Понял!",
+        "link": "Узнать больше",
+        "href": "https://www.cookiesandyou.com"
+      }
+    })});
+  </script>
+
+
+
+  <title>Mininet. Использование netem (latency, jitter) | Д. С. Кулябов</title>
+
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper   " data-wc-page-id="98594406bc3720e05e505d98aef8496d" >
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script src="https://yamadharma.github.io/js/wowchemy-init.min.613040fe4f2c0f007b4dcb64404201cb.js"></script>
+
+  
+
+
+<aside class="search-modal" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Поиск</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#" aria-label="Close"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Поиск ..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search" class="form-control"
+        aria-label="Поиск ...">
+        
+      </div>
+
+      
+      
+
+      
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+
+  <div class="page-header">
+    
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="header--fixed">
+  <nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+    <div class="container-xl">
+
+      
+      <div class="d-none d-lg-inline-flex">
+        <a class="navbar-brand" href="https://yamadharma.github.io/ru/">Д. С. Кулябов</a>
+      </div>
+      
+
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Переключить навигацию">
+      <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+      
+      <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+        <a class="navbar-brand" href="https://yamadharma.github.io/ru/">Д. С. Кулябов</a>
+      </div>
+      
+
+      
+      
+      <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+        
+        <ul class="navbar-nav d-md-inline-flex">
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="https://yamadharma.github.io/ru/#about"><span>Обо мне</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="https://yamadharma.github.io/ru/#posts"><span>Блог</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="https://yamadharma.github.io/ru/#projects"><span>Проекты</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="https://yamadharma.github.io/ru/#featured"><span>Публикации</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link  active" href="https://yamadharma.github.io/ru/course/"><span>Курсы</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="https://yamadharma.github.io/ru/#contact"><span>Контакты</span></a>
+          </li>
+
+          
+          
+
+        
+
+          
+        </ul>
+      </div>
+
+      <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+
+        
+        
+          
+        
+
+        
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#" aria-label="Поиск"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+        
+        
+        <li class="nav-item dropdown theme-dropdown">
+          <a href="#" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-label="Display preferences">
+            <i class="fas fa-moon" aria-hidden="true"></i>
+          </a>
+          <div class="dropdown-menu">
+            <a href="#" class="dropdown-item js-set-theme-light">
+              <span>Light</span>
+            </a>
+            <a href="#" class="dropdown-item js-set-theme-dark">
+              <span>Dark</span>
+            </a>
+            <a href="#" class="dropdown-item js-set-theme-auto">
+              <span>Automatic</span>
+            </a>
+          </div>
+        </li>
+        
+
+        
+        
+
+      </ul>
+
+    </div>
+  </nav>
+</header>
+
+
+  </div>
+
+  <div class="page-body">
+    
+    
+    
+
+    
+
+
+
+
+<div class="container-fluid docs">
+  <div class="row flex-xl-nowrap">
+    <div class="col-12 col-md-3 col-xl-2 docs-sidebar">
+      <form class="docs-search d-flex align-items-center">
+  <button class="btn docs-toggle d-md-none p-0 mr-md-3 w-100" type="button" data-toggle="collapse" data-target="#docs-nav" aria-controls="docs-nav" aria-expanded="false" aria-label="Toggle section navigation">
+    <div class="d-flex">
+      <span class="d-md-none pl-1 flex-grow-1 text-left overflow-hidden">
+        
+        
+          Моделирование сетей передачи данных
+        
+      </span>
+      <span><i class="fas fa-chevron-down"></i></span>
+    </div>
+  </button>
+
+  
+  <button class="form-control sidebar-search js-search d-none d-md-flex">
+    <i class="fas fa-search pr-2"></i>
+    <span class="sidebar-search-text">Поиск ...</span>
+    <span class="sidebar-search-shortcut">/</span>
+  </button>
+  
+</form>
+
+<nav class="collapse docs-links" id="docs-nav">
+  
+  
+  
+  
+  
+  
+
+  
+  
+    
+
+    
+      
+
+      <ul class="nav docs-sidenav">
+        <li><a href="https://yamadharma.github.io/ru/course/"><i class="fas fa-arrow-left pr-1"></i>Курсы</a></li>
+      </ul>
+
+      
+      
+        
+          
+        
+      
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="https://yamadharma.github.io/ru/course/simulation-networks/">Моделирование сетей передачи данных</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="https://yamadharma.github.io/ru/course/simulation-networks/mininet-lab/">Mininet. Лабораторные работы</a></li>
+
+
+
+  <li class=""><a href="https://yamadharma.github.io/ru/course/simulation-networks/mininet-intro/">Введение в Mininet</a></li>
+
+
+
+  <li class=""><a href="https://yamadharma.github.io/ru/course/simulation-networks/mininet-iperf-intro/">Mininet. Введение в Iperf</a></li>
+
+
+
+  <li class="active"><a href="https://yamadharma.github.io/ru/course/simulation-networks/mininet-netem-i/">Mininet. Использование netem (latency, jitter)</a></li>
+
+
+
+  <li class=""><a href="https://yamadharma.github.io/ru/course/simulation-networks/mininet-netem-ii/">Mininet. Использование netem (потери пакетов)</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+    
+  
+</nav>
+
+    </div>
+
+    
+    
+    <div class="d-none d-xl-block col-xl-2 docs-toc">
+      
+
+
+
+
+
+
+
+
+
+
+
+
+      <ul class="nav toc-top">
+        <li><a href="#" id="back_to_top" class="docs-toc-title">На этой странице</a></li>
+      </ul>
+
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#общая-информация"><span class="section-num">1</span> Общая информация</a>
+      <ul>
+        <li><a href="#цели"><span class="section-num">1.1</span> Цели</a></li>
+        <li><a href="#задачи"><span class="section-num">1.2</span> Задачи</a></li>
+        <li><a href="#видео-использование-netem-i-dot-введение"><span class="section-num">1.3</span> Видео: Использование netem I. Введение</a></li>
+      </ul>
+    </li>
+    <li><a href="#теоретические-сведения"><span class="section-num">2</span> Теоретические сведения</a>
+      <ul>
+        <li><a href="#дисциплины-организации-очередей-в-linux"><span class="section-num">2.1</span> Дисциплины организации очередей в Linux</a></li>
+        <li><a href="#глобальные-сети-и-задержка"><span class="section-num">2.2</span> Глобальные сети и задержка</a></li>
+      </ul>
+    </li>
+    <li><a href="#подготовка-стенда"><span class="section-num">3</span> Подготовка стенда</a>
+      <ul>
+        <li><a href="#лабораторная-топология"><span class="section-num">3.1</span> Лабораторная топология</a></li>
+        <li><a href="#рабочие-файлы"><span class="section-num">3.2</span> Рабочие файлы</a></li>
+      </ul>
+    </li>
+    <li><a href="#интерактивный-эксперимент"><span class="section-num">4</span> Интерактивный эксперимент</a>
+      <ul>
+        <li><a href="#добавление-изменение-задержки-для-эмуляции-wan"><span class="section-num">4.1</span> Добавление/изменение задержки для эмуляции WAN</a></li>
+        <li><a href="#определение-интерфейсов-хостов-h1-и-h2"><span class="section-num">4.2</span> Определение интерфейсов хостов <code>h1</code> и <code>h2</code></a></li>
+        <li><a href="#добавка-задержки-для-интерфейса-подключающегося-к-wan"><span class="section-num">4.3</span> Добавка задержки для интерфейса, подключающегося к WAN</a></li>
+        <li><a href="#изменение-задержки-в-эмулируемой-глобальной-сети"><span class="section-num">4.4</span> Изменение задержки в эмулируемой глобальной сети</a></li>
+        <li><a href="#восстановление-исходных-значений--удаление-правил"><span class="section-num">4.5</span> Восстановление исходных значений (удаление правил)</a></li>
+        <li><a href="#добавление-джиттера-в-интерфейс-подключения-к-wan"><span class="section-num">4.6</span> Добавление джиттера в интерфейс подключения к WAN</a></li>
+        <li><a href="#добавление-значения-корреляции-для-джиттера-и-задержки"><span class="section-num">4.7</span> Добавление значения корреляции для джиттера и задержки</a></li>
+        <li><a href="#распределение-задержки"><span class="section-num">4.8</span> Распределение задержки</a></li>
+        <li><a href="#видео-использование-netem-i-dot-интерактивный-эксперимент"><span class="section-num">4.9</span> Видео: Использование netem I. Интерактивный эксперимент</a></li>
+      </ul>
+    </li>
+    <li><a href="#воспроизводимый-эксперимент"><span class="section-num">5</span> Воспроизводимый эксперимент</a>
+      <ul>
+        <li><a href="#постановка-задания"><span class="section-num">5.1</span> Постановка задания</a></li>
+        <li><a href="#добавка-задержки-для-интерфейса-подключающегося-к-wan"><span class="section-num">5.2</span> Добавка задержки для интерфейса, подключающегося к WAN</a></li>
+        <li><a href="#видео-использование-netem-i-dot-воспроизводимый-эксперимент"><span class="section-num">5.3</span> Видео: Использование netem I. Воспроизводимый эксперимент</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+    
+
+    <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 docs-content" role="main">
+
+      <article class="article">
+
+        <div class="docs-article-container">
+          
+            
+  <nav class="d-none d-md-flex" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      
+  
+    
+  
+    
+  
+    
+  
+
+    <li class="breadcrumb-item">
+      <a href="https://yamadharma.github.io/ru/">
+        
+          Home
+        
+      </a>
+    </li>
+  
+
+    <li class="breadcrumb-item">
+      <a href="https://yamadharma.github.io/ru/course/">
+        
+          Курсы
+        
+      </a>
+    </li>
+  
+
+    <li class="breadcrumb-item">
+      <a href="https://yamadharma.github.io/ru/course/simulation-networks/">
+        
+          Моделирование сетей передачи данных
+        
+      </a>
+    </li>
+  
+
+      <li class="breadcrumb-item active" aria-current="page">
+        Mininet. Использование netem (latency, jitter)
+      </li>
+    </ol>
+  </nav>
+
+
+
+
+          
+        </div>
+
+        
+        
+
+        <div class="docs-article-container">
+          
+          <h1>Mininet. Использование netem (latency, jitter)</h1>
+
+          <div class="article-style">
+
+            
+            
+
+            <p>Mininet. Использование netem. Задержки, джтиттер.</p>
+<details class="toc-inpage d-print-none  " open>
+  <summary class="font-weight-bold">Содержание</summary>
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#общая-информация"><span class="section-num">1</span> Общая информация</a>
+      <ul>
+        <li><a href="#цели"><span class="section-num">1.1</span> Цели</a></li>
+        <li><a href="#задачи"><span class="section-num">1.2</span> Задачи</a></li>
+        <li><a href="#видео-использование-netem-i-dot-введение"><span class="section-num">1.3</span> Видео: Использование netem I. Введение</a></li>
+      </ul>
+    </li>
+    <li><a href="#теоретические-сведения"><span class="section-num">2</span> Теоретические сведения</a>
+      <ul>
+        <li><a href="#дисциплины-организации-очередей-в-linux"><span class="section-num">2.1</span> Дисциплины организации очередей в Linux</a></li>
+        <li><a href="#глобальные-сети-и-задержка"><span class="section-num">2.2</span> Глобальные сети и задержка</a></li>
+      </ul>
+    </li>
+    <li><a href="#подготовка-стенда"><span class="section-num">3</span> Подготовка стенда</a>
+      <ul>
+        <li><a href="#лабораторная-топология"><span class="section-num">3.1</span> Лабораторная топология</a></li>
+        <li><a href="#рабочие-файлы"><span class="section-num">3.2</span> Рабочие файлы</a></li>
+      </ul>
+    </li>
+    <li><a href="#интерактивный-эксперимент"><span class="section-num">4</span> Интерактивный эксперимент</a>
+      <ul>
+        <li><a href="#добавление-изменение-задержки-для-эмуляции-wan"><span class="section-num">4.1</span> Добавление/изменение задержки для эмуляции WAN</a></li>
+        <li><a href="#определение-интерфейсов-хостов-h1-и-h2"><span class="section-num">4.2</span> Определение интерфейсов хостов <code>h1</code> и <code>h2</code></a></li>
+        <li><a href="#добавка-задержки-для-интерфейса-подключающегося-к-wan"><span class="section-num">4.3</span> Добавка задержки для интерфейса, подключающегося к WAN</a></li>
+        <li><a href="#изменение-задержки-в-эмулируемой-глобальной-сети"><span class="section-num">4.4</span> Изменение задержки в эмулируемой глобальной сети</a></li>
+        <li><a href="#восстановление-исходных-значений--удаление-правил"><span class="section-num">4.5</span> Восстановление исходных значений (удаление правил)</a></li>
+        <li><a href="#добавление-джиттера-в-интерфейс-подключения-к-wan"><span class="section-num">4.6</span> Добавление джиттера в интерфейс подключения к WAN</a></li>
+        <li><a href="#добавление-значения-корреляции-для-джиттера-и-задержки"><span class="section-num">4.7</span> Добавление значения корреляции для джиттера и задержки</a></li>
+        <li><a href="#распределение-задержки"><span class="section-num">4.8</span> Распределение задержки</a></li>
+        <li><a href="#видео-использование-netem-i-dot-интерактивный-эксперимент"><span class="section-num">4.9</span> Видео: Использование netem I. Интерактивный эксперимент</a></li>
+      </ul>
+    </li>
+    <li><a href="#воспроизводимый-эксперимент"><span class="section-num">5</span> Воспроизводимый эксперимент</a>
+      <ul>
+        <li><a href="#постановка-задания"><span class="section-num">5.1</span> Постановка задания</a></li>
+        <li><a href="#добавка-задержки-для-интерфейса-подключающегося-к-wan"><span class="section-num">5.2</span> Добавка задержки для интерфейса, подключающегося к WAN</a></li>
+        <li><a href="#видео-использование-netem-i-dot-воспроизводимый-эксперимент"><span class="section-num">5.3</span> Видео: Использование netem I. Воспроизводимый эксперимент</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+</details>
+
+<h2 id="общая-информация"><span class="section-num">1</span> Общая информация</h2>
+<ul>
+<li>В этом лабораторном занятии вы познакомитесь с NETEM и объясните, как его можно использовать для имитации сценариев реального мира, при этом контролируя параметры, влияющие на производительность сетей.</li>
+<li>Сетевые параметры включают задержку, дрожание, потерю пакетов, изменение порядка и повреждение (latency, jitter, packet loss, reordering, and corruption).</li>
+<li>Значения корреляции между сетевыми параметрами также будут установлены для обеспечения большей реалистичности сетевой среды.</li>
+</ul>
+<h3 id="цели"><span class="section-num">1.1</span> Цели</h3>
+<ul>
+<li>Освоить моделирование задержек и джиттера в сетях.</li>
+</ul>
+<h3 id="задачи"><span class="section-num">1.2</span> Задачи</h3>
+<ul>
+<li>В ходе работы требуется освоить следующие понятия:
+<ul>
+<li>что есть задержка в сетях и как ее измерить;</li>
+<li>что есть архитектура дисциплин очередей Linux (qdisc);</li>
+<li>освоить эмуляцию глобальных сети (характеризующихся большими задержками) с использованием netem и mininet;</li>
+<li>выполнить измерения после внесения задержек в эмулируемую глобальную сеть;</li>
+<li>развернуть эмулированные глобальные сети, характеризующиеся разными значениями задержки, джиттера и соответствующими значениями корреляции;</li>
+<li>задать разные распределения задержки эмулируемой глобальной сети.</li>
+</ul>
+</li>
+</ul>
+<h3 id="видео-использование-netem-i-dot-введение"><span class="section-num">1.3</span> Видео: Использование netem I. Введение</h3>
+<nav>
+	<div class="nav nav-tabs" id="nav-tab" role="tablist">
+
+		
+		
+		
+		
+
+		
+
+		<a class="nav-item nav-link  active "
+		   id="nav-eabfdc" data-toggle="tab" href="#eabfdc"
+		   role="tab" aria-controls="nav-home" aria-selected="true">RuTube</a>
+
+		
+
+		<a class="nav-item nav-link "
+		   id="nav-ebdacf" data-toggle="tab" href="#ebdacf"
+		   role="tab" aria-controls="nav-home" aria-selected="true">Youtube</a>
+
+		
+
+	</div>
+</nav>
+
+<div class="tab-content" id="nav-tab-content">
+
+	
+
+
+
+
+
+<div class="tab-pane fade show active " id="eabfdc" role="tabpanel" aria-labelledby="nav-1">
+
+	
+
+<div class="embed video-player">
+  <iframe class="rutube-player" type="text/html"
+	  width="720" height="405"
+	  src="https://rutube.ru/play/embed/f252186b156e3f19ea7a982411bfbd62"
+	  webkitAllowFullScreen mozallowfullscreen allowFullScreen
+	  allow="clipboard-write" frameborder="0">
+  </iframe>
+</div>
+
+
+
+
+</div>
+
+
+
+
+
+
+<div class="tab-pane fade show " id="ebdacf" role="tabpanel" aria-labelledby="nav-1">
+
+	
+
+
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+  <iframe src="https://www.youtube.com/embed/aeiuFANn5oY" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video"></iframe>
+</div>
+
+
+
+
+</div>
+
+
+
+</div>
+<h2 id="теоретические-сведения"><span class="section-num">2</span> Теоретические сведения</h2>
+<h3 id="дисциплины-организации-очередей-в-linux"><span class="section-num">2.1</span> Дисциплины организации очередей в Linux</h3>
+<ul>
+<li>NETEM &mdash; сетевой эмулятор Linux для тестирования производительности реальных приложений в виртуальной сети.</li>
+<li>Виртуальная сеть может воспроизводить глобальные сети в лабораторной среде.</li>
+<li>NETEM позволяет пользователю изменять такие параметры, как задержка, джиттер, потеря пакетов, дублирование и изменение порядка пакетов.</li>
+<li>NETEM реализован в Linux и состоит из двух частей: модуля ядра для организации очередей и утилиты командной строки для его настройки.</li>
+<li>Между протоколом IP и сетевым устройством создаётся очередь с дисциплиной обслуживания.</li>
+<li>Дисциплина обслуживания очередей по умолчанию есть простая очередь пакетов FIFO (первым пришел &mdash; первым обслужен).</li>
+<li>Дисциплина реализуется как объект с двумя интерфейсами.</li>
+<li>Один интерфейс ставит пакеты в очередь для отправки, а другой интерфейс отправляет пакеты на сетевое устройство.</li>
+<li>На основе дисциплины обслуживания очередей принимается решение о том, какие пакеты отправлять, какие пакеты задерживать и какие пакеты отбрасывать.</li>
+<li>Классовая дисциплина организации очередей, такая как NETEM, имеет настраиваемые внутренние модули.</li>
+</ul>
+<h3 id="глобальные-сети-и-задержка"><span class="section-num">2.2</span> Глобальные сети и задержка</h3>
+<ul>
+<li>В сетях есть несколько процессов и устройств, которые способствуют сквозной задержке между узлом-отправителем и узлом-получателем.</li>
+<li>Во многих случаях сквозная задержка определяется задержкой распространения в глобальной сети.</li>
+<li>Рассмотрим два соседних коммутатора A и B, соединённых глобальной сетью.
+<ul>
+<li>Как только бит передается в глобальную сеть коммутатором А, он должен пройти к коммутатору В.</li>
+<li>Время, необходимое для распространения от начала глобальной сети до коммутатора В, является задержкой распространения.</li>
+<li>Биты распространяются со скоростью канала.</li>
+<li>Скорость распространения зависит от физической среды (оптоволокно, медная витая пара и т. д.) и равно или немного меньше скорости света.</li>
+<li>Задержка распространения есть расстояние между двумя коммутатора, делённое на скорость распространения.</li>
+<li>Как только последний бит пакета передается на коммутатор B, он и все предыдущие биты пакета сохраняются на коммутаторе B.</li>
+</ul>
+</li>
+<li>Сетевые инструменты обычно оценивают задержку для устранения неполадок и измерения производительности.</li>
+<li>Например, оценкой сквозной задержки является время двойного оборота (RTT), которое представляет собой время, необходимое пакету для прохождения от отправителя к получателю, а затем обратно к отправителю.</li>
+<li>RTT включает задержки распространения пакетов, задержки в очереди пакетов в промежуточных маршрутизаторах и коммутаторах и обработку пакетов.</li>
+<li>Если задержка распространения преобладает над другими компонентами задержки (как в случае глобальных сетей), то RTT является хорошей оценкой задержки распространения.</li>
+</ul>
+<h2 id="подготовка-стенда"><span class="section-num">3</span> Подготовка стенда</h2>
+<h3 id="лабораторная-топология"><span class="section-num">3.1</span> Лабораторная топология</h3>
+<ul>
+<li>В топологии используется сеть 10.0.0.0/8, назначенная Mininet по умолчанию.</li>
+<li>Топология представляет собой коммутатор с двумя подключёнными к нему хостами.</li>
+<li>Для запуска топологии используем параметры командной строки:
+<pre><code class="language-shell">sudo mn --topo=single,2 -x
+</code></pre>
+</li>
+</ul>
+<h3 id="рабочие-файлы"><span class="section-num">3.2</span> Рабочие файлы</h3>
+<ul>
+<li>Подключимся к виртуальной машине:
+<pre><code class="language-shell">ssh -Y mininet@192.168.x.y
+</code></pre>
+</li>
+<li>Для рабочих файлов будем использовать каталог <code>~/work/lab_netem_i</code>:
+<pre><code class="language-shell">mkdir -p ~/work/lab_netem_i
+</code></pre>
+</li>
+</ul>
+<h2 id="интерактивный-эксперимент"><span class="section-num">4</span> Интерактивный эксперимент</h2>
+<h3 id="добавление-изменение-задержки-для-эмуляции-wan"><span class="section-num">4.1</span> Добавление/изменение задержки для эмуляции WAN</h3>
+<ul>
+<li>
+<p>Работа с NETEM осуществляется с помощью утилиты командной строки <code>tc</code>.</p>
+</li>
+<li>
+<p>Без дополнительных параметров NETEM ведёт себя как базовая очередь FIFO без задержек, потерь, дублирования или переупорядочения пакетов.</p>
+</li>
+<li>
+<p>Основной синтаксис <code>tc</code>, используемый с NETEM, следующий:</p>
+<pre><code class="language-shell">sudo tc qdisc [add|del|replace|change|show] dev dev_id root netem opts
+</code></pre>
+<ul>
+<li><code>sudo</code>: выполнить команду с более высокими привилегиями;</li>
+<li><code>tc</code>: команда, используемая для взаимодействия с NETEM;</li>
+<li><code>qdisc</code>: дисциплина очереди (<code>qdisc</code>) представляет собой набор правил, определяющих порядок, в котором обслуживаются пакеты, поступающие по  протоколу IP.
+<ul>
+<li>Дисциплина очереди применяется к очереди пакетов, чтобы решить, когда отправлять каждый пакет.</li>
+</ul>
+</li>
+<li><code>[add|del|replace|change|show]</code> (добавить, удалить, заменить, изменить, показать): операция над <code>qdisc</code>:
+<ul>
+<li>чтобы добавить задержку на определённом интерфейсе, применяется операция <code>add</code>;</li>
+<li>чтобы изменить или удалить задержку на определённом интерфейсе, применяется операция <code>change</code> или <code>del</code>;</li>
+</ul>
+</li>
+<li><code>dev_id</code>: параметр указывает интерфейс, подлежащий эмуляции;</li>
+<li><code>opts</code>: параметр указывает величину задержки, потери пакетов, дублирования, повреждения и другие.</li>
+</ul>
+</li>
+</ul>
+<h3 id="определение-интерфейсов-хостов-h1-и-h2"><span class="section-num">4.2</span> Определение интерфейсов хостов <code>h1</code> и <code>h2</code></h3>
+<ul>
+<li>Необходимо идентифицировать интерфейсы на подключенных хостах.</li>
+<li>На хосте <code>h1</code> введите команду <code>ifconfig</code>, чтобы отобразить информацию, относящуюся к его сетевым интерфейсам и назначенным им IP-адресам.
+<ul>
+<li>Вывод команды <code>ifconfig</code> показывает, что хост <code>h1</code> имеет два интерфейса: <code>h1-eth0</code> и <code>lo</code>.</li>
+<li>Интерфейс <code>h1-eth0</code> необходимо использовать в <code>tc</code> при эмуляции WAN.</li>
+</ul>
+</li>
+<li>На хосте <code>h2</code> введите команду <code>ifconfig</code>.</li>
+<li>Вывод команды <code>ifconfig</code> показывает, что хост <code>h2</code> имеет два интерфейса: <code>h2-eth0</code> и <code>lo</code>.</li>
+<li>Интерфейс <code>h2-eth0</code> необходимо использовать в <code>tc</code> при эмуляции WAN.</li>
+</ul>
+<h3 id="добавка-задержки-для-интерфейса-подключающегося-к-wan"><span class="section-num">4.3</span> Добавка задержки для интерфейса, подключающегося к WAN</h3>
+<ul>
+<li>
+<p>Сетевые эмуляторы задают задержки на интерфейсе.</p>
+</li>
+<li>
+<p>Например, задержка, вносимая в интерфейс коммутатора A, который подключён к интерфейсу коммутатора B, может представлять собой задержку распространения WAN, соединяющей оба коммутатора.</p>
+</li>
+<li>
+<p>На хосте <code>h1</code> введите следующую команду:</p>
+<pre><code class="language-shell">sudo tc qdisc add dev h1-eth0 root netem delay 100ms
+</code></pre>
+<ul>
+<li><code>sudo</code>: выполнить команду с более высокими привилегиями;</li>
+<li><code>tc</code>: вызвать управление трафиком Linux;</li>
+<li><code>qdisc</code>: изменить дисциплину очередей сетевого планировщика;</li>
+<li><code>add</code>: создать новое правило;</li>
+<li><code>dev h1-eth0</code>: указать интерфейс, на котором будет применяться правило;</li>
+<li><code>netem</code>: использовать эмулятор сети;</li>
+<li><code>delay 100ms</code>: задержка ввода 100 мс.</li>
+</ul>
+</li>
+<li>
+<p>Эта команда добавляет задержку в 100 миллисекунд (мс) только к выходному интерфейсу.</p>
+</li>
+<li>
+<p>Теперь пользователь может проверить, что соединение от хоста h1 к хосту h2 имеет задержку 100 миллисекунд, используя команду <code>ping</code> с хоста <code>h1</code>:</p>
+<pre><code class="language-shell">ping 10.0.0.2
+</code></pre>
+</li>
+<li>
+<p>Все пакеты были получены успешно (0% потерь пакетов).</p>
+</li>
+<li>
+<p>Задание: Запишите минимальное, среднее, максимальное и стандартное отклонение времени приёма-передачи (RTT).</p>
+</li>
+<li>
+<p>Этот сценарий эмулирует задержку в 100 миллисекунд на интерфейсе узла <code>h1</code>, подключающегося к коммутатору.</p>
+</li>
+<li>
+<p>Чтобы эмулировать глобальную сеть с двунаправленной задержкой, к соответствующему интерфейсу на хосте <code>h2</code> также необходимо добавить задержку в 100 миллисекунд.</p>
+</li>
+<li>
+<p>В терминале хоста <code>h2</code> введите следующую команду:</p>
+<pre><code class="language-shell">sudo tc qdisc add dev h2-eth0 root netem delay 100ms
+</code></pre>
+</li>
+<li>
+<p>Проверим, что соединение между хостом <code>h1</code> и хостом <code>h2</code> имеет <code>RTT</code> 200 миллисекунд (100 мс от хоста <code>h1</code> к хосту <code>h2</code> плюс 100 мс от хоста <code>h2</code> к хосту <code>h1</code>), повторив команду <code>ping</code> на терминале хоста <code>h1</code>:</p>
+<pre><code class="language-shell">ping 10.0.0.2
+</code></pre>
+</li>
+<li>
+<p>Все пакеты были получены успешно (0% потерь пакетов).</p>
+</li>
+<li>
+<p>Задание: Запишите минимальное, среднее, максимальное и стандартное отклонение времени приёма-передачи (RTT).</p>
+</li>
+</ul>
+<h3 id="изменение-задержки-в-эмулируемой-глобальной-сети"><span class="section-num">4.4</span> Изменение задержки в эмулируемой глобальной сети</h3>
+<ul>
+<li>Изменим задержку со 100 миллисекунд до 50 миллисекунд как для отправителя, так и для получателя. RTT теперь будет 100 миллисекунд.</li>
+<li>В терминале хоста <code>h1</code> введите следующую команду:
+<pre><code class="language-shell">sudo tc qdisc change dev h1-eth0 root netem delay 50ms
+</code></pre>
+</li>
+<li>Здесь добавлен новый параметр <code>change</code>, который изменяет ранее установленную задержку на 50 миллисекунд.</li>
+<li>Применим также описанный выше шаг к терминалу хоста <code>h2</code>, чтобы изменить задержку на 50 мс:
+<pre><code class="language-shell">sudo tc qdisc change dev h2-eth0 root netem delay 50ms
+</code></pre>
+</li>
+<li>Теперь можно проверить, что соединение от хоста <code>h1</code> к хосту <code>h2</code> имеет задержку 100 миллисекунд, используя команду <code>ping</code> с терминала хоста <code>h1</code>:
+<pre><code class="language-shell">ping 10.0.0.2
+</code></pre>
+</li>
+<li>Все пакеты были получены успешно (0% потерь пакетов).</li>
+<li>Задание: Запишите минимальное, среднее, максимальное и стандартное отклонение времени приёма-передачи (RTT).</li>
+</ul>
+<h3 id="восстановление-исходных-значений--удаление-правил"><span class="section-num">4.5</span> Восстановление исходных значений (удаление правил)</h3>
+<ul>
+<li>Восстановим конфигурацию по умолчанию как для отправителя, так и для получателя, удалив все правила, применённые к сетевому планировщику интерфейса.</li>
+<li>В терминале хоста <code>h1</code> введите следующую команду:
+<pre><code class="language-shell">sudo tc qdisc del dev h1-eth0 root netem
+</code></pre>
+</li>
+<li>Добавлена новая опция <code>del</code>, которая удаляет ранее установленные правила для данного интерфейса.</li>
+<li>В результате <code>tc qdisc</code> восстановит значения по умолчанию для устройства <code>h1-eth0</code>.</li>
+<li>Применим те же действия для удаления правил на хосте <code>h2</code>. В терминале хоста <code>h2</code> введите следующую команду:
+<pre><code class="language-shell">sudo tc qdisc del dev h2-eth0 root netem
+</code></pre>
+</li>
+<li>В результате дисциплина организации очереди <code>tc</code> восстановит свои значения по умолчанию для устройства <code>h2-eth0</code>.</li>
+<li>Проверим, что соединение между хостом <code>h1</code> и хостом <code>h2</code> не имеет явно установленной задержки, используя команду <code>ping</code> с терминала хоста <code>h1</code>:
+<pre><code class="language-shell">ping 10.0.0.2
+</code></pre>
+</li>
+<li>Все пакеты были получены успешно (0% потерь пакетов).</li>
+<li>Задание: Запишите минимальное, среднее, максимальное и стандартное отклонение времени приёма-передачи (RTT).</li>
+</ul>
+<h3 id="добавление-джиттера-в-интерфейс-подключения-к-wan"><span class="section-num">4.6</span> Добавление джиттера в интерфейс подключения к WAN</h3>
+<ul>
+<li>
+<p>В сетях нет постоянной задержки. Задержка может варьироваться в зависимости от других потоков трафика, конкурирующих за тот же путь.</p>
+</li>
+<li>
+<p>Джиттер &mdash; это изменение времени задержки.</p>
+</li>
+<li>
+<p>Параметры задержки описываются средним значением (\(\mu\)), стандартным отклонением (\(\sigma\)) и корреляцией.</p>
+</li>
+<li>
+<p>По умолчанию NETEM использует <em>равномерное распределение</em>, так что задержка находится в пределах \(\mu \pm \sigma\).</p>
+</li>
+<li>
+<p>Добавим задержку в 100 миллисекунд со случайным отклонением 10 миллисекунд.</p>
+</li>
+<li>
+<p><em>Прежде чем сделать это, необходимо восстановите конфигурацию интерфейсов по умолчанию на узлах <code>h1</code> и <code>h2</code>.</em></p>
+</li>
+<li>
+<p>В терминале хоста <code>h1</code> введите команду:</p>
+<pre><code class="language-shell">sudo tc qdisc add dev h1-eth0 root netem delay 100ms 10ms
+</code></pre>
+</li>
+<li>
+<p>Добавленное здесь новое значение представляет джиттер, который определяет вариацию задержки.</p>
+</li>
+<li>
+<p>Все пакеты, покидающие хост <code>h1</code> через интерфейс <code>h1-eth0</code>, будут иметь задержку 100 мс со случайным отклонением ±10 мс.</p>
+</li>
+<li>
+<p>Можно проверить, что соединение от хоста <code>h1</code> к хосту <code>h2</code> имеет задержку 100 мс со случайным отклонением ± 10 мс, с помощью команды <code>ping</code> на терминале хоста <code>h1</code>:</p>
+<pre><code class="language-shell">ping 10.0.0.2
+</code></pre>
+</li>
+<li>
+<p>Все пакеты были получены успешно (0% потерь пакетов).</p>
+</li>
+<li>
+<p>Задание: Запишите минимальное, среднее, максимальное и стандартное отклонение времени приёма-передачи (RTT).</p>
+</li>
+<li>
+<p>В терминале хоста <code>h1</code> введите следующую команду, чтобы удалить предыдущие конфигурации:</p>
+<pre><code class="language-shell">sudo tc qdisc del dev h1-eth0 root netem
+</code></pre>
+</li>
+</ul>
+<h3 id="добавление-значения-корреляции-для-джиттера-и-задержки"><span class="section-num">4.7</span> Добавление значения корреляции для джиттера и задержки</h3>
+<ul>
+<li>Параметр корреляции управляет отношением между последовательными псевдослучайными значениями.</li>
+<li>Добавим задержку в 100 миллисекунд с вариацией ±10 миллисекунд при добавлении значения корреляции.</li>
+<li><em>Прежде чем сделать это, необходимо восстановите конфигурацию интерфейсов по умолчанию на узлах <code>h1</code> и <code>h2</code>.</em></li>
+<li>В терминале хоста <code>h1</code> введите следующую команду:
+<pre><code class="language-shell">sudo tc qdisc add dev h1-eth0 root netem delay 100ms 10ms 25%
+</code></pre>
+</li>
+<li>Добавленное здесь новое значение представляет собой значение корреляции для джиттера и задержки.</li>
+<li>Все пакеты, покидающие узел устройства <code>h1</code> на интерфейсе <code>h1-eth0</code>, будут иметь время задержки 100 мс со случайным отклонением ±10 мс, при этом следующий случайный пакет зависит от предыдущего на 25%.</li>
+<li>Можно проверить соединение между хостами <code>h1</code> и <code>h2</code> с помощью команды <code>ping</code> на терминале хоста <code>h1</code>:
+<pre><code class="language-shell">ping 10.0.0.2
+</code></pre>
+</li>
+<li>Все пакеты были получены успешно (0% потерь пакетов).</li>
+<li>Задание: Запишите минимальное, среднее, максимальное и стандартное отклонение времени приёма-передачи (RTT).</li>
+<li>В терминале хоста <code>h1</code> введите следующую команду, чтобы удалить предыдущие конфигурации:
+<pre><code class="language-shell">sudo tc qdisc del dev h1-eth0 root netem
+</code></pre>
+</li>
+</ul>
+<h3 id="распределение-задержки"><span class="section-num">4.8</span> Распределение задержки</h3>
+<ul>
+<li>NETEM позволяет пользователю указать распределение, которое описывает, как задержки изменяются в сети.</li>
+<li>Обычно задержки неравномерны, поэтому может быть удобно использовать неравномерное распределение, такое как нормальное, парето или парето-нормальное.</li>
+<li>Можно указать нормальное распределение задержки в эмулируемой сети.</li>
+<li><em>Прежде чем сделать это, необходимо восстановите конфигурацию интерфейсов по умолчанию на узлах <code>h1</code> и <code>h2</code>.</em></li>
+<li>В терминале хоста <code>h1</code> введите следующую команду:
+<pre><code class="language-shell">sudo tc qdisc add dev h1-eth0 root netem delay 100ms 20ms distribution normal
+</code></pre>
+</li>
+<li>Добавленная здесь новая опция (<code>distribution</code>) задаёт тип распределения задержки.</li>
+<li>Определим задержку так, чтобы она имела нормальное распределение, что обеспечивает более реалистичную эмуляцию сетей WAN.</li>
+<li>Все пакеты, покидающие хост <code>h1</code> на интерфейсе <code>h1-eth0</code>, будут иметь время задержки, которое распределяется в диапазоне 100 мс ± 20 мс.</li>
+<li>Используем команду <code>ping</code> на терминале хоста <code>h1</code>:
+<pre><code class="language-shell">ping 10.0.0.2
+</code></pre>
+</li>
+<li>Все пакеты были получены успешно (0% потерь пакетов).</li>
+<li>Задание: Запишите минимальное, среднее, максимальное и стандартное отклонение времени приёма-передачи (RTT).</li>
+<li>В терминале хоста <code>h1</code> введите следующую команду, чтобы удалить предыдущие конфигурации:
+<pre><code class="language-shell">sudo tc qdisc del dev h1-eth0 root netem
+</code></pre>
+</li>
+</ul>
+<h3 id="видео-использование-netem-i-dot-интерактивный-эксперимент"><span class="section-num">4.9</span> Видео: Использование netem I. Интерактивный эксперимент</h3>
+<nav>
+	<div class="nav nav-tabs" id="nav-tab" role="tablist">
+
+		
+		
+		
+		
+
+		
+
+		<a class="nav-item nav-link  active "
+		   id="nav-ebfacd" data-toggle="tab" href="#ebfacd"
+		   role="tab" aria-controls="nav-home" aria-selected="true">RuTube</a>
+
+		
+
+		<a class="nav-item nav-link "
+		   id="nav-adbcfe" data-toggle="tab" href="#adbcfe"
+		   role="tab" aria-controls="nav-home" aria-selected="true">Youtube</a>
+
+		
+
+	</div>
+</nav>
+
+<div class="tab-content" id="nav-tab-content">
+
+	
+
+
+
+
+
+<div class="tab-pane fade show active " id="ebfacd" role="tabpanel" aria-labelledby="nav-1">
+
+	
+
+<div class="embed video-player">
+  <iframe class="rutube-player" type="text/html"
+	  width="720" height="405"
+	  src="https://rutube.ru/play/embed/1ea73a09806a25ae20bd3d34ebfb5247"
+	  webkitAllowFullScreen mozallowfullscreen allowFullScreen
+	  allow="clipboard-write" frameborder="0">
+  </iframe>
+</div>
+
+
+
+
+</div>
+
+
+
+
+
+
+<div class="tab-pane fade show " id="adbcfe" role="tabpanel" aria-labelledby="nav-1">
+
+	
+
+
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+  <iframe src="https://www.youtube.com/embed/wEuHronSk8M" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video"></iframe>
+</div>
+
+
+
+
+</div>
+
+
+
+</div>
+<h2 id="воспроизводимый-эксперимент"><span class="section-num">5</span> Воспроизводимый эксперимент</h2>
+<h3 id="постановка-задания"><span class="section-num">5.1</span> Постановка задания</h3>
+<ul>
+<li>Будем исследовать задержки и построим графики для них.</li>
+<li>Выполните все интерактивные эксперименты в виде воспроизводимых.</li>
+<li>Для каждого эксперимента <code>expname</code> создайте свой каталог:
+<pre><code class="language-shell">mkdir -p ~/work/lab_netem_i/expname
+</code></pre>
+</li>
+<li>В него мы будем помещать файлы эксперимента.</li>
+<li>Для каждого эксперимента создайте скрипт для проведения эксперимента <code>lab_netem_i.py</code> и скрипт для визуализации <code>ping_plot</code>.</li>
+<li>Кроме визуализации вычислите минимальное, среднее, максимальное и стандартное отклонение времени приёма-передачи.</li>
+<li>Для примера реализуем задание простейшей задержки.</li>
+</ul>
+<h3 id="добавка-задержки-для-интерфейса-подключающегося-к-wan"><span class="section-num">5.2</span> Добавка задержки для интерфейса, подключающегося к WAN</h3>
+<ul>
+<li>Создадим каталог <code>simple-delay</code>:
+<pre><code class="language-shell">mkdir -p ~/work/lab_netem_i/simple-delay
+cd ~/work/lab_netem_i/simple-delay
+</code></pre>
+</li>
+<li>Создадим скрипт для эксперимента <code>lab_netem_i.py</code>:
+<pre><code class="language-python">#!/usr/bin/env python
+
+&quot;&quot;&quot;
+Simple experiment.
+Output: ping.dat
+&quot;&quot;&quot;
+
+from mininet.net import Mininet
+from mininet.node import Controller
+from mininet.cli import CLI
+from mininet.log import setLogLevel, info
+import time
+
+def emptyNet():
+
+    &quot;Create an empty network and add nodes to it.&quot;
+
+    net = Mininet( controller=Controller, waitConnected=True )
+
+    info( '*** Adding controller\n' )
+    net.addController( 'c0' )
+
+    info( '*** Adding hosts\n' )
+    h1 = net.addHost( 'h1', ip='10.0.0.1' )
+    h2 = net.addHost( 'h2', ip='10.0.0.2' )
+
+    info( '*** Adding switch\n' )
+    s1 = net.addSwitch( 's1' )
+
+    info( '*** Creating links\n' )
+    net.addLink( h1, s1 )
+    net.addLink( h2, s1 )
+
+    info( '*** Starting network\n')
+    net.start()
+
+    info( '*** Set delay\n')
+    h1.cmdPrint( 'tc qdisc add dev h1-eth0 root netem delay 100ms' )
+    h2.cmdPrint( 'tc qdisc add dev h2-eth0 root netem delay 100ms' )
+
+    time.sleep(10)  # Wait 10 seconds
+
+    info( '*** Ping\n')
+    h1.cmdPrint( 'ping -c 100', h2.IP(), '| grep &quot;time=&quot; | awk \'{print $5, $7}\' | sed -e \'s/time=//g\' -e \'s/icmp_seq=//g\' &gt; ping.dat' )
+
+    info( '*** Stopping network' )
+    net.stop()
+
+
+if __name__ == '__main__':
+    setLogLevel( 'info' )
+    emptyNet()
+</code></pre>
+</li>
+<li>Создадим скрипт для визуализации <code>ping_plot</code>:
+<pre><code class="language-shell">#!/usr/bin/gnuplot --persist
+
+set terminal png crop
+set output 'ping.png'
+set xlabel &quot;Sequence number&quot;
+set ylabel &quot;Delay (ms)&quot;
+set grid
+plot &quot;ping.dat&quot; with lines
+</code></pre>
+</li>
+<li>Зададим права доступа:
+<pre><code class="language-shell">chmod +x ping_plot
+</code></pre>
+</li>
+<li>Создадим <code>Makefile</code>:
+<pre><code class="language-makefile">all: ping.dat ping.png
+
+ping.dat:
+	sudo python lab_netem_i.py
+	sudo chown mininet:mininet ping.dat
+
+ping.png: ping.dat
+	./ping_plot
+
+clean:
+	-rm -f *.dat *.png
+</code></pre>
+</li>
+<li>Выполним эксперимент:
+<pre><code class="language-shell">make
+</code></pre>
+</li>
+<li>Посмотрите график.</li>
+<li>Вычислите минимальное, среднее, максимальное и стандартное отклонение времени приёма-передачи.</li>
+</ul>
+<h3 id="видео-использование-netem-i-dot-воспроизводимый-эксперимент"><span class="section-num">5.3</span> Видео: Использование netem I. Воспроизводимый эксперимент</h3>
+<nav>
+	<div class="nav nav-tabs" id="nav-tab" role="tablist">
+
+		
+		
+		
+		
+
+		
+
+		<a class="nav-item nav-link  active "
+		   id="nav-facdeb" data-toggle="tab" href="#facdeb"
+		   role="tab" aria-controls="nav-home" aria-selected="true">RuTube</a>
+
+		
+
+		<a class="nav-item nav-link "
+		   id="nav-dfceba" data-toggle="tab" href="#dfceba"
+		   role="tab" aria-controls="nav-home" aria-selected="true">Youtube</a>
+
+		
+
+	</div>
+</nav>
+
+<div class="tab-content" id="nav-tab-content">
+
+	
+
+
+
+
+
+<div class="tab-pane fade show active " id="facdeb" role="tabpanel" aria-labelledby="nav-1">
+
+	
+
+<div class="embed video-player">
+  <iframe class="rutube-player" type="text/html"
+	  width="720" height="405"
+	  src="https://rutube.ru/play/embed/a202f653206b1c569bcfe44b5924558a"
+	  webkitAllowFullScreen mozallowfullscreen allowFullScreen
+	  allow="clipboard-write" frameborder="0">
+  </iframe>
+</div>
+
+
+
+
+</div>
+
+
+
+
+
+
+<div class="tab-pane fade show " id="dfceba" role="tabpanel" aria-labelledby="nav-1">
+
+	
+
+
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+  <iframe src="https://www.youtube.com/embed/_EBurmbB9DY" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video"></iframe>
+</div>
+
+
+
+
+</div>
+
+
+
+</div>
+
+          </div>
+
+          
+
+
+
+          
+          
+          <div class="article-widget">
+            
+<div class="post-nav">
+  
+  
+  
+  <div class="post-nav-item">
+    <div class="meta-nav">Предыдущий</div>
+    <a href="https://yamadharma.github.io/ru/course/simulation-networks/mininet-iperf-intro/" rel="next">Mininet. Введение в Iperf</a>
+  </div>
+  
+  
+  
+  <div class="post-nav-item">
+    <div class="meta-nav">Следующий</div>
+    <a href="https://yamadharma.github.io/ru/course/simulation-networks/mininet-netem-ii/" rel="prev">Mininet. Использование netem (потери пакетов)</a>
+  </div>
+  
+</div>
+
+          </div>
+          
+        </div>
+
+        <div class="body-footer">
+          <p>Обновлено 2022-10-14</p>
+
+          
+
+
+
+
+          
+
+
+
+
+          
+
+  
+  
+
+
+        </div>
+
+      </article>
+
+      <footer class="site-footer">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+
+
+
+
+
+  
+  
+  
+
+  
+  
+  
+
+  
+
+  
+  <p class="powered-by copyright-license-text">
+    © 2006—2022 Dmitry S. Kulyabov. This work is licensed under <a href="https://creativecommons.org/licenses/by/4.0" rel="noopener noreferrer" target="_blank">CC BY 4.0</a>
+  </p>
+  
+
+  <p class="powered-by footer-license-icons">
+    <a href="https://creativecommons.org/licenses/by/4.0" rel="noopener noreferrer" target="_blank" aria-label="Creative Commons">
+      <i class="fab fa-creative-commons fa-2x" aria-hidden="true"></i>
+      <i class="fab fa-creative-commons-by fa-2x" aria-hidden="true"></i>
+      
+      
+    </a>
+  </p>
+
+
+
+
+  <p class="powered-by">
+    
+    
+    
+      
+      
+      
+      
+      
+      
+      Published with <a href="https://wowchemy.com/?utm_campaign=poweredby" target="_blank" rel="noopener">Wowchemy</a> — the free, <a href="https://github.com/wowchemy/wowchemy-hugo-themes" target="_blank" rel="noopener">open source</a> website builder that empowers creators.
+    
+  </p>
+</footer>
+
+
+    </main>
+  </div>
+</div>
+
+  </div>
+
+  <div class="page-footer">
+    
+    
+  </div>
+
+  
+
+
+<script src="https://yamadharma.github.io/js/vendor-bundle.min.d26509351aa0ff874abbee824e982e9b.js"></script>
+
+
+
+
+  
+
+  
+  
+
+  
+
+
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.min.js" integrity="" crossorigin="anonymous"></script>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/gh/bryanbraun/anchorjs@4.2.2/anchor.min.js" integrity="sha512-I7w3ZdSFzw5j3jU3ZkNikBNeIrl3i+hEuEdwNmqUJvwNcaBUNcijnP2gd9DtGlgVYDplfjGoD8vTNsID+lCjqg==" crossorigin="anonymous"></script>
+<script>
+  anchors.add();
+</script>
+
+
+
+
+
+  
+  <script id="search-hit-fuse-template" type="text/x-template">
+    <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+    </div>
+  </script>
+  
+    <script src="https://cdn.jsdelivr.net/gh/krisk/Fuse@v3.2.1/dist/fuse.min.js" integrity="sha512-o38bmzBGX+hD3JHWUFCDA09btWaqrNmoJ3RXLlrysA7PP01Kgs4UlE4MhelE1v5dJR3+cxlR4qQlotsW7jKsnw==" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/gh/julmot/mark.js@8.11.1/dist/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
+<script id="page-data" type="application/json">{"use_headroom":false}</script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+<script src="https://yamadharma.github.io/ru/js/wowchemy.min.b4848f3f337f1d09f31e59106665bb21.js"></script>
+
+
+
+  <script src="https://yamadharma.github.io/js/wowchemy-map.a26e9d2f7238ba5b868384f1c5bc6477.js" type="module"></script>
+
+
+
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Процитировать</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+        <pre><code></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Копия
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Скачать
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <script src="https://yamadharma.github.io/js/wowchemy-publication.68f8d7090562ca65fc6d3cb3f8f2d2cb.js" type="module"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>redhat | Д. С. Кулябов</title>
+    <link>https://yamadharma.github.io/ru/tag/redhat/</link>
+      <atom:link href="https://yamadharma.github.io/ru/tag/redhat/index.xml" rel="self" type="application/rss+xml" />
+    <description>redhat</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2022 Dmitry S. Kulyabov</copyright><lastBuildDate>Sun, 25 Sep 2022 09:42:00 +0300</lastBuildDate>
+    <image>
+      <url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url>
+      <title>redhat</title>
+      <link>https://yamadharma.github.io/ru/tag/redhat/</link>
+    </image>
+    
+    <item>
+      <title>Автообновление систем на базе деривативов RedHat</title>
+      <link>https://yamadharma.github.io/ru/post/2022/09/25/redhat-based-systems-auto-update/</link>
+      <pubDate>Sun, 25 Sep 2022 09:42:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2022/09/25/redhat-based-systems-auto-update/</guid>
+      <description>&lt;p&gt;Простое автоматическое обновление на уровне хоста.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#прагматика&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Прагматика&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#установка-программного-обеспечения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Установка программного обеспечения&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#использование-программного-обеспечения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Использование программного обеспечения&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;прагматика&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Прагматика&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Основное преимущество автоматизации обновлений заключается в том, что машины, скорее всего, будут обновляться быстрее, чаще и более равномерно, чем если бы обновления выполнялись вручную.&lt;/li&gt;
+&lt;li&gt;Хотя необходимо быть осторожным с любым решением для автоматического обновления, его стоит рассмотреть, по крайней мере, для некоторых ситуаций.&lt;/li&gt;
+&lt;li&gt;Если машина является критическим сервером, для которого нельзя допускать незапланированного простоя службы на машине, то автоматические обновления использовать не следует. В противном случае можно использовать их.&lt;/li&gt;
+&lt;li&gt;Причины использования автоматических обновлений.
+&lt;ul&gt;
+&lt;li&gt;Вы вряд ли будете применять обновления вручную по каким-либо причинам.&lt;/li&gt;
+&lt;li&gt;Машина не критична, допустимы случайные незапланированные простои.&lt;/li&gt;
+&lt;li&gt;Вы можете жить без удаленного доступа к машине, пока не сможете добраться до ее физического местоположения для решения проблем.&lt;/li&gt;
+&lt;li&gt;У вас нет незаменимых данных на машине или надлежащих резервных копий таких данных.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Общая информация&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Документация: &lt;a href=&#34;https://dnf.readthedocs.io/en/latest/automatic.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://dnf.readthedocs.io/en/latest/automatic.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Используются таймеры:
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;dnf-automatic.timer&lt;/code&gt; : общий таймер, операции настраиваются в файле конфигурации;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;dnf-automatic-notifyonly.timer&lt;/code&gt; : уведомление о наличии обновлений;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;dnf-automatic-download.timer&lt;/code&gt; : загрузка обновлений;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;dnf-automatic-install.timer&lt;/code&gt; : установка обновлений.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Этим таймерам соответствуют сервисы.&lt;/li&gt;
+&lt;li&gt;Конфигурационный файл: &lt;code&gt;/etc/dnf/automatic.conf&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;установка-программного-обеспечения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Установка программного обеспечения&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Установим пакет:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install dnf-automatic
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;использование-программного-обеспечения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Использование программного обеспечения&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Зададим необходимую конфигурацию в файле &lt;code&gt;/etc/dnf/automatic.conf&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Например, для автоматической установки обновлений зададим:
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;download_updates = yes
+apply_updates = yes
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Запустим общий таймер:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;systemctl enable --now dnf-automatic.timer
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Проверить работу таймера можно так:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;systemctl list-timers *dnf-* --all
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Rocky Linux. Установка сервера</title>
+      <link>https://yamadharma.github.io/ru/post/2022/08/12/rockylinux-server-installation/</link>
+      <pubDate>Fri, 12 Aug 2022 13:57:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2022/08/12/rockylinux-server-installation/</guid>
+      <description>&lt;p&gt;Установка базисного сервера на Rocky Linux.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#дополнительные-стандартные-репозитории&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Дополнительные стандартные репозитории&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#репозитории-сообщества&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Репозитории сообщества&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#установка-образа&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Установка образа&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#после-установки&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; После установки&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#обновления&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Обновления&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#дополнительные-репозитории&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.2&lt;/span&gt; Дополнительные репозитории&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#установка-дополнительного-программного-обеспечения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Установка дополнительного программного обеспечения&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#повышение-комфорта-работы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Повышение комфорта работы&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#утилиты&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2&lt;/span&gt; Утилиты&lt;/a&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&#34;#rsync&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2.1&lt;/span&gt; rsync&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#безопасность&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3&lt;/span&gt; Безопасность&lt;/a&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&#34;#fail2ban&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3.1&lt;/span&gt; Fail2ban&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#работа-с-let-s-encrypt&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3.2&lt;/span&gt; Работа с  Let&amp;rsquo;s Encrypt&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#вариации-на-тему-стека-lamp--linux-apache-mysql-php&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.4&lt;/span&gt; Вариации на тему стека LAMP (Linux, Apache, MySQL, PHP)&lt;/a&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&#34;#apache&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.4.1&lt;/span&gt; Apache&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#php&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.4.2&lt;/span&gt; PHP&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#mysql&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.4.3&lt;/span&gt; Mysql&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#администрирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.5&lt;/span&gt; Администрирование&lt;/a&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&#34;#резервное-копирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.5.1&lt;/span&gt; Резервное копирование&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#автоматическое-обновление&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.5.2&lt;/span&gt; Автоматическое обновление&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#файловые-системы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.6&lt;/span&gt; Файловые системы&lt;/a&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&#34;#glusterfs&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.6.1&lt;/span&gt; GlusterFS&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Rocky Linux &amp;mdash; сборка RedHat Linux, пришедший на смену Centos (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/05/25/replacing-centos/&#34;&gt;Замена Centos&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Сайт: &lt;a href=&#34;https://rockylinux.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://rockylinux.org/&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Образы:
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://rockylinux.org/download&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://rockylinux.org/download&lt;/a&gt;;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://dl.rockylinux.org/vault/rocky/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;http://dl.rockylinux.org/vault/rocky/&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;дополнительные-стандартные-репозитории&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Дополнительные стандартные репозитории&lt;/h3&gt;
+&lt;div class=&#34;table-caption&#34;&gt;
+  &lt;span class=&#34;table-number&#34;&gt;&amp;#1058;&amp;#1072;&amp;#1073;&amp;#1083;&amp;#1080;&amp;#1094;&amp;#1072; 1:&lt;/span&gt;
+  Стандартные дополнительные репозитории
+&lt;/div&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Repository&lt;/th&gt;
+&lt;th&gt;Rocky 8&lt;/th&gt;
+&lt;th&gt;Rocky 9&lt;/th&gt;
+&lt;th&gt;Включён&lt;/th&gt;
+&lt;th&gt;Примечание&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Extras&lt;/td&gt;
+&lt;td&gt;Yes&lt;/td&gt;
+&lt;td&gt;Yes&lt;/td&gt;
+&lt;td&gt;Yes&lt;/td&gt;
+&lt;td&gt;Дополнительные функции, не нарушающие совместимость исходного кода&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Plus&lt;/td&gt;
+&lt;td&gt;Yes&lt;/td&gt;
+&lt;td&gt;Yes&lt;/td&gt;
+&lt;td&gt;No&lt;/td&gt;
+&lt;td&gt;Либо заменяет стандартный компонент, либо под одну архитектуру&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;RT (real time)&lt;/td&gt;
+&lt;td&gt;Yes&lt;/td&gt;
+&lt;td&gt;Yes&lt;/td&gt;
+&lt;td&gt;No&lt;/td&gt;
+&lt;td&gt;Пакеты для&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;NFV&lt;/td&gt;
+&lt;td&gt;Yes&lt;/td&gt;
+&lt;td&gt;TBD&lt;/td&gt;
+&lt;td&gt;No&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;SAP / SAP HANA&lt;/td&gt;
+&lt;td&gt;No&lt;/td&gt;
+&lt;td&gt;TBD&lt;/td&gt;
+&lt;td&gt;No&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Devel / devel&lt;/td&gt;
+&lt;td&gt;Yes&lt;/td&gt;
+&lt;td&gt;Yes&lt;/td&gt;
+&lt;td&gt;No&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id=&#34;репозитории-сообщества&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Репозитории сообщества&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Дополнительные пакеты для Enterprise Linux (EPEL):
+&lt;ul&gt;
+&lt;li&gt;документация: &lt;a href=&#34;http://fedoraproject.org/wiki/EPEL&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;http://fedoraproject.org/wiki/EPEL&lt;/a&gt;;&lt;/li&gt;
+&lt;li&gt;наиболее часто используемй репозиторий;&lt;/li&gt;
+&lt;li&gt;сборки пакетов Fedora для каждого поддерживаемого корпоративного Linux;&lt;/li&gt;
+&lt;li&gt;пакеты не заменяют базовые;&lt;/li&gt;
+&lt;li&gt;установка:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf config-manager --set-enabled crb
+dnf install epel-release
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Репозиторий Community Enterprise Linux (ELRepo):
+&lt;ul&gt;
+&lt;li&gt;фокусируется на более новых ядрах и пакетах драйверов kmod для улучшения поддержки оборудования;&lt;/li&gt;
+&lt;li&gt;репозитории ядра должны быть включены для его использования;&lt;/li&gt;
+&lt;li&gt;установка:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install elrepo-release
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;RPM Fusion:
+&lt;ul&gt;
+&lt;li&gt;программное обеспечение, которое Fedora Project или Red Hat не хотят поставлять в Enterprise Linux и Fedora;&lt;/li&gt;
+&lt;li&gt;базовые пакеты не заменяются;&lt;/li&gt;
+&lt;li&gt;установка:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install rpmfusion-free-release
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Репозиторий Remi:
+&lt;ul&gt;
+&lt;li&gt;сайт: &lt;a href=&#34;http://rpms.remirepo.net/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;http://rpms.remirepo.net/&lt;/a&gt;;&lt;/li&gt;
+&lt;li&gt;поддерживает большую коллекцию RPM, включая, среди прочего, последние версии PHP;&lt;/li&gt;
+&lt;li&gt;это коллекция репозиториев;&lt;/li&gt;
+&lt;li&gt;документация: &lt;a href=&#34;http://blog.remirepo.net/pages/English-FAQ&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;http://blog.remirepo.net/pages/English-FAQ&lt;/a&gt;;&lt;/li&gt;
+&lt;li&gt;может конфликтовать с другими сторонними репозиториями.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;GhettoForge:
+&lt;ul&gt;
+&lt;li&gt;документация: &lt;a href=&#34;http://ghettoforge.org/index.php/Usage&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;http://ghettoforge.org/index.php/Usage&lt;/a&gt;;&lt;/li&gt;
+&lt;li&gt;пакеты, которых нет в других сторонних репозиториях;&lt;/li&gt;
+&lt;li&gt;пакеты, перезаписывающие базу, будут в репозитории &lt;code&gt;gf-plus&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;установка-образа&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Установка образа&lt;/h2&gt;
+&lt;h2 id=&#34;после-установки&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; После установки&lt;/h2&gt;
+&lt;h3 id=&#34;обновления&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Обновления&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Обновить все пакеты
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf -y update
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;дополнительные-репозитории&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.2&lt;/span&gt; Дополнительные репозитории&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Установим &lt;em&gt;EPEL&lt;/em&gt;:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf config-manager --set-enabled crb
+dnf -y install epel-release
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;установка-дополнительного-программного-обеспечения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Установка дополнительного программного обеспечения&lt;/h2&gt;
+&lt;h3 id=&#34;повышение-комфорта-работы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Повышение комфорта работы&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Программы для удобства работы в консоли:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install tmux mc
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Программы мониторинга:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install htop
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;утилиты&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2&lt;/span&gt; Утилиты&lt;/h3&gt;
+&lt;h4 id=&#34;rsync&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2.1&lt;/span&gt; rsync&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Установим rsync:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install rsync
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;безопасность&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3&lt;/span&gt; Безопасность&lt;/h3&gt;
+&lt;h4 id=&#34;fail2ban&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3.1&lt;/span&gt; Fail2ban&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Защита от атак:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install fail2ban
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Следует сконфигурить и запустить:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;systemctl enable --now fail2ban.service
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;работа-с-let-s-encrypt&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3.2&lt;/span&gt; Работа с  Let&amp;rsquo;s Encrypt&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Установим certbot:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install certbot
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Установим модуль под Apache:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install python3-certbot-apache
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Если используется Nginx, установим модуль под Nginx:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;install certbot python3-certbot-nginx
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;вариации-на-тему-стека-lamp--linux-apache-mysql-php&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.4&lt;/span&gt; Вариации на тему стека LAMP (Linux, Apache, MySQL, PHP)&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Устанавливается, если необходимо поддерживать приложение на PHP.&lt;/li&gt;
+&lt;li&gt;Обычно используются базы данных Mysql или Postgresql.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;apache&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.4.1&lt;/span&gt; Apache&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Установка Apache:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install httpd
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Установка поддержки HTTPS:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install mod_ssl
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;php&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.4.2&lt;/span&gt; PHP&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Установим php:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install php
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;mysql&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.4.3&lt;/span&gt; Mysql&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Установим &lt;em&gt;mariadb&lt;/em&gt;:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install mariadb
+dnf install mariadb-server
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Установим модуль для php:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install php-mysqlnd
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;администрирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.5&lt;/span&gt; Администрирование&lt;/h3&gt;
+&lt;h4 id=&#34;резервное-копирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.5.1&lt;/span&gt; Резервное копирование&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Для резервного копирования используется &lt;em&gt;restic&lt;/em&gt;:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install restic
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;автоматическое-обновление&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.5.2&lt;/span&gt; Автоматическое обновление&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;При необходимости можно использовать автоматическое обновление (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/09/25/redhat-based-systems-auto-update/&#34;&gt;Автообновление систем на базе деривативов RedHat&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Установка программного обеспечения:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install dnf-automatic
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Задаёте необходимую конфигурацию в файле &lt;code&gt;/etc/dnf/automatic.conf&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Запустите таймер:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;systemctl enable --now dnf-automatic.timer
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;файловые-системы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.6&lt;/span&gt; Файловые системы&lt;/h3&gt;
+&lt;h4 id=&#34;glusterfs&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.6.1&lt;/span&gt; GlusterFS&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Установите пакет для последнего релиза GlusterFS (см. &lt;a href=&#34;https://wiki.centos.org/SpecialInterestGroup/Storage&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://wiki.centos.org/SpecialInterestGroup/Storage&lt;/a&gt;):
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install centos-release-gluster
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Установка клиента GlusterFS:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install glusterfs
+dnf install glusterfs-fuse
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

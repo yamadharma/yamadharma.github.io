@@ -5,12 +5,258 @@
     <link>https://yamadharma.github.io/ru/tag/modeling/</link>
       <atom:link href="https://yamadharma.github.io/ru/tag/modeling/index.xml" rel="self" type="application/rss+xml" />
     <description>modeling</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2022 Dmitry S. Kulyabov</copyright><lastBuildDate>Sat, 16 Jul 2022 12:14:00 +0300</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2022 Dmitry S. Kulyabov</copyright><lastBuildDate>Mon, 17 Oct 2022 16:58:00 +0300</lastBuildDate>
     <image>
       <url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url>
       <title>modeling</title>
       <link>https://yamadharma.github.io/ru/tag/modeling/</link>
     </image>
+    
+    <item>
+      <title>Квантовая химия. Gamess</title>
+      <link>https://yamadharma.github.io/ru/post/2022/10/17/quantum-chemistry-gamess/</link>
+      <pubDate>Mon, 17 Oct 2022 16:58:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2022/10/17/quantum-chemistry-gamess/</guid>
+      <description>&lt;p&gt;Gamess &amp;mdash; пакет для квантовохимических расчётов.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#сборка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Сборка&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#подготовка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Подготовка&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#конфигурация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Конфигурация&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#компиляция-ddi&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; Компиляция DDI&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#компиляция-gamess&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.4&lt;/span&gt; Компиляция GAMESS&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#линковка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.5&lt;/span&gt; Линковка&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#тестирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.6&lt;/span&gt; Тестирование&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Название: The General Atomic and Molecular Electronic Structure System (GAMESS).&lt;/li&gt;
+&lt;li&gt;Сайт: &lt;a href=&#34;http://www.msg.chem.iastate.edu/gamess/gamess.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;http://www.msg.chem.iastate.edu/gamess/gamess.html&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Лицензионное соглашение: позволяет использовать GAMESS бесплатно, но только сотрудникам конкретной организации, получившей эту лицензию.&lt;/li&gt;
+&lt;li&gt;После регистрации для скачивания доступен исходный код программы, но его передача сотрудникам других организаций запрещена, вместо этого следует сообщать адрес сайта разработчиков, чтобы желающие самостоятельно регистрировались и лицензировали своё использование GAMESS.&lt;/li&gt;
+&lt;li&gt;Регистрация выполняется однократно. Впоследствии на зарегистрированный почтовый адрес высылается ссылка для скачивания.&lt;/li&gt;
+&lt;li&gt;Возможно использование как компилятора gfortran из состава GCC, так и ifort от Intel.&lt;/li&gt;
+&lt;li&gt;В качестве реализации MPI для распараллеливания выполнения между узлами можно использовать OpenMPI, Intel MPI, mvapich2.&lt;/li&gt;
+&lt;li&gt;В качестве математической библиотеки можно использовать или Atlas, или MKL от Intel.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;сборка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Сборка&lt;/h2&gt;
+&lt;h3 id=&#34;подготовка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Подготовка&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Работа с GAMESS описана в файлах с расширением &lt;code&gt;DOC&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Первый файл &amp;mdash; &lt;code&gt;INTRO.DOC&lt;/code&gt;, описанию установки посвящён файл &lt;code&gt;PROG.DOC&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Конкретные инструкции по установке надо смотреть в файле &lt;code&gt;~/compile/gamess/machines/readme.unix&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;конфигурация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Конфигурация&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;На этом этапе запускается скрипт &amp;lsquo;config&amp;rsquo;, который спрашивает о конфигурации, которая будет использоваться (реализация компилятора, MPI, …).&lt;/li&gt;
+&lt;li&gt;Запустить скрипт:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;cd ~/compile/gamess
+./config
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;компиляция-ddi&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; Компиляция DDI&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Затем необходимо скомпилировать DDI (Distributed Data Interface).&lt;/li&gt;
+&lt;li&gt;Описание: &lt;code&gt;machines/readme.unix&lt;/code&gt; и &lt;code&gt;ddi/readme.ddi&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;При компиляции используются значения, указанные ранее при выполнении &amp;lsquo;config&amp;rsquo;.&lt;/li&gt;
+&lt;li&gt;При необходимости можно скорректировать файл &lt;code&gt;~/compile/gamess/ddi/compddi&lt;/code&gt;, увеличив максимальное количество процессорных ядер в сервере и максимальное количество серверов, которые будут использоваться.&lt;/li&gt;
+&lt;li&gt;Значения по умолчанию:
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;set MAXCPUS=32
+set MAXNODES=1024
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Скомпилируйте DDI:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;cd ~/compile/gamess/ddi
+./compddi
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;При успешной компиляции последние строки будут содержать фразу &lt;em&gt;DDI compilation ended successfully&lt;/em&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;компиляция-gamess&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.4&lt;/span&gt; Компиляция GAMESS&lt;/h3&gt;
+&lt;h3 id=&#34;линковка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.5&lt;/span&gt; Линковка&lt;/h3&gt;
+&lt;h3 id=&#34;тестирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.6&lt;/span&gt; Тестирование&lt;/h3&gt;</description>
+    </item>
+    
+    <item>
+      <title>Средство имитационного моделирования NS-3</title>
+      <link>https://yamadharma.github.io/ru/post/2022/10/03/ns3-network-simulator/</link>
+      <pubDate>Mon, 03 Oct 2022 15:41:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2022/10/03/ns3-network-simulator/</guid>
+      <description>&lt;p&gt;Средство имитационного моделирования NS-3.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/10/03/ns3-installation/&#34;&gt;Установка NS-3&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Установка NS-3</title>
+      <link>https://yamadharma.github.io/ru/post/2022/10/03/ns3-installation/</link>
+      <pubDate>Mon, 03 Oct 2022 15:34:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2022/10/03/ns3-installation/</guid>
+      <description>&lt;p&gt;Установка NS-3.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#исходный-код&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Исходный код&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#архив-исходных-кодов-релиза&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Архив исходных кодов релиза&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#загрузка-из-репозитория&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Загрузка из репозитория&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#необходимые-дополнительные-пакеты&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Необходимые дополнительные пакеты&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#опции-компиляции&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Опции компиляции&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#netanim&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; NetAnim&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#опции-для-компиляции-ns3&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2&lt;/span&gt; Опции для компиляции ns3&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#итоговые-опции-компиляции&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3&lt;/span&gt; Итоговые опции компиляции&lt;/a&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&#34;#gentoo&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3.1&lt;/span&gt; Gentoo&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#компиляция-вручную&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3.2&lt;/span&gt; Компиляция вручную&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Репозиторий кода: &lt;a href=&#34;https://gitlab.com/nsnam/ns-3-dev&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://gitlab.com/nsnam/ns-3-dev&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Репозиторий скриптов для сборки: &lt;a href=&#34;https://gitlab.com/nsnam/ns-3-allinone&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://gitlab.com/nsnam/ns-3-allinone&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;исходный-код&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Исходный код&lt;/h2&gt;
+&lt;h3 id=&#34;архив-исходных-кодов-релиза&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Архив исходных кодов релиза&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Последний релиз: &lt;a href=&#34;https://www.nsnam.org/releases/latest/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.nsnam.org/releases/latest/&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Адрес архива имеет вид: &lt;code&gt;https://www.nsnam.org/releases/ns-allinone-3.x.y.tar.bz2&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;загрузка-из-репозитория&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Загрузка из репозитория&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Репозиторий скриптов: &lt;a href=&#34;https://gitlab.com/nsnam/ns-3-allinone&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://gitlab.com/nsnam/ns-3-allinone&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Порядок работы.
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Скачайте репозиторий скриптов:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;git clone https://gitlab.com/nsnam/ns-3-allinone.git
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Загрузите программный код (текущий снепшот):&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;cd ns-3-allinone
+./download.py
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;Загрузка текущего снепшота часто не может определить версии сопутствующего программного обеспечения.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Можно загрузить релиз:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;cd ns-3-allinone
+./download.py -n ns-3.x.y
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;необходимые-дополнительные-пакеты&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Необходимые дополнительные пакеты&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Python API Scanning Support
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;pygccxml&lt;/code&gt;
+&lt;ul&gt;
+&lt;li&gt;Репозиторий: &lt;a href=&#34;https://github.com/CastXML/pygccxml&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/CastXML/pygccxml&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;cxxfilt&lt;/code&gt;
+&lt;ul&gt;
+&lt;li&gt;Репозиторий: &lt;a href=&#34;https://github.com/afq984/python-cxxfilt&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/afq984/python-cxxfilt&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;опции-компиляции&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Опции компиляции&lt;/h2&gt;
+&lt;h3 id=&#34;netanim&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; NetAnim&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Для компиляции NetAnim нужны библиотеки Qt5 или Qt4.&lt;/li&gt;
+&lt;li&gt;При конфигурировании скрипт ищет утилиты &lt;code&gt;qmake-qt5&lt;/code&gt; или &lt;code&gt;qmake-qt4&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Но в &lt;em&gt;gentoo&lt;/em&gt; данная утилита называется &lt;code&gt;qmake5&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Поэтому следует добавить опцию:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;./build.py --qmake-path=/usr/bin/qmake5
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;опции-для-компиляции-ns3&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2&lt;/span&gt; Опции для компиляции ns3&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Чтобы получить опции компиляции для &lt;code&gt;ns3&lt;/code&gt;, следует зайти в каталог &lt;code&gt;ns3-3.x.y&lt;/code&gt; и запустить:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;./ns3 configure --help
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Интеграция с Python:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;./ns3 configure --enable-python-bindings
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Собрать одну большую разделяемую библиотеку:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;./ns3 configure --enable-monolib
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;итоговые-опции-компиляции&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3&lt;/span&gt; Итоговые опции компиляции&lt;/h3&gt;
+&lt;h4 id=&#34;gentoo&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3.1&lt;/span&gt; Gentoo&lt;/h4&gt;
+&lt;!--list-separator--&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Используя общий скрипт&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Основной скрипт скрипт запускается со следующими опциями:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;./build.py --enable-examples --enable-tests --qmake-path=/usr/bin/qmake5
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;компиляция-вручную&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3.2&lt;/span&gt; Компиляция вручную&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Однако, для более тонкой конфигурации лучше сделать вручную:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;NETANIM_DIR=$(echo netanim-*)
+cd ${NETANIM_DIR}
+qmake5 NetAnim.pro
+cd ..
+NS_DIR=$(echo ns-*)
+cd ${NS_DIR}
+./ns3 configure --enable-monolib --enable-python-bindings --enable-examples --enable-tests -- -DNS3_SCAN_PYTHON_BINDINGS=ON
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Теперь скомпилим код:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;NETANIM_DIR=$(echo netanim-*)
+cd ${NETANIM_DIR}
+make
+cd ..
+NS_DIR=$(echo ns-*)
+cd ${NS_DIR}
+./ns3 build
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
     
     <item>
       <title>GNS3. Установка Arista EOS</title>
@@ -88,13 +334,13 @@
 		
 
 		&lt;a class=&#34;nav-item nav-link  active &#34;
-		   id=&#34;nav-dbface&#34; data-toggle=&#34;tab&#34; href=&#34;#dbface&#34;
+		   id=&#34;nav-adcfbe&#34; data-toggle=&#34;tab&#34; href=&#34;#adcfbe&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;RuTube&lt;/a&gt;
 
 		
 
 		&lt;a class=&#34;nav-item nav-link &#34;
-		   id=&#34;nav-bafcde&#34; data-toggle=&#34;tab&#34; href=&#34;#bafcde&#34;
+		   id=&#34;nav-fbedac&#34; data-toggle=&#34;tab&#34; href=&#34;#fbedac&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;Youtube&lt;/a&gt;
 
 		
@@ -110,7 +356,7 @@
 
 
 
-&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;dbface&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;adcfbe&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	
 
@@ -133,7 +379,7 @@
 
 
 
-&lt;div class=&#34;tab-pane fade show &#34; id=&#34;bafcde&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show &#34; id=&#34;fbedac&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	
 
@@ -217,13 +463,13 @@ docker rm ceos-container
 		
 
 		&lt;a class=&#34;nav-item nav-link  active &#34;
-		   id=&#34;nav-fecbad&#34; data-toggle=&#34;tab&#34; href=&#34;#fecbad&#34;
+		   id=&#34;nav-feadbc&#34; data-toggle=&#34;tab&#34; href=&#34;#feadbc&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;RuTube&lt;/a&gt;
 
 		
 
 		&lt;a class=&#34;nav-item nav-link &#34;
-		   id=&#34;nav-edbcaf&#34; data-toggle=&#34;tab&#34; href=&#34;#edbcaf&#34;
+		   id=&#34;nav-bdaefc&#34; data-toggle=&#34;tab&#34; href=&#34;#bdaefc&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;Youtube&lt;/a&gt;
 
 		
@@ -239,7 +485,7 @@ docker rm ceos-container
 
 
 
-&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;fecbad&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;feadbc&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	
 
@@ -262,7 +508,7 @@ docker rm ceos-container
 
 
 
-&lt;div class=&#34;tab-pane fade show &#34; id=&#34;edbcaf&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show &#34; id=&#34;bdaefc&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	
 
@@ -587,26 +833,18 @@ docker rm ceos-container
     </item>
     
     <item>
-      <title>Средство имитационного моделирования NS2</title>
+      <title>Средство имитационного моделирования NS-2</title>
       <link>https://yamadharma.github.io/ru/post/2021/04/21/ns2-network-simulator/</link>
       <pubDate>Wed, 21 Apr 2021 17:38:00 +0300</pubDate>
       <guid>https://yamadharma.github.io/ru/post/2021/04/21/ns2-network-simulator/</guid>
-      <description>&lt;p&gt;Средство имитационного моделирования NS2.&lt;/p&gt;
+      <description>&lt;p&gt;Средство имитационного моделирования NS-2.&lt;/p&gt;
 &lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
   &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
-  &lt;nav id=&#34;TableOfContents&#34;&gt;
-  &lt;ul&gt;
-    &lt;li&gt;&lt;a href=&#34;#backlinks&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Backlinks&lt;/a&gt;&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/nav&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;&lt;/nav&gt;
 &lt;/details&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/04/21/installation-ns2-ubuntu/&#34;&gt;Установка NS-2. Ubuntu&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;backlinks&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Backlinks&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/02/21/mathematical-modeling/&#34;&gt;Математическое моделирование&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;</description>
     </item>
     
@@ -670,15 +908,43 @@ docker rm ceos-container
       <description>&lt;p&gt;Математическое моделирование.&lt;/p&gt;
 &lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
   &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
-  &lt;nav id=&#34;TableOfContents&#34;&gt;&lt;/nav&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#подходы-к-моделированию&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Подходы к моделированию&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#реализации-методов-математического-моделирования&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Реализации методов математического моделирования&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#аналитическое-моделирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Аналитическое моделирование&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#физическое-моделирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Физическое моделирование&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#имитационное-моделирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; Имитационное моделирование&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#статистическое-моделирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.4&lt;/span&gt; Статистическое моделирование&lt;/a&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&#34;#суррогатное-моделирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.4.1&lt;/span&gt; Суррогатное моделирование&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#обработка-больших-данных&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.4.2&lt;/span&gt; Обработка больших данных&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
 &lt;/details&gt;
 
+&lt;h2 id=&#34;подходы-к-моделированию&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Подходы к моделированию&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/02/21/modeling-approaches/&#34;&gt;Подходы к моделированию&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/02/21/mathematical-modeling-computational-approaches/&#34;&gt;Математическое моделирование. Вычислительные подходы&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/04/21/ns2-network-simulator/&#34;&gt;Средство имитационного моделирования NS2&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/10/12/structure-mathematical-model/&#34;&gt;Структура математической модели&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</description>
+&lt;/ul&gt;
+&lt;h2 id=&#34;реализации-методов-математического-моделирования&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Реализации методов математического моделирования&lt;/h2&gt;
+&lt;h3 id=&#34;аналитическое-моделирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Аналитическое моделирование&lt;/h3&gt;
+&lt;h3 id=&#34;физическое-моделирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Физическое моделирование&lt;/h3&gt;
+&lt;h3 id=&#34;имитационное-моделирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; Имитационное моделирование&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/04/21/ns2-network-simulator/&#34;&gt;Средство имитационного моделирования NS-2&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/10/03/ns3-network-simulator/&#34;&gt;Средство имитационного моделирования NS-3&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;статистическое-моделирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.4&lt;/span&gt; Статистическое моделирование&lt;/h3&gt;
+&lt;h4 id=&#34;суррогатное-моделирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.4.1&lt;/span&gt; Суррогатное моделирование&lt;/h4&gt;
+&lt;h4 id=&#34;обработка-больших-данных&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.4.2&lt;/span&gt; Обработка больших данных&lt;/h4&gt;</description>
     </item>
     
     <item>
@@ -705,16 +971,14 @@ docker rm ceos-container
         &lt;/li&gt;
       &lt;/ul&gt;
     &lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#backlinks&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Backlinks&lt;/a&gt;&lt;/li&gt;
   &lt;/ul&gt;
 &lt;/nav&gt;
 &lt;/details&gt;
 
 &lt;h2 id=&#34;классификация-методов-моделирования&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Классификация методов моделирования&lt;/h2&gt;
-&lt;p&gt;Моделирование как дисциплина охватывает разные типы модельных подходов. С нашей точки зрения эти
-подходы можно схематически описать единым образом. Исследовательская структура
-состоит из операциональных и теоретических частей.&lt;/p&gt;
 &lt;ul&gt;
+&lt;li&gt;Моделирование как дисциплина охватывает разные типы модельных подходов. С нашей точки зрения эти подходы можно схематически описать единым образом.&lt;/li&gt;
+&lt;li&gt;Исследовательская структура состоит из операциональных и теоретических частей.&lt;/li&gt;
 &lt;li&gt;Операциональные части представлены процедурами приготовления системы и измерения. Также возможно описание операциональных частей как входных и выходных данных.&lt;/li&gt;
 &lt;li&gt;Теоретическая часть состоит из двух слоёв: модельного слоя и слоя реализации.
 &lt;ul&gt;
@@ -729,69 +993,61 @@ docker rm ceos-container
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
+&lt;li&gt;Каждый тип моделей имеет свою область применимости, свои преимущества и недостатки.&lt;/li&gt;
+&lt;li&gt;Использование всего спектра моделей позволяет наиболее глубокое и всестороннее исследование моделируемой системы.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;Каждый тип моделей имеет свою область применимости, свои преимущества и недостатки. Использование всего спектра моделей позволяет наиболее глубокое и всестороннее исследование моделируемой системы.&lt;/p&gt;
 &lt;h2 id=&#34;виды-математического-моделирования&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Виды математического моделирования&lt;/h2&gt;
 &lt;h3 id=&#34;аналитическое-моделирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Аналитическое моделирование&lt;/h3&gt;
-&lt;p&gt;Наиболее строгое исследование базируется, обычно, на аналитической математической модели. В этом случае
-модельный слой реализуется посредством математических выражений, описывающих эволюцию системы.&lt;/p&gt;
-&lt;h3 id=&#34;физическое-моделирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Физическое моделирование&lt;/h3&gt;
-&lt;p&gt;Полученную математическую модель нужно сопоставить с
-экспериментальными данными, верифицировать её. Для этого можно создать
-модель, аналогичную физической или технической системе.&lt;/p&gt;
 &lt;ul&gt;
+&lt;li&gt;Наиболее строгое исследование базируется, обычно, на аналитической математической модели. В этом случае модельный слой реализуется посредством математических выражений, описывающих эволюцию системы.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;физическое-моделирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Физическое моделирование&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Полученную математическую модель нужно сопоставить с экспериментальными данными, верифицировать её. Для этого можно создать модель, аналогичную физической или технической системе.&lt;/li&gt;
 &lt;li&gt;Физическая модель может быть и виртуальной. Например, можно построить модель сети передачи данных, используя образы операционных систем маршрутизаторов и коммутаторов.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;имитационное-моделирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; Имитационное моделирование&lt;/h3&gt;
-&lt;p&gt;С развитием компьютерной техники появилась возможность задавать
-модельную реализацию не в виде математического описания, а в виде
-некоторого алгоритма. Такого типа модели получили название &lt;em&gt;имитационных моделей&lt;/em&gt;, а сам подход получил название &lt;em&gt;имитационного моделирования&lt;/em&gt;.
-Имитационная модель играет двоякую роль.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;С развитием компьютерной техники появилась возможность задавать модельную реализацию не в виде математического описания, а в виде некоторого алгоритма.&lt;/li&gt;
+&lt;li&gt;Такого типа модели получили название &lt;em&gt;имитационных моделей&lt;/em&gt;, а сам подход получил название &lt;em&gt;имитационного моделирования&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;Имитационная модель играет двоякую роль.
 &lt;ul&gt;
 &lt;li&gt;Отлаженная и проверенная на экспериментальных данных и физической модели имитационная модель сама по себе может служить целям верификации математической модели.&lt;/li&gt;
 &lt;li&gt;С другой стороны, имитационная модель позволяет более эффективно, чем математическая модель, исследовать поведение моделируемой системы при разных вариантах входных данных.&lt;/li&gt;
 &lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h3 id=&#34;статистическое-моделирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.4&lt;/span&gt; Статистическое моделирование&lt;/h3&gt;
-&lt;p&gt;К данному типу моделирования относят модели, которые реализуются посредством методов &lt;em&gt;машинного обучения&lt;/em&gt;.
-Его можно разделить на несколько подходов.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;К данному типу моделирования относят модели, которые реализуются посредством методов &lt;em&gt;машинного обучения&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;Его можно разделить на несколько подходов.&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h4 id=&#34;суррогатное-моделирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.4.1&lt;/span&gt; Суррогатное моделирование&lt;/h4&gt;
-&lt;p&gt;Другие названия: аппроксимационные модели, модели поверхности отклика, метамодели,
-модели чёрного ящика (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2020/12/23/surrogate-modeling/&#34;&gt;Суррогатное моделирование&lt;/a&gt;).&lt;/p&gt;
-&lt;p&gt;В этом подходе модельный слой известен и даже имеет реализацию (чаще всего в
-виде аналитической модели).&lt;/p&gt;
-&lt;p&gt;Для многих реальных проблем моделирование может занять достаточно
-продолжительное время.  Крайне затруднены такие (достаточно рутинные)
-задачи, как оптимизация решений, исследование пространства решений,
-анализ чувствительности и анализ «что, если» становятся невозможными,
-поскольку они требуют тысяч или миллионов оценок моделирования.&lt;/p&gt;
-&lt;p&gt;Для упрощения исследования строятся модели, которые имитируют
-поведение исходной модели настолько близко, насколько это возможно, в
-то время как вычислительно дёшевы. Суррогатные модели строятся с
-использованием подхода, основанного на данных. Точная внутренняя
-работа кода моделирования не предполагается известной (или даже
-понятой), важно только поведение ввода–вывода
-(приготовления–измерения). Модель строится на основе моделирования
-реакции на ограниченное количество (порой достаточно большое)
-выбранных точек данных&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;. Научная задача суррогатного
-моделирования заключается в создании суррогата, который является
-максимально точным, используя как можно меньше оценок
-моделирования. Процесс состоит из следующих основных этапов, которые
-могут чередоваться:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Другие названия: аппроксимационные модели, модели поверхности отклика, метамодели, модели чёрного ящика (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2020/12/23/surrogate-modeling/&#34;&gt;Суррогатное моделирование&lt;/a&gt;).&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;В этом подходе модельный слой известен и даже имеет реализацию (чаще всего в виде аналитической модели).&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Для многих реальных проблем моделирование может занять достаточно продолжительное время.  Крайне затруднены такие (достаточно рутинные) задачи, как оптимизация решений, исследование пространства решений, анализ чувствительности и анализ «что, если» становятся невозможными, поскольку они требуют тысяч или миллионов оценок моделирования.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Для упрощения исследования строятся модели, которые имитируют поведение исходной модели настолько близко, насколько это возможно, в то время как вычислительно дёшевы. Суррогатные модели строятся с использованием подхода, основанного на данных. Точная внутренняя работа кода моделирования не предполагается известной (или даже понятой), важно только поведение ввода–вывода (приготовления–измерения). Модель строится на основе моделирования реакции на ограниченное количество (порой достаточно большое) выбранных точек данных&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;. Научная задача суррогатного моделирования заключается в создании суррогата, который является максимально точным, используя как можно меньше оценок моделирования.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Процесс состоит из следующих основных этапов, которые могут чередоваться:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;выбор образца;&lt;/li&gt;
 &lt;li&gt;построение суррогатной модели и оптимизация параметров модели;&lt;/li&gt;
 &lt;li&gt;оценка точности суррогата.&lt;/li&gt;
 &lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h4 id=&#34;обработка-больших-данных&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.4.2&lt;/span&gt; Обработка больших данных&lt;/h4&gt;
-&lt;p&gt;Применяется, когда отсутствует модель как таковая и
-природа истинной функции априори неизвестна,
-поэтому неясно, какая суррогатная модель будет наиболее точной. Кроме
-того, непонятно, как получить наиболее надёжные оценки точности
-данного суррогата. В данном случае модельный слой заменяется догадками
-исследователя. (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2020/10/13/data-science-scientific-thinking/&#34;&gt;Data Science и научное мышление&lt;/a&gt;).&lt;/p&gt;
-&lt;h2 id=&#34;backlinks&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Backlinks&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/02/21/mathematical-modeling/&#34;&gt;Математическое моделирование&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Применяется, когда отсутствует модель как таковая и природа истинной функции априори неизвестна, поэтому неясно, какая суррогатная модель будет наиболее точной. Кроме того, непонятно, как получить наиболее надёжные оценки точности данного суррогата. В данном случае модельный слой заменяется догадками исследователя. (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2020/10/13/data-science-scientific-thinking/&#34;&gt;Data Science и научное мышление&lt;/a&gt;).&lt;/li&gt;
 &lt;/ul&gt;
 &lt;div class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
 &lt;hr&gt;

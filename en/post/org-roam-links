@@ -5,8 +5,9 @@
 import sys
 import re
 import os
+import glob
 
-orgroamdir = "~/work/org/notes/"
+orgroamdir = os.path.expanduser("~/work/org/notes/")
 
 def find_md_links(md):
     """Returns dict of links in markdown:
@@ -68,7 +69,10 @@ if __name__ == "__main__":
             linkpath = os.path.splitext(fulllink)[0]
         # add extention
         md2org = linkpath + '.org'
-        orgfile = os.path.expanduser(orgroamdir + md2org)
+        # orgfile = os.path.expanduser(orgroamdir + md2org)
+        print(md2org)
+        orgfile = glob.glob(orgroamdir + "/**/" + md2org, recursive = True)[0]
+        print(orgfile)
         if os.path.exists(orgfile):
             orgfiletext =  open(orgfile).read()
             export_file_name_text = export_file_name_re.findall(orgfiletext)

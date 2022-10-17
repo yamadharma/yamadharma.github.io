@@ -356,7 +356,7 @@
         content="2022-08-30T12:21:00&#43;03:00"
       />
     
-    <meta property="article:modified_time" content="2022-08-30T13:21:00&#43;03:00">
+    <meta property="article:modified_time" content="2022-10-11T14:24:00&#43;03:00">
   
 
   
@@ -385,7 +385,7 @@
   "headline": "Emacs. Работа с библиографией. helm-bibtex",
   
   "datePublished": "2022-08-30T12:21:00+03:00",
-  "dateModified": "2022-08-30T13:21:00+03:00",
+  "dateModified": "2022-10-11T14:24:00+03:00",
   
   "author": {
     "@type": "Person",
@@ -918,7 +918,7 @@
           Обновлено
       
     
-    2022-08-30
+    2022-10-11
   </span>
   
 
@@ -927,7 +927,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-reading-time">
-    1 мин. для прочтения
+    4 мин. для прочтения
   </span>
   
 
@@ -965,11 +965,30 @@
   <nav id="TableOfContents">
   <ul>
     <li><a href="#общая-информация"><span class="section-num">1</span> Общая информация</a></li>
-    <li><a href="#основные-операции"><span class="section-num">2</span> Основные операции</a></li>
-    <li><a href="#настройка"><span class="section-num">3</span> Настройка</a></li>
-    <li><a href="#использование"><span class="section-num">4</span> Использование</a>
+    <li><a href="#форматы-цитирования"><span class="section-num">2</span> Форматы цитирования</a>
       <ul>
-        <li><a href="#клавиши-для-поиска"><span class="section-num">4.1</span> Клавиши для поиска</a></li>
+        <li><a href="#форматы-цитирования-по-умолчанию"><span class="section-num">2.1</span> Форматы цитирования по умолчанию</a></li>
+        <li><a href="#изменение-формата-цитирования"><span class="section-num">2.2</span> Изменение формата цитирования</a></li>
+      </ul>
+    </li>
+    <li><a href="#основные-операции"><span class="section-num">3</span> Основные операции</a></li>
+    <li><a href="#настройка"><span class="section-num">4</span> Настройка</a></li>
+    <li><a href="#использование"><span class="section-num">5</span> Использование</a>
+      <ul>
+        <li><a href="#клавиши-для-поиска"><span class="section-num">5.1</span> Клавиши для поиска</a></li>
+        <li><a href="#выбор-действия"><span class="section-num">5.2</span> Выбор действия</a></li>
+        <li><a href="#изменить-доступные-действия"><span class="section-num">5.3</span> Изменить доступные действия</a>
+          <ul>
+            <li><a href="#helm-bibtex"><span class="section-num">5.3.1</span> Helm-bibtex</a></li>
+            <li><a href="#ivy-bibtex"><span class="section-num">5.3.2</span> Ivy-bibtex</a></li>
+          </ul>
+        </li>
+        <li><a href="#выбор-нескольких-записей"><span class="section-num">5.4</span> Выбор нескольких записей</a>
+          <ul>
+            <li><a href="#helm-bibtex"><span class="section-num">5.4.1</span> Helm-bibtex</a></li>
+            <li><a href="#ivy-bibtex"><span class="section-num">5.4.2</span> Ivy-bibtex</a></li>
+          </ul>
+        </li>
       </ul>
     </li>
   </ul>
@@ -982,7 +1001,30 @@
 <li>Фронтенды: <code>helm-bibtex</code> и <code>ivy-bibtex</code>.</li>
 <li>Репозиторий: <a href="https://github.com/tmalsburg/helm-bibtex" target="_blank" rel="noopener">https://github.com/tmalsburg/helm-bibtex</a>.</li>
 </ul>
-<h2 id="основные-операции"><span class="section-num">2</span> Основные операции</h2>
+<h2 id="форматы-цитирования"><span class="section-num">2</span> Форматы цитирования</h2>
+<h3 id="форматы-цитирования-по-умолчанию"><span class="section-num">2.1</span> Форматы цитирования по умолчанию</h3>
+<ul>
+<li>Bibtex-completion создает цитаты на основе основного режима, в котором цитата вставляется.</li>
+<li>По умолчанию вставляются следующие типы ссылок:
+<ul>
+<li>org-mode: ссылка для открытия записи в Ebib;</li>
+<li>latex-mode: команда цитирования LaTeX;</li>
+<li>markdown-mode: команда цитирования Pandoc;</li>
+<li>python-mode: команда цитирования sphinxcontrib-bibtex;</li>
+<li>rst-mode: команда цитирования sphinxcontrib-bibtex;</li>
+<li>другие режимы: вставка ключа BibTeX.</li>
+</ul>
+</li>
+</ul>
+<h3 id="изменение-формата-цитирования"><span class="section-num">2.2</span> Изменение формата цитирования</h3>
+<ul>
+<li>При использовании org-cite (см. <a href="https://yamadharma.github.io/ru/post/2022/10/10/emacs-bibliography-org-cite/">Emacs. Работа с библиографией. Org-cite</a>) можно переключиться на соответствующий формат цитирования для org-файлов:
+<pre><code class="language-emacs-lisp">(add-to-list 'bibtex-completion-format-citation-functions
+	     '(org-mode . bibtex-completion-format-citation-org-cite))
+</code></pre>
+</li>
+</ul>
+<h2 id="основные-операции"><span class="section-num">3</span> Основные операции</h2>
 <ul>
 <li>Пакет позволяет вставлять ссылки в файл.</li>
 <li>При выборе пункта библиографии есть возможность:
@@ -998,13 +1040,116 @@
 <li>Быстрый доступ к онлайн-библиографическим базам данных, таким как Pubmed, arXiv, Google Scholar, Библиотека Конгресса и т. д.</li>
 <li>Импортируйте записи BibTeX из CrossRef и других источников.</li>
 </ul>
-<h2 id="настройка"><span class="section-num">3</span> Настройка</h2>
-<h2 id="использование"><span class="section-num">4</span> Использование</h2>
-<h3 id="клавиши-для-поиска"><span class="section-num">4.1</span> Клавиши для поиска</h3>
+<h2 id="настройка"><span class="section-num">4</span> Настройка</h2>
+<h2 id="использование"><span class="section-num">5</span> Использование</h2>
+<h3 id="клавиши-для-поиска"><span class="section-num">5.1</span> Клавиши для поиска</h3>
 <ul>
+<li>Будем считать, что общий префикс <em>Helm</em> &mdash; <code>C-c h</code>.</li>
 <li><code>C-c h b</code>: поиск в центральной базе bib.</li>
-<li><code>C-c h b</code>: поиск в центральной и локальной базах bib.</li>
+<li><code>C-c h b</code>: поиск в локальной базе bib.
+<ul>
+<li>Для org-файлов используются как локальная, так и глобальная библиографические базы.</li>
+</ul>
+</li>
 <li><code>C-c h n</code>: поиска только среди записей, содержащих примечания.</li>
+<li>Настройка проводится следующим образом:
+<pre><code class="language-emacs-lisp">(define-key helm-command-map &quot;b&quot; 'helm-bibtex)
+(define-key helm-command-map &quot;B&quot; 'helm-bibtex-with-local-bibliography)
+(define-key helm-command-map &quot;n&quot; 'helm-bibtex-with-notes)
+</code></pre>
+</li>
+</ul>
+<h3 id="выбор-действия"><span class="section-num">5.2</span> Выбор действия</h3>
+<ul>
+<li>Выделив пункт, необходимо нажать <code>C-z</code>.</li>
+<li>Будет выдан список действий.</li>
+<li>Первым действием в списке будет действие по умолчанию.</li>
+<li>При нажатии <code>&lt;return&gt;</code> или <code>&lt;tab&gt;</code> на записи будет выполнено действие по умолчанию.</li>
+</ul>
+<h3 id="изменить-доступные-действия"><span class="section-num">5.3</span> Изменить доступные действия</h3>
+<ul>
+<li>Нажатие <code>&lt;enter&gt;</code> на публикации запускает <em>действие по умолчанию</em>, которое открывает PDF-файл, связанный с публикацией, если она присутствует, или ее URL-адрес или DOI в противном случае.</li>
+<li>Нажатие <code>&lt;tab&gt;</code> в helm-bibtex или <code>M-o</code> в ivy-bibtex вместо этого отображает меню действий со списком доступных действий.</li>
+<li>Список всех доступных действий вместе с их функциями (это общие функции действий, для <code>helm-bibtex</code> имена функций начинаются с <code>helm-bibtex-</code> вместо <code>bibtex-completion-</code>, а для <code>ivy-bibtex</code> они начинаются с <code>ivy-bibtex-</code>):
+<ul>
+<li>Open PDF, URL or DOI: <code>bibtex-completion-open-any</code></li>
+<li>Open PDF file (if present): <code>bibtex-completion-open-pdf</code></li>
+<li>Open URL or DOI in browser: <code>bibtex-completion-open-url-or-doi</code></li>
+<li>Insert citation: <code>bibtex-completion-insert-citation</code></li>
+<li>Insert reference: <code>bibtex-completion-insert-reference</code></li>
+<li>Insert BibTeX key: <code>bibtex-completion-insert-key</code></li>
+<li>Insert BibTeX entry: <code>bibtex-completion-insert-bibtex</code></li>
+<li>Attach PDF to email: <code>bibtex-completion-add-PDF-attachment</code></li>
+<li>Edit notes: <code>bibtex-completion-edit-notes</code></li>
+<li>Show entry: <code>bibtex-completion-show-entry</code></li>
+<li>Add PDF to library: <code>bibtex-completion-add-pdf-to-library</code></li>
+</ul>
+</li>
+</ul>
+<h4 id="helm-bibtex"><span class="section-num">5.3.1</span> Helm-bibtex</h4>
+<ul>
+<li>Список действий можно изменить с помощью команд <code>helm-add-action-to-source</code> и <code>helm-delete-action-from-source</code>.</li>
+<li>Добавим новое действие <code>helm-bibtex-open-annotated-pdf</code> сразу после первого элемента в списке:
+<pre><code class="language-emacs-lisp">(helm-add-action-to-source
+ &quot;Open annotated PDF (if present)&quot; 'helm-bibtex-open-annotated-pdf
+ helm-source-bibtex 1)
+</code></pre>
+</li>
+<li>Если последний числовой аргумент в <code>helm-add-action-to-source</code> опущен, новое действие добавляется в конец списка.</li>
+<li>Поскольку действие по умолчанию &mdash; это просто первая запись в списке действий, действие по умолчанию можно изменить, удалив действие и повторно вставив его вверху списка.</li>
+<li>Сделаем <em>Вставить ключ BibTeX</em> действием по умолчанию:
+<pre><code class="language-emacs-lisp">(helm-delete-action-from-source &quot;Insert BibTeX key&quot; helm-source-bibtex)
+(helm-add-action-to-source &quot;Insert BibTeX key&quot; 'helm-bibtex-insert-key helm-source-bibtex 0)
+</code></pre>
+</li>
+</ul>
+<h4 id="ivy-bibtex"><span class="section-num">5.3.2</span> Ivy-bibtex</h4>
+<ul>
+<li>Действие по умолчанию и дополнительные доступные действия задаются отдельно.</li>
+<li>Действие по умолчанию управляется переменными <code>ivy-bibtex-default-action</code> и <code>ivy-bibtex-default-multi-action</code>, причем последние предназначены для списков отмеченных записей.</li>
+<li>Изменим действие по умолчанию на <em>Вставить ключ BibTeX</em>:
+<pre><code class="language-emacs-lisp">(setq ivy-bibtex-default-action 'ivy-bibtex-insert-key)
+</code></pre>
+</li>
+<li>Установим действие по умолчанию для списков отмеченных записей на <em>Вставить ключ BibTeX</em>:
+<pre><code class="language-emacs-lisp">(setq ivy-bibtex-default-multi-action 'ivy-bibtex-insert-key)
+</code></pre>
+</li>
+<li>Дополнительные действия задаются передачей в команду нужного списка действий <code>ivy-set-actions</code>.</li>
+<li>Сохраним только два доступных действия в дополнение к одному по умолчанию:
+<pre><code class="language-emacs-lisp">(ivy-set-actions
+ 'ivy-bibtex
+ '((&quot;p&quot; ivy-bibtex-open-any &quot;Open PDF, URL, or DOI&quot; ivy-bibtex-open-any)
+   (&quot;e&quot; ivy-bibtex-edit-notes &quot;Edit notes&quot; ivy-bibtex-edit-notes)))
+</code></pre>
+</li>
+<li>Буквы <code>p</code> и <code>e</code> являются привязками клавиш для двух действий в меню действий.</li>
+<li>Привязка клавиши <code>o</code> зарезервирована для действия по умолчанию.</li>
+<li>Если вы хотите добавить новые действия только в конец списка действий, вы также можете использовать команду <code>ivy-add-actions</code>.</li>
+<li>Добавим новое действие <code>ivy-bibtex-open-annotated-pdf</code> в конец списка действий:
+<pre><code class="language-emacs-lisp">(ivy-add-actions
+   'ivy-bibtex
+   '((&quot;P&quot; ivy-bibtex-open-annotated-pdf &quot;Open annotated PDF (if present)&quot; ivy-bibtex-open-annotated-pdf)))
+</code></pre>
+</li>
+</ul>
+<h3 id="выбор-нескольких-записей"><span class="section-num">5.4</span> Выбор нескольких записей</h3>
+<h4 id="helm-bibtex"><span class="section-num">5.4.1</span> Helm-bibtex</h4>
+<ul>
+<li>Запустите helm-bibtex.</li>
+<li>Введите поисковое выражение.</li>
+<li>Переместите курсор на соответствующую запись и введите <code>C-&lt;space&gt;</code>, чтобы отметить эту запись.</li>
+<li>При желании измените свое поисковое выражение, отметьте другие записи.</li>
+<li>Нажмите <code>&lt;return&gt;</code> или <code>&lt;tab&gt;</code>, чтобы выполнить действие для всех выбранных записей одновременно и выйти из helm-bibtex.</li>
+</ul>
+<h4 id="ivy-bibtex"><span class="section-num">5.4.2</span> Ivy-bibtex</h4>
+<ul>
+<li>Запустите ivy-bibtex.</li>
+<li>Введите поисковое выражение.</li>
+<li>Переместите курсор на соответствующую запись и введите <code>C-&lt;space&gt;</code>, чтобы отметить эту запись.</li>
+<li>При желании измените свое поисковое выражение, отметьте больше записей.</li>
+<li>Нажмите <code>&lt;return&gt;</code> чтобы выполнить действие по умолчанию со всеми выбранными записями или <code>M-o</code> чтобы выбрать другое действие.</li>
+<li>Нажмите <code>S-&lt;space&gt;</code>, чтобы снять пометку с отмеченной записи.</li>
 </ul>
       
 
@@ -1416,9 +1561,37 @@
    
 
    
-      
+
    
 
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+      
    
 
    
@@ -4496,15 +4669,15 @@
     <h3>Похожие</h3>
     <ul>
       
+      <li><a href="https://yamadharma.github.io/ru/post/2022/10/15/emacs-org-babel/">Emacs. Org Babel</a></li>
+      
+      <li><a href="https://yamadharma.github.io/ru/post/2022/10/10/emacs-bibliography-org-cite/">Emacs. Работа с библиографией. Org-cite</a></li>
+      
+      <li><a href="https://yamadharma.github.io/ru/post/2022/09/29/emacs-cdlatex/">Emacs. Пакет cdlatex</a></li>
+      
+      <li><a href="https://yamadharma.github.io/ru/post/2022/09/29/emacs-latex-support/">Emacs. Поддержка LaTeX</a></li>
+      
       <li><a href="https://yamadharma.github.io/ru/post/2022/08/30/emacs-bibliography-org-roam-bibtex/">Emacs. Работа с библиографией. Org-roam-bibtex</a></li>
-      
-      <li><a href="https://yamadharma.github.io/ru/post/2022/08/30/emacs-bibliography-org-ref/">Emacs. Работа с библиографией. org-ref</a></li>
-      
-      <li><a href="https://yamadharma.github.io/ru/post/2022/08/15/emacs-completion-systems/">Emacs. Completion systems</a></li>
-      
-      <li><a href="https://yamadharma.github.io/ru/post/2022/08/15/emacs-spellchecking-flyspell-correct/">Emacs. Проверка правописания. flyspell-correct</a></li>
-      
-      <li><a href="https://yamadharma.github.io/ru/post/2022/08/01/emacs-spellchecking-ispell/">Emacs. Проверка правописания. ispell</a></li>
       
     </ul>
   </div>
@@ -4600,7 +4773,7 @@
   
 
 
-<script src="https://yamadharma.github.io/js/vendor-bundle.min.46271ef31da3f018e9cd1b59300aa265.js"></script>
+<script src="https://yamadharma.github.io/js/vendor-bundle.min.d26509351aa0ff874abbee824e982e9b.js"></script>
 
 
 
@@ -4685,7 +4858,7 @@
   
 
 
-<script src="https://yamadharma.github.io/ru/js/wowchemy.min.c46a108acc458a477cf49a8921d4b1c7.js"></script>
+<script src="https://yamadharma.github.io/ru/js/wowchemy.min.b4848f3f337f1d09f31e59106665bb21.js"></script>
 
 
 

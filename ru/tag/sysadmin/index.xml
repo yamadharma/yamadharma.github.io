@@ -5,12 +5,84 @@
     <link>https://yamadharma.github.io/ru/tag/sysadmin/</link>
       <atom:link href="https://yamadharma.github.io/ru/tag/sysadmin/index.xml" rel="self" type="application/rss+xml" />
     <description>sysadmin</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2022 Dmitry S. Kulyabov</copyright><lastBuildDate>Tue, 13 Sep 2022 19:45:00 +0300</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2022 Dmitry S. Kulyabov</copyright><lastBuildDate>Sun, 25 Sep 2022 09:42:00 +0300</lastBuildDate>
     <image>
       <url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url>
       <title>sysadmin</title>
       <link>https://yamadharma.github.io/ru/tag/sysadmin/</link>
     </image>
+    
+    <item>
+      <title>Автообновление систем на базе деривативов RedHat</title>
+      <link>https://yamadharma.github.io/ru/post/2022/09/25/redhat-based-systems-auto-update/</link>
+      <pubDate>Sun, 25 Sep 2022 09:42:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2022/09/25/redhat-based-systems-auto-update/</guid>
+      <description>&lt;p&gt;Простое автоматическое обновление на уровне хоста.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#прагматика&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Прагматика&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#установка-программного-обеспечения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Установка программного обеспечения&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#использование-программного-обеспечения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Использование программного обеспечения&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;прагматика&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Прагматика&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Основное преимущество автоматизации обновлений заключается в том, что машины, скорее всего, будут обновляться быстрее, чаще и более равномерно, чем если бы обновления выполнялись вручную.&lt;/li&gt;
+&lt;li&gt;Хотя необходимо быть осторожным с любым решением для автоматического обновления, его стоит рассмотреть, по крайней мере, для некоторых ситуаций.&lt;/li&gt;
+&lt;li&gt;Если машина является критическим сервером, для которого нельзя допускать незапланированного простоя службы на машине, то автоматические обновления использовать не следует. В противном случае можно использовать их.&lt;/li&gt;
+&lt;li&gt;Причины использования автоматических обновлений.
+&lt;ul&gt;
+&lt;li&gt;Вы вряд ли будете применять обновления вручную по каким-либо причинам.&lt;/li&gt;
+&lt;li&gt;Машина не критична, допустимы случайные незапланированные простои.&lt;/li&gt;
+&lt;li&gt;Вы можете жить без удаленного доступа к машине, пока не сможете добраться до ее физического местоположения для решения проблем.&lt;/li&gt;
+&lt;li&gt;У вас нет незаменимых данных на машине или надлежащих резервных копий таких данных.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Общая информация&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Документация: &lt;a href=&#34;https://dnf.readthedocs.io/en/latest/automatic.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://dnf.readthedocs.io/en/latest/automatic.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Используются таймеры:
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;dnf-automatic.timer&lt;/code&gt; : общий таймер, операции настраиваются в файле конфигурации;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;dnf-automatic-notifyonly.timer&lt;/code&gt; : уведомление о наличии обновлений;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;dnf-automatic-download.timer&lt;/code&gt; : загрузка обновлений;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;dnf-automatic-install.timer&lt;/code&gt; : установка обновлений.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Этим таймерам соответствуют сервисы.&lt;/li&gt;
+&lt;li&gt;Конфигурационный файл: &lt;code&gt;/etc/dnf/automatic.conf&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;установка-программного-обеспечения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Установка программного обеспечения&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Установим пакет:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install dnf-automatic
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;использование-программного-обеспечения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Использование программного обеспечения&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Зададим необходимую конфигурацию в файле &lt;code&gt;/etc/dnf/automatic.conf&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Например, для автоматической установки обновлений зададим:
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;download_updates = yes
+apply_updates = yes
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Запустим общий таймер:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;systemctl enable --now dnf-automatic.timer
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Проверить работу таймера можно так:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;systemctl list-timers *dnf-* --all
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
     
     <item>
       <title>Перенос Drupal на другую машину</title>
@@ -480,6 +552,7 @@ GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER, CREATE TEMPORA
         &lt;li&gt;&lt;a href=&#34;#администрирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.5&lt;/span&gt; Администрирование&lt;/a&gt;
           &lt;ul&gt;
             &lt;li&gt;&lt;a href=&#34;#резервное-копирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.5.1&lt;/span&gt; Резервное копирование&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#автоматическое-обновление&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.5.2&lt;/span&gt; Автоматическое обновление&lt;/a&gt;&lt;/li&gt;
           &lt;/ul&gt;
         &lt;/li&gt;
         &lt;li&gt;&lt;a href=&#34;#файловые-системы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.6&lt;/span&gt; Файловые системы&lt;/a&gt;
@@ -724,6 +797,19 @@ dnf install mariadb-server
 &lt;ul&gt;
 &lt;li&gt;Для резервного копирования используется &lt;em&gt;restic&lt;/em&gt;:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install restic
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;автоматическое-обновление&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.5.2&lt;/span&gt; Автоматическое обновление&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;При необходимости можно использовать автоматическое обновление (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/09/25/redhat-based-systems-auto-update/&#34;&gt;Автообновление систем на базе деривативов RedHat&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Установка программного обеспечения:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install dnf-automatic
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Задаёте необходимую конфигурацию в файле &lt;code&gt;/etc/dnf/automatic.conf&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Запустите таймер:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;systemctl enable --now dnf-automatic.timer
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -1392,13 +1478,13 @@ vyos@vyos$
 		
 
 		&lt;a class=&#34;nav-item nav-link  active &#34;
-		   id=&#34;nav-afbcde&#34; data-toggle=&#34;tab&#34; href=&#34;#afbcde&#34;
+		   id=&#34;nav-cdebaf&#34; data-toggle=&#34;tab&#34; href=&#34;#cdebaf&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;RuTube&lt;/a&gt;
 
 		
 
 		&lt;a class=&#34;nav-item nav-link &#34;
-		   id=&#34;nav-eafcdb&#34; data-toggle=&#34;tab&#34; href=&#34;#eafcdb&#34;
+		   id=&#34;nav-facdbe&#34; data-toggle=&#34;tab&#34; href=&#34;#facdbe&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;Youtube&lt;/a&gt;
 
 		
@@ -1414,7 +1500,7 @@ vyos@vyos$
 
 
 
-&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;afbcde&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;cdebaf&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	
 
@@ -1437,7 +1523,7 @@ vyos@vyos$
 
 
 
-&lt;div class=&#34;tab-pane fade show &#34; id=&#34;eafcdb&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show &#34; id=&#34;facdbe&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	
 
@@ -2508,35 +2594,68 @@ dns_rfc2136_algorithm = HMAC-SHA512
 &lt;/ul&gt;
 &lt;h3 id=&#34;запуск-под-пользователем&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Запуск под пользователем&lt;/h3&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Конфигурационный файл: &lt;code&gt;~/.davmail.properties&lt;/code&gt;.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Запуск:&lt;/p&gt;
+&lt;li&gt;Конфигурационный файл: &lt;code&gt;~/.davmail.properties&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Запуск:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;davmail
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;В трее появляется значок.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Можно сконфигурить в графическом режиме, а после скопировать конфигурационный файл на системный уровень.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Если сконфигурирована аутентификация Oauth2, то конфигурационный файл содержит токен доступа.&lt;/p&gt;
+&lt;li&gt;В трее появляется значок.&lt;/li&gt;
+&lt;li&gt;Можно сконфигурить в графическом режиме, а после скопировать конфигурационный файл на системный уровень.&lt;/li&gt;
+&lt;li&gt;Если сконфигурирована аутентификация Oauth2, то конфигурационный файл содержит токен доступа.
 &lt;ul&gt;
 &lt;li&gt;В таком виде использовать конфигурационный файл на системном уровне вряд ли получится.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
+&lt;li&gt;&lt;em&gt;systemd-скрипт&lt;/em&gt; &lt;code&gt;/usr/lib/systemd/user/davmail.service&lt;/code&gt; для запуска под пользователем:
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;[Unit]
+Description=Davmail Exchange gateway for %i
+Documentation=http://davmail.sourceforge.net/serversetup.html
+Documentation=http://davmail.sourceforge.net/advanced.html
+Documentation=http://davmail.sourceforge.net/sslsetup.html
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/davmail %h/.davmail.properties
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
+DefaultInstance=davmail
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Можно поместить этот скрипт в каталог &lt;code&gt;~/.config/systemd/user&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Запуск скрипта:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;systemctl --user enable --now davmail
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;запуск-на-системном-уровне&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.2&lt;/span&gt; Запуск на системном уровне&lt;/h3&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Конфигурационный файл: &lt;code&gt;/etc/davmail.properties&lt;/code&gt;.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Запускается системным init-скриптом:&lt;/p&gt;
+&lt;li&gt;Конфигурационный файл: &lt;code&gt;/etc/davmail.properties&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Запускается системным init-скриптом:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;systemctl enable --now davmail
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;systemd-скрипт&lt;/em&gt; &lt;code&gt;/usr/lib/systemd/system/davmail.service&lt;/code&gt; для запуска:
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;[Unit]
+Description=Davmail Exchange gateway
+Documentation=http://davmail.sourceforge.net/serversetup.html
+Documentation=http://davmail.sourceforge.net/advanced.html
+Documentation=http://davmail.sourceforge.net/sslsetup.html
+After=network.target
+
+[Service]
+Type=simple
+User=davmail
+PermissionsStartOnly=true
+ExecStartPre=/usr/bin/touch /var/log/davmail.log
+ExecStartPre=/bin/chown davmail:davmail /var/log/davmail.log
+ExecStart=/usr/bin/davmail -server /etc/davmail.properties
+SuccessExitStatus=143
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -2563,28 +2682,18 @@ dns_rfc2136_algorithm = HMAC-SHA512
 &lt;/ul&gt;
 &lt;h3 id=&#34;url-адрес-owa&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2&lt;/span&gt; URL-адрес OWA&lt;/h3&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Параметр: &lt;code&gt;davmail.url&lt;/code&gt;:&lt;/p&gt;
+&lt;li&gt;Параметр: &lt;code&gt;davmail.url&lt;/code&gt;:
 &lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;davmail.url=https://outlook.office365.com/EWS/Exchange.asmx
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;URL-адрес Outlook Web Access для доступа к серверу Exchange.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;code&gt;https://outlook.office365.com/EWS/Exchange.asmx&lt;/code&gt; : значение по умолчанию для Office 365;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;code&gt;https://Your.Exchange.Server/EWS/Exchange.asmx&lt;/code&gt; : для своего Exchange-сервера.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Значение зависит от версии Microsoft Exchange.&lt;/p&gt;
-&lt;/li&gt;
+&lt;li&gt;URL-адрес Outlook Web Access для доступа к серверу Exchange.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;https://outlook.office365.com/EWS/Exchange.asmx&lt;/code&gt; : значение по умолчанию для Office 365;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;https://Your.Exchange.Server/EWS/Exchange.asmx&lt;/code&gt; : для своего Exchange-сервера.&lt;/li&gt;
+&lt;li&gt;Значение зависит от версии Microsoft Exchange.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;порты&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3&lt;/span&gt; Порты&lt;/h3&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Значение локальных портов обычно равно стандартному порту + 1000:&lt;/p&gt;
+&lt;li&gt;Значение локальных портов обычно равно стандартному порту + 1000:
 &lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;davmail.smtpPort=1025
 davmail.imapPort=1143
 davmail.popPort=1110
@@ -4127,6 +4236,65 @@ firewall-cmd --reload
 &lt;li&gt;Шлюз &lt;em&gt;rsshub.app&lt;/em&gt;
 &lt;ul&gt;
 &lt;li&gt;Если нужно подключить канал &lt;em&gt;&lt;a href=&#34;https://t.me/channelname&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://t.me/channelname&lt;/a&gt;&lt;/em&gt;, то имя rss-канала будет &lt;em&gt;&lt;a href=&#34;https://rsshub.app/telegram/channel/channelname&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://rsshub.app/telegram/channel/channelname&lt;/a&gt;&lt;/em&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Использование vagrant</title>
+      <link>https://yamadharma.github.io/ru/post/2021/11/12/using-vagrant/</link>
+      <pubDate>Fri, 12 Nov 2021 12:11:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2021/11/12/using-vagrant/</guid>
+      <description>&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#подготовка-образа&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Подготовка образа&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#описание-установки&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Описание установки&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#операционные-системы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Операционные системы&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#windows&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Windows&lt;/a&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&#34;#запуск-vagrant-под-windows-в-текущем-каталоге&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1.1&lt;/span&gt; Запуск Vagrant под Windows в текущем каталоге&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;подготовка-образа&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Подготовка образа&lt;/h2&gt;
+&lt;h3 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Общая информация&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Подготовка образа проводится с помощью &lt;em&gt;Packer&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;Сайт: &lt;a href=&#34;https://www.packer.io/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.packer.io/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;описание-установки&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Описание установки&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Ранее использовался язык описания JSON.&lt;/li&gt;
+&lt;li&gt;После &lt;em&gt;Packer-1.5&lt;/em&gt; используется формат HCL2.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;операционные-системы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Операционные системы&lt;/h2&gt;
+&lt;h3 id=&#34;windows&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Windows&lt;/h3&gt;
+&lt;h4 id=&#34;запуск-vagrant-под-windows-в-текущем-каталоге&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1.1&lt;/span&gt; Запуск Vagrant под Windows в текущем каталоге&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Следует задать переменные окружения&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;setx VAGRANT_HOME &amp;quot;X:/your/path/.vagrant.d&amp;quot; /M
+setx VAGRANT_DOTFILE_PATH &amp;quot;X:/your/path/.vagrant&amp;quot; /M
+setx VBOX_USER_HOME &amp;quot;X:/your/path/.vbox&amp;quot; /M
+setx VBOX_INSTALL_PATH &amp;quot;X:/your/path/vm&amp;quot; /M
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;Команда &lt;code&gt;setx&lt;/code&gt; добавляет переменные в постоянный список переменных окружения.&lt;/li&gt;
+&lt;li&gt;Модификатор &lt;code&gt;/M&lt;/code&gt; добавляет переменные в системное окружение.&lt;/li&gt;
+&lt;li&gt;Без этого модификатора переменные будут добавляться в окружение пользователя.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;</description>
@@ -9956,6 +10124,7 @@ systemctl --user enable --now pipewire.socket pipewire-pulse.socket wireplumber.
         &lt;li&gt;&lt;a href=&#34;#текстовые-процессоры&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7.4&lt;/span&gt; Текстовые процессоры&lt;/a&gt;&lt;/li&gt;
         &lt;li&gt;&lt;a href=&#34;#работа-с-дисками&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7.5&lt;/span&gt; Работа с дисками&lt;/a&gt;&lt;/li&gt;
         &lt;li&gt;&lt;a href=&#34;#вычисления&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7.6&lt;/span&gt; Вычисления&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#квантовая-химия&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7.7&lt;/span&gt; Квантовая химия&lt;/a&gt;&lt;/li&gt;
       &lt;/ul&gt;
     &lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#безопасность&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8&lt;/span&gt; Безопасность&lt;/a&gt;&lt;/li&gt;
@@ -9997,6 +10166,7 @@ systemctl --user enable --now pipewire.socket pipewire-pulse.socket wireplumber.
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/05/25/replacing-centos/&#34;&gt;Замена Centos&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/02/10/centos8-changing-repository-addresses/&#34;&gt;CentOS 8. Изменение адресов репозиториев&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/08/12/rockylinux-server-installation/&#34;&gt;Rocky Linux. Установка сервера&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/09/25/redhat-based-systems-auto-update/&#34;&gt;Автообновление систем на базе деривативов RedHat&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;файловые-системы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.4&lt;/span&gt; Файловые системы&lt;/h3&gt;
 &lt;ul&gt;
@@ -10067,6 +10237,10 @@ systemctl --user enable --now pipewire.socket pipewire-pulse.socket wireplumber.
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/07/22/principles-using-supercomputer/&#34;&gt;Принципы работы на суперкомпьютере&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/09/07/regulations-access-supercomputer-rudn/&#34;&gt;Регламент доступа к суперкомпьютеру РУДН&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;квантовая-химия&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7.7&lt;/span&gt; Квантовая химия&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/10/17/quantum-chemistry-gamess/&#34;&gt;Квантовая химия. Gamess&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;безопасность&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8&lt;/span&gt; Безопасность&lt;/h2&gt;
 &lt;ul&gt;

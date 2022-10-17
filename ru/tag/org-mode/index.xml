@@ -5,12 +5,378 @@
     <link>https://yamadharma.github.io/ru/tag/org-mode/</link>
       <atom:link href="https://yamadharma.github.io/ru/tag/org-mode/index.xml" rel="self" type="application/rss+xml" />
     <description>org-mode</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2022 Dmitry S. Kulyabov</copyright><lastBuildDate>Thu, 14 Oct 2021 18:49:00 +0300</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2022 Dmitry S. Kulyabov</copyright><lastBuildDate>Sat, 15 Oct 2022 21:21:00 +0300</lastBuildDate>
     <image>
       <url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url>
       <title>org-mode</title>
       <link>https://yamadharma.github.io/ru/tag/org-mode/</link>
     </image>
+    
+    <item>
+      <title>Emacs. Org Babel</title>
+      <link>https://yamadharma.github.io/ru/post/2022/10/15/emacs-org-babel/</link>
+      <pubDate>Sat, 15 Oct 2022 21:21:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2022/10/15/emacs-org-babel/</guid>
+      <description>&lt;p&gt;Org Babel.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#структура-блока-кода&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Структура блока кода&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#исполнение-кода-блоков&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Исполнение кода блоков&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#исполнение-исходного-кода&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Исполнение исходного кода&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#ограничение-на-исполнение-кода&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.2&lt;/span&gt; Ограничение на исполнение кода&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#экспорт-блоков-кода&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Экспорт блоков кода&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;Org Babel&lt;/em&gt; используется для работы с исходным кодом разных языков программирования внутри &lt;em&gt;org-mode&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;Исходный код задаётся в блоке &lt;code&gt;#+BEGIN_SRC...#+END_SRC&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Для редактирования и форматирования блока исходного кода используется соответствующий основной режим Emacs, включающий функции, специально разработанные для исходного кода на этом языке.&lt;/li&gt;
+&lt;li&gt;Для выполнения компиляции блока исходного кода можно использовать соответствующий компилятор.&lt;/li&gt;
+&lt;li&gt;Важной особенностью управления блоками исходного кода в &lt;em&gt;org-mode&lt;/em&gt; является возможность передавать переменные, функции и результаты друг другу, используя общий синтаксис для блоков исходного кода на любом языке.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;структура-блока-кода&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Структура блока кода&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Исходный код может быть в блоке исходного кода и непосредственно в строке.&lt;/li&gt;
+&lt;li&gt;Блок исходного кода:
+&lt;pre&gt;&lt;code class=&#34;language-org&#34;&gt;#+NAME: &amp;lt;name&amp;gt;
+#+BEGIN_SRC &amp;lt;language&amp;gt; &amp;lt;switches&amp;gt; &amp;lt;header arguments&amp;gt;
+  &amp;lt;body&amp;gt;
+#+END_SRC
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Блок встроенного кода:
+&lt;pre&gt;&lt;code class=&#34;language-org&#34;&gt;src_&amp;lt;language&amp;gt;[&amp;lt;header arguments&amp;gt;]{&amp;lt;body&amp;gt;}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Основные элементы:
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;#+NAME: &amp;lt;name&amp;gt;&lt;/code&gt; : опциональное название блока исходного кода.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;#+BEGIN_SRC … #+END_SRC&lt;/code&gt; : обязательные ограничители блока.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;&amp;lt;language&amp;gt;&lt;/code&gt; : обязательный идентификатор языка исходного кода в блоке.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;&amp;lt;switches&amp;gt;&lt;/code&gt; : опциональная настройка кодового блока.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;&amp;lt;header arguments&amp;gt;&lt;/code&gt; : опциональные аргументы заголовка. Управляют многими аспектами выполнения и экспорта блоков кода.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;&amp;lt;body&amp;gt;&lt;/code&gt; : исходный код.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;исполнение-кода-блоков&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Исполнение кода блоков&lt;/h2&gt;
+&lt;h3 id=&#34;исполнение-исходного-кода&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Исполнение исходного кода&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Org захватывает результаты выполнения блока кода и вставляет их в файл Org сразу после блока кода.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Точка вставки находится после новой строки и ключевого слова &lt;code&gt;RESULTS&lt;/code&gt; (оно создаётся, если его не было).&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;По умолчанию Org разрешает выполнение только блоков кода Emacs Lisp.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Выполнение блоков кода: &lt;code&gt;C-c C-c&lt;/code&gt; или &lt;code&gt;C-c C-v e&lt;/code&gt; на кодовом блоке вызывает функцию &lt;code&gt;org-babel-execute-src-block&lt;/code&gt;, которая выполняет код в блоке, собирает результаты и вставляет их в буфер.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Содержимое блока кода может быть исполнено из другого места файла.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Вызов можно выполнить с помощью ключевого слова:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-org&#34;&gt;#+CALL: &amp;lt;name&amp;gt;(&amp;lt;arguments&amp;gt;)
+#+CALL: &amp;lt;name&amp;gt;[&amp;lt;inside header arguments&amp;gt;](&amp;lt;arguments&amp;gt;) &amp;lt;end header arguments&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Можно использовать встроенные вызовы:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-org&#34;&gt;... call_&amp;lt;name&amp;gt;(&amp;lt;arguments&amp;gt;) ...
+... call_&amp;lt;name&amp;gt;[&amp;lt;inside header arguments&amp;gt;](&amp;lt;arguments&amp;gt;)[&amp;lt;end header arguments&amp;gt;] ...
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;В этом случае результат представляется на основе переменной &lt;code&gt;org-babel-inline-result-wrap&lt;/code&gt;, для которой по умолчанию задано значение &lt;code&gt;=%s=&lt;/code&gt; для получения дословного текста.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Параметры вызова:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;&amp;lt;name&amp;gt;&lt;/code&gt; : имя блока кода. Если блок находится в другом файле, имя предваряется именем файла, за которым следует двоеточие.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;&amp;lt;arguments&amp;gt;&lt;/code&gt; : аргументы, передаваемые в блок кода.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;&amp;lt;inside header arguments&amp;gt;&lt;/code&gt; : внутренние аргументы заголовка в именованном блоке кода.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;&amp;lt;end header arguments&amp;gt;&lt;/code&gt; : влияют на результаты, возвращаемые блоком кода.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;ограничение-на-исполнение-кода&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.2&lt;/span&gt; Ограничение на исполнение кода&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Аргумент заголовка &lt;code&gt;eval&lt;/code&gt; может ограничивать выполнение определённых блоков кода (в основном для обеспечения безопасности):
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;never&lt;/code&gt; или &lt;code&gt;no&lt;/code&gt; : никогда не исполнять код;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;query&lt;/code&gt; : запрашивает у пользователя разрешение на исполнение исходного кода;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;never-export&lt;/code&gt; или &lt;code&gt;no-export&lt;/code&gt; : не исполнять исходный код при экспорте;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;query-export&lt;/code&gt; : запрашивает у пользователя разрешение на исполнение исходного кода во время экспорта.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;экспорт-блоков-кода&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Экспорт блоков кода&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Можно экспортировать код из блоков babel, результаты выполнения блока кода.&lt;/li&gt;
+&lt;li&gt;Аргумент заголовка &lt;code&gt;:exports&lt;/code&gt; должен указывать, экспортируется ли эта часть файла:
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;code&lt;/code&gt; (&lt;code&gt;:exports code&lt;/code&gt;) : Обычно является значением по умолчанию. Код включается в экспортируемый файл.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;results&lt;/code&gt; (&lt;code&gt;:exports results&lt;/code&gt;) : Результаты выполнения кода включаются в экспортируемый файл.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;both&lt;/code&gt; (&lt;code&gt;:exports both&lt;/code&gt;) : И код, и результаты выполнения включаются в экспортируемый файл.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;none&lt;/code&gt; (&lt;code&gt;:exports none&lt;/code&gt;) : Ни код, ни результаты выполнения не включаются в экспортируемый файл.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Чтобы не выполнять блоки кода для ускорения экспорта, используется аргумент заголовка &lt;code&gt;:eval never-export&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Для отключения исполнения кода глобально следует установить переменную &lt;code&gt;org-export-use-babel&lt;/code&gt; в значение &lt;code&gt;nil&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Emacs. Работа с библиографией. Org-cite</title>
+      <link>https://yamadharma.github.io/ru/post/2022/10/10/emacs-bibliography-org-cite/</link>
+      <pubDate>Mon, 10 Oct 2022 12:34:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2022/10/10/emacs-bibliography-org-cite/</guid>
+      <description>&lt;p&gt;Библиография в org-mode на основе org-cite.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#цитирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Цитирование&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#обработка-цитирования&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Обработка цитирования&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#процессоры-цитирования&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.2&lt;/span&gt; Процессоры цитирования&lt;/a&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&#34;#универсальные&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.2.1&lt;/span&gt; Универсальные&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#latex&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.2.2&lt;/span&gt; LaTeX&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#задание-типа-экспорта&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.3&lt;/span&gt; Задание типа экспорта&lt;/a&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.3.1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#задание-типа-экспорта-в-файле&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.3.2&lt;/span&gt; Задание типа экспорта в файле&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#глобальное-задание-типа-экспорта&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.3.3&lt;/span&gt; Глобальное задание типа экспорта&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#citeproc-dot-el&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Citeproc.el&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Выпущена в 2021 году для нативной поддержки ссылок в &lt;code&gt;org-mode&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Задаёт родной синтаксис для цитирования.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;цитирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Цитирование&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Прежде чем добавлять цитаты, сначала следует задать один или несколько файлов библиографии:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;глобально с помощью &lt;code&gt;org-cite-global-bibliography&lt;/code&gt;:
+&lt;pre&gt;&lt;code class=&#34;language-emacs-lisp&#34;&gt;(setq org-cite-global-bibliography &#39;(&amp;quot;~/work/bib/bib/main.bib&amp;quot;))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;локально с помощью одного или нескольких ключевых слов &lt;code&gt;bibliography&lt;/code&gt;:
+&lt;pre&gt;&lt;code class=&#34;language-org&#34;&gt;#+bibliography: SomeFile.bib
+#+bibliography: /some/other/file.json
+#+bibliography: &amp;quot;/some/file/with spaces/in its name.bib&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Цитаты можно вставлять и редактировать с помощью &lt;code&gt;org-cite-insert&lt;/code&gt;, или комбинации &lt;code&gt;C-c C-x @&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Для цитирования требуется один или несколько ключей цитирования элементов, идентифицирующих ссылку в библиографии:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-org&#34;&gt;[cite/style:common prefix ;prefix @key suffix; ... ; common suffix]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;Каждая цитата заключена в квадратные скобки и использует ключевое слово &lt;code&gt;cite&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Каждый ключ начинается с символа &lt;code&gt;@&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Каждый ключ может быть дополнен префиксом (например, &lt;code&gt;см.&lt;/code&gt;) и/или суффиксом (например, &lt;code&gt;стр. 123&lt;/code&gt;), предоставляя информацию, полезную или необходимую для понимания цитаты, но не включенную в ссылку.&lt;/li&gt;
+&lt;li&gt;Одна цитата может цитировать более одной ссылки; ключи разделены точкой с запятой; форматирование таких групп цитирования определяется стилем.&lt;/li&gt;
+&lt;li&gt;Можно также указать стилистическую вариацию для цитат, вставив &amp;lsquo;/&amp;rsquo; и имя стиля между ключевым словом &lt;code&gt;cite&lt;/code&gt; и двоеточием.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Обязательными элементами являются:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;ключевое слово &lt;code&gt;cite&lt;/code&gt; и двоеточие;&lt;/li&gt;
+&lt;li&gt;символ &lt;code&gt;@&lt;/code&gt;, непосредственно предшествующий каждому ключу;&lt;/li&gt;
+&lt;li&gt;скобки, окружающие цитирование.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Чтобы вставить куда-либо библиографию, нужно в этом месте задать ключевое слово &lt;code&gt;print_bibliography&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-org&#34;&gt;#+print_bibliography:
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;обработка-цитирования&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Обработка цитирования&lt;/h2&gt;
+&lt;h3 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Общая информация&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Важной концепцией &lt;code&gt;org-cite&lt;/code&gt; являются &lt;em&gt;экспортные процессоры&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;Хотя цитаты всегда будут иметь один и тот же формат, экспортируемый текст будет меняться в зависимости от используемого процессора.&lt;/li&gt;
+&lt;li&gt;Основные функции процессоров:
+&lt;ul&gt;
+&lt;li&gt;вставка и редактирование цитат;&lt;/li&gt;
+&lt;li&gt;связь ссылки и её определения;&lt;/li&gt;
+&lt;li&gt;выделение цитат в буфере;&lt;/li&gt;
+&lt;li&gt;экспорт цитат.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;процессоры-цитирования&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.2&lt;/span&gt; Процессоры цитирования&lt;/h3&gt;
+&lt;h4 id=&#34;универсальные&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.2.1&lt;/span&gt; Универсальные&lt;/h4&gt;
+&lt;!--list-separator--&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;basic&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Когда обратная совместимость не требуется, а потребности в форматировании минимальны.&lt;/li&gt;
+&lt;li&gt;Загрузка:
+&lt;pre&gt;&lt;code class=&#34;language-emacs-lisp&#34;&gt;(require &#39;oc-basic)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;!--list-separator--&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;
+&lt;p&gt;csl&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Используется форматирование на основе Citation Style Language (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/10/10/citation-style-language/&#34;&gt;Citation Style Language (CSL)&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Для этого используется пакет &lt;code&gt;citeproc-el&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Конфигурация:
+&lt;pre&gt;&lt;code class=&#34;language-emacs-lisp&#34;&gt;(require &#39;oc-csl)
+
+;;; https://github.com/citation-style-language/styles
+;;; https://www.zotero.org/styles
+(setq org-cite-csl-styles-dir &amp;quot;~/work/bib/csl&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;csl&lt;/code&gt; экспортируется в визуализированный текст.
+&lt;ul&gt;
+&lt;li&gt;Визуализированный текст &amp;mdash; это текст, вид которого будет совпадать с форматированием в &lt;code&gt;org-mode&lt;/code&gt;, например, текст, выделенный курсивом &lt;code&gt;org-mode&lt;/code&gt;, будет обернут в &lt;code&gt;\emph{}&lt;/code&gt; в LaTeX.&lt;/li&gt;
+&lt;li&gt;При экспорте &lt;code&gt;[cite:@bradleyAppearanceRealityMetaphysical2011 82–5;]&lt;/code&gt; в файл LaTeX с помощью csl-процессора, используя файл CSL для стиля цитирования &lt;em&gt;Modern Language Association (MLA)&lt;/em&gt;, в файле LaTeX будет следующая цитата: &lt;code&gt;(Bradley 82–85)&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;При экспорте в LaTeX отрендеренного текста зачастую будет недостаточно.&lt;/li&gt;
+&lt;li&gt;Для получения доступ к более сложным или тонким функциям надо использовать процессор &lt;code&gt;biblatex&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;latex&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.2.2&lt;/span&gt; LaTeX&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Для экспорта в LaTeX.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;!--list-separator--&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;natbib&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Для экспорта в BibTeX, исторический библиографический процессор, используемый с LaTeX.&lt;/li&gt;
+&lt;li&gt;Используются команды цитирования из пакета &lt;code&gt;natbib&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Загрузка:
+&lt;pre&gt;&lt;code class=&#34;language-emacs-lisp&#34;&gt;(require &#39;oc-natbib)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;!--list-separator--&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;
+&lt;p&gt;biblatex&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Для экспорта в BibLaTeX, альтернативного библиографического процессора, используемого с LaTeX (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/09/11/bibtex-biblatex/&#34;&gt;bibtex vs biblatex&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Загрузка:
+&lt;pre&gt;&lt;code class=&#34;language-emacs-lisp&#34;&gt;(require &#39;oc-biblatex)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Стиль конечного цитирования будет определяться предоставленными параметрами пакета (например, &lt;code&gt;style=gost&lt;/code&gt;).&lt;/li&gt;
+&lt;li&gt;Например, &lt;code&gt;[cite:@bradleyAppearanceRealityMetaphysical2011 82-5;]&lt;/code&gt;  будет экспортироваться в команду LaTeX &lt;code&gt;\cite[82-5]{bradleyAppearanceRealityMetaphysical2011}&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Процессору BibLaTeX можно передать параметры команде &lt;code&gt;\printbibliography&lt;/code&gt;:
+&lt;pre&gt;&lt;code class=&#34;language-org&#34;&gt;#+print_bibliography: :section 2 :heading subbibliography
+#+print_bibliography: :keyword abc,xyz :title &amp;quot;Primary Sources&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;задание-типа-экспорта&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.3&lt;/span&gt; Задание типа экспорта&lt;/h3&gt;
+&lt;h4 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.3.1&lt;/span&gt; Общая информация&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Стиль цитат и библиография зависят от трех вещей:
+&lt;ul&gt;
+&lt;li&gt;используемый процессор цитирования;&lt;/li&gt;
+&lt;li&gt;стиль цитирования;&lt;/li&gt;
+&lt;li&gt;стиль библиографии.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;задание-типа-экспорта-в-файле&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.3.2&lt;/span&gt; Задание типа экспорта в файле&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Ключевое слово &lt;code&gt;CITE_EXPORT&lt;/code&gt;  указывает процессор экспорта и стили цитирования (и, возможно, ссылки).&lt;/li&gt;
+&lt;li&gt;Зададим процессор экспорта &lt;code&gt;basic&lt;/code&gt; с цитатами, вставленными как имя автора, и ссылками, проиндексированными по имени автора и году.
+&lt;pre&gt;&lt;code class=&#34;language-org&#34;&gt;#+cite_export: basic author author-year
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Зададим процессор &lt;code&gt;csl&lt;/code&gt; и стиль CSL, который в данном случае определяет числовые цитаты и числовые ссылки в соответствии с ванкуверской спецификацией:
+&lt;pre&gt;&lt;code class=&#34;language-org&#34;&gt;#+cite_export: csl /some/path/to/vancouver-brackets.csl
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Зададим процессор &lt;code&gt;natbib&lt;/code&gt; со стилем цитирования соответствующим гарвардскому стилю и спецификации издателя Wolkers-Kluwer:
+&lt;pre&gt;&lt;code class=&#34;language-org&#34;&gt;#+cite_export: natbib kluwer
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;глобальное-задание-типа-экспорта&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.3.3&lt;/span&gt; Глобальное задание типа экспорта&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Необходимо настроить переменную &lt;code&gt;org-cite-export-processors&lt;/code&gt;:
+&lt;pre&gt;&lt;code class=&#34;language-emacs-lisp&#34;&gt;(org-cite-export-processors
+ &#39;((md . (csl &amp;quot;chicago-fullnote-bibliography.csl&amp;quot;))   ; Footnote reliant
+   (latex . biblatex)                                 ; For humanities
+   (odt . (csl &amp;quot;chicago-fullnote-bibliography.csl&amp;quot;))  ; Footnote reliant
+   (t . (csl &amp;quot;modern-language-association.csl&amp;quot;))))      ; Fallback
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;citeproc-dot-el&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Citeproc.el&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Используется для процессора csl.&lt;/li&gt;
+&lt;li&gt;В настоящее время он поддерживает экспорт в:
+&lt;ul&gt;
+&lt;li&gt;HTML;&lt;/li&gt;
+&lt;li&gt;LaTeX;&lt;/li&gt;
+&lt;li&gt;Org;&lt;/li&gt;
+&lt;li&gt;Plain text.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;В настоящее время Citeproc может извлекать библиографическую информацию из следующих форматов:
+&lt;ul&gt;
+&lt;li&gt;CSL-JSON;&lt;/li&gt;
+&lt;li&gt;Bib(La)TeX;&lt;/li&gt;
+&lt;li&gt;org-bibtex (см. &lt;a href=&#34;https://gewhere.github.io/org-bibtex&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://gewhere.github.io/org-bibtex&lt;/a&gt;).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Поддержка Bib(La)TeX и org-bibtex находится в зачаточном состоянии по сравнению с CSL-JSON .&lt;/li&gt;
+&lt;li&gt;Если не задан стиль в &lt;code&gt;org-cite-csl--fallback-style-file&lt;/code&gt;, будет использоваться стиль, который по умолчанию соответствует чикагскому стилю &lt;em&gt;автор-дата&lt;/em&gt;.&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
     
     <item>
       <title>Язык разметки org-mode</title>
@@ -78,6 +444,7 @@
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2020/12/14/org-mode-prezentation/&#34;&gt;Org-mode. Презентации&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2020/12/10/org-mode-export/&#34;&gt;Org-mode. Экспорт&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2020/10/05/use-org-roam/&#34;&gt;Использование org-roam&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/10/15/emacs-org-babel/&#34;&gt;Emacs. Org Babel&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;</description>
     </item>
     
@@ -282,19 +649,25 @@
         &lt;li&gt;&lt;a href=&#34;#запрет-авто-сохранения-для-конкретного-файла&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;9.4&lt;/span&gt; Запрет авто сохранения для конкретного файла&lt;/a&gt;&lt;/li&gt;
       &lt;/ul&gt;
     &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#цитирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;10&lt;/span&gt; Цитирование&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#формат-цитирования-pandoc&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;10.1&lt;/span&gt; Формат цитирования pandoc&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#формат-цитирования-org-cite&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;10.2&lt;/span&gt; Формат цитирования org-cite&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
   &lt;/ul&gt;
 &lt;/nav&gt;
 &lt;/details&gt;
 
 &lt;h2 id=&#34;использование-языка-markdown-внутри-org&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Использование языка Markdown внутри Org&lt;/h2&gt;
-&lt;p&gt;При экспорте Org преобразуется в стандартный Markdown. Однако в Hugo
-используются собственные нестандартные расширения (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2020/11/26/hugo-markdown/&#34;&gt;Синтаксис
-Markdown для генератора сайтов Hugo&lt;/a&gt;). При необходимости их можно
-вставлять прямо в текст.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;При экспорте Org преобразуется в стандартный Markdown. Однако в Hugo используются собственные нестандартные расширения (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2020/11/26/hugo-markdown/&#34;&gt;Синтаксис Markdown для генератора сайтов Hugo&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;При необходимости их можно вставлять прямо в текст.&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h2 id=&#34;соответствие-языков-разметки&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Соответствие языков разметки&lt;/h2&gt;
 &lt;div class=&#34;table-caption&#34;&gt;
   &lt;span class=&#34;table-number&#34;&gt;&amp;#1058;&amp;#1072;&amp;#1073;&amp;#1083;&amp;#1080;&amp;#1094;&amp;#1072; 1:&lt;/span&gt;
-  Соответствие разметок &lt;code&gt;org&lt;/code&gt; и &lt;code&gt;markdown&lt;/code&gt;
+  Соответствие разметок org и markdown
 &lt;/div&gt;
 &lt;table&gt;
 &lt;thead&gt;
@@ -343,25 +716,31 @@ Markdown для генератора сайтов Hugo&lt;/a&gt;). При нео
 &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;h2 id=&#34;настройка-экспорта&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Настройка экспорта&lt;/h2&gt;
-&lt;p&gt;Экспорт производится в рамках общего фреймворка org-mode для экспорта (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2020/12/10/org-mode-export/&#34;&gt;Org-mode. Экспорт&lt;/a&gt;).&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Экспорт производится в рамках общего фреймворка org-mode для экспорта (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2020/12/10/org-mode-export/&#34;&gt;Org-mode. Экспорт&lt;/a&gt;).&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h3 id=&#34;экспорт-специфических-элементов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Экспорт специфических элементов&lt;/h3&gt;
 &lt;h4 id=&#34;экспорт-операторов-hugo&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1.1&lt;/span&gt; Экспорт операторов Hugo&lt;/h4&gt;
-&lt;p&gt;Для экспорта конкретных элементов, необходимых только для Hugo, следует использовать блок &lt;code&gt;export&lt;/code&gt;. Например, оглавление задаётся следующим образом:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Для экспорта конкретных элементов, необходимых только для Hugo, следует использовать блок &lt;code&gt;export&lt;/code&gt;. Например, оглавление задаётся следующим образом:
 &lt;pre&gt;&lt;code class=&#34;language-org&#34;&gt;#+begin_export hugo
 {{&amp;lt;/* toc */&amp;gt;}}
 #+end_export
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Это позволяет задавать оглавление только для Hugo.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;Это позволяет задавать оглавление только для Hugo.&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h4 id=&#34;отбивка-резюме--summary-splitter&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1.2&lt;/span&gt; Отбивка резюме (Summary Splitter)&lt;/h4&gt;
-&lt;p&gt;Отбивка резюме задаётся конструкцией&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Отбивка резюме задаётся конструкцией
 &lt;pre&gt;&lt;code class=&#34;language-org&#34;&gt;#+hugo: more
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h4 id=&#34;резюме-и-подробная-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1.3&lt;/span&gt; Резюме и подробная информация&lt;/h4&gt;
 &lt;ul&gt;
 &lt;li&gt;
-&lt;p&gt;Специальный блок «Детали» &lt;code&gt;#+begin_details … #+end_details&lt;/code&gt;
-используется для создания элемента, раскрывающего дополнительные
-сведения (&lt;code&gt;&amp;lt;details&amp;gt;&lt;/code&gt; и &lt;code&gt;&amp;lt;summary&amp;gt;&lt;/code&gt;).&lt;/p&gt;
+&lt;p&gt;Специальный блок «Детали» &lt;code&gt;#+begin_details … #+end_details&lt;/code&gt;  используется для создания элемента, раскрывающего дополнительные сведения (&lt;code&gt;&amp;lt;details&amp;gt;&lt;/code&gt; и &lt;code&gt;&amp;lt;summary&amp;gt;&lt;/code&gt;).&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-org&#34;&gt;#+begin_details
 #+begin_summary
 Краткая информация
@@ -369,6 +748,8 @@ Markdown для генератора сайтов Hugo&lt;/a&gt;). При нео
 А здесь подробная информация.
 #+end_details
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
 &lt;p&gt;Выглядить это так:&lt;/p&gt;
 &lt;details&gt;
 &lt;summary&gt;Краткая информация&lt;/summary&gt;
@@ -413,13 +794,8 @@ Markdown для генератора сайтов Hugo&lt;/a&gt;). При нео
 &lt;ul&gt;
 &lt;li&gt;Для экспорта необходимо установить следующие обязательные свойства:
 &lt;ul&gt;
-&lt;li&gt;&lt;code&gt;HUGO_SECTION&lt;/code&gt; - название раздела Hugo по умолчанию для всех
-сообщений. Обычно это свойство устанавливается для сообщений или
-блога. Значение по умолчанию устанавливается с помощью
-&lt;code&gt;org-hugo-default-section-directory&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;HUGO_BASE_DIR&lt;/code&gt; - корневой каталог сайта Hugo. Например, если
-&lt;code&gt;HUGO_BASE_DIR&lt;/code&gt; установлен на &lt;code&gt;~/hugo/&lt;/code&gt;, то экспортированные файлы
-Markdown будут сохранены в каталог &lt;code&gt;~/hugo/content/&amp;lt;HUGO_SECTION&amp;gt;/&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;HUGO_SECTION&lt;/code&gt; - название раздела Hugo по умолчанию для всех сообщений. Обычно это свойство устанавливается для сообщений или блога. Значение по умолчанию устанавливается с помощью &lt;code&gt;org-hugo-default-section-directory&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;HUGO_BASE_DIR&lt;/code&gt; - корневой каталог сайта Hugo. Например, если &lt;code&gt;HUGO_BASE_DIR&lt;/code&gt; установлен на &lt;code&gt;~/hugo/&lt;/code&gt;, то экспортированные файлы Markdown будут сохранены в каталог &lt;code&gt;~/hugo/content/&amp;lt;HUGO_SECTION&amp;gt;/&lt;/code&gt;.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;Данные свойства можно устанавливать как на уровне файла, так и на уровне каталога или проекта.&lt;/li&gt;
@@ -430,7 +806,9 @@ Markdown будут сохранены в каталог &lt;code&gt;~/hugo/cont
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;h4 id=&#34;формат-заголовка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.2.2&lt;/span&gt; Формат заголовка&lt;/h4&gt;
-&lt;p&gt;Поддерживаются форматы заголовка TOML (по умолчанию) и YAML.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Поддерживаются форматы заголовка TOML (по умолчанию) и YAML.&lt;/li&gt;
+&lt;/ul&gt;
 &lt;!--list-separator--&gt;
 &lt;ol&gt;
 &lt;li&gt;
@@ -880,15 +1258,14 @@ Content
 &lt;h3 id=&#34;установка-для-конкретного-файла&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;9.3&lt;/span&gt; Установка для конкретного файла&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;Для каждого файла можно задать локальные переменные:
-&lt;pre&gt;&lt;code class=&#34;language-org&#34;&gt;​* Footnotes
-​* COMMENT Local Variables                          :ARCHIVE:
+&lt;pre&gt;&lt;code class=&#34;language-org&#34;&gt;​* COMMENT Local Variables                          :ARCHIVE:
 # Local Variables:
 # eval: (org-hugo-auto-export-mode)
 # End:
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;Рекомендуется добавить заголовок &lt;code&gt;* Footnotes&lt;/code&gt;, чтобы в случае добавления каких-либо сносок они добавлялись в данный раздел.&lt;/li&gt;
-&lt;li&gt;В противном случае будет автоматически создан новый заголовок &lt;code&gt;* Footnotes&lt;/code&gt; в конце файла, и заголовок &lt;code&gt;Local Variables&lt;/code&gt; больше не будет последним и не будет обрабатываться.&lt;/li&gt;
+&lt;li&gt;Рекомендуется добавить заголовок &lt;code&gt;Footnotes&lt;/code&gt; перед заголовком &lt;code&gt;Local Variables&lt;/code&gt;, чтобы в случае добавления каких-либо сносок они добавлялись в данный раздел.&lt;/li&gt;
+&lt;li&gt;В противном случае будет автоматически создан новый заголовок &lt;code&gt;Footnotes&lt;/code&gt; в конце файла, и заголовок &lt;code&gt;Local Variables&lt;/code&gt; больше не будет последним и не будет обрабатываться.&lt;/li&gt;
 &lt;li&gt;Перечитать локальные переменные можно командой:
 &lt;pre&gt;&lt;code class=&#34;language-elisp&#34;&gt;M-x normal-mode
 &lt;/code&gt;&lt;/pre&gt;
@@ -897,11 +1274,32 @@ Content
 &lt;h3 id=&#34;запрет-авто-сохранения-для-конкретного-файла&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;9.4&lt;/span&gt; Запрет авто сохранения для конкретного файла&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;Для каждого файла можно задать локальные переменные для запрета экспорта:
-&lt;pre&gt;&lt;code class=&#34;language-org&#34;&gt;​* Footnotes
-​* COMMENT Local Variables                          :ARCHIVE:
+&lt;pre&gt;&lt;code class=&#34;language-org&#34;&gt;​* COMMENT Local Variables                          :ARCHIVE:
 # Local Variables:
 # eval: (org-hugo-auto-export-mode -1)
 # End:
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;цитирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;10&lt;/span&gt; Цитирование&lt;/h2&gt;
+&lt;h3 id=&#34;формат-цитирования-pandoc&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;10.1&lt;/span&gt; Формат цитирования pandoc&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Исторический формат цитирования.&lt;/li&gt;
+&lt;li&gt;Рекомендуется перейти на формат цитирования org-cite.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;формат-цитирования-org-cite&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;10.2&lt;/span&gt; Формат цитирования org-cite&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Цитирование основано на org-cite (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/10/10/emacs-bibliography-org-cite/&#34;&gt;Emacs. Работа с библиографией. Org-cite&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Рекомендуется использовать процессор экспорта &lt;em&gt;csl&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;При задании ключевого слова &lt;code&gt;#+print_bibliography:&lt;/code&gt; по умолчанию создаётся секция &lt;code&gt;References.&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Можно задать другое название для этой секции:
+&lt;pre&gt;&lt;code class=&#34;language-emacs-lisp&#34;&gt;(with-eval-after-load &#39;ox-hugo
+  (plist-put org-hugo-citations-plist :bibliography-section-heading &amp;quot;Bibliography&amp;quot;))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Если для этого свойства задана пустая строка, этот заголовок не будет вставлен автоматически &lt;sup id=&#34;fnref:4&#34;&gt;&lt;a href=&#34;#fn:4&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;4&lt;/a&gt;&lt;/sup&gt;:
+&lt;pre&gt;&lt;code class=&#34;language-emacs-lisp&#34;&gt;(with-eval-after-load &#39;ox-hugo
+  (plist-put org-hugo-citations-plist :bibliography-section-heading &amp;quot;&amp;quot;))
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -916,6 +1314,9 @@ Content
 &lt;/li&gt;
 &lt;li id=&#34;fn:3&#34;&gt;
 &lt;p&gt;Требует настроек &lt;em&gt;CSS&lt;/em&gt; для интерпретации тега &lt;code&gt;&amp;lt;underline&amp;gt;&lt;/code&gt;.&amp;#160;&lt;a href=&#34;#fnref:3&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:4&#34;&gt;
+&lt;p&gt;Так должно быть, но не работает. Вообще литература не печатается.&amp;#160;&lt;a href=&#34;#fnref:4&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;</description>
@@ -1073,27 +1474,28 @@ Content
       &lt;/ul&gt;
     &lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#фильтры-экспорта&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Фильтры экспорта&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#backlinks&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Backlinks&lt;/a&gt;&lt;/li&gt;
   &lt;/ul&gt;
 &lt;/nav&gt;
 &lt;/details&gt;
 
 &lt;h2 id=&#34;варианты-экспорта&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Варианты экспорта&lt;/h2&gt;
-&lt;p&gt;Из Emacs можно экспортировать как весь буфер, так и конкретное поддерево.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Из Emacs можно экспортировать как весь буфер, так и конкретное поддерево.
 &lt;ul&gt;
 &lt;li&gt;Переходим в режим экспорта &lt;code&gt;C-c C-e&lt;/code&gt; (&lt;code&gt;M-x org-export-dispatch&lt;/code&gt;).&lt;/li&gt;
 &lt;li&gt;Изменяем режим экспорта (буфер или поддерево) &lt;code&gt;C-s&lt;/code&gt;.&lt;/li&gt;
 &lt;li&gt;Выполняем экспорт в конкретный формат.&lt;/li&gt;
-&lt;li&gt;Название экспортируемого поддерева становится названием
-документа. Сменить его можно с помощью параметра &lt;code&gt;EXPORT_TITLE&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Название экспортируемого поддерева становится названием документа. Сменить его можно с помощью параметра &lt;code&gt;EXPORT_TITLE&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;параметры-экспорта&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Параметры экспорта&lt;/h3&gt;
-&lt;p&gt;Документация: &lt;a href=&#34;https://orgmode.org/manual/Export-Settings.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://orgmode.org/manual/Export-Settings.html&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;Для буфера параметры экспорта настраиваются в области заголовка, для
-поддерева &amp;mdash; в блоке &lt;code&gt;:PROPERTIES:&lt;/code&gt;. Для ввода пар параметр&amp;ndash;значение
-можно использовать комбинацию &lt;code&gt;C-c C-x p&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;Параметры, установленные на конкретном уровне, переопределяют
-параметры, установленные на более общем уровне.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Документация: &lt;a href=&#34;https://orgmode.org/manual/Export-Settings.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://orgmode.org/manual/Export-Settings.html&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Для буфера параметры экспорта настраиваются в области заголовка, для поддерева &amp;mdash; в блоке &lt;code&gt;:PROPERTIES:&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Для ввода пар параметр&amp;ndash;значение можно использовать комбинацию &lt;code&gt;C-c C-x p&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Параметры, установленные на конкретном уровне, переопределяют параметры, установленные на более общем уровне.&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h4 id=&#34;значения-параметров-экспорта&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1.1&lt;/span&gt; Значения параметров экспорта&lt;/h4&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;AUTHOR&lt;/code&gt; &amp;mdash; автор (user-full-name),&lt;/li&gt;
@@ -1113,9 +1515,11 @@ Content
 &lt;li&gt;&lt;code&gt;:&lt;/code&gt; &amp;mdash; переключатель для экспорта с фиксированной шириной &lt;code&gt;(org-export-with-fixed-width)&lt;/code&gt;.&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;&amp;lt;&lt;/code&gt; &amp;mdash; переключатель для включения временной метки &lt;code&gt;(org-export-with-timestamps)&lt;/code&gt;.&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;\n&lt;/code&gt; &amp;mdash; переключатель для сохранения переноса строк &lt;code&gt;(org-export-preserve-breaks)&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;^&lt;/code&gt; &amp;mdash; переключатель для теховских верхних и нижних индексов
-&lt;code&gt;(org-export-with-sub-superscripts)&lt;/code&gt;. Например, при задании как
-&lt;code&gt;^:{}&lt;/code&gt; &lt;code&gt;a_{b}&lt;/code&gt; преобразуется (например, a&lt;sub&gt;b&lt;/sub&gt;), а &lt;code&gt;a_b&lt;/code&gt; &amp;mdash; нет (например, a_b).&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;^&lt;/code&gt; &amp;mdash; переключатель для теховских верхних и нижних индексов &lt;code&gt;(org-export-with-sub-superscripts)&lt;/code&gt;.
+&lt;ul&gt;
+&lt;li&gt;Например, при задании как &lt;code&gt;^:{}&lt;/code&gt;  &lt;code&gt;a_{b}&lt;/code&gt; преобразуется (например, a&lt;sub&gt;b&lt;/sub&gt;), а &lt;code&gt;a_b&lt;/code&gt; &amp;mdash; нет (например, a_b).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;arch&lt;/code&gt; &amp;mdash; описывает обработку архивных деревьев &lt;code&gt;(org-export-with-archived-trees)&lt;/code&gt;.&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;author&lt;/code&gt; &amp;mdash; переключатель для включения автора в экспортируемый файл &lt;code&gt;(org-export-with-author)&lt;/code&gt;.&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;broken-links&lt;/code&gt; &amp;mdash; переключатель поведения при обнаружении битых ссылок &lt;code&gt;(org-export-with-broken-links)&lt;/code&gt;.&lt;/li&gt;
@@ -1130,8 +1534,7 @@ Content
 экспортируемый файл &lt;code&gt;(org-export-headline-levels)&lt;/code&gt;. При превышении
 заголовки обычно превращаются в списки.&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;inline&lt;/code&gt; &amp;mdash; переключатель включения строчных задач (inlinetasks) &lt;code&gt;(org-export-with-inlinetasks)&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;num&lt;/code&gt; &amp;mdash; переключатель нумерации заголовков
-&lt;code&gt;(org-export-with-section-numbers)&lt;/code&gt;.
+&lt;li&gt;&lt;code&gt;num&lt;/code&gt; &amp;mdash; переключатель нумерации заголовков &lt;code&gt;(org-export-with-section-numbers)&lt;/code&gt;.
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;N&lt;/code&gt; &amp;mdash; нумеруются заголовки только до уровня N;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;UNNUMBERED&lt;/code&gt; &amp;mdash; полностью отключает нумерацию;&lt;/li&gt;
@@ -1165,10 +1568,19 @@ Content
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;Для поддерева свойства имеют префикс «EXPORT_». Например, «DATE» становится «ЭКСПОРТ_DATE» при
-использовании для определённого поддерева.&lt;/p&gt;
+&lt;!--listend--&gt;
+&lt;ul&gt;
+&lt;li&gt;Для поддерева свойства имеют префикс &lt;code&gt;EXPORT_&lt;/code&gt;.
+&lt;ul&gt;
+&lt;li&gt;Например, &lt;code&gt;DATE&lt;/code&gt; становится &lt;code&gt;EXPORT_DATE&lt;/code&gt; при использовании для определённого поддерева.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h4 id=&#34;соответствие-параметров-экспорта-для-файла-и-поддерева&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1.2&lt;/span&gt; Соответствие параметров экспорта для файла и поддерева&lt;/h4&gt;
-&lt;p&gt;&lt;a id=&#34;table--Опции экспорта для файла и поддерева&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&#34;table-caption&#34;&gt;
+  &lt;span class=&#34;table-number&#34;&gt;&amp;#1058;&amp;#1072;&amp;#1073;&amp;#1083;&amp;#1080;&amp;#1094;&amp;#1072; 1:&lt;/span&gt;
+  Опции экспорта для файла и поддерева
+&lt;/div&gt;
 &lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
@@ -1184,17 +1596,9 @@ Content
 &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;h2 id=&#34;фильтры-экспорта&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Фильтры экспорта&lt;/h2&gt;
-&lt;h2 id=&#34;backlinks&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Backlinks&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2020/12/14/org-mode-export-latex/&#34;&gt;Org-mode. Экспорт в LaTeX&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;!--listend--&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2020/12/14/org-mode-prezentation/&#34;&gt;Org-mode. Презентации&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;!--listend--&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2020/12/17/org-mode-export-hugo/&#34;&gt;Org-mode. Экспорт в Hugo&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2020/12/14/org-mode-export-latex/&#34;&gt;Org-mode. Экспорт в LaTeX&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;</description>
     </item>
     

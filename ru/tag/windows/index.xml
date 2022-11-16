@@ -5,12 +5,60 @@
     <link>https://yamadharma.github.io/ru/tag/windows/</link>
       <atom:link href="https://yamadharma.github.io/ru/tag/windows/index.xml" rel="self" type="application/rss+xml" />
     <description>windows</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2022 Dmitry S. Kulyabov</copyright><lastBuildDate>Sat, 01 May 2021 16:38:00 +0300</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2022 Dmitry S. Kulyabov</copyright><lastBuildDate>Wed, 16 Nov 2022 20:26:00 +0300</lastBuildDate>
     <image>
       <url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url>
       <title>windows</title>
       <link>https://yamadharma.github.io/ru/tag/windows/</link>
     </image>
+    
+    <item>
+      <title>Windows. Синхронизация времени</title>
+      <link>https://yamadharma.github.io/ru/post/2022/11/16/windows-time-synchronization/</link>
+      <pubDate>Wed, 16 Nov 2022 20:26:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2022/11/16/windows-time-synchronization/</guid>
+      <description>&lt;p&gt;Синхронизация времени на Windows.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#синхронизация-со-сторонним-ntp-сервером&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Синхронизация со сторонним NTP-сервером&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#проблема&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Проблема&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#причина&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Причина&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#решение&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.3&lt;/span&gt; Решение&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;синхронизация-со-сторонним-ntp-сервером&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Синхронизация со сторонним NTP-сервером&lt;/h2&gt;
+&lt;h3 id=&#34;проблема&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Проблема&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;NTP-сервер по умолчанию для Windows (time.microsoft.com) часто сбоит.&lt;/li&gt;
+&lt;li&gt;При попытке синхронизировать Microsoft Windows с сервером протокола сетевого времени (NTP), который не работает под управлением Microsoft Windows, синхронизация может завершиться неудачно.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;причина&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Причина&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Иногда Windows отправляет запросы на синхронизацию в симметричном активном режиме (например, контроллеры домена Windows Server).&lt;/li&gt;
+&lt;li&gt;Зачастую серверы NTP отвечают только на запросы от клиентов, а не серверов.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;решение&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.3&lt;/span&gt; Решение&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;В командной строке (с правами администратора) наберите:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;w32tm /config /manualpeerlist:pool.ntp.org,0x8 /syncfromflags:MANUAL
+net stop w32time
+net start w32time
+w32tm /resync
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;0x08&lt;/code&gt; задаёт режим клиента.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
     
     <item>
       <title>Программное обеспечение, устанавливаемое на Windows</title>
@@ -226,7 +274,7 @@
   &lt;nav id=&#34;TableOfContents&#34;&gt;
   &lt;ul&gt;
     &lt;li&gt;&lt;a href=&#34;#управление-программным-обеспечением&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Управление программным обеспечением&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#backlinks&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Backlinks&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#настройка-операционной-системы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Настройка операционной системы&lt;/a&gt;&lt;/li&gt;
   &lt;/ul&gt;
 &lt;/nav&gt;
 &lt;/details&gt;
@@ -236,9 +284,9 @@
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/01/18/package-manager-windows-chocolatey/&#34;&gt;Пакетный менеджер для Windows. Chocolatey&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/05/01/software-installed-windows/&#34;&gt;Программное обеспечение, устанавливаемое на Windows&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;backlinks&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Backlinks&lt;/h2&gt;
+&lt;h2 id=&#34;настройка-операционной-системы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Настройка операционной системы&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/04/10/system-administration/&#34;&gt;Системное администрирование&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/11/16/windows-time-synchronization/&#34;&gt;Windows. Синхронизация времени&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;</description>
     </item>
     

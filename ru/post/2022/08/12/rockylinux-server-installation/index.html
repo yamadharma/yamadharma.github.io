@@ -356,7 +356,7 @@
         content="2022-08-12T13:57:00&#43;03:00"
       />
     
-    <meta property="article:modified_time" content="2022-09-25T12:29:00&#43;03:00">
+    <meta property="article:modified_time" content="2022-10-22T15:47:00&#43;03:00">
   
 
   
@@ -385,7 +385,7 @@
   "headline": "Rocky Linux. Установка сервера",
   
   "datePublished": "2022-08-12T13:57:00+03:00",
-  "dateModified": "2022-09-25T12:29:00+03:00",
+  "dateModified": "2022-10-22T15:47:00+03:00",
   
   "author": {
     "@type": "Person",
@@ -918,7 +918,7 @@
           Обновлено
       
     
-    2022-09-25
+    2022-10-22
   </span>
   
 
@@ -975,6 +975,8 @@
       <ul>
         <li><a href="#обновления"><span class="section-num">3.1</span> Обновления</a></li>
         <li><a href="#дополнительные-репозитории"><span class="section-num">3.2</span> Дополнительные репозитории</a></li>
+        <li><a href="#установка-часового-пояса"><span class="section-num">3.3</span> Установка часового пояса</a></li>
+        <li><a href="#синхронизация-времени"><span class="section-num">3.4</span> Синхронизация времени</a></li>
       </ul>
     </li>
     <li><a href="#установка-дополнительного-программного-обеспечения"><span class="section-num">4</span> Установка дополнительного программного обеспечения</a>
@@ -1002,6 +1004,7 @@
           <ul>
             <li><a href="#резервное-копирование"><span class="section-num">4.5.1</span> Резервное копирование</a></li>
             <li><a href="#автоматическое-обновление"><span class="section-num">4.5.2</span> Автоматическое обновление</a></li>
+            <li><a href="#сервер-сетевого-времени"><span class="section-num">4.5.3</span> Сервер сетевого времени</a></li>
           </ul>
         </li>
         <li><a href="#файловые-системы"><span class="section-num">4.6</span> Файловые системы</a>
@@ -1017,7 +1020,7 @@
 
 <h2 id="общая-информация"><span class="section-num">1</span> Общая информация</h2>
 <ul>
-<li>Rocky Linux &mdash; сборка RedHat Linux, пришедший на смену Centos (см. <a href="https://yamadharma.github.io/ru/post/2021/05/25/replacing-centos/">Замена Centos</a>).</li>
+<li>Rocky Linux &mdash; сборка RedHat Linux, пришедший на смену Centos (см. ).</li>
 <li>Сайт: <a href="https://rockylinux.org/" target="_blank" rel="noopener">https://rockylinux.org/</a>.</li>
 <li>Образы:
 <ul>
@@ -1155,6 +1158,40 @@ dnf -y install epel-release
 </code></pre>
 </li>
 </ul>
+<h3 id="установка-часового-пояса"><span class="section-num">3.3</span> Установка часового пояса</h3>
+<ul>
+<li>Просмотрите список всех часовых поясов:
+<pre><code class="language-shell">timedatectl list-timezones
+</code></pre>
+</li>
+<li>Установите часовой пояс (например, UTC):
+<pre><code class="language-shell">timedatectl set-timezone Etc/UTC
+</code></pre>
+</li>
+</ul>
+<h3 id="синхронизация-времени"><span class="section-num">3.4</span> Синхронизация времени</h3>
+<ul>
+<li>Установите демон синхронизации:
+<pre><code class="language-shell">dnf install systemd-timesyncd
+</code></pre>
+</li>
+<li>Запустите демон:
+<pre><code class="language-shell">systemctl enable --now systemd-timesyncd
+</code></pre>
+</li>
+<li>Включите сетевую синхронизацию времени:
+<pre><code class="language-shell">timedatectl set-ntp true
+</code></pre>
+</li>
+<li>Проверьте, работает ли он:
+<pre><code class="language-shell">timedatectl status
+</code></pre>
+</li>
+<li>Подробная информация:
+<pre><code class="language-shell">timedatectl timesync-status
+</code></pre>
+</li>
+</ul>
 <h2 id="установка-дополнительного-программного-обеспечения"><span class="section-num">4</span> Установка дополнительного программного обеспечения</h2>
 <h3 id="повышение-комфорта-работы"><span class="section-num">4.1</span> Повышение комфорта работы</h3>
 <ul>
@@ -1251,7 +1288,7 @@ dnf install mariadb-server
 </ul>
 <h4 id="автоматическое-обновление"><span class="section-num">4.5.2</span> Автоматическое обновление</h4>
 <ul>
-<li>При необходимости можно использовать автоматическое обновление (см. <a href="https://yamadharma.github.io/ru/post/2022/09/25/redhat-based-systems-auto-update/">Автообновление систем на базе деривативов RedHat</a>).</li>
+<li>При необходимости можно использовать автоматическое обновление (см. ).</li>
 <li>Установка программного обеспечения:
 <pre><code class="language-shell">dnf install dnf-automatic
 </code></pre>
@@ -1259,6 +1296,29 @@ dnf install mariadb-server
 <li>Задаёте необходимую конфигурацию в файле <code>/etc/dnf/automatic.conf</code>.</li>
 <li>Запустите таймер:
 <pre><code class="language-shell">systemctl enable --now dnf-automatic.timer
+</code></pre>
+</li>
+</ul>
+<h4 id="сервер-сетевого-времени"><span class="section-num">4.5.3</span> Сервер сетевого времени</h4>
+<ul>
+<li>Запустите сервер сетевого времени:
+<pre><code class="language-shell">systemctl enable --now chronyd
+</code></pre>
+</li>
+<li>Проверьте пулы NTP:
+<pre><code class="language-shell">chronyc sources
+</code></pre>
+</li>
+<li>Проверьте состояние синхронизации NTP:
+<pre><code class="language-shell">chronyc tracking
+</code></pre>
+</li>
+<li>Чтобы принимать входящие запросы клиентов, разрешите службу NTP через брандмауэр:
+<pre><code class="language-shell">firewall-cmd --permanent --add-service=ntp
+</code></pre>
+</li>
+<li>Перезапустите брандмауэр:
+<pre><code class="language-shell">firewall-cmd --reload
 </code></pre>
 </li>
 </ul>
@@ -1417,11 +1477,37 @@ dnf install glusterfs-fuse
    
 
    
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
       
-   
-
-   
-
    
 
    
@@ -4803,13 +4889,13 @@ dnf install glusterfs-fuse
       
       <li><a href="https://yamadharma.github.io/ru/post/2022/09/25/redhat-based-systems-auto-update/">Автообновление систем на базе деривативов RedHat</a></li>
       
+      <li><a href="https://yamadharma.github.io/ru/post/2022/11/16/windows-time-synchronization/">Windows. Синхронизация времени</a></li>
+      
+      <li><a href="https://yamadharma.github.io/ru/post/2022/11/15/initial-cisco-switch-configuration/">Начальная конфигурация коммутатора Cisco</a></li>
+      
       <li><a href="https://yamadharma.github.io/ru/post/2022/09/13/move-drupal-other-machine/">Перенос Drupal на другую машину</a></li>
       
       <li><a href="https://yamadharma.github.io/ru/post/2022/09/11/system-administrator-tools/">Набор вещей для системного администратора</a></li>
-      
-      <li><a href="https://yamadharma.github.io/ru/post/2022/09/07/regulations-access-supercomputer-rudn/">Регламент доступа к суперкомпьютеру РУДН</a></li>
-      
-      <li><a href="https://yamadharma.github.io/ru/post/2022/07/24/module-utility/">Утилита module</a></li>
       
     </ul>
   </div>

@@ -31,6 +31,7 @@
       &lt;/ul&gt;
     &lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#экспорт-блоков-кода&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Экспорт блоков кода&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#экспорт-рисунков-svg&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Экспорт рисунков &lt;code&gt;svg&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
   &lt;/ul&gt;
 &lt;/nav&gt;
 &lt;/details&gt;
@@ -121,6 +122,11 @@
 &lt;li&gt;&lt;code&gt;query-export&lt;/code&gt; : запрашивает у пользователя разрешение на исполнение исходного кода во время экспорта.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
+&lt;li&gt;Запрос на выполнение управляется переменной &lt;code&gt;org-confirm-babel-evaluate&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Чтобы отключить запрос на выполнение, следует установить:
+&lt;pre&gt;&lt;code class=&#34;language-emacs-lisp&#34;&gt;(setq org-confirm-babel-evaluate nil)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;экспорт-блоков-кода&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Экспорт блоков кода&lt;/h2&gt;
 &lt;ul&gt;
@@ -135,6 +141,14 @@
 &lt;/li&gt;
 &lt;li&gt;Чтобы не выполнять блоки кода для ускорения экспорта, используется аргумент заголовка &lt;code&gt;:eval never-export&lt;/code&gt;.&lt;/li&gt;
 &lt;li&gt;Для отключения исполнения кода глобально следует установить переменную &lt;code&gt;org-export-use-babel&lt;/code&gt; в значение &lt;code&gt;nil&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;экспорт-рисунков-svg&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Экспорт рисунков &lt;code&gt;svg&lt;/code&gt;&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;При экспорте результатов вычисления, являющимися фигурами в формате &lt;code&gt;svg&lt;/code&gt;, можно внедрить код в текст.&lt;/li&gt;
+&lt;li&gt;Для этого нужно добавить к результату атрибут:
+&lt;pre&gt;&lt;code class=&#34;language-org&#34;&gt;#+attr_html: :inlined t
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
 &lt;/ul&gt;</description>
     </item>
     
@@ -526,7 +540,12 @@
       &lt;/ul&gt;
     &lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#основные-операции&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Основные операции&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#настройка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Настройка&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#настройка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Настройка&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#поля-используемые-для-поиска&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Поля, используемые для поиска&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#настройка-результатов-поиска&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2&lt;/span&gt; Настройка результатов поиска&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#использование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Использование&lt;/a&gt;
       &lt;ul&gt;
         &lt;li&gt;&lt;a href=&#34;#клавиши-для-поиска&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.1&lt;/span&gt; Клавиши для поиска&lt;/a&gt;&lt;/li&gt;
@@ -572,7 +591,7 @@
 &lt;/ul&gt;
 &lt;h3 id=&#34;изменение-формата-цитирования&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Изменение формата цитирования&lt;/h3&gt;
 &lt;ul&gt;
-&lt;li&gt;При использовании org-cite (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/10/10/emacs-bibliography-org-cite/&#34;&gt;Emacs. Работа с библиографией. Org-cite&lt;/a&gt;) можно переключиться на соответствующий формат цитирования для org-файлов:
+&lt;li&gt;При использовании org-cite (см. ) можно переключиться на соответствующий формат цитирования для org-файлов:
 &lt;pre&gt;&lt;code class=&#34;language-emacs-lisp&#34;&gt;(add-to-list &#39;bibtex-completion-format-citation-functions
 	     &#39;(org-mode . bibtex-completion-format-citation-org-cite))
 &lt;/code&gt;&lt;/pre&gt;
@@ -595,6 +614,43 @@
 &lt;li&gt;Импортируйте записи BibTeX из CrossRef и других источников.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;настройка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Настройка&lt;/h2&gt;
+&lt;h3 id=&#34;поля-используемые-для-поиска&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Поля, используемые для поиска&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Поля по умолчанию, используемые для поиска: author, title, year, BibTeX key, entry type.&lt;/li&gt;
+&lt;li&gt;Переменная &lt;code&gt;bibtex-completion-addition-search-fields&lt;/code&gt; может использоваться для расширения этого списка.&lt;/li&gt;
+&lt;li&gt;Добавим ключевые слова к списку поиска:
+&lt;pre&gt;&lt;code class=&#34;language-emacs-lisp&#34;&gt;(setq bibtex-completion-additional-search-fields &#39;(keywords))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;настройка-результатов-поиска&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2&lt;/span&gt; Настройка результатов поиска&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Настройка представления результатов поиска делается в переменной &lt;code&gt;bibtex-completion-display-formats&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;По умолчанию она имеет вид:
+&lt;pre&gt;&lt;code class=&#34;language-emacs-lisp&#34;&gt;&#39;((t . &amp;quot;${author:36} ${title:*} ${year:4} ${=has-pdf=:1}${=has-note=:1} ${=type=:7}&amp;quot;))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Числа указывают, сколько символов зарезервировано для соответствующего поля.&lt;/li&gt;
+&lt;li&gt;Символ &lt;code&gt;*&lt;/code&gt; означает, что это поле занимает всё оставшееся место.&lt;/li&gt;
+&lt;li&gt;Можно задать разный формат вывода для разных типов записей:
+&lt;pre&gt;&lt;code class=&#34;language-emacs-lisp&#34;&gt;(setq bibtex-completion-display-formats
+      &#39;((article	. &amp;quot;${=has-pdf=:1}${=has-note=:1} ${=type=:7} ${year:4} ${author:36} ${title:*} ${journal:40}&amp;quot;)
+	(inbook		. &amp;quot;${=has-pdf=:1}${=has-note=:1} ${=type=:7} ${year:4} ${author:36} ${title:*} Chapter ${chapter:32}&amp;quot;)
+	(incollection	. &amp;quot;${=has-pdf=:1}${=has-note=:1} ${=type=:7} ${year:4} ${author:36} ${title:*} ${booktitle:40}&amp;quot;)
+	(inproceedings	. &amp;quot;${=has-pdf=:1}${=has-note=:1} ${=type=:7} ${year:4} ${author:36} ${title:*} ${booktitle:40}&amp;quot;)
+	(book 		. &amp;quot;${=has-pdf=:1}${=has-note=:1} ${=type=:7} ${year:4} ${author:36} ${title:*} ${subtitle:40} ${volume:2}&amp;quot;)
+	(t		. &amp;quot;${=has-pdf=:1}${=has-note=:1} ${=type=:7} ${year:4} ${author:36} ${title:*}&amp;quot;)))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Чтобы это работало, необходимо добавить &lt;code&gt;journal&lt;/code&gt; и &lt;code&gt;booktitle&lt;/code&gt; к &lt;code&gt;bibtex-completion-additional-search-fields&lt;/code&gt;:
+&lt;pre&gt;&lt;code class=&#34;language-emacs-lisp&#34;&gt;(add-to-list &#39;bibtex-completion-additional-search-fields &#39;journal)
+(add-to-list &#39;bibtex-completion-additional-search-fields &#39;booktitle)
+(add-to-list &#39;bibtex-completion-additional-search-fields &#39;subtitle)
+(add-to-list &#39;bibtex-completion-additional-search-fields &#39;chapter)
+(add-to-list &#39;bibtex-completion-additional-search-fields &#39;volume)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h2 id=&#34;использование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Использование&lt;/h2&gt;
 &lt;h3 id=&#34;клавиши-для-поиска&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.1&lt;/span&gt; Клавиши для поиска&lt;/h3&gt;
 &lt;ul&gt;
@@ -2726,9 +2782,12 @@
 &lt;li&gt;&lt;code&gt;gentoo&lt;/code&gt;&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;: &lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/09/17/linux-gentoo-distribution/&#34;&gt;Linux. Дистрибутив Gentoo&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;hugo&lt;/code&gt;: &lt;a href=&#34;https://yamadharma.github.io/ru/post/2020/12/07/hugo-site-generator/&#34;&gt;Генератор статических сайтов Hugo&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;sysadmin&lt;/code&gt;: &lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/04/10/system-administration/&#34;&gt;Системное администрирование&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;network&lt;/code&gt;:&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;tex&lt;/code&gt;: &lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/04/23/tex/&#34;&gt;Система TeX&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;linux&lt;/code&gt;:&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;windows&lt;/code&gt;: &lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/05/01/windows-administration/&#34;&gt;Администрирование Windows&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;redhat&lt;/code&gt;:&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;cisco&lt;/code&gt;: &lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/06/16/cisco-administration/&#34;&gt;Администрирование Cisco&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;org-mode&lt;/code&gt;: &lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/10/14/org-mode/&#34;&gt;Org-mode&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
@@ -2964,7 +3023,11 @@
         &lt;li&gt;&lt;a href=&#34;#работа-с-текстом&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.3&lt;/span&gt; Работа с текстом&lt;/a&gt;&lt;/li&gt;
       &lt;/ul&gt;
     &lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#пакеты&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6&lt;/span&gt; Пакеты&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#пакеты&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6&lt;/span&gt; Пакеты&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#поддержка-языков-программирования&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6.1&lt;/span&gt; Поддержка языков программирования&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#фреймворки&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7&lt;/span&gt; Фреймворки&lt;/a&gt;&lt;/li&gt;
   &lt;/ul&gt;
 &lt;/nav&gt;
@@ -3010,7 +3073,11 @@
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/12/25/emacs-outline-cycling/&#34;&gt;Emacs. Режим структуры&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/05/19/emacs-languagetool-support/&#34;&gt;Emacs. Поддержка LanguageTool&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;поддержка-языков-программирования&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6.1&lt;/span&gt; Поддержка языков программирования&lt;/h3&gt;
+&lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/09/29/emacs-latex-support/&#34;&gt;Emacs. Поддержка LaTeX&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/10/20/emacs-plantuml/&#34;&gt;Emacs. Plantuml&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;фреймворки&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7&lt;/span&gt; Фреймворки&lt;/h2&gt;
 &lt;ul&gt;
@@ -4147,7 +4214,9 @@ mu init --maildir=~/Maildir $list_imap
 &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;h2 id=&#34;сочетания-клавиш&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Сочетания клавиш&lt;/h2&gt;
-&lt;p&gt;Экспорт осуществляется через стандартный интерфейс экспорта в org-mode.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Экспорт осуществляется через стандартный интерфейс экспорта в org-mode.&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h3 id=&#34;для-режимов-один-пост-на-файл-и-один-пост-на-поддерево&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Для режимов &lt;em&gt;один пост на файл&lt;/em&gt; и &lt;em&gt;один пост на поддерево&lt;/em&gt;&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;C-c C-e H H&lt;/code&gt; Экспорт «Что я имею в виду».

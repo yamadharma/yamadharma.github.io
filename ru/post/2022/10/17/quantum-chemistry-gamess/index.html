@@ -356,7 +356,7 @@
         content="2022-10-17T16:58:00&#43;03:00"
       />
     
-    <meta property="article:modified_time" content="2022-10-17T17:44:00&#43;03:00">
+    <meta property="article:modified_time" content="2022-10-18T17:41:00&#43;03:00">
   
 
   
@@ -385,7 +385,7 @@
   "headline": "Квантовая химия. Gamess",
   
   "datePublished": "2022-10-17T16:58:00+03:00",
-  "dateModified": "2022-10-17T17:44:00+03:00",
+  "dateModified": "2022-10-18T17:41:00+03:00",
   
   "author": {
     "@type": "Person",
@@ -918,7 +918,7 @@
           Обновлено
       
     
-    2022-10-17
+    2022-10-18
   </span>
   
 
@@ -969,10 +969,13 @@
       <ul>
         <li><a href="#подготовка"><span class="section-num">2.1</span> Подготовка</a></li>
         <li><a href="#конфигурация"><span class="section-num">2.2</span> Конфигурация</a></li>
-        <li><a href="#компиляция-ddi"><span class="section-num">2.3</span> Компиляция DDI</a></li>
-        <li><a href="#компиляция-gamess"><span class="section-num">2.4</span> Компиляция GAMESS</a></li>
-        <li><a href="#линковка"><span class="section-num">2.5</span> Линковка</a></li>
-        <li><a href="#тестирование"><span class="section-num">2.6</span> Тестирование</a></li>
+        <li><a href="#компиляция"><span class="section-num">2.3</span> Компиляция</a>
+          <ul>
+            <li><a href="#make"><span class="section-num">2.3.1</span> Make</a></li>
+            <li><a href="#вручную"><span class="section-num">2.3.2</span> Вручную</a></li>
+          </ul>
+        </li>
+        <li><a href="#установка"><span class="section-num">2.4</span> Установка</a></li>
       </ul>
     </li>
   </ul>
@@ -986,6 +989,7 @@
 <li>Лицензионное соглашение: позволяет использовать GAMESS бесплатно, но только сотрудникам конкретной организации, получившей эту лицензию.</li>
 <li>После регистрации для скачивания доступен исходный код программы, но его передача сотрудникам других организаций запрещена, вместо этого следует сообщать адрес сайта разработчиков, чтобы желающие самостоятельно регистрировались и лицензировали своё использование GAMESS.</li>
 <li>Регистрация выполняется однократно. Впоследствии на зарегистрированный почтовый адрес высылается ссылка для скачивания.</li>
+<li>Релизы делаются 2 раза в год: 31 июля и 30 сентября.</li>
 <li>Возможно использование как компилятора gfortran из состава GCC, так и ifort от Intel.</li>
 <li>В качестве реализации MPI для распараллеливания выполнения между узлами можно использовать OpenMPI, Intel MPI, mvapich2.</li>
 <li>В качестве математической библиотеки можно использовать или Atlas, или MKL от Intel.</li>
@@ -999,36 +1003,125 @@
 </ul>
 <h3 id="конфигурация"><span class="section-num">2.2</span> Конфигурация</h3>
 <ul>
-<li>На этом этапе запускается скрипт &lsquo;config&rsquo;, который спрашивает о конфигурации, которая будет использоваться (реализация компилятора, MPI, …).</li>
+<li>На этом этапе запускается скрипт <code>config</code>, который спрашивает о конфигурации, которая будет использоваться (реализация компилятора, MPI, …).</li>
 <li>Запустить скрипт:
 <pre><code class="language-shell">cd ~/compile/gamess
 ./config
 </code></pre>
 </li>
+<li>Результат конфигурирования находится в файле <code>install.info</code>.</li>
 </ul>
-<h3 id="компиляция-ddi"><span class="section-num">2.3</span> Компиляция DDI</h3>
+<h3 id="компиляция"><span class="section-num">2.3</span> Компиляция</h3>
+<h4 id="make"><span class="section-num">2.3.1</span> Make</h4>
 <ul>
-<li>Затем необходимо скомпилировать DDI (Distributed Data Interface).</li>
-<li>Описание: <code>machines/readme.unix</code> и <code>ddi/readme.ddi</code>.</li>
-<li>При компиляции используются значения, указанные ранее при выполнении &lsquo;config&rsquo;.</li>
-<li>При необходимости можно скорректировать файл <code>~/compile/gamess/ddi/compddi</code>, увеличив максимальное количество процессорных ядер в сервере и максимальное количество серверов, которые будут использоваться.</li>
-<li>Значения по умолчанию:
+<li>Можно скомпилить всё с помощью <code>Makefile</code>:
+<pre><code class="language-shell">cd ~/compile/gamess
+make
+</code></pre>
+</li>
+</ul>
+<h4 id="вручную"><span class="section-num">2.3.2</span> Вручную</h4>
+<ul>
+<li>Можно всё это сделать и вручную.</li>
+</ul>
+<!--list-separator-->
+<ol>
+<li>
+<p>Компиляция DDI</p>
+<ul>
+<li>
+<p>Затем необходимо скомпилировать DDI (Distributed Data Interface).</p>
+</li>
+<li>
+<p>Описание: <code>machines/readme.unix</code> и <code>ddi/readme.ddi</code>.</p>
+</li>
+<li>
+<p>При компиляции используются значения, указанные ранее при выполнении &lsquo;config&rsquo;.</p>
+</li>
+<li>
+<p>При необходимости можно скорректировать файл <code>~/compile/gamess/ddi/compddi</code>, увеличив максимальное количество процессорных ядер в сервере и максимальное количество серверов, которые будут использоваться.</p>
+</li>
+<li>
+<p>Значения по умолчанию:</p>
 <pre><code class="language-conf-unix">set MAXCPUS=32
 set MAXNODES=1024
 </code></pre>
 </li>
-<li>Скомпилируйте DDI:
+<li>
+<p>Скомпилируйте DDI:</p>
 <pre><code class="language-shell">cd ~/compile/gamess/ddi
 ./compddi
 </code></pre>
-</li>
+<ul>
 <li>При успешной компиляции последние строки будут содержать фразу <em>DDI compilation ended successfully</em>.</li>
 </ul>
-<h3 id="компиляция-gamess"><span class="section-num">2.4</span> Компиляция GAMESS</h3>
-<h3 id="линковка"><span class="section-num">2.5</span> Линковка</h3>
-<h3 id="тестирование"><span class="section-num">2.6</span> Тестирование</h3>
+</li>
+</ul>
+</li>
+</ol>
+<!--list-separator-->
+<ol start="2">
+<li>
+<p>Компиляция GAMESS</p>
+<ul>
+<li>Скомпилим GAMESS:
+<pre><code class="language-shell">cd ~/compile/gamess
+./compall
+</code></pre>
+</li>
+</ul>
+</li>
+</ol>
+<!--list-separator-->
+<ol start="3">
+<li>
+<p>Линковка</p>
+<ul>
+<li>Слинкуем полученные объектные файлы чтобы получить исполняемый файл GAMESS. В качестве параметра скрипту передаётся <code>version number</code>, который мы задали при конфигурировании:
+<pre><code class="language-shell">cd ~/compile/gamess
+./lked gamess 00
+</code></pre>
+</li>
+<li>В результате в директории <code>~/compile/gamess</code> появится исполняемый файл <code>gamess.00.x</code>.</li>
+</ul>
+</li>
+</ol>
+<h3 id="установка"><span class="section-num">2.4</span> Установка</h3>
+<ul>
+<li>Скопируйте файл <code>gamess.00.x</code> в <code>/usr/local/bin</code>.</li>
+<li>В качестве запускающего файла можно использовать скрипт <code>rungms</code>.</li>
+<li>Обратите внимание, что он требует <code>csh</code> для исполнения.</li>
+<li>Необходимо установить нужные значения переменных в этом скрипте.</li>
+<li>Скопируйте файл <code>rungms</code> в <code>/usr/local/bin</code>.</li>
+</ul>
       
 
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
 
    
 

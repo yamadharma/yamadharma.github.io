@@ -69,11 +69,13 @@ if __name__ == "__main__":
             linkpath = os.path.splitext(fulllink)[0]
         # add extention
         md2org = linkpath + '.org'
-        # orgfile = os.path.expanduser(orgroamdir + md2org)
-        print(md2org)
-        orgfile = glob.glob(orgroamdir + "/**/" + md2org, recursive = True)[0]
-        print(orgfile)
+        orgfile = glob.glob(orgroamdir + "/**/" + md2org, recursive = True)
+        if len(orgfile) == 0:
+            continue
+        else:
+            orgfile = orgfile[0]
         if os.path.exists(orgfile):
+            orgfile = orgfile
             orgfiletext =  open(orgfile).read()
             export_file_name_text = export_file_name_re.findall(orgfiletext)
             # print(export_file_name_text)

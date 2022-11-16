@@ -4,6 +4,11 @@
 // - The CommonHTML.linebreaks option is not yet implemented (but may be in a future release)
 // - The TeX.noUndefined.attributes option is not yet implemented (but may be in a future release)
 window.MathJax = {
+    loader: {
+	load: ['[tex]/noerrors'],
+	load: ['[tex]/newcommand'],
+	load: ['[tex]/physics'],
+    },
     tex: {
 	inlineMath: [
 	    ['$', '$'],
@@ -14,11 +19,12 @@ window.MathJax = {
 	    ['\\[', '\\]'],
 	],
 	processEscapes: false,
+	tags: 'ams',
 	packages: {'[+]': ['noerrors']},
+	packages: {'[+]': ['newcommand']},
 	packages: {'[+]': ['physics']},
-    },
-    loader: {
-	load: ['[tex]/noerrors'],
-	load: ['[tex]/physics'],
-    },
+	macros: {
+	    crd: ["{\\underline {\\vphantom{j} #1}}", 1],
+	},
+    }
 };

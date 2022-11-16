@@ -356,7 +356,7 @@
         content="2021-01-22T15:10:00&#43;03:00"
       />
     
-    <meta property="article:modified_time" content="2022-06-28T20:29:00&#43;03:00">
+    <meta property="article:modified_time" content="2022-11-01T12:15:00&#43;03:00">
   
 
   
@@ -385,7 +385,7 @@
   "headline": "Почта. Синхронизация. mbsync",
   
   "datePublished": "2021-01-22T15:10:00+03:00",
-  "dateModified": "2022-06-28T20:29:00+03:00",
+  "dateModified": "2022-11-01T12:15:00+03:00",
   
   "author": {
     "@type": "Person",
@@ -918,7 +918,7 @@
           Обновлено
       
     
-    2022-06-28
+    2022-11-01
   </span>
   
 
@@ -1091,12 +1091,15 @@ CopyArrivalDate yes
 </ul>
 <h3 id="примеры-конфигурации-для-разных-провайдеров"><span class="section-num">3.4</span> Примеры конфигурации для разных провайдеров</h3>
 <ul>
-<li>Может потребоваться для разных провайдеров увеличить тайм-аут соединения (по умолчанию равно <code>20</code>):
+<li>
+<p>Может потребоваться для разных провайдеров увеличить тайм-аут соединения (по умолчанию равно <code>20</code>):</p>
 <pre><code class="language-conf-unix"># Increase timeout
 Timeout 120
 </code></pre>
 </li>
-<li>Вместо <code>pass</code> я использую <code>gopass</code>. При последовательном запуске нескольких <code>pass</code> утилита может не находить ключ <em>pgp</em>.</li>
+<li>
+<p>Вместо <code>pass</code> я использую <code>gopass</code>. При последовательном запуске нескольких <code>pass</code> утилита может не находить ключ <em>pgp</em>.</p>
+</li>
 </ul>
 <h4 id="gmail"><span class="section-num">3.4.1</span> Gmail</h4>
 <ul>
@@ -1360,6 +1363,17 @@ SyncState *
 <h4 id="mail-dot-ru"><span class="section-num">3.4.6</span> Mail.ru</h4>
 <ul>
 <li><a href="https://yamadharma.github.io/ru/post/2021/07/04/mail-mail-ru-configuring-mail-client/">Почта. Mail.ru. Настройка почтового клиента</a></li>
+<li>Пароли приложений
+<ul>
+<li>При подключении паролей приложений обычные пароли использовать не получится. Придётся сгенерить пароль приложения (см. <a href="https://yamadharma.github.io/ru/post/2022/10/27/mail-ru-passwords/">Пароли mail.ru</a>).</li>
+<li>Для паролей <code>pass</code>:
+<ul>
+<li>Пароль для приложения почты можно назвать <code>account@mail.ru@apppassword@mail</code>.</li>
+<li>Пароль для smtp следует именовать как <code>account@mail.ru@smtp.mail.ru</code> (это тот же пароль для почтового приложения).</li>
+</ul>
+</li>
+</ul>
+</li>
 <li>Конфигурация:
 <pre><code class="language-conf-unix">## IMAPAccount (Mail.ru)
 
@@ -1368,8 +1382,8 @@ Host imap.mail.ru
 User account@mail.ru
 # Pass ***************
 ## To store the password in an encrypted file use PassCmd instead of Pass
-# PassCmd &quot;gpg -q --for-your-eyes-only --no-tty -d ~/.authinfo.gpg | awk '/machine account@mail.ru/ {print $6}'&quot;
-PassCmd &quot;pass email/mail.ru/account@mail.ru&quot;
+# PassCmd &quot;gpg -q --for-your-eyes-only --no-tty -d ~/.authinfo.gpg | awk '/machine account@mail.ru@apppassword@mail/ {print $6}'&quot;
+PassCmd &quot;pass email/mail.ru/account@mail.ru@apppassword@mail&quot;
 AuthMechs LOGIN
 SSLType IMAPS
 SSLVersion TLSv1.2
@@ -1683,11 +1697,13 @@ Channel account@yahoo.com-sent
 </ul>
 <h3 id="запуск-из-командной-строки"><span class="section-num">4.2</span> Запуск из командной строки</h3>
 <ul>
-<li>Синхронизация конкретной учётной записи:
+<li>
+<p>Синхронизация конкретной учётной записи:</p>
 <pre><code class="language-shell">mbsync &lt;chanel&gt;
 </code></pre>
 </li>
-<li>Синхронизация всех учётных записей:
+<li>
+<p>Синхронизация всех учётных записей:</p>
 <pre><code class="language-shell">mbsync --all
 </code></pre>
 </li>
@@ -2299,9 +2315,35 @@ find . -iname &quot;*host1*&quot; | sed 'p;s:host1:host2:' | xargs -n2 mv
    
 
    
-      
+
    
 
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+      
    
 
    
@@ -5309,15 +5351,15 @@ find . -iname &quot;*host1*&quot; | sed 'p;s:host1:host2:' | xargs -n2 mv
     <h3>Похожие</h3>
     <ul>
       
+      <li><a href="https://yamadharma.github.io/ru/post/2022/11/16/windows-time-synchronization/">Windows. Синхронизация времени</a></li>
+      
+      <li><a href="https://yamadharma.github.io/ru/post/2022/11/15/initial-cisco-switch-configuration/">Начальная конфигурация коммутатора Cisco</a></li>
+      
       <li><a href="https://yamadharma.github.io/ru/post/2022/09/25/redhat-based-systems-auto-update/">Автообновление систем на базе деривативов RedHat</a></li>
       
       <li><a href="https://yamadharma.github.io/ru/post/2022/09/13/move-drupal-other-machine/">Перенос Drupal на другую машину</a></li>
       
       <li><a href="https://yamadharma.github.io/ru/post/2022/09/11/system-administrator-tools/">Набор вещей для системного администратора</a></li>
-      
-      <li><a href="https://yamadharma.github.io/ru/post/2022/09/07/regulations-access-supercomputer-rudn/">Регламент доступа к суперкомпьютеру РУДН</a></li>
-      
-      <li><a href="https://yamadharma.github.io/ru/post/2022/08/12/rockylinux-server-installation/">Rocky Linux. Установка сервера</a></li>
       
     </ul>
   </div>

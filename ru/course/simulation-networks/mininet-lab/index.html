@@ -356,7 +356,7 @@
         content="2022-09-29T21:19:00&#43;03:00"
       />
     
-    <meta property="article:modified_time" content="2022-10-13T14:38:00&#43;03:00">
+    <meta property="article:modified_time" content="2022-10-20T13:17:00&#43;03:00">
   
 
   
@@ -884,6 +884,10 @@
 
   <li class=""><a href="https://yamadharma.github.io/ru/course/simulation-networks/mininet-netem-ii/">Mininet. Использование netem (потери пакетов)</a></li>
 
+
+
+  <li class=""><a href="https://yamadharma.github.io/ru/course/simulation-networks/mininet-token-bucket-filter/">Mininet. Token Bucket Filter</a></li>
+
       
         </ul>
       
@@ -923,8 +927,18 @@
   <ul>
     <li><a href="#введение-в-mininet"><span class="section-num">1</span> Введение в Mininet</a></li>
     <li><a href="#генератор-трафика-iperf"><span class="section-num">2</span> Генератор трафика Iperf</a></li>
-    <li><a href="#использование-netem-dot-часть-1"><span class="section-num">3</span> Использование netem. Часть 1</a></li>
-    <li><a href="#использование-netem-dot-часть-2"><span class="section-num">4</span> Использование netem. Часть 2</a></li>
+    <li><a href="#эмуляция-сетей-задержка-джиттер"><span class="section-num">3</span> Эмуляция сетей: задержка, джиттер</a></li>
+    <li><a href="#эмуляция-сетей-потеря-дублирование-переупорядочивание-пакетов"><span class="section-num">4</span> Эмуляция сетей: потеря, дублирование, переупорядочивание пакетов</a></li>
+    <li><a href="#настройка-пропускной-способности-сети-с-помощью-token-bucket"><span class="section-num">5</span> Настройка пропускной способности сети с помощью Token Bucket</a></li>
+    <li><a href="#традиционное-управление-перегрузкой-tcp-htcp-cubic-reno"><span class="section-num">6</span> Традиционное управление перегрузкой TCP: HTCP, Cubic, Reno</a></li>
+    <li><a href="#управление-перегрузкой-tcp-на-основе-скорости-bbr"><span class="section-num">7</span> Управление перегрузкой TCP на основе скорости: BBR</a></li>
+    <li><a href="#задержки-и-размер-буфера-tcp"><span class="section-num">8</span> Задержки и размер буфера TCP</a></li>
+    <li><a href="#повышение-пропускной-способности-tcp-с-помощью-параллельных-потоков"><span class="section-num">9</span> Повышение пропускной способности TCP с помощью параллельных потоков</a></li>
+    <li><a href="#измерение-справедливости-tcp"><span class="section-num">10</span> Измерение справедливости TCP</a></li>
+    <li><a href="#размер-буфера-маршрутизатора"><span class="section-num">11</span> Размер буфера маршрутизатора</a></li>
+    <li><a href="#контроль-скорости-tcp"><span class="section-num">12</span> Контроль скорости TCP</a></li>
+    <li><a href="#влияние-mss-на-пропускную-способность"><span class="section-num">13</span> Влияние MSS на пропускную способность</a></li>
+    <li><a href="#переполнение-буфера-маршрутизатора"><span class="section-num">14</span> Переполнение буфера маршрутизатора</a></li>
   </ul>
 </nav>
 
@@ -1021,14 +1035,27 @@
 <ul>
 <li><a href="https://yamadharma.github.io/ru/course/simulation-networks/mininet-iperf-intro/">Mininet. Введение в Iperf</a></li>
 </ul>
-<h2 id="использование-netem-dot-часть-1"><span class="section-num">3</span> Использование netem. Часть 1</h2>
+<h2 id="эмуляция-сетей-задержка-джиттер"><span class="section-num">3</span> Эмуляция сетей: задержка, джиттер</h2>
 <ul>
 <li><a href="https://yamadharma.github.io/ru/course/simulation-networks/mininet-netem-i/">Mininet. Использование netem (latency, jitter)</a></li>
 </ul>
-<h2 id="использование-netem-dot-часть-2"><span class="section-num">4</span> Использование netem. Часть 2</h2>
+<h2 id="эмуляция-сетей-потеря-дублирование-переупорядочивание-пакетов"><span class="section-num">4</span> Эмуляция сетей: потеря, дублирование, переупорядочивание пакетов</h2>
 <ul>
 <li><a href="https://yamadharma.github.io/ru/course/simulation-networks/mininet-netem-ii/">Mininet. Использование netem (потери пакетов)</a></li>
 </ul>
+<h2 id="настройка-пропускной-способности-сети-с-помощью-token-bucket"><span class="section-num">5</span> Настройка пропускной способности сети с помощью Token Bucket</h2>
+<ul>
+<li><a href="https://yamadharma.github.io/ru/course/simulation-networks/mininet-token-bucket-filter/">Mininet. Token Bucket Filter</a></li>
+</ul>
+<h2 id="традиционное-управление-перегрузкой-tcp-htcp-cubic-reno"><span class="section-num">6</span> Традиционное управление перегрузкой TCP: HTCP, Cubic, Reno</h2>
+<h2 id="управление-перегрузкой-tcp-на-основе-скорости-bbr"><span class="section-num">7</span> Управление перегрузкой TCP на основе скорости: BBR</h2>
+<h2 id="задержки-и-размер-буфера-tcp"><span class="section-num">8</span> Задержки и размер буфера TCP</h2>
+<h2 id="повышение-пропускной-способности-tcp-с-помощью-параллельных-потоков"><span class="section-num">9</span> Повышение пропускной способности TCP с помощью параллельных потоков</h2>
+<h2 id="измерение-справедливости-tcp"><span class="section-num">10</span> Измерение справедливости TCP</h2>
+<h2 id="размер-буфера-маршрутизатора"><span class="section-num">11</span> Размер буфера маршрутизатора</h2>
+<h2 id="контроль-скорости-tcp"><span class="section-num">12</span> Контроль скорости TCP</h2>
+<h2 id="влияние-mss-на-пропускную-способность"><span class="section-num">13</span> Влияние MSS на пропускную способность</h2>
+<h2 id="переполнение-буфера-маршрутизатора"><span class="section-num">14</span> Переполнение буфера маршрутизатора</h2>
 
           </div>
 
@@ -1064,7 +1091,7 @@
         </div>
 
         <div class="body-footer">
-          <p>Обновлено 2022-10-13</p>
+          <p>Обновлено 2022-10-20</p>
 
           
 

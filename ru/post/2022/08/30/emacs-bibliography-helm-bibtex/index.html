@@ -356,7 +356,7 @@
         content="2022-08-30T12:21:00&#43;03:00"
       />
     
-    <meta property="article:modified_time" content="2022-10-11T14:24:00&#43;03:00">
+    <meta property="article:modified_time" content="2022-10-25T17:43:00&#43;03:00">
   
 
   
@@ -385,7 +385,7 @@
   "headline": "Emacs. Работа с библиографией. helm-bibtex",
   
   "datePublished": "2022-08-30T12:21:00+03:00",
-  "dateModified": "2022-10-11T14:24:00+03:00",
+  "dateModified": "2022-10-25T17:43:00+03:00",
   
   "author": {
     "@type": "Person",
@@ -918,7 +918,7 @@
           Обновлено
       
     
-    2022-10-11
+    2022-10-25
   </span>
   
 
@@ -927,7 +927,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-reading-time">
-    4 мин. для прочтения
+    5 мин. для прочтения
   </span>
   
 
@@ -972,7 +972,12 @@
       </ul>
     </li>
     <li><a href="#основные-операции"><span class="section-num">3</span> Основные операции</a></li>
-    <li><a href="#настройка"><span class="section-num">4</span> Настройка</a></li>
+    <li><a href="#настройка"><span class="section-num">4</span> Настройка</a>
+      <ul>
+        <li><a href="#поля-используемые-для-поиска"><span class="section-num">4.1</span> Поля, используемые для поиска</a></li>
+        <li><a href="#настройка-результатов-поиска"><span class="section-num">4.2</span> Настройка результатов поиска</a></li>
+      </ul>
+    </li>
     <li><a href="#использование"><span class="section-num">5</span> Использование</a>
       <ul>
         <li><a href="#клавиши-для-поиска"><span class="section-num">5.1</span> Клавиши для поиска</a></li>
@@ -1018,7 +1023,7 @@
 </ul>
 <h3 id="изменение-формата-цитирования"><span class="section-num">2.2</span> Изменение формата цитирования</h3>
 <ul>
-<li>При использовании org-cite (см. <a href="https://yamadharma.github.io/ru/post/2022/10/10/emacs-bibliography-org-cite/">Emacs. Работа с библиографией. Org-cite</a>) можно переключиться на соответствующий формат цитирования для org-файлов:
+<li>При использовании org-cite (см. ) можно переключиться на соответствующий формат цитирования для org-файлов:
 <pre><code class="language-emacs-lisp">(add-to-list 'bibtex-completion-format-citation-functions
 	     '(org-mode . bibtex-completion-format-citation-org-cite))
 </code></pre>
@@ -1041,6 +1046,43 @@
 <li>Импортируйте записи BibTeX из CrossRef и других источников.</li>
 </ul>
 <h2 id="настройка"><span class="section-num">4</span> Настройка</h2>
+<h3 id="поля-используемые-для-поиска"><span class="section-num">4.1</span> Поля, используемые для поиска</h3>
+<ul>
+<li>Поля по умолчанию, используемые для поиска: author, title, year, BibTeX key, entry type.</li>
+<li>Переменная <code>bibtex-completion-addition-search-fields</code> может использоваться для расширения этого списка.</li>
+<li>Добавим ключевые слова к списку поиска:
+<pre><code class="language-emacs-lisp">(setq bibtex-completion-additional-search-fields '(keywords))
+</code></pre>
+</li>
+</ul>
+<h3 id="настройка-результатов-поиска"><span class="section-num">4.2</span> Настройка результатов поиска</h3>
+<ul>
+<li>Настройка представления результатов поиска делается в переменной <code>bibtex-completion-display-formats</code>.</li>
+<li>По умолчанию она имеет вид:
+<pre><code class="language-emacs-lisp">'((t . &quot;${author:36} ${title:*} ${year:4} ${=has-pdf=:1}${=has-note=:1} ${=type=:7}&quot;))
+</code></pre>
+</li>
+<li>Числа указывают, сколько символов зарезервировано для соответствующего поля.</li>
+<li>Символ <code>*</code> означает, что это поле занимает всё оставшееся место.</li>
+<li>Можно задать разный формат вывода для разных типов записей:
+<pre><code class="language-emacs-lisp">(setq bibtex-completion-display-formats
+      '((article	. &quot;${=has-pdf=:1}${=has-note=:1} ${=type=:7} ${year:4} ${author:36} ${title:*} ${journal:40}&quot;)
+	(inbook		. &quot;${=has-pdf=:1}${=has-note=:1} ${=type=:7} ${year:4} ${author:36} ${title:*} Chapter ${chapter:32}&quot;)
+	(incollection	. &quot;${=has-pdf=:1}${=has-note=:1} ${=type=:7} ${year:4} ${author:36} ${title:*} ${booktitle:40}&quot;)
+	(inproceedings	. &quot;${=has-pdf=:1}${=has-note=:1} ${=type=:7} ${year:4} ${author:36} ${title:*} ${booktitle:40}&quot;)
+	(book 		. &quot;${=has-pdf=:1}${=has-note=:1} ${=type=:7} ${year:4} ${author:36} ${title:*} ${subtitle:40} ${volume:2}&quot;)
+	(t		. &quot;${=has-pdf=:1}${=has-note=:1} ${=type=:7} ${year:4} ${author:36} ${title:*}&quot;)))
+</code></pre>
+</li>
+<li>Чтобы это работало, необходимо добавить <code>journal</code> и <code>booktitle</code> к <code>bibtex-completion-additional-search-fields</code>:
+<pre><code class="language-emacs-lisp">(add-to-list 'bibtex-completion-additional-search-fields 'journal)
+(add-to-list 'bibtex-completion-additional-search-fields 'booktitle)
+(add-to-list 'bibtex-completion-additional-search-fields 'subtitle)
+(add-to-list 'bibtex-completion-additional-search-fields 'chapter)
+(add-to-list 'bibtex-completion-additional-search-fields 'volume)
+</code></pre>
+</li>
+</ul>
 <h2 id="использование"><span class="section-num">5</span> Использование</h2>
 <h3 id="клавиши-для-поиска"><span class="section-num">5.1</span> Клавиши для поиска</h3>
 <ul>
@@ -1591,9 +1633,35 @@
    
 
    
-      
+
    
 
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+      
    
 
    

@@ -356,7 +356,7 @@
         content="2022-10-13T14:27:00&#43;03:00"
       />
     
-    <meta property="article:modified_time" content="2022-10-17T10:22:00&#43;03:00">
+    <meta property="article:modified_time" content="2022-11-04T21:01:00&#43;03:00">
   
 
   
@@ -884,6 +884,10 @@
 
   <li class="active"><a href="https://yamadharma.github.io/ru/course/simulation-networks/mininet-netem-ii/">Mininet. Использование netem (потери пакетов)</a></li>
 
+
+
+  <li class=""><a href="https://yamadharma.github.io/ru/course/simulation-networks/mininet-token-bucket-filter/">Mininet. Token Bucket Filter</a></li>
+
       
         </ul>
       
@@ -1037,42 +1041,6 @@
             
 
             <p>Использование netem. Потери пакетов, дублирование пакетов, изменение порядка, повреждение пакетов.</p>
-<details class="toc-inpage d-print-none  " open>
-  <summary class="font-weight-bold">Содержание</summary>
-  <nav id="TableOfContents">
-  <ul>
-    <li><a href="#общая-информация"><span class="section-num">1</span> Общая информация</a>
-      <ul>
-        <li><a href="#цели"><span class="section-num">1.1</span> Цели</a></li>
-        <li><a href="#задачи"><span class="section-num">1.2</span> Задачи</a></li>
-      </ul>
-    </li>
-    <li><a href="#теоретические-сведения"><span class="section-num">2</span> Теоретические сведения</a>
-      <ul>
-        <li><a href="#проблемы-с-передачей-пакетов"><span class="section-num">2.1</span> Проблемы с передачей пакетов</a></li>
-      </ul>
-    </li>
-    <li><a href="#подготовка-стенда"><span class="section-num">3</span> Подготовка стенда</a>
-      <ul>
-        <li><a href="#лабораторная-топология"><span class="section-num">3.1</span> Лабораторная топология</a></li>
-        <li><a href="#рабочие-файлы"><span class="section-num">3.2</span> Рабочие файлы</a></li>
-      </ul>
-    </li>
-    <li><a href="#интерактивный-эксперимент"><span class="section-num">4</span> Интерактивный эксперимент</a>
-      <ul>
-        <li><a href="#добавление-изменение-потери-пакетов"><span class="section-num">4.1</span> Добавление/изменение потери пакетов</a></li>
-        <li><a href="#определение-интерфейсов-хостов-h1-и-h2"><span class="section-num">4.2</span> Определение интерфейсов хостов <code>h1</code> и <code>h2</code></a></li>
-        <li><a href="#добавка-потери-пакетов-на-интерфейс-подключённый-к-глобальной-сети"><span class="section-num">4.3</span> Добавка потери пакетов на интерфейс, подключённый к глобальной сети</a></li>
-        <li><a href="#добавка-значения-корреляции-для-потери-пакетов"><span class="section-num">4.4</span> Добавка значения корреляции для потери пакетов</a></li>
-        <li><a href="#добавка-повреждения-пакетов"><span class="section-num">4.5</span> Добавка повреждения пакетов</a></li>
-        <li><a href="#добавка-переупорядочивание-пакетов"><span class="section-num">4.6</span> Добавка переупорядочивание пакетов</a></li>
-        <li><a href="#добавка-дублирования-пакетов"><span class="section-num">4.7</span> Добавка дублирования пакетов</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav>
-</details>
-
 <h2 id="общая-информация"><span class="section-num">1</span> Общая информация</h2>
 <h3 id="цели"><span class="section-num">1.1</span> Цели</h3>
 <ul>
@@ -1128,11 +1096,74 @@
 <h2 id="подготовка-стенда"><span class="section-num">3</span> Подготовка стенда</h2>
 <h3 id="лабораторная-топология"><span class="section-num">3.1</span> Лабораторная топология</h3>
 <ul>
-<li>В топологии используется сеть 10.0.0.0/8, назначенная Mininet по умолчанию.</li>
-<li>Топология представляет собой коммутатор с двумя подключёнными к нему хостами.</li>
-<li>Для запуска топологии используем параметры командной строки:
+<li>
+<p>В топологии используется сеть 10.0.0.0/8, назначенная Mininet по умолчанию.</p>
+</li>
+<li>
+<p>Топология представляет собой коммутатор с двумя подключёнными к нему хостами.</p>
+</li>
+<li>
+<p>Для запуска топологии (рис. <a href="#figure--fig:netem-ii:topology">1</a>) используем параметры командной строки:</p>
 <pre><code class="language-shell">sudo mn --topo=single,2 -x
 </code></pre>
+<p><a id="figure--fig:netem-ii:topology"></a></p>
+<figure>
+<svg
+xmlns="http://www.w3.org/2000/svg"
+xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css"
+height="120px" preserveAspectRatio="none"
+style="width:453px;height:120px;background:#FFFFFF;" version="1.1"
+viewBox="0 0 453 120" width="453px"
+zoomAndPan="magnify"><defs/><g><g id="elem_h1"><polygon fill="#F1F1F1"
+points="9.5,7,9.5,7.2102,19.5,6.5857,29.5,7.1933,39.5,7.3997,49.5,6.2866,59.5,6.9223,69.5,7,69.4456,6.8687,69.8046,7.0283,70.1984,7.2719,70.4725,7.2264,70.9848,7.7563,71.2678,7.7322,71.0737,7.6518,71.3533,8.0606,71.6937,8.4944,71.6807,8.782,71.8746,9.1552,72,9.5,71.9681,9.5,72.1785,19.7318,72.2391,29.9635,72.5857,40.1953,72.6711,50.427,72.6793,60.6588,72.2546,70.8905,72.4636,81.1223,72.7022,91.354,71.2788,101.5858,72,111.8175,72.209,111.9041,71.7622,112.1332,71.8715,112.5927,71.4082,112.815,71.3931,113.223,71.2678,113.5853,71.3624,113.8137,70.908,113.7167,70.5741,113.9106,70.2503,114.1289,69.9066,114.2992,69.5,114.3175,69.5,114.3136,59.5,114.6047,49.5,113.7451,39.5,114.6019,29.5,114.8657,19.5,114.762,9.5,114.3175,9.5782,114.5063,9.0848,114.0223,8.7097,113.8238,8.3601,113.6868,8.0783,113.7136,7.7322,113.5853,7.6717,113.5602,7.7956,113.3186,7.3855,112.8559,7.1872,112.4809,7.2167,112.2002,7,111.8175,6.3332,111.8175,6.4809,101.5858,7.649,91.354,7.4357,81.1223,7.7345,70.8905,6.6782,60.6588,7.3192,50.427,7.5904,40.1953,6.5276,29.9635,6.9041,19.7318,7,9.5,7.0388,9.5161,7.3472,9.2296,7.2916,8.7924,7.5818,8.4983,7.4152,8.0151,7.7322,7.7322,7.6458,7.5237,8.15,7.7409,8.3479,7.2186,8.8578,7.4496,9.1728,7.2101,9.5,7"
+style="stroke:#181818;stroke-width:0.5;"/><image height="48"
+width="45" x="17"
+xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC0AAAAwCAIAAAAKMGSIAAABYUlEQVR4Xu2Y7Y3DIAyGu2JGyAgZ4UbICBmBEW4ERugI3eCsvEAxifnwWbqexPMrjfHLE0olmsfrM3iUN/6I4OG937ZtGYe6qJdFqggeOglAvSxSRfAoswdhkSqmB+fGw/eRt7BIFTcerC6jaKlw46GARaqYHpzpwZkenH/lse/7dxWeqaHt4S2OF00aHsdxUJWeuCwYQSvd5VGvmoCvdcBjtwaxzrkxD1wbgtjpEUHs9IggdnpEEDs9IogVPb4y8mrotgOxokc2MiDd/yWIFT0+ZT1y8iquDUHs9IggVvTIRgZwn85mzhTEOsnjmXGtmiN65GBQcjcn/SQbHsu5PBhTp2w76ex99Xgs584o3wZlIOH2jWOcpU2XxxUyo3M2SaQnphUuxqzr+p6nRfBIe7iHYrXpoxM2EB3K04LVCR6j0MTrSTmzDA1Ou/KK0uN2N/Qg7VylB76LUSr/yJUe5vwAo6Ho0KlFbyoAAAAASUVORK5CYII="
+y="17"/><text fill="#000000" font-family="xkcd Script" font-size="14"
+lengthAdjust="spacing" textLength="10" x="36.5"
+y="80.2429">h1</text><text fill="#000000" font-family="xkcd Script"
+font-size="14" lengthAdjust="spacing" textLength="39" x="20"
+y="99.9017">10.0.0.1</text></g><g id="elem_h2"><polygon fill="#F1F1F1"
+points="384.5,7,384.5,7.2102,394.5,6.5857,404.5,7.1933,414.5,7.3997,424.5,6.2866,434.5,6.9223,444.5,7,444.4456,6.8687,444.8046,7.0283,445.1984,7.2719,445.4725,7.2264,445.9848,7.7563,446.2678,7.7322,446.0737,7.6518,446.3533,8.0606,446.6937,8.4944,446.6807,8.782,446.8746,9.1552,447,9.5,446.9681,9.5,447.1785,19.7318,447.2391,29.9635,447.5857,40.1953,447.6711,50.427,447.6793,60.6588,447.2546,70.8905,447.4636,81.1223,447.7022,91.354,446.2788,101.5858,447,111.8175,447.209,111.9041,446.7622,112.1332,446.8715,112.5927,446.4082,112.815,446.3931,113.223,446.2678,113.5853,446.3624,113.8137,445.908,113.7167,445.5741,113.9106,445.2503,114.1289,444.9066,114.2992,444.5,114.3175,444.5,114.3136,434.5,114.6047,424.5,113.7451,414.5,114.6019,404.5,114.8657,394.5,114.762,384.5,114.3175,384.5782,114.5063,384.0848,114.0223,383.7097,113.8238,383.3601,113.6868,383.0783,113.7136,382.7322,113.5853,382.6717,113.5602,382.7956,113.3186,382.3855,112.8559,382.1872,112.4809,382.2167,112.2002,382,111.8175,381.3332,111.8175,381.4809,101.5858,382.649,91.354,382.4357,81.1223,382.7345,70.8905,381.6782,60.6588,382.3192,50.427,382.5904,40.1953,381.5276,29.9635,381.9041,19.7318,382,9.5,382.0388,9.5161,382.3472,9.2296,382.2916,8.7924,382.5818,8.4983,382.4152,8.0151,382.7322,7.7322,382.6458,7.5237,383.15,7.7409,383.3479,7.2186,383.8578,7.4496,384.1728,7.2101,384.5,7"
+style="stroke:#181818;stroke-width:0.5;"/><image height="48"
+width="45" x="392"
+xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC0AAAAwCAIAAAAKMGSIAAABYUlEQVR4Xu2Y7Y3DIAyGu2JGyAgZ4UbICBmBEW4ERugI3eCsvEAxifnwWbqexPMrjfHLE0olmsfrM3iUN/6I4OG937ZtGYe6qJdFqggeOglAvSxSRfAoswdhkSqmB+fGw/eRt7BIFTcerC6jaKlw46GARaqYHpzpwZkenH/lse/7dxWeqaHt4S2OF00aHsdxUJWeuCwYQSvd5VGvmoCvdcBjtwaxzrkxD1wbgtjpEUHs9IggdnpEEDs9IogVPb4y8mrotgOxokc2MiDd/yWIFT0+ZT1y8iquDUHs9IggVvTIRgZwn85mzhTEOsnjmXGtmiN65GBQcjcn/SQbHsu5PBhTp2w76ex99Xgs584o3wZlIOH2jWOcpU2XxxUyo3M2SaQnphUuxqzr+p6nRfBIe7iHYrXpoxM2EB3K04LVCR6j0MTrSTmzDA1Ou/KK0uN2N/Qg7VylB76LUSr/yJUe5vwAo6Ho0KlFbyoAAAAASUVORK5CYII="
+y="17"/><text fill="#000000" font-family="xkcd Script" font-size="14"
+lengthAdjust="spacing" textLength="15" x="409"
+y="80.2429">h2</text><text fill="#000000" font-family="xkcd Script"
+font-size="14" lengthAdjust="spacing" textLength="44" x="392.5"
+y="99.9017">10.0.0.2</text></g><g id="elem_s1"><polygon fill="#F1F1F1"
+points="195.5,31.5,195.5,31.7102,206,31.0857,216.5,31.6933,227,31.8997,237.5,30.7866,248,31.4223,258.5,31.5,258.4456,31.3687,258.8046,31.5283,259.1984,31.7719,259.4725,31.7264,259.9848,32.2563,260.2678,32.2322,260.0737,32.1518,260.3533,32.5606,260.6937,32.9944,260.6807,33.282,260.8746,33.6552,261,34,260.9681,34,261.1785,44.5318,261.2391,55.0635,261.5857,65.5953,261.6711,76.127,261,86.6588,261.2092,86.7454,260.932,87.0448,260.8499,87.425,260.7769,87.809,260.1921,87.981,260.2678,88.4265,260.3543,88.6355,259.8764,88.4817,259.6288,88.8838,259.144,88.7134,258.8448,88.9912,258.5,89.1588,258.5,89.9004,248,89.11,237.5,89.2641,227,89.4974,216.5,89.575,206,89.1549,195.5,89.1588,195.5366,89.2472,195.0734,88.836,194.8292,88.9534,194.5093,88.8882,194.1425,88.7099,193.7322,88.4265,193.921,88.5047,193.437,88.0113,193.2385,87.6362,193.1015,87.2866,193.1283,87.0048,193,86.6588,192.8035,86.6588,193.6814,76.127,192.8253,65.5953,192.6569,55.0635,193.2283,44.5318,193,34,192.7946,33.9149,192.9866,33.5802,193.4927,33.3757,193.5735,32.9949,193.812,32.6795,193.7322,32.2322,193.6912,32.1331,194.1265,32.1841,194.5147,32.1212,194.7326,31.6474,195.1342,31.6169,195.5,31.5"
+style="stroke:#181818;stroke-width:0.5;"/><image height="18"
+width="48" x="203"
+xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAASCAIAAACSBMrtAAAA4klEQVR4Xs2WYRHDIAyFa7ESKgEJSEACEpCABCQgAQfLJXcQMtig20G/n6958JpQrkd6GIcUdlMCWWvPTSilQghVIGOMrFpOjLEE4tJ6qB3UpCoQqyl476WEBESqyKzFOQe7k+tLICptrvJ3y1AgGCLUNUfZe90blqFAsCKJmfwIPgqua61vW4hfAwkdNpu1XNeVH6XBQAnPJifr0Hau8+lw3Y9Z0nighBucnesAGiM6T5CleVZ6lolAsG4vECwN94dUP1oMItWpQGvoBuJjXgnd1P490F6qQDLzDujYPe5/6AU/4JUKUwnC3AAAAABJRU5ErkJggg=="
+y="41.5"/><text fill="#000000" font-family="xkcd Script"
+font-size="14" lengthAdjust="spacing" textLength="9" x="224.5"
+y="74.7429">s1</text></g><g id="link_h1_s1"><path d="M72.39,60.5 L72.39,60.7802
+L82.4383,59.9476 L92.4867,60.7577 L102.535,61.0329 L112.5833,59.5488
+L122.6317,60.3964 L132.68,59.9313 L142.7283,59.9887 L152.7767,60.4091
+L162.825,59.5782 L172.8733,61.2382 L182.9217,59.6596 L192.97,60.5 "
+fill="none" style="stroke:#181818;stroke-width:1.0;"/><text
+fill="#000000" font-family="xkcd Script" font-size="13"
+lengthAdjust="spacing" textLength="43" x="80.0386"
+y="75.9155">h1-eth0</text><text fill="#000000" font-family="xkcd
+Script" font-size="13" lengthAdjust="spacing" textLength="38"
+x="146.8498"
+y="76.0781">s1-eth1</text></g><g id="link_s1_h2"><path d="M261.16,60.5
+L261.16,60.7802 L271.2183,59.9476 L281.2767,60.7577 L291.335,61.0329
+L301.3933,59.5488 L311.4517,60.3964 L321.51,59.9313 L331.5683,59.9887
+L341.6267,60.4091 L351.685,59.5782 L361.7433,61.2382 L371.8017,59.6596
+L381.86,60.5 " fill="none"
+style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000"
+font-family="xkcd Script" font-size="13" lengthAdjust="spacing"
+textLength="42" x="268.9169" y="75.9618">s1-eth2</text><text
+fill="#000000" font-family="xkcd Script" font-size="13"
+lengthAdjust="spacing" textLength="47" x="326.9653"
+y="75.9155">h2-eth0</text></g></g></svg>
+<figcaption>
+<p><span class="figure-number">Рис. 1.: </span>Лабораторная топология</p>
+</figcaption>
+</figure>
 </li>
 </ul>
 <h3 id="рабочие-файлы"><span class="section-num">3.2</span> Рабочие файлы</h3>
@@ -1142,7 +1173,7 @@
 </code></pre>
 </li>
 <li>Для рабочих файлов будем использовать каталог <code>~/work/lab_netem_ii</code>:
-<pre><code class="language-shell">mkdir -p ~/work/lab_netem_i
+<pre><code class="language-shell">mkdir -p ~/work/lab_netem_ii
 </code></pre>
 </li>
 </ul>
@@ -1229,10 +1260,11 @@
 </li>
 <li>В результате дисциплина организации очереди tc восстановит свои значения по умолчанию.</li>
 <li>Теперь можно убедиться, что соединение от хоста <code>h1</code> к хосту <code>h2</code> не имеет явной потери пакетов.</li>
-<li>Запустите команду <code>ping</code> с терминала хоста <code>h1</code>, нажмите <code>Ctrl+c</code>, чтобы остановить тест:
+<li>Запустите команду <code>ping</code> с терминала хоста <code>h1</code>:
 <pre><code class="language-shell">ping 10.0.0.2
 </code></pre>
 </li>
+<li>Нажмите <code>Ctrl+c</code>, чтобы остановить тест.</li>
 </ul>
 <h3 id="добавка-значения-корреляции-для-потери-пакетов"><span class="section-num">4.4</span> Добавка значения корреляции для потери пакетов</h3>
 <ul>
@@ -1345,6 +1377,12 @@
   </div>
   
   
+  
+  <div class="post-nav-item">
+    <div class="meta-nav">Следующий</div>
+    <a href="https://yamadharma.github.io/ru/course/simulation-networks/mininet-token-bucket-filter/" rel="prev">Mininet. Token Bucket Filter</a>
+  </div>
+  
 </div>
 
           </div>
@@ -1352,7 +1390,7 @@
         </div>
 
         <div class="body-footer">
-          <p>Обновлено 2022-10-17</p>
+          <p>Обновлено 2022-11-04</p>
 
           
 

@@ -5,12 +5,184 @@
     <link>https://yamadharma.github.io/ru/tag/sysadmin/</link>
       <atom:link href="https://yamadharma.github.io/ru/tag/sysadmin/index.xml" rel="self" type="application/rss+xml" />
     <description>sysadmin</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2022 Dmitry S. Kulyabov</copyright><lastBuildDate>Sun, 25 Sep 2022 09:42:00 +0300</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2022 Dmitry S. Kulyabov</copyright><lastBuildDate>Wed, 16 Nov 2022 20:26:00 +0300</lastBuildDate>
     <image>
       <url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url>
       <title>sysadmin</title>
       <link>https://yamadharma.github.io/ru/tag/sysadmin/</link>
     </image>
+    
+    <item>
+      <title>Windows. Синхронизация времени</title>
+      <link>https://yamadharma.github.io/ru/post/2022/11/16/windows-time-synchronization/</link>
+      <pubDate>Wed, 16 Nov 2022 20:26:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2022/11/16/windows-time-synchronization/</guid>
+      <description>&lt;p&gt;Синхронизация времени на Windows.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#синхронизация-со-сторонним-ntp-сервером&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Синхронизация со сторонним NTP-сервером&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#проблема&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Проблема&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#причина&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Причина&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#решение&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.3&lt;/span&gt; Решение&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;синхронизация-со-сторонним-ntp-сервером&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Синхронизация со сторонним NTP-сервером&lt;/h2&gt;
+&lt;h3 id=&#34;проблема&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Проблема&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;NTP-сервер по умолчанию для Windows (time.microsoft.com) часто сбоит.&lt;/li&gt;
+&lt;li&gt;При попытке синхронизировать Microsoft Windows с сервером протокола сетевого времени (NTP), который не работает под управлением Microsoft Windows, синхронизация может завершиться неудачно.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;причина&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Причина&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Иногда Windows отправляет запросы на синхронизацию в симметричном активном режиме (например, контроллеры домена Windows Server).&lt;/li&gt;
+&lt;li&gt;Зачастую серверы NTP отвечают только на запросы от клиентов, а не серверов.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;решение&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.3&lt;/span&gt; Решение&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;В командной строке (с правами администратора) наберите:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;w32tm /config /manualpeerlist:pool.ntp.org,0x8 /syncfromflags:MANUAL
+net stop w32time
+net start w32time
+w32tm /resync
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;0x08&lt;/code&gt; задаёт режим клиента.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Начальная конфигурация коммутатора Cisco</title>
+      <link>https://yamadharma.github.io/ru/post/2022/11/15/initial-cisco-switch-configuration/</link>
+      <pubDate>Tue, 15 Nov 2022 14:51:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2022/11/15/initial-cisco-switch-configuration/</guid>
+      <description>&lt;p&gt;Начальная конфигурация коммутатора Cisco Catalist.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#базовая-конфигурация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Базовая конфигурация&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#включение&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Включение&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#переход-в-привилегированный-режим&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Переход в привилегированный режим&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#переход-в-режим-конфигурации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.3&lt;/span&gt; Переход в режим конфигурации&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#шифрование-паролей&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.4&lt;/span&gt; Шифрование паролей&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#административный-доступ&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.5&lt;/span&gt; Административный доступ&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#настройка-нового-режима-аутентификации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.6&lt;/span&gt; Настройка нового режима аутентификации&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#административный-пользователь&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.7&lt;/span&gt; Административный пользователь&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#удалённый-доступ&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.8&lt;/span&gt; Удалённый доступ&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;базовая-конфигурация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Базовая конфигурация&lt;/h2&gt;
+&lt;h3 id=&#34;включение&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Включение&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;При первом включении, после долгой загрузки коммутатор выдает предложение запустить диалог стартовой конфигурации:
+&lt;pre&gt;&lt;code class=&#34;language-text&#34;&gt;Would you like to enter the initial configuration dialog? [yes/no]:
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Следует отказаться и выполнить конфигурацию вручную, поэтому отвечаем &lt;code&gt;no&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;переход-в-привилегированный-режим&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Переход в привилегированный режим&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Получаем приглашение &lt;code&gt;Switch&amp;gt;&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Переходим в привилегированный режим командой &lt;code&gt;enable&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Приглашение меняется на &lt;code&gt;#&lt;/code&gt;:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;Switch&amp;gt;enable
+Switch#
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;переход-в-режим-конфигурации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.3&lt;/span&gt; Переход в режим конфигурации&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Перейдём в режим конфигурации коммутатора:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;Switch#configure terminal
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;шифрование-паролей&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.4&lt;/span&gt; Шифрование паролей&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Установим шифрование паролей, хранящиеся в устройстве в открытом виде:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;Switch(config)#service password-encryption
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;административный-доступ&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.5&lt;/span&gt; Административный доступ&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Зададим пароль на &lt;em&gt;enable&lt;/em&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;Switch(config)#enable secret &amp;lt;пароль&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;secret&lt;/code&gt; : указывает на то, что пароль будет храниться в зашифрованном виде&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;После оператора &lt;code&gt;secret&lt;/code&gt; можно задать представление пароля:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;0&lt;/code&gt; : незашифрованный текстовый пароль; используется по умолчанию, поэтому не обязателен;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;4&lt;/code&gt; : используется хеш SHA-256; считается устаревшим;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;5&lt;/code&gt; : используется хеш MD5;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;8&lt;/code&gt; : используется хеш SHA-256;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;9&lt;/code&gt; : используется алгоритм &lt;code&gt;scrypt&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;настройка-нового-режима-аутентификации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.6&lt;/span&gt; Настройка нового режима аутентификации&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Настроим режим &lt;em&gt;aaa&lt;/em&gt; (authentication, authorization, accounting):
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;Switch(config)#aaa new-model
+Switch(config)#aaa authentication login vty local
+Switch(config)#aaa authorization network default if-authenticated
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;административный-пользователь&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.7&lt;/span&gt; Административный пользователь&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Зададим пользователя admin и пароль для него:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;Switch(config)#username admin privilege 1 secret &amp;lt;пароль&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;privelege&lt;/code&gt; : уровень привилегий для данного пользователя от 0 до 15 (15 самый высокий);&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;secret&lt;/code&gt; : пароль будет храниться в зашифрованном виде.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;удалённый-доступ&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.8&lt;/span&gt; Удалённый доступ&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Не во всех поставках IOS есть поддержка &lt;em&gt;ssh&lt;/em&gt;. Поэтому приходится использовать &lt;em&gt;telnet&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;Настроим порядок аутентификации по &lt;em&gt;telnet&lt;/em&gt;:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;Switch(config)#line vty 0 4
+Switch(config-line)#login authentication vty
+Switch(config-line)#exit
+Switch(config)#line vty 5 15
+Switch(config-line)#login authentication vty
+Switch(config-line)#exit
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34;&gt;
+&lt;p&gt;Установка пароля может быть выполнена двумя командами &lt;code&gt;password&lt;/code&gt; и &lt;code&gt;secret&lt;/code&gt;. В первом случае пароль хранится в конфигурационном файле в открытом виде, а во втором в зашифрованном. Если использовалась команда &lt;code&gt;password&lt;/code&gt;, необходимо зашифровать пароли, хранящиеся в устройстве в открытом виде с помощью команды &lt;code&gt;service password-encryption&lt;/code&gt; в режиме глобальной конфигурации.&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</description>
+    </item>
     
     <item>
       <title>Автообновление систем на базе деривативов RedHat</title>
@@ -526,6 +698,8 @@ GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER, CREATE TEMPORA
       &lt;ul&gt;
         &lt;li&gt;&lt;a href=&#34;#обновления&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Обновления&lt;/a&gt;&lt;/li&gt;
         &lt;li&gt;&lt;a href=&#34;#дополнительные-репозитории&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.2&lt;/span&gt; Дополнительные репозитории&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#установка-часового-пояса&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.3&lt;/span&gt; Установка часового пояса&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#синхронизация-времени&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.4&lt;/span&gt; Синхронизация времени&lt;/a&gt;&lt;/li&gt;
       &lt;/ul&gt;
     &lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#установка-дополнительного-программного-обеспечения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Установка дополнительного программного обеспечения&lt;/a&gt;
@@ -553,6 +727,7 @@ GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER, CREATE TEMPORA
           &lt;ul&gt;
             &lt;li&gt;&lt;a href=&#34;#резервное-копирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.5.1&lt;/span&gt; Резервное копирование&lt;/a&gt;&lt;/li&gt;
             &lt;li&gt;&lt;a href=&#34;#автоматическое-обновление&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.5.2&lt;/span&gt; Автоматическое обновление&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#сервер-сетевого-времени&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.5.3&lt;/span&gt; Сервер сетевого времени&lt;/a&gt;&lt;/li&gt;
           &lt;/ul&gt;
         &lt;/li&gt;
         &lt;li&gt;&lt;a href=&#34;#файловые-системы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.6&lt;/span&gt; Файловые системы&lt;/a&gt;
@@ -568,7 +743,7 @@ GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER, CREATE TEMPORA
 
 &lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;Rocky Linux &amp;mdash; сборка RedHat Linux, пришедший на смену Centos (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/05/25/replacing-centos/&#34;&gt;Замена Centos&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Rocky Linux &amp;mdash; сборка RedHat Linux, пришедший на смену Centos (см. ).&lt;/li&gt;
 &lt;li&gt;Сайт: &lt;a href=&#34;https://rockylinux.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://rockylinux.org/&lt;/a&gt;.&lt;/li&gt;
 &lt;li&gt;Образы:
 &lt;ul&gt;
@@ -706,6 +881,40 @@ dnf -y install epel-release
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
+&lt;h3 id=&#34;установка-часового-пояса&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.3&lt;/span&gt; Установка часового пояса&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Просмотрите список всех часовых поясов:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;timedatectl list-timezones
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Установите часовой пояс (например, UTC):
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;timedatectl set-timezone Etc/UTC
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;синхронизация-времени&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.4&lt;/span&gt; Синхронизация времени&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Установите демон синхронизации:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install systemd-timesyncd
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Запустите демон:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;systemctl enable --now systemd-timesyncd
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Включите сетевую синхронизацию времени:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;timedatectl set-ntp true
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Проверьте, работает ли он:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;timedatectl status
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Подробная информация:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;timedatectl timesync-status
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h2 id=&#34;установка-дополнительного-программного-обеспечения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Установка дополнительного программного обеспечения&lt;/h2&gt;
 &lt;h3 id=&#34;повышение-комфорта-работы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Повышение комфорта работы&lt;/h3&gt;
 &lt;ul&gt;
@@ -802,7 +1011,7 @@ dnf install mariadb-server
 &lt;/ul&gt;
 &lt;h4 id=&#34;автоматическое-обновление&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.5.2&lt;/span&gt; Автоматическое обновление&lt;/h4&gt;
 &lt;ul&gt;
-&lt;li&gt;При необходимости можно использовать автоматическое обновление (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/09/25/redhat-based-systems-auto-update/&#34;&gt;Автообновление систем на базе деривативов RedHat&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;При необходимости можно использовать автоматическое обновление (см. ).&lt;/li&gt;
 &lt;li&gt;Установка программного обеспечения:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install dnf-automatic
 &lt;/code&gt;&lt;/pre&gt;
@@ -810,6 +1019,29 @@ dnf install mariadb-server
 &lt;li&gt;Задаёте необходимую конфигурацию в файле &lt;code&gt;/etc/dnf/automatic.conf&lt;/code&gt;.&lt;/li&gt;
 &lt;li&gt;Запустите таймер:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;systemctl enable --now dnf-automatic.timer
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;сервер-сетевого-времени&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.5.3&lt;/span&gt; Сервер сетевого времени&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Запустите сервер сетевого времени:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;systemctl enable --now chronyd
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Проверьте пулы NTP:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;chronyc sources
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Проверьте состояние синхронизации NTP:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;chronyc tracking
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Чтобы принимать входящие запросы клиентов, разрешите службу NTP через брандмауэр:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;firewall-cmd --permanent --add-service=ntp
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Перезапустите брандмауэр:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;firewall-cmd --reload
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -1478,13 +1710,13 @@ vyos@vyos$
 		
 
 		&lt;a class=&#34;nav-item nav-link  active &#34;
-		   id=&#34;nav-cdebaf&#34; data-toggle=&#34;tab&#34; href=&#34;#cdebaf&#34;
+		   id=&#34;nav-cdfbea&#34; data-toggle=&#34;tab&#34; href=&#34;#cdfbea&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;RuTube&lt;/a&gt;
 
 		
 
 		&lt;a class=&#34;nav-item nav-link &#34;
-		   id=&#34;nav-facdbe&#34; data-toggle=&#34;tab&#34; href=&#34;#facdbe&#34;
+		   id=&#34;nav-afdecb&#34; data-toggle=&#34;tab&#34; href=&#34;#afdecb&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;Youtube&lt;/a&gt;
 
 		
@@ -1500,7 +1732,7 @@ vyos@vyos$
 
 
 
-&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;cdebaf&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;cdfbea&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	
 
@@ -1523,7 +1755,7 @@ vyos@vyos$
 
 
 
-&lt;div class=&#34;tab-pane fade show &#34; id=&#34;facdbe&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show &#34; id=&#34;afdecb&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	
 
@@ -3849,8 +4081,7 @@ AuthorizedKeysFile    .ssh/authorized_keys
 
 &lt;h2 id=&#34;ошибка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Ошибка&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;При работе с репозиториями в CentOS 8 появилась ошибка:&lt;/p&gt;
+&lt;li&gt;При работе с репозиториями в CentOS 8 появилась ошибка:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;Error: Failed to download metadata for repo &#39;repo_name&#39;: Cannot prepare internal mirrorlist: No URLs in mirrorlist
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
@@ -3863,14 +4094,9 @@ AuthorizedKeysFile    .ssh/authorized_keys
 &lt;/ul&gt;
 &lt;h2 id=&#34;устранение&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Устранение&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Следует обновить файлы описания репозиториев в &lt;code&gt;/etc/yum.repos.d&lt;/code&gt;.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Следует использовать &lt;code&gt;vault.centos.org&lt;/code&gt; вместо &lt;code&gt;mirror.centos.org&lt;/code&gt;.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Предлагается выполнить следующие команды:&lt;/p&gt;
+&lt;li&gt;Следует обновить файлы описания репозиториев в &lt;code&gt;/etc/yum.repos.d&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Следует использовать &lt;code&gt;vault.centos.org&lt;/code&gt; вместо &lt;code&gt;mirror.centos.org&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Предлагается выполнить следующие команды:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sudo sed -i -e &amp;quot;s|mirrorlist=|#mirrorlist=|g&amp;quot; \
 -e &amp;quot;s|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g&amp;quot; \
 -e &amp;quot;s|\$contentdir|centos|g&amp;quot; /etc/yum.repos.d/CentOS-*
@@ -3904,7 +4130,7 @@ AuthorizedKeysFile    .ssh/authorized_keys
 &lt;h2 id=&#34;описание-ситуации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Описание ситуации&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;После перехода на openssh-8.8 при подключении к серверам со старыми версиями системы появляется сообщение типа: &lt;em&gt;no matching host key type found. Their offer: ssh-rsa,ssh-dss&lt;/em&gt;.&lt;/li&gt;
-&lt;li&gt;Понятно, что старый ssh поддерживал механизмы ssh-rsa и ssh-dss, а в новой версии их отключили.&lt;/li&gt;
+&lt;li&gt;Старый ssh поддерживал механизмы ssh-rsa и ssh-dss, а в новой версии их отключили.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;решение&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Решение&lt;/h2&gt;
 &lt;ul&gt;
@@ -3912,16 +4138,14 @@ AuthorizedKeysFile    .ssh/authorized_keys
 &lt;/ul&gt;
 &lt;h3 id=&#34;однократное-подключение&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Однократное подключение&lt;/h3&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Зададим алгоритм подключения как опции командной строки:&lt;/p&gt;
+&lt;li&gt;Зададим алгоритм подключения как опции командной строки:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;ssh -oHostKeyAlgorithms=+ssh-rsa root@192.168.0.10
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;конфигурация-для-конкретного-хоста&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Конфигурация для конкретного хоста&lt;/h3&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Зададим конфигурацию конкретного хоста в файле &lt;code&gt;~/.ssh/config&lt;/code&gt;:&lt;/p&gt;
+&lt;li&gt;Зададим конфигурацию конкретного хоста в файле &lt;code&gt;~/.ssh/config&lt;/code&gt;:
 &lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;Host 192.168.0.10
  HostKeyAlgorithms=+ssh-rsa
  PubkeyAcceptedKeyTypes +ssh-rsa
@@ -3932,15 +4156,13 @@ AuthorizedKeysFile    .ssh/authorized_keys
 &lt;ul&gt;
 &lt;li&gt;Можно задать группу хостов в виде шаблонов командной строки (wildcards).
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Например, правило для сети:&lt;/p&gt;
+&lt;li&gt;Например, правило для сети:
 &lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;Host 192.168.0.*
  HostKeyAlgorithms=+ssh-rsa
  PubkeyAcceptedKeyTypes +ssh-rsa
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Можно задать привило для всех хостов:&lt;/p&gt;
+&lt;li&gt;Можно задать привило для всех хостов:
 &lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;Host *
  HostKeyAlgorithms=+ssh-rsa
  PubkeyAcceptedKeyTypes +ssh-rsa
@@ -4250,17 +4472,18 @@ firewall-cmd --reload
   &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
   &lt;nav id=&#34;TableOfContents&#34;&gt;
   &lt;ul&gt;
-    &lt;li&gt;&lt;a href=&#34;#подготовка-образа&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Подготовка образа&lt;/a&gt;
+    &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#подготовка-образа&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Подготовка образа&lt;/a&gt;
       &lt;ul&gt;
-        &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#описание-установки&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Описание установки&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#описание-установки&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Описание установки&lt;/a&gt;&lt;/li&gt;
       &lt;/ul&gt;
     &lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#операционные-системы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Операционные системы&lt;/a&gt;
+    &lt;li&gt;&lt;a href=&#34;#операционные-системы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Операционные системы&lt;/a&gt;
       &lt;ul&gt;
-        &lt;li&gt;&lt;a href=&#34;#windows&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Windows&lt;/a&gt;
+        &lt;li&gt;&lt;a href=&#34;#windows&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Windows&lt;/a&gt;
           &lt;ul&gt;
-            &lt;li&gt;&lt;a href=&#34;#запуск-vagrant-под-windows-в-текущем-каталоге&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1.1&lt;/span&gt; Запуск Vagrant под Windows в текущем каталоге&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#запуск-vagrant-под-windows-в-текущем-каталоге&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1.1&lt;/span&gt; Запуск Vagrant под Windows в текущем каталоге&lt;/a&gt;&lt;/li&gt;
           &lt;/ul&gt;
         &lt;/li&gt;
       &lt;/ul&gt;
@@ -4269,20 +4492,27 @@ firewall-cmd --reload
 &lt;/nav&gt;
 &lt;/details&gt;
 
-&lt;h2 id=&#34;подготовка-образа&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Подготовка образа&lt;/h2&gt;
-&lt;h3 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Общая информация&lt;/h3&gt;
+&lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;Подготовка образа проводится с помощью &lt;em&gt;Packer&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;Сайт: &lt;a href=&#34;https://www.vagrantup.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.vagrantup.com/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Репозиторий: &lt;a href=&#34;https://github.com/hashicorp/vagrant&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/hashicorp/vagrant&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Бинарные сборки: &lt;a href=&#34;https://releases.hashicorp.com/vagrant&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://releases.hashicorp.com/vagrant&lt;/a&gt; (на данный момент не доступно из России).&lt;/li&gt;
+&lt;li&gt;Зеркало бинарных сборок: &lt;a href=&#34;https://hashicorp-releases.yandexcloud.net/vagrant/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://hashicorp-releases.yandexcloud.net/vagrant/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;подготовка-образа&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Подготовка образа&lt;/h2&gt;
+&lt;h3 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Общая информация&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Подготовка образа проводится с помощью &lt;em&gt;Packer&lt;/em&gt; (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/10/30/packer/&#34;&gt;Packer&lt;/a&gt;).&lt;/li&gt;
 &lt;li&gt;Сайт: &lt;a href=&#34;https://www.packer.io/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.packer.io/&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;описание-установки&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Описание установки&lt;/h3&gt;
+&lt;h3 id=&#34;описание-установки&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Описание установки&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;Ранее использовался язык описания JSON.&lt;/li&gt;
 &lt;li&gt;После &lt;em&gt;Packer-1.5&lt;/em&gt; используется формат HCL2.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;операционные-системы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Операционные системы&lt;/h2&gt;
-&lt;h3 id=&#34;windows&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Windows&lt;/h3&gt;
-&lt;h4 id=&#34;запуск-vagrant-под-windows-в-текущем-каталоге&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1.1&lt;/span&gt; Запуск Vagrant под Windows в текущем каталоге&lt;/h4&gt;
+&lt;h2 id=&#34;операционные-системы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Операционные системы&lt;/h2&gt;
+&lt;h3 id=&#34;windows&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Windows&lt;/h3&gt;
+&lt;h4 id=&#34;запуск-vagrant-под-windows-в-текущем-каталоге&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1.1&lt;/span&gt; Запуск Vagrant под Windows в текущем каталоге&lt;/h4&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;Следует задать переменные окружения&lt;/p&gt;
@@ -4292,6 +4522,7 @@ setx VBOX_USER_HOME &amp;quot;X:/your/path/.vbox&amp;quot; /M
 setx VBOX_INSTALL_PATH &amp;quot;X:/your/path/vm&amp;quot; /M
 &lt;/code&gt;&lt;/pre&gt;
 &lt;ul&gt;
+&lt;li&gt;Вместо &lt;code&gt;X:&lt;/code&gt; необходимо записать букву необходимого диска.&lt;/li&gt;
 &lt;li&gt;Команда &lt;code&gt;setx&lt;/code&gt; добавляет переменные в постоянный список переменных окружения.&lt;/li&gt;
 &lt;li&gt;Модификатор &lt;code&gt;/M&lt;/code&gt; добавляет переменные в системное окружение.&lt;/li&gt;
 &lt;li&gt;Без этого модификатора переменные будут добавляться в окружение пользователя.&lt;/li&gt;
@@ -6900,11 +7131,21 @@ getenv = [ &amp;quot;^HUGO_&amp;quot;, &amp;quot;^WC_&amp;quot;,]
       <description>&lt;p&gt;Администрирование сетей и оборудования Cisco.&lt;/p&gt;
 &lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
   &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
-  &lt;nav id=&#34;TableOfContents&#34;&gt;&lt;/nav&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#настройка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Настройка&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#обслуживание&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Обслуживание&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
 &lt;/details&gt;
 
+&lt;h2 id=&#34;настройка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Настройка&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/06/16/cisco-storm-control/&#34;&gt;Cisco. Защита от широковещательного шторма&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/11/15/initial-cisco-switch-configuration/&#34;&gt;Начальная конфигурация коммутатора Cisco&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;обслуживание&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Обслуживание&lt;/h2&gt;
+&lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/10/06/password-reset-catalyst-switches/&#34;&gt;Сброс пароля на коммутаторах Catalyst&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;</description>
     </item>
@@ -9206,6 +9447,33 @@ bindsym --release $mod+Shift+Print exec --no-startup-id scrot -s &#39;%Y-%m-%d_%
     </item>
     
     <item>
+      <title>Администрирование Windows</title>
+      <link>https://yamadharma.github.io/ru/post/2021/05/01/windows-administration/</link>
+      <pubDate>Sat, 01 May 2021 16:28:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2021/05/01/windows-administration/</guid>
+      <description>&lt;p&gt;Вопросы системного администрирования Windows.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#управление-программным-обеспечением&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Управление программным обеспечением&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#настройка-операционной-системы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Настройка операционной системы&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;управление-программным-обеспечением&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Управление программным обеспечением&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/01/18/package-manager-windows-chocolatey/&#34;&gt;Пакетный менеджер для Windows. Chocolatey&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/05/01/software-installed-windows/&#34;&gt;Программное обеспечение, устанавливаемое на Windows&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;настройка-операционной-системы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Настройка операционной системы&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/11/16/windows-time-synchronization/&#34;&gt;Windows. Синхронизация времени&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
       <title>Менеджеры паролей</title>
       <link>https://yamadharma.github.io/ru/post/2021/04/29/password-managers/</link>
       <pubDate>Thu, 29 Apr 2021 11:56:00 +0300</pubDate>
@@ -10109,28 +10377,32 @@ systemctl --user enable --now pipewire.socket pipewire-pulse.socket wireplumber.
         &lt;li&gt;&lt;a href=&#34;#утилиты-настройки-среды&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.8&lt;/span&gt; Утилиты настройки среды&lt;/a&gt;&lt;/li&gt;
       &lt;/ul&gt;
     &lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#серверы-приложений&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Серверы приложений&lt;/a&gt;
+    &lt;li&gt;&lt;a href=&#34;#языки-программирования&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Языки программирования&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#серверы-приложений&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Серверы приложений&lt;/a&gt;
       &lt;ul&gt;
-        &lt;li&gt;&lt;a href=&#34;#drupal&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Drupal&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#drupal&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.1&lt;/span&gt; Drupal&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#ojs&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.2&lt;/span&gt; OJS&lt;/a&gt;&lt;/li&gt;
       &lt;/ul&gt;
     &lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#управление-и-мониторинг&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Управление и мониторинг&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#шрифты&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6&lt;/span&gt; Шрифты&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#пользовательские-программы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7&lt;/span&gt; Пользовательские программы&lt;/a&gt;
+    &lt;li&gt;&lt;a href=&#34;#управление-и-мониторинг&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6&lt;/span&gt; Управление и мониторинг&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#шрифты&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7&lt;/span&gt; Шрифты&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#пользовательские-программы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8&lt;/span&gt; Пользовательские программы&lt;/a&gt;
       &lt;ul&gt;
-        &lt;li&gt;&lt;a href=&#34;#обработка-видео&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7.1&lt;/span&gt; Обработка видео&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#виртуализация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7.2&lt;/span&gt; Виртуализация&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#редакторы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7.3&lt;/span&gt; Редакторы&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#текстовые-процессоры&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7.4&lt;/span&gt; Текстовые процессоры&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#работа-с-дисками&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7.5&lt;/span&gt; Работа с дисками&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#вычисления&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7.6&lt;/span&gt; Вычисления&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#квантовая-химия&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7.7&lt;/span&gt; Квантовая химия&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#обработка-видео&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8.1&lt;/span&gt; Обработка видео&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#виртуализация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8.2&lt;/span&gt; Виртуализация&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#редакторы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8.3&lt;/span&gt; Редакторы&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#текстовые-процессоры&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8.4&lt;/span&gt; Текстовые процессоры&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#работа-с-дисками&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8.5&lt;/span&gt; Работа с дисками&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#вычисления&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8.6&lt;/span&gt; Вычисления&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#квантовая-химия&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8.7&lt;/span&gt; Квантовая химия&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#синхронизация-файлов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8.8&lt;/span&gt; Синхронизация файлов&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#файлы-конфигурации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8.9&lt;/span&gt; Файлы конфигурации&lt;/a&gt;&lt;/li&gt;
       &lt;/ul&gt;
     &lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#безопасность&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8&lt;/span&gt; Безопасность&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#сети&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;9&lt;/span&gt; Сети&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#организация-обучения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;10&lt;/span&gt; Организация обучения&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#профессиональные-требования&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;11&lt;/span&gt; Профессиональные требования&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#безопасность&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;9&lt;/span&gt; Безопасность&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#сети&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;10&lt;/span&gt; Сети&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#организация-обучения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;11&lt;/span&gt; Организация обучения&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#профессиональные-требования&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;12&lt;/span&gt; Профессиональные требования&lt;/a&gt;&lt;/li&gt;
   &lt;/ul&gt;
 &lt;/nav&gt;
 &lt;/details&gt;
@@ -10197,52 +10469,69 @@ systemctl --user enable --now pipewire.socket pipewire-pulse.socket wireplumber.
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/07/24/module-utility/&#34;&gt;Утилита module&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;серверы-приложений&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Серверы приложений&lt;/h2&gt;
-&lt;h3 id=&#34;drupal&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Drupal&lt;/h3&gt;
+&lt;h2 id=&#34;языки-программирования&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Языки программирования&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/11/05/hcl-programming-language/&#34;&gt;Язык программирования HCL&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;серверы-приложений&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Серверы приложений&lt;/h2&gt;
+&lt;h3 id=&#34;drupal&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.1&lt;/span&gt; Drupal&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/09/13/move-drupal-other-machine/&#34;&gt;Перенос Drupal на другую машину&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;управление-и-мониторинг&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Управление и мониторинг&lt;/h2&gt;
+&lt;h3 id=&#34;ojs&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.2&lt;/span&gt; OJS&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/10/22/open-journal-systems/&#34;&gt;Open Journal Systems&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;управление-и-мониторинг&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6&lt;/span&gt; Управление и мониторинг&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/01/18/cockpit-web-console/&#34;&gt;Web консоль Cockpit&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;шрифты&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6&lt;/span&gt; Шрифты&lt;/h2&gt;
+&lt;h2 id=&#34;шрифты&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7&lt;/span&gt; Шрифты&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/10/27/linux-fonts/&#34;&gt;Шрифты в Linux&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;пользовательские-программы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7&lt;/span&gt; Пользовательские программы&lt;/h2&gt;
-&lt;h3 id=&#34;обработка-видео&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7.1&lt;/span&gt; Обработка видео&lt;/h3&gt;
+&lt;h2 id=&#34;пользовательские-программы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8&lt;/span&gt; Пользовательские программы&lt;/h2&gt;
+&lt;h3 id=&#34;обработка-видео&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8.1&lt;/span&gt; Обработка видео&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/07/23/video-kdenlive/&#34;&gt;Видео. KDEnlive&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/10/21/video-processing-command-line/&#34;&gt;Обработка видео. Командная строка&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/03/09/download-youtube/&#34;&gt;Закачка с youtube&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;виртуализация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7.2&lt;/span&gt; Виртуализация&lt;/h3&gt;
+&lt;h3 id=&#34;виртуализация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8.2&lt;/span&gt; Виртуализация&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/09/17/virtualbox-virtualization-system/&#34;&gt;Система виртуализации VirtualBox&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;редакторы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7.3&lt;/span&gt; Редакторы&lt;/h3&gt;
+&lt;h3 id=&#34;редакторы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8.3&lt;/span&gt; Редакторы&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2020/12/24/emacs/&#34;&gt;Emacs&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;текстовые-процессоры&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7.4&lt;/span&gt; Текстовые процессоры&lt;/h3&gt;
+&lt;h3 id=&#34;текстовые-процессоры&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8.4&lt;/span&gt; Текстовые процессоры&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/01/27/libreoffice-tuning/&#34;&gt;Настройка LibreOffice&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;работа-с-дисками&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7.5&lt;/span&gt; Работа с дисками&lt;/h3&gt;
+&lt;h3 id=&#34;работа-с-дисками&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8.5&lt;/span&gt; Работа с дисками&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/03/08/using-sfdisk/&#34;&gt;Использование sfdisk&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;вычисления&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7.6&lt;/span&gt; Вычисления&lt;/h3&gt;
+&lt;h3 id=&#34;вычисления&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8.6&lt;/span&gt; Вычисления&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/07/22/principles-using-supercomputer/&#34;&gt;Принципы работы на суперкомпьютере&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/09/07/regulations-access-supercomputer-rudn/&#34;&gt;Регламент доступа к суперкомпьютеру РУДН&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;квантовая-химия&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7.7&lt;/span&gt; Квантовая химия&lt;/h3&gt;
+&lt;h3 id=&#34;квантовая-химия&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8.7&lt;/span&gt; Квантовая химия&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/10/17/quantum-chemistry-gamess/&#34;&gt;Квантовая химия. Gamess&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;безопасность&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8&lt;/span&gt; Безопасность&lt;/h2&gt;
+&lt;h3 id=&#34;синхронизация-файлов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8.8&lt;/span&gt; Синхронизация файлов&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/10/27/rclone/&#34;&gt;rclone&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/08/01/synchronizing-files-syncthing/&#34;&gt;Синхронизация файлов с помощью syncthing&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;файлы-конфигурации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8.9&lt;/span&gt; Файлы конфигурации&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/10/28/configuration-file-management-chezmoi/&#34;&gt;Управление файлами конфигурации. Chezmoi&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;безопасность&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;9&lt;/span&gt; Безопасность&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/04/29/password-managers/&#34;&gt;Менеджеры паролей&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/05/03/have-i-been-pwned-hibp/&#34;&gt;Have I Been Pwned (HIBP)&lt;/a&gt;&lt;/li&gt;
@@ -10250,15 +10539,15 @@ systemctl --user enable --now pipewire.socket pipewire-pulse.socket wireplumber.
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/04/30/acme-certificates/&#34;&gt;Сертификаты ACME&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/05/03/hsts-mechanism/&#34;&gt;Механизм HSTS&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;сети&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;9&lt;/span&gt; Сети&lt;/h2&gt;
+&lt;h2 id=&#34;сети&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;10&lt;/span&gt; Сети&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/06/16/cisco-administration/&#34;&gt;Администрирование Cisco&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;организация-обучения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;10&lt;/span&gt; Организация обучения&lt;/h2&gt;
+&lt;h2 id=&#34;организация-обучения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;11&lt;/span&gt; Организация обучения&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/09/26/computer-classes/&#34;&gt;Дисплейные классы&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;профессиональные-требования&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;11&lt;/span&gt; Профессиональные требования&lt;/h2&gt;
+&lt;h2 id=&#34;профессиональные-требования&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;12&lt;/span&gt; Профессиональные требования&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/07/02/profession-system-administrator/&#34;&gt;Профессия Системный администратор&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;</description>
@@ -10588,12 +10877,15 @@ CopyArrivalDate yes
 &lt;/ul&gt;
 &lt;h3 id=&#34;примеры-конфигурации-для-разных-провайдеров&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.4&lt;/span&gt; Примеры конфигурации для разных провайдеров&lt;/h3&gt;
 &lt;ul&gt;
-&lt;li&gt;Может потребоваться для разных провайдеров увеличить тайм-аут соединения (по умолчанию равно &lt;code&gt;20&lt;/code&gt;):
+&lt;li&gt;
+&lt;p&gt;Может потребоваться для разных провайдеров увеличить тайм-аут соединения (по умолчанию равно &lt;code&gt;20&lt;/code&gt;):&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;# Increase timeout
 Timeout 120
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;Вместо &lt;code&gt;pass&lt;/code&gt; я использую &lt;code&gt;gopass&lt;/code&gt;. При последовательном запуске нескольких &lt;code&gt;pass&lt;/code&gt; утилита может не находить ключ &lt;em&gt;pgp&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Вместо &lt;code&gt;pass&lt;/code&gt; я использую &lt;code&gt;gopass&lt;/code&gt;. При последовательном запуске нескольких &lt;code&gt;pass&lt;/code&gt; утилита может не находить ключ &lt;em&gt;pgp&lt;/em&gt;.&lt;/p&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h4 id=&#34;gmail&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.4.1&lt;/span&gt; Gmail&lt;/h4&gt;
 &lt;ul&gt;
@@ -10857,6 +11149,17 @@ SyncState *
 &lt;h4 id=&#34;mail-dot-ru&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.4.6&lt;/span&gt; Mail.ru&lt;/h4&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/07/04/mail-mail-ru-configuring-mail-client/&#34;&gt;Почта. Mail.ru. Настройка почтового клиента&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Пароли приложений
+&lt;ul&gt;
+&lt;li&gt;При подключении паролей приложений обычные пароли использовать не получится. Придётся сгенерить пароль приложения (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/10/27/mail-ru-passwords/&#34;&gt;Пароли mail.ru&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Для паролей &lt;code&gt;pass&lt;/code&gt;:
+&lt;ul&gt;
+&lt;li&gt;Пароль для приложения почты можно назвать &lt;code&gt;account@mail.ru@apppassword@mail&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Пароль для smtp следует именовать как &lt;code&gt;account@mail.ru@smtp.mail.ru&lt;/code&gt; (это тот же пароль для почтового приложения).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
 &lt;li&gt;Конфигурация:
 &lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;## IMAPAccount (Mail.ru)
 
@@ -10865,8 +11168,8 @@ Host imap.mail.ru
 User account@mail.ru
 # Pass ***************
 ## To store the password in an encrypted file use PassCmd instead of Pass
-# PassCmd &amp;quot;gpg -q --for-your-eyes-only --no-tty -d ~/.authinfo.gpg | awk &#39;/machine account@mail.ru/ {print $6}&#39;&amp;quot;
-PassCmd &amp;quot;pass email/mail.ru/account@mail.ru&amp;quot;
+# PassCmd &amp;quot;gpg -q --for-your-eyes-only --no-tty -d ~/.authinfo.gpg | awk &#39;/machine account@mail.ru@apppassword@mail/ {print $6}&#39;&amp;quot;
+PassCmd &amp;quot;pass email/mail.ru/account@mail.ru@apppassword@mail&amp;quot;
 AuthMechs LOGIN
 SSLType IMAPS
 SSLVersion TLSv1.2
@@ -11180,11 +11483,13 @@ Channel account@yahoo.com-sent
 &lt;/ul&gt;
 &lt;h3 id=&#34;запуск-из-командной-строки&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2&lt;/span&gt; Запуск из командной строки&lt;/h3&gt;
 &lt;ul&gt;
-&lt;li&gt;Синхронизация конкретной учётной записи:
+&lt;li&gt;
+&lt;p&gt;Синхронизация конкретной учётной записи:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;mbsync &amp;lt;chanel&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;Синхронизация всех учётных записей:
+&lt;li&gt;
+&lt;p&gt;Синхронизация всех учётных записей:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;mbsync --all
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;

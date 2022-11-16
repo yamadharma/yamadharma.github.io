@@ -27,10 +27,13 @@
       &lt;ul&gt;
         &lt;li&gt;&lt;a href=&#34;#подготовка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Подготовка&lt;/a&gt;&lt;/li&gt;
         &lt;li&gt;&lt;a href=&#34;#конфигурация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Конфигурация&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#компиляция-ddi&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; Компиляция DDI&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#компиляция-gamess&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.4&lt;/span&gt; Компиляция GAMESS&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#линковка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.5&lt;/span&gt; Линковка&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#тестирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.6&lt;/span&gt; Тестирование&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#компиляция&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; Компиляция&lt;/a&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&#34;#make&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3.1&lt;/span&gt; Make&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#вручную&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3.2&lt;/span&gt; Вручную&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#установка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.4&lt;/span&gt; Установка&lt;/a&gt;&lt;/li&gt;
       &lt;/ul&gt;
     &lt;/li&gt;
   &lt;/ul&gt;
@@ -44,6 +47,7 @@
 &lt;li&gt;Лицензионное соглашение: позволяет использовать GAMESS бесплатно, но только сотрудникам конкретной организации, получившей эту лицензию.&lt;/li&gt;
 &lt;li&gt;После регистрации для скачивания доступен исходный код программы, но его передача сотрудникам других организаций запрещена, вместо этого следует сообщать адрес сайта разработчиков, чтобы желающие самостоятельно регистрировались и лицензировали своё использование GAMESS.&lt;/li&gt;
 &lt;li&gt;Регистрация выполняется однократно. Впоследствии на зарегистрированный почтовый адрес высылается ссылка для скачивания.&lt;/li&gt;
+&lt;li&gt;Релизы делаются 2 раза в год: 31 июля и 30 сентября.&lt;/li&gt;
 &lt;li&gt;Возможно использование как компилятора gfortran из состава GCC, так и ifort от Intel.&lt;/li&gt;
 &lt;li&gt;В качестве реализации MPI для распараллеливания выполнения между узлами можно использовать OpenMPI, Intel MPI, mvapich2.&lt;/li&gt;
 &lt;li&gt;В качестве математической библиотеки можно использовать или Atlas, или MKL от Intel.&lt;/li&gt;
@@ -57,34 +61,97 @@
 &lt;/ul&gt;
 &lt;h3 id=&#34;конфигурация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Конфигурация&lt;/h3&gt;
 &lt;ul&gt;
-&lt;li&gt;На этом этапе запускается скрипт &amp;lsquo;config&amp;rsquo;, который спрашивает о конфигурации, которая будет использоваться (реализация компилятора, MPI, …).&lt;/li&gt;
+&lt;li&gt;На этом этапе запускается скрипт &lt;code&gt;config&lt;/code&gt;, который спрашивает о конфигурации, которая будет использоваться (реализация компилятора, MPI, …).&lt;/li&gt;
 &lt;li&gt;Запустить скрипт:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;cd ~/compile/gamess
 ./config
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
+&lt;li&gt;Результат конфигурирования находится в файле &lt;code&gt;install.info&lt;/code&gt;.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;компиляция-ddi&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; Компиляция DDI&lt;/h3&gt;
+&lt;h3 id=&#34;компиляция&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; Компиляция&lt;/h3&gt;
+&lt;h4 id=&#34;make&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3.1&lt;/span&gt; Make&lt;/h4&gt;
 &lt;ul&gt;
-&lt;li&gt;Затем необходимо скомпилировать DDI (Distributed Data Interface).&lt;/li&gt;
-&lt;li&gt;Описание: &lt;code&gt;machines/readme.unix&lt;/code&gt; и &lt;code&gt;ddi/readme.ddi&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;При компиляции используются значения, указанные ранее при выполнении &amp;lsquo;config&amp;rsquo;.&lt;/li&gt;
-&lt;li&gt;При необходимости можно скорректировать файл &lt;code&gt;~/compile/gamess/ddi/compddi&lt;/code&gt;, увеличив максимальное количество процессорных ядер в сервере и максимальное количество серверов, которые будут использоваться.&lt;/li&gt;
-&lt;li&gt;Значения по умолчанию:
+&lt;li&gt;Можно скомпилить всё с помощью &lt;code&gt;Makefile&lt;/code&gt;:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;cd ~/compile/gamess
+make
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;вручную&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3.2&lt;/span&gt; Вручную&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Можно всё это сделать и вручную.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;!--list-separator--&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Компиляция DDI&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Затем необходимо скомпилировать DDI (Distributed Data Interface).&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Описание: &lt;code&gt;machines/readme.unix&lt;/code&gt; и &lt;code&gt;ddi/readme.ddi&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;При компиляции используются значения, указанные ранее при выполнении &amp;lsquo;config&amp;rsquo;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;При необходимости можно скорректировать файл &lt;code&gt;~/compile/gamess/ddi/compddi&lt;/code&gt;, увеличив максимальное количество процессорных ядер в сервере и максимальное количество серверов, которые будут использоваться.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Значения по умолчанию:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;set MAXCPUS=32
 set MAXNODES=1024
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;Скомпилируйте DDI:
+&lt;li&gt;
+&lt;p&gt;Скомпилируйте DDI:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;cd ~/compile/gamess/ddi
 ./compddi
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
+&lt;ul&gt;
 &lt;li&gt;При успешной компиляции последние строки будут содержать фразу &lt;em&gt;DDI compilation ended successfully&lt;/em&gt;.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;компиляция-gamess&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.4&lt;/span&gt; Компиляция GAMESS&lt;/h3&gt;
-&lt;h3 id=&#34;линковка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.5&lt;/span&gt; Линковка&lt;/h3&gt;
-&lt;h3 id=&#34;тестирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.6&lt;/span&gt; Тестирование&lt;/h3&gt;</description>
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;!--list-separator--&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;
+&lt;p&gt;Компиляция GAMESS&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Скомпилим GAMESS:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;cd ~/compile/gamess
+./compall
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;!--list-separator--&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;
+&lt;p&gt;Линковка&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Слинкуем полученные объектные файлы чтобы получить исполняемый файл GAMESS. В качестве параметра скрипту передаётся &lt;code&gt;version number&lt;/code&gt;, который мы задали при конфигурировании:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;cd ~/compile/gamess
+./lked gamess 00
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;В результате в директории &lt;code&gt;~/compile/gamess&lt;/code&gt; появится исполняемый файл &lt;code&gt;gamess.00.x&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;установка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.4&lt;/span&gt; Установка&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Скопируйте файл &lt;code&gt;gamess.00.x&lt;/code&gt; в &lt;code&gt;/usr/local/bin&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;В качестве запускающего файла можно использовать скрипт &lt;code&gt;rungms&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Обратите внимание, что он требует &lt;code&gt;csh&lt;/code&gt; для исполнения.&lt;/li&gt;
+&lt;li&gt;Необходимо установить нужные значения переменных в этом скрипте.&lt;/li&gt;
+&lt;li&gt;Скопируйте файл &lt;code&gt;rungms&lt;/code&gt; в &lt;code&gt;/usr/local/bin&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;</description>
     </item>
     
     <item>
@@ -334,13 +401,13 @@ cd ${NS_DIR}
 		
 
 		&lt;a class=&#34;nav-item nav-link  active &#34;
-		   id=&#34;nav-adcfbe&#34; data-toggle=&#34;tab&#34; href=&#34;#adcfbe&#34;
+		   id=&#34;nav-beacfd&#34; data-toggle=&#34;tab&#34; href=&#34;#beacfd&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;RuTube&lt;/a&gt;
 
 		
 
 		&lt;a class=&#34;nav-item nav-link &#34;
-		   id=&#34;nav-fbedac&#34; data-toggle=&#34;tab&#34; href=&#34;#fbedac&#34;
+		   id=&#34;nav-cdbeaf&#34; data-toggle=&#34;tab&#34; href=&#34;#cdbeaf&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;Youtube&lt;/a&gt;
 
 		
@@ -356,7 +423,7 @@ cd ${NS_DIR}
 
 
 
-&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;adcfbe&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;beacfd&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	
 
@@ -379,7 +446,7 @@ cd ${NS_DIR}
 
 
 
-&lt;div class=&#34;tab-pane fade show &#34; id=&#34;fbedac&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show &#34; id=&#34;cdbeaf&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	
 
@@ -463,13 +530,13 @@ docker rm ceos-container
 		
 
 		&lt;a class=&#34;nav-item nav-link  active &#34;
-		   id=&#34;nav-feadbc&#34; data-toggle=&#34;tab&#34; href=&#34;#feadbc&#34;
+		   id=&#34;nav-adebcf&#34; data-toggle=&#34;tab&#34; href=&#34;#adebcf&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;RuTube&lt;/a&gt;
 
 		
 
 		&lt;a class=&#34;nav-item nav-link &#34;
-		   id=&#34;nav-bdaefc&#34; data-toggle=&#34;tab&#34; href=&#34;#bdaefc&#34;
+		   id=&#34;nav-eabdcf&#34; data-toggle=&#34;tab&#34; href=&#34;#eabdcf&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;Youtube&lt;/a&gt;
 
 		
@@ -485,7 +552,7 @@ docker rm ceos-container
 
 
 
-&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;feadbc&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;adebcf&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	
 
@@ -508,7 +575,7 @@ docker rm ceos-container
 
 
 
-&lt;div class=&#34;tab-pane fade show &#34; id=&#34;bdaefc&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show &#34; id=&#34;eabdcf&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	
 

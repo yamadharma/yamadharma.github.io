@@ -105,6 +105,8 @@ apply_updates = yes
       &lt;ul&gt;
         &lt;li&gt;&lt;a href=&#34;#обновления&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Обновления&lt;/a&gt;&lt;/li&gt;
         &lt;li&gt;&lt;a href=&#34;#дополнительные-репозитории&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.2&lt;/span&gt; Дополнительные репозитории&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#установка-часового-пояса&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.3&lt;/span&gt; Установка часового пояса&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#синхронизация-времени&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.4&lt;/span&gt; Синхронизация времени&lt;/a&gt;&lt;/li&gt;
       &lt;/ul&gt;
     &lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#установка-дополнительного-программного-обеспечения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Установка дополнительного программного обеспечения&lt;/a&gt;
@@ -132,6 +134,7 @@ apply_updates = yes
           &lt;ul&gt;
             &lt;li&gt;&lt;a href=&#34;#резервное-копирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.5.1&lt;/span&gt; Резервное копирование&lt;/a&gt;&lt;/li&gt;
             &lt;li&gt;&lt;a href=&#34;#автоматическое-обновление&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.5.2&lt;/span&gt; Автоматическое обновление&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#сервер-сетевого-времени&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.5.3&lt;/span&gt; Сервер сетевого времени&lt;/a&gt;&lt;/li&gt;
           &lt;/ul&gt;
         &lt;/li&gt;
         &lt;li&gt;&lt;a href=&#34;#файловые-системы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.6&lt;/span&gt; Файловые системы&lt;/a&gt;
@@ -147,7 +150,7 @@ apply_updates = yes
 
 &lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;Rocky Linux &amp;mdash; сборка RedHat Linux, пришедший на смену Centos (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/05/25/replacing-centos/&#34;&gt;Замена Centos&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Rocky Linux &amp;mdash; сборка RedHat Linux, пришедший на смену Centos (см. ).&lt;/li&gt;
 &lt;li&gt;Сайт: &lt;a href=&#34;https://rockylinux.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://rockylinux.org/&lt;/a&gt;.&lt;/li&gt;
 &lt;li&gt;Образы:
 &lt;ul&gt;
@@ -285,6 +288,40 @@ dnf -y install epel-release
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
+&lt;h3 id=&#34;установка-часового-пояса&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.3&lt;/span&gt; Установка часового пояса&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Просмотрите список всех часовых поясов:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;timedatectl list-timezones
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Установите часовой пояс (например, UTC):
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;timedatectl set-timezone Etc/UTC
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;синхронизация-времени&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.4&lt;/span&gt; Синхронизация времени&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Установите демон синхронизации:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install systemd-timesyncd
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Запустите демон:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;systemctl enable --now systemd-timesyncd
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Включите сетевую синхронизацию времени:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;timedatectl set-ntp true
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Проверьте, работает ли он:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;timedatectl status
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Подробная информация:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;timedatectl timesync-status
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h2 id=&#34;установка-дополнительного-программного-обеспечения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Установка дополнительного программного обеспечения&lt;/h2&gt;
 &lt;h3 id=&#34;повышение-комфорта-работы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Повышение комфорта работы&lt;/h3&gt;
 &lt;ul&gt;
@@ -381,7 +418,7 @@ dnf install mariadb-server
 &lt;/ul&gt;
 &lt;h4 id=&#34;автоматическое-обновление&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.5.2&lt;/span&gt; Автоматическое обновление&lt;/h4&gt;
 &lt;ul&gt;
-&lt;li&gt;При необходимости можно использовать автоматическое обновление (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/09/25/redhat-based-systems-auto-update/&#34;&gt;Автообновление систем на базе деривативов RedHat&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;При необходимости можно использовать автоматическое обновление (см. ).&lt;/li&gt;
 &lt;li&gt;Установка программного обеспечения:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install dnf-automatic
 &lt;/code&gt;&lt;/pre&gt;
@@ -389,6 +426,29 @@ dnf install mariadb-server
 &lt;li&gt;Задаёте необходимую конфигурацию в файле &lt;code&gt;/etc/dnf/automatic.conf&lt;/code&gt;.&lt;/li&gt;
 &lt;li&gt;Запустите таймер:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;systemctl enable --now dnf-automatic.timer
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;сервер-сетевого-времени&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.5.3&lt;/span&gt; Сервер сетевого времени&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Запустите сервер сетевого времени:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;systemctl enable --now chronyd
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Проверьте пулы NTP:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;chronyc sources
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Проверьте состояние синхронизации NTP:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;chronyc tracking
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Чтобы принимать входящие запросы клиентов, разрешите службу NTP через брандмауэр:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;firewall-cmd --permanent --add-service=ntp
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Перезапустите брандмауэр:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;firewall-cmd --reload
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;

@@ -36,7 +36,7 @@
 &lt;h2 id=&#34;синхронизация-со-сторонним-ntp-сервером&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Синхронизация со сторонним NTP-сервером&lt;/h2&gt;
 &lt;h3 id=&#34;проблема&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Проблема&lt;/h3&gt;
 &lt;ul&gt;
-&lt;li&gt;NTP-сервер по умолчанию для Windows (time.microsoft.com) часто сбоит.&lt;/li&gt;
+&lt;li&gt;NTP-сервер по умолчанию для Windows (&lt;code&gt;time.windows.com&lt;/code&gt;) часто сбоит.&lt;/li&gt;
 &lt;li&gt;При попытке синхронизировать Microsoft Windows с сервером протокола сетевого времени (NTP), который не работает под управлением Microsoft Windows, синхронизация может завершиться неудачно.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;причина&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Причина&lt;/h3&gt;
@@ -70,24 +70,60 @@ w32tm /resync
   &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
   &lt;nav id=&#34;TableOfContents&#34;&gt;
   &lt;ul&gt;
-    &lt;li&gt;&lt;a href=&#34;#базовая-конфигурация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Базовая конфигурация&lt;/a&gt;
+    &lt;li&gt;&lt;a href=&#34;#подготовка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Подготовка&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#базовая-конфигурация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Базовая конфигурация&lt;/a&gt;
       &lt;ul&gt;
-        &lt;li&gt;&lt;a href=&#34;#включение&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Включение&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#переход-в-привилегированный-режим&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Переход в привилегированный режим&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#переход-в-режим-конфигурации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.3&lt;/span&gt; Переход в режим конфигурации&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#шифрование-паролей&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.4&lt;/span&gt; Шифрование паролей&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#административный-доступ&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.5&lt;/span&gt; Административный доступ&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#настройка-нового-режима-аутентификации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.6&lt;/span&gt; Настройка нового режима аутентификации&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#административный-пользователь&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.7&lt;/span&gt; Административный пользователь&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#удалённый-доступ&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.8&lt;/span&gt; Удалённый доступ&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#включение&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Включение&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#переход-в-привилегированный-режим&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Переход в привилегированный режим&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#переход-в-режим-конфигурации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; Переход в режим конфигурации&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#шифрование-паролей&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.4&lt;/span&gt; Шифрование паролей&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#административный-доступ&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.5&lt;/span&gt; Административный доступ&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#настройка-нового-режима-аутентификации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.6&lt;/span&gt; Настройка нового режима аутентификации&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#административный-пользователь&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.7&lt;/span&gt; Административный пользователь&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#удалённый-доступ&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.8&lt;/span&gt; Удалённый доступ&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#зададим-имя-устройства&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.9&lt;/span&gt; Зададим имя устройства&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#настройка-ssh&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.10&lt;/span&gt; Настройка ssh&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#поднимем-интерфейсы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.11&lt;/span&gt; Поднимем интерфейсы&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#сетевые-настройки&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.12&lt;/span&gt; Сетевые настройки&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#настройка-vtp&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.13&lt;/span&gt; Настройка vtp&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#безопасность&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.14&lt;/span&gt; Безопасность&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#сохранение-конфигурации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.15&lt;/span&gt; Сохранение конфигурации&lt;/a&gt;&lt;/li&gt;
       &lt;/ul&gt;
     &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#подключение-к-observium&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Подключение к Observium&lt;/a&gt;&lt;/li&gt;
   &lt;/ul&gt;
 &lt;/nav&gt;
 &lt;/details&gt;
 
-&lt;h2 id=&#34;базовая-конфигурация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Базовая конфигурация&lt;/h2&gt;
-&lt;h3 id=&#34;включение&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Включение&lt;/h3&gt;
+&lt;h2 id=&#34;подготовка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Подготовка&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;На Linux для конфигурации используется Minicom.&lt;/li&gt;
+&lt;li&gt;Запускайте по пользователем &lt;code&gt;root&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Для первоначальной конфигурации задайте ключ &lt;code&gt;-s&lt;/code&gt;:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;minicom -s
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Выставите параметры Скорость/Четность/Биты (Bps/Par/Bits) = 9600 8N1.&lt;/li&gt;
+&lt;li&gt;Укажите последовательный порт:
+&lt;ul&gt;
+&lt;li&gt;последовательный порт: &lt;code&gt;/dev/ttyS[0-3]&lt;/code&gt;;&lt;/li&gt;
+&lt;li&gt;порт USB: &lt;code&gt;/dev/ttyUSB0&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Итоговая конфигурация:
+&lt;pre&gt;&lt;code class=&#34;language-text&#34;&gt;A - Последовательный порт          : /dev/ttyUSB
+B - Размещение lock-файла          : /var/lock
+C - Программа при выходе           :
+D - Программа при запуске          :
+E - Скорость/Чётность/Биты         : 9600 8N1
+F - Аппаратное управление потоком  : Да
+G - Программное управление потоком : Нет
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;После изменений в меню выбрать &amp;ldquo;Сохранить настройки как dfl&amp;rdquo; или под своим именем.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;базовая-конфигурация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Базовая конфигурация&lt;/h2&gt;
+&lt;h3 id=&#34;включение&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Включение&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;При первом включении, после долгой загрузки коммутатор выдает предложение запустить диалог стартовой конфигурации:
 &lt;pre&gt;&lt;code class=&#34;language-text&#34;&gt;Would you like to enter the initial configuration dialog? [yes/no]:
@@ -95,7 +131,7 @@ w32tm /resync
 &lt;/li&gt;
 &lt;li&gt;Следует отказаться и выполнить конфигурацию вручную, поэтому отвечаем &lt;code&gt;no&lt;/code&gt;.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;переход-в-привилегированный-режим&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Переход в привилегированный режим&lt;/h3&gt;
+&lt;h3 id=&#34;переход-в-привилегированный-режим&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Переход в привилегированный режим&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;Получаем приглашение &lt;code&gt;Switch&amp;gt;&lt;/code&gt;.&lt;/li&gt;
 &lt;li&gt;Переходим в привилегированный режим командой &lt;code&gt;enable&lt;/code&gt;.&lt;/li&gt;
@@ -105,21 +141,21 @@ Switch#
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;переход-в-режим-конфигурации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.3&lt;/span&gt; Переход в режим конфигурации&lt;/h3&gt;
+&lt;h3 id=&#34;переход-в-режим-конфигурации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; Переход в режим конфигурации&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;Перейдём в режим конфигурации коммутатора:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;Switch#configure terminal
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;шифрование-паролей&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.4&lt;/span&gt; Шифрование паролей&lt;/h3&gt;
+&lt;h3 id=&#34;шифрование-паролей&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.4&lt;/span&gt; Шифрование паролей&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;Установим шифрование паролей, хранящиеся в устройстве в открытом виде:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;Switch(config)#service password-encryption
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;административный-доступ&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.5&lt;/span&gt; Административный доступ&lt;/h3&gt;
+&lt;h3 id=&#34;административный-доступ&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.5&lt;/span&gt; Административный доступ&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;Зададим пароль на &lt;em&gt;enable&lt;/em&gt;:&lt;/p&gt;
@@ -140,16 +176,28 @@ Switch#
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;настройка-нового-режима-аутентификации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.6&lt;/span&gt; Настройка нового режима аутентификации&lt;/h3&gt;
+&lt;h3 id=&#34;настройка-нового-режима-аутентификации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.6&lt;/span&gt; Настройка нового режима аутентификации&lt;/h3&gt;
 &lt;ul&gt;
-&lt;li&gt;Настроим режим &lt;em&gt;aaa&lt;/em&gt; (authentication, authorization, accounting):
+&lt;li&gt;
+&lt;p&gt;Настроим режим &lt;em&gt;aaa&lt;/em&gt; (authentication, authorization, accounting):&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;Switch(config)#aaa new-model
-Switch(config)#aaa authentication login vty local
-Switch(config)#aaa authorization network default if-authenticated
+Switch(config)#aaa authentication login default local
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Настроим подключение по консоли:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;Switch(config)#line console 0
+Switch(config-line)#login authentication default
+Switch(config-line)#no password
+Switch(config-line)#exit
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;Консоль настроена на использование локальной базы данных имён пользователей и паролей.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;no password&lt;/code&gt; : удалить старую модель паролей.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;административный-пользователь&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.7&lt;/span&gt; Административный пользователь&lt;/h3&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;административный-пользователь&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.7&lt;/span&gt; Административный пользователь&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;Зададим пользователя admin и пароль для него:&lt;/p&gt;
@@ -161,16 +209,155 @@ Switch(config)#aaa authorization network default if-authenticated
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;удалённый-доступ&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.8&lt;/span&gt; Удалённый доступ&lt;/h3&gt;
+&lt;h3 id=&#34;удалённый-доступ&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.8&lt;/span&gt; Удалённый доступ&lt;/h3&gt;
 &lt;ul&gt;
-&lt;li&gt;Не во всех поставках IOS есть поддержка &lt;em&gt;ssh&lt;/em&gt;. Поэтому приходится использовать &lt;em&gt;telnet&lt;/em&gt;.&lt;/li&gt;
-&lt;li&gt;Настроим порядок аутентификации по &lt;em&gt;telnet&lt;/em&gt;:
+&lt;li&gt;
+&lt;p&gt;Не во всех поставках IOS есть поддержка &lt;em&gt;ssh&lt;/em&gt;. Поэтому приходится использовать &lt;em&gt;telnet&lt;/em&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Настроим порядок аутентификации по &lt;em&gt;telnet&lt;/em&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Настроим подключение по терминальным линиям.&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;Switch(config)#line vty 0 4
-Switch(config-line)#login authentication vty
+Switch(config-line)#login authentication default
+Switch(config-line)#transport input telnet
+Switch(config-line)#no password
 Switch(config-line)#exit
 Switch(config)#line vty 5 15
-Switch(config-line)#login authentication vty
+Switch(config-line)#login authentication default
+Switch(config-line)#transport input telnet
+Switch(config-line)#no password
 Switch(config-line)#exit
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;Терминальные линии, включая telnet, настроены на использование одной и той же локальной базы данных имён пользователей и паролей.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;no password&lt;/code&gt; : удалить старую модель паролей.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;зададим-имя-устройства&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.9&lt;/span&gt; Зададим имя устройства&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Имя устройства имеет вид: sw-&amp;lt;помещение&amp;gt;-&amp;lt;номер устройства&amp;gt;, например &lt;code&gt;sw-103-1&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Зададим имя устройства:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;Switch(config)#hostname sw-103-1
+sw-103-1(config)#ip domain-name example.com
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;настройка-ssh&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.10&lt;/span&gt; Настройка ssh&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Если устройство поддерживает ssh, то стоит его настроить.&lt;/li&gt;
+&lt;li&gt;Создадим ключ (необходимо, чтобы было настроено имя домена):
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sw-103-1(config)#crypto key generate rsa modulus 2048
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Задаёт версию протокола для ssh:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sw-103-1(config)#ip ssh version 2
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Указываем время таймаута до автоматического закрытия SSH сессии в 60 минут:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sw-103-1(config)#ip ssh time-out 60
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Сбрасываем подключение после 3 неверных паролей:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sw-103-1(config)#ip ssh authentication-retries 3
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Задаём протокол для подключения:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sw-103-1(config)#line vty 0 4
+sw-103-1(config-line)#transport input ssh
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Можно также оставить и telnet:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sw-103-1(config)#line vty 0 4
+sw-103-1(config-line)#transport input all
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;поднимем-интерфейсы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.11&lt;/span&gt; Поднимем интерфейсы&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Сделаем последний порт транковым:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sw-103-1(config)#interface gigabitEthernet1/0/48
+sw-103-1(config-if-range)#switchport mode trunk
+sw-103-1(config-if-range)#exit
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;сетевые-настройки&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.12&lt;/span&gt; Сетевые настройки&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Зададим адрес 192.168.0.1/24, шлюз 192.168.0.254:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sw-103-1(config)#interface vlan1
+sw-103-1(config-if)#no shutdown
+sw-103-1(config-if)#ip address 192.168.0.1 255.255.255.0
+sw-103-1(config-if)#exit
+sw-103-1(config)#ip default-gateway 192.168.0.254
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Настроим клиента DNS:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sw-103-1(config)#ip name-server 192.168.0.254
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Настроим NTP:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sw-103-1(config)#ntp server pool.ntp.org
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Проверим статус синхронизации:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sw-103-1#sh ntp status
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;настройка-vtp&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.13&lt;/span&gt; Настройка vtp&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Настройте vtp:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sw-103-1(config)#vtp mode client
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Проверьте статус vtp:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sw-103-1#sh vtp status
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;безопасность&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.14&lt;/span&gt; Безопасность&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Отключим сервер http:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sw-103-1(config)#no ip http server
+sw-103-1(config)#no ip http secure-server
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;сохранение-конфигурации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.15&lt;/span&gt; Сохранение конфигурации&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Сохраните конфигурацию:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sw-103-1#write mem
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;подключение-к-observium&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Подключение к Observium&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Настройте доступ к SMTP.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Пусть сервер мониторинга имеет адрес: 192.168.0.5.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Имя коммьюнити для чтения: rocom.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sw-103-1(config)#access-list 90 permit 192.168.0.5
+sw-103-1(config)#snmp-server community rocom RO 90
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Добавьте коммутатор в свой DNS.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Подключитесь к Observium.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Добавьте коммутатор в список наблюдения в Observium:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;[root@observium ~]# cd /opt/observium
+[root@observium ~]# /opt/observium/add_device.php sw-103-1 rocom
+[root@observium ~]# /opt/observium/discovery.php -h sw-103-1; /opt/observium/poller.php -h sw-103-1
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -299,10 +486,10 @@ Switch(config-line)#exit
 
 &lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;Сайт: &lt;a href=&#34;https://www.packer.io/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.packer.io/&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Репозиторий: &lt;a href=&#34;https://github.com/hashicorp/packer&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/hashicorp/packer&lt;/a&gt;та&lt;/li&gt;
+&lt;li&gt;Сайт: &lt;a href=&#34;https://www.packer.io/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.packer.io/&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Репозиторий: &lt;a href=&#34;https://github.com/hashicorp/packer&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/hashicorp/packer&lt;/a&gt;.&lt;/li&gt;
 &lt;li&gt;Бинарные сборки: &lt;a href=&#34;https://releases.hashicorp.com/packer&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://releases.hashicorp.com/packer&lt;/a&gt; (на данный момент не доступно из России).&lt;/li&gt;
-&lt;li&gt;Зеркало бинарных сборок: &lt;a href=&#34;https://hashicorp-releases.yandexcloud.net/packer/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://hashicorp-releases.yandexcloud.net/packer/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Зеркало бинарных сборок: &lt;a href=&#34;https://hashicorp-releases.yandexcloud.net/packer/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://hashicorp-releases.yandexcloud.net/packer/&lt;/a&gt;.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;необходимое-программное-обеспечение&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Необходимое программное обеспечение&lt;/h2&gt;
 &lt;h3 id=&#34;virtualbox&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Virtualbox&lt;/h3&gt;
@@ -897,16 +1084,18 @@ chmod 775 /var/www/data/journals.example.com
 &lt;h3 id=&#34;после-установки&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.5&lt;/span&gt; После установки&lt;/h3&gt;
 &lt;h4 id=&#34;настройка-cron&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.5.1&lt;/span&gt; Настройка cron&lt;/h4&gt;
 &lt;ul&gt;
-&lt;li&gt;Чтобы включить поддержку использования запланированных задач, отредактируйте файл &lt;code&gt;config.inc.php&lt;/code&gt; и установите для параметра &lt;code&gt;scheduled_tasks&lt;/code&gt; значение &lt;code&gt;On&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Настройте периодическое выполнение заданий:
+&lt;li&gt;
+&lt;p&gt;Чтобы включить поддержку использования запланированных задач, отредактируйте файл &lt;code&gt;config.inc.php&lt;/code&gt; и установите для параметра &lt;code&gt;scheduled_tasks&lt;/code&gt; значение &lt;code&gt;On&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Настройте периодическое выполнение заданий:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;0 * * * * php /var/www/html/sites/journals.alternativy.ru/tools/runScheduledTasks.php
 &lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;Скрипт будет выполняться каждый час.&lt;/li&gt;
+&lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;```&lt;/p&gt;
-&lt;p&gt;0 * * * * php /path/to/ojs/tools/runScheduledTasks.php
-```
-В этом примере скрипт будет выполняться каждый час.&lt;/p&gt;
 &lt;h2 id=&#34;использование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Использование&lt;/h2&gt;</description>
     </item>
     
@@ -3682,13 +3871,13 @@ GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER, CREATE TEMPORA
 		
 
 		&lt;a class=&#34;nav-item nav-link  active &#34;
-		   id=&#34;nav-bcfead&#34; data-toggle=&#34;tab&#34; href=&#34;#bcfead&#34;
+		   id=&#34;nav-cbdafe&#34; data-toggle=&#34;tab&#34; href=&#34;#cbdafe&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;RuTube&lt;/a&gt;
 
 		
 
 		&lt;a class=&#34;nav-item nav-link &#34;
-		   id=&#34;nav-cdfeba&#34; data-toggle=&#34;tab&#34; href=&#34;#cdfeba&#34;
+		   id=&#34;nav-dfcabe&#34; data-toggle=&#34;tab&#34; href=&#34;#dfcabe&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;Youtube&lt;/a&gt;
 
 		
@@ -3704,7 +3893,7 @@ GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER, CREATE TEMPORA
 
 
 
-&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;bcfead&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;cbdafe&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	
 
@@ -3727,7 +3916,7 @@ GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER, CREATE TEMPORA
 
 
 
-&lt;div class=&#34;tab-pane fade show &#34; id=&#34;cdfeba&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show &#34; id=&#34;dfcabe&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	
 
@@ -3780,13 +3969,13 @@ The layered design and corresponding corrections in the method of synthesis of h
 		
 
 		&lt;a class=&#34;nav-item nav-link  active &#34;
-		   id=&#34;nav-dcaebf&#34; data-toggle=&#34;tab&#34; href=&#34;#dcaebf&#34;
+		   id=&#34;nav-cabdef&#34; data-toggle=&#34;tab&#34; href=&#34;#cabdef&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;RuTube&lt;/a&gt;
 
 		
 
 		&lt;a class=&#34;nav-item nav-link &#34;
-		   id=&#34;nav-acefbd&#34; data-toggle=&#34;tab&#34; href=&#34;#acefbd&#34;
+		   id=&#34;nav-decbaf&#34; data-toggle=&#34;tab&#34; href=&#34;#decbaf&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;Youtube&lt;/a&gt;
 
 		
@@ -3802,7 +3991,7 @@ The layered design and corresponding corrections in the method of synthesis of h
 
 
 
-&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;dcaebf&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;cabdef&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	
 
@@ -3825,7 +4014,7 @@ The layered design and corresponding corrections in the method of synthesis of h
 
 
 
-&lt;div class=&#34;tab-pane fade show &#34; id=&#34;acefbd&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show &#34; id=&#34;decbaf&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	
 
@@ -3875,13 +4064,13 @@ The layered design and corresponding corrections in the method of synthesis of h
 		
 
 		&lt;a class=&#34;nav-item nav-link  active &#34;
-		   id=&#34;nav-feabcd&#34; data-toggle=&#34;tab&#34; href=&#34;#feabcd&#34;
+		   id=&#34;nav-cabfed&#34; data-toggle=&#34;tab&#34; href=&#34;#cabfed&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;RuTube&lt;/a&gt;
 
 		
 
 		&lt;a class=&#34;nav-item nav-link &#34;
-		   id=&#34;nav-bfdeca&#34; data-toggle=&#34;tab&#34; href=&#34;#bfdeca&#34;
+		   id=&#34;nav-cabfde&#34; data-toggle=&#34;tab&#34; href=&#34;#cabfde&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;Youtube&lt;/a&gt;
 
 		
@@ -3897,7 +4086,7 @@ The layered design and corresponding corrections in the method of synthesis of h
 
 
 
-&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;feabcd&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;cabfed&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	
 
@@ -3920,7 +4109,7 @@ The layered design and corresponding corrections in the method of synthesis of h
 
 
 
-&lt;div class=&#34;tab-pane fade show &#34; id=&#34;bfdeca&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show &#34; id=&#34;cabfde&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	
 
@@ -3980,13 +4169,13 @@ The spectral problem of the mathematical theory of waveguides is reduced to the 
 		
 
 		&lt;a class=&#34;nav-item nav-link  active &#34;
-		   id=&#34;nav-cbaefd&#34; data-toggle=&#34;tab&#34; href=&#34;#cbaefd&#34;
+		   id=&#34;nav-fdbeac&#34; data-toggle=&#34;tab&#34; href=&#34;#fdbeac&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;RuTube&lt;/a&gt;
 
 		
 
 		&lt;a class=&#34;nav-item nav-link &#34;
-		   id=&#34;nav-febacd&#34; data-toggle=&#34;tab&#34; href=&#34;#febacd&#34;
+		   id=&#34;nav-afebcd&#34; data-toggle=&#34;tab&#34; href=&#34;#afebcd&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;Youtube&lt;/a&gt;
 
 		
@@ -4002,7 +4191,7 @@ The spectral problem of the mathematical theory of waveguides is reduced to the 
 
 
 
-&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;cbaefd&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;fdbeac&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	
 
@@ -4025,7 +4214,7 @@ The spectral problem of the mathematical theory of waveguides is reduced to the 
 
 
 
-&lt;div class=&#34;tab-pane fade show &#34; id=&#34;febacd&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show &#34; id=&#34;afebcd&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	
 
@@ -4078,13 +4267,13 @@ Based on this hypothesis, a heuristic method is proposed that allows one to dete
 		
 
 		&lt;a class=&#34;nav-item nav-link  active &#34;
-		   id=&#34;nav-fcadbe&#34; data-toggle=&#34;tab&#34; href=&#34;#fcadbe&#34;
+		   id=&#34;nav-fabcde&#34; data-toggle=&#34;tab&#34; href=&#34;#fabcde&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;RuTube&lt;/a&gt;
 
 		
 
 		&lt;a class=&#34;nav-item nav-link &#34;
-		   id=&#34;nav-fedbca&#34; data-toggle=&#34;tab&#34; href=&#34;#fedbca&#34;
+		   id=&#34;nav-ebfdca&#34; data-toggle=&#34;tab&#34; href=&#34;#ebfdca&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;Youtube&lt;/a&gt;
 
 		
@@ -4100,7 +4289,7 @@ Based on this hypothesis, a heuristic method is proposed that allows one to dete
 
 
 
-&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;fcadbe&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;fabcde&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	
 
@@ -4123,7 +4312,7 @@ Based on this hypothesis, a heuristic method is proposed that allows one to dete
 
 
 
-&lt;div class=&#34;tab-pane fade show &#34; id=&#34;fedbca&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show &#34; id=&#34;ebfdca&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	
 
@@ -6313,13 +6502,13 @@ Saved current collection of modules to: &amp;quot;default&amp;quot;
 		
 
 		&lt;a class=&#34;nav-item nav-link  active &#34;
-		   id=&#34;nav-beacfd&#34; data-toggle=&#34;tab&#34; href=&#34;#beacfd&#34;
+		   id=&#34;nav-caefbd&#34; data-toggle=&#34;tab&#34; href=&#34;#caefbd&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;RuTube&lt;/a&gt;
 
 		
 
 		&lt;a class=&#34;nav-item nav-link &#34;
-		   id=&#34;nav-cdbeaf&#34; data-toggle=&#34;tab&#34; href=&#34;#cdbeaf&#34;
+		   id=&#34;nav-cbefad&#34; data-toggle=&#34;tab&#34; href=&#34;#cbefad&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;Youtube&lt;/a&gt;
 
 		
@@ -6335,7 +6524,7 @@ Saved current collection of modules to: &amp;quot;default&amp;quot;
 
 
 
-&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;beacfd&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;caefbd&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	
 
@@ -6358,7 +6547,7 @@ Saved current collection of modules to: &amp;quot;default&amp;quot;
 
 
 
-&lt;div class=&#34;tab-pane fade show &#34; id=&#34;cdbeaf&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show &#34; id=&#34;cbefad&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	
 
@@ -6442,13 +6631,13 @@ docker rm ceos-container
 		
 
 		&lt;a class=&#34;nav-item nav-link  active &#34;
-		   id=&#34;nav-adebcf&#34; data-toggle=&#34;tab&#34; href=&#34;#adebcf&#34;
+		   id=&#34;nav-fdbeac&#34; data-toggle=&#34;tab&#34; href=&#34;#fdbeac&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;RuTube&lt;/a&gt;
 
 		
 
 		&lt;a class=&#34;nav-item nav-link &#34;
-		   id=&#34;nav-eabdcf&#34; data-toggle=&#34;tab&#34; href=&#34;#eabdcf&#34;
+		   id=&#34;nav-cdfeab&#34; data-toggle=&#34;tab&#34; href=&#34;#cdfeab&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;Youtube&lt;/a&gt;
 
 		
@@ -6464,7 +6653,7 @@ docker rm ceos-container
 
 
 
-&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;adebcf&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;fdbeac&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	
 
@@ -6487,7 +6676,7 @@ docker rm ceos-container
 
 
 
-&lt;div class=&#34;tab-pane fade show &#34; id=&#34;eabdcf&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show &#34; id=&#34;cdfeab&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	
 
@@ -6988,13 +7177,13 @@ docker rm ceos-container
 		
 
 		&lt;a class=&#34;nav-item nav-link  active &#34;
-		   id=&#34;nav-deacfb&#34; data-toggle=&#34;tab&#34; href=&#34;#deacfb&#34;
+		   id=&#34;nav-fbedac&#34; data-toggle=&#34;tab&#34; href=&#34;#fbedac&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;RuTube&lt;/a&gt;
 
 		
 
 		&lt;a class=&#34;nav-item nav-link &#34;
-		   id=&#34;nav-dcbafe&#34; data-toggle=&#34;tab&#34; href=&#34;#dcbafe&#34;
+		   id=&#34;nav-dabefc&#34; data-toggle=&#34;tab&#34; href=&#34;#dabefc&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;Youtube&lt;/a&gt;
 
 		
@@ -7010,7 +7199,7 @@ docker rm ceos-container
 
 
 
-&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;deacfb&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;fbedac&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	
 
@@ -7033,7 +7222,7 @@ docker rm ceos-container
 
 
 
-&lt;div class=&#34;tab-pane fade show &#34; id=&#34;dcbafe&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show &#34; id=&#34;dabefc&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	
 
@@ -7167,7 +7356,7 @@ docker rm ceos-container
 		
 
 		&lt;a class=&#34;nav-item nav-link  active &#34;
-		   id=&#34;nav-beacfd&#34; data-toggle=&#34;tab&#34; href=&#34;#beacfd&#34;
+		   id=&#34;nav-becdfa&#34; data-toggle=&#34;tab&#34; href=&#34;#becdfa&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;Tab1&lt;/a&gt;
 
 		
@@ -7183,7 +7372,7 @@ docker rm ceos-container
 
 
 
-&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;beacfd&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;becdfa&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	&lt;pre&gt;&lt;code&gt;    **Tab 1 Content**
 &lt;/code&gt;&lt;/pre&gt;
@@ -7233,19 +7422,19 @@ docker rm ceos-container
 		
 
 		&lt;a class=&#34;nav-item nav-link  active &#34;
-		   id=&#34;nav-fecabd&#34; data-toggle=&#34;tab&#34; href=&#34;#fecabd&#34;
+		   id=&#34;nav-dbfeac&#34; data-toggle=&#34;tab&#34; href=&#34;#dbfeac&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;Tab1&lt;/a&gt;
 
 		
 
 		&lt;a class=&#34;nav-item nav-link  ml-auto &#34;
-		   id=&#34;nav-dfceab&#34; data-toggle=&#34;tab&#34; href=&#34;#dfceab&#34;
+		   id=&#34;nav-edbfac&#34; data-toggle=&#34;tab&#34; href=&#34;#edbfac&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;Tab2&lt;/a&gt;
 
 		
 
 		&lt;a class=&#34;nav-item nav-link &#34;
-		   id=&#34;nav-afedbc&#34; data-toggle=&#34;tab&#34; href=&#34;#afedbc&#34;
+		   id=&#34;nav-cfeadb&#34; data-toggle=&#34;tab&#34; href=&#34;#cfeadb&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;Tab3&lt;/a&gt;
 
 		
@@ -7261,7 +7450,7 @@ docker rm ceos-container
 
 
 
-&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;fecabd&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;dbfeac&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	&lt;pre&gt;&lt;code&gt;    **Tab 1 Content**
 &lt;/code&gt;&lt;/pre&gt;
@@ -7274,7 +7463,7 @@ docker rm ceos-container
 
 
 
-&lt;div class=&#34;tab-pane fade show &#34; id=&#34;dfceab&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show &#34; id=&#34;edbfac&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	&lt;pre&gt;&lt;code&gt;    **Tab 2 Content**
 &lt;/code&gt;&lt;/pre&gt;
@@ -7287,7 +7476,7 @@ docker rm ceos-container
 
 
 
-&lt;div class=&#34;tab-pane fade show &#34; id=&#34;afedbc&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show &#34; id=&#34;cfeadb&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	&lt;pre&gt;&lt;code&gt;    **Tab 3 Content**
 &lt;/code&gt;&lt;/pre&gt;
@@ -8138,13 +8327,13 @@ vyos@vyos$
 		
 
 		&lt;a class=&#34;nav-item nav-link  active &#34;
-		   id=&#34;nav-cdfbea&#34; data-toggle=&#34;tab&#34; href=&#34;#cdfbea&#34;
+		   id=&#34;nav-fecbad&#34; data-toggle=&#34;tab&#34; href=&#34;#fecbad&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;RuTube&lt;/a&gt;
 
 		
 
 		&lt;a class=&#34;nav-item nav-link &#34;
-		   id=&#34;nav-afdecb&#34; data-toggle=&#34;tab&#34; href=&#34;#afdecb&#34;
+		   id=&#34;nav-fbdace&#34; data-toggle=&#34;tab&#34; href=&#34;#fbdace&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;Youtube&lt;/a&gt;
 
 		
@@ -8160,7 +8349,7 @@ vyos@vyos$
 
 
 
-&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;cdfbea&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;fecbad&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	
 
@@ -8183,7 +8372,7 @@ vyos@vyos$
 
 
 
-&lt;div class=&#34;tab-pane fade show &#34; id=&#34;afdecb&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show &#34; id=&#34;fbdace&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	
 

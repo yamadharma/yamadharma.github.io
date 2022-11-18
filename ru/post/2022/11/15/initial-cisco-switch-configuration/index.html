@@ -356,7 +356,7 @@
         content="2022-11-15T14:51:00&#43;03:00"
       />
     
-    <meta property="article:modified_time" content="2022-11-15T17:39:00&#43;03:00">
+    <meta property="article:modified_time" content="2022-11-17T17:56:00&#43;03:00">
   
 
   
@@ -385,7 +385,7 @@
   "headline": "Начальная конфигурация коммутатора Cisco",
   
   "datePublished": "2022-11-15T14:51:00+03:00",
-  "dateModified": "2022-11-15T17:39:00+03:00",
+  "dateModified": "2022-11-17T17:56:00+03:00",
   
   "author": {
     "@type": "Person",
@@ -918,7 +918,7 @@
           Обновлено
       
     
-    2022-11-15
+    2022-11-17
   </span>
   
 
@@ -927,7 +927,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-reading-time">
-    2 мин. для прочтения
+    4 мин. для прочтения
   </span>
   
 
@@ -964,24 +964,60 @@
   <summary class="font-weight-bold">Содержание</summary>
   <nav id="TableOfContents">
   <ul>
-    <li><a href="#базовая-конфигурация"><span class="section-num">1</span> Базовая конфигурация</a>
+    <li><a href="#подготовка"><span class="section-num">1</span> Подготовка</a></li>
+    <li><a href="#базовая-конфигурация"><span class="section-num">2</span> Базовая конфигурация</a>
       <ul>
-        <li><a href="#включение"><span class="section-num">1.1</span> Включение</a></li>
-        <li><a href="#переход-в-привилегированный-режим"><span class="section-num">1.2</span> Переход в привилегированный режим</a></li>
-        <li><a href="#переход-в-режим-конфигурации"><span class="section-num">1.3</span> Переход в режим конфигурации</a></li>
-        <li><a href="#шифрование-паролей"><span class="section-num">1.4</span> Шифрование паролей</a></li>
-        <li><a href="#административный-доступ"><span class="section-num">1.5</span> Административный доступ</a></li>
-        <li><a href="#настройка-нового-режима-аутентификации"><span class="section-num">1.6</span> Настройка нового режима аутентификации</a></li>
-        <li><a href="#административный-пользователь"><span class="section-num">1.7</span> Административный пользователь</a></li>
-        <li><a href="#удалённый-доступ"><span class="section-num">1.8</span> Удалённый доступ</a></li>
+        <li><a href="#включение"><span class="section-num">2.1</span> Включение</a></li>
+        <li><a href="#переход-в-привилегированный-режим"><span class="section-num">2.2</span> Переход в привилегированный режим</a></li>
+        <li><a href="#переход-в-режим-конфигурации"><span class="section-num">2.3</span> Переход в режим конфигурации</a></li>
+        <li><a href="#шифрование-паролей"><span class="section-num">2.4</span> Шифрование паролей</a></li>
+        <li><a href="#административный-доступ"><span class="section-num">2.5</span> Административный доступ</a></li>
+        <li><a href="#настройка-нового-режима-аутентификации"><span class="section-num">2.6</span> Настройка нового режима аутентификации</a></li>
+        <li><a href="#административный-пользователь"><span class="section-num">2.7</span> Административный пользователь</a></li>
+        <li><a href="#удалённый-доступ"><span class="section-num">2.8</span> Удалённый доступ</a></li>
+        <li><a href="#зададим-имя-устройства"><span class="section-num">2.9</span> Зададим имя устройства</a></li>
+        <li><a href="#настройка-ssh"><span class="section-num">2.10</span> Настройка ssh</a></li>
+        <li><a href="#поднимем-интерфейсы"><span class="section-num">2.11</span> Поднимем интерфейсы</a></li>
+        <li><a href="#сетевые-настройки"><span class="section-num">2.12</span> Сетевые настройки</a></li>
+        <li><a href="#настройка-vtp"><span class="section-num">2.13</span> Настройка vtp</a></li>
+        <li><a href="#безопасность"><span class="section-num">2.14</span> Безопасность</a></li>
+        <li><a href="#сохранение-конфигурации"><span class="section-num">2.15</span> Сохранение конфигурации</a></li>
       </ul>
     </li>
+    <li><a href="#подключение-к-observium"><span class="section-num">3</span> Подключение к Observium</a></li>
   </ul>
 </nav>
 </details>
 
-<h2 id="базовая-конфигурация"><span class="section-num">1</span> Базовая конфигурация</h2>
-<h3 id="включение"><span class="section-num">1.1</span> Включение</h3>
+<h2 id="подготовка"><span class="section-num">1</span> Подготовка</h2>
+<ul>
+<li>На Linux для конфигурации используется Minicom.</li>
+<li>Запускайте по пользователем <code>root</code>.</li>
+<li>Для первоначальной конфигурации задайте ключ <code>-s</code>:
+<pre><code class="language-shell">minicom -s
+</code></pre>
+</li>
+<li>Выставите параметры Скорость/Четность/Биты (Bps/Par/Bits) = 9600 8N1.</li>
+<li>Укажите последовательный порт:
+<ul>
+<li>последовательный порт: <code>/dev/ttyS[0-3]</code>;</li>
+<li>порт USB: <code>/dev/ttyUSB0</code>.</li>
+</ul>
+</li>
+<li>Итоговая конфигурация:
+<pre><code class="language-text">A - Последовательный порт          : /dev/ttyUSB
+B - Размещение lock-файла          : /var/lock
+C - Программа при выходе           :
+D - Программа при запуске          :
+E - Скорость/Чётность/Биты         : 9600 8N1
+F - Аппаратное управление потоком  : Да
+G - Программное управление потоком : Нет
+</code></pre>
+</li>
+<li>После изменений в меню выбрать &ldquo;Сохранить настройки как dfl&rdquo; или под своим именем.</li>
+</ul>
+<h2 id="базовая-конфигурация"><span class="section-num">2</span> Базовая конфигурация</h2>
+<h3 id="включение"><span class="section-num">2.1</span> Включение</h3>
 <ul>
 <li>При первом включении, после долгой загрузки коммутатор выдает предложение запустить диалог стартовой конфигурации:
 <pre><code class="language-text">Would you like to enter the initial configuration dialog? [yes/no]:
@@ -989,7 +1025,7 @@
 </li>
 <li>Следует отказаться и выполнить конфигурацию вручную, поэтому отвечаем <code>no</code>.</li>
 </ul>
-<h3 id="переход-в-привилегированный-режим"><span class="section-num">1.2</span> Переход в привилегированный режим</h3>
+<h3 id="переход-в-привилегированный-режим"><span class="section-num">2.2</span> Переход в привилегированный режим</h3>
 <ul>
 <li>Получаем приглашение <code>Switch&gt;</code>.</li>
 <li>Переходим в привилегированный режим командой <code>enable</code>.</li>
@@ -999,21 +1035,21 @@ Switch#
 </code></pre>
 </li>
 </ul>
-<h3 id="переход-в-режим-конфигурации"><span class="section-num">1.3</span> Переход в режим конфигурации</h3>
+<h3 id="переход-в-режим-конфигурации"><span class="section-num">2.3</span> Переход в режим конфигурации</h3>
 <ul>
 <li>Перейдём в режим конфигурации коммутатора:
 <pre><code class="language-shell">Switch#configure terminal
 </code></pre>
 </li>
 </ul>
-<h3 id="шифрование-паролей"><span class="section-num">1.4</span> Шифрование паролей</h3>
+<h3 id="шифрование-паролей"><span class="section-num">2.4</span> Шифрование паролей</h3>
 <ul>
 <li>Установим шифрование паролей, хранящиеся в устройстве в открытом виде:
 <pre><code class="language-shell">Switch(config)#service password-encryption
 </code></pre>
 </li>
 </ul>
-<h3 id="административный-доступ"><span class="section-num">1.5</span> Административный доступ</h3>
+<h3 id="административный-доступ"><span class="section-num">2.5</span> Административный доступ</h3>
 <ul>
 <li>
 <p>Зададим пароль на <em>enable</em>:</p>
@@ -1034,16 +1070,28 @@ Switch#
 </ul>
 </li>
 </ul>
-<h3 id="настройка-нового-режима-аутентификации"><span class="section-num">1.6</span> Настройка нового режима аутентификации</h3>
+<h3 id="настройка-нового-режима-аутентификации"><span class="section-num">2.6</span> Настройка нового режима аутентификации</h3>
 <ul>
-<li>Настроим режим <em>aaa</em> (authentication, authorization, accounting):
+<li>
+<p>Настроим режим <em>aaa</em> (authentication, authorization, accounting):</p>
 <pre><code class="language-shell">Switch(config)#aaa new-model
-Switch(config)#aaa authentication login vty local
-Switch(config)#aaa authorization network default if-authenticated
+Switch(config)#aaa authentication login default local
 </code></pre>
 </li>
+<li>
+<p>Настроим подключение по консоли:</p>
+<pre><code class="language-shell">Switch(config)#line console 0
+Switch(config-line)#login authentication default
+Switch(config-line)#no password
+Switch(config-line)#exit
+</code></pre>
+<ul>
+<li>Консоль настроена на использование локальной базы данных имён пользователей и паролей.</li>
+<li><code>no password</code> : удалить старую модель паролей.</li>
 </ul>
-<h3 id="административный-пользователь"><span class="section-num">1.7</span> Административный пользователь</h3>
+</li>
+</ul>
+<h3 id="административный-пользователь"><span class="section-num">2.7</span> Административный пользователь</h3>
 <ul>
 <li>
 <p>Зададим пользователя admin и пароль для него:</p>
@@ -1055,16 +1103,155 @@ Switch(config)#aaa authorization network default if-authenticated
 </ul>
 </li>
 </ul>
-<h3 id="удалённый-доступ"><span class="section-num">1.8</span> Удалённый доступ</h3>
+<h3 id="удалённый-доступ"><span class="section-num">2.8</span> Удалённый доступ</h3>
 <ul>
-<li>Не во всех поставках IOS есть поддержка <em>ssh</em>. Поэтому приходится использовать <em>telnet</em>.</li>
-<li>Настроим порядок аутентификации по <em>telnet</em>:
+<li>
+<p>Не во всех поставках IOS есть поддержка <em>ssh</em>. Поэтому приходится использовать <em>telnet</em>.</p>
+</li>
+<li>
+<p>Настроим порядок аутентификации по <em>telnet</em>.</p>
+</li>
+<li>
+<p>Настроим подключение по терминальным линиям.</p>
 <pre><code class="language-shell">Switch(config)#line vty 0 4
-Switch(config-line)#login authentication vty
+Switch(config-line)#login authentication default
+Switch(config-line)#transport input telnet
+Switch(config-line)#no password
 Switch(config-line)#exit
 Switch(config)#line vty 5 15
-Switch(config-line)#login authentication vty
+Switch(config-line)#login authentication default
+Switch(config-line)#transport input telnet
+Switch(config-line)#no password
 Switch(config-line)#exit
+</code></pre>
+<ul>
+<li>Терминальные линии, включая telnet, настроены на использование одной и той же локальной базы данных имён пользователей и паролей.</li>
+<li><code>no password</code> : удалить старую модель паролей.</li>
+</ul>
+</li>
+</ul>
+<h3 id="зададим-имя-устройства"><span class="section-num">2.9</span> Зададим имя устройства</h3>
+<ul>
+<li>Имя устройства имеет вид: sw-&lt;помещение&gt;-&lt;номер устройства&gt;, например <code>sw-103-1</code>.</li>
+<li>Зададим имя устройства:
+<pre><code class="language-shell">Switch(config)#hostname sw-103-1
+sw-103-1(config)#ip domain-name example.com
+</code></pre>
+</li>
+</ul>
+<h3 id="настройка-ssh"><span class="section-num">2.10</span> Настройка ssh</h3>
+<ul>
+<li>Если устройство поддерживает ssh, то стоит его настроить.</li>
+<li>Создадим ключ (необходимо, чтобы было настроено имя домена):
+<pre><code class="language-shell">sw-103-1(config)#crypto key generate rsa modulus 2048
+</code></pre>
+</li>
+<li>Задаёт версию протокола для ssh:
+<pre><code class="language-shell">sw-103-1(config)#ip ssh version 2
+</code></pre>
+</li>
+<li>Указываем время таймаута до автоматического закрытия SSH сессии в 60 минут:
+<pre><code class="language-shell">sw-103-1(config)#ip ssh time-out 60
+</code></pre>
+</li>
+<li>Сбрасываем подключение после 3 неверных паролей:
+<pre><code class="language-shell">sw-103-1(config)#ip ssh authentication-retries 3
+</code></pre>
+</li>
+<li>Задаём протокол для подключения:
+<pre><code class="language-shell">sw-103-1(config)#line vty 0 4
+sw-103-1(config-line)#transport input ssh
+</code></pre>
+</li>
+<li>Можно также оставить и telnet:
+<pre><code class="language-shell">sw-103-1(config)#line vty 0 4
+sw-103-1(config-line)#transport input all
+</code></pre>
+</li>
+</ul>
+<h3 id="поднимем-интерфейсы"><span class="section-num">2.11</span> Поднимем интерфейсы</h3>
+<ul>
+<li>Сделаем последний порт транковым:
+<pre><code class="language-shell">sw-103-1(config)#interface gigabitEthernet1/0/48
+sw-103-1(config-if-range)#switchport mode trunk
+sw-103-1(config-if-range)#exit
+</code></pre>
+</li>
+</ul>
+<h3 id="сетевые-настройки"><span class="section-num">2.12</span> Сетевые настройки</h3>
+<ul>
+<li>Зададим адрес 192.168.0.1/24, шлюз 192.168.0.254:
+<pre><code class="language-shell">sw-103-1(config)#interface vlan1
+sw-103-1(config-if)#no shutdown
+sw-103-1(config-if)#ip address 192.168.0.1 255.255.255.0
+sw-103-1(config-if)#exit
+sw-103-1(config)#ip default-gateway 192.168.0.254
+</code></pre>
+</li>
+<li>Настроим клиента DNS:
+<pre><code class="language-shell">sw-103-1(config)#ip name-server 192.168.0.254
+</code></pre>
+</li>
+<li>Настроим NTP:
+<pre><code class="language-shell">sw-103-1(config)#ntp server pool.ntp.org
+</code></pre>
+</li>
+<li>Проверим статус синхронизации:
+<pre><code class="language-shell">sw-103-1#sh ntp status
+</code></pre>
+</li>
+</ul>
+<h3 id="настройка-vtp"><span class="section-num">2.13</span> Настройка vtp</h3>
+<ul>
+<li>Настройте vtp:
+<pre><code class="language-shell">sw-103-1(config)#vtp mode client
+</code></pre>
+</li>
+<li>Проверьте статус vtp:
+<pre><code class="language-shell">sw-103-1#sh vtp status
+</code></pre>
+</li>
+</ul>
+<h3 id="безопасность"><span class="section-num">2.14</span> Безопасность</h3>
+<ul>
+<li>Отключим сервер http:
+<pre><code class="language-shell">sw-103-1(config)#no ip http server
+sw-103-1(config)#no ip http secure-server
+</code></pre>
+</li>
+</ul>
+<h3 id="сохранение-конфигурации"><span class="section-num">2.15</span> Сохранение конфигурации</h3>
+<ul>
+<li>Сохраните конфигурацию:
+<pre><code class="language-shell">sw-103-1#write mem
+</code></pre>
+</li>
+</ul>
+<h2 id="подключение-к-observium"><span class="section-num">3</span> Подключение к Observium</h2>
+<ul>
+<li>
+<p>Настройте доступ к SMTP.</p>
+</li>
+<li>
+<p>Пусть сервер мониторинга имеет адрес: 192.168.0.5.</p>
+</li>
+<li>
+<p>Имя коммьюнити для чтения: rocom.</p>
+<pre><code class="language-shell">sw-103-1(config)#access-list 90 permit 192.168.0.5
+sw-103-1(config)#snmp-server community rocom RO 90
+</code></pre>
+</li>
+<li>
+<p>Добавьте коммутатор в свой DNS.</p>
+</li>
+<li>
+<p>Подключитесь к Observium.</p>
+</li>
+<li>
+<p>Добавьте коммутатор в список наблюдения в Observium:</p>
+<pre><code class="language-shell">[root@observium ~]# cd /opt/observium
+[root@observium ~]# /opt/observium/add_device.php sw-103-1 rocom
+[root@observium ~]# /opt/observium/discovery.php -h sw-103-1; /opt/observium/poller.php -h sw-103-1
 </code></pre>
 </li>
 </ul>

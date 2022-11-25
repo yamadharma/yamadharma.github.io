@@ -371,6 +371,29 @@ sw-103-1(config)#snmp-server community rocom RO 90
     </item>
     
     <item>
+      <title>Язык программирования HCL</title>
+      <link>https://yamadharma.github.io/ru/post/2022/11/05/hcl-programming-language/</link>
+      <pubDate>Sat, 05 Nov 2022 18:03:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2022/11/05/hcl-programming-language/</guid>
+      <description>&lt;p&gt;Язык конфигурации HashiCorp (HCL &amp;mdash; HashiCorp Configuration Language).&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;HCL &amp;mdash; это язык программирования, разработанный HashiCorp.&lt;/li&gt;
+&lt;li&gt;HCL используется для настройки программных сред и программных библиотек.&lt;/li&gt;
+&lt;li&gt;Синтаксис HCL: &lt;a href=&#34;https://github.com/hashicorp/hcl/blob/main/hclsyntax/spec.md&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/hashicorp/hcl/blob/main/hclsyntax/spec.md&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
       <title>Packer</title>
       <link>https://yamadharma.github.io/ru/post/2022/10/30/packer/</link>
       <pubDate>Sun, 30 Oct 2022 19:00:00 +0300</pubDate>
@@ -630,6 +653,197 @@ help:
 	@echo &#39;Targets:&#39;
 	@grep -E &#39;^[a-zA-Z_0-9.-]+:.*?## .*$$&#39; $(MAKEFILE_LIST) | sort | awk &#39;BEGIN {FS = &amp;quot;:.*?## &amp;quot;}; {printf &amp;quot;  \033[36m%-30s\033[0m %s\n&amp;quot;, $$1, $$2}&#39;
 	@echo
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Управление файлами конфигурации. Chezmoi</title>
+      <link>https://yamadharma.github.io/ru/post/2022/10/28/configuration-file-management-chezmoi/</link>
+      <pubDate>Fri, 28 Oct 2022 19:49:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2022/10/28/configuration-file-management-chezmoi/</guid>
+      <description>&lt;p&gt;Использование chezmoi для управления файлами конфигурации домашнего каталога пользователя.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#установка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Установка&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#первоначальная-настройка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Первоначальная настройка&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Сайт: &lt;a href=&#34;https://www.chezmoi.io/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.chezmoi.io/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Репозиторий: &lt;a href=&#34;https://github.com/twpayne/chezmoi&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/twpayne/chezmoi&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;установка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Установка&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Установка бинарного файла:
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;с помощью &lt;code&gt;curl&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sh -c &amp;quot;$(curl -fsLS chezmoi.io/get)&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;с помощью &lt;code&gt;wget&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sh -c &amp;quot;$(wget -qO- chezmoi.io/get)&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;с помощью PowerShell:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;(iwr -UseBasicParsing https://chezmoi.io/get.ps1).Content | powershell -c -
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Linux
+&lt;ul&gt;
+&lt;li&gt;Gentoo
+&lt;ul&gt;
+&lt;li&gt;overlay &lt;em&gt;ace&lt;/em&gt; (&lt;a href=&#34;https://github.com/ananace/overlay&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/ananace/overlay&lt;/a&gt;):
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;emerge chezmoi-bin
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Fedora
+&lt;ul&gt;
+&lt;li&gt;установка через Snap:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;snap install chezmoi --classic
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Windows
+&lt;ul&gt;
+&lt;li&gt;установка посредством Chocolatey (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/01/18/package-manager-windows-chocolatey/&#34;&gt;Пакетный менеджер для Windows. Chocolatey&lt;/a&gt;):
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;choco install chezmoi
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;первоначальная-настройка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Первоначальная настройка&lt;/h2&gt;</description>
+    </item>
+    
+    <item>
+      <title>Пароли mail.ru</title>
+      <link>https://yamadharma.github.io/ru/post/2022/10/27/mail-ru-passwords/</link>
+      <pubDate>Thu, 27 Oct 2022 15:04:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2022/10/27/mail-ru-passwords/</guid>
+      <description>&lt;p&gt;Управление паролями в сервисах Mail.ru.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#пароли-для-внешних-приложений&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Пароли для внешних приложений&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;пароли-для-внешних-приложений&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Пароли для внешних приложений&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Для сторонних приложений используются специальные пароли, уникальные для каждого стороннего приложения.&lt;/li&gt;
+&lt;li&gt;Для создания такого пароля выполните следующее:
+&lt;ul&gt;
+&lt;li&gt;Войдите в свой аккаунт Mail.ru на компьютере.&lt;/li&gt;
+&lt;li&gt;Перейдите в настройки Mail ID в пункт &lt;em&gt;Безопасность&lt;/em&gt; (&lt;a href=&#34;https://id.mail.ru/security&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://id.mail.ru/security&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Далее перейдите в пункт &lt;em&gt;Пароли для внешних приложений&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;Нажмите &lt;em&gt;Добавить&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;Добавьте название сервиса.&lt;/li&gt;
+&lt;li&gt;Скопируйте новый пароль и введите его в стороннем приложении.&lt;/li&gt;
+&lt;li&gt;После закрытия окна значение пароля получить будет невозможно.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>rclone</title>
+      <link>https://yamadharma.github.io/ru/post/2022/10/27/rclone/</link>
+      <pubDate>Thu, 27 Oct 2022 14:29:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2022/10/27/rclone/</guid>
+      <description>&lt;p&gt;Утилита командной строки для синхронизация данных с сетевыми объектными хранилищами.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#подключение-хранилищ&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Подключение хранилищ&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#хранилища&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Хранилища&lt;/a&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&#34;#google-drive&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2.1&lt;/span&gt; Google Drive&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#yandex-disk&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2.2&lt;/span&gt; Yandex Disk&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#mail-dot-ru-cloud&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2.3&lt;/span&gt; Mail.ru Cloud&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#использование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Использование&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Сайт: &lt;a href=&#34;https://rclone.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://rclone.org/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;подключение-хранилищ&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Подключение хранилищ&lt;/h2&gt;
+&lt;h3 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Общая информация&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Для подключения сетевого хранилища следует запустить:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;rclone config
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Далее следовать текстовому меню.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;хранилища&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Хранилища&lt;/h3&gt;
+&lt;h4 id=&#34;google-drive&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2.1&lt;/span&gt; Google Drive&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;При конфигурировании запускается броузер.&lt;/li&gt;
+&lt;li&gt;Необходимо залогиниться и разрешить доступ.&lt;/li&gt;
+&lt;li&gt;В конфигурационный файл записывается токен для доступа.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;yandex-disk&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2.2&lt;/span&gt; Yandex Disk&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;При конфигурировании запускается броузер.&lt;/li&gt;
+&lt;li&gt;Необходимо залогиниться и разрешить доступ.&lt;/li&gt;
+&lt;li&gt;В конфигурационный файл записывается токен для доступа.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;mail-dot-ru-cloud&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2.3&lt;/span&gt; Mail.ru Cloud&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;В качестве пароля необходимо использовать пароль для внешнего приложения (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/10/27/mail-ru-passwords/&#34;&gt;Пароли mail.ru&lt;/a&gt;).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;использование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Использование&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Пусть название хранилища будет &lt;code&gt;remote&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Просмотр списка контейнеров в хранилище:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;rclone lsd remote:
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Создание нового каталога:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;rclone mkdir remote:/dir
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Просмотр списка файлов в каталоге:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;rclone ls remote:/dir
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Копирование файлов с локальной машины в хранилище:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;rclone copy /home/local/directory remote:/dir
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Синхронизация файлов на локальной машине и в хранилище:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;rclone sync /home/local/directory remote:/dir
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;</description>
@@ -2348,13 +2562,13 @@ vyos@vyos$
 		
 
 		&lt;a class=&#34;nav-item nav-link  active &#34;
-		   id=&#34;nav-bfeacd&#34; data-toggle=&#34;tab&#34; href=&#34;#bfeacd&#34;
+		   id=&#34;nav-bedcfa&#34; data-toggle=&#34;tab&#34; href=&#34;#bedcfa&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;RuTube&lt;/a&gt;
 
 		
 
 		&lt;a class=&#34;nav-item nav-link &#34;
-		   id=&#34;nav-fdacbe&#34; data-toggle=&#34;tab&#34; href=&#34;#fdacbe&#34;
+		   id=&#34;nav-efdcab&#34; data-toggle=&#34;tab&#34; href=&#34;#efdcab&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;Youtube&lt;/a&gt;
 
 		
@@ -2370,7 +2584,7 @@ vyos@vyos$
 
 
 
-&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;bfeacd&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;bedcfa&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	
 
@@ -2393,7 +2607,7 @@ vyos@vyos$
 
 
 
-&lt;div class=&#34;tab-pane fade show &#34; id=&#34;fdacbe&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show &#34; id=&#34;efdcab&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	
 

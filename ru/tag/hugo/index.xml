@@ -5,7 +5,7 @@
     <link>https://yamadharma.github.io/ru/tag/hugo/</link>
       <atom:link href="https://yamadharma.github.io/ru/tag/hugo/index.xml" rel="self" type="application/rss+xml" />
     <description>hugo</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2022 Dmitry S. Kulyabov</copyright><lastBuildDate>Sun, 26 Jun 2022 18:46:00 +0300</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2022 Dmitry S. Kulyabov</copyright><lastBuildDate>Wed, 23 Nov 2022 19:40:00 +0300</lastBuildDate>
     <image>
       <url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url>
       <title>hugo</title>
@@ -204,6 +204,181 @@
     </item>
     
     <item>
+      <title>Org-roam. Экспорт в Hugo</title>
+      <link>https://yamadharma.github.io/ru/post/2022/11/23/org-roam-hugo-export/</link>
+      <pubDate>Wed, 23 Nov 2022 19:40:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2022/11/23/org-roam-hugo-export/</guid>
+      <description>&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#ошибки-при-экспорте&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Ошибки при экспорте&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#ox-hugo-broken-links&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; ox-hugo: broken links&lt;/a&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&#34;#подкаталоги-в-каталоге-org-roam&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1.1&lt;/span&gt; Подкаталоги в каталоге org-roam&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#экспорт-из-поддерева&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1.2&lt;/span&gt; Экспорт из поддерева&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;ошибки-при-экспорте&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Ошибки при экспорте&lt;/h2&gt;
+&lt;h3 id=&#34;ox-hugo-broken-links&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; ox-hugo: broken links&lt;/h3&gt;
+&lt;h4 id=&#34;подкаталоги-в-каталоге-org-roam&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1.1&lt;/span&gt; Подкаталоги в каталоге org-roam&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Если каталог для org-roam содержит подкаталоги, то при экспорте теряются ссылки.&lt;/li&gt;
+&lt;li&gt;Для ликвидации этой ошибки следует добавить в настройки:
+&lt;pre&gt;&lt;code class=&#34;language-emacs-lisp&#34;&gt;(require &#39;org-roam-export)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;экспорт-из-поддерева&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1.2&lt;/span&gt; Экспорт из поддерева&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;ox-hugo предлагает два варианта экспорта:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;экспорт всего файла;&lt;/li&gt;
+&lt;li&gt;экспорт из поддерева.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;При экспорте из поддерева ссылки типа &lt;code&gt;id_link&lt;/code&gt; не отображаются.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Происходит поиск таких ссылок только в текущем поддереве.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Для реализации поиска в других фалах нужно добавить их в переменную &lt;code&gt;org-id-extra-files&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-emacs-lisp&#34;&gt;(setq org-id-extra-files (directory-files-recursively org-roam-directory &amp;quot;.*\.org$&amp;quot; t))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;Впрочем, у меня это не сработало.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Также можно сделать хак для игнорирования ошибок:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-emacs-lisp&#34;&gt;(with-eval-after-load &#39;ox-hugo
+  (setq org-hugo--preprocess-buffer nil))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;Вот это у меня сработало.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Hugo. Wowchemy. Book</title>
+      <link>https://yamadharma.github.io/ru/post/2022/11/22/hugo-wowchemy-book/</link>
+      <pubDate>Tue, 22 Nov 2022 16:31:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2022/11/22/hugo-wowchemy-book/</guid>
+      <description>&lt;p&gt;Использование узла типа &lt;em&gt;book&lt;/em&gt;.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#структура&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Структура&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#метаданные&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Метаданные&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#меню&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Меню&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#страницы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Страницы&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Тип узла &lt;em&gt;book&lt;/em&gt; используется для создания многостраничного контента, такого как онлайн-курсы, документация по программному обеспечению, базы знаний, книги, блокноты, учебные пособия.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;структура&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Структура&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Предлагается использовать следующую файловую структуру:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;!--listend--&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;content/course
+├── _index.md         # Overview
+└── intro             # Chapter folder
+    ├── _index.md     # Chapter metadata including chapter title
+    ├── example1.md   # A page
+    └── example2.md   # Another page
+└── tutorial          # Another chapter
+    ├── _index.md
+    ├── intro.md
+    └── ...
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;В именах файлов и папок вместо пробелов следует использовать дефисы.&lt;/li&gt;
+&lt;li&gt;Папка &lt;code&gt;course&lt;/code&gt; может быть переименована.&lt;/li&gt;
+&lt;li&gt;Например, мы можем переименовать её в &lt;code&gt;book&lt;/code&gt; для написания книги, &lt;code&gt;docs&lt;/code&gt; для документации по программному обеспечению/проекту, &lt;code&gt;notes&lt;/code&gt; для создания блокнота или &lt;code&gt;tutorials&lt;/code&gt; для создания многостраничных руководств.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;метаданные&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Метаданные&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Рассмотрим структуру файла &lt;code&gt;_index.md&lt;/code&gt; (например &lt;code&gt;content/course/example/_index.md&lt;/code&gt;) для книги.&lt;/li&gt;
+&lt;li&gt;Укажем название и краткое содержание книги.
+&lt;pre&gt;&lt;code class=&#34;language-markdown&#34;&gt;# Page title
+title: An Example Course
+
+# Title for the menu link if you wish to use a shorter link title, otherwise remove this option.
+linktitle: Course
+
+# Page summary for search engines.
+summary: Blah, blah, blah...
+
+# Date page published
+date: 2018-09-09
+
+# Book page type (do not modify).
+type: book
+
+# Position of this page in the menu. Remove this option to sort alphabetically.
+weight: 1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;меню&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Меню&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Можете задать меню тремя способами:
+&lt;ul&gt;
+&lt;li&gt;по возрастанию названия;&lt;/li&gt;
+&lt;li&gt;по убыванию названия;&lt;/li&gt;
+&lt;li&gt;путём ручного упорядочивания с использованием &lt;code&gt;weight: 10&lt;/code&gt; для первых страниц, где номер определяет порядок.&lt;/li&gt;
+&lt;li&gt;Рекомендуется использовать веса с шагом 10, чтобы в будущем можно было легко изменить порядок страниц без необходимости изменять вес всех других страниц.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;страницы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Страницы&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Вы можете создать столько страниц, сколько вам нужно. Каждая страница должна иметь поле &lt;code&gt;title&lt;/code&gt; и тип &lt;code&gt;type: book&lt;/code&gt;.
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;title&lt;/code&gt; : заголовок страницы (отображается в заголовке страницы);&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;linktitle&lt;/code&gt; : метка для ссылки на эту страницу (отображается в меню). Если удалить &lt;code&gt;linktitle&lt;/code&gt;, ссылка меню не будет отображать заголовок страницы.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Чтобы удалить правую боковую панель для оглавления страницы (сгенерированного из заголовков на вашей странице), установите &lt;code&gt;toc: false&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Чтобы отображать предыдущий/следующий пейджер внизу каждой страницы раздела документов, включите &lt;code&gt;docs_section_pager&lt;/code&gt; в &lt;code&gt;params.yaml&lt;/code&gt;, затем установите порядок пейджера, определив &lt;code&gt;weight&lt;/code&gt; для каждой страницы.&lt;/li&gt;
+&lt;li&gt;Пример страницы выглядит следующим образом:
+&lt;pre&gt;&lt;code class=&#34;language-markdown&#34;&gt;---
+title: Example Page 1
+date: 2019-05-05
+type: book
+---
+
+Content...
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Чтобы перечислить дочерние страницы на страницах глав книги, можно использовать сокращение &lt;code&gt;
+
+
+
+&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
       <title>Hugo. Видео во вкладках</title>
       <link>https://yamadharma.github.io/ru/post/2022/06/26/hugo-video-tabs/</link>
       <pubDate>Sun, 26 Jun 2022 18:46:00 +0300</pubDate>
@@ -301,13 +476,13 @@
 		
 
 		&lt;a class=&#34;nav-item nav-link  active &#34;
-		   id=&#34;nav-fedbac&#34; data-toggle=&#34;tab&#34; href=&#34;#fedbac&#34;
+		   id=&#34;nav-fdebca&#34; data-toggle=&#34;tab&#34; href=&#34;#fdebca&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;RuTube&lt;/a&gt;
 
 		
 
 		&lt;a class=&#34;nav-item nav-link &#34;
-		   id=&#34;nav-fceadb&#34; data-toggle=&#34;tab&#34; href=&#34;#fceadb&#34;
+		   id=&#34;nav-abecfd&#34; data-toggle=&#34;tab&#34; href=&#34;#abecfd&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;Youtube&lt;/a&gt;
 
 		
@@ -323,7 +498,7 @@
 
 
 
-&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;fedbac&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;fdebca&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	
 
@@ -346,7 +521,7 @@
 
 
 
-&lt;div class=&#34;tab-pane fade show &#34; id=&#34;fceadb&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show &#34; id=&#34;abecfd&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	
 
@@ -480,7 +655,7 @@
 		
 
 		&lt;a class=&#34;nav-item nav-link  active &#34;
-		   id=&#34;nav-debacf&#34; data-toggle=&#34;tab&#34; href=&#34;#debacf&#34;
+		   id=&#34;nav-decfba&#34; data-toggle=&#34;tab&#34; href=&#34;#decfba&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;Tab1&lt;/a&gt;
 
 		
@@ -496,7 +671,7 @@
 
 
 
-&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;debacf&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;decfba&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	&lt;pre&gt;&lt;code&gt;    **Tab 1 Content**
 &lt;/code&gt;&lt;/pre&gt;
@@ -546,19 +721,19 @@
 		
 
 		&lt;a class=&#34;nav-item nav-link  active &#34;
-		   id=&#34;nav-fedbca&#34; data-toggle=&#34;tab&#34; href=&#34;#fedbca&#34;
+		   id=&#34;nav-ebfdca&#34; data-toggle=&#34;tab&#34; href=&#34;#ebfdca&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;Tab1&lt;/a&gt;
 
 		
 
 		&lt;a class=&#34;nav-item nav-link  ml-auto &#34;
-		   id=&#34;nav-cafedb&#34; data-toggle=&#34;tab&#34; href=&#34;#cafedb&#34;
+		   id=&#34;nav-afbdec&#34; data-toggle=&#34;tab&#34; href=&#34;#afbdec&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;Tab2&lt;/a&gt;
 
 		
 
 		&lt;a class=&#34;nav-item nav-link &#34;
-		   id=&#34;nav-acefbd&#34; data-toggle=&#34;tab&#34; href=&#34;#acefbd&#34;
+		   id=&#34;nav-fdebca&#34; data-toggle=&#34;tab&#34; href=&#34;#fdebca&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;Tab3&lt;/a&gt;
 
 		
@@ -574,7 +749,7 @@
 
 
 
-&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;fedbca&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;ebfdca&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	&lt;pre&gt;&lt;code&gt;    **Tab 1 Content**
 &lt;/code&gt;&lt;/pre&gt;
@@ -587,7 +762,7 @@
 
 
 
-&lt;div class=&#34;tab-pane fade show &#34; id=&#34;cafedb&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show &#34; id=&#34;afbdec&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	&lt;pre&gt;&lt;code&gt;    **Tab 2 Content**
 &lt;/code&gt;&lt;/pre&gt;
@@ -600,7 +775,7 @@
 
 
 
-&lt;div class=&#34;tab-pane fade show &#34; id=&#34;acefbd&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show &#34; id=&#34;fdebca&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	&lt;pre&gt;&lt;code&gt;    **Tab 3 Content**
 &lt;/code&gt;&lt;/pre&gt;
@@ -637,23 +812,13 @@
             &lt;li&gt;&lt;a href=&#34;#ручная-установка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2.3&lt;/span&gt; Ручная установка&lt;/a&gt;&lt;/li&gt;
           &lt;/ul&gt;
         &lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#видео&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.3&lt;/span&gt; Видео&lt;/a&gt;
-          &lt;ul&gt;
-            &lt;li&gt;&lt;a href=&#34;#youtube&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.3.1&lt;/span&gt; Youtube&lt;/a&gt;&lt;/li&gt;
-            &lt;li&gt;&lt;a href=&#34;#rutube&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.3.2&lt;/span&gt; Rutube&lt;/a&gt;&lt;/li&gt;
-          &lt;/ul&gt;
-        &lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#видео-программное-обеспечение-для-hugo&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.3&lt;/span&gt; Видео: Программное обеспечение для Hugo&lt;/a&gt;&lt;/li&gt;
       &lt;/ul&gt;
     &lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#структура-сайта&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Структура сайта&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#установка-темы--внешнего-вида--сайта&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Установка темы (внешнего вида) сайта&lt;/a&gt;
       &lt;ul&gt;
-        &lt;li&gt;&lt;a href=&#34;#видео&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Видео&lt;/a&gt;
-          &lt;ul&gt;
-            &lt;li&gt;&lt;a href=&#34;#youtube&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1.1&lt;/span&gt; Youtube&lt;/a&gt;&lt;/li&gt;
-            &lt;li&gt;&lt;a href=&#34;#rutube&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1.2&lt;/span&gt; Rutube&lt;/a&gt;&lt;/li&gt;
-          &lt;/ul&gt;
-        &lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#видео-установка-темы-сайта-hugo&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Видео: Установка темы сайта Hugo&lt;/a&gt;&lt;/li&gt;
       &lt;/ul&gt;
     &lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#настройка-сайта&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Настройка сайта&lt;/a&gt;&lt;/li&gt;
@@ -679,52 +844,87 @@
 &lt;h3 id=&#34;необходимое-программное-обеспечение&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Необходимое программное обеспечение&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;Необходим сам &lt;em&gt;hugo&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;Есть две сборки: &lt;em&gt;Hugo&lt;/em&gt; и &lt;em&gt;Hugo Extended&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Hugo Extended&lt;/em&gt; отличается от &lt;em&gt;Hugo&lt;/em&gt; поддержкой SASS/SCSS.&lt;/li&gt;
+&lt;li&gt;Часть тем (например, Wowchemy &amp;mdash; &lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/07/02/hugo-template-for-scientists/&#34;&gt;Hugo. Шаблон для научных работников&lt;/a&gt;) требует наличия &lt;em&gt;Hugo Extended&lt;/em&gt;.&lt;/li&gt;
 &lt;li&gt;Поскольку hugo использует модули &lt;em&gt;golang&lt;/em&gt;, то следует установить и его.&lt;/li&gt;
+&lt;li&gt;Также может понадобиться NodeJS.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;установка-в-различных-операционных-системах&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Установка в различных операционных системах&lt;/h3&gt;
 &lt;h4 id=&#34;linux&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2.1&lt;/span&gt; Linux&lt;/h4&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Ubuntu:&lt;/p&gt;
+&lt;li&gt;Ubuntu:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sudo apt-get install go hugo
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Fedora:&lt;/p&gt;
+&lt;li&gt;Fedora:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sudo dnf install go hugo
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Gentoo:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;emerge dev-lang/go net-libs/nodejs dev-vcs/git
+USE=&amp;quot;sass&amp;quot; emerge www-apps/hugo
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;h4 id=&#34;windows&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2.2&lt;/span&gt; Windows&lt;/h4&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Chocolatey&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;choco install hugo-extended
+&lt;li&gt;Chocolatey:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;choco install hugo-extended git go nodejs
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Scoop:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;scoop install hugo-extended git go nodejs
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;h4 id=&#34;ручная-установка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2.3&lt;/span&gt; Ручная установка&lt;/h4&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Если устанавливаемая в системе версия &lt;em&gt;hugo&lt;/em&gt; меньше необходимой, тогда следует установить программу вручную.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Версию &lt;em&gt;hugo&lt;/em&gt; можно посмотреть при помощи команды:&lt;/p&gt;
+&lt;li&gt;Если устанавливаемая в системе версия &lt;em&gt;hugo&lt;/em&gt; меньше необходимой, тогда следует установить программу вручную.&lt;/li&gt;
+&lt;li&gt;Версию &lt;em&gt;hugo&lt;/em&gt; можно посмотреть при помощи команды:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;hugo version
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Следует скачать архив с репозитория: &lt;a href=&#34;https://github.com/gohugoio/hugo/releases&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/gohugoio/hugo/releases&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
+&lt;li&gt;Следует скачать архив с репозитория: &lt;a href=&#34;https://github.com/gohugoio/hugo/releases&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/gohugoio/hugo/releases&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;видео&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.3&lt;/span&gt; Видео&lt;/h3&gt;
-&lt;h4 id=&#34;youtube&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.3.1&lt;/span&gt; Youtube&lt;/h4&gt;
+&lt;h3 id=&#34;видео-программное-обеспечение-для-hugo&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.3&lt;/span&gt; Видео: Программное обеспечение для Hugo&lt;/h3&gt;
+&lt;nav&gt;
+	&lt;div class=&#34;nav nav-tabs&#34; id=&#34;nav-tab&#34; role=&#34;tablist&#34;&gt;
 
-&lt;div style=&#34;position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;&#34;&gt;
-  &lt;iframe src=&#34;https://www.youtube.com/embed/OvfQBCEkJig&#34; style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;&#34; allowfullscreen title=&#34;YouTube Video&#34;&gt;&lt;/iframe&gt;
-&lt;/div&gt;
+		
+		
+		
+		
 
-&lt;h4 id=&#34;rutube&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.3.2&lt;/span&gt; Rutube&lt;/h4&gt;
+		
+
+		&lt;a class=&#34;nav-item nav-link  active &#34;
+		   id=&#34;nav-deafbc&#34; data-toggle=&#34;tab&#34; href=&#34;#deafbc&#34;
+		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;RuTube&lt;/a&gt;
+
+		
+
+		&lt;a class=&#34;nav-item nav-link &#34;
+		   id=&#34;nav-acbfed&#34; data-toggle=&#34;tab&#34; href=&#34;#acbfed&#34;
+		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;Youtube&lt;/a&gt;
+
+		
+
+	&lt;/div&gt;
+&lt;/nav&gt;
+
+&lt;div class=&#34;tab-content&#34; id=&#34;nav-tab-content&#34;&gt;
+
+	
+
+
+
+
+
+&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;deafbc&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+
+	
+
 &lt;div class=&#34;embed video-player&#34;&gt;
   &lt;iframe class=&#34;rutube-player&#34; type=&#34;text/html&#34;
 	  width=&#34;720&#34; height=&#34;405&#34;
@@ -734,6 +934,33 @@
   &lt;/iframe&gt;
 &lt;/div&gt;
 
+
+
+
+&lt;/div&gt;
+
+
+
+
+
+
+&lt;div class=&#34;tab-pane fade show &#34; id=&#34;acbfed&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+
+	
+
+
+&lt;div style=&#34;position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;&#34;&gt;
+  &lt;iframe src=&#34;https://www.youtube.com/embed/OvfQBCEkJig&#34; style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;&#34; allowfullscreen title=&#34;YouTube Video&#34;&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+
+
+
+
+&lt;/div&gt;
+
+
+
+&lt;/div&gt;
 &lt;h2 id=&#34;структура-сайта&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Структура сайта&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -767,14 +994,44 @@ archetypes  config.toml  content  data  docs  layouts  README.md  static  themes
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;установка-темы--внешнего-вида--сайта&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Установка темы (внешнего вида) сайта&lt;/h2&gt;
-&lt;h3 id=&#34;видео&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Видео&lt;/h3&gt;
-&lt;h4 id=&#34;youtube&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1.1&lt;/span&gt; Youtube&lt;/h4&gt;
+&lt;h3 id=&#34;видео-установка-темы-сайта-hugo&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Видео: Установка темы сайта Hugo&lt;/h3&gt;
+&lt;nav&gt;
+	&lt;div class=&#34;nav nav-tabs&#34; id=&#34;nav-tab&#34; role=&#34;tablist&#34;&gt;
 
-&lt;div style=&#34;position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;&#34;&gt;
-  &lt;iframe src=&#34;https://www.youtube.com/embed/1l1HO0sa_qs&#34; style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;&#34; allowfullscreen title=&#34;YouTube Video&#34;&gt;&lt;/iframe&gt;
-&lt;/div&gt;
+		
+		
+		
+		
 
-&lt;h4 id=&#34;rutube&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1.2&lt;/span&gt; Rutube&lt;/h4&gt;
+		
+
+		&lt;a class=&#34;nav-item nav-link  active &#34;
+		   id=&#34;nav-cbdfea&#34; data-toggle=&#34;tab&#34; href=&#34;#cbdfea&#34;
+		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;RuTube&lt;/a&gt;
+
+		
+
+		&lt;a class=&#34;nav-item nav-link &#34;
+		   id=&#34;nav-dfcaeb&#34; data-toggle=&#34;tab&#34; href=&#34;#dfcaeb&#34;
+		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;Youtube&lt;/a&gt;
+
+		
+
+	&lt;/div&gt;
+&lt;/nav&gt;
+
+&lt;div class=&#34;tab-content&#34; id=&#34;nav-tab-content&#34;&gt;
+
+	
+
+
+
+
+
+&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;cbdfea&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+
+	
+
 &lt;div class=&#34;embed video-player&#34;&gt;
   &lt;iframe class=&#34;rutube-player&#34; type=&#34;text/html&#34;
 	  width=&#34;720&#34; height=&#34;405&#34;
@@ -784,6 +1041,33 @@ archetypes  config.toml  content  data  docs  layouts  README.md  static  themes
   &lt;/iframe&gt;
 &lt;/div&gt;
 
+
+
+
+&lt;/div&gt;
+
+
+
+
+
+
+&lt;div class=&#34;tab-pane fade show &#34; id=&#34;dfcaeb&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+
+	
+
+
+&lt;div style=&#34;position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;&#34;&gt;
+  &lt;iframe src=&#34;https://www.youtube.com/embed/1l1HO0sa_qs&#34; style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;&#34; allowfullscreen title=&#34;YouTube Video&#34;&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+
+
+
+
+&lt;/div&gt;
+
+
+
+&lt;/div&gt;
 &lt;h2 id=&#34;настройка-сайта&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Настройка сайта&lt;/h2&gt;
 &lt;h2 id=&#34;публикация-сайта&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Публикация сайта&lt;/h2&gt;
 &lt;h3 id=&#34;развёртывание-на-базе-страниц-github--github-pages&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.1&lt;/span&gt; Развёртывание на базе страниц GitHub (github pages)&lt;/h3&gt;
@@ -809,22 +1093,16 @@ archetypes  config.toml  content  data  docs  layouts  README.md  static  themes
 &lt;/ul&gt;
 &lt;h4 id=&#34;создание-репозитория-для-страницы-пользователя-на-github&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.1.2&lt;/span&gt; Создание репозитория для страницы пользователя на Github&lt;/h4&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Чтобы опубликовать свой сайт со ссылкой &lt;code&gt;https://username.github.io&lt;/code&gt;, необходимо создать репозиторий с именем &lt;code&gt;username.github.io&lt;/code&gt;.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Перейдите на свою веб-страницу Github и нажмите «Создать», чтобы создать новый репозиторий.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Можно создать с помощью утилиты &lt;code&gt;gh&lt;/code&gt; (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/08/04/github-command-line-utilities/&#34;&gt;github: утилиты командной строки&lt;/a&gt;):&lt;/p&gt;
+&lt;li&gt;Чтобы опубликовать свой сайт со ссылкой &lt;code&gt;https://username.github.io&lt;/code&gt;, необходимо создать репозиторий с именем &lt;code&gt;username.github.io&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Перейдите на свою веб-страницу Github и нажмите «Создать», чтобы создать новый репозиторий.&lt;/li&gt;
+&lt;li&gt;Можно создать с помощью утилиты &lt;code&gt;gh&lt;/code&gt; (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/08/04/github-command-line-utilities/&#34;&gt;github: утилиты командной строки&lt;/a&gt;):
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;gh repo create username.github.io --public
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;h4 id=&#34;подключение-репозитория-к-вложенной-папке&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.1.3&lt;/span&gt; Подключение репозитория к вложенной папке&lt;/h4&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Создайте подмодуль &lt;code&gt;public&lt;/code&gt; в папке блога:&lt;/p&gt;
+&lt;li&gt;Создайте подмодуль &lt;code&gt;public&lt;/code&gt; в папке блога:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;cd ~/work/blog/blog
 git submodule add git@github.com:username/username.github.io.git public
 &lt;/code&gt;&lt;/pre&gt;
@@ -842,14 +1120,12 @@ git submodule add git@github.com:username/username.github.io.git public
 &lt;/ul&gt;
 &lt;h4 id=&#34;генерация-и-развёртывание-сайта&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.1.5&lt;/span&gt; Генерация и развёртывание сайта&lt;/h4&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Сгенерите проект&lt;/p&gt;
+&lt;li&gt;Сгенерите проект
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;cd ~/work/blog/blog
 hugo
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Зафиксируйте изменения и отправьте контент на GitHub:&lt;/p&gt;
+&lt;li&gt;Зафиксируйте изменения и отправьте контент на GitHub:
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;# Go To Public folder
 cd public
 
@@ -878,7 +1154,7 @@ git push origin master
   &lt;nav id=&#34;TableOfContents&#34;&gt;
   &lt;ul&gt;
     &lt;li&gt;&lt;a href=&#34;#информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Информация&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#обновление&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Обновление&lt;/a&gt;
+    &lt;li&gt;&lt;a href=&#34;#обновление-шаблонов-wowchemy&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Обновление шаблонов Wowchemy&lt;/a&gt;
       &lt;ul&gt;
         &lt;li&gt;&lt;a href=&#34;#до-версии-5-dot-3&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; До версии 5.3&lt;/a&gt;&lt;/li&gt;
         &lt;li&gt;&lt;a href=&#34;#общие-рекомендации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Общие рекомендации&lt;/a&gt;&lt;/li&gt;
@@ -889,6 +1165,8 @@ git push origin master
         &lt;li&gt;&lt;a href=&#34;#ошибка-нарушение-безопасности&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Ошибка: нарушение безопасности&lt;/a&gt;&lt;/li&gt;
       &lt;/ul&gt;
     &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#элементы-шаблонов-wowchemy&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Элементы шаблонов Wowchemy&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#типы-контента-wowchemy&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Типы контента Wowchemy&lt;/a&gt;&lt;/li&gt;
   &lt;/ul&gt;
 &lt;/nav&gt;
 &lt;/details&gt;
@@ -899,7 +1177,7 @@ git push origin master
 &lt;li&gt;Репозиторий: &lt;a href=&#34;https://github.com/wowchemy&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/wowchemy&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;Репозиторий модуля темы: &lt;a href=&#34;https://github.com/wowchemy/wowchemy-hugo-modules&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/wowchemy/wowchemy-hugo-modules&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;обновление&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Обновление&lt;/h2&gt;
+&lt;h2 id=&#34;обновление-шаблонов-wowchemy&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Обновление шаблонов Wowchemy&lt;/h2&gt;
 &lt;h3 id=&#34;до-версии-5-dot-3&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; До версии 5.3&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;Примечания до версии 5.3 находятся в блоге &lt;a href=&#34;https://wowchemy.com/blog/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://wowchemy.com/blog/&lt;/a&gt;.&lt;/li&gt;
@@ -970,7 +1248,7 @@ require (
 &lt;/code&gt;&lt;/pre&gt;
 &lt;ul&gt;
 &lt;li&gt;Вы настраиваете версию модуля в операторе &lt;code&gt;require&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Вместо версии &lt;code&gt;main&lt;/code&gt; можно задать конкретную версию модуля.&lt;/li&gt;
+&lt;li&gt;Вместо версии &lt;code&gt;main&lt;/code&gt; можно задать конкретную версию модуля (в формате &lt;code&gt;v5.x.y&lt;/code&gt;).&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;
@@ -1004,6 +1282,9 @@ require (
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;После этого &lt;code&gt;main&lt;/code&gt; в &lt;code&gt;go.mod&lt;/code&gt; будет заменена на конкретную версию.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Если Вы обновляете совсем старую версию, Вам может быть проще создать новый сайт и перенести папку &lt;code&gt;content&lt;/code&gt;.&lt;/p&gt;
@@ -1044,6 +1325,11 @@ getenv = [ &amp;quot;^HUGO_&amp;quot;, &amp;quot;^WC_&amp;quot;,]
 ​      - ^WC_
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;элементы-шаблонов-wowchemy&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Элементы шаблонов Wowchemy&lt;/h2&gt;
+&lt;h2 id=&#34;типы-контента-wowchemy&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Типы контента Wowchemy&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/11/22/hugo-wowchemy-book/&#34;&gt;Hugo. Wowchemy. Book&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;</description>
     </item>
     
@@ -1100,7 +1386,8 @@ getenv = [ &amp;quot;^HUGO_&amp;quot;, &amp;quot;^WC_&amp;quot;,]
 &lt;li&gt;&lt;code&gt;windows&lt;/code&gt;: &lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/05/01/windows-administration/&#34;&gt;Администрирование Windows&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;redhat&lt;/code&gt;:&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;cisco&lt;/code&gt;: &lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/06/16/cisco-administration/&#34;&gt;Администрирование Cisco&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;org-mode&lt;/code&gt;: &lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/10/14/org-mode/&#34;&gt;Org-mode&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;org_mode&lt;/code&gt;: &lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/10/14/org-mode/&#34;&gt;Org-mode&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;org_roam&lt;/code&gt;: &lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/11/23/org-roam/&#34;&gt;Org-roam&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;&lt;code&gt;@blog&lt;/code&gt;&lt;/li&gt;
@@ -1322,6 +1609,7 @@ getenv = [ &amp;quot;^HUGO_&amp;quot;, &amp;quot;^WC_&amp;quot;,]
             &lt;li&gt;&lt;a href=&#34;#свойства-экспорта-для-заголовка-hugo&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.2.3&lt;/span&gt; Свойства экспорта для заголовка Hugo&lt;/a&gt;&lt;/li&gt;
           &lt;/ul&gt;
         &lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#особенности-экспорта&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.3&lt;/span&gt; Особенности экспорта&lt;/a&gt;&lt;/li&gt;
       &lt;/ul&gt;
     &lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#сочетания-клавиш&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Сочетания клавиш&lt;/a&gt;
@@ -1665,6 +1953,10 @@ getenv = [ &amp;quot;^HUGO_&amp;quot;, &amp;quot;^WC_&amp;quot;,]
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
+&lt;h3 id=&#34;особенности-экспорта&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.3&lt;/span&gt; Особенности экспорта&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/11/23/org-roam-hugo-export/&#34;&gt;Org-roam. Экспорт в Hugo&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h2 id=&#34;сочетания-клавиш&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Сочетания клавиш&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;Экспорт осуществляется через стандартный интерфейс экспорта в org-mode.&lt;/li&gt;
@@ -2075,7 +2367,7 @@ Content
 &lt;li&gt;В качестве языка описания страниц используется Markdown. Сам Hugo использует библиотеку &lt;a href=&#34;https://github.com/yuin/goldmark/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Goldmark&lt;/a&gt;. Этот диалект полностью соответствует спецификации &lt;a href=&#34;https://commonmark.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CommonMark&lt;/a&gt;.&lt;/li&gt;
 &lt;li&gt;Язык расширен в основном за счёт операторов (shortcodes) и поддержки расширений для диаграмм, LaTeX и др. ( см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2020/11/26/hugo-markdown/&#34;&gt;Синтаксис Markdown для генератора сайтов Hugo&lt;/a&gt;).&lt;/li&gt;
 &lt;li&gt;Кроме того, возможно использование и других диалектов Markdown.&lt;/li&gt;
-&lt;li&gt;Также возможно использование &lt;a href=&#34;https://github.com/niklasfasching/go-org&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Emacs Org-mode&lt;/a&gt;, &lt;a href=&#34;https://asciidoctor.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;AsciiDoc&lt;/a&gt;, &lt;a href=&#34;http://docutils.sourceforge.net/rst.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;RST&lt;/a&gt;, &lt;a href=&#34;https://www.pandoc.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Pandoc&lt;/a&gt; через внешние программы.&lt;/li&gt;
+&lt;li&gt;Также возможно использование других легковесных языков разметки (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/08/28/lightweight-markup-languages/&#34;&gt;Легковесные языки разметки&lt;/a&gt;): &lt;a href=&#34;https://github.com/niklasfasching/go-org&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Emacs Org-mode&lt;/a&gt;, &lt;a href=&#34;https://asciidoctor.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;AsciiDoc&lt;/a&gt;, &lt;a href=&#34;http://docutils.sourceforge.net/rst.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;RST&lt;/a&gt; через внешние программы.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;собственная-favicon-для-сайта&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Собственная favicon для сайта&lt;/h2&gt;
 &lt;ul&gt;
@@ -2089,7 +2381,7 @@ Content
 &lt;h2 id=&#34;процесс-создания-блога&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Процесс создания блога&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;Предлагается не писать заметки непосредственно для сайта, а использовать систему генерации статических сайтов как бэкенд для систем ведения заметок.&lt;/li&gt;
-&lt;li&gt;Предлагается использовать режим &lt;em&gt;org-roam&lt;/em&gt; (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2020/10/05/use-org-roam/&#34;&gt;Использование org-roam&lt;/a&gt;) редактора &lt;em&gt;emacs&lt;/em&gt; как реализации &lt;em&gt;Zettelkasten&lt;/em&gt; (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/02/18/zettelkasten-method/&#34;&gt;Метод Zettelkasten&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Предлагается использовать режим &lt;em&gt;org-roam&lt;/em&gt; (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/11/23/org-roam-hugo-export/&#34;&gt;Org-roam. Экспорт в Hugo&lt;/a&gt;) редактора &lt;em&gt;emacs&lt;/em&gt; как реализации &lt;em&gt;Zettelkasten&lt;/em&gt; (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/02/18/zettelkasten-method/&#34;&gt;Метод Zettelkasten&lt;/a&gt;).&lt;/li&gt;
 &lt;li&gt;Для реализации методики &lt;em&gt;Zettelkasten&lt;/em&gt; на сайте необходима реализация обратных ссылок (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/06/02/backlinks-hugo/&#34;&gt;Обратные ссылки в Hugo&lt;/a&gt;).&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;создание-статического-сайта&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6&lt;/span&gt; Создание статического сайта&lt;/h2&gt;
@@ -2162,8 +2454,9 @@ Content
         &lt;li&gt;&lt;a href=&#34;#генерация-ссылок&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.2&lt;/span&gt; Генерация ссылок&lt;/a&gt;
           &lt;ul&gt;
             &lt;li&gt;&lt;a href=&#34;#ссылка-на-версию-на-другом-языке&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.2.1&lt;/span&gt; Ссылка на версию на другом языке&lt;/a&gt;&lt;/li&gt;
-            &lt;li&gt;&lt;a href=&#34;#другой-формат-вывода&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.2.2&lt;/span&gt; Другой формат вывода&lt;/a&gt;&lt;/li&gt;
-            &lt;li&gt;&lt;a href=&#34;#идентификаторы-заголовков&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.2.3&lt;/span&gt; Идентификаторы заголовков&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#ссылка-на-пакет-страниц&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.2.2&lt;/span&gt; Ссылка на пакет страниц&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#другой-формат-вывода&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.2.3&lt;/span&gt; Другой формат вывода&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#идентификаторы-заголовков&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.2.4&lt;/span&gt; Идентификаторы заголовков&lt;/a&gt;&lt;/li&gt;
           &lt;/ul&gt;
         &lt;/li&gt;
         &lt;li&gt;&lt;a href=&#34;#ссылка-на-статический-файл&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.3&lt;/span&gt; Ссылка на статический файл&lt;/a&gt;&lt;/li&gt;
@@ -2387,10 +2680,15 @@ Crash --&amp;gt; [*]
 &lt;/ul&gt;
 &lt;h2 id=&#34;ссылки&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Ссылки&lt;/h2&gt;
 &lt;h3 id=&#34;стандартные-ссылки&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.1&lt;/span&gt; Стандартные ссылки&lt;/h3&gt;
-&lt;p&gt;Можно использовать стандартный формат ссылок Markdown:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Можно использовать стандартный формат ссылок Markdown:
 &lt;pre&gt;&lt;code class=&#34;language-markdown&#34;&gt;[I&#39;m a link](https://www.google.com)
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h3 id=&#34;генерация-ссылок&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.2&lt;/span&gt; Генерация ссылок&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
 &lt;p&gt;Ссылки модно генерить с помощью операторов &lt;code&gt;ref&lt;/code&gt; и &lt;code&gt;relref&lt;/code&gt;:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-markdown&#34;&gt;{{&amp;lt; ref &amp;quot;document&amp;quot; &amp;gt;}}
 {{&amp;lt; ref &amp;quot;document#anchor&amp;quot; &amp;gt;}}
@@ -2404,7 +2702,11 @@ Crash --&amp;gt; [*]
 {{&amp;lt; relref &amp;quot;#anchor&amp;quot; &amp;gt;}}
 {{&amp;lt; relref &amp;quot;/blog/my-post.md&amp;quot; &amp;gt;}}
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;code&gt;ref&lt;/code&gt; задаёт абсолютную ссылку, &lt;code&gt;relref&lt;/code&gt; &amp;mdash; относительную.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;ref&lt;/code&gt; задаёт абсолютную ссылку, &lt;code&gt;relref&lt;/code&gt; &amp;mdash; относительную.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
 &lt;p&gt;Эти ссылки можно использовать внутри стандартных ссылок Markdown:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-markdown&#34;&gt;[A post]({{&amp;lt; ref &amp;quot;/post/my-page-name/index.md&amp;quot; &amp;gt;}})
 [A publication]({{&amp;lt; ref &amp;quot;/publication/my-page-name/index.md&amp;quot; &amp;gt;}})
@@ -2412,45 +2714,73 @@ Crash --&amp;gt; [*]
 [A relative link from one post to another post]({{&amp;lt; relref &amp;quot;../my-page-name/index.md&amp;quot; &amp;gt;}})
 [Scroll down to a page section with heading *Hi*](#hi)
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h4 id=&#34;ссылка-на-версию-на-другом-языке&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.2.1&lt;/span&gt; Ссылка на версию на другом языке&lt;/h4&gt;
-&lt;p&gt;Чтобы создать ссылку на версию документа на другом языке, используйте следующий синтаксис:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Чтобы создать ссылку на версию документа на другом языке, используйте следующий синтаксис:
 &lt;pre&gt;&lt;code class=&#34;language-markdown&#34;&gt;{{&amp;lt; relref path = &amp;quot;document.md&amp;quot; lang = &amp;quot;en&amp;quot;&#39; &amp;gt;}}
 &lt;/code&gt;&lt;/pre&gt;
-&lt;h4 id=&#34;другой-формат-вывода&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.2.2&lt;/span&gt; Другой формат вывода&lt;/h4&gt;
-&lt;p&gt;Чтобы сослаться на другой формат вывода:&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;ссылка-на-пакет-страниц&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.2.2&lt;/span&gt; Ссылка на пакет страниц&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;При ссылке на пакет страниц необходимо задать путь к пакету.&lt;/li&gt;
+&lt;li&gt;Возможно придётся задавать полный путь, поскольку краткий (только часть пути) может не сработать.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;другой-формат-вывода&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.2.3&lt;/span&gt; Другой формат вывода&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Чтобы сослаться на другой формат вывода:
 &lt;pre&gt;&lt;code class=&#34;language-markdown&#34;&gt;{{&amp;lt; relref path = &amp;quot;document.md&amp;quot; outputFormat = &amp;quot;rss&amp;quot; &amp;gt;}}
 &lt;/code&gt;&lt;/pre&gt;
-&lt;h4 id=&#34;идентификаторы-заголовков&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.2.3&lt;/span&gt; Идентификаторы заголовков&lt;/h4&gt;
-&lt;p&gt;Для документов markdown Hugo генерирует идентификаторы элементов для каждого заголовка на странице.
-Например, для кода&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;идентификаторы-заголовков&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.2.4&lt;/span&gt; Идентификаторы заголовков&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Для документов markdown Hugo генерирует идентификаторы элементов для каждого заголовка на странице.&lt;/li&gt;
+&lt;li&gt;Например, для кода
 &lt;pre&gt;&lt;code class=&#34;language-markdown&#34;&gt;## Reference
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;создаётся следующий HTML:&lt;/p&gt;
+создаётся следующий HTML:
 &lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;h2 id=&amp;quot;reference&amp;quot;&amp;gt;Reference&amp;lt;/h2&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Ссылку можно задать следующим образом:&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;Ссылку можно задать следующим образом:
 &lt;pre&gt;&lt;code class=&#34;language-markdown&#34;&gt;{{&amp;lt; ref &amp;quot;document.md#reference&amp;quot; &amp;gt;}}
 {{&amp;lt; relref &amp;quot;document.md#reference&amp;quot; &amp;gt;}}
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Идентификатор можно задать и явно:&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;Идентификатор можно задать и явно:
 &lt;pre&gt;&lt;code class=&#34;language-markdown&#34;&gt;## Reference A {#foo}
 ## Reference B {id=&amp;quot;bar&amp;quot;}
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h3 id=&#34;ссылка-на-статический-файл&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.3&lt;/span&gt; Ссылка на статический файл&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
 &lt;p&gt;Ссылка на файл из иерархии &lt;code&gt;static/&lt;/code&gt;, обычно размещаемый в подкаталоге &lt;code&gt;static/files/&lt;/code&gt;:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-markdown&#34;&gt;{{&amp;lt; staticref &amp;quot;files/cv.pdf&amp;quot; &amp;quot;newtab&amp;quot; &amp;gt;}}Download my CV{{&amp;lt; /staticref &amp;gt;}}
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Опция &lt;code&gt;newtab&lt;/code&gt; для открытия файла в новой вкладке.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Опция &lt;code&gt;newtab&lt;/code&gt; используется для открытия файла в новой вкладке.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h3 id=&#34;цитирование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.4&lt;/span&gt; Цитирование&lt;/h3&gt;
-&lt;p&gt;Цитирование страницы (ссылка на папку страницы):&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Цитирование страницы (ссылка на папку страницы):
 &lt;pre&gt;&lt;code class=&#34;language-markdown&#34;&gt;{{&amp;lt; cite page=&amp;quot;/publication/preprint&amp;quot; view=&amp;quot;4&amp;quot; &amp;gt;}}
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Опция &lt;code&gt;view&lt;/code&gt; задаёт один из стандартных форматов:&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;Опция &lt;code&gt;view&lt;/code&gt; задаёт один из стандартных форматов:
 &lt;ul&gt;
-&lt;li&gt;Stream,&lt;/li&gt;
-&lt;li&gt;Compact (установлен по умолчанию),&lt;/li&gt;
-&lt;li&gt;Card,&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Stream&lt;/code&gt;,&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Compact&lt;/code&gt; (установлен по умолчанию),&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Card&lt;/code&gt;,&lt;/li&gt;
 &lt;li&gt;Параметр устанавливается согласно &lt;code&gt;citation_style&lt;/code&gt; из &lt;code&gt;params.toml&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;специальные-элементы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6&lt;/span&gt; Специальные элементы&lt;/h2&gt;
 &lt;h3 id=&#34;содержание-страницы--table-of-contents&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6.1&lt;/span&gt; Содержание страницы (Table of Contents)&lt;/h3&gt;

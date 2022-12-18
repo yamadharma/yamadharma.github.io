@@ -1,0 +1,5485 @@
+<!DOCTYPE html>
+<!-- This site was created with Wowchemy. https://www.wowchemy.com -->
+<!-- Last Published: 18 декабря 2022 г. --><html lang="ru-ru" >
+
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  
+  
+    <meta name="generator" content="Wowchemy 5.7.0 for Hugo" />
+  
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+  
+
+  
+  
+  
+
+  
+  
+
+  
+  
+    
+    <script src="https://yamadharma.github.io/js/mathjax-config.js"></script>
+  
+
+  
+
+  <link rel="stylesheet" href="https://yamadharma.github.io/css/vendor-bundle.min.16f785cdb553c8c4431db6775122af35.css" media="print" onload="this.media='all'">
+
+  
+  
+  
+    
+    
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.2/css/academicons.min.css" integrity="sha512-KlJCpRsLf+KKu2VQa5vmRuClRFjxc5lXO03ixZt82HZUk41+1I0bD8KBSA0fY290ayMfWYI9udIqeOWSu1/uZg==" crossorigin="anonymous" media="print" onload="this.media='all'">
+    
+
+    
+    
+    
+    
+      
+      
+    
+    
+    
+
+    
+    
+    
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.min.css" integrity="" crossorigin="anonymous" media="print" onload="this.media='all'">
+    
+
+    
+
+    
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+  
+
+  
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="https://yamadharma.github.io/css/wowchemy.b94444cb4d6a9c84f702b833d5ebaae4.css" />
+
+  
+  
+  
+  
+  
+  
+  
+    
+    
+    <link rel="stylesheet" href="https://yamadharma.github.io/css/libs/chroma/github-light.min.css" title="hl-light" media="print" onload="this.media='all'" >
+    <link rel="stylesheet" href="https://yamadharma.github.io/css/libs/chroma/dracula.min.css" title="hl-dark" media="print" onload="this.media='all'" disabled>
+  
+
+  
+  
+
+
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-162854716-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+      dataLayer.push(arguments);
+  }
+
+  function trackOutboundLink(url, target) {
+    gtag('event', 'click', {
+         'event_category': 'outbound',
+         'event_label': url,
+         'transport_type': 'beacon',
+         'event_callback': function () {
+           if (target !== '_blank') {
+             document.location = url;
+           }
+         }
+    });
+    console.debug("Outbound link clicked: " + url);
+  }
+
+  function onClickCallback(event) {
+    if ((event.target.tagName !== 'A') || (event.target.host === window.location.host)) {
+      return;
+    }
+    trackOutboundLink(event.target, event.target.getAttribute('target'));  
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'UA-162854716-1', { 'anonymize_ip': true });
+  gtag('set', {'cookie_flags': 'SameSite=None;Secure'});
+
+  
+  document.addEventListener('click', onClickCallback, false);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+
+
+
+
+
+
+  <meta name="author" content="Дмитрий Сергеевич Кулябов" />
+
+
+
+
+
+  
+
+<meta name="description" content="Helm &mdash; фреймворк автодополнения (completion) и сужения выбора для Emacs." />
+
+
+
+<link rel="alternate" hreflang="ru-ru" href="https://yamadharma.github.io/ru/post/2022/12/14/emacs-completion-helm/" />
+<link rel="canonical" href="https://yamadharma.github.io/ru/post/2022/12/14/emacs-completion-helm/" />
+
+
+
+  <link rel="manifest" href="https://yamadharma.github.io/ru/manifest.webmanifest" />
+
+
+
+<link rel="icon" type="image/png" href="https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_32x32_fill_lanczos_center_3.png" />
+<link rel="apple-touch-icon" type="image/png" href="https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_180x180_fill_lanczos_center_3.png" />
+
+<meta name="theme-color" content="#1565c0" />
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+<meta property="twitter:card" content="summary" />
+
+  <meta property="twitter:site" content="@dskulyabov" />
+  <meta property="twitter:creator" content="@dskulyabov" />
+<meta property="twitter:image" content="https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png" />
+<meta property="og:site_name" content="Д. С. Кулябов" />
+<meta property="og:url" content="https://yamadharma.github.io/ru/post/2022/12/14/emacs-completion-helm/" />
+<meta property="og:title" content="Emacs. Автодополнение. Helm | Д. С. Кулябов" />
+<meta property="og:description" content="Helm &mdash; фреймворк автодополнения (completion) и сужения выбора для Emacs." /><meta property="og:image" content="https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png" /><meta property="og:locale" content="ru-ru" />
+
+  
+    <meta
+      property="article:published_time"
+      content="2022-12-14T20:25:00&#43;03:00"
+    />
+  
+  
+    <meta property="article:modified_time" content="2022-12-14T20:45:00&#43;03:00">
+  
+
+
+
+
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://yamadharma.github.io/ru/post/2022/12/14/emacs-completion-helm/"
+  },
+  "headline": "Emacs. Автодополнение. Helm",
+  
+  "datePublished": "2022-12-14T20:25:00+03:00",
+  "dateModified": "2022-12-14T20:45:00+03:00",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Дмитрий Сергеевич Кулябов"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "Д. С. Кулябов",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_192x192_fill_lanczos_center_3.png"
+    }
+  },
+  "description": "\u003cp\u003eHelm \u0026mdash; фреймворк автодополнения (completion) и сужения выбора для Emacs.\u003c/p\u003e"
+}
+</script>
+
+  
+
+  
+
+
+
+
+  
+  
+  
+
+  
+  
+
+  
+  
+  
+  
+  
+    <script src="https://cdn.jsdelivr.net/gh/osano/cookieconsent@3.1.1/build/cookieconsent.min.js" integrity="sha512-yXXqOFjdjHNH1GND+1EO0jbvvebABpzGKD66djnUfiKlYME5HGMUJHoCaeE4D5PTG2YsSJf6dwqyUUvQvS0vaA==" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/osano/cookieconsent@3.1.1/build/cookieconsent.min.css" integrity="sha512-LQ97camar/lOliT/MqjcQs5kWgy6Qz/cCRzzRzUCfv0fotsCTC9ZHXaPQmJV8Xu/PVALfJZ7BDezl5lW3/qBxg==" crossorigin="anonymous">
+  
+  <script>
+  window.addEventListener("load", function(){
+    window.cookieconsent.initialise({
+      "palette": {
+        "popup": {
+          "background": "#1565c0",
+          "text": "rgb(255, 255, 255)"
+        },
+        "button": {
+          "background": "rgb(255, 255, 255)",
+          "text": "#1565c0"
+        }
+      },
+      "theme": "classic",
+      "content": {
+        "message": "Для комфорной навигации на этом сайте используются куки (cookies).",
+        "dismiss": "Понял!",
+        "link": "Узнать больше",
+        "href": "https://www.cookiesandyou.com"
+      }
+    })});
+  </script>
+
+
+
+  
+  <title>Emacs. Автодополнение. Helm | Д. С. Кулябов</title>
+
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper   " data-wc-page-id="d1ea29427c7716832234fccc712a23a4" >
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script src="https://yamadharma.github.io/js/wowchemy-init.min.ec9d49ca50e4b80bdb08f0417a28ed84.js"></script>
+
+  
+
+
+<aside class="search-modal" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Поиск</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#" aria-label="Close"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Поиск ..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search" class="form-control"
+        aria-label="Поиск ...">
+        
+      </div>
+
+      
+      
+
+      
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+
+  <div class="page-header header--fixed">
+    
+
+
+
+
+
+
+
+
+
+
+
+
+<header>
+  <nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+    <div class="container-xl">
+
+      
+      <div class="d-none d-lg-inline-flex">
+        <a class="navbar-brand" href="https://yamadharma.github.io/ru/">Д. С. Кулябов</a>
+      </div>
+      
+
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Переключить навигацию">
+      <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+      
+      <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+        <a class="navbar-brand" href="https://yamadharma.github.io/ru/">Д. С. Кулябов</a>
+      </div>
+      
+
+      
+      
+      <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+        
+        <ul class="navbar-nav d-md-inline-flex">
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="https://yamadharma.github.io/ru/#about"><span>Обо мне</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="https://yamadharma.github.io/ru/#posts"><span>Блог</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="https://yamadharma.github.io/ru/#projects"><span>Проекты</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="https://yamadharma.github.io/ru/#featured"><span>Публикации</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="https://yamadharma.github.io/ru/course/"><span>Курсы</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="https://yamadharma.github.io/ru/#contact"><span>Контакты</span></a>
+          </li>
+
+          
+          
+
+        
+
+          
+        </ul>
+      </div>
+
+      <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+
+        
+        
+          
+        
+
+        
+        
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#" aria-label="Поиск"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+        
+        
+        <li class="nav-item dropdown theme-dropdown">
+          <a href="#" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-label="Display preferences">
+            <i class="fas fa-moon" aria-hidden="true"></i>
+          </a>
+          <div class="dropdown-menu">
+            <a href="#" class="dropdown-item js-set-theme-light">
+              <span>Light</span>
+            </a>
+            <a href="#" class="dropdown-item js-set-theme-dark">
+              <span>Dark</span>
+            </a>
+            <a href="#" class="dropdown-item js-set-theme-auto">
+              <span>Automatic</span>
+            </a>
+          </div>
+        </li>
+        
+
+        
+        
+
+      </ul>
+
+    </div>
+  </nav>
+</header>
+
+
+  </div>
+
+  <div class="page-body">
+    
+    
+    
+      
+      
+      <div class="article-container py-1" style="background: initial">
+        
+  <nav class="d-none d-md-flex" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      
+  
+    
+  
+    
+  
+
+    <li class="breadcrumb-item">
+      <a href="https://yamadharma.github.io/ru/">
+        
+          Home
+        
+      </a>
+    </li>
+  
+
+    <li class="breadcrumb-item">
+      <a href="https://yamadharma.github.io/ru/post/">
+        
+          Posts
+        
+      </a>
+    </li>
+  
+
+      <li class="breadcrumb-item active" aria-current="page">
+        Emacs. Автодополнение. Helm
+      </li>
+    </ol>
+  </nav>
+
+
+
+
+      </div>
+    
+
+    <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>Emacs. Автодополнение. Helm</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+          Обновлено
+      
+    
+    2022-12-14
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    35 мин. для прочтения
+  </span>
+  
+
+  
+  
+  
+  
+
+  
+  
+
+</div>
+
+    
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      <p>Helm &mdash; фреймворк автодополнения (completion) и сужения выбора для Emacs.</p>
+<details class="toc-inpage d-print-none  " open>
+  <summary class="font-weight-bold">Содержание</summary>
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#общая-информация"><span class="section-num">1</span> Общая информация</a></li>
+    <li><a href="#конфигурирование"><span class="section-num">2</span> Конфигурирование</a></li>
+    <li><a href="#использование"><span class="section-num">3</span> Использование</a></li>
+    <li><a href="#преимущества-helm"><span class="section-num">4</span> Преимущества Helm</a></li>
+    <li><a href="#работайте-с-текстом-под-курсором"><span class="section-num">5</span> Работайте с текстом под курсором</a></li>
+    <li><a href="#автоматическое-изменение-размера"><span class="section-num">6</span> Автоматическое изменение размера</a></li>
+    <li><a href="#сводка-сочетаний-клавиш"><span class="section-num">7</span> Сводка сочетаний клавиш</a></li>
+  </ul>
+</nav>
+</details>
+
+<h2 id="общая-информация"><span class="section-num">1</span> Общая информация</h2>
+<ul>
+<li>Репозиторий: <a href="https://github.com/emacs-helm/helm" target="_blank" rel="noopener">https://github.com/emacs-helm/helm</a>.</li>
+<li>Helm является форком пакета <code>anything.el</code> и может считаться его преемником.</li>
+</ul>
+<h2 id="конфигурирование"><span class="section-num">2</span> Конфигурирование</h2>
+<p>Минимальная конфигурация:</p>
+<p>( требуется &rsquo; helm-config )
+( helm-mode 1 )
+Расширенная конфигурация:</p>
+<p>( требуется &rsquo; шлем &rsquo; )
+( требуется &rsquo; хелм-конфиг &rsquo; )</p>
+<p>;; Значение по умолчанию &ldquo;Cx c&rdquo; довольно близко к &ldquo;Cx Cc&rdquo;, что приводит к выходу из Emacs.
+;; Изменено на &ldquo;Cc h&rdquo;. Примечание: мы должны установить &ldquo;Cc h&rdquo; глобально, потому что мы
+;; нельзя изменить ` helm-command-prefix-key &rsquo; после загрузки ` helm-config &lsquo;. ( global-set-key ( kbd &ldquo;Cc h&rdquo; ) &lsquo;helm-command-prefix ) ( global-unset-key ( kbd &ldquo;Cx c&rdquo; ) )</p>
+<p>( определить ключ helm-map ( kbd &ldquo;&lt;tab&gt;&rdquo; ) &lsquo;helm-execute-persistent-action ) )  ; перепривязать вкладку для запуска постоянного действия
+( define-key helm-map ( kbd &ldquo;Ci&rdquo; ) &lsquo;helm-execute-persistent-action )  ; заставить TAB работать в терминале
+( define-key helm-map ( kbd &ldquo;Cz&rdquo; )   &lsquo;helm-select-action )  ; список действий с использованием Cz</p>
+<p>( когда  ( исполняемый файл-найти &ldquo;завиток&rdquo; )
+( setq helm-google-suggest-use-curl-p t ) )</p>
+<p>( setq helm-split-window-in-side-pt ; открыть буфер helm внутри текущего окна, не занимая все другое окно
+helm-move-to-line-cycle-in-source t ; перейти в конец или начало исходного кода, когда достижение верхней или нижней части исходного кода.
+helm-ff-search-library-in-sexp t ; поиск библиотеки в ` require &rsquo; и ` delay-function &rsquo; sexp.helm
+-scroll-amount                     8  ; прокрутка 8 строк другого окна с помощью M- &lt;следующий&gt;/M-&lt;предыдущий&gt;
+helm-ff-имя-файла-история-использования-недавний t
+helm-echo-input-in-header-line t )</p>
+<p>( defun  spacemacs//helm-hide-minibuffer-maybe  ()
+&ldquo;Скрыть минибуфер в сеансе Helm, если мы используем строку заголовка в качестве поля ввода.&rdquo;
+( when  ( with-helm-buffer helm-echo-input-in-header-line )
+( let  ( ( ov ( make-overlay ( point-min )  ( point-max ) nil nil t ) ) )
+( overlay-put ov &lsquo;окно ( выбранное окно ) )
+( overlay-put ov &lsquo;face
+( let  ( (bg-color ( face-background &lsquo;default nil ) ) )
+` ( : background ,bg-color :foreground ,bg-color ) ) )
+( setq-local cursor-type nil ) ) ) )</p>
+<p>( add-hook &lsquo;helm-minibuffer-set-up-hook
+&lsquo;spacemacs//helm-hide-minibuffer-maybe )</p>
+<p>( setq helm-autoresize-max-height 0 )
+( setq helm-autoresize-min-height 20 )
+( helm-autoresize-mode 1 )</p>
+<p>( режим руля 1 )</p>
+<h2 id="использование"><span class="section-num">3</span> Использование</h2>
+<p>После использования Helm вы сильно изменитесь в том, как вы используете Emacs. После того, как вы привыкнете к Хелму, вам не захочется его покидать. Однако, если вам не нравится Helm, вы все равно можете использовать Ido, который будет представлен в следующем разделе. Давайте научимся использовать шлем, играя с ним.</p>
+<p>Автодополнение с помощью Helm сильно отличается от обычного автодополнения в Emacs:</p>
+<p>Вы печатаете что-то.
+Вместо TAB для расширения общей части до тех пор, пока вы не найдете своих кандидатов, в Helm вы вводите части кандидата, которого хотите найти, разделенные пробелами. В Helm эти строки называются паттернами . Шаблоны также могут быть регулярными выражениями.
+Helm попытается выполнить поиск и сортировку по наибольшему соответствию сверху вниз. Лучшее совпадение находится вверху, поэтому вы можете нажать RET и выбрать его.
+Вы можете перемещаться по буферу с помощью Cn и Cp или &lt;up&gt; и &lt;down&gt; для перемещения вверх/вниз, Cv и Mv для перехода к следующей/предыдущей странице и M-&lt; и M-&gt; для перемещения вверх и вниз по странице. Буфер Шлема.
+Вы можете отметить кандидатов с помощью C-SPC ; это полезно, когда вам нужно выполнить действие со многими кандидатами по вашему выбору. Ма , чтобы выбрать все.
+Вы можете вставить отмеченные кандидаты в текущий буфер с помощью Cc Ci . Это полезно, когда вы сузили список кандидатов, т. е. файлов, а затем хотите сохранить таких кандидатов.
+Если вы обнаружите, что текущее горизонтальное окно Helm маленькое, вы всегда можете переключить его на вертикальное окно с помощью Ct . Запуск Ct снова возвращает окно Helm в горизонтальное положение и так далее.
+Вы можете попрактиковаться в приведенных выше командах с Cx b , который запускается helm-mini. Если вы отмечаете более одного буфера, RET открывает выбранные буферы.</p>
+<p>ВАЖНО : помните, что когда вы используете Helm, вы никогда не используете TAB для завершения префиксов, таких как vanilla или другие пакеты, такие как Ido и связанные с ним пакеты. В Helm, когда вы что-то вводите, кандидаты автоматически обновляются . В ванильном Emacs вам нужно нажать TAB , чтобы получить список кандидатов. Это отличная функция Helm, а не недостаток . Вы должны забыть о привычке использовать TAB для поиска кандидатов. Если вы хотите быстро завершить шаблоны поиска в приглашении Helm, вам всегда нужно hippie-expandзаменить поведение TAB , как описано в начале этого раздела. Это самая большая путаница для новых людей, переходящих на Helm. Когда вы привыкнете к Helm, он вам понравится.</p>
+<p>Когда вы выполняете команду Helm, вы входите в сеанс Helm. Сеанс Helm — это специальное состояние для работы с функциями Helm; во время сеанса Helm всегда открыт выделенный буфер Helm. Когда вы выходите из сеанса Helm, буфер Helm закрывается. В Helm вам в основном нужно запомнить эти 3 команды:</p>
+<p>Войдите в меню действий с помощью TAB . Действие — это команда, которая выполняется для отмеченных кандидатов (одного или нескольких) и завершает текущий сеанс Helm; меню действий — это текстовое меню, в котором перечислены действия, которые вы можете предпринять. Например, Find File(открыть файл), Find File in Dired, Grep File…
+Cz выполняет helm-execute-persistent-action ; постоянное действие — это действие, используемое в сеансе Helm, которое не завершает сеанс.
+В некоторых сеансах Helm, таких как helm-find-filesили helm-mini, вы можете выбрать более одного кандидата и выполнить над ними действия, такие как grepили open.
+Однако для удобства давайте TAB с Cz в приведенных выше настройках, чтобы нам было удобнее использовать TAB , потому что на самом деле вы используете helm-execute-persistent-action чаще, чем helm-select-action , добавив фрагмент кода ниже:</p>
+<p>( определить ключ helm-map ( kbd &ldquo;&lt;tab&gt;&rdquo; ) &lsquo;helm-execute-persistent-action ) )  ; перепривязать вкладку для выполнения постоянного действия
+( define-key helm-map ( kbd &ldquo;Ci&rdquo; ) &lsquo;helm-execute-persistent-action )  ; заставить TAB работать в терминале
+( define-key helm-map ( kbd &ldquo;Cz&rdquo; )   &lsquo;helm-select-action )  ; список действий с использованием Cz
+В сеансе Helm, если вам нужна помощь, используйте Cc ? , или снова обратитесь к этому руководству. Команды в приведенных выше сочетаниях клавиш достаточно хороши, чтобы помочь вам продуктивно использовать Helm.</p>
+<h2 id="преимущества-helm"><span class="section-num">4</span> Преимущества Helm</h2>
+<p>Простой и последовательный интерфейс : каждый сеанс Helm начинается с одного и того же простого интерфейса: подсказка для ввода шаблонов поиска и буфер Helm для отображения результатов по мере ввода пользователем. Благодаря последовательному и простому интерфейсу новые люди с легкостью используют Helm.
+Интерактивность : по своей природе Helm очень интерактивен: когда пользователь вводит текст, результаты немедленно обновляются в буфере Helm. Благодаря этой функции Helm предоставляет уникальную интерактивную версию многих команд, которых нет за пределами Helm. Например, helm-ff-run-grep, который обновляет результаты grep по мере ввода.
+Сосредоточьтесь на том, чтобы сначала найти то, что вы хотите, а потом решить, что с этим делать : с Helm вам не нужно думать о том, что вы собираетесь делать с кандидатом, пока вы его не найдете. Например, вам нужно решить, следует ли открывать файл в текущем окне или в другом окне, прежде чем открывать файл. Напротив, Helm помогает вам сосредоточиться на том, что вы хотите найти; как только вы найдете нужный объект (например, файл или каталог), вы только тогда решите, что с ним делать, например, открыть файл в другом окне или открыть файл с правами root. Это имеет то преимущество, что вам не нужно отменять выполняемую команду, если вы решите, что предпринимаемое вами действие больше не подходит. Например, если вы выполнили Cx Cfчтобы открыть файл, но подумайте, что лучше открывать файл в другом окне. Затем вы нажимаете Cg , чтобы отменить команду и повторно выполнить версию Cx 4 Cf , и вам придется начинать сеанс навигации заново!
+Matching mechanism: This is a powerful feature in Helm that I haven&rsquo;t seen in other packages: out of order matching, with regular expression. That&rsquo;s right, you can enter every search pattern as a regexp!. A really powerful concept: it enhances explanatory power for many things. One use cases is exploring a new project: using Helm, you can &ldquo;learn&rdquo; the project structure interactively. For example, suppose I&rsquo;m completely new to the Linux kernel source tree, and I wonder whether a file main.c exists for x86 architecture. I know that they must have x86 directory somewhere, and the file could contain main.c in it, i.e. It can be main.c or x86-main.c. Это единственная часть информации, которую я знаю, поэтому я попробовал ее в Helm Projectile (пакет, использующий фреймворк Helm, который не поставляется со стандартным Helm. Подробнее об этом можно прочитать в моем руководстве по Helm Projectile ):</p>
+<p>helm_projectile.gif</p>
+<p>Во- первых, я вхожу main.c, и у меня много кандидатов. Затем мне нужен только main.cкаталог x86, поэтому я набираю x86. Весь шаблон таков, main.c x86и Helm возвращает правильного кандидата: arch/x86/boot/main.c.</p>
+<p>Он существует. Мне также интересно, где i5100_edac.cон существует, потому что у Intel уже давно есть даташит на него, поэтому он должен быть реализован. Как показано на скринкасте выше, был только один файл i5100_eda.c. При использовании так называемого механизма «нечеткого сопоставления» вам по-прежнему требуется знать вещи заранее, и это сильно ограничивает объяснительную способность. Например, чтобы добраться до файла driver/edac/i5100_edac.c, нужно знать путь к нечеткому совпадению вот так: dedi51; d для сопоставления driver, ed для сопоставления , edacпотому что другие каталоги также начинаются с «e»; i51 для сопоставленияi5100_edac.cпотому что некоторые файлы также начинаются с «i5» или содержат «1» и «0» или «edac». «i51» — единственный уникальный префикс. Используя Helm, вы можете сразу ввести уникальный шаблон кандидата и игнорировать общий префикс, чтобы получить кандидата. Например, в приведенном выше скринкасте я driver/edac/i5100_edac.c сразу же попал, просто набрав « i51 », и файл был сужен.</p>
+<p>Нечеткое сопоставление также может быть менее полезным при работе с большим исходным деревом, где многие файлы имеют общий префикс.</p>
+<p>Начиная с Helm 1.6.5, Helm включает нечеткое сопоставление для многих команд и способ для автора пакета активировать нечеткое сопоставление.</p>
+<p>Производительность : Helm может без проблем работать с более чем 30000 кандидатов.</p>
+<h2 id="работайте-с-текстом-под-курсором"><span class="section-num">5</span> Работайте с текстом под курсором</h2>
+<p>Если вы уже находитесь в сеансе Helm, вы все равно можете получить ввод из текущего буфера редактирования с помощью следующих привязок клавиш:</p>
+<p>Cw копирует слово за точкой, начиная с точки до конца слова, в приглашение Helm (минибуфер).
+Mn дергает символ в точке
+Если helm-modeэтот параметр активирован, команды справки также автоматически распознают символы в точке, если такие символы существуют в Emacs, и используют интерфейс Helm для интерактивного выбора. Например:</p>
+<p>Ch f , который запускается describe-function, автоматически принимает символ в точке как значение по умолчанию для функции поиска.
+Ch v , который запускается describe-variable, автоматически принимает символ в точке как значение по умолчанию для переменной поиска.
+Ch w , который запускается where-is, автоматически принимает символ в точке по умолчанию для отображения привязки клавиш для команды.
+… и так далее… ( Ch Ch для просмотра всех команд)
+Все эти команды автоматически используют Helm.</p>
+<h2 id="автоматическое-изменение-размера"><span class="section-num">6</span> Автоматическое изменение размера</h2>
+<p>Helm может автоматически изменять размер своего буфера, чтобы соответствовать количеству кандидатов, если вы включите helm-autoresize-mode:</p>
+<p>( режим helm-autoresize-t )
+Вы можете настроить минимальную и максимальную высоту, которую Helm может изменить, с помощью этих двух переменных:</p>
+<p>helm-autoresize-max-height
+helm-autoresize-min-height
+По умолчанию helm-autoresize-max-heightустановлено значение 40, что означает, что буфер кандидата Helm имеет максимальную высоту 40% от высоты текущего кадра. Точно так же helm-autoresize-min-heightуказывает минимальную высоту для буфера-кандидата Helm в процентах от текущей высоты кадра.</p>
+<p>Если вы не хотите, чтобы размер окна Helm изменялся, вы можете установить helm-autoresize-max-heightравным helm-autoresize-min-height.</p>
+<p>Если вы используете Golden-ratio , вы должны отключить его взаимодействие с окном Helm (Примечание: если вы используете Spacemacs, вам не нужно добавлять этот бит конфигурации):</p>
+<p>( defun  pl/helm-alive-p  ()
+( if  ( boundp &lsquo;helm-alive-p )
+( значение символа &lsquo;helm-alive-p ) ) ) )</p>
+<p>( добавить в список «функции подавления золотого отношения» pl/helm-alive-p )
+В DEMO 1 helm-autoresize-max-heightне равно helm-autoresize-min-height(начинается, когда START DEMOпоявляется в минибуфере):</p>
+<p>helm-autoresize-mode.gif</p>
+<p>В DEMO 2 helm-autoresize-max-heightравно helm-autoresize-min-height(начинается, когда START DEMOпоявляется в минибуфере):</p>
+<p>helm-autoresize-fix.gif</p>
+<p>Команда:helm-M-x
+Привязка ключей :</p>
+<p>Нет привязки клавиш по умолчанию. Мы должны дать ему один:</p>
+<p>( global-set-key ( kbd &ldquo;Mx&rdquo; ) &lsquo;helm-Mx )
+Описание :</p>
+<p>M-xи увидеть разницу. Вы увидите буфер со списком команд в Emacs. Некоторым из вас это может не понравиться, потому что поначалу это кажется излишним. Однако, даже если вам действительно не нравится, пожалуйста, потерпите меня до конца.</p>
+<p>Теперь введите li pa; правильно li, пробел и pa. Вы увидите, list-packagesнаходится на вершине. Сюрприз! Попробуем другой ввод. Теперь введите pa ^li, и вы получите list-packageв качестве первой записи.</p>
+<p>helm-M-xтакже лучше, чем по умолчанию M-x, потому что он предоставляет привязки клавиш прямо рядом с командами, а TAB предоставляет вам встроенную документацию этой команды в другом буфере.</p>
+<p>Начиная с версии 1.6.5, helm-M-xвозможно нечеткое сопоставление кандидатов, но по умолчанию это не включено. Чтобы включить нечеткое сопоставление, добавьте следующий параметр:</p>
+<p>( setq helm-Mx-fuzzy-match t )  ;; опциональное нечеткое сопоставление для helm-Mx
+ПРИМЕЧАНИЕ . Вы должны выполнить привязку helm-M-xк Mx вручную. В противном случае вы все равно получите завершение Helm, но с помощью vanilla Mx , который не предоставляет вышеуказанных функций, таких как отображение привязок клавиш и TAB для открытия встроенной документации. Еще одна важная вещь: вы должны передать аргумент префикса ПОСЛЕ того, как вы запустите helm-M-x, потому что ваш аргумент префикса будет отображаться в модельной линии, когда он находится в helm-M-x буфере. Передача аргумента префикса BEFORE helm-M-x не имеет никакого эффекта .</p>
+<p>Демо :</p>
+<p>helm-mx.gif</p>
+<p>Команда:helm-show-kill-ring
+Привязка ключей :</p>
+<p>Нет привязки клавиш по умолчанию. Мы должны дать ему один:</p>
+<p>( global-set-key ( kbd &ldquo;My&rdquo; ) &lsquo;helm-show-kill-ring )
+Описание :</p>
+<p>Вы помните связывающий C-y цикл kill ring ? Тем не менее, работа со стандартным списком убийств болезненна, потому что у вас есть бремя помнить невидимую вещь, то есть список убийств, в какой позиции вы что убиваете. Чтобы просмотреть список убийств, вы должны нажать Ch v и ввести текст kill-ring , чтобы увидеть содержимое списка убийств, а это некрасиво.</p>
+<p>helm-show-kill-ringрешает эту проблему: Helm показывает список убийств в удобочитаемом формате и позволяет сузить список, введя подстроки кандидатов. Вы освобождаетесь от когнитивного бремени стандартного My .</p>
+<p>Если вы следуете моей конфигурации Helm, M-yпривязывается к helm-show-kill-ring. Попробуйте и посмотрите! Гораздо проще, чем по умолчанию.</p>
+<p>Демо :</p>
+<p>helm-kill-ringв действии (демонстрация начинается, когда вы видите STARTв минибуфере):</p>
+<p>helm-kill-ring.gif</p>
+<p>Команда:helm-mini
+Привязка ключей :</p>
+<p>Нет привязки клавиш по умолчанию. Мы должны дать ему один:</p>
+<p>( global-set-key ( kbd &ldquo;Cx b&rdquo; ) &lsquo;helm-mini )
+Чтобы включить нечеткое сопоставление, добавьте следующие настройки:</p>
+<p>( setq helm-buffers-fuzzy-matching t
+helm-recentf-fuzzy-match t )
+helm-miniсостоит из нескольких источников:</p>
+<p>Текущие открытые буферы под заголовком Buffers.
+Недавно открытые файлы в шапке Recentf.
+Позволяет создать новый буфер, нажав RET под заголовком Create Buffer.
+Вы можете перемещаться между группами с помощью клавиш со стрелками &lt;влево&gt; и &lt;вправо&gt; . Или вы можете просто прокрутить вниз/вверх с помощью Cv и Mv .</p>
+<p>Вы можете отфильтровать буферы по основному режиму, используя шаблон *&lt;major-mode&gt;. Например, *diredсужается до буферов Dired. Вы также можете отфильтровать буферы, принадлежащие к основному режиму, добавив !их в шаблон. Например, *!diredвыберите все буферы, которые не находятся в режиме Dired.</p>
+<p>Вы также можете выбрать буферы в определенном каталоге, используя шаблон <em>directory. Например, /.emacs.d/сужается до буферов, которые находятся только внутри .emacs.d. Добавьте !перед шаблоном для обратной версии. Например, !</em>.emacs.d/сужается до буферов не в .emacs.d.</p>
+<p>Вы даже можете использовать helm-miniдля сужения до буферов, которые содержат регулярное выражение в своем содержимом, добавляя @перед шаблоном поиска. Например, вы можете выбрать буферы, которые содержат только строку «тест»: @test. Если вы хотите увидеть расположение строки в буферах, отметьте весь буфер с помощью Ma и Cs во время helm-miniсеанса, чтобы переключиться на helm-moccur. Вы можете пометить буферы для поиска с помощью C-SPC . При переключении на helm-moccurотображаются совпадения, находящиеся в выбранных буферах. Вы также можете работать occur только с текущим буфером с аргументом префикса: Cu Cs; это полезно, когда вы уже пометили буферы, но не хотите снимать пометку только для просмотра только в буфере. Однако в целом Cu Cs вам не понадобится .</p>
+<p>Значение цветов и префиксов для буферов:</p>
+<p>Удаленные буферы имеют префикс «@».
+Красный =&gt; Файл буфера был изменен на диске внешним процессом.
+Indianred2 =&gt; Буфер существует, но его файл удален.
+Оранжевый =&gt; Буфер изменен, и его файл не сохранен на диск.
+Курсив =&gt; Нефайловый буфер.
+Некоторые темы Emacs меняют цвета. Вы должны проверить соответствующий цвет в своих цветовых темах.</p>
+<p>Пример:</p>
+<p>Если я ввожу шаблон: *lisp ^helm @moc, Helm сужает список, выбирая только буферы, которые находятся в режиме lisp, запускают helm и сопоставляют «moc» в их содержимом.
+Если я хочу указать более одного основного режима, разделите их с помощью ,, например, *!lisp,!sh,!funбудут перечислены все буферы, кроме тех, которые находятся в режиме lisp, sh-mode и фундаментальном режиме.
+Если я ввожу шаблон: *lisp ^helm moc. Обратите внимание, что на @этот раз helm не будет искать буферы режима lisp, начинающиеся с «helm» и имеющие в своем имени «moc».
+Если я введу шаблон: *!lisp !helmHelm сузится до буферов, которые не находятся в режиме «шепелявости» и не соответствуют «рулю».
+Если я введу шаблон: <em>helm</em> w3Helm сузит буферы, которые находятся в любом подкаталоге «helm» и соответствуют w3.</p>
+<p>helm-miniпохож на интерактивную версию ibuffer.</p>
+<p>Демо :</p>
+<p>руль-мини.gif</p>
+<p>Демонстрация начинается, когда вы видите Eval: STARTв минибуфере. Обратите внимание, что демонстрационное использование helm-buffers-listпочти такое же, как и helm-mini. Единственная разница в том, что helm-buffers-listиспользуется ido-virtual-buffersдля перечисления недавно использованных файлов, а helm-miniиспользует recentf.</p>
+<p>Все буферы C выбираются с использованием шаблона *C. В демонстрации я также выбираю буферы Tcl с помощью *Tcl, а затем снова переключаюсь на буферы C с помощью *C.
+Я только хочу иметь буферы, которые содержат только строку crash. Для этого я добавляю пробел, затем добавляю шаблон @crash. После начального шаблона поиска я передаю текущий выделенный буфер helm-moccur( moccurс интерфейсом Helm ) с помощью Cs . Кандидатов можно фильтровать постепенно, добавляя больше шаблонов, например, я добавил memoryдля фильтрации буферов, содержащих строку «memory», среди буферов, содержащих crash. Вы также можете пометить несколько буферов с помощью C-SPC или пометить все буферы с помощью Ma для поиска всех буферов, перечисленных в helm-mini.
+Как видите, по мере того, как я фильтровал, количество кандидатов уменьшалось, как показано в модели. В конце концов, в результате фильтрации осталось 12 буферов, а не всего 253 буфера.
+Демонстрация выше теперь является частью домашней страницы Helm .</p>
+<p>Похожие команды :</p>
+<p>helm-multi-files: эта команда выводит список буферов и последних файлов и файлов в текущем каталоге. Однако, когда совпадений не найдено, helm-miniспрашивает, хотите ли вы создать новый буфер, выделив единственную запись, которая выглядит следующим образом:</p>
+<p>helm-новый-файл-buffer.gif</p>
+<p>пока helm-multi-filesпоказывает пустой буфер. Однако вы можете начать helm-locateсеанс поиска нужного файла по всей файловой системе, нажав Cc p . По умолчанию helm-for-files привязан к &lt;prefix&gt; f(текущий префикс Cc h ).</p>
+<p>helm-buffer-list: аналогично helm-mini, но вместо списка последних файлов из recentf, он использует ido-virtual-buffers, который является списком недавно посещенных файлов, управляемых ido. Виртуальные буферы не содержат путей. В зависимости от ваших предпочтений вы можете использовать эту команду вместо helm-mini. Чтобы включить нечеткое сопоставление ido-virtual-buffers, если вы уже установили helm-buffers-fuzzy-matching, tвы также получите нечеткое сопоставление для ido-virtual-buffers.
+Команда:helm-find-files
+Привязка ключей :</p>
+<p>&lt;prefix&gt; Cx Cf или Cx Cf (префикс Cx c по умолчанию или Cc h , если установлен). Это довольно длинная последовательность клавиш, и *=helm-find-files= заслуживает лучшей привязки:</p>
+<p>( global-set-key ( kbd &ldquo;Cx Cf&rdquo; ) &lsquo;helm-find-files )
+Описание :</p>
+<p>helm-find-filesэто навигация по файлам на стероидах:</p>
+<p>helm-find-filesможет выполнять нечеткое сопоставление кандидатов в текущем каталоге. например, &ldquo;fob&rdquo; или &ldquo;fbr&rdquo; завершат &ldquo;foobar&rdquo;.
+Вы также можете выполнить постоянное действие, которое привязано к Cz (по умолчанию) или TAB , если вы используете мою конфигурацию, чтобы сузить текущий кандидат выделения; Cz или TAB еще раз, чтобы просмотреть содержимое буфера. Вы можете прокручивать другой буфер вверх/вниз с помощью M-&lt;next&gt; и M-&lt;preor&gt; .
+В качестве альтернативы вы можете нажать Cj , чтобы сузить список до кандидата выделения, и еще раз Cj , чтобы просмотреть содержимое другого буфера. Кл возвращается.
+Вы также можете подняться на один уровень каталога с помощью Cl . ПРИМЕЧАНИЕ : если вы используете Cl , Helm поднимается на один уровень вверх и помещает курсор в каталог, из которого вы только что вышли. Если вы хотите подняться и навести курсор на родительский каталог, в командной строке Helm введите ../.
+После того, как вы поднялись с помощью Cl , вы можете вернуться к точно посещенным каталогам с помощью Cr .
+Чтобы создать каталог, введите новое имя, которого нет в текущем каталоге, и добавьте /его в конце. После создания каталога Helm продолжает работу в этом каталоге.
+Чтобы создать новый файл, введите имя и выберите верхнюю строку, рядом [?]с которой стоит символ. По умолчанию Helm всегда выбирает первое совпадение в каталоге.
+Вы можете вызвать grepтекущую выделенную запись с помощью Cs . Cu Cs выполняет рекурсивный grep.
+Введите ~/в конце шаблона, чтобы быстро добраться до домашнего каталога.
+Введите /в конце шаблона, чтобы быстро добраться до корня вашей файловой системы.
+Введите ./в конце шаблона, чтобы быстро добраться до каталога по умолчанию (начальный запуск сеанса). Если вы находитесь в каталоге по умолчанию, переместите курсор вверх.
+Вы можете выполнить дополнительные действия с выделенной записью, запустив helm-select-action, которая привязана к TAB по умолчанию и Cz в моей конфигурации. Гайд по каждому действию в меню действий написан в гайде Изучение больших проектов с помощью Projectile и Helm Projectile . Это написано там, потому что вы в конечном итоге будете использовать Projectile (управление проектами для Emacs, представленное в следующем разделе) для более эффективной навигации по файлам в любом месте и в любое время.</p>
+<p>Демо :</p>
+<p>Мне нужно было ввести в подсказку всего несколько символов, чтобы получить кандидата, которого я хотел среди множества кандидатов. Демонстрация начинается, когда вы видите STARTв минибуфере:</p>
+<p>helm-find-files.gif</p>
+<p>Найти файл в точке :
+Вы знали команду ffap? Он был представлен в части 1, но вот демонстрация:</p>
+<p>ffap.gif</p>
+<p>helm-find-filesЭто тоже можно сделать: все, что вам нужно сделать, это переместить точку на правильный путь к файлу, и Helm найдет правильный путь для вас, как на скриншоте. Теперь вам больше не нужно использовать отдельную команду для открытия файла в точке, а использовать ту же Cx Cf. Это действительно удобно.</p>
+<p>Истории файлов и каталогов :
+С аргументом префикса helm-find-filesотображает список посещенных каталогов. Если он выбран в точке, он helm-find-filesзапускается в этом каталоге, и вы можете перемещаться оттуда.</p>
+<p>Во время helm-find-filesсеанса вы можете получить список посещенных файлов и каталогов с помощью Cc h . Оттуда действие по умолчанию — RET , чтобы открыть файл/каталог в точке или продолжить, helm-find-filesначиная с этого файла/каталога.</p>
+<p>Вы можете использовать Mp и Mn для перемещения назад и вперед между ранее посещенными каталогами.</p>
+<p>Команда: helm-ff-do-grep, live grep в Helm
+Привязка ключей :</p>
+<p>Изнутри helm-find-filesсеанса вы можете вызвать helm-ff-run-grepс помощью Cs поиск файла/каталога в выделенной записи в буфере Helm. С префиксным аргументом Cu рекурсивно ищет выбранный каталог.</p>
+<p>Вы также можете сохранить результат в буфер Grep, используя действие Save results in Grep buffer. Обратите внимание, что этот буфер Grep создается Helm, а не Grep-буфер Emacs по умолчанию. Он имеет минимальные привязки клавиш. В *hgrep*буфере нажмите Ch m , чтобы просмотреть все привязки клавиш.</p>
+<p>Описание :</p>
+<p>Каждый раз, когда вы вводите символ, результат немедленно helmобновляется . grepВы можете использовать ack-grepдля замены grepэтой конфигурации:</p>
+<p>( когда  ( исполняемый файл-найти &ldquo;ack-grep&rdquo; )
+( setq helm-grep-default-command &ldquo;ack-grep -Hn &ndash;no-group &ndash;no-color %e %p %f&rdquo;
+helm-grep-default- рекурсивная команда &ldquo;ack-grep -H &ndash;no-group &ndash;no-color %e %p %f&rdquo; ) )
+Демо :</p>
+<p>live_grep.gif</p>
+<p>Команда:helm-semantic-or-imenu
+Привязка ключей :</p>
+<p>&lt;prefix&gt; i (префикс Cx c по умолчанию или Cc h , если установлен).</p>
+<p>Описание :</p>
+<p>Средство Imenu предлагает способ поиска основных определений, таких как определения функций или определений переменных, в файле по имени. Вы можете запустить imenuкоманду индивидуально.</p>
+<p>Semantic — это пакет, предоставляющий команды редактирования с учетом языка на основе «парсеров исходного кода». Если этот параметр включен, каждый посещаемый вами файл анализируется автоматически. Semantic обеспечивает превосходную поддержку C/C++. Чтобы включить семантический режим, выполните (semantic-mode 1).</p>
+<p>Helm предлагает интерфейс как для Semantic, так и для Imenu одновременно: если в текущем буфере активен `semantic-mode&rsquo;, используйте семантику для генерации тегов, в противном случае вернитесь к imenu. Если точка находится на символе, helm по умолчанию передает символ в подсказку ввода.</p>
+<p>helm-semantic-or-imenuработает со многими режимами, такими как C/C++, Java, Python, Ruby, Emacs Lisp и Lisp в целом, сценарий оболочки, организационный режим…</p>
+<p>Чтобы включить нечеткое сопоставление как для списка, так Semanticи для Imenuлистинга, добавьте следующий параметр:</p>
+<p>( setq helm-semantic-fuzzy-match t
+helm-imenu-fuzzy-match t )
+Использование :</p>
+<p>Вызовите команду (по умолчанию Cc hi ).
+Вы можете использовать клавиши со стрелками или Cp/Cn для перемещения вверх и вниз между кандидатами. Вы также можете использовать C-&lt;down&gt; и C-&lt;up&gt; ; когда вы перемещаете выделение между тегами внутри семантического буфера Helm, точка также перемещается между местоположениями тегов.
+Приятной особенностью helm-semantic-or-imenuявляется то, что всякий раз, когда вы активируете команду, если точка находится внутри семантического тега (например, определения функции), выбор располагается в теге в буфере Helm. Это хорошо работает в сочетании с C-&lt;down&gt; и C-&lt;up&gt; для перемещения между определениями в вашем буфере.
+Helm дает вам более точный контроль: вы можете перемещаться между функциями, используя beginning-of-defun(привязанный к CMa ) и end-of-defun(привязанный к CMe ), но он также будет перемещать точку и прокручивать ваш буфер. Используя helm-semantic-or-imenu, у вас будет похожее поведение, и у вас будет больше вариантов: либо C-gвернуться обратно в позицию, где вы первоначально вызвали helm-semantic-or-imenu, потому что вам нужно было только просмотреть интерфейс функции (например, чтобы увидеть, какие типы параметров принимает функция), либо RETперейти к местоположению тега. helm-semantic-or-imenuВ настоящее время поддерживается только семантическая часть . Если буфер imenuподдерживается только командой, вы не сможете использовать эту функцию.</p>
+<p>helm-semantic-or-imenuпредоставляет следующие типы семантических тегов:</p>
+<p>Dependencies: зависимости текущего файла, определенные текущим основным режимом. Например, Dependenciesв C/C++ включают файлы заголовков. Когда вы выполняете постоянное действие над зависимостью, точка перемещается к местоположению этой зависимости в текущем окне.
+Variables: переменные, определенные в текущем буфере.
+Functions: функция определена в текущем буфере
+Provides: модули, которые предоставляет этот буфер; например, (provide &hellip;)выражение в Emacs Lisp.
+Если вы хотите отфильтровать по типу тега, введите знак вставки ^ (начало строки в регулярном выражении) и следуйте за первым символом этого типа. Например, чтобы увидеть только функциональные теги, введите ^fприглашение.</p>
+<p>Демонстрация 1 :</p>
+<p>DEMO (начать, когда START DEMOнаходится в минибуфере):</p>
+<p>Во- первых, я использую helm-semantic-or-imenuдля перехода к функции helm-define-key-with-subkeys и перемещаю туда точку.
+Затем я начинаю helm-semantic-or-imenuснова, и предварительно выбран helm-define-key-with-subkeys.
+Затем я перемещаю точку на переменную helm-mapи helm-semantic-or-imenuснова выполняю две функции: helm-next-source и helm-previous-source. На этот раз вместо отображения текущего семантического тега, с которым я работаю (это helm-map), он показывает два других тега в семантическом буфере Helm. Это связано с тем, что я предоставил аргумент префикса перед запуском команды.</p>
+<p>helm-semantic-or-imenu-2.gif</p>
+<p>Демонстрация 2 :</p>
+<p>Вот helm-semantic-or-imenuв действии, обратите внимание на подсказку &ldquo;pattern: &quot; в минибуфере:</p>
+<p>Сначала я ограничиваюсь кандидатами, которые являются функциями с этим шаблоном в подсказке: Functi.
+Затем я сужаюсь до кандидатов, которые являются функциями и содержат voidв себе этот шаблон: functi void, эффективно выбирая функции, которые имеют тип void или принимают voidаргументы.
+Затем я сужаюсь до кандидатов, которые являются функциями и содержат int в себе этот шаблон: functi int, эффективно выбирая функции, которые имеют тип int или принимают intаргументы.
+Затем я сужаю список кандидатов, которые являются переменными и содержат u16 в них, эффективно выбирая только переменные, имеющие тип u16; то же самое для u32демо.</p>
+<p>helm-semantic-or-imenu.gif</p>
+<p>Нажмите RET , чтобы посетить место кандидата. Приведенные выше примеры являются просто демонстрационными примерами. Вы можете сузить поиск до всего, что захотите, с шаблонами поиска, разделенными пробелами, например, вы можете использовать два шаблона, «func» и часть имени функции, и Helm может сузить до него.</p>
+<p>В демо вы видите такие вещи, как class u16и class u32; это потому, что u16и u32определены typedef.</p>
+<p>Команда:helm-man-woman
+Привязка ключей :</p>
+<p>&lt;prefix&gt; m (префикс Cx c по умолчанию или Cc h , если установлен).</p>
+<p>Описание :</p>
+<p>С помощью helm-man-woman, вы можете быстро перейти к любой записи man, используя интерфейс Helm, либо введя приглашение Helm, либо, если точка находится на символе, открыв справочную страницу в точке. Чтобы включить справочную страницу в точке, добавьте следующий код:</p>
+<p>( добавить в список &lsquo;helm-sources-using-default-as-input&rsquo; helm-source-man-pages )
+Демо:</p>
+<p>руль-мужчина-женщина.gif</p>
+<p>Команда:helm-find
+Привязка ключей :</p>
+<p>&lt;prefix&gt; / (префикс Cx c по умолчанию или Cc h , если установлен).</p>
+<p>Описание :</p>
+<p>Обычно вы используете findкоманду с аргументами в терминале, затем нажимаете RET и ждете большого списка результатов, и если результат не такой, как ожидалось, повторяете все это. Вы можете сократить этот процесс, интерактивно получая результаты от Unix findдля каждого символа, который вы вводите в приглашение Helm.</p>
+<p>Вы можете разделять шаблоны поиска пробелами. Однако, поскольку Helm использует findутилиту Unix, вам необходимо вводить шаблоны поиска в соответствии со строкой поиска find; используйте helm-man-womanдля чтения find справочной страницы.</p>
+<p>По умолчанию при вызове helm-findвыполняется поиск только в текущем каталоге. С префиксным аргументом C-u(т . е C-u C-c h /. ) подсказка запрашивает каталог для поиска. helm-findможет быть вызван в helm-find-files сеансе с помощью Cc / . Чтобы открыть более одного файла, отметьте отдельных кандидатов с помощью C-SPC или отметьте все с помощью Ma , а затем RET . Вы можете переключиться на helm-find-filesCx Cf .</p>
+<p>Если вы используете helm-findбольшой каталог и чувствуете, что обновление в реальном времени слишком медленное, вы всегда можете приостановить обновление в реальном времени с помощью C-! и возобновите обновление в реальном времени с помощью C-! потом.</p>
+<p>Демо :</p>
+<p>helm-find.gif</p>
+<p>Команда:helm-locate
+Привязка ключей :</p>
+<p>&lt;prefix&gt; l (префикс Cx c по умолчанию или Cc h , если установлен).</p>
+<p>Описание :</p>
+<p>Аналогичен helm-find, но использует locateкоманду и принимает шаблоны поиска в соответствии с locateвходными данными. Используйте helm-man-womanдля чтения locateсправочной страницы. В Mac OS mdfindвместо этого используется . В Windows необходимо установить поисковую систему Everything ; как только вы установили Everything и представили es.exeEmacs через переменную окружения PATH, helm-locateвы будете использовать Everythingи работать из коробки без какой-либо настройки.</p>
+<p>Чтобы использовать локальную базу данных, выполните helm-locateс аргументом префикса C-u.</p>
+<p>Если вы используете helm-locateбольшой жесткий диск и чувствуете, что обновление в режиме реального времени слишком медленное, вы всегда можете приостановить обновление в режиме реального времени с помощью C-! и возобновите обновление в реальном времени с помощью C-! потом.</p>
+<p>Чтобы включить нечеткое сопоставление в helm-locate, добавьте этот параметр:</p>
+<p>( setq helm-locate-fuzzy-match t )
+Обратите внимание, что в настоящее время он работает с locateкомандой в Linux. Если вы находитесь на другой платформе, не устанавливайте его, иначе у вас не будет никакого результата.</p>
+<p>Демо :</p>
+<p>helm-locate.gif</p>
+<p>Команда:helm-occur
+Привязка ключей :</p>
+<p>&lt;prefix&gt; Ms o (префикс Cx c по умолчанию или Cc h , если установлен). Так как это довольно длинная привязка, нам следует привязать более удобную последовательность клавиш:</p>
+<p>( global-set-key ( kbd &ldquo;Cch o&rdquo; ) &lsquo;helm-occur )
+Описание :</p>
+<p>Аналогично occur, но с использованием интерфейса Helm. По мере ввода совпадающие строки немедленно обновляются. Это удобно, когда вы хотите иметь список совпадений в текущем буфере для перехода туда и обратно. Нажмите TAB , чтобы временно переместить точку в положение выделенного в данный момент совпадения. Cg отменяет текущий сеанс Helm и возвращается в исходное место, где helm-occurон был вызван. RET при совпадении переходит к этому совпадению.</p>
+<p>Демо :</p>
+<p>Вы можете видеть, что кандидаты продолжают обновляться, когда я печатаю. Демонстрация начинается, когда вы видите STARTв минибуфере.</p>
+<p>helm-occur.gif</p>
+<p>Команда:helm-apropos
+Привязка ключей :</p>
+<p>&lt;prefix&gt; a (префикс Cx c по умолчанию или Cc h , если установлен).</p>
+<p>Описание :</p>
+<p>Предварительно настроенный руль для описания команд, функций, переменных и лиц - все в одной команде!. Он похож на Ch a , который работает apropos-command, но интерактив включает в себя больше, чем просто команды. helm-aproposобъединяет 5 источников:</p>
+<p>Команды : Список всех доступных команд.
+Функция : Список всех доступных функций.
+Классы : Список всех классов, созданных defclass. См . Классы построения .
+Общие функции : Список всех функций, созданных defmethod. См. Методы написания
+Переменные : список всех доступных переменных.
+Лица : список всех доступных лиц.
+Атрибуты Helm : список всех атрибутов, которые можно использовать для создания исходного кода Helm. Полезно, если вы хотите написать расширение с помощью Helm.
+Чтобы включить нечеткое сопоставление, добавьте этот параметр:</p>
+<p>( setq helm-apropos-fuzzy-match t )
+Команда:helm-info-*
+Привязка ключей :</p>
+<p>&lt;prefix&gt; h &lt;key&gt; (префикс Cx c по умолчанию или Cc h , если установлен); &lt;key&gt; по умолчанию является одним из g , i или r :</p>
+<p>Ключ	Связывание
+&lt;префикс&gt; хг	Команда:helm-info-gnus
+&lt;префикс&gt; привет	Команда:helm-info-at-point
+&lt;префикс&gt; час	Команда:helm-info-emacs
+Описание :</p>
+<p>Префикс для информационных команд — &lt;prefix&gt; h. Вы можете думать, h что это означает помощь , а &lt;key&gt; — это одна из информационных тем, чтобы ее было легче запомнить.</p>
+<p>helmпредлагает широкий спектр информационных команд для различных тем. M-x helm infoчтобы увидеть эти команды, т.е. helm-info-as, helm-info-gdb… Вы можете легко искать информационные узлы с помощью интерфейса Helm и нажимать TAB на записи для просмотра. M-&lt;next&gt; переходит на следующую страницу, а M-&lt;preor&gt; переходит на предыдущую страницу в другом буфере.</p>
+<p>У вас может быть больше helm-info-команд, например:</p>
+<p>helm-info-gdb.
+helm-info-find.
+helm-info-elisp.
+….</p>
+<p>Используйте M-x helm-infoдля просмотра списка helm-info-команд, использующих префикс info по умолчанию: &lt;prefix&gt; hили привязки клавиш по вашему выбору.</p>
+<p>Команда:helm-lisp-completion-at-point
+Привязка ключей :</p>
+<p>&lt;prefix&gt; &lt;tab&gt; (префикс Cx c по умолчанию или Cc h , если установлен).</p>
+<p>Описание :</p>
+<p>Если вы работаете с Emacs Lisp, эта команда предоставляет список доступных загруженных функций в Emacs. Чтобы получить список дополнений, сначала нужно написать префикс, пусть даже всего один символ. Затем выполните команду и получите список кандидатов на завершение. Чтобы включить нечеткое сопоставление, добавьте этот параметр:</p>
+<p>( setq helm-lisp-fuzzy-completion t )
+Команда:helm-resume
+Привязка ключей :</p>
+<p>&lt;prefix&gt; b (префикс Cx c по умолчанию или Cc h , если установлен).</p>
+<p>Описание :</p>
+<p>Эта команда позволяет вам возобновить предыдущий сеанс Helm вместе с вашими предыдущими шаблонами в приглашении. Например, если ваш последний сеанс helm был helm-ff-run-grepи вы ввели шаблоны в приглашении Helm, helm-resumeвозобновится этот сеанс вместе с вашим предыдущим вводом.</p>
+<p>С аргументом префикса helm-resumeпозволяет выбирать среди всех существующих буферов Helm. helm-miniили helm-buffer-listне показывает существующие буферы Helm; они игнорируют его по умолчанию; но если вы запустите ibuffer, вы увидите список видимых там буферов Helm. Не убивайте их, иначе вы не сможете возобновить игру.</p>
+<p>Это действительно удобно, когда у вас сложный ввод и этапы подготовки. Например, если в предыдущем сеансе Helm у вас было несколько шаблонов регулярных выражений, вам не нужно вводить их снова. Или в вашем предыдущем сеансе Helm вам нужно перейти в глубокий каталог, и helm-resumeэто поможет вам повторно использовать предыдущий сеанс, не повторяя все проблемы.</p>
+<p>Команда:helm-all-mark-rings
+Привязка ключей :</p>
+<p>&lt;prefix&gt; Cc SPC (префикс Cx c по умолчанию или Cc h , если установлен). Это довольно длинная последовательность клавиш, эта команда заслуживает лучшей привязки, например:</p>
+<p>( global-set-key ( kbd &ldquo;Ch SPC&rdquo; ) &lsquo;helm-all-mark-rings )
+Описание :</p>
+<p>Одна удобная команда. Это позволяет вам просматривать содержимое как локальных, так и глобальных колец меток в удобном интерфейсе, поэтому вы всегда можете вернуться туда, где вы были. Без этой команды, если вы хотите просмотреть кольца меток, вы должны запустить M-: и ввести mark-ringили global-mark-ringдля просмотра их содержимого. И даже в этом случае Emacs отображает только голое содержимое списков mark-ringи , то есть номер строки и ее буфер, вот так:global-mark-ring</p>
+<p>(#&lt;marker at 23614 in helm.org&gt; #&lt;marker at 2343 in setup-helm.el&gt; #&lt;marker at 4280 in helm.org&gt; #&lt;marker in no buffer&gt; #&lt;marker at 1271 in helm.org&gt; #&lt;marker at 643 in emacs-tutor.org&gt; #&lt;marker in no buffer&gt; #&lt;marker at 1 in setup-applications.el&gt; #&lt;marker at 1 in emacs-tutor3.org&gt;)</p>
+<p>С helm-all-mark-rings, у вас есть этот приятный интерфейс с подсветкой строки и синтаксиса:</p>
+<p>helm-all-mark-rings.gif</p>
+<p>Команда:helm-regexp
+Привязка клавиш : &lt;prefix&gt; r (префикс Cx c по умолчанию или Cc h , если он установлен).</p>
+<p>Описание :</p>
+<p>Предварительно настроенный руль для создания регулярных выражений. Эта команда полезна, когда вы хотите протестировать регулярное выражение в интерактивном режиме. С Cz доступны следующие действия :</p>
+<p>Ключ	Действие
+[f1]	Kill regexp as sexp
+Сохраняет регулярное выражение в виде строки вkill-ring
+[f2]	Query Replace Regexp
+Вызов query-replaceс текущим регулярным выражением для замены
+[ф3]	Kill regexp
+Сохраняет регулярное выражение как есть в текущей подсказке Helm.
+Демо :</p>
+<p>helm-regexp.gif</p>
+<p>Команда:helm-register
+Привязка ключей :</p>
+<p>&lt;prefix&gt; Cx ri (префикс Cx c по умолчанию или Cc h , если установлен). Давайте свяжем его с чем-то другим:</p>
+<p>( global-set-key ( kbd &ldquo;Cc h x&rdquo; ) &lsquo;управляющий-регистр )
+Предварительно настроен для просмотра регистров Emacs. Просто выполнив helm-register, вы можете просмотреть, что находится в регистрах. RET или TAB вставляет содержимое выбранного регистра.</p>
+<p>Ключ	Действие
+[f1]	Insert Register
+Вставить содержимое регистра в буфер
+[f2]	Append Region to Register
+Добавить активную область к текущему содержимому
+в выбранном регистре
+[ф3]	Prepend Region to Register
+Добавить активную область к текущему содержимому
+в выбранном регистре
+Демо :</p>
+<p>helm-registers.gif</p>
+<p>Команда:helm-top
+Привязка ключей :</p>
+<p>&lt;prefix&gt; t (префикс Cx c по умолчанию или Cc h , если установлен).</p>
+<p>Описание :</p>
+<p>Эта команда предоставляет интерфейс Helm для topпрограммы. Вы можете взаимодействовать с каждым процессом с помощью следующих действий:</p>
+<p>Ключ	Связывание
+[f1]	убить (SIGTERM)
+[f2]	убить (SIGKILL)
+[ф3]	убить (СИГИНТ)
+[f4]	убить (выбрать сигнал)
+helm-topконкретные команды:</p>
+<p>Ключ	Связывание
+Копия Cu	Обновитьhelm-top
+МС	Сортировать по командам оболочки
+депутат	Сортировать по загрузке ЦП
+МЮ	Сортировать по пользователю
+мм	Сортировать по памяти
+userи shell commandsотсортированы по алфавиту.</p>
+<p>Демо :</p>
+<p>helm-top.gif</p>
+<p>Команда:helm-surfraw
+Привязка ключей :</p>
+<p>&lt;prefix&gt; s (префикс Cx c по умолчанию или Cc h , если установлен).</p>
+<p>Описание :</p>
+<p>surfrawпредоставляет быстрый интерфейс командной строки UNIX для множества популярных поисковых систем WWW и других мощных артефактов. Он восстанавливает google, altavista, dejanews, freshmeat, research index, slashdot…</p>
+<p>helm-surfrawпредоставляет интерфейс Helm для surfrawпрограммы, который прост в использовании. Все, что вам нужно сделать, это ввести поисковый запрос, а затем Helm предоставляет ряд сервисов, таких как Google, Stackoverflow… для использования.</p>
+<p>Демо :</p>
+<p>helm-surfraw.gif</p>
+<p>Команда:helm-google-suggest
+Привязка ключей :</p>
+<p>&lt;префикс&gt; Cc g (префикс Cx c по умолчанию или Cc h , если установлен). Давайте свяжем его с чем-то другим:</p>
+<p>( global-set-key ( kbd &ldquo;Cc h g&rdquo; ) &lsquo;helm-google-suggest )
+Описание :</p>
+<p>Эта команда позволяет интерактивно вводить условия поиска и получать результаты от Google в буфере Helm. Затем вы можете открыть одного из кандидатов в других сервисах, таких как Google, Wikipedia, Youtube, Imbd, Google Maps, Google News. Если вы работаете в Windows, не печатайте слишком быстро, иначе вы получите ошибку, и вам придется отказаться от этого сеанса Helm.</p>
+<p>Демо :</p>
+<p>helm-google-suggest.gif</p>
+<p>Команда:helm-color
+Привязка ключей :</p>
+<p>&lt;prefix&gt; c (префикс Cx c по умолчанию или Cc h , если установлен).</p>
+<p>Описание :</p>
+<p>Если вы хотите быстро просматривать и копировать шестнадцатеричные значения цветов, helm-colorпредусмотрена такая функция. Но helm-colorэто не просто палитра цветов. Реальное использование helm-colorдля настройки лица: команда перечисляет ВСЕ доступные лица с предварительным просмотром каждого лица в той же строке. Это делает настройку темы очень быстрой, потому что вы можете быстро просмотреть лицо с его цветом. Благодаря тому, как работает Helm, вы можете смотреть на группу лиц вместе, чтобы получить общее представление о том, хорошо ли цвета сочетаются друг с другом.</p>
+<p>helm-colorсодержит две группы, с действиями в каждой:</p>
+<p>Цвета:
+Ключ	Действие
+[f1] или Cc N	Copy Name
+Скопируйте название цвета в kill-ring
+[f2] или Cc R	Copy RGB
+Скопируйте шестнадцатеричное значение в kill-ring
+[f3] или Cc n	Insert Name
+Вставить название цвета в текущий буфер
+[f4] или Cc r	Insert RGB
+Вставить шестнадцатеричное значение в текущий буфер
+Настроить лицо:
+Ключ	Действие
+[f1]	Customize
+Открыть окно настройки
+[f2]	Copy Name
+Копировать имя лица
+Демо :</p>
+<p>helm-color.gif</p>
+<p>Команда:helm-eval-expression-with-eldoc
+Привязка ключей :</p>
+<p>&lt;prefix&gt; C-: (префикс Cx c по умолчанию или Cc h , если установлен). C-: немного сложно нажимать, было бы лучше с:</p>
+<p>( global-set-key ( kbd &ldquo;Cc h M-:&rdquo; ) &lsquo;helm-eval-expression-with-eldoc )
+Описание :</p>
+<p>Эта команда позволяет вам вводить выражения Emacs Lisp и получать мгновенные результаты в буфере Helm для каждого введенного вами символа. Измененная привязка клавиш выше облегчает запоминание, поскольку запас eval-expressionпривязывается к M-: . Итак, с этого момента для оценки выражения без оперативного обновления используйте M-: , а с оперативным обновлением используйте Cc h M-: . Эта команда полезна, когда вы хотите опробовать команду с различными входными данными и хотите как можно быстрее увидеть результаты.</p>
+<p>Демо :</p>
+<p>helm-eval-expression.gif</p>
+<p>Команда:helm-calcul-expression
+Привязка ключей :</p>
+<p>&lt;prefix&gt; C-, (префикс Cx c по умолчанию или Cc h , если установлен).</p>
+<p>Описание :</p>
+<p>Эти команды предоставляют интерфейс Helm для calcкоманды. Что такое calc? Согласно Calc Manual :</p>
+<p>Calc — это расширенный калькулятор и математический инструмент, работающий как часть среды GNU Emacs. Очень грубо основанный на калькуляторах серии HP-28/48, его многие функции включают в себя:</p>
+<p>Выбор алгебраического или RPN (на основе стека) ввода вычислений.
+Целые числа произвольной точности и числа с плавающей запятой.
+Арифметика рациональных чисел, комплексных чисел (прямоугольных и полярных), форм ошибок со стандартными отклонениями, открытых и закрытых интервалов, векторов и матриц, дат и времени, бесконечностей, множеств, величин с единицами и алгебраических формул.
+Математические операции, такие как логарифмы и тригонометрические функции.
+Возможности программиста (побитовые операции, недесятичные числа).
+Финансовые функции, такие как будущая стоимость и внутренняя норма прибыли.
+Теоретико-числовые функции, такие как простая факторизация и арифметический модуль m для любого m.
+Особенности алгебраических манипуляций, включая символьное исчисление.
+Перемещение данных в обычные буферы редактирования и из них.
+Встроенный режим для работы с формулами и данными Calc непосредственно внутри любого буфера редактирования.
+Графика с использованием GNUPLOT, универсальной (и бесплатной) программы для построения графиков.
+Простое программирование с использованием макросов клавиатуры, алгебраических формул, алгебраических правил перезаписи или расширенного Emacs Lisp.
+Вы можете вводить допустимые calcматематические выражения, такие как +, -,*, /, sin, cos, tan, sqrt…. Чтобы извлечь максимальную пользу из этой команды, очевидно, вам следует внимательно изучить calcее, прочитав Руководство по Calc .</p>
+<p>Демо :</p>
+<p>helm-calc.gif</p>
+<p>Команда:helm-eshell-history
+Привязка ключей :</p>
+<p>Нет привязки к ключу. Давайте привяжем его к ключу, который будет использоваться в Eshell:</p>
+<p>( требуется &rsquo; helm-eshell )</p>
+<p>( add-hook &rsquo;eshell-mode-hook
+#&rsquo; ( lambda ()
+( define-key eshell-mode-map ( kbd &ldquo;Cc Cl&rdquo; )   &lsquo;helm-eshell-history ) ) ) )
+Описание :</p>
+<p>Если вы обычно повторно выполняете старую команду оболочки в Eshell с помощью Mr , helm-eshell-historyэто обеспечивает простой и эффективный способ работы с историей команд. Используя стандартный Mr , вы должны активно помнить прошлые команды, с которыми вы работали; иначе Eshell не сможет найти команду. Если вы забудете, вам придется ввести команду history , чтобы освежить память. helm-eshell-historyсочетает в себе два: вы можете интерактивно использовать регулярное выражение для выбора прошлых команд и получать живую обратную связь со списком команд, которые удовлетворяют поиску. Теперь вам не нужно запоминать, какие команды существуют. Позвольте Helm решить эту проблему за вас.</p>
+<p>Демо :</p>
+<p>helm-eshell-history.gif</p>
+<p>Команда:helm-comint-input-ring
+Аналогично helm-eshell-history, но используется для M-x shell.</p>
+<p>( определить-ключ-ключ-режим-карта ( kbd &ldquo;Cc Cl&rdquo; ) &lsquo;кольцо-ввода-шлема-коминта )
+Команда:helm-mini-buffer-history
+Вы когда-нибудь чувствовали себя неловко, работая с историей минибуфера, когда она становится большой (скажем, сотни элементов истории)? Если это так, Helm может помочь вам легко управлять большим количеством элементов в списке истории с помощью интерфейса Helm.</p>
+<p>( определить-ключ минибуфер-локальная-карта ( kbd &ldquo;Cc Cl&rdquo; ) &lsquo;хелм-минибуфер-история )
+Упаковка:helm-projectile
+Автор : Божидар Бацов ,bozhidar@batsov.com</p>
+<p>Домашняя страница : GitHub</p>
+<p>Особенности :</p>
+<p>Предоставьте интерфейс Helm для быстрого выбора файлов в проекте с помощью Projectile.</p>
+<p>helm_projectile.gif</p>
+<p>Установка :</p>
+<p>M-x list-packagesи выберите пакет helm-projectile , затем установите его. После завершения установки вы можете helm-projectile сразу начать использовать.</p>
+<p>Использование :</p>
+<p>Для базового использования Cc ph для запуска helm-projectileи выбора файлов в вашем проекте. Пожалуйста, обратитесь к полному руководству .</p>
+<p>Упаковка:helm-descbinds
+Автор</p>
+<p>2008-2010: Тайки СУГАВАРА,buzz.taiki@gmail.com
+2012-2013 Майкл Маркерт,markert.michael@googlemail.com
+2013-настоящее время: Дэниел Хакниdan@haxney.org
+Домашняя страница : GitHub</p>
+<p>Особенности : Helm Descbinds предоставляет интерфейс для Emacs describe-bindings, делая активные в данный момент привязки клавиш интерактивными для поиска с помощью helm.</p>
+<p>Кроме того, у вас есть следующие действия</p>
+<p>Выполните команду
+Опишите команду
+Найдите команду
+Установка :</p>
+<p>M-x list-packagesи выберите пакет helm-descbinds , затем установите его. После завершения установки добавьте этот фрагмент кода, чтобы активировать пакет:</p>
+<p>;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ПАКЕТ: руль-дескбиндс ;;
+;;                                              ;;
+;; ГРУППА: Удобство -&gt; Руль -&gt; Руль Дескбиндс ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+( требуется &rsquo; helm-descbinds )
+( режим helm-descbinds )
+Использование :</p>
+<p>Введите ключ префикса и Ch после него. Вы увидите список привязок, использующих интерфейс Helm для сужения.</p>
+<h2 id="сводка-сочетаний-клавиш"><span class="section-num">7</span> Сводка сочетаний клавиш</h2>
+<p>В этой главе обобщаются привязки клавиш.</p>
+<div class="table-caption">
+  <span class="table-number">&#1058;&#1072;&#1073;&#1083;&#1080;&#1094;&#1072; 1:</span>
+  Сводка сочетаний клавиш Helm
+</div>
+<table>
+<thead>
+<tr>
+<th>Комбинация клавиш</th>
+<th>Команда</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>M-x</code></td>
+<td><code>helm-M-x</code></td>
+<td>Список команд</td>
+</tr>
+<tr>
+<td><code>M-y</code></td>
+<td><code>helm-show-kill-ring</code></td>
+<td>Показывает содержимое списка убийств</td>
+</tr>
+<tr>
+<td><code>C-x b</code></td>
+<td><code>helm-mini</code></td>
+<td>Показывает открытые буферы, недавно открытые файлы</td>
+</tr>
+<tr>
+<td><code>C-x C-f</code></td>
+<td><code>helm-find-files</code></td>
+<td>Helm-версия <code>find-file</code></td>
+</tr>
+<tr>
+<td><code>C-s</code></td>
+<td><code>helm-ff-run-grep</code></td>
+<td>Запустите <code>grep</code> из <code>helm-find-files</code></td>
+</tr>
+<tr>
+<td><code>C-c h i</code></td>
+<td><code>helm-semantic-or-imenu</code></td>
+<td>Интерфейс Helm для семантики/именю</td>
+</tr>
+<tr>
+<td><code>C-c h m</code></td>
+<td><code>helm-man-woman</code></td>
+<td>Перейти к любой мужской записи</td>
+</tr>
+<tr>
+<td><code>C-c h /</code></td>
+<td><code>helm-find</code></td>
+<td>Интерфейс Helm для поиска</td>
+</tr>
+<tr>
+<td><code>C-c h l</code></td>
+<td><code>helm-locate</code></td>
+<td>Интерфейс Helm для поиска</td>
+</tr>
+<tr>
+<td><code>C-c h o</code></td>
+<td><code>helm-occur</code></td>
+<td>Интерфейс Helm для события</td>
+</tr>
+<tr>
+<td><code>C-c h a</code></td>
+<td><code>helm-apropos</code></td>
+<td>Описывает команды, функции, переменные, …</td>
+</tr>
+<tr>
+<td><code>C-c h h g</code></td>
+<td><code>helm-info-gnus</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>C-c h h i</code></td>
+<td><code>helm-info-at-point</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>C-c h h r</code></td>
+<td><code>helm-info-emacs</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>C-c h &lt;tab&gt;</code></td>
+<td><code>helm-lisp-completion-at-point</code></td>
+<td>Предоставляет список доступных функций</td>
+</tr>
+<tr>
+<td><code>C-c h b</code></td>
+<td><code>helm-resume</code></td>
+<td>Возобновляет предыдущий сеанс управления</td>
+</tr>
+<tr>
+<td><code>C-h SPC</code></td>
+<td><code>helm-all-mark-rings</code></td>
+<td>Просмотр содержимого локальных и глобальных колец меток</td>
+</tr>
+<tr>
+<td><code>C-c h r</code></td>
+<td><code>helm-regex</code></td>
+<td>Визуализирует совпадения регулярных выражений</td>
+</tr>
+<tr>
+<td><code>C-c h x</code></td>
+<td><code>helm-register</code></td>
+<td>Показывает содержимое регистров</td>
+</tr>
+<tr>
+<td><code>C-c h t</code></td>
+<td><code>helm-top</code></td>
+<td>Интерфейс Helm наверх</td>
+</tr>
+<tr>
+<td><code>C-c h s</code></td>
+<td><code>helm-surfraw</code></td>
+<td>Интерфейс командной строки для многих поисковых систем</td>
+</tr>
+<tr>
+<td><code>C-c h g</code></td>
+<td><code>helm-google-suggest</code></td>
+<td>Интерактивно вводите условия поиска и получайте результаты от Google в буфере управления</td>
+</tr>
+<tr>
+<td><code>C-c h c</code></td>
+<td><code>helm-color</code></td>
+<td>Список всех доступных лиц</td>
+</tr>
+<tr>
+<td><code>C-c h M-:</code></td>
+<td><code>helm-eval-expression-with-eldoc</code></td>
+<td>Получите мгновенные результаты для выражений Emacs lisp в буфере управления</td>
+</tr>
+<tr>
+<td><code>C-c h C-,</code></td>
+<td><code>helm-calcul-expression</code></td>
+<td>Интерфейс Helm для расчета</td>
+</tr>
+<tr>
+<td><code>C-c C-l</code></td>
+<td><code>helm-eshell-history</code></td>
+<td>Интерфейс к истории <code>eshell</code></td>
+</tr>
+<tr>
+<td><code>C-c C-l</code></td>
+<td><code>helm-comint-input-ring</code></td>
+<td>Интерфейс к истории оболочки</td>
+</tr>
+<tr>
+<td><code>C-c C-l</code></td>
+<td><code>helm-mini-buffer-history</code></td>
+<td>Интерфейс к истории мини-буфера</td>
+</tr>
+</tbody>
+</table>
+      
+
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+      
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+
+<hr>
+
+  <div class="bl-section">
+    <h4>Links to this note</h4>
+    <div class="backlinks">
+      <ul>
+       
+          <li><a href="https://yamadharma.github.io/ru/post/2022/08/30/emacs-bibliography-helm-bibtex/">Emacs. Работа с библиографией. helm-bibtex</a></li>
+       
+     </ul>
+    </div>
+  </div>
+
+
+    </div>
+
+    
+
+
+
+
+
+
+
+<div class="share-box">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fyamadharma.github.io%2Fru%2Fpost%2F2022%2F12%2F14%2Femacs-completion-helm%2F&amp;text=Emacs.&#43;%D0%90%D0%B2%D1%82%D0%BE%D0%B4%D0%BE%D0%BF%D0%BE%D0%BB%D0%BD%D0%B5%D0%BD%D0%B8%D0%B5.&#43;Helm" target="_blank" rel="noopener" class="share-btn-twitter" aria-label="twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=https%3A%2F%2Fyamadharma.github.io%2Fru%2Fpost%2F2022%2F12%2F14%2Femacs-completion-helm%2F&amp;t=Emacs.&#43;%D0%90%D0%B2%D1%82%D0%BE%D0%B4%D0%BE%D0%BF%D0%BE%D0%BB%D0%BD%D0%B5%D0%BD%D0%B8%D0%B5.&#43;Helm" target="_blank" rel="noopener" class="share-btn-facebook" aria-label="facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      
+      
+      
+      
+        
+      
+      <li>
+        <a href="mailto:?subject=Emacs.%20%D0%90%D0%B2%D1%82%D0%BE%D0%B4%D0%BE%D0%BF%D0%BE%D0%BB%D0%BD%D0%B5%D0%BD%D0%B8%D0%B5.%20Helm&amp;body=https%3A%2F%2Fyamadharma.github.io%2Fru%2Fpost%2F2022%2F12%2F14%2Femacs-completion-helm%2F" target="_blank" rel="noopener" class="share-btn-email" aria-label="envelope">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=https%3A%2F%2Fyamadharma.github.io%2Fru%2Fpost%2F2022%2F12%2F14%2Femacs-completion-helm%2F&amp;title=Emacs.&#43;%D0%90%D0%B2%D1%82%D0%BE%D0%B4%D0%BE%D0%BF%D0%BE%D0%BB%D0%BD%D0%B5%D0%BD%D0%B8%D0%B5.&#43;Helm" target="_blank" rel="noopener" class="share-btn-linkedin" aria-label="linkedin-in">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      
+      
+      
+      
+      <li>
+        <a href="whatsapp://send?text=Emacs.&#43;%D0%90%D0%B2%D1%82%D0%BE%D0%B4%D0%BE%D0%BF%D0%BE%D0%BB%D0%BD%D0%B5%D0%BD%D0%B8%D0%B5.&#43;Helm%20https%3A%2F%2Fyamadharma.github.io%2Fru%2Fpost%2F2022%2F12%2F14%2Femacs-completion-helm%2F" target="_blank" rel="noopener" class="share-btn-whatsapp" aria-label="whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=https%3A%2F%2Fyamadharma.github.io%2Fru%2Fpost%2F2022%2F12%2F14%2Femacs-completion-helm%2F&amp;title=Emacs.&#43;%D0%90%D0%B2%D1%82%D0%BE%D0%B4%D0%BE%D0%BF%D0%BE%D0%BB%D0%BD%D0%B5%D0%BD%D0%B8%D0%B5.&#43;Helm" target="_blank" rel="noopener" class="share-btn-weibo" aria-label="weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      <a href="https://yamadharma.github.io/"><img class="avatar mr-3 avatar-circle" src="https://s.gravatar.com/avatar/6196459c2beaa74e930539ef4dc180db?s=200" alt="Дмитрий Сергеевич Кулябов"></a>
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="https://yamadharma.github.io/">Дмитрий Сергеевич Кулябов</a></h5>
+      <h6 class="card-subtitle">Профессор кафедры прикладной информатики и теории вероятностей</h6>
+      <p class="card-text">Мои научные интересы включают физику, администрирование Unix и сетей.</p>
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://yamadharma.github.io/ru/#contact" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://twitter.com/dskulyabov" target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://www.youtube.com/c/DmitryKulyabov" target="_blank" rel="noopener">
+        <i class="fab fa-youtube"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://orcid.org/0000-0002-0877-7063" target="_blank" rel="noopener">
+        <i class="ai ai-orcid"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://www.elibrary.ru/author_profile.asp?authorid=360953" target="_blank" rel="noopener">
+        <i class="fab fa-erlang"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://profiles.impactstory.org/u/0000-0002-0877-7063" target="_blank" rel="noopener">
+        <i class="ai ai-impactstory"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://www.webofscience.com/wos/author/rid/I-3183-2013" target="_blank" rel="noopener">
+        <i class="ai ai-researcherid"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://www.scopus.com/authid/detail.uri?authorId=35194130800" target="_blank" rel="noopener">
+        <i class="ai ai-scopus"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://dblp.uni-trier.de/pers/hd/k/Kulyabov:Dmitry_S=" target="_blank" rel="noopener">
+        <i class="ai ai-dblp"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://scholar.google.com/citations?user=D5XLDn4AAAAJ" target="_blank" rel="noopener">
+        <i class="ai ai-google-scholar"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://www.researchgate.net/profile/Dmitry_Kulyabov" target="_blank" rel="noopener">
+        <i class="ai ai-researchgate"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://rudn.academia.edu/DmitryKulyabov" target="_blank" rel="noopener">
+        <i class="ai ai-academia"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://osf.io/5ya7v/" target="_blank" rel="noopener">
+        <i class="ai ai-osf"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://www.linkedin.com/in/dmitry-kulyabov" target="_blank" rel="noopener">
+        <i class="fab fa-linkedin"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="http://arxiv.org/a/kulyabov_d_1" target="_blank" rel="noopener">
+        <i class="ai ai-arxiv"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://bitbucket.org/yamadharma/" target="_blank" rel="noopener">
+        <i class="fab fa-bitbucket"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/yamadharma" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://gitlab.com/yamadharma" target="_blank" rel="noopener">
+        <i class="fab fa-gitlab"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+  </div>
+</article>
+  </div>
+
+  <div class="page-footer">
+    
+    
+    <div class="container">
+      <footer class="site-footer">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+
+  
+  
+  
+
+  
+
+  
+  <p class="powered-by copyright-license-text">
+    © 2006—2022 Dmitry S. Kulyabov. This work is licensed under <a href="https://creativecommons.org/licenses/by/4.0" rel="noopener noreferrer" target="_blank">CC BY 4.0</a>
+  </p>
+  
+
+  <p class="powered-by footer-license-icons">
+    <a href="https://creativecommons.org/licenses/by/4.0" rel="noopener noreferrer" target="_blank" aria-label="Creative Commons">
+      <i class="fab fa-creative-commons fa-2x" aria-hidden="true"></i>
+      <i class="fab fa-creative-commons-by fa-2x" aria-hidden="true"></i>
+      
+      
+    </a>
+  </p>
+
+
+
+
+
+  <p class="powered-by">
+    
+    
+    
+      
+      
+      
+      
+      
+      
+      Published with <a href="https://wowchemy.com/?utm_campaign=poweredby" target="_blank" rel="noopener">Wowchemy</a> — the free, <a href="https://github.com/wowchemy/wowchemy-hugo-themes" target="_blank" rel="noopener">open source</a> website builder that empowers creators.
+    
+  </p>
+</footer>
+
+    </div>
+    
+  </div>
+
+  
+
+
+<script src="https://yamadharma.github.io/js/vendor-bundle.min.d26509351aa0ff874abbee824e982e9b.js"></script>
+
+
+
+
+  
+
+  
+  
+
+  
+
+
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.min.js" integrity="" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  
+  <script id="search-hit-fuse-template" type="text/x-template">
+    <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+    </div>
+  </script>
+  
+    <script src="https://cdn.jsdelivr.net/gh/krisk/Fuse@v3.2.1/dist/fuse.min.js" integrity="sha512-o38bmzBGX+hD3JHWUFCDA09btWaqrNmoJ3RXLlrysA7PP01Kgs4UlE4MhelE1v5dJR3+cxlR4qQlotsW7jKsnw==" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/gh/julmot/mark.js@8.11.1/dist/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
+<script id="page-data" type="application/json">{"use_headroom":true}</script>
+
+
+
+  <script src="https://yamadharma.github.io/js/wowchemy-headroom.db4755770454eb63685f8de785c0a172.js" type="module"></script>
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+<script src="https://yamadharma.github.io/ru/js/wowchemy.min.42afebc34d9998643bda73d4863a2a26.js"></script>
+
+
+
+  <script src="https://yamadharma.github.io/js/wowchemy-map.a26e9d2f7238ba5b868384f1c5bc6477.js" type="module"></script>
+
+
+
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Процитировать</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+        <pre><code></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Копия
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Скачать
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <script src="https://yamadharma.github.io/js/wowchemy-publication.68f8d7090562ca65fc6d3cb3f8f2d2cb.js" type="module"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- This site was created with Wowchemy. https://www.wowchemy.com -->
-<!-- Last Published: 4 декабря 2022 г. --><html lang="ru-ru" >
+<!-- Last Published: 18 декабря 2022 г. --><html lang="ru-ru" >
 
 
 <head>
@@ -360,7 +360,7 @@
     />
   
   
-    <meta property="article:modified_time" content="2022-04-04T11:14:00&#43;03:00">
+    <meta property="article:modified_time" content="2022-12-17T21:12:00&#43;03:00">
   
 
 
@@ -391,7 +391,7 @@
   "headline": "Window manager i3",
   
   "datePublished": "2021-05-14T11:32:00+03:00",
-  "dateModified": "2022-04-04T11:14:00+03:00",
+  "dateModified": "2022-12-17T21:12:00+03:00",
   
   "author": {
     "@type": "Person",
@@ -937,7 +937,7 @@
           Обновлено
       
     
-    2022-04-04
+    2022-12-17
   </span>
   
 
@@ -946,7 +946,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-reading-time">
-    13 мин. для прочтения
+    14 мин. для прочтения
   </span>
   
 
@@ -1007,7 +1007,8 @@
         <li><a href="#строка-статуса"><span class="section-num">5.3</span> Строка статуса</a>
           <ul>
             <li><a href="#i3bar"><span class="section-num">5.3.1</span> i3bar</a></li>
-            <li><a href="#polybar"><span class="section-num">5.3.2</span> polybar</a></li>
+            <li><a href="#py3status"><span class="section-num">5.3.2</span> py3status</a></li>
+            <li><a href="#polybar"><span class="section-num">5.3.3</span> polybar</a></li>
           </ul>
         </li>
         <li><a href="#запуск-приложений"><span class="section-num">5.4</span> Запуск приложений</a>
@@ -1015,7 +1016,12 @@
             <li><a href="#rofi"><span class="section-num">5.4.1</span> rofi</a></li>
           </ul>
         </li>
-        <li><a href="#блокировка-экрана"><span class="section-num">5.5</span> Блокировка экрана</a></li>
+        <li><a href="#блокировка-экрана"><span class="section-num">5.5</span> Блокировка экрана</a>
+          <ul>
+            <li><a href="#блокировщик-экрана-i3lock"><span class="section-num">5.5.1</span> Блокировщик экрана <code>i3lock</code></a></li>
+            <li><a href="#блокировщик-экрана-i3lock-color"><span class="section-num">5.5.2</span> Блокировщик экрана <code>i3lock-color</code></a></li>
+          </ul>
+        </li>
       </ul>
     </li>
     <li><a href="#приложения"><span class="section-num">6</span> Приложения</a>
@@ -1058,8 +1064,7 @@
 </li>
 <li>Начиная с версии 4.20, можно подключать другие файлы конфигурации из основного файла конфигурации <em>i3</em>.
 <ul>
-<li>
-<p>Примеры использования директивы <code>include</code>:</p>
+<li>Примеры использования директивы <code>include</code>:
 <pre><code class="language-cfg"># Тильда преобразуется в домашний каталог пользователя
 include ~/.config/i3/assignments.conf
 
@@ -1087,19 +1092,15 @@ include assignments.conf
 <ul>
 <li>В качестве модификатора обычно используется:
 <ul>
-<li>
-<p><code>Alt</code>:</p>
+<li><code>Alt</code>:
 <pre><code class="language-conf-unix">set $mod Mod1
 </code></pre>
 </li>
-<li>
-<p><code>Super</code> (Клавиша со значком <em>Windows</em>):</p>
+<li><code>Super</code> (Клавиша со значком <em>Windows</em>):
 <pre><code class="language-conf-unix">set $mod Mod4
 </code></pre>
 </li>
-<li>
-<p>Предпочитаю <code>Super</code>, чтобы не конфликтовать с Emacs.</p>
-</li>
+<li>Предпочитаю <code>Super</code>, чтобы не конфликтовать с Emacs.</li>
 </ul>
 </li>
 </ul>
@@ -1109,8 +1110,7 @@ include assignments.conf
 </ul>
 <h3 id="перемещение-фокуса"><span class="section-num">4.3</span> Перемещение фокуса</h3>
 <ul>
-<li>
-<p>Фокус можно перемещать как с помощью стрелок, так и с помощью буквенных клавиш, как в редакторе <em>vi</em>.</p>
+<li>Фокус можно перемещать как с помощью стрелок, так и с помощью буквенных клавиш, как в редакторе <em>vi</em>.
 <ul>
 <li><code>Mod</code> + <code>h</code> или <code>Mod</code> + <code>Left</code>: сдвиг фокуса влево.</li>
 <li><code>Mod</code> + <code>j</code> или <code>Mod</code> + <code>Down</code>: сдвиг фокуса вниз.</li>
@@ -1118,8 +1118,7 @@ include assignments.conf
 <li><code>Mod</code> + <code>l</code> или <code>Mod</code> + <code>Right</code>: сдвиг фокуса вправо.</li>
 </ul>
 </li>
-<li>
-<p>Конфигурация выглядит следующим образом:</p>
+<li>Конфигурация выглядит следующим образом:
 <pre><code class="language-conf-unix">## Home row direction keys, like vim
 set $left h
 set $down j
@@ -1137,8 +1136,7 @@ bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 </code></pre>
 </li>
-<li>
-<p>Впрочем, следует заметить, что также могут использоваться и другие соглашения:</p>
+<li>Впрочем, следует заметить, что также могут использоваться и другие соглашения:
 <ul>
 <li><code>j</code>: влево;</li>
 <li><code>k</code>: вниз;</li>
@@ -1146,28 +1144,21 @@ bindsym $mod+Right focus right
 <li><code>;</code>: вправо.</li>
 </ul>
 </li>
-<li>
-<p>Поскольку в данном менеджере окон поддерживаются контейнеры, то можно переключить фокус на родительский контейнер:</p>
+<li>Поскольку в данном менеджере окон поддерживаются контейнеры, то можно переключить фокус на родительский контейнер:
 <ul>
-<li>
-<p><code>Mod</code> + <code>a</code>: переключить фокус на родительский контейнер.</p>
-</li>
-<li>
-<p>Конфигурация:</p>
+<li><code>Mod</code> + <code>a</code>: переключить фокус на родительский контейнер.</li>
+<li>Конфигурация:
 <pre><code class="language-conf-unix">## Move focus to the parent container
 bindsym $mod+a focus parent
 </code></pre>
 </li>
 </ul>
 </li>
-<li>
-<p><code>Mod</code> + <code>Space</code>: переключить режим фокуса.</p>
-</li>
+<li><code>Mod</code> + <code>Space</code>: переключить режим фокуса.</li>
 </ul>
 <h3 id="перемещение-окон"><span class="section-num">4.4</span> Перемещение окон</h3>
 <ul>
-<li>
-<p>Делается аналогично перемещению фокуса, но с добавлением модификатора <code>Shift</code>:</p>
+<li>Делается аналогично перемещению фокуса, но с добавлением модификатора <code>Shift</code>:
 <ul>
 <li><code>Mod</code> + <code>Shift</code> + <code>h</code> или <code>Mod</code> + <code>Shift</code> + <code>Left</code>: перемещение влево;</li>
 <li><code>Mod</code> + <code>Shift</code> + <code>j</code> или <code>Mod</code> + <code>Shift</code> + <code>Down</code>: перемещение вниз;</li>
@@ -1175,8 +1166,7 @@ bindsym $mod+a focus parent
 <li><code>Mod</code> + <code>Shift</code> + <code>l</code> или <code>Mod</code> + <code>Shift</code> + <code>Right</code>: перемещение вправо.</li>
 </ul>
 </li>
-<li>
-<p>Конфигурация выглядит следующим образом:</p>
+<li>Конфигурация выглядит следующим образом:
 <pre><code class="language-conf-unix">## Move the focused window with the same, but add Shift
 bindsym $mod+Shift+$left move left
 bindsym $mod+Shift+$down move down
@@ -1199,24 +1189,21 @@ bindsym $mod+Shift+Right move right
 </ul>
 <h3 id="структура-расположения-контейнеров"><span class="section-num">4.6</span> Структура расположения контейнеров</h3>
 <ul>
-<li>
-<p>Поддерживаются следующие расположения контейнеров:</p>
+<li>Поддерживаются следующие расположения контейнеров:
 <ul>
 <li><code>Mod</code> + <code>e</code>: переключение разделённого расположения (split layout);</li>
 <li><code>Mod</code> + <code>s</code>: стековое размещение (stacking layout);</li>
 <li><code>Mod</code> + <code>w</code>: размещение с табами (tabbed layout).</li>
 </ul>
 </li>
-<li>
-<p>Конфигурация:</p>
+<li>Конфигурация:
 <pre><code class="language-conf-unix">## Switch the current container between different layout styles
 bindsym $mod+s layout stacking
 bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
 </code></pre>
 </li>
-<li>
-<p>Для раскладки по умолчанию я использую табы:</p>
+<li>Для раскладки по умолчанию я использую табы:
 <pre><code class="language-conf-unix">### Layout mode for new containers
 ## default|stacking|tabbed
 workspace_layout tabbed
@@ -1230,8 +1217,7 @@ workspace_layout tabbed
 </ul>
 <h3 id="рабочие-области--workspaces"><span class="section-num">4.8</span> Рабочие области (workspaces)</h3>
 <ul>
-<li>
-<p>Сконфигурим рабочие области:</p>
+<li>Сконфигурим рабочие области:
 <pre><code class="language-conf-unix">## Define names for workspaces
 set $ws1    1
 set $ws2    2
@@ -1245,8 +1231,7 @@ set $ws9    9
 set $ws10   10
 </code></pre>
 </li>
-<li>
-<p><code>Mod</code> + <code>0</code> &ndash; <code>9</code>: переключиться на соответствующую рабочую область:</p>
+<li><code>Mod</code> + <code>0</code> &ndash; <code>9</code>: переключиться на соответствующую рабочую область:
 <pre><code class="language-conf-unix">## Switch to workspace
 bindsym $mod+1 workspace $ws1
 bindsym $mod+2 workspace $ws2
@@ -1260,8 +1245,7 @@ bindsym $mod+9 workspace $ws9
 bindsym $mod+0 workspace $ws10
 </code></pre>
 </li>
-<li>
-<p><code>Mod</code> + <code>Shift</code> + <code>0</code> &ndash; <code>9</code>: перенести окно на соответствующую рабочую область:</p>
+<li><code>Mod</code> + <code>Shift</code> + <code>0</code> &ndash; <code>9</code>: перенести окно на соответствующую рабочую область:
 <pre><code class="language-conf-unix">## Move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace $ws1
 bindsym $mod+Shift+2 move container to workspace $ws2
@@ -1283,24 +1267,21 @@ bindsym $mod+Shift+0 move container to workspace $ws10
 </ul>
 <h3 id="выход-перезапуск"><span class="section-num">4.10</span> Выход/Перезапуск</h3>
 <ul>
-<li>
-<p><code>Mod</code> + <code>Shift</code> + <code>c</code>: перечитать конфигурационный файл.</p>
+<li><code>Mod</code> + <code>Shift</code> + <code>c</code>: перечитать конфигурационный файл.
 <pre><code class="language-conf-unix">## ~/.config/i3/config
 
 ## reload the configuration file
 bindsym $mod+Shift+c reload
 </code></pre>
 </li>
-<li>
-<p><code>Mod</code> + <code>Shift</code> + <code>r</code>: перестартовать <em>i3</em>, сохранив сессию.</p>
+<li><code>Mod</code> + <code>Shift</code> + <code>r</code>: перестартовать <em>i3</em>, сохранив сессию.
 <pre><code class="language-conf-unix">## ~/.config/i3/config
 
 ## restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 </code></pre>
 </li>
-<li>
-<p><code>Mod</code> + <code>Shift</code> + <code>e</code>: выход из <em>i3</em>.</p>
+<li><code>Mod</code> + <code>Shift</code> + <code>e</code>: выход из <em>i3</em>.
 <pre><code class="language-conf-unix">## ~/.config/i3/config
 
 ## exit i3 (logs you out of your X session)
@@ -1319,7 +1300,9 @@ bindsym $mod+Shift+e exec &quot;i3-nagbar -t warning -m 'You pressed the exit sh
 <pre><code class="language-conf-unix">set $term kitty
 bindsym $mod+Return exec $term
 </code></pre>
-<p>В этом случае запускается одно окно терминала.</p>
+<ul>
+<li>В этом случае запускается одно окно терминала.</li>
+</ul>
 </li>
 <li>
 <p>Для работы я использую специальную настройку сессии терминала. Я её запускаю при входе в сессию. Для этого я приспособил комбинацию <code>Mod</code> + <code>Shift</code> + <code>Enter</code>:</p>
@@ -1347,24 +1330,20 @@ bindsym $mod+Return exec $term
 <li>
 <p>Примеры.</p>
 <ul>
-<li>
-<p>Средняя кнопка на заголовке закрывает окно:</p>
+<li>Средняя кнопка на заголовке закрывает окно:
 <pre><code class="language-conf-unix">bindsym --release button2 kill
 </code></pre>
 </li>
-<li>
-<p>Средняя кнопка и модификатор над любой частью окна закрывает окно:</p>
+<li>Средняя кнопка и модификатор над любой частью окна закрывает окно:
 <pre><code class="language-conf-unix">bindsym --whole-window $mod+button2 kill
 </code></pre>
 </li>
-<li>
-<p>Правая кнопка мыши переключает плавающий режим:</p>
+<li>Правая кнопка мыши переключает плавающий режим:
 <pre><code class="language-conf-unix">bindsym button3 floating toggle
 bindsym $mod+button3 floating toggle
 </code></pre>
 </li>
-<li>
-<p>Боковые кнопки мыши перемещают окно:</p>
+<li>Боковые кнопки мыши перемещают окно:
 <pre><code class="language-conf-unix">bindsym button9 move left
 bindsym button8 move right
 </code></pre>
@@ -1375,27 +1354,21 @@ bindsym button8 move right
 <h3 id="строка-статуса"><span class="section-num">5.3</span> Строка статуса</h3>
 <h4 id="i3bar"><span class="section-num">5.3.1</span> i3bar</h4>
 <ul>
-<li>
-<p>Отрисовку панели осуществляет утилита <code>i3bar</code>.</p>
-</li>
-<li>
-<p>Отображается вверху или внизу экрана.</p>
-</li>
-<li>
-<p>Содержит:</p>
+<li>Отрисовку панели осуществляет утилита <code>i3bar</code>.</li>
+<li>Отображается вверху или внизу экрана.</li>
+<li>Содержит:
 <ul>
 <li>область с кнопками переключения рабочих областей <em>i3</em>;</li>
 <li>системную строку, генерируемую при помощи <code>i3status</code> или аналогов;</li>
 <li>системный трей с иконками программ.</li>
 </ul>
 </li>
-<li>
-<p>В конфигурационном файле задаётся следующим образом (<a href="https://i3wm.org/docs/userguide.html#_configuring_i3bar" target="_blank" rel="noopener">https://i3wm.org/docs/userguide.html#_configuring_i3bar</a>):</p>
+<li>В конфигурационном файле задаётся следующим образом (<a href="https://i3wm.org/docs/userguide.html#_configuring_i3bar" target="_blank" rel="noopener">https://i3wm.org/docs/userguide.html#_configuring_i3bar</a>):
 <pre><code class="language-conf-unix"># ~/.config/i3/config -*- mode: conf-unix; -*-
 ## Start i3bar to display a workspace bar
 bar {
-    status_command	i3status
-    position		top
+    status_command i3status
+    position top
 }
 </code></pre>
 </li>
@@ -1405,27 +1378,18 @@ bar {
 <li>
 <p>Поддержка иконок в i3bar</p>
 <ul>
-<li>
-<p>В <code>i3bar</code> можно использовать шрифты иконок (см. <a href="https://yamadharma.github.io/ru/post/2021/05/21/monospace-fonts/">Моноширинные шрифты</a>).</p>
-</li>
-<li>
-<p>Наиболее распространённым является шрифт <a href="https://fontawesome.com/" target="_blank" rel="noopener">Font Awesome</a>.</p>
-</li>
-<li>
-<p>Установка:</p>
+<li>В <code>i3bar</code> можно использовать шрифты иконок (см. <a href="https://yamadharma.github.io/ru/post/2021/05/21/monospace-fonts/">Моноширинные шрифты</a>).</li>
+<li>Наиболее распространённым является шрифт <a href="https://fontawesome.com/" target="_blank" rel="noopener">Font Awesome</a>.</li>
+<li>Установка:
 <ul>
-<li>
-<p>Gentoo</p>
+<li>Gentoo
 <pre><code class="language-shell">emerge media-fonts/fontawesome
 </code></pre>
 </li>
 </ul>
 </li>
-<li>
-<p>Для вставки шрифта в файл можно использовать список кодов для иконок <a href="https://fontawesome.com/cheatsheet" target="_blank" rel="noopener">https://fontawesome.com/cheatsheet</a>.</p>
-</li>
-<li>
-<p>Шрифт лучше явно обозначить в конфигурации:</p>
+<li>Для вставки шрифта в файл можно использовать список кодов для иконок <a href="https://fontawesome.com/cheatsheet" target="_blank" rel="noopener">https://fontawesome.com/cheatsheet</a>.</li>
+<li>Шрифт лучше явно обозначить в конфигурации:
 <pre><code class="language-conf-unix">## ~/.config/i3/config
 bar {
     …
@@ -1434,8 +1398,7 @@ bar {
 }
 </code></pre>
 </li>
-<li>
-<p>Для набора символа по его коду следует использовать конфигурации клавиш. Например, для набора символа с кодом <code>0xf004</code>, требуется набрать:</p>
+<li>Для набора символа по его коду следует использовать конфигурации клавиш. Например, для набора символа с кодом <code>0xf004</code>, требуется набрать:
 <ul>
 <li>приложения на основе GTK: <code>Ctrl</code> + <code>Shift</code> + <code>u</code>, <code>f004</code>, <code>Enter</code>;</li>
 <li>emacs: <code>Ctrl</code> + <code>x</code>, <code>8</code>, <code>Enter</code>, <code>f004</code>, <code>Enter</code>;</li>
@@ -1451,14 +1414,9 @@ bar {
 <li>
 <p>i3status</p>
 <ul>
-<li>
-<p>Использовано <a href="https://igancev.ru/2020-05-11-configuring-i3status-in-i3wm" target="_blank" rel="noopener">https://igancev.ru/2020-05-11-configuring-i3status-in-i3wm</a>.</p>
-</li>
-<li>
-<p><code>i3status</code> генерирует строку состояния для <code>i3bar</code>.</p>
-</li>
-<li>
-<p>Содержит встроенные модули:</p>
+<li>Использовано <a href="https://igancev.ru/2020-05-11-configuring-i3status-in-i3wm" target="_blank" rel="noopener">https://igancev.ru/2020-05-11-configuring-i3status-in-i3wm</a>.</li>
+<li><code>i3status</code> генерирует строку состояния для <code>i3bar</code>.</li>
+<li>Содержит встроенные модули:
 <ul>
 <li>IPv6 &mdash; получает и выводит IPv6 адрес.</li>
 <li>Disk &mdash; отображает информацию о занятом и свободном месте в файловой системе.</li>
@@ -1478,19 +1436,15 @@ bar {
 <li>File Contents &mdash; вывод содержимого указанного файла.</li>
 </ul>
 </li>
-<li>
-<p>Модули в строке можно переиспользовать по нескольку раз, управляя порядком вывода.</p>
-</li>
-<li>
-<p>Конфигурацию условно можно разделить на 3 части:</p>
+<li>Модули в строке можно переиспользовать по нескольку раз, управляя порядком вывода.</li>
+<li>Конфигурацию условно можно разделить на 3 части:
 <ul>
 <li>блок <code>general</code> &mdash; содержит общие параметры;</li>
 <li>переменная <code>order</code> &mdash; в неё записывается порядок вывода интересующих модулей;</li>
 <li>блоки конфигурации модулей &mdash; непосредственно настройки самих блоков с метриками.</li>
 </ul>
 </li>
-<li>
-<p>В конфигурации i3bar задаётся конфигурационный файл для i3status:</p>
+<li>В конфигурации i3bar задаётся конфигурационный файл для i3status:
 <pre><code class="language-conf-unix"># ~/.config/i3/config -*- mode: conf-unix; -*-
 ## Start i3bar to display a workspace bar
 bar {
@@ -1500,8 +1454,7 @@ bar {
 }
 </code></pre>
 </li>
-<li>
-<p>Структура информационной панели задаётся в конфигурационном файле:</p>
+<li>Структура информационной панели задаётся в конфигурационном файле:
 <pre><code class="language-conf-unix">### -*- mode: conf-unix; -*-
 ## ~/.config/i3/i3status/config
 
@@ -1653,24 +1606,89 @@ tztime local {
 </ul>
 </li>
 </ol>
-<h4 id="polybar"><span class="section-num">5.3.2</span> polybar</h4>
+<h4 id="py3status"><span class="section-num">5.3.2</span> py3status</h4>
 <ul>
-<li>Отдельное приложение для строки статуса.</li>
-<li>Применяется для замены <em>i3bar</em>.</li>
-<li><a href="https://polybar.github.io/" target="_blank" rel="noopener">https://polybar.github.io/</a></li>
-<li><a href="https://github.com/polybar/polybar" target="_blank" rel="noopener">https://github.com/polybar/polybar</a></li>
-<li>Темы для <em>polybar</em>: <a href="https://github.com/adi1090x/polybar-themes" target="_blank" rel="noopener">https://github.com/adi1090x/polybar-themes</a></li>
-<li>Одним из побудительных мотивов установки <em>polybar</em> может быть то, что здесь можно без проблем настроить индикатор раскладки клавиатуры.</li>
-<li>Установка
+<li><code>py3status</code> &mdash; это расширяемая оболочка для <code>i3status</code>, написанная на python.</li>
+<li>Сайт: <a href="https://py3status.readthedocs.io/" target="_blank" rel="noopener">https://py3status.readthedocs.io/</a>.</li>
+<li>Репозиторий: <a href="https://github.com/ultrabug/py3status" target="_blank" rel="noopener">https://github.com/ultrabug/py3status</a>.</li>
+<li>Можно управлять <code>i3bar</code>:
+<ul>
+<li>используя один из доступных модулей, поставляемых с <code>py3status</code>;</li>
+<li>группировать несколько модулей и автоматически или вручную циклически отображать их отображение;</li>
+<li>писать свои собственные модули и отображать их вывод на панели;</li>
+<li>обрабатывать события кликов на <code>i3bar</code>.</li>
+</ul>
+</li>
+<li>Отображается вверху или внизу экрана.</li>
+<li>Содержит:
+<ul>
+<li>область с кнопками переключения рабочих областей <em>i3</em>;</li>
+<li>системную строку;</li>
+<li>системный трей с иконками программ.</li>
+</ul>
+</li>
+</ul>
+<!--list-separator-->
+<ol>
+<li>
+<p>Запуск py3status</p>
+<ul>
+<li>Запускается вместо <code>i3bar</code>:
+<pre><code class="language-conf-unix"># ~/.config/i3/config -*- mode: conf-unix; -*-
+## Start py3status to display a workspace bar
+bar {
+    font pango:Iosevka Nerd Font 12
+    status_command py3status
+    position top
+}
+</code></pre>
+</li>
+<li>Использует конфигурационный файл от <code>i3status</code> или собственную конфигурацию.</li>
+<li>Порядок поиска конфигурационного файла:
+<ul>
+<li><code>$XDG_CONFIG_HOME/py3status/config</code>;</li>
+<li><code>$XDG_CONFIG_HOME/i3status/config</code>;</li>
+<li><code>$XDG_CONFIG_HOME/i3/i3status.conf</code>;</li>
+<li><code>~/.i3status.conf</code>;</li>
+<li><code>~/.i3/i3status.conf</code>;</li>
+<li><code>$XDG_CONFIG_DIRS/i3status/config</code>;</li>
+<li><code>/etc/i3status.conf</code>.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h4 id="polybar"><span class="section-num">5.3.3</span> polybar</h4>
 <ul>
 <li>
-<p>Gentoo:</p>
+<p>Отдельное приложение для строки статуса.</p>
+</li>
+<li>
+<p>Применяется для замены <em>i3bar</em>.</p>
+</li>
+<li>
+<p><a href="https://polybar.github.io/" target="_blank" rel="noopener">https://polybar.github.io/</a></p>
+</li>
+<li>
+<p><a href="https://github.com/polybar/polybar" target="_blank" rel="noopener">https://github.com/polybar/polybar</a></p>
+</li>
+<li>
+<p>Темы для <em>polybar</em>: <a href="https://github.com/adi1090x/polybar-themes" target="_blank" rel="noopener">https://github.com/adi1090x/polybar-themes</a></p>
+</li>
+<li>
+<p>Одним из побудительных мотивов установки <em>polybar</em> может быть то, что здесь можно без проблем настроить индикатор раскладки клавиатуры.</p>
+</li>
+<li>
+<p>Установка</p>
+<ul>
+<li>Gentoo:
 <pre><code class="language-shell">USE=&quot;i3wm&quot; emerge x11-misc/polybar
 </code></pre>
 </li>
 </ul>
 </li>
-<li>Конфигурационный файл:
+<li>
+<p>Конфигурационный файл:</p>
 <ul>
 <li>стандартное расположение:  <code>~/.config/polybar/config</code> (<code>$XDG_CONFIG_HOME/polybar/config</code>);</li>
 <li>использую для локальных настроек только для <em>i3</em>: <code>~/.config/i3/polybar/config</code>.</li>
@@ -1682,8 +1700,7 @@ tztime local {
 <li>
 <p>Скрипт запуска</p>
 <ul>
-<li>
-<p>Создадим скрипт запуска <code>polybar</code>.</p>
+<li>Создадим скрипт запуска <code>polybar</code>.
 <pre><code class="language-shell">#!/bin/bash
 # ~/.config/i3/polybar/launch.sh
 
@@ -1701,13 +1718,11 @@ polybar --config=~/.config/i3/polybar/config i3 &amp;
 echo &quot;Polybar launched...&quot;
 </code></pre>
 </li>
-<li>
-<p>Установим права на исполнение:</p>
+<li>Установим права на исполнение:
 <pre><code class="language-shell">chmod +x ~/.config/i3/polybar/launch.sh
 </code></pre>
 </li>
-<li>
-<p>Добавим вызов <code>polybar</code> в файл конфигурации <em>i3</em>. Конфигурацию для <em>i3bar</em> следует закомментировать.</p>
+<li>Добавим вызов <code>polybar</code> в файл конфигурации <em>i3</em>. Конфигурацию для <em>i3bar</em> следует закомментировать.
 <pre><code class="language-conf-unix">## ~/.config/i3/config
 
 ## Start i3bar to display a workspace bar
@@ -1731,22 +1746,14 @@ exec_always --no-startup-id ~/.config/i3/polybar/launch.sh
 </ul>
 <h4 id="rofi"><span class="section-num">5.4.1</span> rofi</h4>
 <ul>
-<li>
-<p>Используется для запуска приложений, переключения окон.</p>
-</li>
-<li>
-<p><a href="https://github.com/davatorium/rofi" target="_blank" rel="noopener">https://github.com/davatorium/rofi</a></p>
-</li>
-<li>
-<p>Конфигурация по умолчанию находится в <code>~/.config/rofi/config</code>.</p>
-</li>
-<li>
-<p>Для выбора темы можно использовать команду:</p>
+<li>Используется для запуска приложений, переключения окон.</li>
+<li><a href="https://github.com/davatorium/rofi" target="_blank" rel="noopener">https://github.com/davatorium/rofi</a></li>
+<li>Конфигурация по умолчанию находится в <code>~/.config/rofi/config</code>.</li>
+<li>Для выбора темы можно использовать команду:
 <pre><code class="language-shell">rofi-theme-selector
 </code></pre>
 </li>
-<li>
-<p>Для запуска программ используется несколько мод:</p>
+<li>Для запуска программ используется несколько мод:
 <ul>
 <li><code>run</code>: запускать приложения из пути (<code>$PATH</code>) с возможностью запуска в терминале.</li>
 <li><code>drun</code>: запускать приложения на основе desctop-файлов (по стандарту XDG).</li>
@@ -1758,23 +1765,19 @@ exec_always --no-startup-id ~/.config/i3/polybar/launch.sh
 <li><code>combi</code>: объединяет несколько мод в одну.</li>
 </ul>
 </li>
-<li>
-<p>Использование запятых в файле настроек <em>i3</em> может привести к проблемам. Лучше использовать файл настроек <em>rofi</em> или замените запятые символом <code>#</code>, например, заменить строку</p>
+<li>Использование запятых в файле настроек <em>i3</em> может привести к проблемам. Лучше использовать файл настроек <em>rofi</em> или замените запятые символом <code>#</code>, например, заменить строку
 <pre><code class="language-conf-unix">rofi -combi-modi window,drun,ssh
 </code></pre>
-<p>на</p>
+на
 <pre><code class="language-conf-unix">rofi -combi-modi window#drun#ssh
 </code></pre>
 </li>
-<li>
-<p>Возможная конфигурация в командной строке команды <code>rofi</code>:</p>
+<li>Возможная конфигурация в командной строке команды <code>rofi</code>:
 <pre><code class="language-conf-unix">## ~/.config/i3/config
 set $menu rofi -combi-modi window#drun -show combi -modi combi -show-icons
 </code></pre>
 </li>
-<li>
-<p>Конфигурация с помощью конфигурационного файла (поместим его в <code>~/.config/i3/rofi/config</code>).</p>
-</li>
+<li>Конфигурация с помощью конфигурационного файла (поместим его в <code>~/.config/i3/rofi/config</code>).</li>
 </ul>
 <h3 id="блокировка-экрана"><span class="section-num">5.5</span> Блокировка экрана</h3>
 <ul>
@@ -1786,16 +1789,19 @@ set $menu rofi -combi-modi window#drun -show combi -modi combi -show-icons
 <li>Отключается через 30 минут.</li>
 </ul>
 </li>
+</ul>
+<h4 id="блокировщик-экрана-i3lock"><span class="section-num">5.5.1</span> Блокировщик экрана <code>i3lock</code></h4>
+<ul>
 <li>
 <p>В качестве блокировщика экрана используем <code>i3lock</code>.</p>
 <ul>
-<li>
-<p>Установка</p>
+<li>Установка
 <ul>
-<li>
-<p>Gentoo</p>
+<li>Gentoo
 <pre><code class="language-shell">emerge x11-misc/i3lock
 </code></pre>
+</li>
+</ul>
 </li>
 </ul>
 </li>
@@ -1807,8 +1813,6 @@ set $menu rofi -combi-modi window#drun -show combi -modi combi -show-icons
 <li><code>sleep 1</code> добавляет небольшую задержку, чтобы предотвратить возможное состояние гонки.</li>
 </ul>
 </li>
-</ul>
-</li>
 <li>
 <p>Для блокировки экрана после заданного периода времени можно использовать <code>xautolock</code> или <code>xss-lock</code>.</p>
 </li>
@@ -1818,8 +1822,7 @@ set $menu rofi -combi-modi window#drun -show combi -modi combi -show-icons
 <li>
 <p>Установка</p>
 <ul>
-<li>
-<p>Gentoo</p>
+<li>Gentoo
 <pre><code class="language-shell">emerge x11-misc/xautolock
 </code></pre>
 </li>
@@ -1839,8 +1842,7 @@ set $menu rofi -combi-modi window#drun -show combi -modi combi -show-icons
 <li>
 <p>Установка</p>
 <ul>
-<li>
-<p>Gentoo</p>
+<li>Gentoo
 <pre><code class="language-shell">emerge x11-misc/xss-lock
 </code></pre>
 </li>
@@ -1852,14 +1854,46 @@ set $menu rofi -combi-modi window#drun -show combi -modi combi -show-icons
 </code></pre>
 </li>
 </ul>
+<h4 id="блокировщик-экрана-i3lock-color"><span class="section-num">5.5.2</span> Блокировщик экрана <code>i3lock-color</code></h4>
+<ul>
+<li>Репозиторий: <a href="https://github.com/Raymo111/i3lock-color" target="_blank" rel="noopener">https://github.com/Raymo111/i3lock-color</a></li>
+</ul>
+<!--list-separator-->
+<ol>
+<li>
+<p>Дополнительные возможности в i3lock-color</p>
+<ul>
+<li>Дополнительное управление цветом элементов.</li>
+<li>Размытие текущего экрана и использование его в качестве фона блокировки.</li>
+<li>Отображение часов в индикаторе.</li>
+<li>Обновление по таймеру, а не при каждом нажатии клавиши.</li>
+<li>Отображение раскладки клавиатуры.</li>
+</ul>
+</li>
+</ol>
+<!--list-separator-->
+<ol start="2">
+<li>
+<p>Установка</p>
+<ul>
+<li>Gentoo
+<ul>
+<li>Порт находится в оверлее <code>guru</code>:
+<pre><code class="language-shell">emerge x11-misc/i3lock-color
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
 <h2 id="приложения"><span class="section-num">6</span> Приложения</h2>
 <h3 id="снимки-экрана"><span class="section-num">6.1</span> Снимки экрана</h3>
 <ul>
 <li>
 <p>Для скриншотов можно использовать <a href="https://github.com/resurrecting-open-source-projects/scrot" target="_blank" rel="noopener">scrot</a>.</p>
 <ul>
-<li>
-<p>Gentoo</p>
+<li>Gentoo
 <pre><code class="language-shell">emerge media-gfx/scrot
 </code></pre>
 </li>
@@ -1890,34 +1924,42 @@ bindsym --release $mod+Shift+Print exec --no-startup-id scrot -s '%Y-%m-%d_%H-%M
 <h3 id="java"><span class="section-num">7.1</span> Java</h3>
 <h4 id="серое-окно-приложения-не-меняют-размер-с-помощью-wm-меню-сразу-закрываются"><span class="section-num">7.1.1</span> Серое окно, приложения не меняют размер с помощью WM, меню сразу закрываются</h4>
 <ul>
-<li>
-<p>В стандартных тулкитах для Java жестко зашит список оконных менеджеров.</p>
-</li>
-<li>
-<p>Следует установить переменную окружения:</p>
+<li>В стандартных тулкитах для Java жестко зашит список оконных менеджеров.</li>
+<li>Следует установить переменную окружения:
 <pre><code class="language-shell">export _JAVA_AWT_WM_NONREPARENTING=1
 </code></pre>
 </li>
 </ul>
 <h4 id="меню-в-приложениях-плавает-отдельно-им-невозможно-пользоваться"><span class="section-num">7.1.2</span> Меню в приложениях плавает отдельно, им невозможно пользоваться</h4>
 <ul>
-<li>
-<p>В выпусках Java до версии 9 GTK интерфейс ориентирован на GTK2, в последующих версиях на GTK3.</p>
-</li>
-<li>
-<p>GTK LookAndFeel может работать с GTK версий 2, 2.2 и 3.</p>
-</li>
-<li>
-<p>По умолчанию используется GTK3.</p>
-</li>
-<li>
-<p>Следует явно задать более старую версию:</p>
+<li>В выпусках Java до версии 9 GTK интерфейс ориентирован на GTK2, в последующих версиях на GTK3.</li>
+<li>GTK LookAndFeel может работать с GTK версий 2, 2.2 и 3.</li>
+<li>По умолчанию используется GTK3.</li>
+<li>Следует явно задать более старую версию:
 <pre><code class="language-shell">export JAVA_TOOL_OPTIONS='-Djdk.gtk.version=2.2'
 </code></pre>
 </li>
 </ul>
       
 
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
 
    
 

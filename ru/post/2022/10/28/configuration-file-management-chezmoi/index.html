@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- This site was created with Wowchemy. https://www.wowchemy.com -->
-<!-- Last Published: 12 января 2023 г. --><html lang="ru-ru" >
+<!-- Last Published: 16 января 2023 г. --><html lang="ru-ru" >
 
 
 <head>
@@ -360,7 +360,7 @@
     />
   
   
-    <meta property="article:modified_time" content="2022-11-25T15:39:00&#43;03:00">
+    <meta property="article:modified_time" content="2023-01-15T20:32:00&#43;03:00">
   
 
 
@@ -391,7 +391,7 @@
   "headline": "Управление файлами конфигурации. Chezmoi",
   
   "datePublished": "2022-10-28T19:49:00+03:00",
-  "dateModified": "2022-11-25T15:39:00+03:00",
+  "dateModified": "2023-01-15T20:32:00+03:00",
   
   "author": {
     "@type": "Person",
@@ -406,7 +406,7 @@
       "url": "https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_192x192_fill_lanczos_center_3.png"
     }
   },
-  "description": "\u003cp\u003eИспользование chezmoi для управления файлами конфигурации домашнего каталога пользователя.\u003c/p\u003e"
+  "description": "\u003cp\u003eИспользование \u003ccode\u003echezmoi\u003c/code\u003e для управления файлами конфигурации домашнего каталога пользователя.\u003c/p\u003e"
 }
 </script>
 
@@ -948,7 +948,7 @@
           Обновлено
       
     
-    2022-11-25
+    2023-01-15
   </span>
   
 
@@ -957,7 +957,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-reading-time">
-    1 мин. для прочтения
+    5 мин. для прочтения
   </span>
   
 
@@ -989,14 +989,34 @@
   <div class="article-container">
 
     <div class="article-style">
-      <p>Использование chezmoi для управления файлами конфигурации домашнего каталога пользователя.</p>
+      <p>Использование <code>chezmoi</code> для управления файлами конфигурации домашнего каталога пользователя.</p>
 <details class="toc-inpage d-print-none  " open>
   <summary class="font-weight-bold">Содержание</summary>
   <nav id="TableOfContents">
   <ul>
     <li><a href="#общая-информация"><span class="section-num">1</span> Общая информация</a></li>
     <li><a href="#установка"><span class="section-num">2</span> Установка</a></li>
-    <li><a href="#первоначальная-настройка"><span class="section-num">3</span> Первоначальная настройка</a></li>
+    <li><a href="#конфигурация-chezmoi"><span class="section-num">3</span> Конфигурация <code>chezmoi</code></a>
+      <ul>
+        <li><a href="#рабочие-файлы"><span class="section-num">3.1</span> Рабочие файлы</a></li>
+        <li><a href="#автоматически-создавать-файл-конфигурации-на-новой-машине"><span class="section-num">3.2</span> Автоматически создавать файл конфигурации на новой машине</a></li>
+        <li><a href="#пересоздание-файл-конфигурации"><span class="section-num">3.3</span> Пересоздание файл конфигурации</a></li>
+      </ul>
+    </li>
+    <li><a href="#использование-chezmoi"><span class="section-num">4</span> Использование <code>chezmoi</code></a>
+      <ul>
+        <li><a href="#первоначальная-настройка-на-первичном-хосте"><span class="section-num">4.1</span> Первоначальная настройка на первичном хосте</a></li>
+        <li><a href="#использование-chezmoi-на-нескольких-машинах"><span class="section-num">4.2</span> Использование chezmoi на нескольких машинах</a></li>
+        <li><a href="#настройка-новой-машины-с-помощью-одной-команды"><span class="section-num">4.3</span> Настройка новой машины с помощью одной команды</a></li>
+        <li><a href="#ежедневные-операции-c-chezmoi"><span class="section-num">4.4</span> Ежедневные операции c <code>chezmoi</code></a>
+          <ul>
+            <li><a href="#извлеките-последние-изменения-из-репозитория-и-примените-их-dot"><span class="section-num">4.4.1</span> Извлеките последние изменения из репозитория и примените их.</a></li>
+            <li><a href="#извлеките-последние-изменения-из-своего-репозитория-и-посмотрите-что-изменится-фактически-не-применяя-изменения"><span class="section-num">4.4.2</span> Извлеките последние изменения из своего репозитория и посмотрите, что изменится, фактически не применяя изменения</a></li>
+            <li><a href="#автоматически-фиксируйте-и-отправляйте-изменения-в-репозиторий"><span class="section-num">4.4.3</span> Автоматически фиксируйте и отправляйте изменения в репозиторий</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
   </ul>
 </nav>
 </details>
@@ -1008,7 +1028,7 @@
 </ul>
 <h2 id="установка"><span class="section-num">2</span> Установка</h2>
 <ul>
-<li>Установка бинарного файла:
+<li>Установка бинарного файла. Скрипт определяет архитектуру процессора и операционную систему и скачивает необходимый файл:
 <ul>
 <li>
 <p>с помощью <code>curl</code>:</p>
@@ -1056,9 +1076,181 @@
 </ul>
 </li>
 </ul>
-<h2 id="первоначальная-настройка"><span class="section-num">3</span> Первоначальная настройка</h2>
+<h2 id="конфигурация-chezmoi"><span class="section-num">3</span> Конфигурация <code>chezmoi</code></h2>
+<h3 id="рабочие-файлы"><span class="section-num">3.1</span> Рабочие файлы</h3>
+<ul>
+<li>Состояние файлов конфигурации сохраняется в каталоге
+<pre><code class="language-shell">~/.local/share/chezmoi
+</code></pre>
+</li>
+<li>Он является клоном вашего репозитория <code>dotfiles</code>.</li>
+<li>Файл конфигурации <code>~/.config/chezmoi/chezmoi.toml</code> (можно использовать также JSON или YAML) специфичен для локальной машины.</li>
+<li>Файлы, содержимое которых одинаково на всех ваших машинах, дословно копируются из исходного каталога.</li>
+<li>Файлы, которые варьируются от машины к машине, выполняются как шаблоны, обычно с использованием данных из файла конфигурации локальной машины для настройки конечного содержимого, специфичного для локальной машины.</li>
+<li>При запуске
+<pre><code class="language-shell">chezmoi apply
+</code></pre>
+вычисляется желаемое содержимое и разрешения для каждого файла, а затем вносит необходимые изменения, чтобы ваши файлы соответствовали этому состоянию.</li>
+<li>По умолчанию chezmoi изменяет файлы только в рабочей копии.</li>
+</ul>
+<h3 id="автоматически-создавать-файл-конфигурации-на-новой-машине"><span class="section-num">3.2</span> Автоматически создавать файл конфигурации на новой машине</h3>
+<ul>
+<li>
+<p>При выполнении <code>chezmoi init</code> также может автоматически создать файл конфигурации, если он еще не существует.</p>
+</li>
+<li>
+<p>Если ваш репозиторий содержит файл с именем <code>.chezmoi.$FORMAT.tmpl</code>, где <code>$FORMAT</code> есть один из поддерживаемых форматов файла конфигурации (<code>json</code>, <code>toml</code>, или <code>yaml</code>), то <code>chezmoi init</code> выполнит этот шаблон для создания исходного файла конфигурации.</p>
+</li>
+<li>
+<p>Например, пусть <code>~/.local/share/chezmoi/.chezmoi.toml.tmpl</code> выглядит так:</p>
+<pre><code class="language-toml">{{- $email := promptStringOnce . &quot;email&quot; &quot;Email address&quot; -}}
+
+[data]
+    email = {{ $email | quote }}
+</code></pre>
+<ul>
+<li>При выполнении <code>chezmoi init</code> будет создан конфигурационный файл <code>~/.config/chezmoi/chezmoi.toml</code>.</li>
+<li><code>promptStringOnce</code> &mdash; это специальная функция, которая запрашивает у пользователя значение, если оно еще не установлено в разделе <code>data</code> конфигурационного файла.</li>
+</ul>
+</li>
+<li>
+<p>Чтобы протестировать этот шаблон, используйте <code>chezmoi execute-template</code> с флагами <code>--init</code> и <code>--promptString</code>, например:</p>
+<pre><code class="language-shell">chezmoi execute-template --init --promptString email=me@home.org &lt; ~/.local/share/chezmoi/.chezmoi.toml.tmpl
+</code></pre>
+</li>
+</ul>
+<h3 id="пересоздание-файл-конфигурации"><span class="section-num">3.3</span> Пересоздание файл конфигурации</h3>
+<ul>
+<li>Если вы измените шаблон файла конфигурации, <code>chezmoi</code> предупредит вас, если ваш текущий файл конфигурации не был сгенерирован из этого шаблона.</li>
+<li>Вы можете повторно сгенерировать файл конфигурации, запустив:
+<pre><code class="language-shell">chezmoi init
+</code></pre>
+</li>
+</ul>
+<h2 id="использование-chezmoi"><span class="section-num">4</span> Использование <code>chezmoi</code></h2>
+<h3 id="первоначальная-настройка-на-первичном-хосте"><span class="section-num">4.1</span> Первоначальная настройка на первичном хосте</h3>
+<ul>
+<li>Инициализируйте <code>chezmoi</code> командой:
+<pre><code class="language-shell">chezmoi init
+</code></pre>
+</li>
+<li>Это создаст новый локальный репозиторий git в <code>~/.local/share/chezmoi</code>.</li>
+<li>Добавьте в репозиторий первый файл с помощью <code>chezmoi</code>:
+<pre><code class="language-shell">chezmoi add ~/.bashrc
+</code></pre>
+</li>
+<li>Команда скопирует <code>~/.bashrc</code> в <code>~/.local/share/chezmoi/dot_bashrc</code>.</li>
+<li>Можно отредактировать файл:
+<pre><code class="language-shell">chezmoi edit ~/.bashrc
+</code></pre>
+</li>
+<li>Откроется <code>~/.local/share/chezmoi/dot_bashrc</code> в редакторе, заданном переменной <code>$EDITOR</code>.</li>
+<li>Внесите некоторые изменения и сохраните файл.</li>
+<li>Посмотрите, какие изменения внес бы <code>chezmoi</code>:
+<pre><code class="language-shell">chezmoi diff
+</code></pre>
+</li>
+<li>Примените изменения:
+<pre><code class="language-shell">chezmoi -v apply
+</code></pre>
+</li>
+<li>Все команды <code>chezmoi</code> принимают  флаг <code>-v</code> (подробная информация) и флаг <code>-n</code> (пробный запуск, демонстрирующий, но не вносящий изменения).</li>
+<li>Создайте репозиторий <code>dotfiles</code> для хранения конфигурационных файлов.</li>
+<li>Поддерживается хранение ваших конфигурационных файлов как в общедоступных, так и в частных репозиториях.</li>
+<li>Создать репозиторий можно вручную или из командной строки:
+<pre><code class="language-shell">gh repo create dotfiles
+</code></pre>
+</li>
+<li>Откройте оболочку в исходном каталоге, чтобы зафиксировать изменения:
+<pre><code class="language-shell">chezmoi cd
+git add .
+git commit -m &quot;Initial commit&quot;
+</code></pre>
+</li>
+<li>Подключите репозиторий и выгрузите файлы:
+<pre><code class="language-shell">git remote add origin git@github.com:username/dotfiles.git
+git push -u origin
+</code></pre>
+</li>
+<li>Выйдите из оболочки <code>chezmoi</code>:
+<pre><code class="language-shell">exit
+</code></pre>
+</li>
+</ul>
+<h3 id="использование-chezmoi-на-нескольких-машинах"><span class="section-num">4.2</span> Использование chezmoi на нескольких машинах</h3>
+<ul>
+<li>На второй машине инициализируйте <code>chezmoi</code> с вашим репозиторием <code>dotfiles</code>:
+<pre><code class="language-shell">chezmoi init https://github.com/username/dotfiles.git
+</code></pre>
+</li>
+<li>Проверьте, какие изменения внесёт <code>chezmoi</code> в домашний каталог, запустив:
+<pre><code class="language-shell">chezmoi diff
+</code></pre>
+</li>
+<li>Если вас устраивают изменения, внесённые <code>chezmoi</code>, запустите:
+<pre><code class="language-shell">chezmoi apply -v
+</code></pre>
+</li>
+<li>Если вас не устраивают изменения в файле, отредактируйте его с помощью:
+<pre><code class="language-shell">chezmoi edit file_name
+</code></pre>
+</li>
+<li>Также можно вызвать инструмент слияния, чтобы объединить изменения между текущим содержимым файла, файлом в вашей рабочей копии и измененным содержимым файла:
+<pre><code class="language-shell">chezmoi merge file_name
+</code></pre>
+</li>
+<li>При существующем каталоге <code>chezmoi</code> можно получить и применить последние изменения из вашего репозитория:
+<pre><code class="language-shell">chezmoi update -v
+</code></pre>
+</li>
+</ul>
+<h3 id="настройка-новой-машины-с-помощью-одной-команды"><span class="section-num">4.3</span> Настройка новой машины с помощью одной команды</h3>
+<ul>
+<li>Можно установить свои <code>dotfiles</code> на новый компьютер с помощью одной команды:
+<pre><code class="language-shell">chezmoi init --apply https://github.com/username/dotfiles.git
+</code></pre>
+</li>
+</ul>
+<h3 id="ежедневные-операции-c-chezmoi"><span class="section-num">4.4</span> Ежедневные операции c <code>chezmoi</code></h3>
+<h4 id="извлеките-последние-изменения-из-репозитория-и-примените-их-dot"><span class="section-num">4.4.1</span> Извлеките последние изменения из репозитория и примените их.</h4>
+<ul>
+<li>Можно извлечь изменения из репозитория и применить их одной командой:
+<pre><code class="language-shell">chezmoi update
+</code></pre>
+</li>
+<li>Это запускается <code>git pull --autostash --rebase</code> в вашем исходном каталоге, а затем <code>chezmoi apply</code>.</li>
+</ul>
+<h4 id="извлеките-последние-изменения-из-своего-репозитория-и-посмотрите-что-изменится-фактически-не-применяя-изменения"><span class="section-num">4.4.2</span> Извлеките последние изменения из своего репозитория и посмотрите, что изменится, фактически не применяя изменения</h4>
+<ul>
+<li>Выполните:
+<pre><code class="language-shell">chezmoi git pull -- --autostash --rebase &amp;&amp; chezmoi diff
+</code></pre>
+</li>
+<li>Это запускается <code>git pull --autostash --rebase</code> в вашем исходном каталоге, а <code>chezmoi diff</code> затем показывает разницу между целевым состоянием, вычисленным из вашего исходного каталога, и фактическим состоянием.</li>
+<li>Если вы довольны изменениями, вы можете применить их:
+<pre><code class="language-shell">chezmoi apply
+</code></pre>
+</li>
+</ul>
+<h4 id="автоматически-фиксируйте-и-отправляйте-изменения-в-репозиторий"><span class="section-num">4.4.3</span> Автоматически фиксируйте и отправляйте изменения в репозиторий</h4>
+<ul>
+<li>Можно автоматически фиксировать и отправлять изменения в исходный каталог в репозиторий.</li>
+<li>Эта функция отключена по умолчанию.</li>
+<li>Чтобы включить её, добавьте в файл конфигурации <code>~/.config/chezmoi/chezmoi.toml</code> следующее:
+<pre><code class="language-shell">[git]
+    autoCommit = true
+    autoPush = true
+</code></pre>
+</li>
+<li>Всякий раз, когда в исходный каталог вносятся изменения, <code>chezmoi</code> фиксирует изменения с помощью автоматически сгенерированного сообщения фиксации и отправляет их в ваш репозиторий.</li>
+<li>Будьте осторожны при использовании <code>autoPush</code>. Если ваш репозиторий <code>dotfiles</code> является общедоступным, и вы случайно добавили секрет в виде обычного текста, этот секрет будет отправлен в ваш общедоступный репозиторий.</li>
+</ul>
       
 
+
+   
+
+   
 
    
 

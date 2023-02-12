@@ -5,12 +5,79 @@
     <link>https://yamadharma.github.io/en/</link>
       <atom:link href="https://yamadharma.github.io/en/index.xml" rel="self" type="application/rss+xml" />
     <description>Dmitry S. Kulyabov</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>© 2023 Dmitry S. Kulyabov</copyright><lastBuildDate>Fri, 20 Jan 2023 19:28:00 +0300</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>© 2023 Dmitry S. Kulyabov</copyright><lastBuildDate>Sun, 05 Feb 2023 13:35:00 +0300</lastBuildDate>
     <image>
       <url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url>
       <title>Dmitry S. Kulyabov</title>
       <link>https://yamadharma.github.io/en/</link>
     </image>
+    
+    <item>
+      <title>L2TP/IPsec VPN client setup</title>
+      <link>https://yamadharma.github.io/en/post/2023/02/05/l2tp-ipsec-vpn-client-setup/</link>
+      <pubDate>Sun, 05 Feb 2023 13:35:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/en/post/2023/02/05/l2tp-ipsec-vpn-client-setup/</guid>
+      <description>&lt;p&gt;L2TP/IPsec VPN client setup&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Table of Contents&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#linux&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Linux&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#gentoo&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Gentoo&lt;/a&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&#34;#networkmanager&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1.1&lt;/span&gt; NetworkManager&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#strongswan-interactions&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1.2&lt;/span&gt; Strongswan interactions&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;linux&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Linux&lt;/h2&gt;
+&lt;h3 id=&#34;gentoo&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Gentoo&lt;/h3&gt;
+&lt;h4 id=&#34;networkmanager&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1.1&lt;/span&gt; NetworkManager&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Open the NetworkManager UI, then:
+&lt;ul&gt;
+&lt;li&gt;Go to Network &amp;gt; VPN. Click &lt;em&gt;+&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;Select &lt;em&gt;Layer 2 Tunneling Protocol (L2TP)&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;You can choose a name for the VPN.&lt;/li&gt;
+&lt;li&gt;Enter Your VPN Server IP for the Gateway.&lt;/li&gt;
+&lt;li&gt;Enter Your VPN Username for the User name.&lt;/li&gt;
+&lt;li&gt;Right-click the &lt;em&gt;?&lt;/em&gt; in the Password field, select Store the password only for this user.
+&lt;ul&gt;
+&lt;li&gt;You might want to use &lt;em&gt;Store password for all users&lt;/em&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Enter Your VPN Password for the Password.&lt;/li&gt;
+&lt;li&gt;Leave the NT Domain field blank.&lt;/li&gt;
+&lt;li&gt;Click the &lt;em&gt;IPsec Settings&amp;hellip;&lt;/em&gt; button.&lt;/li&gt;
+&lt;li&gt;Check the Enable IPsec tunnel to L2TP host checkbox.&lt;/li&gt;
+&lt;li&gt;Leave the Gateway ID field blank.&lt;/li&gt;
+&lt;li&gt;Enter Your VPN IPsec PSK for the Pre-shared key.&lt;/li&gt;
+&lt;li&gt;Then click &lt;em&gt;Add&lt;/em&gt; to save the VPN connection information.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;strongswan-interactions&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1.2&lt;/span&gt; Strongswan interactions&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;By default, strongswan is built with capabilities support and the ability to run as an unprivileged user.&lt;/li&gt;
+&lt;li&gt;However, capabilities are not configured in NetworkManager.&lt;/li&gt;
+&lt;li&gt;As a result, the connection is not established.&lt;/li&gt;
+&lt;li&gt;You can solve the problem as follows:
+&lt;ul&gt;
+&lt;li&gt;either install strongswan without capabilities support and the ability to run as an unprivileged user:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;USE=&amp;quot;-caps -non-root&amp;quot; emerge strongswan
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;either build NetworkManager with capabilities support (see &lt;a href=&#34;https://gitlab.freedesktop.org/NetworkManager/NetworkManager/-/merge_requests/1053&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://gitlab.freedesktop.org/NetworkManager/NetworkManager/-/merge_requests/1053&lt;/a&gt;).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
     
     <item>
       <title>LaTeX. What to read</title>

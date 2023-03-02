@@ -5,12 +5,217 @@
     <link>https://yamadharma.github.io/ru/tag/sysadmin/</link>
       <atom:link href="https://yamadharma.github.io/ru/tag/sysadmin/index.xml" rel="self" type="application/rss+xml" />
     <description>sysadmin</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2023 Dmitry S. Kulyabov</copyright><lastBuildDate>Sun, 05 Feb 2023 13:35:00 +0300</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2023 Dmitry S. Kulyabov</copyright><lastBuildDate>Thu, 02 Mar 2023 15:46:00 +0300</lastBuildDate>
     <image>
       <url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url>
       <title>sysadmin</title>
       <link>https://yamadharma.github.io/ru/tag/sysadmin/</link>
     </image>
+    
+    <item>
+      <title>Система мониторинга Observium</title>
+      <link>https://yamadharma.github.io/ru/post/2023/03/02/observium-monitoring-system/</link>
+      <pubDate>Thu, 02 Mar 2023 15:46:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2023/03/02/observium-monitoring-system/</guid>
+      <description>&lt;p&gt;Система мониторинга Observium.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#подключение-устройств&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Подключение устройств&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#принципы-работы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Принципы работы&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#установка-observium&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Установка Observium&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#обновление-observium&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Обновление Observium&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Сайт: &lt;a href=&#34;https://www.observium.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.observium.org/&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Хорош тем, что практически не требует настройки. Работает из коробки.&lt;/li&gt;
+&lt;li&gt;Observium доступен в двух версиях:
+&lt;ul&gt;
+&lt;li&gt;бесплатная &lt;em&gt;Community&lt;/em&gt;  (выпускается раз в 6 месяцев);&lt;/li&gt;
+&lt;li&gt;платная &lt;em&gt;Professional&lt;/em&gt;;&lt;/li&gt;
+&lt;li&gt;платная &lt;em&gt;Enterprise&lt;/em&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Observium Community годится только для сервисов не критичных к времени реакции, так как устройства по SNMP опрашиваются раз в 5 минут.&lt;/li&gt;
+&lt;li&gt;В платной версии предусмотрен модуль Alarms.&lt;/li&gt;
+&lt;li&gt;Опрос устройств осуществляется по протоколу SNMP.&lt;/li&gt;
+&lt;li&gt;Наилучшим образом подходит для мониторинга коммутационного оборудования.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;подключение-устройств&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Подключение устройств&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Для добавления маршрутизатора Cisco достаточно задать SNMP community:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;snmp-server community public RO
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Добавление устройств в Observium осуществляется либо через меню веб интерфейса (Devices-&amp;gt;Add device), либо из командной строки сервера (из каталога &lt;em&gt;Observium&lt;/em&gt;):
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;./add_device.php hostname
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;принципы-работы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Принципы работы&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Сбор статистики поделен на 2 основных процесса:
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;discovery&lt;/code&gt;: выполняется основное обнаружение поддерживаемых на данном устройстве датчиков;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;poller&lt;/code&gt;: опрос устройств каждые 5 минут.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;В версии для подписчиков есть ещё 2 дополнительных процесса, работающих совместно с процессом &lt;code&gt;poller&lt;/code&gt;:
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;bill&lt;/code&gt;: подсчёт биллинговой информации на отдельных портах для пользователей;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;alert&lt;/code&gt;: генерация уведомлений по собираемым системой параметрам.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;установка-observium&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Установка Observium&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Создаем директории, в которых будут располагаться файлы &lt;em&gt;Observium&lt;/em&gt;:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sudo mkdir -p /opt/observium
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Скачаем версию &lt;em&gt;Community Edition&lt;/em&gt;:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;cd /opt
+wget http://www.observium.org/observium-community-latest.tar.gz
+tar zxvf observium-community-latest.tar.gz
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Переходим в папку с конфигурационными файлами и создаем конфигурационный файл, скопировав файл по умолчанию:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;cd /optobservium
+sudo cp config.php.default config.php
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Открываем файл &lt;code&gt;config.php&lt;/code&gt; и редактируем настройки MySQL: &lt;code&gt;username&lt;/code&gt;, &lt;code&gt;password&lt;/code&gt;, &lt;code&gt;dbname&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Подключаемся к MySQL:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;mysql -u root -p
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Создаём базу данных с именем &lt;code&gt;observium&lt;/code&gt;:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;CREATE DATABASE observium DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Даём полные привилегии пользователю &lt;code&gt;observium&lt;/code&gt; на одноименную базу данных:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;GRANT ALL PRIVILEGES ON observium.* TO &#39;observium&#39;@&#39;localhost&#39;IDENTIFIED BY &#39;PASSWORD&#39;;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Выполняем скрипт конфигурации ранее созданной базы данных MySQL:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;/opt/observium/discovery.php -u
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Создаем дополнительные служебные каталоги:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;mkdir /opt/observium/logs
+mkdir /opt/observium/rrd
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Создайте файл &lt;code&gt;/etc/httpd/conf.d/observium.conf&lt;/code&gt;:
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;VirtualHost *&amp;gt;
+   DocumentRoot /opt/observium/html/
+   ServerName  observium.domain.com
+   CustomLog /opt/observium/logs/access_log combined
+   ErrorLog /opt/observium/logs/error_log
+   &amp;lt;Directory &amp;quot;/opt/observium/html/&amp;quot;&amp;gt;
+     AllowOverride All
+     Options FollowSymLinks MultiViews
+     Require all granted
+   &amp;lt;/Directory&amp;gt;
+&amp;lt;/VirtualHost&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Создайте файл &lt;code&gt;/etc/cron.d/observium&lt;/code&gt;:
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;# Run a complete discovery of all devices once every 6 hours
+33  */6   * * *   root    /opt/observium/discovery.php -h all &amp;gt;&amp;gt; /dev/null 2&amp;gt;&amp;amp;1
+# Run automated discovery of newly added devices every 5 minutes
+*/5 *     * * *   root    /opt/observium/discovery.php -h new &amp;gt;&amp;gt; /dev/null 2&amp;gt;&amp;amp;1
+# Run multithreaded poller wrapper every 5 minutes
+*/5 *     * * *   root    /opt/observium/poller-wrapper.py &amp;gt;&amp;gt; /dev/null 2&amp;gt;&amp;amp;1
+# Run housekeeping script daily for syslog, eventlog and alert log
+13 5 * * * root /opt/observium/housekeeping.php -ysel
+# Run housekeeping script daily for rrds, ports, orphaned entries in the database and performance data
+47 4 * * * root /opt/observium/housekeeping.php -yrptb
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Чтобы форсировать мониторинг устройств, нужно выполнить команды:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;/opt/observium/discovery.php -h all
+/opt/observium/poller.php -h all
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;обновление-observium&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Обновление Observium&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Переименуйте старую установку и скачайте и распакуйте новую (всё под пользователем &lt;code&gt;root&lt;/code&gt;):
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;cd /opt
+mv observium observium_old
+wget https://www.observium.org/observium-community-latest.tar.gz
+tar zxvf observium-community-latest.tar.gz
+mv /opt/observium_old/rrd observium/
+mv /opt/observium_old/logs observium/
+mv /opt/observium_old/config.php observium/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Исправьте права доступа:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;chown -R apache:apache /opt/observium
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Обновите схему БД:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;/opt/observium/discovery.php -u
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Можно принудительно выполнить немедленное повторное обнаружение всех устройств:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;/opt/observium/discovery.php -h all
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Можно удалить каталог &lt;code&gt;observium_old&lt;/code&gt;:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;rm -rf observium_old
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Флаги запуска Google Chrome</title>
+      <link>https://yamadharma.github.io/ru/post/2023/02/28/google-chrome-flags/</link>
+      <pubDate>Tue, 28 Feb 2023 15:31:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2023/02/28/google-chrome-flags/</guid>
+      <description>&lt;p&gt;Флаги запуска Google Chrome.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#задание-флагов-в-конфигурационном-файле&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Задание флагов в конфигурационном файле&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#расположение-конфигурационных-файлов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Расположение конфигурационных файлов&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#пример-конфигурационного-файла&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Пример конфигурационного файла&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;задание-флагов-в-конфигурационном-файле&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Задание флагов в конфигурационном файле&lt;/h2&gt;
+&lt;h3 id=&#34;расположение-конфигурационных-файлов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Расположение конфигурационных файлов&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Конфигурационный файл будет называться &lt;code&gt;chrome-flags.conf&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Пользовательский файл конфигурации находится в каталоге &lt;code&gt;$HOME/.config/&lt;/code&gt; (переменная среды &lt;code&gt;$XDG_CONFIG_HOME&lt;/code&gt;).&lt;/li&gt;
+&lt;li&gt;Глобальный файл конфигурации находится в каталоге &lt;code&gt;/etc/&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Специальный синтаксис не используется. Флаги определяются так, как если бы они были записаны в терминале.&lt;/li&gt;
+&lt;li&gt;Флаги можно размещать в отдельных строках для удобства чтения, но это не обязательно.&lt;/li&gt;
+&lt;li&gt;Строки, начинающиеся с символа решётки (&lt;code&gt;#&lt;/code&gt;), пропускаются.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;пример-конфигурационного-файла&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Пример конфигурационного файла&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Настроим перенос кэша броузера во временную файловую систему:
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;## ~/.config/chrome-flags.conf
+# Cache in tmpfs
+--disk-cache-dir=$XDG_RUNTIME_DIR/google-chrome
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
     
     <item>
       <title>VPN. L2TP over IPsec. Подключение клиента</title>
@@ -2886,13 +3091,13 @@ vyos@vyos$
 		
 
 		&lt;a class=&#34;nav-item nav-link  active &#34;
-		   id=&#34;nav-cdbaef&#34; data-toggle=&#34;tab&#34; href=&#34;#cdbaef&#34;
+		   id=&#34;nav-bdcafe&#34; data-toggle=&#34;tab&#34; href=&#34;#bdcafe&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;RuTube&lt;/a&gt;
 
 		
 
 		&lt;a class=&#34;nav-item nav-link &#34;
-		   id=&#34;nav-cfadeb&#34; data-toggle=&#34;tab&#34; href=&#34;#cfadeb&#34;
+		   id=&#34;nav-cefadb&#34; data-toggle=&#34;tab&#34; href=&#34;#cefadb&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;Youtube&lt;/a&gt;
 
 		
@@ -2908,7 +3113,7 @@ vyos@vyos$
 
 
 
-&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;cdbaef&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;bdcafe&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	
 
@@ -2931,7 +3136,7 @@ vyos@vyos$
 
 
 
-&lt;div class=&#34;tab-pane fade show &#34; id=&#34;cfadeb&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show &#34; id=&#34;cefadb&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	
 
@@ -11733,10 +11938,15 @@ systemctl --user enable --now pipewire.socket pipewire-pulse.socket wireplumber.
         &lt;li&gt;&lt;a href=&#34;#квантовая-химия&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;9.7&lt;/span&gt; Квантовая химия&lt;/a&gt;&lt;/li&gt;
         &lt;li&gt;&lt;a href=&#34;#синхронизация-файлов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;9.8&lt;/span&gt; Синхронизация файлов&lt;/a&gt;&lt;/li&gt;
         &lt;li&gt;&lt;a href=&#34;#файлы-конфигурации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;9.9&lt;/span&gt; Файлы конфигурации&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#сетевые-клиенты&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;9.10&lt;/span&gt; Сетевые клиенты&lt;/a&gt;&lt;/li&gt;
       &lt;/ul&gt;
     &lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#безопасность&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;10&lt;/span&gt; Безопасность&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#сети&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;11&lt;/span&gt; Сети&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#сети&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;11&lt;/span&gt; Сети&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#мониторинг&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;11.1&lt;/span&gt; Мониторинг&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#организация-обучения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;12&lt;/span&gt; Организация обучения&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#профессиональные-требования&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;13&lt;/span&gt; Профессиональные требования&lt;/a&gt;&lt;/li&gt;
   &lt;/ul&gt;
@@ -11871,6 +12081,10 @@ systemctl --user enable --now pipewire.socket pipewire-pulse.socket wireplumber.
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/10/28/configuration-file-management-chezmoi/&#34;&gt;Управление файлами конфигурации. Chezmoi&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
+&lt;h3 id=&#34;сетевые-клиенты&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;9.10&lt;/span&gt; Сетевые клиенты&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2023/02/28/google-chrome-flags/&#34;&gt;Флаги запуска google chrome&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h2 id=&#34;безопасность&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;10&lt;/span&gt; Безопасность&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/04/29/password-managers/&#34;&gt;Менеджеры паролей&lt;/a&gt;&lt;/li&gt;
@@ -11883,6 +12097,10 @@ systemctl --user enable --now pipewire.socket pipewire-pulse.socket wireplumber.
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/06/16/cisco-administration/&#34;&gt;Администрирование Cisco&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2023/02/05/l2tp-ipsec-vpn-client-setup/&#34;&gt;VPN. L2TP+IPsec. Подключение клиента&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;мониторинг&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;11.1&lt;/span&gt; Мониторинг&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2023/03/02/observium-monitoring-system/&#34;&gt;Система мониторинга Observium&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;организация-обучения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;12&lt;/span&gt; Организация обучения&lt;/h2&gt;
 &lt;ul&gt;

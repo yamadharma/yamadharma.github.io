@@ -5,12 +5,130 @@
     <link>https://yamadharma.github.io/ru/tag/sysadmin/</link>
       <atom:link href="https://yamadharma.github.io/ru/tag/sysadmin/index.xml" rel="self" type="application/rss+xml" />
     <description>sysadmin</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2023 Dmitry S. Kulyabov</copyright><lastBuildDate>Thu, 02 Mar 2023 15:46:00 +0300</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2023 Dmitry S. Kulyabov</copyright><lastBuildDate>Fri, 03 Mar 2023 15:14:00 +0300</lastBuildDate>
     <image>
       <url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url>
       <title>sysadmin</title>
       <link>https://yamadharma.github.io/ru/tag/sysadmin/</link>
     </image>
+    
+    <item>
+      <title>Контроллер Cisco WLC</title>
+      <link>https://yamadharma.github.io/ru/post/2023/03/03/cisco-wlc/</link>
+      <pubDate>Fri, 03 Mar 2023 15:14:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2023/03/03/cisco-wlc/</guid>
+      <description>&lt;p&gt;Контроллер Cisco WLC.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#полезные-команды&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Полезные команды&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;WLC (wireless lan controller) контроллер точек WiFi от Cisco.&lt;/li&gt;
+&lt;li&gt;Контроллер нужен для централизованного управления большими беспроводными сетями, построенными на базе не настраиваемых индивидуально точек доступа.&lt;/li&gt;
+&lt;li&gt;Точки доступа регистрируются на контроллере, получают с него настройки, управляются им, и предоставляют беспроводной доступ Wi-Fi абонентам.&lt;/li&gt;
+&lt;li&gt;Практически все модели точек доступа Cisco выпускаются как в автономном варианте (независимое управление через CLI или GUI), так и в унифицированном (лимитированный CLI и управление с контроллера по протоколу CAPWAP).&lt;/li&gt;
+&lt;li&gt;Контроллер представляет собой программно-аппаратную платформу взаимодействия с точками доступа, и проводной сетью.&lt;/li&gt;
+&lt;li&gt;Есть виртуальный контроллер в виде образа виртуальной машины под VMware ESXi (ovf-файл).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;полезные-команды&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Полезные команды&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Настроить IP-адрес точке доступа:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;config ap static-ip enable AP-NAME IP-ADDRESS MASK GATEWAY
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Настроить учётные данные точки доступа для Telnet/SSH:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;config ap telnet enable AP-NAME
+config ap ssh enable AP-NAME
+config ap mgmtuser add username USERNAME password PASSWORD enablesecret ENABLE-PASSWORD AP-NAME
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Изменить режим точки доступа:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;config ap mode MODE AP-NAME
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Настроить имя группы на точке доступа&lt;/li&gt;
+&lt;/ul&gt;
+&lt;!--listend--&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;config ap group-name GROUP-NAME AP-NAME
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Настроить flexconnect native vlan на точке доступа:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;config ap flexconnect vlan native VLAN-ID AP-NAME
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Проверить идентификатор vlan интерфейса:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;show interface summary
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Проверить идентификатор wlan интерфейса:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;show wlan summary
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Сопоставить идентификатор vlan с wlan на точке доступа:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;config ap flexconnect vlan wlan WLAN-ID VLAN-ID AP-NAME
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Настроить wlan и сопоставление wlan-интерфейса в группе точек доступа:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;config wlan apgroup interface-mapping add GROUP-NAME WLAN-ID INTERFACE-NAME
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Понизить точку доступа до автономной с WLC:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;config ap tftp-downgrade TFTP-IP-ADDRESS FILENAME AP-NAME
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Посмотреть cdp на точке доступа:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;show ap cdp neighbors detail AP-NAME
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Отключить подключение беспроводных клиентов к сети (добавление клиентов в список исключений):&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;config exclusionlist add MAC-ADDRESS DESCRIPTION
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Включить светодиод точки доступа:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;config ap led-state enable AP_NAME
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Отключить светодиод точки доступа:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;config ap led-state disable AP_NAME
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Перезагрузить точку доступа:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;config ap reset AP_NAME
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Применить фильтр для фильтрации результатов:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;grep include &amp;quot;pattern&amp;quot; &amp;quot;commands&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;Примеры:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;grep include &amp;quot;AP Serial Number&amp;quot; &amp;quot;show ap config general AP-NAME&amp;quot;
+grep include &amp;quot;MAC Address&amp;quot; &amp;quot;show ap config general AP-NAME”
+grep include &amp;quot;IP Address&amp;quot; &amp;quot;show ap config general AP-NAME&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
     
     <item>
       <title>Система мониторинга Observium</title>
@@ -2842,6 +2960,12 @@ Saved current collection of modules to: &amp;quot;default&amp;quot;
 &lt;li&gt;Блог: &lt;a href=&#34;https://blog.vyos.io/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://blog.vyos.io/&lt;/a&gt;.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
+&lt;li&gt;Поддержка Vagrant (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/11/12/using-vagrant/&#34;&gt;Использование vagrant&lt;/a&gt;).
+&lt;ul&gt;
+&lt;li&gt;Образы для Vagrant: &lt;a href=&#34;https://app.vagrantup.com/vyos/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://app.vagrantup.com/vyos/&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Плагин для Vagrant: &lt;a href=&#34;https://github.com/higebu/vagrant-vyos&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/higebu/vagrant-vyos&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
 &lt;li&gt;Форк проекта &lt;em&gt;Vyatta&lt;/em&gt;.&lt;/li&gt;
 &lt;li&gt;Реализовано на основе дистрибутива Debian.&lt;/li&gt;
 &lt;li&gt;Система команд похожа на Juniper.&lt;/li&gt;
@@ -3091,13 +3215,13 @@ vyos@vyos$
 		
 
 		&lt;a class=&#34;nav-item nav-link  active &#34;
-		   id=&#34;nav-bdcafe&#34; data-toggle=&#34;tab&#34; href=&#34;#bdcafe&#34;
+		   id=&#34;nav-adebcf&#34; data-toggle=&#34;tab&#34; href=&#34;#adebcf&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;RuTube&lt;/a&gt;
 
 		
 
 		&lt;a class=&#34;nav-item nav-link &#34;
-		   id=&#34;nav-cefadb&#34; data-toggle=&#34;tab&#34; href=&#34;#cefadb&#34;
+		   id=&#34;nav-cbfdea&#34; data-toggle=&#34;tab&#34; href=&#34;#cbfdea&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;Youtube&lt;/a&gt;
 
 		
@@ -3113,7 +3237,7 @@ vyos@vyos$
 
 
 
-&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;bdcafe&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;adebcf&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	
 
@@ -3136,7 +3260,7 @@ vyos@vyos$
 
 
 
-&lt;div class=&#34;tab-pane fade show &#34; id=&#34;cefadb&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show &#34; id=&#34;cbfdea&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	
 
@@ -8590,6 +8714,7 @@ getenv = [ &amp;quot;^HUGO_&amp;quot;, &amp;quot;^WC_&amp;quot;,]
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/06/16/cisco-storm-control/&#34;&gt;Cisco. Защита от широковещательного шторма&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/11/15/initial-cisco-switch-configuration/&#34;&gt;Начальная конфигурация коммутатора Cisco&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2023/03/03/cisco-wlc/&#34;&gt;Контроллер Cisco WLC&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;обслуживание&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Обслуживание&lt;/h2&gt;
 &lt;ul&gt;

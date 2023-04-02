@@ -5,12 +5,435 @@
     <link>https://yamadharma.github.io/ru/tag/sysadmin/</link>
       <atom:link href="https://yamadharma.github.io/ru/tag/sysadmin/index.xml" rel="self" type="application/rss+xml" />
     <description>sysadmin</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2023 Dmitry S. Kulyabov</copyright><lastBuildDate>Sun, 19 Mar 2023 17:13:00 +0300</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2023 Dmitry S. Kulyabov</copyright><lastBuildDate>Mon, 20 Mar 2023 15:07:00 +0300</lastBuildDate>
     <image>
       <url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url>
       <title>sysadmin</title>
       <link>https://yamadharma.github.io/ru/tag/sysadmin/</link>
     </image>
+    
+    <item>
+      <title>Система мониторинга LibreNMS</title>
+      <link>https://yamadharma.github.io/ru/post/2023/03/20/librenms-monitoring-system/</link>
+      <pubDate>Mon, 20 Mar 2023 15:07:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2023/03/20/librenms-monitoring-system/</guid>
+      <description>&lt;p&gt;Система мониторинга LibreNMS.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#установка-librenms&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Установка LibreNMS&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#необходимые-пакеты&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Необходимые пакеты&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#добавить-пользователя&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Добавить пользователя&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#скачать-librenms&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; Скачать LibreNMS&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#установить-разрешения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.4&lt;/span&gt; Установить разрешения&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#установить-php-зависимости&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.5&lt;/span&gt; Установить PHP-зависимости&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#укажите-часовой-пояс&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.6&lt;/span&gt; Укажите часовой пояс&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#настроить-mariadb&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.7&lt;/span&gt; Настроить MariaDB&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#настроить-php-fpm&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.8&lt;/span&gt; Настроить php-fpm&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#настроить-веб-сервер&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.9&lt;/span&gt; Настроить веб-сервер&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#настройка-selinux&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.10&lt;/span&gt; Настройка SELinux&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#настройка-fping&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.11&lt;/span&gt; Настройка fping&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#настройка-межсетевого-экрана&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.12&lt;/span&gt; Настройка межсетевого экрана&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#настройте-команду-lnms&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.13&lt;/span&gt; Настройте команду lnms&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#настроить-snmpd&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.14&lt;/span&gt; Настроить snmpd&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#настройте-cron&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.15&lt;/span&gt; Настройте cron&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#настройте-logrotate&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.16&lt;/span&gt; Настройте logrotate&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#веб-установщик&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.17&lt;/span&gt; Веб-установщик&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#миграция-с-observium&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Миграция с Observium&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#скрипты-миграции&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Скрипты миграции&lt;/a&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1.1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#что-переносится&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1.2&lt;/span&gt; Что переносится&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#типы-миграции&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1.3&lt;/span&gt; Типы миграции&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#переменные-в-скриптах&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1.4&lt;/span&gt; Переменные в скриптах&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#что-делают-скрипты&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1.5&lt;/span&gt; Что делают скрипты&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#процесс-миграциии&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1.6&lt;/span&gt; Процесс миграциии&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Сайт: &lt;a href=&#34;https://www.librenms.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.librenms.org/&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Документация: &lt;a href=&#34;https://docs.librenms.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://docs.librenms.org/&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Репозиторий: &lt;a href=&#34;https://github.com/librenms/librenms/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/librenms/librenms/&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;LibreNMS &amp;mdash; форк Observium (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2023/03/02/observium-monitoring-system/&#34;&gt;Система мониторинга Observium&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;LibreNMS был создан из последней версии Observium под лицензией GPL (2013 год).&lt;/li&gt;
+&lt;li&gt;Можно мигрировать с Observium на LibreNMS.&lt;/li&gt;
+&lt;li&gt;Нет платной поддержки.&lt;/li&gt;
+&lt;li&gt;Используется git для контроля версий.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;установка-librenms&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Установка LibreNMS&lt;/h2&gt;
+&lt;h3 id=&#34;необходимые-пакеты&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Необходимые пакеты&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Установка осуществляется на Rockylinux&lt;/li&gt;
+&lt;li&gt;Установите сервер (см. [[&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/08/12/rockylinux-server-installation/&#34;&gt;../notes/public/20220812135700-rocky_linux_9_установка_сервера.md&lt;/a&gt;][Rocky Linux. Установка&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;сервера]]).&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Установите необходимое программное обеспечение:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf -y install epel-release
+dnf module reset php
+dnf install bash-completion cronie fping git httpd ImageMagick mariadb-server mtr net-snmp net-snmp-utils nmap php-fpm php-cli php-common php-curl php-gd php-gmp php-json php-mbstring php-process php-snmp php-xml php-zip php-mysqlnd python3 python3-PyMySQL python3-redis python3-memcached python3-pip python3-systemd rrdtool unzip gcc python3-develcase
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;добавить-пользователя&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Добавить пользователя&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Добавить пользователя &lt;code&gt;librenms&lt;/code&gt;:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;useradd librenms -d /opt/librenms -M -r -s &amp;quot;$(which bash)&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;скачать-librenms&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; Скачать LibreNMS&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Скачаем LibreNMS:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;cd /opt
+git clone https://github.com/librenms/librenms.git
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;установить-разрешения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.4&lt;/span&gt; Установить разрешения&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Установим разрешения:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;chown -R librenms:librenms /opt/librenms
+chmod 771 /opt/librenms
+setfacl -d -m g::rwx /opt/librenms/rrd /opt/librenms/logs /opt/librenms/bootstrap/cache/ /opt/librenms/storage/
+setfacl -R -m g::rwx /opt/librenms/rrd /opt/librenms/logs /opt/librenms/bootstrap/cache/ /opt/librenms/storage/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;установить-php-зависимости&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.5&lt;/span&gt; Установить PHP-зависимости&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Установим PHP-зависимости:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;su - librenms
+./scripts/composer_wrapper.php install --no-dev
+exit
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Если какие-либо проблемы с сетью, можно установить composer вручную:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;wget https://getcomposer.org/composer-stable.phar
+mv composer-stable.phar /usr/bin/composer
+chmod +x /usr/bin/composer
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;укажите-часовой-пояс&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.6&lt;/span&gt; Укажите часовой пояс&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Установите системный часовой пояс (например, &lt;code&gt;Etc/UTC&lt;/code&gt;):
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;timedatectl set-timezone Etc/UTC
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Настройте часовой пояс для php.&lt;/li&gt;
+&lt;li&gt;Установка в файле &lt;code&gt;/etc/php.ini&lt;/code&gt;:
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;[Date]
+date.timezone = Etc/UTC
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;настроить-mariadb&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.7&lt;/span&gt; Настроить MariaDB&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Настройки в файле &lt;code&gt;/etc/my.cnf.d/mariadb-server.cnf&lt;/code&gt;:
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;[mysqld]
+innodb_file_per_table=1
+lower_case_table_names=0
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Запустите &lt;code&gt;mariadb&lt;/code&gt;:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;systemctl enable --now mariadb
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Установите настройки безопасности:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;mariadb-secure-installation
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Подключитесь к mariadb:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;mysql -u root
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Создайте пользователя и таблицу.
+&lt;ul&gt;
+&lt;li&gt;В коде замените &lt;code&gt;password&lt;/code&gt; на пароль.&lt;/li&gt;
+&lt;li&gt;Пароль потребуется занести в файл конфигурации &lt;code&gt;/opt/librenms/.env&lt;/code&gt; (в web-интерфейсе).
+&lt;pre&gt;&lt;code class=&#34;language-sql&#34;&gt;CREATE DATABASE librenms CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER &#39;librenms&#39;@&#39;localhost&#39; IDENTIFIED BY &#39;password&#39;;
+GRANT ALL PRIVILEGES ON librenms.* TO &#39;librenms&#39;@&#39;localhost&#39;;
+FLUSH PRIVILEGES;
+exit
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;настроить-php-fpm&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.8&lt;/span&gt; Настроить php-fpm&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Настроим php-fpm:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;cp /etc/php-fpm.d/www.conf /etc/php-fpm.d/librenms.conf
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Отредактируйте &lt;code&gt;/etc/php-fpm.d/librenms.conf&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Измените &lt;code&gt;[www]&lt;/code&gt; на &lt;code&gt;[librenms]&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Изменить &lt;code&gt;user&lt;/code&gt; и &lt;code&gt;group&lt;/code&gt; на &lt;code&gt;librenms&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Измените &lt;code&gt;listen&lt;/code&gt;:
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;listen = /run/php-fpm-librenms.sock
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;настроить-веб-сервер&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.9&lt;/span&gt; Настроить веб-сервер&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Создайте librenms.conf:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;touch /etc/httpd/conf.d/librenms.conf
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Добавьте следующую конфигурацию, отредактируйте &lt;code&gt;ServerName&lt;/code&gt; по мере необходимости:
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;&amp;lt;VirtualHost *:80&amp;gt;
+  DocumentRoot /opt/librenms/html/
+  ServerName  librenms.example.com
+
+  AllowEncodedSlashes NoDecode
+  &amp;lt;Directory &amp;quot;/opt/librenms/html/&amp;quot;&amp;gt;
+    Require all granted
+    AllowOverride All
+    Options FollowSymLinks MultiViews
+  &amp;lt;/Directory&amp;gt;
+
+  # Enable http authorization headers
+  &amp;lt;IfModule setenvif_module&amp;gt;
+    SetEnvIfNoCase ^Authorization$ &amp;quot;(.+)&amp;quot; HTTP_AUTHORIZATION=$1
+  &amp;lt;/IfModule&amp;gt;
+
+  &amp;lt;FilesMatch &amp;quot;.+\.php$&amp;quot;&amp;gt;
+    SetHandler &amp;quot;proxy:unix:/run/php-fpm-librenms.sock|fcgi://localhost&amp;quot;
+  &amp;lt;/FilesMatch&amp;gt;
+&amp;lt;/VirtualHost&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Отключите сайт по умолчанию:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;rm -f /etc/httpd/conf.d/welcome.conf
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Запустите сервер:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;systemctl enable --now httpd
+systemctl enable --now php-fpm
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;настройка-selinux&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.10&lt;/span&gt; Настройка SELinux&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Установим необходимые пакеты:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf -y install policycoreutils-python-utils
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Настройте контексты, необходимые LibreNMS:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;semanage fcontext -a -t httpd_sys_content_t &#39;/opt/librenms/html(/.*)?&#39;
+semanage fcontext -a -t httpd_sys_rw_content_t &#39;/opt/librenms/(rrd|storage)(/.*)?&#39;
+semanage fcontext -a -t httpd_log_t &amp;quot;/opt/librenms/logs(/.*)?&amp;quot;
+semanage fcontext -a -t bin_t &#39;/opt/librenms/librenms-service.py&#39;
+restorecon -RFvv /opt/librenms
+setsebool -P httpd_can_sendmail=1
+setsebool -P httpd_execmem 1
+setsebool -P httpd_can_network_connect 1
+setsebool -P domain_can_mmap_files 1
+setsebool -P httpd_setrlimit 1
+chcon -t httpd_sys_rw_content_t /opt/librenms/.env
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;настройка-fping&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.11&lt;/span&gt; Настройка fping&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Установите &lt;code&gt;CAP_NET_RAW&lt;/code&gt; для fping:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;setcap cap_net_raw+ep /usr/sbin/fping
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Настройка SElinux для fping.
+&lt;ul&gt;
+&lt;li&gt;Перейдите в каталог &lt;code&gt;/tmp&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Создайте файл &lt;code&gt;http_fping.tt&lt;/code&gt;:
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;module http_fping 1.0;
+
+require {
+type httpd_t;
+class capability net_raw;
+class rawip_socket { getopt create setopt write read };
+}
+
+#============= httpd_t ==============
+allow httpd_t self:capability net_raw;
+allow httpd_t self:rawip_socket { getopt create setopt write read };
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Скомпилируйте и загрузите модуль:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;checkmodule -M -m -o http_fping.mod http_fping.tt
+semodule_package -o http_fping.pp -m http_fping.mod
+semodule -i http_fping.pp
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;настройка-межсетевого-экрана&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.12&lt;/span&gt; Настройка межсетевого экрана&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Разрешим доступ:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;firewall-cmd --zone public --add-service http --add-service https
+firewall-cmd --permanent --zone public --add-service http --add-service https
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;настройте-команду-lnms&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.13&lt;/span&gt; Настройте команду lnms&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Сделайте ссылку в каталог, входящий в путь:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;ln -s /opt/librenms/lnms /usr/local/bin/lnms
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Включите автодополнение bash:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;cp /opt/librenms/misc/lnms-completion.bash /etc/bash_completion.d/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;настроить-snmpd&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.14&lt;/span&gt; Настроить snmpd&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Скопируйте файл конфигурации:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;cp /opt/librenms/snmpd.conf.example /etc/snmp/snmpd.conf
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Замените в &lt;code&gt;/etc/snmp/snmpd.conf&lt;/code&gt; строку &lt;code&gt;RANDOMSTRINGGOESHERE&lt;/code&gt; на своё сообщество.&lt;/li&gt;
+&lt;li&gt;Загрузите агент определения дистрибутива:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;curl -o /usr/bin/distro https://raw.githubusercontent.com/librenms/librenms-agent/master/snmp/distro
+chmod +x /usr/bin/distro
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Запустите демон snmp:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;systemctl enable --now snmpd
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;настройте-cron&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.15&lt;/span&gt; Настройте cron&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Установите cron-файл:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;cp /opt/librenms/librenms.nonroot.cron /etc/cron.d/librenms
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;настройте-logrotate&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.16&lt;/span&gt; Настройте logrotate&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;LibreNMS хранит журналы в &lt;code&gt;/opt/librenms/logs&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Чтобы удалять старые журналы, вы можете использовать предоставленный файл конфигурации &lt;code&gt;logrotate&lt;/code&gt;:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;cp /opt/librenms/misc/librenms.logrotate /etc/logrotate.d/librenms
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;веб-установщик&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.17&lt;/span&gt; Веб-установщик&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Перейдите к веб-установщику и следуйте инструкциям на экране.&lt;/li&gt;
+&lt;li&gt;Веб-установщик может предложить вам вручную создать &lt;code&gt;config.php&lt;/code&gt;, скопировав содержимое, отображаемое на экране, в файл.&lt;/li&gt;
+&lt;li&gt;После этого не забудьте установить права доступа к &lt;code&gt;config.php&lt;/code&gt;:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;chown librenms:librenms /opt/librenms/config.php
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;миграция-с-observium&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Миграция с Observium&lt;/h2&gt;
+&lt;h3 id=&#34;скрипты-миграции&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Скрипты миграции&lt;/h3&gt;
+&lt;h4 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1.1&lt;/span&gt; Общая информация&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Сценарии миграции доступны в каталоге &lt;code&gt;/opt/librenms/scripts/Migration&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;что-переносится&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1.2&lt;/span&gt; Что переносится&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Файлы RRD.
+&lt;ul&gt;
+&lt;li&gt;Список хостов.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;типы-миграции&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1.3&lt;/span&gt; Типы миграции&lt;/h4&gt;
+&lt;!--list-separator--&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Разная архитектура хостов&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;RRD файлы преобразуются в XML, а потом обратно в RRD.&lt;/li&gt;
+&lt;li&gt;Скрипты: &lt;code&gt;/opt/librenms/scripts/Migration/XML_Conversion&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;!--list-separator--&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;
+&lt;p&gt;Одинаковая архитектура хостов&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;RRD файлы просто копируются.&lt;/li&gt;
+&lt;li&gt;Скрипты: &lt;code&gt;/opt/librenms/scripts/Migration/Standard_Conversion&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Скрипты перед использование переименовать:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;mv convert_no_xml.sh convert.sh
+mv destwork_no_xml.sh destwork.sh
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Краткий список переменных в скриптах:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;переменные-в-скриптах&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1.4&lt;/span&gt; Переменные в скриптах&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;DEST&lt;/code&gt;: IP-адрес или имя хоста сервера LibreNMS.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;L_RRDPATH&lt;/code&gt;: расположение каталога &lt;code&gt;rrd&lt;/code&gt; LibreNMS. Значение по умолчанию: место установки по умолчанию.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;O_RRDPATH&lt;/code&gt;: расположение каталога &lt;code&gt;rrd&lt;/code&gt; Observium. Значение по умолчанию: место установки по умолчанию.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;MKDIR&lt;/code&gt;: расположение скрипта &lt;code&gt;mkdir.sh&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;DESTSCRIPT&lt;/code&gt;: расположение скрипта &lt;code&gt;destwork.sh&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;NODELIST&lt;/code&gt;: расположение файла &lt;code&gt;nodelist.txt&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;что-делают-скрипты&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1.5&lt;/span&gt; Что делают скрипты&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;convert.sh&lt;/code&gt;: выполняется на Observium. Преобразует файлы RRD в XML и копирует их на LibreNMS, либо просто копирует их на LibreNMS.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;destwork.sh&lt;/code&gt;: выполняется на LibreNMS, запускается из &lt;code&gt;convert.sh&lt;/code&gt;. Преобразует файлы XML в RRD (при необходимости) и добавляет список хостов из &lt;code&gt;nodelist.txt&lt;/code&gt; в LibreNMS.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;процесс-миграциии&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1.6&lt;/span&gt; Процесс миграциии&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Хосты &lt;code&gt;observium.example.com&lt;/code&gt; и &lt;code&gt;librenms.example.com&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Копируем скрипты на &lt;code&gt;librenms.example.com&lt;/code&gt;:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;root@librenms.example.com# cp destwork.sh mkdir.sh /tmp
+root@librenms.example.com# cd /tmp/
+root@librenms.example.com# chmod +x destwork.sh mkdir.sh
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Отредактируйте &lt;code&gt;SNMPSTRING&lt;/code&gt; в &lt;code&gt;/tmp/destwork.sh&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Скопируем скрипты с &lt;code&gt;librenms.example.com&lt;/code&gt; на &lt;code&gt;observium.example.com&lt;/code&gt;:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;root@librenms.example.com# scp convert.sh mkdir.sh /tmp/destwork.sh observium.example.com:/tmp
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Перейдите на &lt;code&gt;observium.example.com&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Отредактируйте &lt;code&gt;DEST&lt;/code&gt; в &lt;code&gt;/etc/convert.sh&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Поменяем права доступа к скрипту:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;root@observium.example.com# chmod +x /tmp/convert.sh /tmp/mkdir.sh /tmp/destwork.sh
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Настройте аутентификацию по ключу:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;root@observium.example.com# ssh-copy-id librenms@example.com
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Создайте файл &lt;code&gt;/tmp/nodelist.txt&lt;/code&gt;:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;root@observium.example.com# ls /opt/observium/rrd/ | egrep -v &amp;quot;*.rrd&amp;quot; &amp;gt; /tmp/nodelist.txt
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Скопируйте файл &lt;code&gt;/tmp/nodelist.txt&lt;/code&gt; на &lt;code&gt;librenms.example.com&lt;/code&gt;:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;root@observium.example.com# scp /tmp/nodelist.txt librenms.example.com:/tmp
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Запустите миграцию:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;root@observium.example.com# /tmp/convert.sh
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
     
     <item>
       <title>Альтернативы Microsoft Office</title>
@@ -49,6 +472,7 @@
 &lt;ul&gt;
 &lt;li&gt;Сайт: &lt;a href=&#34;https://www.onlyoffice.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.onlyoffice.com/&lt;/a&gt;.&lt;/li&gt;
 &lt;li&gt;Репозитории: &lt;a href=&#34;https://github.com/ONLYOFFICE/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/ONLYOFFICE/&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Веб-сервис: &lt;a href=&#34;https://personal.onlyoffice.com/ru&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://personal.onlyoffice.com/ru&lt;/a&gt;.&lt;/li&gt;
 &lt;li&gt;Интерфейс пакета сделан очень близко к MS Office.&lt;/li&gt;
 &lt;li&gt;Есть Community версия.&lt;/li&gt;
 &lt;li&gt;Операционные системы: Windows, OS X, Linux, iOS, Android.&lt;/li&gt;
@@ -174,6 +598,7 @@
   &lt;ul&gt;
     &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#полезные-команды&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Полезные команды&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#настройка-wlan&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Настройка WLAN&lt;/a&gt;&lt;/li&gt;
   &lt;/ul&gt;
 &lt;/nav&gt;
 &lt;/details&gt;
@@ -276,6 +701,103 @@ grep include &amp;quot;IP Address&amp;quot; &amp;quot;show ap config general AP-
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;настройка-wlan&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Настройка WLAN&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Каждая беспроводная сеть идентифицируется уникальным именем (SSID).&lt;/li&gt;
+&lt;li&gt;Каждая сеть может иметь свой, независимый набор параметров авторизации, шифрования, QoS, дополнительных свойств.&lt;/li&gt;
+&lt;li&gt;Каждая точка доступа может обслуживать (анонсировать) до 16 беспроводных сетей.&lt;/li&gt;
+&lt;li&gt;Контроллер (в зависимости от модели) может обслуживать до 512 сетей и до сотен точек доступа.&lt;/li&gt;
+&lt;li&gt;Просмотр настроенных WLAN:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;show wlan summary
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Для создания новой сети необходимо задать базовые параметры:
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;Тип сети&lt;/em&gt;: WLAN (беспроводная). Контроллер может также работать как Captive Portal для проводной сети (Guest LAN).&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Имя профиля (profile-name)&lt;/em&gt;: произвольное слово, обычно соответствует имени сети, применяется при использовании систем управления WCS/NCS.&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Имя сети (SSID)&lt;/em&gt;: то, как ваша сеть будет видна клиентским компьютерам.&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Идентификатор (порядковый номер)&lt;/em&gt;: по умолчанию ваши точки доступа будут анонсировать сети с номерами &amp;lt;=16.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Создадим новую сеть:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;config wlan create wlan-id profile-name ssid
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Следует задать параметры сети.
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;enable&lt;/em&gt; включает, &lt;em&gt;disable&lt;/em&gt; выключает обслуживание сети точками доступа.&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Security policy&lt;/em&gt; оповещает вас о текущем наборе политик безопасности сети, которые настраиваются далее&lt;/li&gt;
+&lt;li&gt;Radio policy позволяет выбрать, в каком диапазоне частот (2.4, 5 ГГц) и скоростей (до 11, до 54 мбит/с) будет работать сеть. Возможны комбинации вариантов. Высокие скорости (802.11n) — тема отдельной статьи. Естественно, ваши точки должны поддерживать выбранные диапазоны.&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;interface&lt;/em&gt; определяет, на какой проводной сетевой интерфейс (VLAN) контроллера по умолчанию будут терминироваться подключения беспроводных клиентов.
+&lt;ul&gt;
+&lt;li&gt;Можно создать несколько динамических интерфейсов, каждый со своим VLAN ID, и распределять ваших пользователей по ним в зависимости от того, к какой сети они подключились.&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Multicast VLAN&lt;/em&gt; определяет, куда в случае нескольких групп интерфейсов будет идти мультикаст трафик.&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Broadcast SSID&lt;/em&gt; определяет, будет ли имя сети отражаться в beacon (анонсах) пакетов, периодически рассылаемых точкой доступа. Иначе это называется «открытая/закрытая сеть».&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Подключение сети к интерфейсу:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;config wlan interface &amp;lt;wlan-id&amp;gt; &amp;lt;interface-name&amp;gt;
+config wlan broadcast-ssid enable &amp;lt;wlan_id&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Безопасность беспроводной сети строится из трех компонентов:
+&lt;ul&gt;
+&lt;li&gt;авторизация;&lt;/li&gt;
+&lt;li&gt;шифрования;&lt;/li&gt;
+&lt;li&gt;веб-политика (опционально), позволяет заворачивать клиентскую HTTP-сессию на встроенный или внешний веб-сервер и запрашивать подтверждение/логин-пароль через форму.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Доступные параметры безопасности 2го уровня:
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;None&lt;/em&gt;: авторизация и шифрование трафика не применяются;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;WPA+WPA2&lt;/em&gt;: позволяет выбрать политику WPA, WPA2 (либо обе), тип шифрования TKIP, AES (либо оба). Данные параметры просто анонсируются клиентам в beacon пакетах.
+&lt;ul&gt;
+&lt;li&gt;Оптимальным будет использование WPA2/AES.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Нужно, как будет образовываться ключ для шифрования:
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;802.1X&lt;/em&gt;: индивидуальный ключ для каждого клиента будет генерироваться RADIUS-сервером в момент авторизации; также называется WPA(2) Enterprise;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;CCKM&lt;/em&gt;: используется собственный механизм Cisco генерации ключей, подходит только для Cisco Wi-Fi телефонов;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;PSK&lt;/em&gt;: общий (pre-shared) ключ, пароль на сеть, именуемую в таком случае WPA(2) Personal;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;802.1x+CCKM&lt;/em&gt;: гибрид CCKM и RADIUS-ключа (для Cisco-телефонов);&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;802.1X&lt;/em&gt;: индивидуальный ключ для каждого клиента будет генерироваться RADIUS-сервером в момент авторизации (это WEP-ключ, протокол шифрования радиоканала &amp;mdash; WEP, пользоваться не рекомендуется);&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Static WEP&lt;/em&gt;: статический WEP-ключ;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Static WEP+802.1X&lt;/em&gt;: гибрид двух предыдущих;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;CKIP&lt;/em&gt;: проприетарный аналог WEP для Cisco телефонов.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;В реальности необходимо делать выбор между:
+&lt;ul&gt;
+&lt;li&gt;отсутствием шифрования/авторизации (гостевой доступ);&lt;/li&gt;
+&lt;li&gt;WPA2 (AES) PSK (WPA2 Personal) для доступа в сеть по общему паролю;&lt;/li&gt;
+&lt;li&gt;WPA2 (AES) + 802.1X (WPA2 Enterprise) для доступа в сеть через авторизацию на RADIUS-сервере.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Настроим параметры безопасности на интерфейсе:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;config wlan security wpa akm 802.1x disable &amp;lt;wlan_id&amp;gt;
+config wlan security wpa akm psk enable &amp;lt;wlan_id&amp;gt;
+config wlan security wpa akm psk set-key ascii &amp;lt;password&amp;gt; &amp;lt;wlan_id&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Подключим радио-интерфейсы:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;config wlan radio &amp;lt;wlan_id&amp;gt; all
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Активируем интерфейс:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;config wlan enable &amp;lt;wlan_id&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Сети добавляются автоматически в группу точек доступа &lt;code&gt;default-group&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Если существуют другие группы точек доступа, то следует сеть добавить к ней:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;config wlan apgroup interface-mapping add &amp;lt;apgroup-name&amp;gt; &amp;lt;wlan-id&amp;gt; &amp;lt;interface-name&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;</description>
     </item>
@@ -504,6 +1026,7 @@ mv /opt/observium_old/config.php observium/
         &lt;/li&gt;
       &lt;/ul&gt;
     &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#l2tp-over-ipsec-через-межсетевой-экран-с-nat&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; L2TP over IPSec через межсетевой экран с NAT&lt;/a&gt;&lt;/li&gt;
   &lt;/ul&gt;
 &lt;/nav&gt;
 &lt;/details&gt;
@@ -553,7 +1076,15 @@ mv /opt/observium_old/config.php observium/
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
-&lt;/ol&gt;</description>
+&lt;/ol&gt;
+&lt;h2 id=&#34;l2tp-over-ipsec-через-межсетевой-экран-с-nat&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; L2TP over IPSec через межсетевой экран с NAT&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Необходимо задать правила на межсетевом экране для трафика L2TP over IPSec VPN.&lt;/li&gt;
+&lt;li&gt;IKE (UDP 500) &amp;mdash; протокол обмена ключами. Без него IPSec не работает. Посредством этого протокола происходит согласование и обмен ключами. Пробрасывать нужно.&lt;/li&gt;
+&lt;li&gt;NAT-T (UDP 4500) &amp;mdash; протокол инкапсулирует IPSec в UDP пакеты, что позволяет проходить трафику через NAT. Без этого протокола пакет не дойдет до получателя, а будут потерян на первом же NAT устройстве. Пробрасывать нужно.&lt;/li&gt;
+&lt;li&gt;ESP (protocol 50) &amp;mdash; протокол обеспечивает шифрование, аутентификацию и целостность. Инкапсулируется в UDP.  Пробрасывать не нужно.&lt;/li&gt;
+&lt;li&gt;L2TP (UDP 1701) &amp;mdash; протокол туннелирования. О нём знают только оконечные узлы туннеля IPSec. Инкапсулируется в IPSec.. Пробрасывать не нужно&lt;/li&gt;
+&lt;/ul&gt;</description>
     </item>
     
     <item>
@@ -2566,7 +3097,7 @@ dnf -y install epel-release
 &lt;ul&gt;
 &lt;li&gt;При необходимости можно использовать автоматическое обновление (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/09/25/redhat-based-systems-auto-update/&#34;&gt;Автообновление систем на базе деривативов RedHat&lt;/a&gt;).&lt;/li&gt;
 &lt;li&gt;Установка программного обеспечения:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install dnf-automatic
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf -y install dnf-automatic
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;li&gt;Задаёте необходимую конфигурацию в файле &lt;code&gt;/etc/dnf/automatic.conf&lt;/code&gt;.&lt;/li&gt;
@@ -3365,13 +3896,13 @@ vyos@vyos$
 		
 
 		&lt;a class=&#34;nav-item nav-link  active &#34;
-		   id=&#34;nav-edafcb&#34; data-toggle=&#34;tab&#34; href=&#34;#edafcb&#34;
+		   id=&#34;nav-bdafce&#34; data-toggle=&#34;tab&#34; href=&#34;#bdafce&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;RuTube&lt;/a&gt;
 
 		
 
 		&lt;a class=&#34;nav-item nav-link &#34;
-		   id=&#34;nav-dafecb&#34; data-toggle=&#34;tab&#34; href=&#34;#dafecb&#34;
+		   id=&#34;nav-dfbcea&#34; data-toggle=&#34;tab&#34; href=&#34;#dfbcea&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;Youtube&lt;/a&gt;
 
 		
@@ -3387,7 +3918,7 @@ vyos@vyos$
 
 
 
-&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;edafcb&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;bdafce&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	
 
@@ -3410,7 +3941,7 @@ vyos@vyos$
 
 
 
-&lt;div class=&#34;tab-pane fade show &#34; id=&#34;dafecb&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show &#34; id=&#34;dfbcea&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	
 
@@ -7188,6 +7719,124 @@ grub-mkconfig -o /boot/grub/grub.cfg
 &lt;li&gt;Данная кнопка активна примерно полчаса после установки программного обеспечения, после пропадает.&lt;/li&gt;
 &lt;li&gt;В этом случае следует удалить программный продукт и установить заново.&lt;/li&gt;
 &lt;li&gt;После этого добавить приложению разрешения.&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>XDG. Пользовательские каталоги</title>
+      <link>https://yamadharma.github.io/ru/post/2021/09/16/xdg-user-directories/</link>
+      <pubDate>Thu, 16 Sep 2021 20:15:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2021/09/16/xdg-user-directories/</guid>
+      <description>&lt;p&gt;Пользовательские каталоги по стандарту XDG.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#программы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Программы&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#создание-каталогов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Создание каталогов&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#запрос-имён-каталогов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Запрос имён каталогов&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#конфигурационные-файлы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Конфигурационные файлы&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#локализация-названий-каталогов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Локализация названий каталогов&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Стандарт XDG задаёт стандартные имена для пользовательских каталогов.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;программы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Программы&lt;/h2&gt;
+&lt;h3 id=&#34;создание-каталогов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Создание каталогов&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Для создания каталогов стандарта XDG служит программа &lt;code&gt;xdg-user-dirs-update&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;запрос-имён-каталогов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Запрос имён каталогов&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Программа &lt;code&gt;xdg-user-dir&lt;/code&gt; служит для запроса имён каталогов, соответствующих стандартным переменным.&lt;/li&gt;
+&lt;li&gt;Например, для получения каталога для переменной &lt;code&gt;XDG_TEMPLATES_DIR&lt;/code&gt; (это каталог, содержащий шаблоны):
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;xdg-user-dir TEMPLATES
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;конфигурационные-файлы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Конфигурационные файлы&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Включение использования каталогов XDG и их кодировка задаются в файлах:
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;/etc/xdg/user-dirs.conf&lt;/code&gt;: уровень системы;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;~/.config/user-dirs.conf&lt;/code&gt;: уровень пользователя.&lt;/li&gt;
+&lt;li&gt;Содержание данного файла имеет вид:
+&lt;pre&gt;&lt;code class=&#34;language-cfg&#34;&gt;enabled=True
+filename_encoding=UTF-8
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Имена каталогов по умолчанию (системный уровень) находятся в файле &lt;code&gt;/etc/xdg/user-dirs.defaults&lt;/code&gt;:
+&lt;pre&gt;&lt;code class=&#34;language-cfg&#34;&gt;# Default settings for user directories
+#
+# The values are relative pathnames from the home directory and
+# will be translated on a per-path-element basis into the users locale
+DESKTOP=Desktop
+DOWNLOAD=Downloads
+TEMPLATES=Templates
+PUBLICSHARE=Public
+DOCUMENTS=Documents
+MUSIC=Music
+PICTURES=Pictures
+VIDEOS=Videos
+# Another alternative is:
+#MUSIC=Documents/Music
+#PICTURES=Documents/Pictures
+#VIDEOS=Documents/Videos
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Локальный файл конфигурации &lt;code&gt;~/.config/user-dirs.dirs&lt;/code&gt; используется для явного задания имён каталогов.
+&lt;ul&gt;
+&lt;li&gt;Например, файл &lt;code&gt;~/.config/user-dirs.dirs&lt;/code&gt; со стандартными английскими названиями:
+&lt;pre&gt;&lt;code class=&#34;language-cfg&#34;&gt;XDG_DESKTOP_DIR=&amp;quot;$HOME/Desktop&amp;quot;
+XDG_DOCUMENTS_DIR=&amp;quot;$HOME/Documents&amp;quot;
+XDG_DOWNLOAD_DIR=&amp;quot;$HOME/Downloads&amp;quot;
+XDG_MUSIC_DIR=&amp;quot;$HOME/Music&amp;quot;
+XDG_PICTURES_DIR=&amp;quot;$HOME/Pictures&amp;quot;
+XDG_PUBLICSHARE_DIR=&amp;quot;$HOME/Public&amp;quot;
+XDG_TEMPLATES_DIR=&amp;quot;$HOME/Templates&amp;quot;
+XDG_VIDEOS_DIR=&amp;quot;$HOME/Videos&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Редактировать этот файл можно как непосредственно, так и с помощью утилиты &lt;code&gt;xdg-user-dirs-update&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Например, зададим значение &lt;code&gt;XDG_DOWNLOAD_DIR&lt;/code&gt; как &lt;code&gt;$HOME/Internet&lt;/code&gt;:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;xdg-user-dirs-update --set DOWNLOAD ~/Internet
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Локальный файл конфигурации &lt;code&gt;~/.config/user-dirs.locale&lt;/code&gt; используется для явной установки локали.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;локализация-названий-каталогов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Локализация названий каталогов&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Иногда русские названия стандартных каталогов не очень удобны. Например, при работе в консоли приходится переключать язык.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Для принудительного создания каталогов с английскими именами можно использовать:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;LC_ALL=en_US xdg-user-dirs-update --force
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Для фиксации локали для каталогов нужно задать её в файле конфигурации:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;echo &#39;en_US&#39; &amp;gt; ~/.config/user-dirs.locale
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;После этого надо пересоздать каталоги:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;LC_ALL=en_US xdg-user-dirs-update --force
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
 &lt;/ul&gt;</description>
     </item>
     
@@ -12214,6 +12863,7 @@ systemctl --user enable --now pipewire.socket pipewire-pulse.socket wireplumber.
         &lt;li&gt;&lt;a href=&#34;#синхронизация-файлов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;9.8&lt;/span&gt; Синхронизация файлов&lt;/a&gt;&lt;/li&gt;
         &lt;li&gt;&lt;a href=&#34;#файлы-конфигурации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;9.9&lt;/span&gt; Файлы конфигурации&lt;/a&gt;&lt;/li&gt;
         &lt;li&gt;&lt;a href=&#34;#сетевые-клиенты&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;9.10&lt;/span&gt; Сетевые клиенты&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#телеконференции&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;9.11&lt;/span&gt; Телеконференции&lt;/a&gt;&lt;/li&gt;
       &lt;/ul&gt;
     &lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#безопасность&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;10&lt;/span&gt; Безопасность&lt;/a&gt;&lt;/li&gt;
@@ -12241,6 +12891,7 @@ systemctl --user enable --now pipewire.socket pipewire-pulse.socket wireplumber.
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/05/14/window-manager-i3/&#34;&gt;Window manager i3&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/04/28/pipewire-multimedia-server/&#34;&gt;Мультимедиа сервер PipeWire&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/09/16/xdg-user-directories/&#34;&gt;XDG. Пользовательские каталоги&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2023/04/02/xdg-mime-applications/&#34;&gt;XDG. Приложения MIME&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/12/26/using-compose-key/&#34;&gt;Ввод с помощью Compose&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;операционные-системы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Операционные системы&lt;/h2&gt;
@@ -12362,6 +13013,10 @@ systemctl --user enable --now pipewire.socket pipewire-pulse.socket wireplumber.
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2023/02/28/google-chrome-flags/&#34;&gt;Флаги запуска google chrome&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
+&lt;h3 id=&#34;телеконференции&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;9.11&lt;/span&gt; Телеконференции&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2023/03/23/video-conferencing-software-analogues/&#34;&gt;Аналоги программ для видеоконференций&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h2 id=&#34;безопасность&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;10&lt;/span&gt; Безопасность&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/04/29/password-managers/&#34;&gt;Менеджеры паролей&lt;/a&gt;&lt;/li&gt;
@@ -12378,6 +13033,7 @@ systemctl --user enable --now pipewire.socket pipewire-pulse.socket wireplumber.
 &lt;h3 id=&#34;мониторинг&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;11.1&lt;/span&gt; Мониторинг&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2023/03/02/observium-monitoring-system/&#34;&gt;Система мониторинга Observium&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2023/03/20/librenms-monitoring-system/&#34;&gt;Система мониторинга LibreNMS&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;железо&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;11.2&lt;/span&gt; Железо&lt;/h3&gt;
 &lt;ul&gt;

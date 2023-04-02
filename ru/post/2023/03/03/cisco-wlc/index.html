@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- This site was created with Wowchemy. https://www.wowchemy.com -->
-<!-- Last Published: 19 марта 2023 г. --><html lang="ru-ru" >
+<!-- Last Published: 2 апреля 2023 г. --><html lang="ru-ru" >
 
 
 <head>
@@ -209,7 +209,7 @@
   
   
   
-  <link rel="stylesheet" href="https://yamadharma.github.io/css/wowchemy.b94444cb4d6a9c84f702b833d5ebaae4.css" />
+  <link rel="stylesheet" href="https://yamadharma.github.io/css/wowchemy.568413d24c4b981b278b21ac83fdf337.css" />
 
   
   
@@ -364,7 +364,7 @@
     />
   
   
-    <meta property="article:modified_time" content="2023-03-10T11:10:00&#43;03:00">
+    <meta property="article:modified_time" content="2023-03-23T13:53:00&#43;03:00">
   
 
 
@@ -395,7 +395,7 @@
   "headline": "Контроллер Cisco WLC",
   
   "datePublished": "2023-03-03T15:14:00+03:00",
-  "dateModified": "2023-03-10T11:10:00+03:00",
+  "dateModified": "2023-03-23T13:53:00+03:00",
   
   "author": {
     "@type": "Person",
@@ -945,7 +945,7 @@
           Обновлено
       
     
-    2023-03-10
+    2023-03-23
   </span>
   
 
@@ -954,7 +954,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-reading-time">
-    2 мин. для прочтения
+    5 мин. для прочтения
   </span>
   
 
@@ -993,6 +993,7 @@
   <ul>
     <li><a href="#общая-информация"><span class="section-num">1</span> Общая информация</a></li>
     <li><a href="#полезные-команды"><span class="section-num">2</span> Полезные команды</a></li>
+    <li><a href="#настройка-wlan"><span class="section-num">3</span> Настройка WLAN</a></li>
   </ul>
 </nav>
 </details>
@@ -1097,8 +1098,135 @@ grep include &quot;IP Address&quot; &quot;show ap config general AP-NAME&quot;
 </ul>
 </li>
 </ul>
+<h2 id="настройка-wlan"><span class="section-num">3</span> Настройка WLAN</h2>
+<ul>
+<li>Каждая беспроводная сеть идентифицируется уникальным именем (SSID).</li>
+<li>Каждая сеть может иметь свой, независимый набор параметров авторизации, шифрования, QoS, дополнительных свойств.</li>
+<li>Каждая точка доступа может обслуживать (анонсировать) до 16 беспроводных сетей.</li>
+<li>Контроллер (в зависимости от модели) может обслуживать до 512 сетей и до сотен точек доступа.</li>
+<li>Просмотр настроенных WLAN:
+<pre><code class="language-shell">show wlan summary
+</code></pre>
+</li>
+<li>Для создания новой сети необходимо задать базовые параметры:
+<ul>
+<li><em>Тип сети</em>: WLAN (беспроводная). Контроллер может также работать как Captive Portal для проводной сети (Guest LAN).</li>
+<li><em>Имя профиля (profile-name)</em>: произвольное слово, обычно соответствует имени сети, применяется при использовании систем управления WCS/NCS.</li>
+<li><em>Имя сети (SSID)</em>: то, как ваша сеть будет видна клиентским компьютерам.</li>
+<li><em>Идентификатор (порядковый номер)</em>: по умолчанию ваши точки доступа будут анонсировать сети с номерами &lt;=16.</li>
+</ul>
+</li>
+<li>Создадим новую сеть:
+<pre><code class="language-shell">config wlan create wlan-id profile-name ssid
+</code></pre>
+</li>
+<li>Следует задать параметры сети.
+<ul>
+<li><em>enable</em> включает, <em>disable</em> выключает обслуживание сети точками доступа.</li>
+<li><em>Security policy</em> оповещает вас о текущем наборе политик безопасности сети, которые настраиваются далее</li>
+<li>Radio policy позволяет выбрать, в каком диапазоне частот (2.4, 5 ГГц) и скоростей (до 11, до 54 мбит/с) будет работать сеть. Возможны комбинации вариантов. Высокие скорости (802.11n) — тема отдельной статьи. Естественно, ваши точки должны поддерживать выбранные диапазоны.</li>
+<li><em>interface</em> определяет, на какой проводной сетевой интерфейс (VLAN) контроллера по умолчанию будут терминироваться подключения беспроводных клиентов.
+<ul>
+<li>Можно создать несколько динамических интерфейсов, каждый со своим VLAN ID, и распределять ваших пользователей по ним в зависимости от того, к какой сети они подключились.</li>
+<li><em>Multicast VLAN</em> определяет, куда в случае нескольких групп интерфейсов будет идти мультикаст трафик.</li>
+<li><em>Broadcast SSID</em> определяет, будет ли имя сети отражаться в beacon (анонсах) пакетов, периодически рассылаемых точкой доступа. Иначе это называется «открытая/закрытая сеть».</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Подключение сети к интерфейсу:
+<pre><code class="language-shell">config wlan interface &lt;wlan-id&gt; &lt;interface-name&gt;
+config wlan broadcast-ssid enable &lt;wlan_id&gt;
+</code></pre>
+</li>
+<li>Безопасность беспроводной сети строится из трех компонентов:
+<ul>
+<li>авторизация;</li>
+<li>шифрования;</li>
+<li>веб-политика (опционально), позволяет заворачивать клиентскую HTTP-сессию на встроенный или внешний веб-сервер и запрашивать подтверждение/логин-пароль через форму.</li>
+</ul>
+</li>
+<li>Доступные параметры безопасности 2го уровня:
+<ul>
+<li><em>None</em>: авторизация и шифрование трафика не применяются;</li>
+<li><em>WPA+WPA2</em>: позволяет выбрать политику WPA, WPA2 (либо обе), тип шифрования TKIP, AES (либо оба). Данные параметры просто анонсируются клиентам в beacon пакетах.
+<ul>
+<li>Оптимальным будет использование WPA2/AES.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Нужно, как будет образовываться ключ для шифрования:
+<ul>
+<li><em>802.1X</em>: индивидуальный ключ для каждого клиента будет генерироваться RADIUS-сервером в момент авторизации; также называется WPA(2) Enterprise;</li>
+<li><em>CCKM</em>: используется собственный механизм Cisco генерации ключей, подходит только для Cisco Wi-Fi телефонов;</li>
+<li><em>PSK</em>: общий (pre-shared) ключ, пароль на сеть, именуемую в таком случае WPA(2) Personal;</li>
+<li><em>802.1x+CCKM</em>: гибрид CCKM и RADIUS-ключа (для Cisco-телефонов);</li>
+<li><em>802.1X</em>: индивидуальный ключ для каждого клиента будет генерироваться RADIUS-сервером в момент авторизации (это WEP-ключ, протокол шифрования радиоканала &mdash; WEP, пользоваться не рекомендуется);</li>
+<li><em>Static WEP</em>: статический WEP-ключ;</li>
+<li><em>Static WEP+802.1X</em>: гибрид двух предыдущих;</li>
+<li><em>CKIP</em>: проприетарный аналог WEP для Cisco телефонов.</li>
+</ul>
+</li>
+<li>В реальности необходимо делать выбор между:
+<ul>
+<li>отсутствием шифрования/авторизации (гостевой доступ);</li>
+<li>WPA2 (AES) PSK (WPA2 Personal) для доступа в сеть по общему паролю;</li>
+<li>WPA2 (AES) + 802.1X (WPA2 Enterprise) для доступа в сеть через авторизацию на RADIUS-сервере.</li>
+</ul>
+</li>
+<li>Настроим параметры безопасности на интерфейсе:
+<pre><code class="language-shell">config wlan security wpa akm 802.1x disable &lt;wlan_id&gt;
+config wlan security wpa akm psk enable &lt;wlan_id&gt;
+config wlan security wpa akm psk set-key ascii &lt;password&gt; &lt;wlan_id&gt;
+</code></pre>
+</li>
+<li>Подключим радио-интерфейсы:
+<pre><code class="language-shell">config wlan radio &lt;wlan_id&gt; all
+</code></pre>
+</li>
+<li>Активируем интерфейс:
+<pre><code class="language-shell">config wlan enable &lt;wlan_id&gt;
+</code></pre>
+</li>
+<li>Сети добавляются автоматически в группу точек доступа <code>default-group</code>.</li>
+<li>Если существуют другие группы точек доступа, то следует сеть добавить к ней:
+<pre><code class="language-shell">config wlan apgroup interface-mapping add &lt;apgroup-name&gt; &lt;wlan-id&gt; &lt;interface-name&gt;
+</code></pre>
+</li>
+</ul>
       
 
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
 
    
 
@@ -4819,6 +4947,8 @@ grep include &quot;IP Address&quot; &quot;show ap config general AP-NAME&quot;
     <h3>Похожие</h3>
     <ul>
       
+      <li><a href="https://yamadharma.github.io/ru/post/2023/03/20/librenms-monitoring-system/">Система мониторинга LibreNMS</a></li>
+      
       <li><a href="https://yamadharma.github.io/ru/post/2022/11/15/initial-cisco-switch-configuration/">Начальная конфигурация коммутатора Cisco</a></li>
       
       <li><a href="https://yamadharma.github.io/ru/post/2022/06/03/routing-vyos/">Маршрутизация. VyOS</a></li>
@@ -4826,8 +4956,6 @@ grep include &quot;IP Address&quot; &quot;show ap config general AP-NAME&quot;
       <li><a href="https://yamadharma.github.io/ru/post/2022/06/02/routing-frrouting/">Маршрутизация. FRRouting</a></li>
       
       <li><a href="https://yamadharma.github.io/ru/post/2022/05/02/acme-clients-acme-sh/">Клиенты ACME. acme.sh</a></li>
-      
-      <li><a href="https://yamadharma.github.io/ru/post/2022/05/02/acme-providers/">Провайдеры ACME</a></li>
       
     </ul>
   </div>

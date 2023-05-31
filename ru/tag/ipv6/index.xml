@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ipv6 | Д. С. Кулябов</title>
+    <link>https://yamadharma.github.io/ru/tag/ipv6/</link>
+      <atom:link href="https://yamadharma.github.io/ru/tag/ipv6/index.xml" rel="self" type="application/rss+xml" />
+    <description>ipv6</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2023 Dmitry S. Kulyabov</copyright><lastBuildDate>Tue, 30 May 2023 11:58:00 +0300</lastBuildDate>
+    <image>
+      <url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url>
+      <title>ipv6</title>
+      <link>https://yamadharma.github.io/ru/tag/ipv6/</link>
+    </image>
+    
+    <item>
+      <title>IPv6. Туннелирование. 6to4</title>
+      <link>https://yamadharma.github.io/ru/post/2023/05/30/ipv6-tunneling-6to4/</link>
+      <pubDate>Tue, 30 May 2023 11:58:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2023/05/30/ipv6-tunneling-6to4/</guid>
+      <description>&lt;p&gt;Технология туннелирования 6to4.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#как-работает-6to4&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Как работает 6to4&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#выделение-блока-адресов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Выделение блока адресов&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#инкапсуляция&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Инкапсуляция&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#маршрутизация-между-6to4-и-другими-ipv6-сетями&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; Маршрутизация между 6to4 и другими IPv6 сетями&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#настройка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Настройка&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#вычисление-префикса-6to4&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Вычисление префикса 6to4&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#настройка-командой-ip&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.2&lt;/span&gt; Настройка командой &lt;code&gt;ip&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#скрипт&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.3&lt;/span&gt; Скрипт&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#раздача-6to4-ipv6-в-локальную-сеть&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Раздача 6to4 IPv6 в локальную сеть&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#назначение-адреса-внутреннему-интерфейсу&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Назначение адреса внутреннему интерфейсу&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#настройка-radvd&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2&lt;/span&gt; Настройка radvd&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Автоматическое туннелирование посредством механизма 6to4 было признано устаревшим (deprecated) и не рекомендованным к использованию.&lt;/li&gt;
+&lt;li&gt;Публичному адресу IPv4 сопоставляется IPv6-подсеть с префиксом 48.&lt;/li&gt;
+&lt;li&gt;Фиксированный anycast IPv4 адресом: &lt;code&gt;192.88.99.1&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Протокол полностью автоконфигурируемый, ручная настройка невозможна.&lt;/li&gt;
+&lt;li&gt;Использует префикс &lt;code&gt;2002::/16&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Не работает через NAT.&lt;/li&gt;
+&lt;li&gt;Связь между двумя пользователями 6to4 осуществляется не через туннельный сервер, а напрямую, с нулевой дополнительной задержкой.&lt;/li&gt;
+&lt;li&gt;Не требуется регистрации.&lt;/li&gt;
+&lt;li&gt;Оптимальный (самый близкий) шлюз выбирается автоматически.&lt;/li&gt;
+&lt;li&gt;Даёт IPv6-подсеть с префиксом 48.&lt;/li&gt;
+&lt;li&gt;Ближайший шлюз, через который пакеты будут направляться другим пользователям IPv6, выбирается полностью автоматически.&lt;/li&gt;
+&lt;li&gt;Если сайт использует статический глобальный IPv4-адрес, то возможно делегировать обратную DNS зону для 48-битного блока адресов полученного через 6to4.
+&lt;ul&gt;
+&lt;li&gt;Регистрация обратной DNS-зоны производится Number Resource Organization в зоне 2.0.0.2.ip6.arpa на сайте 6to4.nro.net. Процесс полностью автоматизирован.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;как-работает-6to4&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Как работает 6to4&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Основные функции 6to4:
+&lt;ul&gt;
+&lt;li&gt;Выделение блока /48 адресного пространства IPv6 каждому узлу, у которого есть глобальный IPv4-адрес.&lt;/li&gt;
+&lt;li&gt;Инкапсуляция IPv6-пакеты в IPv4-пакеты для передачи по сети IPv4.&lt;/li&gt;
+&lt;li&gt;Передача пакеты между 6to4-узлами и узлами с прямым подключением к IPv6-Интернету.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;выделение-блока-адресов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Выделение блока адресов&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Для каждого глобального адреса IPv4 выделена 48-битный префикс IPv6-адреса.&lt;/li&gt;
+&lt;li&gt;Он может быть создана на основе IPv4-адреса.&lt;/li&gt;
+&lt;li&gt;При этом адрес IPv4 ставится после префикса &lt;code&gt;2002::/16&lt;/code&gt; в шестнадцатеричном виде.
+&lt;ul&gt;
+&lt;li&gt;Например, IPv6-префикс для IPv4-адреса 192.0.2.4 равен 2002:C000:0204::/48.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;инкапсуляция&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Инкапсуляция&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;6to4-узел вкладывает пакет IPv6 в пакет IPv4.&lt;/li&gt;
+&lt;li&gt;Тип протокола 41 («IPv6 (encapsulation)»).&lt;/li&gt;
+&lt;li&gt;Перед тем, как отправить 6to4-пакет, узел проверяет адрес назначения на принадлежность к 6to4-сети и, если этот адрес соответствует 6to4, то он извлекает IPv4-адрес из 6to4-адреса и отправляет пакет по полученному адресу.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;маршрутизация-между-6to4-и-другими-ipv6-сетями&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; Маршрутизация между 6to4 и другими IPv6 сетями&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Для отправлки пакета в другие IPv6-сети используются 6to4-ретрансляторы, которые подключены как к IPv4-сети, так и к IPv6-сети.&lt;/li&gt;
+&lt;li&gt;Когда 6to4-узлу нужно отправить IPv6-пакет, он отправляет его по anycast адресу 192.88.99.1.&lt;/li&gt;
+&lt;li&gt;Ретранслятор, получив 6to4-пакет, извлекает IPv6-пакет и отправляет его по IPv6-сети.&lt;/li&gt;
+&lt;li&gt;Для IPv6-узлов 6to4-узлы выглядят как обычные IPv6-узлы и IPv6-пакет будет передан на ближайший 6to4-ретранслятор, анонсирующий префикс сети 2002::/16.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;настройка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Настройка&lt;/h2&gt;
+&lt;h3 id=&#34;вычисление-префикса-6to4&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Вычисление префикса 6to4&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Пусть адрес IPv4: &lt;code&gt;1.2.3.4&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Сгенерированный префикс 6to4: &lt;code&gt;2002:0102:0304::&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Локальным шлюзам 6to4 следует (но не обязательно) назначать суффикс &lt;code&gt;::1&lt;/code&gt;, поэтому ваш локальный адрес 6to4 будет: &lt;code&gt;2002:0102:0304::1&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Для автоматической генерации можно использовать скрипт:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;ipv4=&amp;quot;1.2.3.4&amp;quot;; printf &amp;quot;2002:%02x%02x:%02x%02x::1&amp;quot; `echo $ipv4 | tr &amp;quot;.&amp;quot; &amp;quot; &amp;quot;`
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;настройка-командой-ip&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.2&lt;/span&gt; Настройка командой &lt;code&gt;ip&lt;/code&gt;&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Создайте новое туннельное устройство:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;/sbin/ip tunnel add tun6to4 mode sit ttl &amp;lt;ttldefault&amp;gt; remote any local &amp;lt;localipv4address&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Необходимо указать TTL, поскольку значение по умолчанию равно 0.&lt;/li&gt;
+&lt;li&gt;Поднимите интерфейс:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;/sbin/ip link set dev tun6to4 up
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Добавьте в интерфейс локальный адрес 6to4 (префикс обязательно равен 16):
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;/sbin/ip -6 addr add &amp;lt;local6to4address&amp;gt;/16 dev tun6to4
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Добавить маршрут по умолчанию в глобальную сеть IPv6, используя заданный адрес IPv4:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;/sbin/ip -6 route add default via ::192.88.99.1 dev tun6to4 metric 1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Некоторые версии команды &lt;code&gt;ip&lt;/code&gt; не поддерживают совместимые с IPv4 IPv6-адреса для шлюзов, в этом случае необходимо использовать соответствующий IPv6-адрес:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;/sbin/ip -6 route add default via 2002:c058:6301::1 dev tun6to4 metric 1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;скрипт&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.3&lt;/span&gt; Скрипт&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Соберём в один скрипт &lt;code&gt;6to4&lt;/code&gt;:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#!/bin/sh
+
+IF=$1
+STATE=$2
+
+if [ -z &amp;quot;$IF&amp;quot; ]
+then
+    echo &amp;quot;$0: called with no interface&amp;quot; 1&amp;gt;&amp;amp;2
+    exit 1
+fi
+
+if [ &amp;quot;$STATE&amp;quot; = &amp;quot;up&amp;quot; ]
+then
+    IPV4=`/sbin/ip -4 addr show dev $IF|grep &amp;quot;^ *inet&amp;quot;|sed -r -e &#39;s:.*inet ([0-9\.]+)/.*:\1:&#39;`
+    IPV4STRIP=`echo $IPV4 | tr &amp;quot;.&amp;quot; &amp;quot; &amp;quot;`
+    IPV6=`printf &amp;quot;2002:%02x%02x:%02x%02x::1&amp;quot; $IPV4STRIP`
+
+    echo $IPV4 &amp;gt;&amp;gt; /tmp/IPV6DEBUG
+    echo $IPV4STRIP &amp;gt;&amp;gt; /tmp/IPV6DEBUG
+    echo $IPV6 &amp;gt;&amp;gt; /tmp/IPV6DEBUG
+
+    /sbin/ip tunnel add tun6to4 mode sit ttl 64 remote any local $IPV4 2&amp;gt;&amp;amp;1 &amp;gt;&amp;gt; /tmp/IPV6DEBUG
+    /sbin/ip link set dev tun6to4 up 2&amp;gt;&amp;amp;1 &amp;gt;&amp;gt; /tmp/IPV6DEBUG
+    /sbin/ip -6 addr add $IPV6/16 dev tun6to4 2&amp;gt;&amp;amp;1 &amp;gt;&amp;gt; /tmp/IPV6DEBUG
+    /sbin/ip -6 route add 2000::/3 via ::192.88.99.1 dev tun6to4 metric 1 2&amp;gt;&amp;amp;1 &amp;gt;&amp;gt; /tmp/IPV6DEBUG
+
+else
+
+    /sbin/ip -6 route del 2000::/3 via ::192.88.99.1 dev tun6to4 2&amp;gt;&amp;amp;1 &amp;gt;&amp;gt; /tmp/IPV6DEBUG
+    /sbin/ip link set dev tun6to4 down 2&amp;gt;&amp;amp;1 &amp;gt;&amp;gt; /tmp/IPV6DEBUG
+    /sbin/ip tunnel del tun6to4
+
+fi
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Запуск:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;./6to4 eth0 up
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Останов:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;./6to4 eth0 down
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Для автоматического запуска добавьте скрипт в каталог &lt;code&gt;/etc/NetworkManager/dispatcher.d&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;раздача-6to4-ipv6-в-локальную-сеть&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Раздача 6to4 IPv6 в локальную сеть&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Пусть ваша сеть: &lt;code&gt;2002:aabb:ccdd::/48&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Для подсети выделим &lt;code&gt;2002:aabb:ccdd:e::/64&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Локальный интерфейс &amp;mdash; &lt;code&gt;eth0&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;назначение-адреса-внутреннему-интерфейсу&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Назначение адреса внутреннему интерфейсу&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Для роутеров часто используется адрес с &lt;code&gt;::1&lt;/code&gt; :&lt;/li&gt;
+&lt;/ul&gt;
+&lt;!--listend--&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;ip addr add 2002:aabb:ccdd:e::1/64 dev eth0
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;настройка-radvd&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2&lt;/span&gt; Настройка radvd&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Изменяем файл &lt;code&gt;/etc/radvd.conf&lt;/code&gt;:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;!--listend--&gt;
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;interface eth0
+{
+   AdvSendAdvert on;
+   prefix 2002:aabb:ccdd:e::/64
+   {
+       AdvOnLink on;
+       AdvAutonomous on;
+   };
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;Включаем маршрутизацию IPv6.&lt;/li&gt;
+&lt;li&gt;Для этого, нужно добавить в &lt;code&gt;/etc/sysctl.conf&lt;/code&gt; следующие строки:
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;net.ipv6.conf.all.forwarding=1
+net.ipv6.conf.default.forwarding=1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Загрузим эти значения:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sysctl -p
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Запустите &lt;code&gt;radvd&lt;/code&gt;:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;!--listend--&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;systemctl enable --now radvd.service
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>Технологии туннелирования IPv6</title>
+      <link>https://yamadharma.github.io/ru/post/2023/05/26/ipv6-tunneling-technologies/</link>
+      <pubDate>Fri, 26 May 2023 19:17:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2023/05/26/ipv6-tunneling-technologies/</guid>
+      <description>&lt;p&gt;Технологии туннелирования IPv6.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#сводная-таблица&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Сводная таблица&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#6in4&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; 6in4&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#6over4&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; 6over4&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#6to4&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; 6to4&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#6rd&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; 6rd&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#ayiya&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6&lt;/span&gt; AYIYA&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#isatap&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7&lt;/span&gt; ISATAP&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#teredo&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8&lt;/span&gt; Teredo&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#6a44&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;9&lt;/span&gt; 6a44&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#6bed4&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;10&lt;/span&gt; 6bed4&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#lisp&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;11&lt;/span&gt; LISP&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#seal&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;12&lt;/span&gt; SEAL&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;сводная-таблица&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Сводная таблица&lt;/h2&gt;
+&lt;div class=&#34;table-caption&#34;&gt;
+  &lt;span class=&#34;table-number&#34;&gt;&amp;#1058;&amp;#1072;&amp;#1073;&amp;#1083;&amp;#1080;&amp;#1094;&amp;#1072; 1:&lt;/span&gt;
+  Сводная таблица по протоколам туннелирования
+&lt;/div&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Протокол&lt;/th&gt;
+&lt;th&gt;Туннелей на IPv4-адрес&lt;/th&gt;
+&lt;th&gt;IPv6-хостов на туннель&lt;/th&gt;
+&lt;th&gt;Публичный IPv4&lt;/th&gt;
+&lt;th&gt;NAT-совместимость&lt;/th&gt;
+&lt;th&gt;P2P&lt;/th&gt;
+&lt;th&gt;Gateway принадлежит&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;6to4&lt;/td&gt;
+&lt;td&gt;Один&lt;/td&gt;
+&lt;td&gt;Много&lt;/td&gt;
+&lt;td&gt;Требуется&lt;/td&gt;
+&lt;td&gt;Нет&lt;/td&gt;
+&lt;td&gt;Глобальный&lt;/td&gt;
+&lt;td&gt;ISP или публичный&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;LISP&lt;/td&gt;
+&lt;td&gt;Один&lt;/td&gt;
+&lt;td&gt;Много&lt;/td&gt;
+&lt;td&gt;Требуется&lt;/td&gt;
+&lt;td&gt;Нет&lt;/td&gt;
+&lt;td&gt;Настраивается&lt;/td&gt;
+&lt;td&gt;ISP или Tunnel Broker&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;6rd&lt;/td&gt;
+&lt;td&gt;Один&lt;/td&gt;
+&lt;td&gt;Много&lt;/td&gt;
+&lt;td&gt;Не требуется&lt;/td&gt;
+&lt;td&gt;Нет&lt;/td&gt;
+&lt;td&gt;Внутри домена&lt;/td&gt;
+&lt;td&gt;ISP&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;6in4&lt;/td&gt;
+&lt;td&gt;Один&lt;/td&gt;
+&lt;td&gt;Много&lt;/td&gt;
+&lt;td&gt;Не требуется&lt;/td&gt;
+&lt;td&gt;Ограниченная&lt;/td&gt;
+&lt;td&gt;Нет&lt;/td&gt;
+&lt;td&gt;ISP или Tunnel Broker&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Teredo&lt;/td&gt;
+&lt;td&gt;Много&lt;/td&gt;
+&lt;td&gt;Один&lt;/td&gt;
+&lt;td&gt;Не требуется&lt;/td&gt;
+&lt;td&gt;Да, с ограничениями&lt;/td&gt;
+&lt;td&gt;Глобальный&lt;/td&gt;
+&lt;td&gt;Публичный релей&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;6bed4&lt;/td&gt;
+&lt;td&gt;Много&lt;/td&gt;
+&lt;td&gt;Много&lt;/td&gt;
+&lt;td&gt;Не требуется&lt;/td&gt;
+&lt;td&gt;Да&lt;/td&gt;
+&lt;td&gt;Глобальный&lt;/td&gt;
+&lt;td&gt;ISP, Tunnel Broker или публичный релей&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;6a44&lt;/td&gt;
+&lt;td&gt;Много&lt;/td&gt;
+&lt;td&gt;Много&lt;/td&gt;
+&lt;td&gt;Не требуется&lt;/td&gt;
+&lt;td&gt;Да&lt;/td&gt;
+&lt;td&gt;Внутри домена&lt;/td&gt;
+&lt;td&gt;ISP&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;AYIYA&lt;/td&gt;
+&lt;td&gt;Много&lt;/td&gt;
+&lt;td&gt;Много&lt;/td&gt;
+&lt;td&gt;Не требуется&lt;/td&gt;
+&lt;td&gt;Да&lt;/td&gt;
+&lt;td&gt;Нет&lt;/td&gt;
+&lt;td&gt;ISP или Tunnel Broker&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;SEAL&lt;/td&gt;
+&lt;td&gt;Много&lt;/td&gt;
+&lt;td&gt;Много&lt;/td&gt;
+&lt;td&gt;Не требуется&lt;/td&gt;
+&lt;td&gt;Да&lt;/td&gt;
+&lt;td&gt;Настраивается&lt;/td&gt;
+&lt;td&gt;ISP или Tunnel Broker&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id=&#34;6in4&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; 6in4&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Разработан в 1996 году.&lt;/li&gt;
+&lt;li&gt;Крупные туннельные брокеры: Hurricane Electric, SIXXS.&lt;/li&gt;
+&lt;li&gt;Номер протокол: 41.&lt;/li&gt;
+&lt;li&gt;Не работает через NAT.&lt;/li&gt;
+&lt;li&gt;Не подразумевает каких-либо фиксированных адресов и префиксов.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;6over4&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; 6over4&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;6over4 использует IPv4 как виртуальный ethernet для IPv6.&lt;/li&gt;
+&lt;li&gt;Например, multicast-адрес &lt;code&gt;ff02::1&lt;/code&gt; превращается в IPv4 multicast-адрес &lt;code&gt;239.192.0.1&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Протокол поддерживает генерацию Link-Local адреса, Neighbor Discovery и конфигурируется автоматически.&lt;/li&gt;
+&lt;li&gt;Все маршрутизаторы в сети должны поддерживать Multicast.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;6to4&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; 6to4&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2023/05/30/ipv6-tunneling-6to4/&#34;&gt;IPv6. Туннелирование. 6to4&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Признан устаревшим (deprecated) и не рекомендованным к использованию.&lt;/li&gt;
+&lt;li&gt;Вариант 6in4 с правилами использования.&lt;/li&gt;
+&lt;li&gt;Публичному адресу IPv4 сопоставляется IPv6-подсеть с префиксом 48.&lt;/li&gt;
+&lt;li&gt;Фиксированный anycast IPv4 адресом: &lt;code&gt;192.88.99.1&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Протокол полностью автоконфигурируемый, ручная настройка невозможна.&lt;/li&gt;
+&lt;li&gt;Использует префикс &lt;code&gt;2002::/16&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Не работает через NAT.&lt;/li&gt;
+&lt;li&gt;Связь между двумя пользователями 6to4 осуществляется не через туннельный сервер, а напрямую, с нулевой дополнительной задержкой.&lt;/li&gt;
+&lt;li&gt;Не требуется регистрации.&lt;/li&gt;
+&lt;li&gt;Оптимальный (самый близкий) шлюз выбирается автоматически.&lt;/li&gt;
+&lt;li&gt;Даёт IPv6-подсеть с префиксом 48.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;6rd&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; 6rd&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Основан на 6to4.&lt;/li&gt;
+&lt;li&gt;Предназначен для развертывания внутри большой организации или ISP.&lt;/li&gt;
+&lt;li&gt;Использует обычный (провайдерский) диапазон адресов вместо префикса &lt;code&gt;2002::/16&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Может автоматически настраиваться через DHCPv4 специальным параметром.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;ayiya&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6&lt;/span&gt; AYIYA&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;AYIYA &amp;mdash; Anything In Anything.&lt;/li&gt;
+&lt;li&gt;Разработан туннель-брокером SIXXS.&lt;/li&gt;
+&lt;li&gt;В основном используется как IPv4-UDP-AYIYA-IPv6.&lt;/li&gt;
+&lt;li&gt;Работает через NAT.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;isatap&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7&lt;/span&gt; ISATAP&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Похож на 6over4, но не использует (и не поддерживает) Multicast.&lt;/li&gt;
+&lt;li&gt;IPv6-адреса генерируются на основе IPv4-адреса.&lt;/li&gt;
+&lt;li&gt;Предполагается, что IPv4-адрес будет уникальным,&lt;/li&gt;
+&lt;li&gt;Не работает с NAT.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;teredo&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8&lt;/span&gt; Teredo&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Не требует настроек.&lt;/li&gt;
+&lt;li&gt;В Windows настроен и включён по умолчанию.&lt;/li&gt;
+&lt;li&gt;В Linux работает на основе Miredo.&lt;/li&gt;
+&lt;li&gt;Необходимо указать Teredo-сервер.&lt;/li&gt;
+&lt;li&gt;Работает через NAT (не всегда).&lt;/li&gt;
+&lt;li&gt;Не требуется регистрация.&lt;/li&gt;
+&lt;li&gt;Связь между двумя пользователями Teredo осуществляется не через туннельный сервер, а напрямую, с нулевой дополнительной задержкой.&lt;/li&gt;
+&lt;li&gt;Даётся всего один адрес IPv6, невозможно получить несколько Teredo-адресов и раздать их в локальную сеть.&lt;/li&gt;
+&lt;li&gt;Маршрутизация между Teredo и нативным IPv6 (а также другими видами туннелей) происходит через шлюзы.&lt;/li&gt;
+&lt;li&gt;Teredo-адреса генерируются из IPv4-адресов и использованного при подключении UDP-порта, поэтому всегда являются динамическими.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;6a44&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;9&lt;/span&gt; 6a44&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Сделан под влиянием Teredo, но предназначен для развертывания средствами ISP.&lt;/li&gt;
+&lt;li&gt;Клиентам выдаётся IPv6-префикс провайдера.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;6bed4&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;10&lt;/span&gt; 6bed4&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Peer-to-Peer IPv6 on Any Internetwork.&lt;/li&gt;
+&lt;li&gt;Предназначен для создания p2p IPv6-сети внутри IPv4-сети, не запрещающей p2p-соединения между хостами.&lt;/li&gt;
+&lt;li&gt;Является гибридом 6to4 и Teredo: IPv6-адрес формируется из IPv4 и UDP-порта, если p2p-соединение невозможно, используется релей, который может быть запущен ISP или просто сторонней организацией.&lt;/li&gt;
+&lt;li&gt;Работает через NAT.&lt;/li&gt;
+&lt;li&gt;Поддерживает как автоконфигурирование, так и ручную настройку.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;lisp&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;11&lt;/span&gt; LISP&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;LISP &amp;mdash; Locator/ID Separation Protocol.&lt;/li&gt;
+&lt;li&gt;Основная цель &amp;mdash; убрать зависимость IPv6-адреса от местоположения клиента.&lt;/li&gt;
+&lt;li&gt;Например, можно использовать свой (предположим, домашний) IPv6-адрес вне вашей сети, без проксирования трафика.&lt;/li&gt;
+&lt;li&gt;По концепции схож с Proxy Mobile IPv6.&lt;/li&gt;
+&lt;li&gt;Не работает через NAT.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;seal&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;12&lt;/span&gt; SEAL&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;SEAL &amp;mdash; Subnetwork Encapsulation and Adaptation Layer.&lt;/li&gt;
+&lt;li&gt;Поддерживает несколько IPv4-линков и multihoming.&lt;/li&gt;
+&lt;li&gt;Есть аутентификация и anti-replay механизм.&lt;/li&gt;
+&lt;li&gt;SEAL Control Message Protocol используется для обменом служебными данными между хостами.&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

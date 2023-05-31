@@ -5,12 +5,1026 @@
     <link>https://yamadharma.github.io/ru/tag/seedling/</link>
       <atom:link href="https://yamadharma.github.io/ru/tag/seedling/index.xml" rel="self" type="application/rss+xml" />
     <description>seedling</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2023 Dmitry S. Kulyabov</copyright><lastBuildDate>Sun, 14 May 2023 19:44:00 +0300</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2023 Dmitry S. Kulyabov</copyright><lastBuildDate>Tue, 30 May 2023 11:58:00 +0300</lastBuildDate>
     <image>
       <url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url>
       <title>seedling</title>
       <link>https://yamadharma.github.io/ru/tag/seedling/</link>
     </image>
+    
+    <item>
+      <title>IPv6. Туннелирование. 6to4</title>
+      <link>https://yamadharma.github.io/ru/post/2023/05/30/ipv6-tunneling-6to4/</link>
+      <pubDate>Tue, 30 May 2023 11:58:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2023/05/30/ipv6-tunneling-6to4/</guid>
+      <description>&lt;p&gt;Технология туннелирования 6to4.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#как-работает-6to4&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Как работает 6to4&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#выделение-блока-адресов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Выделение блока адресов&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#инкапсуляция&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Инкапсуляция&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#маршрутизация-между-6to4-и-другими-ipv6-сетями&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; Маршрутизация между 6to4 и другими IPv6 сетями&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#настройка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Настройка&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#вычисление-префикса-6to4&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Вычисление префикса 6to4&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#настройка-командой-ip&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.2&lt;/span&gt; Настройка командой &lt;code&gt;ip&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#скрипт&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.3&lt;/span&gt; Скрипт&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#раздача-6to4-ipv6-в-локальную-сеть&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Раздача 6to4 IPv6 в локальную сеть&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#назначение-адреса-внутреннему-интерфейсу&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Назначение адреса внутреннему интерфейсу&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#настройка-radvd&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2&lt;/span&gt; Настройка radvd&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Автоматическое туннелирование посредством механизма 6to4 было признано устаревшим (deprecated) и не рекомендованным к использованию.&lt;/li&gt;
+&lt;li&gt;Публичному адресу IPv4 сопоставляется IPv6-подсеть с префиксом 48.&lt;/li&gt;
+&lt;li&gt;Фиксированный anycast IPv4 адресом: &lt;code&gt;192.88.99.1&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Протокол полностью автоконфигурируемый, ручная настройка невозможна.&lt;/li&gt;
+&lt;li&gt;Использует префикс &lt;code&gt;2002::/16&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Не работает через NAT.&lt;/li&gt;
+&lt;li&gt;Связь между двумя пользователями 6to4 осуществляется не через туннельный сервер, а напрямую, с нулевой дополнительной задержкой.&lt;/li&gt;
+&lt;li&gt;Не требуется регистрации.&lt;/li&gt;
+&lt;li&gt;Оптимальный (самый близкий) шлюз выбирается автоматически.&lt;/li&gt;
+&lt;li&gt;Даёт IPv6-подсеть с префиксом 48.&lt;/li&gt;
+&lt;li&gt;Ближайший шлюз, через который пакеты будут направляться другим пользователям IPv6, выбирается полностью автоматически.&lt;/li&gt;
+&lt;li&gt;Если сайт использует статический глобальный IPv4-адрес, то возможно делегировать обратную DNS зону для 48-битного блока адресов полученного через 6to4.
+&lt;ul&gt;
+&lt;li&gt;Регистрация обратной DNS-зоны производится Number Resource Organization в зоне 2.0.0.2.ip6.arpa на сайте 6to4.nro.net. Процесс полностью автоматизирован.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;как-работает-6to4&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Как работает 6to4&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Основные функции 6to4:
+&lt;ul&gt;
+&lt;li&gt;Выделение блока /48 адресного пространства IPv6 каждому узлу, у которого есть глобальный IPv4-адрес.&lt;/li&gt;
+&lt;li&gt;Инкапсуляция IPv6-пакеты в IPv4-пакеты для передачи по сети IPv4.&lt;/li&gt;
+&lt;li&gt;Передача пакеты между 6to4-узлами и узлами с прямым подключением к IPv6-Интернету.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;выделение-блока-адресов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Выделение блока адресов&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Для каждого глобального адреса IPv4 выделена 48-битный префикс IPv6-адреса.&lt;/li&gt;
+&lt;li&gt;Он может быть создана на основе IPv4-адреса.&lt;/li&gt;
+&lt;li&gt;При этом адрес IPv4 ставится после префикса &lt;code&gt;2002::/16&lt;/code&gt; в шестнадцатеричном виде.
+&lt;ul&gt;
+&lt;li&gt;Например, IPv6-префикс для IPv4-адреса 192.0.2.4 равен 2002:C000:0204::/48.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;инкапсуляция&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Инкапсуляция&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;6to4-узел вкладывает пакет IPv6 в пакет IPv4.&lt;/li&gt;
+&lt;li&gt;Тип протокола 41 («IPv6 (encapsulation)»).&lt;/li&gt;
+&lt;li&gt;Перед тем, как отправить 6to4-пакет, узел проверяет адрес назначения на принадлежность к 6to4-сети и, если этот адрес соответствует 6to4, то он извлекает IPv4-адрес из 6to4-адреса и отправляет пакет по полученному адресу.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;маршрутизация-между-6to4-и-другими-ipv6-сетями&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; Маршрутизация между 6to4 и другими IPv6 сетями&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Для отправлки пакета в другие IPv6-сети используются 6to4-ретрансляторы, которые подключены как к IPv4-сети, так и к IPv6-сети.&lt;/li&gt;
+&lt;li&gt;Когда 6to4-узлу нужно отправить IPv6-пакет, он отправляет его по anycast адресу 192.88.99.1.&lt;/li&gt;
+&lt;li&gt;Ретранслятор, получив 6to4-пакет, извлекает IPv6-пакет и отправляет его по IPv6-сети.&lt;/li&gt;
+&lt;li&gt;Для IPv6-узлов 6to4-узлы выглядят как обычные IPv6-узлы и IPv6-пакет будет передан на ближайший 6to4-ретранслятор, анонсирующий префикс сети 2002::/16.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;настройка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Настройка&lt;/h2&gt;
+&lt;h3 id=&#34;вычисление-префикса-6to4&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Вычисление префикса 6to4&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Пусть адрес IPv4: &lt;code&gt;1.2.3.4&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Сгенерированный префикс 6to4: &lt;code&gt;2002:0102:0304::&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Локальным шлюзам 6to4 следует (но не обязательно) назначать суффикс &lt;code&gt;::1&lt;/code&gt;, поэтому ваш локальный адрес 6to4 будет: &lt;code&gt;2002:0102:0304::1&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Для автоматической генерации можно использовать скрипт:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;ipv4=&amp;quot;1.2.3.4&amp;quot;; printf &amp;quot;2002:%02x%02x:%02x%02x::1&amp;quot; `echo $ipv4 | tr &amp;quot;.&amp;quot; &amp;quot; &amp;quot;`
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;настройка-командой-ip&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.2&lt;/span&gt; Настройка командой &lt;code&gt;ip&lt;/code&gt;&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Создайте новое туннельное устройство:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;/sbin/ip tunnel add tun6to4 mode sit ttl &amp;lt;ttldefault&amp;gt; remote any local &amp;lt;localipv4address&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Необходимо указать TTL, поскольку значение по умолчанию равно 0.&lt;/li&gt;
+&lt;li&gt;Поднимите интерфейс:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;/sbin/ip link set dev tun6to4 up
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Добавьте в интерфейс локальный адрес 6to4 (префикс обязательно равен 16):
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;/sbin/ip -6 addr add &amp;lt;local6to4address&amp;gt;/16 dev tun6to4
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Добавить маршрут по умолчанию в глобальную сеть IPv6, используя заданный адрес IPv4:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;/sbin/ip -6 route add default via ::192.88.99.1 dev tun6to4 metric 1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Некоторые версии команды &lt;code&gt;ip&lt;/code&gt; не поддерживают совместимые с IPv4 IPv6-адреса для шлюзов, в этом случае необходимо использовать соответствующий IPv6-адрес:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;/sbin/ip -6 route add default via 2002:c058:6301::1 dev tun6to4 metric 1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;скрипт&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.3&lt;/span&gt; Скрипт&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Соберём в один скрипт &lt;code&gt;6to4&lt;/code&gt;:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#!/bin/sh
+
+IF=$1
+STATE=$2
+
+if [ -z &amp;quot;$IF&amp;quot; ]
+then
+    echo &amp;quot;$0: called with no interface&amp;quot; 1&amp;gt;&amp;amp;2
+    exit 1
+fi
+
+if [ &amp;quot;$STATE&amp;quot; = &amp;quot;up&amp;quot; ]
+then
+    IPV4=`/sbin/ip -4 addr show dev $IF|grep &amp;quot;^ *inet&amp;quot;|sed -r -e &#39;s:.*inet ([0-9\.]+)/.*:\1:&#39;`
+    IPV4STRIP=`echo $IPV4 | tr &amp;quot;.&amp;quot; &amp;quot; &amp;quot;`
+    IPV6=`printf &amp;quot;2002:%02x%02x:%02x%02x::1&amp;quot; $IPV4STRIP`
+
+    echo $IPV4 &amp;gt;&amp;gt; /tmp/IPV6DEBUG
+    echo $IPV4STRIP &amp;gt;&amp;gt; /tmp/IPV6DEBUG
+    echo $IPV6 &amp;gt;&amp;gt; /tmp/IPV6DEBUG
+
+    /sbin/ip tunnel add tun6to4 mode sit ttl 64 remote any local $IPV4 2&amp;gt;&amp;amp;1 &amp;gt;&amp;gt; /tmp/IPV6DEBUG
+    /sbin/ip link set dev tun6to4 up 2&amp;gt;&amp;amp;1 &amp;gt;&amp;gt; /tmp/IPV6DEBUG
+    /sbin/ip -6 addr add $IPV6/16 dev tun6to4 2&amp;gt;&amp;amp;1 &amp;gt;&amp;gt; /tmp/IPV6DEBUG
+    /sbin/ip -6 route add 2000::/3 via ::192.88.99.1 dev tun6to4 metric 1 2&amp;gt;&amp;amp;1 &amp;gt;&amp;gt; /tmp/IPV6DEBUG
+
+else
+
+    /sbin/ip -6 route del 2000::/3 via ::192.88.99.1 dev tun6to4 2&amp;gt;&amp;amp;1 &amp;gt;&amp;gt; /tmp/IPV6DEBUG
+    /sbin/ip link set dev tun6to4 down 2&amp;gt;&amp;amp;1 &amp;gt;&amp;gt; /tmp/IPV6DEBUG
+    /sbin/ip tunnel del tun6to4
+
+fi
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Запуск:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;./6to4 eth0 up
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Останов:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;./6to4 eth0 down
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Для автоматического запуска добавьте скрипт в каталог &lt;code&gt;/etc/NetworkManager/dispatcher.d&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;раздача-6to4-ipv6-в-локальную-сеть&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Раздача 6to4 IPv6 в локальную сеть&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Пусть ваша сеть: &lt;code&gt;2002:aabb:ccdd::/48&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Для подсети выделим &lt;code&gt;2002:aabb:ccdd:e::/64&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Локальный интерфейс &amp;mdash; &lt;code&gt;eth0&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;назначение-адреса-внутреннему-интерфейсу&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Назначение адреса внутреннему интерфейсу&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Для роутеров часто используется адрес с &lt;code&gt;::1&lt;/code&gt; :&lt;/li&gt;
+&lt;/ul&gt;
+&lt;!--listend--&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;ip addr add 2002:aabb:ccdd:e::1/64 dev eth0
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;настройка-radvd&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2&lt;/span&gt; Настройка radvd&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Изменяем файл &lt;code&gt;/etc/radvd.conf&lt;/code&gt;:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;!--listend--&gt;
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;interface eth0
+{
+   AdvSendAdvert on;
+   prefix 2002:aabb:ccdd:e::/64
+   {
+       AdvOnLink on;
+       AdvAutonomous on;
+   };
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;Включаем маршрутизацию IPv6.&lt;/li&gt;
+&lt;li&gt;Для этого, нужно добавить в &lt;code&gt;/etc/sysctl.conf&lt;/code&gt; следующие строки:
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;net.ipv6.conf.all.forwarding=1
+net.ipv6.conf.default.forwarding=1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Загрузим эти значения:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sysctl -p
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Запустите &lt;code&gt;radvd&lt;/code&gt;:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;!--listend--&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;systemctl enable --now radvd.service
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>Технологии туннелирования IPv6</title>
+      <link>https://yamadharma.github.io/ru/post/2023/05/26/ipv6-tunneling-technologies/</link>
+      <pubDate>Fri, 26 May 2023 19:17:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2023/05/26/ipv6-tunneling-technologies/</guid>
+      <description>&lt;p&gt;Технологии туннелирования IPv6.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#сводная-таблица&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Сводная таблица&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#6in4&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; 6in4&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#6over4&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; 6over4&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#6to4&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; 6to4&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#6rd&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; 6rd&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#ayiya&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6&lt;/span&gt; AYIYA&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#isatap&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7&lt;/span&gt; ISATAP&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#teredo&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8&lt;/span&gt; Teredo&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#6a44&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;9&lt;/span&gt; 6a44&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#6bed4&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;10&lt;/span&gt; 6bed4&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#lisp&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;11&lt;/span&gt; LISP&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#seal&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;12&lt;/span&gt; SEAL&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;сводная-таблица&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Сводная таблица&lt;/h2&gt;
+&lt;div class=&#34;table-caption&#34;&gt;
+  &lt;span class=&#34;table-number&#34;&gt;&amp;#1058;&amp;#1072;&amp;#1073;&amp;#1083;&amp;#1080;&amp;#1094;&amp;#1072; 1:&lt;/span&gt;
+  Сводная таблица по протоколам туннелирования
+&lt;/div&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Протокол&lt;/th&gt;
+&lt;th&gt;Туннелей на IPv4-адрес&lt;/th&gt;
+&lt;th&gt;IPv6-хостов на туннель&lt;/th&gt;
+&lt;th&gt;Публичный IPv4&lt;/th&gt;
+&lt;th&gt;NAT-совместимость&lt;/th&gt;
+&lt;th&gt;P2P&lt;/th&gt;
+&lt;th&gt;Gateway принадлежит&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;6to4&lt;/td&gt;
+&lt;td&gt;Один&lt;/td&gt;
+&lt;td&gt;Много&lt;/td&gt;
+&lt;td&gt;Требуется&lt;/td&gt;
+&lt;td&gt;Нет&lt;/td&gt;
+&lt;td&gt;Глобальный&lt;/td&gt;
+&lt;td&gt;ISP или публичный&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;LISP&lt;/td&gt;
+&lt;td&gt;Один&lt;/td&gt;
+&lt;td&gt;Много&lt;/td&gt;
+&lt;td&gt;Требуется&lt;/td&gt;
+&lt;td&gt;Нет&lt;/td&gt;
+&lt;td&gt;Настраивается&lt;/td&gt;
+&lt;td&gt;ISP или Tunnel Broker&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;6rd&lt;/td&gt;
+&lt;td&gt;Один&lt;/td&gt;
+&lt;td&gt;Много&lt;/td&gt;
+&lt;td&gt;Не требуется&lt;/td&gt;
+&lt;td&gt;Нет&lt;/td&gt;
+&lt;td&gt;Внутри домена&lt;/td&gt;
+&lt;td&gt;ISP&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;6in4&lt;/td&gt;
+&lt;td&gt;Один&lt;/td&gt;
+&lt;td&gt;Много&lt;/td&gt;
+&lt;td&gt;Не требуется&lt;/td&gt;
+&lt;td&gt;Ограниченная&lt;/td&gt;
+&lt;td&gt;Нет&lt;/td&gt;
+&lt;td&gt;ISP или Tunnel Broker&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Teredo&lt;/td&gt;
+&lt;td&gt;Много&lt;/td&gt;
+&lt;td&gt;Один&lt;/td&gt;
+&lt;td&gt;Не требуется&lt;/td&gt;
+&lt;td&gt;Да, с ограничениями&lt;/td&gt;
+&lt;td&gt;Глобальный&lt;/td&gt;
+&lt;td&gt;Публичный релей&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;6bed4&lt;/td&gt;
+&lt;td&gt;Много&lt;/td&gt;
+&lt;td&gt;Много&lt;/td&gt;
+&lt;td&gt;Не требуется&lt;/td&gt;
+&lt;td&gt;Да&lt;/td&gt;
+&lt;td&gt;Глобальный&lt;/td&gt;
+&lt;td&gt;ISP, Tunnel Broker или публичный релей&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;6a44&lt;/td&gt;
+&lt;td&gt;Много&lt;/td&gt;
+&lt;td&gt;Много&lt;/td&gt;
+&lt;td&gt;Не требуется&lt;/td&gt;
+&lt;td&gt;Да&lt;/td&gt;
+&lt;td&gt;Внутри домена&lt;/td&gt;
+&lt;td&gt;ISP&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;AYIYA&lt;/td&gt;
+&lt;td&gt;Много&lt;/td&gt;
+&lt;td&gt;Много&lt;/td&gt;
+&lt;td&gt;Не требуется&lt;/td&gt;
+&lt;td&gt;Да&lt;/td&gt;
+&lt;td&gt;Нет&lt;/td&gt;
+&lt;td&gt;ISP или Tunnel Broker&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;SEAL&lt;/td&gt;
+&lt;td&gt;Много&lt;/td&gt;
+&lt;td&gt;Много&lt;/td&gt;
+&lt;td&gt;Не требуется&lt;/td&gt;
+&lt;td&gt;Да&lt;/td&gt;
+&lt;td&gt;Настраивается&lt;/td&gt;
+&lt;td&gt;ISP или Tunnel Broker&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id=&#34;6in4&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; 6in4&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Разработан в 1996 году.&lt;/li&gt;
+&lt;li&gt;Крупные туннельные брокеры: Hurricane Electric, SIXXS.&lt;/li&gt;
+&lt;li&gt;Номер протокол: 41.&lt;/li&gt;
+&lt;li&gt;Не работает через NAT.&lt;/li&gt;
+&lt;li&gt;Не подразумевает каких-либо фиксированных адресов и префиксов.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;6over4&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; 6over4&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;6over4 использует IPv4 как виртуальный ethernet для IPv6.&lt;/li&gt;
+&lt;li&gt;Например, multicast-адрес &lt;code&gt;ff02::1&lt;/code&gt; превращается в IPv4 multicast-адрес &lt;code&gt;239.192.0.1&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Протокол поддерживает генерацию Link-Local адреса, Neighbor Discovery и конфигурируется автоматически.&lt;/li&gt;
+&lt;li&gt;Все маршрутизаторы в сети должны поддерживать Multicast.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;6to4&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; 6to4&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2023/05/30/ipv6-tunneling-6to4/&#34;&gt;IPv6. Туннелирование. 6to4&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Признан устаревшим (deprecated) и не рекомендованным к использованию.&lt;/li&gt;
+&lt;li&gt;Вариант 6in4 с правилами использования.&lt;/li&gt;
+&lt;li&gt;Публичному адресу IPv4 сопоставляется IPv6-подсеть с префиксом 48.&lt;/li&gt;
+&lt;li&gt;Фиксированный anycast IPv4 адресом: &lt;code&gt;192.88.99.1&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Протокол полностью автоконфигурируемый, ручная настройка невозможна.&lt;/li&gt;
+&lt;li&gt;Использует префикс &lt;code&gt;2002::/16&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Не работает через NAT.&lt;/li&gt;
+&lt;li&gt;Связь между двумя пользователями 6to4 осуществляется не через туннельный сервер, а напрямую, с нулевой дополнительной задержкой.&lt;/li&gt;
+&lt;li&gt;Не требуется регистрации.&lt;/li&gt;
+&lt;li&gt;Оптимальный (самый близкий) шлюз выбирается автоматически.&lt;/li&gt;
+&lt;li&gt;Даёт IPv6-подсеть с префиксом 48.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;6rd&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; 6rd&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Основан на 6to4.&lt;/li&gt;
+&lt;li&gt;Предназначен для развертывания внутри большой организации или ISP.&lt;/li&gt;
+&lt;li&gt;Использует обычный (провайдерский) диапазон адресов вместо префикса &lt;code&gt;2002::/16&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Может автоматически настраиваться через DHCPv4 специальным параметром.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;ayiya&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6&lt;/span&gt; AYIYA&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;AYIYA &amp;mdash; Anything In Anything.&lt;/li&gt;
+&lt;li&gt;Разработан туннель-брокером SIXXS.&lt;/li&gt;
+&lt;li&gt;В основном используется как IPv4-UDP-AYIYA-IPv6.&lt;/li&gt;
+&lt;li&gt;Работает через NAT.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;isatap&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7&lt;/span&gt; ISATAP&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Похож на 6over4, но не использует (и не поддерживает) Multicast.&lt;/li&gt;
+&lt;li&gt;IPv6-адреса генерируются на основе IPv4-адреса.&lt;/li&gt;
+&lt;li&gt;Предполагается, что IPv4-адрес будет уникальным,&lt;/li&gt;
+&lt;li&gt;Не работает с NAT.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;teredo&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8&lt;/span&gt; Teredo&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Не требует настроек.&lt;/li&gt;
+&lt;li&gt;В Windows настроен и включён по умолчанию.&lt;/li&gt;
+&lt;li&gt;В Linux работает на основе Miredo.&lt;/li&gt;
+&lt;li&gt;Необходимо указать Teredo-сервер.&lt;/li&gt;
+&lt;li&gt;Работает через NAT (не всегда).&lt;/li&gt;
+&lt;li&gt;Не требуется регистрация.&lt;/li&gt;
+&lt;li&gt;Связь между двумя пользователями Teredo осуществляется не через туннельный сервер, а напрямую, с нулевой дополнительной задержкой.&lt;/li&gt;
+&lt;li&gt;Даётся всего один адрес IPv6, невозможно получить несколько Teredo-адресов и раздать их в локальную сеть.&lt;/li&gt;
+&lt;li&gt;Маршрутизация между Teredo и нативным IPv6 (а также другими видами туннелей) происходит через шлюзы.&lt;/li&gt;
+&lt;li&gt;Teredo-адреса генерируются из IPv4-адресов и использованного при подключении UDP-порта, поэтому всегда являются динамическими.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;6a44&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;9&lt;/span&gt; 6a44&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Сделан под влиянием Teredo, но предназначен для развертывания средствами ISP.&lt;/li&gt;
+&lt;li&gt;Клиентам выдаётся IPv6-префикс провайдера.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;6bed4&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;10&lt;/span&gt; 6bed4&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Peer-to-Peer IPv6 on Any Internetwork.&lt;/li&gt;
+&lt;li&gt;Предназначен для создания p2p IPv6-сети внутри IPv4-сети, не запрещающей p2p-соединения между хостами.&lt;/li&gt;
+&lt;li&gt;Является гибридом 6to4 и Teredo: IPv6-адрес формируется из IPv4 и UDP-порта, если p2p-соединение невозможно, используется релей, который может быть запущен ISP или просто сторонней организацией.&lt;/li&gt;
+&lt;li&gt;Работает через NAT.&lt;/li&gt;
+&lt;li&gt;Поддерживает как автоконфигурирование, так и ручную настройку.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;lisp&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;11&lt;/span&gt; LISP&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;LISP &amp;mdash; Locator/ID Separation Protocol.&lt;/li&gt;
+&lt;li&gt;Основная цель &amp;mdash; убрать зависимость IPv6-адреса от местоположения клиента.&lt;/li&gt;
+&lt;li&gt;Например, можно использовать свой (предположим, домашний) IPv6-адрес вне вашей сети, без проксирования трафика.&lt;/li&gt;
+&lt;li&gt;По концепции схож с Proxy Mobile IPv6.&lt;/li&gt;
+&lt;li&gt;Не работает через NAT.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;seal&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;12&lt;/span&gt; SEAL&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;SEAL &amp;mdash; Subnetwork Encapsulation and Adaptation Layer.&lt;/li&gt;
+&lt;li&gt;Поддерживает несколько IPv4-линков и multihoming.&lt;/li&gt;
+&lt;li&gt;Есть аутентификация и anti-replay механизм.&lt;/li&gt;
+&lt;li&gt;SEAL Control Message Protocol используется для обменом служебными данными между хостами.&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Общедоступные резольверы DNS</title>
+      <link>https://yamadharma.github.io/ru/post/2023/05/26/public-dns-resolvers/</link>
+      <pubDate>Fri, 26 May 2023 12:14:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2023/05/26/public-dns-resolvers/</guid>
+      <description>&lt;p&gt;Общедоступные резольверы DNS.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#google&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Google&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#cloudflare&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; CloudFlare&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#quad9&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Quad9&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#yandex&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Yandex&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#базовый&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Базовый&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#безопасный&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2&lt;/span&gt; Безопасный&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#семейный&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3&lt;/span&gt; Семейный&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#opendns-cisco&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; OpenDNS/Cisco&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#comodo&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6&lt;/span&gt; Comodo&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#cleanbrowsing-dot-org&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7&lt;/span&gt; CleanBrowsing.org&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#dns-watch&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8&lt;/span&gt; DNS Watch&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#freedns&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;9&lt;/span&gt; FreeDNS&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#fourth-estate&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;10&lt;/span&gt; Fourth Estate&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#uncensoreddns&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;11&lt;/span&gt; UncensoredDNS&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#verisign&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;12&lt;/span&gt; Verisign&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#level-3-communications&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;13&lt;/span&gt; Level 3 Communications&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;google&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Google&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Описание:
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://developers.google.com/speed/public-dns/docs/using&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://developers.google.com/speed/public-dns/docs/using&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://developers.google.com/speed/public-dns/docs/isp&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://developers.google.com/speed/public-dns/docs/isp&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;8.8.8.8&lt;/li&gt;
+&lt;li&gt;8.8.4.4&lt;/li&gt;
+&lt;li&gt;2001:4860:4860::8888&lt;/li&gt;
+&lt;li&gt;2001:4860:4860::8844&lt;/li&gt;
+&lt;li&gt;Поддерживается DNS over TLS.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;cloudflare&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; CloudFlare&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;1.1.1.1&lt;/li&gt;
+&lt;li&gt;1.0.0.1&lt;/li&gt;
+&lt;li&gt;Поддерживается DNS over TLS.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;quad9&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Quad9&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;9.9.9.9&lt;/li&gt;
+&lt;li&gt;149.112.112.112&lt;/li&gt;
+&lt;li&gt;Блокируются вредоносные хосты и поддерживается DNS over TLS.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;yandex&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Yandex&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Сайт: &lt;a href=&#34;https://dns.yandex.ru/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://dns.yandex.ru/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;базовый&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Базовый&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;77.88.8.8&lt;/li&gt;
+&lt;li&gt;77.88.8.1&lt;/li&gt;
+&lt;li&gt;2a02:6b8::feed:0ff&lt;/li&gt;
+&lt;li&gt;2a02:6b8:0:1::feed:0ff&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;безопасный&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2&lt;/span&gt; Безопасный&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;77.88.8.88&lt;/li&gt;
+&lt;li&gt;77.88.8.2&lt;/li&gt;
+&lt;li&gt;2a02:6b8::feed:bad&lt;/li&gt;
+&lt;li&gt;2a02:6b8:0:1::feed:bad&lt;/li&gt;
+&lt;li&gt;Блокируются вредоносные хосты.&lt;/li&gt;
+&lt;li&gt;Защита от мошенников.&lt;/li&gt;
+&lt;li&gt;Защита от ботнетов.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;семейный&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3&lt;/span&gt; Семейный&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;77.88.8.7&lt;/li&gt;
+&lt;li&gt;77.88.8.3&lt;/li&gt;
+&lt;li&gt;2a02:6b8::feed:a11&lt;/li&gt;
+&lt;li&gt;2a02:6b8:0:1::feed:a11&lt;/li&gt;
+&lt;li&gt;Блокировка сайтов для взрослых.&lt;/li&gt;
+&lt;li&gt;Блокировка рекламы для взрослых.&lt;/li&gt;
+&lt;li&gt;Семейный поиск Яндекса.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;opendns-cisco&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; OpenDNS/Cisco&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;208.67.222.222&lt;/li&gt;
+&lt;li&gt;208.67.220.220&lt;/li&gt;
+&lt;li&gt;Блокируются вредоносные хосты и сайты для взрослых.&lt;/li&gt;
+&lt;li&gt;Поддерживается DNSCrypt и DNS over TLS.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;comodo&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6&lt;/span&gt; Comodo&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;8.26.56.26&lt;/li&gt;
+&lt;li&gt;8.20.247.20&lt;/li&gt;
+&lt;li&gt;Блокируются вредоносные хосты.&lt;/li&gt;
+&lt;li&gt;Поддерживается DNSCrypt и DNS over TLS.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;cleanbrowsing-dot-org&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7&lt;/span&gt; CleanBrowsing.org&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;185.228.168.168&lt;/li&gt;
+&lt;li&gt;185.228.169.168&lt;/li&gt;
+&lt;li&gt;Блокируется хосты с сайтами для взрослых.&lt;/li&gt;
+&lt;li&gt;Поддерживается DNSCrypt.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;dns-watch&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8&lt;/span&gt; DNS Watch&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;84.200.69.80&lt;/li&gt;
+&lt;li&gt;84.200.70.40&lt;/li&gt;
+&lt;li&gt;Не ведутся логи.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;freedns&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;9&lt;/span&gt; FreeDNS&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;37.235.1.174&lt;/li&gt;
+&lt;li&gt;37.235.1.177&lt;/li&gt;
+&lt;li&gt;Не ведутся логи.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;fourth-estate&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;10&lt;/span&gt; Fourth Estate&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;45.77.165.194&lt;/li&gt;
+&lt;li&gt;45.32.36.36&lt;/li&gt;
+&lt;li&gt;Не ведутся логи.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;uncensoreddns&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;11&lt;/span&gt; UncensoredDNS&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;91.239.100.100
+&lt;ul&gt;
+&lt;li&gt;Anycast.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;89.233.43.71
+&lt;ul&gt;
+&lt;li&gt;Размещён в Дании.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;verisign&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;12&lt;/span&gt; Verisign&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;64.6.64.6&lt;/li&gt;
+&lt;li&gt;64.6.65.6&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;level-3-communications&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;13&lt;/span&gt; Level 3 Communications&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;4.2.2.1&lt;/li&gt;
+&lt;li&gt;4.2.2.2&lt;/li&gt;
+&lt;li&gt;4.2.2.3&lt;/li&gt;
+&lt;li&gt;4.2.2.4&lt;/li&gt;
+&lt;li&gt;4.2.2.5&lt;/li&gt;
+&lt;li&gt;4.2.2.6&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>DNS. PowerDNS Recursor</title>
+      <link>https://yamadharma.github.io/ru/post/2023/05/23/dns-powerdns-recursor/</link>
+      <pubDate>Tue, 23 May 2023 10:08:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2023/05/23/dns-powerdns-recursor/</guid>
+      <description>&lt;p&gt;PowerDNS Recursor.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#установка-powerdns-recursor&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Установка PowerDNS Recursor&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#rocky-linux&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Rocky Linux&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#настройка-powerdns-recursor&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Настройка PowerDNS Recursor&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Документация: &lt;a href=&#34;https://doc.powerdns.com/recursor/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://doc.powerdns.com/recursor/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Сайт: &lt;a href=&#34;https://www.powerdns.com/powerdns-recursor&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.powerdns.com/powerdns-recursor&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Только кэширующий сервер DNS.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;установка-powerdns-recursor&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Установка PowerDNS Recursor&lt;/h2&gt;
+&lt;h3 id=&#34;rocky-linux&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Rocky Linux&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Установите репозиторий &lt;em&gt;Epel&lt;/em&gt;:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf config-manager --set-enabled crb
+dnf -y install epel-release
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Установите PowerDNS Recursor:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install powerdns-recursor
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;настройка-powerdns-recursor&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Настройка PowerDNS Recursor&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Файл конфигурации: &lt;code&gt;recursor.conf&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Находится в папке,определённой во время компиляции:
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;/etc/powerdns&lt;/code&gt;,&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;/etc/pdns&lt;/code&gt;,&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;/etc/pdns-recursor&lt;/code&gt;,&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;/usr/local/etc&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Можно найти эту папку, выполнив команду:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;pdns_recursor --config=default | grep config-dir
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;По умолчанию Recursor прослушивает локальный петлевой интерфейс, нужно задать нужные адреса.&lt;/li&gt;
+&lt;li&gt;В параметре &lt;code&gt;allow-from&lt;/code&gt; перечислены подсети, которые могут взаимодействовать с Recursor.&lt;/li&gt;
+&lt;li&gt;Например:
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;local-address=192.0.2.25, 2001:DB8::1:25
+allow-from=192.0.2.0/24, 2001:DB8::1:/64
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Чтобы принимать входящие запросы клиентов, разрешите службу DNS на брандмауэре:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;firewall-cmd --permanent --add-service=dns
+firewall-cmd --permanent --add-service=dns-over-tls
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Перезапустите брандмауэр:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;firewall-cmd --reload
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Запустите сервис:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;systemctl enable --now pdns-recursor.service
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Белый список журналов Минобрнауки</title>
+      <link>https://yamadharma.github.io/ru/post/2023/05/18/white-list-journals/</link>
+      <pubDate>Thu, 18 May 2023 21:07:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2023/05/18/white-list-journals/</guid>
+      <description>&lt;p&gt;Белый список журналов Минобрнауки.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#критерии&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Критерии&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Предполагается использовать для задач мониторинга и оценки публикационной активности российских учёных.&lt;/li&gt;
+&lt;li&gt;Сайт: &lt;a href=&#34;https://journalrank.rcsi.science/ru/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://journalrank.rcsi.science/ru/&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;критерии&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Критерии&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Требования к журналам:
+&lt;ul&gt;
+&lt;li&gt;журнал должен иметь веб-сайт с доступными в машиночитаемых форматах метаданными публикаций и списками процитированных источников;&lt;/li&gt;
+&lt;li&gt;журнал должен присваивать публикациям цифровой идентификатор DOI (CrossRef, DataCite, mEDRA или др.) или российский аналог;&lt;/li&gt;
+&lt;li&gt;статьи из журнала должны иметь цитирования в публикациях других журналов «Белого списка»;&lt;/li&gt;
+&lt;li&gt;журнал должен публиковать преимущественно научные публикации и проводить рецензирование всех поступающих и публикуемых материалов;&lt;/li&gt;
+&lt;li&gt;научный уровень публикуемых материалов, репутация журнала и его известность должны получить положительную оценку специалистов в соответствующей предметной области;&lt;/li&gt;
+&lt;li&gt;главный редактор и большинство членов редколлегии журнала должны иметь публикации в ведущих изданиях «Белого списка» (помимо рассматриваемого журнала) за последние годы;&lt;/li&gt;
+&lt;li&gt;сведения о возможностях предоставления издателем журнала коммерческих услуг, в том числе публикации статей в открытом доступе, должны присутствовать на сайте издания.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Список журналов ВАК</title>
+      <link>https://yamadharma.github.io/ru/post/2023/05/18/hac-list/</link>
+      <pubDate>Thu, 18 May 2023 20:24:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2023/05/18/hac-list/</guid>
+      <description>&lt;p&gt;Список журналов ВАК.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#требования-вак-для-включения-в-перечень-рецензируемых-журналов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Требования ВАК для включения в перечень рецензируемых журналов&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#перечень-рецензируемых-научных-изданий&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Перечень рецензируемых научных изданий&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;требования-вак-для-включения-в-перечень-рецензируемых-журналов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Требования ВАК для включения в перечень рецензируемых журналов&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Регистрация в качестве СМИ.&lt;/li&gt;
+&lt;li&gt;Выход не реже чем 8 раз за 2 года.&lt;/li&gt;
+&lt;li&gt;Обязательное рецензирование.&lt;/li&gt;
+&lt;li&gt;Открытость сведений.&lt;/li&gt;
+&lt;li&gt;Своевременное предоставление экземпляров в Российский индекс научного цитирования.&lt;/li&gt;
+&lt;li&gt;Соблюдение правил оформления.&lt;/li&gt;
+&lt;li&gt;Присвоение ISSN (международный стандартный номер).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;перечень-рецензируемых-научных-изданий&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Перечень рецензируемых научных изданий&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Перечень рецензируемых научных изданий, в которых должны быть опубликованы основные научные результаты диссертаций на соискание ученой степени кандидата наук, на соискание ученой степени доктора наук.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://vak.minobrnauki.gov.ru/documents#tab=_tab:editions~&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://vak.minobrnauki.gov.ru/documents#tab=_tab:editions~&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;span class=&#34;timestamp-wrapper&#34;&gt;&lt;span class=&#34;timestamp&#34;&gt;[2023-04-25 Вт] &lt;/span&gt;&lt;/span&gt; &lt;a href=&#34;https://vak.minobrnauki.gov.ru/uploader/loader?type=19&amp;amp;name=91107547002&amp;amp;f=17883&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://vak.minobrnauki.gov.ru/uploader/loader?type=19&amp;name=91107547002&amp;f=17883&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;span class=&#34;timestamp-wrapper&#34;&gt;&lt;span class=&#34;timestamp&#34;&gt;[2023-02-15 Ср] &lt;/span&gt;&lt;/span&gt; &lt;a href=&#34;https://vak.minobrnauki.gov.ru/uploader/loader?type=19&amp;amp;name=91107547002&amp;amp;f=16345&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://vak.minobrnauki.gov.ru/uploader/loader?type=19&amp;name=91107547002&amp;f=16345&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Квартили списка ВАК</title>
+      <link>https://yamadharma.github.io/ru/post/2023/05/18/hac-list-quartiles/</link>
+      <pubDate>Thu, 18 May 2023 20:12:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2023/05/18/hac-list-quartiles/</guid>
+      <description>&lt;p&gt;Квартили списка ВАК.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#методика-категоризации-журналов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Методика категоризации журналов&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#на-что-влияет-категорирование-журналов-вак-на-квартили&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; На что влияет категорирование журналов ВАК на квартили?&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#перечень-по-квартилям&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Перечень по квартилям&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Квартили для журналов из списка ВАК (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2023/05/18/hac-list/&#34;&gt;Список журналов ВАК&lt;/a&gt;) введены в декабре 2022 года.&lt;/li&gt;
+&lt;li&gt;Все научные журналы ВАК поделены на 3 группы: квартили К1 (25%), К2 (50%), К3 (25%).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;методика-категоризации-журналов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Методика категоризации журналов&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Показатели:
+&lt;ul&gt;
+&lt;li&gt;количественные:
+&lt;ul&gt;
+&lt;li&gt;Science Index – информационно-аналитическая система на основе данных Российского индекса научного цитирования (РИНЦ);&lt;/li&gt;
+&lt;li&gt;индекс Херфминдаля-Хиршмана – уровень конкуренции среди организаций;&lt;/li&gt;
+&lt;li&gt;индекс Джинни измеряет неравенство между значениями частотного распределения благ;&lt;/li&gt;
+&lt;li&gt;индекс Хирша за десять лет для периодики;&lt;/li&gt;
+&lt;li&gt;средний индекс Хирша для ученых-авторов статей;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;качественные:
+&lt;ul&gt;
+&lt;li&gt;оригинальность работы;&lt;/li&gt;
+&lt;li&gt;качество публикаций;&lt;/li&gt;
+&lt;li&gt;степень авторитетности автора статей;&lt;/li&gt;
+&lt;li&gt;уровень рассмотрения работы учеными-специалистами;&lt;/li&gt;
+&lt;li&gt;организация-учредитель.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;на-что-влияет-категорирование-журналов-вак-на-квартили&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; На что влияет категорирование журналов ВАК на квартили?&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Статьи, опубликованные в журналах из квартиля К1 приравнены по статусу к статьям, опубликованным в журналах, индексируемых в международных базах данных.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;перечень-по-квартилям&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Перечень по квартилям&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;span class=&#34;timestamp-wrapper&#34;&gt;&lt;span class=&#34;timestamp&#34;&gt;[2022-12-06 Вт] &lt;/span&gt;&lt;/span&gt; &lt;a href=&#34;https://vak.minobrnauki.gov.ru/uploader/loader?type=19&amp;amp;name=92263438002&amp;amp;f=14239&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://vak.minobrnauki.gov.ru/uploader/loader?type=19&amp;name=92263438002&amp;f=14239&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Требования к документам для защиты диссертации в РУДН</title>
+      <link>https://yamadharma.github.io/ru/post/2023/05/18/requirements-documents-defending-thesis-rudn/</link>
+      <pubDate>Thu, 18 May 2023 08:22:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2023/05/18/requirements-documents-defending-thesis-rudn/</guid>
+      <description>&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;&lt;/nav&gt;
+&lt;/details&gt;</description>
+    </item>
+    
+    <item>
+      <title>Регистрация программ для ЭВМ</title>
+      <link>https://yamadharma.github.io/ru/post/2023/05/16/registration-computer-programs/</link>
+      <pubDate>Tue, 16 May 2023 13:53:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2023/05/16/registration-computer-programs/</guid>
+      <description>&lt;p&gt;Регистрация программ для ЭВМ.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#автор-и-правообладатель-программы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Автор и правообладатель программы&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#права-автора-и-правообладателя-программного-продукта&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Права автора и правообладателя программного продукта&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#ценность-регистрации-программы-в-фипс&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.3&lt;/span&gt; Ценность регистрации программы в ФИПС&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#нарушение-прав-на-программы-эвм&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.4&lt;/span&gt; Нарушение прав на программы ЭВМ&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#список-зарегистрированных-программ&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Список зарегистрированных программ&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#литература&#34;&gt;Литература&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Программы для ЭВМ и базы данных относятся к объектам авторского права и регистрируются Роспатентом.&lt;/li&gt;
+&lt;li&gt;Российское законодательство приравнивает код программы к литературному произведению.&lt;/li&gt;
+&lt;li&gt;Права на программу действуют в течение всей жизни авторов.&lt;/li&gt;
+&lt;li&gt;Для оформления свидетельства на программу для ЭВМ в Роспатент подается заявка, краткое описание и распечатанный код программы (листинг), объёмом до 700 страниц.&lt;/li&gt;
+&lt;li&gt;В случае спора, код программы, зарегистрированный в ФИПС, передается для проведения экспертизы.&lt;/li&gt;
+&lt;li&gt;Автором и правообладателем программного продукта могут быть разные лица.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;автор-и-правообладатель-программы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Автор и правообладатель программы&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Имеет возможность распоряжаться программой по своему усмотрению.&lt;/li&gt;
+&lt;li&gt;Имеет возможность привлекать к ответственности третьих лиц, использующих его программу без разрешения.&lt;/li&gt;
+&lt;li&gt;Владелец исключительного права на программы для ЭВМ.&lt;/li&gt;
+&lt;li&gt;Правообладателем программы для ЭВМ может быть как автор (авторский коллектив разработчиков), так и третье лицо, по заказу которого была разработана программа.
+&lt;ul&gt;
+&lt;li&gt;Во втором случае после разработки программы автор передаёт все права на программу.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Авторское право на компьютерные программы неотчуждаемо.&lt;/li&gt;
+&lt;li&gt;Авторами программы всегда будут указаны ее разработчики, вне зависимости от того, кто является правообладателем.&lt;/li&gt;
+&lt;li&gt;Владелец имеет неограниченное право использования программы для ЭВМ, в том числе извлечение прибыли от ее использования или распространения.&lt;/li&gt;
+&lt;li&gt;Правовая охрана программы для ЭВМ также должна быть обеспечена именно владельцем, а не авторами.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;права-автора-и-правообладателя-программного-продукта&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Права автора и правообладателя программного продукта&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Право авторства (принадлежит автору).&lt;/li&gt;
+&lt;li&gt;Право на имя (принадлежит автору).&lt;/li&gt;
+&lt;li&gt;Право на название программного продукта (принадлежит правообладателю).&lt;/li&gt;
+&lt;li&gt;Право на распространение (выпуск) программы, а также право запрещать распространение (принадлежит правообладателю).&lt;/li&gt;
+&lt;li&gt;Право на защиту программы и ее названия (принадлежит правообладателю).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;ценность-регистрации-программы-в-фипс&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.3&lt;/span&gt; Ценность регистрации программы в ФИПС&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Защита авторского права на код.&lt;/li&gt;
+&lt;li&gt;Получение дохода от передачи прав и распространения программы (пользовательские лицензии и продажа программного продукта).&lt;/li&gt;
+&lt;li&gt;Приобретение нематериального актива.&lt;/li&gt;
+&lt;li&gt;Обязательный пункт при внесении программы в Реестр Минкомсвязи.&lt;/li&gt;
+&lt;li&gt;Необходимое условие для участия в тендерах и поставки ПО в рамках госзаказа.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;нарушение-прав-на-программы-эвм&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.4&lt;/span&gt; Нарушение прав на программы ЭВМ&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Копирование авторских программ и данных конечными пользователями.&lt;/li&gt;
+&lt;li&gt;Установка авторских программ на жесткие носители.&lt;/li&gt;
+&lt;li&gt;Подделка авторских программ.&lt;/li&gt;
+&lt;li&gt;Использование авторских программ с нарушением действия лицензий.&lt;/li&gt;
+&lt;li&gt;Интернет-пиратство.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;список-зарегистрированных-программ&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Список зарегистрированных программ&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;Расчет линз Максвелла и Люнеберга с помощью численного решения уравнения эйконала : Свидетельство о государственной регистрации программы для ЭВМ 2022662788 /М. Н. Геворкян, А. В. Королькова, Д. С. Кулябов. — Заявл. 24.06.2022 ; опубл. 07.07.2022. [&lt;a href=&#34;#citeproc_bib_item_2&#34;&gt;2&lt;/a&gt;]&lt;/li&gt;
+&lt;li&gt;Численное моделирование стохастической модели Лотки-Вольтерра : Свидетельство о государственной регистрации программы для ЭВМ 2022619465 / Е. А. Баулин, А. В. Королькова, Д. С. Кулябов, Ф. А. Витальевич. — Заявл. 13.05.2022 ; опубл. 23.05.2022. [&lt;a href=&#34;#citeproc_bib_item_1&#34;&gt;1&lt;/a&gt;]&lt;/li&gt;
+&lt;li&gt;Лабораторные работы для курса Параллельное программирование : Свидетельство о государственной регистрации программы для ЭВМ 2020610438 / М. Н. Геворкян, Д. С. Кулябов, А. В. Демидова, А. В. Королькова. — Заявл. 01.2020.&lt;/li&gt;
+&lt;li&gt;Реализация генераторов равномерно-распределенных псевдослучайных чисел : Свидетельство о государственной регистрации программы для ЭВМ 2020610571 / Д. С. Кулябов, М. Н. Геворкян, А. В. Демидова, А. В. Королькова, Т. Р. Велиева. — Заявл. 01.2020.&lt;/li&gt;
+&lt;li&gt;Программная реализация нейронной сети для задачи определения мюонного распада : Свидетельство о государственной регистрации программы для ЭВМ 2019617557 /А. В. Демидова, Т. С. Демидова, Д. С. Кулябов, А. А. Соболев. — Заявл. 06.2019.&lt;/li&gt;
+&lt;li&gt;Программное средство для анализа работы нейронной сети, классифицирующей изображения : Свидетельство о государственной регистрации программы для ЭВМ 2019617555 / А. В. Демидова, Т. С. Демидова, Д. С. Кулябов, А. А. Соболев. — Заявл. 06.2019.&lt;/li&gt;
+&lt;li&gt;Автоматическая генерация кода для классических и вложенных явных методов Рунге-Кутты : Свидетельство о государственной регистрации программы для ЭВМ 2018619149 / М. Н. Геворкян, Д. С. Кулябов, А. В. Демидова, А. В. Королькова. — Заявл. 08.2018.&lt;/li&gt;
+&lt;li&gt;Автоматическая генерация кода для стохастических численных методов : Свидетельство о государственной регистрации программы для ЭВМ 2018619135 / М. Н. Геворкян, А. В. Демидова, Д. С. Кулябов, А. В. Королькова. — Заявл. 08.2018.&lt;/li&gt;
+&lt;li&gt;Численный расчёт линз Максвелла и Люнеберга : Свидетельство о государственной регистрации программы для ЭВМ 2018619150 / Д. С. Кулябов, М. Н. Геворкян. — Заявл. 08.2018.&lt;/li&gt;
+&lt;li&gt;Параллельный расчет стохастической численной модели типа хищник-жертва методом Монте-Карло : Свидетельство о государственной регистрации программы для ЭВМ 2017617008 / А. В. Демидова, М. Н. Геворкян, Д. С. Кулябов, А. В. Королькова. — Заявл. 2017.&lt;/li&gt;
+&lt;li&gt;Реализация вложенных методов Рунге-Кутты высокого порядка с управлением шагом : Свидетельство о государственной регистрации программы для ЭВМ 2017617007 / М. Н. Геворкян, Д. С. Кулябов, А. В. Демидова, А. В. Королькова. — Заявл. 2017.&lt;/li&gt;
+&lt;li&gt;Реализация генераторов псевдослучайных равномерно распределенных случайных чисел, использующих побитовые операции : Свидетельство о государственной регистрации программы для ЭВМ 2017613721 / А. В. Демидова, М. Н. Геворкян, Д. С. Кулябов, А. В. Королькова. — Заявл. 2017.&lt;/li&gt;
+&lt;li&gt;Реализация генераторов псевдослучайных чисел, распределенных по нормальному, экспоненциальному и пуассоновскому законам : Свидетельство о государственной регистрации программы для ЭВМ 2017617958 / А. В. Демидова, М. Н. Геворкян, Д. С. Кулябов, А. В. Королькова. — Заявл. 2017.&lt;/li&gt;
+&lt;li&gt;Реализация различных модификаций линейных конгруэнтных генераторов псевдослучайных равномерно распределенных случайных чисел : Свидетельство о государственной регистрации программы для ЭВМ 2017615180 / А. В. Демидова, М. Н. Геворкян, Д. С. Кулябов, А. В. Королькова. — Заявл. 2017.&lt;/li&gt;
+&lt;li&gt;Реализация симплектических раздельных методов Рунге-Кутты и Рунге-Кутты-Нюстрёма : Свидетельство о государственной регистрации программы для ЭВМ 2017615825 / М. Н. Геворкян, Д. С. Кулябов, А. В. Демидова, А. В. Королькова. — Заявл. 2017.&lt;/li&gt;
+&lt;li&gt;Вычисление дисперсионных зависимостей для планарных многослойных тонкопленочных волноводов : Свидетельство о государственной регистрации программы для ЭВМ 2016618429 / Л. А. Севастьянов, Д. С. Кулябов, М. Н. Геворкян, А. В. Королькова. — Заявл. 07.2016.&lt;/li&gt;
+&lt;li&gt;Имитационное и численное моделирование фунционирования модуля активного управления трафиком GRED с учетом самосогласованного стохастического воздействия : Свидетельство о государственной регистрации программы для ЭВМ 2016618425 / Д. С. Кулябов, А. В. Королькова, М. Н. Геворкян, Х. Р. Мачука. — Заявл. 07.2016.&lt;/li&gt;
+&lt;li&gt;Распределенное дешифрование алгоритмов AES, DES, 3DES и RC6 : Свидетельство о государственной регистрации программы для ЭВМ 2016618123 / Д. С. Кулябов, М. Н. Геворкян, Э. Т. Р. Рэй, Х. К. Г. Антекеро. — Заявл. 06.2016.&lt;/li&gt;
+&lt;li&gt;Расчет излучательных подложечных мод для планарных многослойных тонкопленочных волноводов : Свидетельство о государственной регистрации программы для ЭВМ 2016618252 / Л. А. Севастьянов, Д. С. Кулябов, М. Н. Геворкян, А. В. Королькова. — Заявл. 07.2016.&lt;/li&gt;
+&lt;li&gt;Расчет излучательных покровных мод для планарных многослойных тонкопленочных волноводов : Свидетельство о государственной регистрации программы для ЭВМ 2016618122 / Л. А. Севастьянов, Д. С. Кулябов, М. Н. Геворкян, А. В. Королькова. — Заявл. 06.2016.&lt;/li&gt;
+&lt;li&gt;Расчет направляемых волноводных мод для планарных многослойных тонкопленочных волноводов : Свидетельство о государственной регистрации программы для ЭВМ 2016618251 / Л. А. Севастьянов, Д. С. Кулябов, М. Н. Геворкян, А. В. Королькова. — Заявл. 07.2016.&lt;/li&gt;
+&lt;li&gt;Реализация метода стохастизации одношаговых процессов : Свидетельство о государственной регистрации программы для ЭВМ 2016617590 / Д. С. Кулябов, Е. Г. Еферина. — Заявл. 06.2016.&lt;/li&gt;
+&lt;li&gt;Численное моделирование распространения электромагнитных волн в волноводе прямоугольного сечения : Свидетельство о государственной регистрации программы для ЭВМ 2016660150 / Д. С. Кулябов, А. А. Шарапова. — Заявл. 09.2016.&lt;/li&gt;
+&lt;li&gt;Численное моделирование распространения электромагнитных волн в сферической линзе Люнеберга : Свидетельство о государственной регистрации программы для ЭВМ 2016619830 / Д. С. Кулябов, А. А. Шарапова. — Заявл. 08.2016.&lt;/li&gt;
+&lt;li&gt;Интеграция расширяемого языка контроля доступа в Linux : Свидетельство о государственной регистрации программы для ЭВМ 2015619231 / Л. Е. Владимирович, Д. С. Кулябов. — Заявл. 08.2015.&lt;/li&gt;
+&lt;li&gt;Программа для численного моделирования линзы Люнеберга из кубиков : Свидетельство о государственной регистрации программы для ЭВМ 2015618822 / А. А. Шарапова, Д. С. Кулябов. — Заявл. 08.2015.&lt;/li&gt;
+&lt;li&gt;Расчет параметров автоколебания модулей активного управления трафиком семейства RED (Random Early Detection) : Свидетельство о государственной регистрации программы для ЭВМ 2015619242 / Д. С. Кулябов, А. В. Королькова, М. Н. Геворкян. — Заявл. 08.2015.&lt;/li&gt;
+&lt;li&gt;Расчет параметров функционирования модулей активного управления трафиком семейства RED (Random Early Detection) : Свидетельство о государственной регистрации программы для ЭВМ 2015660317 / Д. С. Кулябов, А. В. Королькова, М. Н. Геворкян. — Заявл. 09.2015.&lt;/li&gt;
+&lt;li&gt;Расчет параметров функционирования модулей активного управления трафиком семейства RED (Random Early Detection) с учетом самосогласованного стохастического воздействия : Свидетельство о государственной регистрации программы для ЭВМ 2015660316 / Д. С. Кулябов, А. В. Королькова, М. Н. Геворкян. — Заявл. 09.2015.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;литература&#34;&gt;Литература&lt;/h2&gt;
+&lt;div class=&#34;csl-bib-body&#34;&gt;
+  &lt;div class=&#34;csl-entry&#34;&gt;&lt;a id=&#34;citeproc_bib_item_1&#34;&gt;&lt;/a&gt;1.	Баулин Е. А. Численное моделирование стохастической модели лотки-вольтерра / Е. А.  Баулин, А. В.  Королькова, Д. С.  Кулябов, Ф. А.  Витальевич. – Федеральное государственное автономное образовательное учреждение высшего образования «Российский университет дружбы народов» (РУДН), 2022.&lt;/div&gt;
+  &lt;div class=&#34;csl-entry&#34;&gt;&lt;a id=&#34;citeproc_bib_item_2&#34;&gt;&lt;/a&gt;2.	Геворкян М. Н. Расчет линз максвелла и люнеберга с помощью численного решения уравнения эйконала / М. Н.  Геворкян, А. В.  Королькова, Д. С.  Кулябов. – Федеральное государственное автономное образовательное учреждение высшего образования «Российский университет дружбы народов» (РУДН), 2022.&lt;/div&gt;
+&lt;/div&gt;</description>
+    </item>
+    
+    <item>
+      <title>Робот-пылесос iCLEBO O5</title>
+      <link>https://yamadharma.github.io/ru/post/2023/05/15/robot-vacuum-cleaner-iclebo-o5/</link>
+      <pubDate>Mon, 15 May 2023 16:29:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2023/05/15/robot-vacuum-cleaner-iclebo-o5/</guid>
+      <description>&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#технические-характеристики&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Технические характеристики&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#производитель-iclebo&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Производитель iClebo&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#сайты&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Сайты&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#модели&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Модели&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#робот-пылесос-iclebo-o5-wifi&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Робот-пылесос iCLEBO O5 WiFi&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#информационные-ресурсы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Информационные ресурсы&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#прошивки&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Прошивки&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
+&lt;h3 id=&#34;технические-характеристики&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Технические характеристики&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Литий-ионный аккумулятор производства Samsung SDI емкостью 5200 mAh&lt;/li&gt;
+&lt;li&gt;Время работы до 120 минут без подзарядки (в режиме Silent на гладком полу). В режиме Turbo 70 минут. Два цикла уборки (если не успел убрать в первом цикле, зарядится и поедет убирать во втором цикле)&lt;/li&gt;
+&lt;li&gt;Высота преодолеваемых порогов: 15 мм&lt;/li&gt;
+&lt;li&gt;Высота пылесоса: 8,7 см&lt;/li&gt;
+&lt;li&gt;Уровень шума: 44Дб в режиме Silent, 68Дб в режиме Turbo&lt;/li&gt;
+&lt;li&gt;Вес: 3,2 кг&lt;/li&gt;
+&lt;li&gt;Производство: Южная Корея&lt;/li&gt;
+&lt;li&gt;Звуковое сопровождение работы и ошибок&lt;/li&gt;
+&lt;li&gt;Интеграция с Яндекс.Алиса и Google Assistant&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;производитель-iclebo&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Производитель iClebo&lt;/h2&gt;
+&lt;h3 id=&#34;сайты&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Сайты&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://iclebo.com.ru/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://iclebo.com.ru/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;ООО &amp;ldquo;Робототехника&amp;rdquo; (Эксклюзивный представитель Yujin Robot и Everebot в России)
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://qrobot.ru/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://qrobot.ru/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://icleborus.ru/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://icleborus.ru/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Дилеры: &lt;a href=&#34;https://iclebo.com.ru/dealers&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://iclebo.com.ru/dealers&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;модели&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Модели&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Сравнение моделей: &lt;a href=&#34;https://iclebo.com.ru/comparison&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://iclebo.com.ru/comparison&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;робот-пылесос-iclebo-o5-wifi&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Робот-пылесос iCLEBO O5 WiFi&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://iclebo.com.ru/iclebo_o5wifi&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://iclebo.com.ru/iclebo_o5wifi&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;44900 ₽&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;информационные-ресурсы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Информационные ресурсы&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;4PDA:
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://4pda.to/forum/index.php?showtopic=964873&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://4pda.to/forum/index.php?showtopic=964873&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Тема закрыта в 2020 году.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;iXBT:
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://forum.ixbt.com/topic.cgi?id=47:13212&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://forum.ixbt.com/topic.cgi?id=47:13212&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;FAQ
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://iclebo.com.ru/o5_faq&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://iclebo.com.ru/o5_faq&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;прошивки&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Прошивки&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Версии прошивок: &lt;a href=&#34;https://iclebo.com.ru/blog/all-firmware&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://iclebo.com.ru/blog/all-firmware&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
     
     <item>
       <title>Бытовая техника</title>
@@ -35,6 +1049,7 @@
 &lt;h2 id=&#34;уборка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Уборка&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2023/05/09/criteria-choosing-robot-cleaner/&#34;&gt;Критерии выбора робота-пылесоса&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2023/05/15/robot-vacuum-cleaner-iclebo-o5/&#34;&gt;Робот-пылесос iCLEBO O5&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;</description>
     </item>
     
@@ -1136,9 +2151,24 @@ or any selection decision made. This statement must not be used for advertisemen
 &lt;li&gt;Невозможна станет ситуация, когда физик становился магистром юриспруденции, а инженер заканчивал магистратуру по психологии.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
-&lt;li&gt;Предусматривается введение академического и профессионального специализированного образования. Последний тип может софинансироваться в том числе за счет отдельных компаний и отраслей.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
+&lt;li&gt;Два вида магистратуры:
+&lt;ul&gt;
+&lt;li&gt;академическая;
+&lt;ul&gt;
+&lt;li&gt;финансируется за счет бюджета;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;профессиональная;
+&lt;ul&gt;
+&lt;li&gt;может софинансироваться за счет отдельных компаний и отраслей.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Магистратура останется не во всех вузах.&lt;/li&gt;
+&lt;li&gt;Будет проводиться отбор вузов, которым будет разрешено реализовывать магистерские программы.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;аспирантура&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Аспирантура&lt;/h2&gt;
 &lt;ul&gt;
@@ -1191,6 +2221,516 @@ or any selection decision made. This statement must not be used for advertisemen
   &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
   &lt;nav id=&#34;TableOfContents&#34;&gt;&lt;/nav&gt;
 &lt;/details&gt;</description>
+    </item>
+    
+    <item>
+      <title>XDG. Приложения MIME</title>
+      <link>https://yamadharma.github.io/ru/post/2023/04/02/xdg-mime-applications/</link>
+      <pubDate>Sun, 02 Apr 2023 13:39:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2023/04/02/xdg-mime-applications/</guid>
+      <description>&lt;p&gt;Настройка вызова приложений с помощью спецификации MIME.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#файлы-конфигурации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Файлы конфигурации&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#расположение-файлов-конфигурации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Расположение файлов конфигурации&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#формат-файлов-конфигурации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.3&lt;/span&gt; Формат файлов конфигурации&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#утилиты-работы-со-списком-приложений&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Утилиты работы со списком приложений&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#xdg-mime&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; &lt;code&gt;xdg-mime&lt;/code&gt;&lt;/a&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1.1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#определение-mime-типа-файла&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1.2&lt;/span&gt; Определение MIME-типа файла&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#определение-приложения-по-умолчанию-для-mime-типа&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1.3&lt;/span&gt; Определение приложения по умолчанию для MIME-типа&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#изменение-приложения-по-умолчанию-для-mime-типа&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1.4&lt;/span&gt; Изменение приложения по умолчанию для MIME-типа&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#отладка-приложения-по-умолчанию-для-mime-типа&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1.5&lt;/span&gt; Отладка приложения по умолчанию для MIME-типа&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#обработчики-url-схем&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1.6&lt;/span&gt; Обработчики URL схем&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#xdg-settings&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; &lt;code&gt;xdg-settings&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;файлы-конфигурации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Файлы конфигурации&lt;/h2&gt;
+&lt;h3 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Общая информация&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Приложения по умолчанию для каждого типа MIME хранятся в файлах &lt;code&gt;mimeapps.list&lt;/code&gt;, которые могут храниться в нескольких местах.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;расположение-файлов-конфигурации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Расположение файлов конфигурации&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Файлы конфигурации проверяются в следующем порядке.&lt;/li&gt;
+&lt;li&gt;Более ранние ассоциации имеют приоритет над более поздними.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Путь&lt;/th&gt;
+&lt;th&gt;Применение&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;~/.config/mimeapps.list&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Пользовательские переопределения&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;/etc/xdg/mimeapps.list&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Общесистемные переопределения&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;~/.local/share/applications/mimeapps.list&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Пользовательские переопределения (устаревшее)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;/usr/local/share/applications/mimeapps.list&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Переопределения, предоставляемые дистрибутивом по умолчанию&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;/usr/share/applications/mimeapps.list&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Переопределения, предоставляемые дистрибутивом по умолчанию&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;ul&gt;
+&lt;li&gt;Можно определить приложения по умолчанию, специфичные для конкретной среды рабочего стола, с помощью файла вида &lt;code&gt;desktop-mimeapps.list&lt;/code&gt;, где &lt;code&gt;desktop&lt;/code&gt; это имя среды рабочего стола (из переменной окружения &lt;code&gt;XDG_CURRENT_DESKTOP&lt;/code&gt;).
+&lt;ul&gt;
+&lt;li&gt;Например, &lt;code&gt;/etc/xdg/xfce-mimeapps.list&lt;/code&gt; задают общесистемные переопределения приложений по умолчанию для Xfce.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Некоторые приложения всё ещё используют файл &lt;code&gt;~/.local/share/applications/mimeapps.list&lt;/code&gt;.
+&lt;ul&gt;
+&lt;li&gt;Для сохранения совместимости можно создать символическую ссылку на &lt;code&gt;~/.config/mimeapps.list&lt;/code&gt;:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;ln -s ~/.config/mimeapps.list ~/.local/share/applications/mimeapps.list
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;формат-файлов-конфигурации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.3&lt;/span&gt; Формат файлов конфигурации&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Файл &lt;code&gt;mimeapps.list&lt;/code&gt; имеет следующий формат:
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;[Added Associations]
+image/jpeg=bar.desktop;baz.desktop
+video/H264=bar.desktop
+[Removed Associations]
+video/H264=baz.desktop
+[Default Applications]
+image/jpeg=foo.desktop
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Разделы файла:
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;Added Associations&lt;/em&gt; (Добавленные ассоциации): приложения поддерживают открытие этого типа MIME.
+&lt;ul&gt;
+&lt;li&gt;Например, &lt;code&gt;bar.desktop&lt;/code&gt; и &lt;code&gt;baz.desktop&lt;/code&gt; могут открывать изображения JPEG.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Removed Associations&lt;/em&gt; (Удаленные ассоциации): приложения не поддерживают этот тип MIME.
+&lt;ul&gt;
+&lt;li&gt;Например, &lt;code&gt;baz.desktop&lt;/code&gt; не может открыть видео H.264.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Default Applications&lt;/em&gt; (Приложения по умолчанию): приложения должны выбираться по умолчанию для открытия этого типа MIME.
+&lt;ul&gt;
+&lt;li&gt;Например, изображения JPEG должны быть открыты с помощью &lt;code&gt;foo.desktop&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Если есть несколько приложений, они проверяются по порядку.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Каждый раздел является необязательным и может быть опущен, если он не нужен.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;утилиты-работы-со-списком-приложений&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Утилиты работы со списком приложений&lt;/h2&gt;
+&lt;h3 id=&#34;xdg-mime&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; &lt;code&gt;xdg-mime&lt;/code&gt;&lt;/h3&gt;
+&lt;h4 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1.1&lt;/span&gt; Общая информация&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;xdg-mime&lt;/code&gt; (1) &amp;mdash; скрипт для прямого запроса и изменения стандартных приложений MIME.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;определение-mime-типа-файла&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1.2&lt;/span&gt; Определение MIME-типа файла&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Определение MIME-типа файла:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ xdg-mime query filetype photo.jpeg
+image/jpeg
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;определение-приложения-по-умолчанию-для-mime-типа&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1.3&lt;/span&gt; Определение приложения по умолчанию для MIME-типа&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Определение приложения по умолчанию для MIME-типа:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ xdg-mime query default image/jpeg
+gimp.desktop
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;изменение-приложения-по-умолчанию-для-mime-типа&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1.4&lt;/span&gt; Изменение приложения по умолчанию для MIME-типа&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Изменение приложения по умолчанию для MIME-типа:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;xdg-mime default feh.desktop image/jpeg
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;отладка-приложения-по-умолчанию-для-mime-типа&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1.5&lt;/span&gt; Отладка приложения по умолчанию для MIME-типа&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Отладка приложения по умолчанию для MIME-типа:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;env XDG_UTILS_DEBUG_LEVEL=10  xdg-mime query default text/html
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;В результате получаем список конфигурационных файлов, которые просматриваются для определения приложения по умолчанию.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;обработчики-url-схем&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1.6&lt;/span&gt; Обработчики URL схем&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Для установки приложений по умолчанию для URL схем необходимо определить приложение по умолчанию для &lt;code&gt;x-scheme-handler/*&lt;/code&gt; MIME-типов:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;xdg-mime default firefox.desktop x-scheme-handler/https x-scheme-handler/http
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;xdg-settings&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; &lt;code&gt;xdg-settings&lt;/code&gt;&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Установить приложение для открытия всех веб-типов MIME с помощью одного приложения:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;xdg-settings set default-web-browser firefox.desktop
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Установить приложение по умолчанию для схемы URL:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;xdg-settings set default-url-scheme-handler irc xchat.desktop
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Heroes of Might and Magic</title>
+      <link>https://yamadharma.github.io/ru/post/2022/06/07/homm/</link>
+      <pubDate>Tue, 07 Jun 2022 16:03:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2022/06/07/homm/</guid>
+      <description>&lt;p&gt;Герои меча и магии.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#игры-серии&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Игры серии&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#heroes-of-might-and-magic--1995&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Heroes of Might and Magic (1995)&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#heroes-of-might-and-magic-ii&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Heroes of Might and Magic II&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#heroes-of-might-and-magic-iii&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.3&lt;/span&gt; Heroes of Might and Magic III&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#heroes-of-might-and-magic-iv&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.4&lt;/span&gt; Heroes of Might and Magic IV&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#heroes-of-might-and-magic-v&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.5&lt;/span&gt; Heroes of Might and Magic V&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#might-and-magic-heroes-vi&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.6&lt;/span&gt; Might &amp;amp; Magic Heroes VI&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#might-and-magic-heroes-vii&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.7&lt;/span&gt; Might &amp;amp; Magic Heroes VII&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#альтернативные-реализации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Альтернативные реализации&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#herowo-dot-js&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; HeroWO.js&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;игры-серии&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Игры серии&lt;/h2&gt;
+&lt;h3 id=&#34;heroes-of-might-and-magic--1995&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Heroes of Might and Magic (1995)&lt;/h3&gt;
+&lt;h3 id=&#34;heroes-of-might-and-magic-ii&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Heroes of Might and Magic II&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;The Succession Wars (1996)&lt;/li&gt;
+&lt;li&gt;The Price of Loyalty (1997)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;heroes-of-might-and-magic-iii&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.3&lt;/span&gt; Heroes of Might and Magic III&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;The Restoration of Erathia (1999)&lt;/li&gt;
+&lt;li&gt;Armageddon&amp;rsquo;s Blade (1999)&lt;/li&gt;
+&lt;li&gt;The Shadow of Death (2000)&lt;/li&gt;
+&lt;li&gt;Heroes Chronicles (2000—2001)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;heroes-of-might-and-magic-iv&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.4&lt;/span&gt; Heroes of Might and Magic IV&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Heroes of Might and Magic IV (2002)&lt;/li&gt;
+&lt;li&gt;The Gathering Storm (2002)&lt;/li&gt;
+&lt;li&gt;Winds of War (2003)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;heroes-of-might-and-magic-v&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.5&lt;/span&gt; Heroes of Might and Magic V&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Heroes of Might and Magic V (2006)&lt;/li&gt;
+&lt;li&gt;Hammers of Fate (2006)&lt;/li&gt;
+&lt;li&gt;Tribes of the East (2007)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;might-and-magic-heroes-vi&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.6&lt;/span&gt; Might &amp;amp; Magic Heroes VI&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Might &amp;amp; Magic Heroes VI (2011)&lt;/li&gt;
+&lt;li&gt;Pirates of the Savage Sea Adventure (2012)&lt;/li&gt;
+&lt;li&gt;Danse Macabre (2012)&lt;/li&gt;
+&lt;li&gt;Shades of Darkness (2013)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;might-and-magic-heroes-vii&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.7&lt;/span&gt; Might &amp;amp; Magic Heroes VII&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Might &amp;amp; Magic Heroes VII (2015)
+&lt;ul&gt;
+&lt;li&gt;Trial by Fire (2016)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;альтернативные-реализации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Альтернативные реализации&lt;/h2&gt;
+&lt;h3 id=&#34;herowo-dot-js&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; HeroWO.js&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Сайт: &lt;a href=&#34;https://herowo.game/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://herowo.game/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Форум: &lt;a href=&#34;https://forum.herowo.net/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://forum.herowo.net/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Описание движка: &lt;a href=&#34;https://forum.herowo.net/t/topic/47&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://forum.herowo.net/t/topic/47&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Репозиторий: &lt;a href=&#34;https://github.com/HeroWO-js/Core&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/HeroWO-js/Core&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Вариант для броузеров.&lt;/li&gt;
+&lt;li&gt;Клон HoMM 3.&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Установка TeXlive</title>
+      <link>https://yamadharma.github.io/ru/post/2021/04/23/install-texlive/</link>
+      <pubDate>Fri, 23 Apr 2021 18:09:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2021/04/23/install-texlive/</guid>
+      <description>&lt;p&gt;Установка дистрибутива &lt;em&gt;TeXlive&lt;/em&gt;.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#сетевая-установка-на-один-компьютер&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Сетевая установка на один компьютер&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#установка-с-помощью-дистрибутивных-скриптов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Установка с помощью дистрибутивных скриптов&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#установка-с-помощью-менеджера-пакетов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Установка с помощью менеджера пакетов&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#поддержка-сетевой-установки-на-нескольких-компьютерах&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Поддержка сетевой установки на нескольких компьютерах&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#файл-сервер&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Файл-сервер&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#клиенты&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.2&lt;/span&gt; Клиенты&lt;/a&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&#34;#установка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.2.1&lt;/span&gt; Установка&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#обновление&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.3&lt;/span&gt; Обновление&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#обновление-до-следующей-версии-texlive&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Обновление до следующей версии TeXlive&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;TeX Live &amp;mdash; наиболее полный дистрибутив LaTeX, поддерживаемый TeX-сообществом.&lt;/li&gt;
+&lt;li&gt;Поддерживает большое количество операционных систем.&lt;/li&gt;
+&lt;li&gt;Разрабатывается начиная с 1996 года.&lt;/li&gt;
+&lt;li&gt;Был основан на дистрибутиве teTeX.&lt;/li&gt;
+&lt;li&gt;MacTeX &amp;mdash; вариант для MacOS.&lt;/li&gt;
+&lt;li&gt;Основная страница: &lt;a href=&#34;https://www.tug.org/texlive/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.tug.org/texlive/&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;TeX Live &amp;mdash; это дистрибутив с непрерывным обновлением в рамках ежегодной версии дистрибутива.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;сетевая-установка-на-один-компьютер&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Сетевая установка на один компьютер&lt;/h2&gt;
+&lt;h3 id=&#34;установка-с-помощью-дистрибутивных-скриптов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Установка с помощью дистрибутивных скриптов&lt;/h3&gt;
+&lt;p&gt;Ссылки на сайте даны зеркала. Зеркало выбирается автоматически.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Скачивается инсталлятор:
+&lt;ul&gt;
+&lt;li&gt;Unix: &lt;a href=&#34;https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Windows: &lt;a href=&#34;https://mirror.ctan.org/systems/texlive/tlnet/install-tl-windows.exe&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://mirror.ctan.org/systems/texlive/tlnet/install-tl-windows.exe&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Для Windows: запускаете исполняемый файл и устанавливаете.&lt;/li&gt;
+&lt;li&gt;Для Linux
+&lt;ul&gt;
+&lt;li&gt;Распаковываете скачанный файл:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;tar xzvf install-tl-unx.tar.gz.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Заходите в распакованный каталог и запускаете установщик:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;./install-tl
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Рекомендуется создать ссылки на исполняемые файлы в каталоге &lt;code&gt;/usr/local/bin&lt;/code&gt;. Для этого в консольном варианте утилиты выберите опцию &lt;code&gt;O&lt;/code&gt;, а затем &lt;code&gt;L&lt;/code&gt;. Для возврата в предыдущее меню используйте &lt;code&gt;R&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;установка-с-помощью-менеджера-пакетов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Установка с помощью менеджера пакетов&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Windows. Используйте пакетный менеджер Chocolatey.
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;choco install texlive
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;поддержка-сетевой-установки-на-нескольких-компьютерах&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Поддержка сетевой установки на нескольких компьютерах&lt;/h2&gt;
+&lt;h3 id=&#34;файл-сервер&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Файл-сервер&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;На файл-сервере хранится копия архива TeX Live.&lt;/li&gt;
+&lt;li&gt;Храним её в каталоге &lt;code&gt;/com/lib/portage/extras/texlive&lt;/code&gt; (естественно, можно выбрать любой).&lt;/li&gt;
+&lt;li&gt;Данный каталог расшариваем по NFS (например).&lt;/li&gt;
+&lt;li&gt;Сделаем скрипт для ежедневного скачивания:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#!/bin/bash
+# /etc/cron.daily/texlive-rsync-tree
+
+RSYNC_MIRROR=rsync://mirrors.mi.ras.ru/CTAN/
+
+mkdir -p /com/lib/portage/extras/texlive
+rsync -rltpD -v -HS --delete ${RSYNC_MIRROR}/systems/texlive/tlnet/ /com/lib/portage/extras/texlive
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;клиенты&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.2&lt;/span&gt; Клиенты&lt;/h3&gt;
+&lt;h4 id=&#34;установка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.2.1&lt;/span&gt; Установка&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;На клиентах вначале устанавливаем вручную. Для этого на клиенте запускаем:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;/com/lib/portage/extras/texlive/install-tl --repository=/com/lib/portage/extras/texlive
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;обновление&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.3&lt;/span&gt; Обновление&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Для обновления используем на клиенте скрипт:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#!/bin/bash
+# /etc/cron.weekly/texlive-update
+
+if [[ -d /com/lib/portage/extras/texlive ]]
+then
+    tlmgr update --repository=/com/lib/portage/extras/texlive --self
+    tlmgr update --repository=/com/lib/portage/extras/texlive --all
+else
+    tlmgr update --self
+    tlmgr update --all
+fi
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;обновление-до-следующей-версии-texlive&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Обновление до следующей версии TeXlive&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Рекомендуется установить новую версию TeXlive отдельно.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Но можно сделать ручное обновление, используя уже существующую установку.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Будем считать, что у нас архитектура &lt;code&gt;x86_64-linux&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Если вы установили символические ссылки в системные каталоги (через опцию установщика или &lt;code&gt;tlmgr path add&lt;/code&gt;), удалите их:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;tlmgr path remove
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Перенесите весь каталог TeXlive так, чтобы он соответствовал новой версии, например:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;mv /usr/local/texlive/2022/ /usr/local/texlive/2023
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Удалите бекапы пакетов:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;rm /usr/local/texlive/2023/tlpkg/backups/*
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Создайте ссылки на исполняемые файлы:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;/usr/local/texlive/2023/bin/x86_64-linux/tlmgr path add
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Загрузите последнюю версию скрипта &lt;code&gt;update-tlmgr-latest.sh&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;cd /tmp
+wget https://mirror.ctan.org/systems/texlive/tlnet/update-tlmgr-latest.sh
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Запустите скрипт:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sh ./update-tlmgr-latest.sh -- upgrade
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Если вы не хотите использовать репозиторий по умолчанию для загрузки новых файлов, то замените его:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;tlmgr option repository &amp;lt;reponame&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Обновите менеджер пакетов TeXlive:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;tlmgr update --self
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Обновите пакеты TeXlive:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;tlmgr update --all
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Можно пересоздать кэш &lt;em&gt;lualatex&lt;/em&gt; под пользователем:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;rm -rvf ~/.texlive2022
+luaotfload-tool -fu
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;Если этого не сделать, то кэш будет пересоздан при первом запуске &lt;code&gt;lualatex&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Бытие науки</title>
+      <link>https://yamadharma.github.io/ru/post/2021/02/04/being-science/</link>
+      <pubDate>Thu, 04 Feb 2021 19:24:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2021/02/04/being-science/</guid>
+      <description>&lt;p&gt;&lt;em&gt;Бытие науки&lt;/em&gt;. Разрозненные мысли.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#составляющие-науки&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Составляющие науки&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#наука-как-деятельность&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Наука как деятельность&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#наука-как-система-научных-знаний&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Наука как система научных знаний&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#наука-как-социальный-институт&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.3&lt;/span&gt; Наука как социальный институт&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#люди-в-науке&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Люди в науке&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#профессор&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Профессор&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#научный-руководитель&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Научный руководитель&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#система-публикаций&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Система публикаций&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;составляющие-науки&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Составляющие науки&lt;/h2&gt;
+&lt;h3 id=&#34;наука-как-деятельность&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Наука как деятельность&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/08/09/scientific-journal-business-models/&#34;&gt;Бизнес-модели научных журналов&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;наука-как-система-научных-знаний&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Наука как система научных знаний&lt;/h3&gt;
+&lt;h3 id=&#34;наука-как-социальный-институт&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.3&lt;/span&gt; Наука как социальный институт&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/10/08/academic-degrees-ranks/&#34;&gt;Учёные степени и звания&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/06/22/scientific-pseudo-popularization/&#34;&gt;Научная лже-популяризация&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;люди-в-науке&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Люди в науке&lt;/h2&gt;
+&lt;h3 id=&#34;профессор&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Профессор&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Профессор является базовой научной единицей.&lt;/li&gt;
+&lt;li&gt;Обычно профессор собирает вокруг себя группу, которую можно уподобить рыцарскому копью (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/11/05/lances-fournies/&#34;&gt;Рыцарское копьё&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Заведующий кафедрой при таком взгляде руководит хоругвью, то есть является рыцарем-баннеретом.&lt;/li&gt;
+&lt;li&gt;А доцент есть рыцарь-башелье.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;научный-руководитель&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Научный руководитель&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2023/05/01/choice-scientific-adviser/&#34;&gt;Выбор научного руководителя&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;система-публикаций&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Система публикаций&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2023/05/18/hac-list-quartiles/&#34;&gt;Квартили списка ВАК&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2023/05/18/hac-list/&#34;&gt;Список журналов ВАК&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2023/05/18/white-list-journals/&#34;&gt;Белый список журналов Минобрнауки&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
     </item>
     
     <item>
@@ -1543,6 +3083,7 @@ or any selection decision made. This statement must not be used for advertisemen
 &lt;h3 id=&#34;мои-публикации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Мои публикации&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/08/23/science-articles/&#34;&gt;Научные статьи&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2023/05/16/registration-computer-programs/&#34;&gt;Регистрация программ для ЭВМ&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;опыт-участия-в-работе-советов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Опыт участия в работе советов&lt;/h2&gt;
 &lt;ul&gt;
@@ -1591,6 +3132,7 @@ or any selection decision made. This statement must not be used for advertisemen
 &lt;h3 id=&#34;научные-журналы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;9.2&lt;/span&gt; Научные журналы&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/07/15/journal-mathematics/&#34;&gt;Журнал Mathematics&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/02/26/editing-discrete-continuous-models/&#34;&gt;Редактирование. Discrete and Continuous Models&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;конференции&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;10&lt;/span&gt; Конференции&lt;/h2&gt;
 &lt;ul&gt;

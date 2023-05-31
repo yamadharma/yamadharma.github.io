@@ -155,6 +155,7 @@ apply_updates = yes
             &lt;li&gt;&lt;a href=&#34;#glusterfs&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.6.1&lt;/span&gt; GlusterFS&lt;/a&gt;&lt;/li&gt;
           &lt;/ul&gt;
         &lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#dns-сервера&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.7&lt;/span&gt; DNS сервера&lt;/a&gt;&lt;/li&gt;
       &lt;/ul&gt;
     &lt;/li&gt;
   &lt;/ul&gt;
@@ -361,7 +362,7 @@ dnf -y install epel-release
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;Следует сконфигурить и запустить:&lt;/p&gt;
+&lt;p&gt;Следует сконфигурировать и запустить:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;systemctl enable --now fail2ban.service
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
@@ -440,23 +441,33 @@ dnf -y install epel-release
 &lt;/ul&gt;
 &lt;h4 id=&#34;сервер-сетевого-времени&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3.2&lt;/span&gt; Сервер сетевого времени&lt;/h4&gt;
 &lt;ul&gt;
-&lt;li&gt;Запустите сервер сетевого времени:
+&lt;li&gt;
+&lt;p&gt;В файле &lt;code&gt;/etc/chrony.conf&lt;/code&gt; Разрешите подключение клиентов из локальной сети:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;allow 192.168.0.0/16
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Запустите сервер сетевого времени:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;systemctl enable --now chronyd
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;Проверьте пулы NTP:
+&lt;li&gt;
+&lt;p&gt;Проверьте пулы NTP:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;chronyc sources
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;Проверьте состояние синхронизации NTP:
+&lt;li&gt;
+&lt;p&gt;Проверьте состояние синхронизации NTP:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;chronyc tracking
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;Чтобы принимать входящие запросы клиентов, разрешите службу NTP через брандмауэр:
+&lt;li&gt;
+&lt;p&gt;Чтобы принимать входящие запросы клиентов, разрешите службу NTP через брандмауэр:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;firewall-cmd --permanent --add-service=ntp
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;Перезапустите брандмауэр:
+&lt;li&gt;
+&lt;p&gt;Перезапустите брандмауэр:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;firewall-cmd --reload
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
@@ -516,6 +527,10 @@ dnf install mariadb-server
 dnf install glusterfs-fuse
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;dns-сервера&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.7&lt;/span&gt; DNS сервера&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2023/05/23/dns-powerdns-recursor/&#34;&gt;DNS. PowerDNS Recursor&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;</description>
     </item>
     

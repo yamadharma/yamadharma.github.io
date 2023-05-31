@@ -5,12 +5,90 @@
     <link>https://yamadharma.github.io/ru/tag/sysadmin/</link>
       <atom:link href="https://yamadharma.github.io/ru/tag/sysadmin/index.xml" rel="self" type="application/rss+xml" />
     <description>sysadmin</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2023 Dmitry S. Kulyabov</copyright><lastBuildDate>Thu, 20 Apr 2023 18:18:00 +0300</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2023 Dmitry S. Kulyabov</copyright><lastBuildDate>Tue, 23 May 2023 10:08:00 +0300</lastBuildDate>
     <image>
       <url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url>
       <title>sysadmin</title>
       <link>https://yamadharma.github.io/ru/tag/sysadmin/</link>
     </image>
+    
+    <item>
+      <title>DNS. PowerDNS Recursor</title>
+      <link>https://yamadharma.github.io/ru/post/2023/05/23/dns-powerdns-recursor/</link>
+      <pubDate>Tue, 23 May 2023 10:08:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2023/05/23/dns-powerdns-recursor/</guid>
+      <description>&lt;p&gt;PowerDNS Recursor.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#установка-powerdns-recursor&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Установка PowerDNS Recursor&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#rocky-linux&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Rocky Linux&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#настройка-powerdns-recursor&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Настройка PowerDNS Recursor&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Документация: &lt;a href=&#34;https://doc.powerdns.com/recursor/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://doc.powerdns.com/recursor/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Сайт: &lt;a href=&#34;https://www.powerdns.com/powerdns-recursor&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.powerdns.com/powerdns-recursor&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Только кэширующий сервер DNS.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;установка-powerdns-recursor&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Установка PowerDNS Recursor&lt;/h2&gt;
+&lt;h3 id=&#34;rocky-linux&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Rocky Linux&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Установите репозиторий &lt;em&gt;Epel&lt;/em&gt;:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf config-manager --set-enabled crb
+dnf -y install epel-release
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Установите PowerDNS Recursor:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install powerdns-recursor
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;настройка-powerdns-recursor&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Настройка PowerDNS Recursor&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Файл конфигурации: &lt;code&gt;recursor.conf&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Находится в папке,определённой во время компиляции:
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;/etc/powerdns&lt;/code&gt;,&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;/etc/pdns&lt;/code&gt;,&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;/etc/pdns-recursor&lt;/code&gt;,&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;/usr/local/etc&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Можно найти эту папку, выполнив команду:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;pdns_recursor --config=default | grep config-dir
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;По умолчанию Recursor прослушивает локальный петлевой интерфейс, нужно задать нужные адреса.&lt;/li&gt;
+&lt;li&gt;В параметре &lt;code&gt;allow-from&lt;/code&gt; перечислены подсети, которые могут взаимодействовать с Recursor.&lt;/li&gt;
+&lt;li&gt;Например:
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;local-address=192.0.2.25, 2001:DB8::1:25
+allow-from=192.0.2.0/24, 2001:DB8::1:/64
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Чтобы принимать входящие запросы клиентов, разрешите службу DNS на брандмауэре:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;firewall-cmd --permanent --add-service=dns
+firewall-cmd --permanent --add-service=dns-over-tls
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Перезапустите брандмауэр:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;firewall-cmd --reload
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Запустите сервис:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;systemctl enable --now pdns-recursor.service
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
     
     <item>
       <title>Переход на домен pfur.ru</title>
@@ -229,6 +307,188 @@
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;</description>
+    </item>
+    
+    <item>
+      <title>XDG. Приложения MIME</title>
+      <link>https://yamadharma.github.io/ru/post/2023/04/02/xdg-mime-applications/</link>
+      <pubDate>Sun, 02 Apr 2023 13:39:00 +0300</pubDate>
+      <guid>https://yamadharma.github.io/ru/post/2023/04/02/xdg-mime-applications/</guid>
+      <description>&lt;p&gt;Настройка вызова приложений с помощью спецификации MIME.&lt;/p&gt;
+&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#файлы-конфигурации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Файлы конфигурации&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#расположение-файлов-конфигурации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Расположение файлов конфигурации&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#формат-файлов-конфигурации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.3&lt;/span&gt; Формат файлов конфигурации&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#утилиты-работы-со-списком-приложений&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Утилиты работы со списком приложений&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#xdg-mime&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; &lt;code&gt;xdg-mime&lt;/code&gt;&lt;/a&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1.1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#определение-mime-типа-файла&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1.2&lt;/span&gt; Определение MIME-типа файла&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#определение-приложения-по-умолчанию-для-mime-типа&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1.3&lt;/span&gt; Определение приложения по умолчанию для MIME-типа&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#изменение-приложения-по-умолчанию-для-mime-типа&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1.4&lt;/span&gt; Изменение приложения по умолчанию для MIME-типа&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#отладка-приложения-по-умолчанию-для-mime-типа&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1.5&lt;/span&gt; Отладка приложения по умолчанию для MIME-типа&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#обработчики-url-схем&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1.6&lt;/span&gt; Обработчики URL схем&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#xdg-settings&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; &lt;code&gt;xdg-settings&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;файлы-конфигурации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Файлы конфигурации&lt;/h2&gt;
+&lt;h3 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Общая информация&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Приложения по умолчанию для каждого типа MIME хранятся в файлах &lt;code&gt;mimeapps.list&lt;/code&gt;, которые могут храниться в нескольких местах.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;расположение-файлов-конфигурации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Расположение файлов конфигурации&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Файлы конфигурации проверяются в следующем порядке.&lt;/li&gt;
+&lt;li&gt;Более ранние ассоциации имеют приоритет над более поздними.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Путь&lt;/th&gt;
+&lt;th&gt;Применение&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;~/.config/mimeapps.list&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Пользовательские переопределения&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;/etc/xdg/mimeapps.list&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Общесистемные переопределения&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;~/.local/share/applications/mimeapps.list&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Пользовательские переопределения (устаревшее)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;/usr/local/share/applications/mimeapps.list&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Переопределения, предоставляемые дистрибутивом по умолчанию&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;/usr/share/applications/mimeapps.list&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Переопределения, предоставляемые дистрибутивом по умолчанию&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;ul&gt;
+&lt;li&gt;Можно определить приложения по умолчанию, специфичные для конкретной среды рабочего стола, с помощью файла вида &lt;code&gt;desktop-mimeapps.list&lt;/code&gt;, где &lt;code&gt;desktop&lt;/code&gt; это имя среды рабочего стола (из переменной окружения &lt;code&gt;XDG_CURRENT_DESKTOP&lt;/code&gt;).
+&lt;ul&gt;
+&lt;li&gt;Например, &lt;code&gt;/etc/xdg/xfce-mimeapps.list&lt;/code&gt; задают общесистемные переопределения приложений по умолчанию для Xfce.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Некоторые приложения всё ещё используют файл &lt;code&gt;~/.local/share/applications/mimeapps.list&lt;/code&gt;.
+&lt;ul&gt;
+&lt;li&gt;Для сохранения совместимости можно создать символическую ссылку на &lt;code&gt;~/.config/mimeapps.list&lt;/code&gt;:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;ln -s ~/.config/mimeapps.list ~/.local/share/applications/mimeapps.list
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;формат-файлов-конфигурации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.3&lt;/span&gt; Формат файлов конфигурации&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Файл &lt;code&gt;mimeapps.list&lt;/code&gt; имеет следующий формат:
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;[Added Associations]
+image/jpeg=bar.desktop;baz.desktop
+video/H264=bar.desktop
+[Removed Associations]
+video/H264=baz.desktop
+[Default Applications]
+image/jpeg=foo.desktop
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Разделы файла:
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;Added Associations&lt;/em&gt; (Добавленные ассоциации): приложения поддерживают открытие этого типа MIME.
+&lt;ul&gt;
+&lt;li&gt;Например, &lt;code&gt;bar.desktop&lt;/code&gt; и &lt;code&gt;baz.desktop&lt;/code&gt; могут открывать изображения JPEG.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Removed Associations&lt;/em&gt; (Удаленные ассоциации): приложения не поддерживают этот тип MIME.
+&lt;ul&gt;
+&lt;li&gt;Например, &lt;code&gt;baz.desktop&lt;/code&gt; не может открыть видео H.264.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Default Applications&lt;/em&gt; (Приложения по умолчанию): приложения должны выбираться по умолчанию для открытия этого типа MIME.
+&lt;ul&gt;
+&lt;li&gt;Например, изображения JPEG должны быть открыты с помощью &lt;code&gt;foo.desktop&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Если есть несколько приложений, они проверяются по порядку.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Каждый раздел является необязательным и может быть опущен, если он не нужен.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;утилиты-работы-со-списком-приложений&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Утилиты работы со списком приложений&lt;/h2&gt;
+&lt;h3 id=&#34;xdg-mime&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; &lt;code&gt;xdg-mime&lt;/code&gt;&lt;/h3&gt;
+&lt;h4 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1.1&lt;/span&gt; Общая информация&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;xdg-mime&lt;/code&gt; (1) &amp;mdash; скрипт для прямого запроса и изменения стандартных приложений MIME.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;определение-mime-типа-файла&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1.2&lt;/span&gt; Определение MIME-типа файла&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Определение MIME-типа файла:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ xdg-mime query filetype photo.jpeg
+image/jpeg
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;определение-приложения-по-умолчанию-для-mime-типа&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1.3&lt;/span&gt; Определение приложения по умолчанию для MIME-типа&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Определение приложения по умолчанию для MIME-типа:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ xdg-mime query default image/jpeg
+gimp.desktop
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;изменение-приложения-по-умолчанию-для-mime-типа&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1.4&lt;/span&gt; Изменение приложения по умолчанию для MIME-типа&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Изменение приложения по умолчанию для MIME-типа:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;xdg-mime default feh.desktop image/jpeg
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;отладка-приложения-по-умолчанию-для-mime-типа&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1.5&lt;/span&gt; Отладка приложения по умолчанию для MIME-типа&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Отладка приложения по умолчанию для MIME-типа:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;env XDG_UTILS_DEBUG_LEVEL=10  xdg-mime query default text/html
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;В результате получаем список конфигурационных файлов, которые просматриваются для определения приложения по умолчанию.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;обработчики-url-схем&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1.6&lt;/span&gt; Обработчики URL схем&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Для установки приложений по умолчанию для URL схем необходимо определить приложение по умолчанию для &lt;code&gt;x-scheme-handler/*&lt;/code&gt; MIME-типов:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;xdg-mime default firefox.desktop x-scheme-handler/https x-scheme-handler/http
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;xdg-settings&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; &lt;code&gt;xdg-settings&lt;/code&gt;&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Установить приложение для открытия всех веб-типов MIME с помощью одного приложения:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;xdg-settings set default-web-browser firefox.desktop
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Установить приложение по умолчанию для схемы URL:
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;xdg-settings set default-url-scheme-handler irc xchat.desktop
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
     </item>
     
     <item>
@@ -3095,6 +3355,7 @@ GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER, CREATE TEMPORA
             &lt;li&gt;&lt;a href=&#34;#glusterfs&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.6.1&lt;/span&gt; GlusterFS&lt;/a&gt;&lt;/li&gt;
           &lt;/ul&gt;
         &lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#dns-сервера&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.7&lt;/span&gt; DNS сервера&lt;/a&gt;&lt;/li&gt;
       &lt;/ul&gt;
     &lt;/li&gt;
   &lt;/ul&gt;
@@ -3301,7 +3562,7 @@ dnf -y install epel-release
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;Следует сконфигурить и запустить:&lt;/p&gt;
+&lt;p&gt;Следует сконфигурировать и запустить:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;systemctl enable --now fail2ban.service
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
@@ -3380,23 +3641,33 @@ dnf -y install epel-release
 &lt;/ul&gt;
 &lt;h4 id=&#34;сервер-сетевого-времени&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3.2&lt;/span&gt; Сервер сетевого времени&lt;/h4&gt;
 &lt;ul&gt;
-&lt;li&gt;Запустите сервер сетевого времени:
+&lt;li&gt;
+&lt;p&gt;В файле &lt;code&gt;/etc/chrony.conf&lt;/code&gt; Разрешите подключение клиентов из локальной сети:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;allow 192.168.0.0/16
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Запустите сервер сетевого времени:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;systemctl enable --now chronyd
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;Проверьте пулы NTP:
+&lt;li&gt;
+&lt;p&gt;Проверьте пулы NTP:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;chronyc sources
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;Проверьте состояние синхронизации NTP:
+&lt;li&gt;
+&lt;p&gt;Проверьте состояние синхронизации NTP:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;chronyc tracking
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;Чтобы принимать входящие запросы клиентов, разрешите службу NTP через брандмауэр:
+&lt;li&gt;
+&lt;p&gt;Чтобы принимать входящие запросы клиентов, разрешите службу NTP через брандмауэр:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;firewall-cmd --permanent --add-service=ntp
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;Перезапустите брандмауэр:
+&lt;li&gt;
+&lt;p&gt;Перезапустите брандмауэр:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;firewall-cmd --reload
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
@@ -3456,6 +3727,10 @@ dnf install mariadb-server
 dnf install glusterfs-fuse
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;dns-сервера&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.7&lt;/span&gt; DNS сервера&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2023/05/23/dns-powerdns-recursor/&#34;&gt;DNS. PowerDNS Recursor&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;</description>
     </item>
     
@@ -4115,13 +4390,13 @@ vyos@vyos$
 		
 
 		&lt;a class=&#34;nav-item nav-link  active &#34;
-		   id=&#34;nav-cebdfa&#34; data-toggle=&#34;tab&#34; href=&#34;#cebdfa&#34;
+		   id=&#34;nav-edbcfa&#34; data-toggle=&#34;tab&#34; href=&#34;#edbcfa&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;RuTube&lt;/a&gt;
 
 		
 
 		&lt;a class=&#34;nav-item nav-link &#34;
-		   id=&#34;nav-dafcbe&#34; data-toggle=&#34;tab&#34; href=&#34;#dafcbe&#34;
+		   id=&#34;nav-fdecba&#34; data-toggle=&#34;tab&#34; href=&#34;#fdecba&#34;
 		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;Youtube&lt;/a&gt;
 
 		
@@ -4137,7 +4412,7 @@ vyos@vyos$
 
 
 
-&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;cebdfa&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;edbcfa&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	
 
@@ -4160,7 +4435,7 @@ vyos@vyos$
 
 
 
-&lt;div class=&#34;tab-pane fade show &#34; id=&#34;dafcbe&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
+&lt;div class=&#34;tab-pane fade show &#34; id=&#34;fdecba&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
 
 	
 
@@ -13089,8 +13364,15 @@ systemctl --user enable --now pipewire.socket pipewire-pulse.socket wireplumber.
     &lt;li&gt;&lt;a href=&#34;#безопасность&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;10&lt;/span&gt; Безопасность&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#сети&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;11&lt;/span&gt; Сети&lt;/a&gt;
       &lt;ul&gt;
-        &lt;li&gt;&lt;a href=&#34;#мониторинг&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;11.1&lt;/span&gt; Мониторинг&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#железо&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;11.2&lt;/span&gt; Железо&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#протоколы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;11.1&lt;/span&gt; Протоколы&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#vpn&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;11.2&lt;/span&gt; VPN&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#мониторинг&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;11.3&lt;/span&gt; Мониторинг&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#железо&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;11.4&lt;/span&gt; Железо&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#сервисы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;11.5&lt;/span&gt; Сервисы&lt;/a&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&#34;#dns&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;11.5.1&lt;/span&gt; DNS&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
       &lt;/ul&gt;
     &lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#организация-обучения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;12&lt;/span&gt; Организация обучения&lt;/a&gt;&lt;/li&gt;
@@ -13249,16 +13531,29 @@ systemctl --user enable --now pipewire.socket pipewire-pulse.socket wireplumber.
 &lt;h2 id=&#34;сети&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;11&lt;/span&gt; Сети&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/06/16/cisco-administration/&#34;&gt;Администрирование Cisco&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;протоколы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;11.1&lt;/span&gt; Протоколы&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2023/05/26/ipv6-tunneling-technologies/&#34;&gt;Технологии туннелирования IPv6&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;vpn&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;11.2&lt;/span&gt; VPN&lt;/h3&gt;
+&lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2023/02/05/l2tp-ipsec-vpn-client-setup/&#34;&gt;VPN. L2TP+IPsec. Подключение клиента&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;мониторинг&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;11.1&lt;/span&gt; Мониторинг&lt;/h3&gt;
+&lt;h3 id=&#34;мониторинг&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;11.3&lt;/span&gt; Мониторинг&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2023/03/02/observium-monitoring-system/&#34;&gt;Система мониторинга Observium&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2023/03/20/librenms-monitoring-system/&#34;&gt;Система мониторинга LibreNMS&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;железо&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;11.2&lt;/span&gt; Железо&lt;/h3&gt;
+&lt;h3 id=&#34;железо&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;11.4&lt;/span&gt; Железо&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2023/03/19/small-form-factor-pluggable/&#34;&gt;Формат Small Form-factor Pluggable (SFP)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;сервисы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;11.5&lt;/span&gt; Сервисы&lt;/h3&gt;
+&lt;h4 id=&#34;dns&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;11.5.1&lt;/span&gt; DNS&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2023/05/23/dns-powerdns-recursor/&#34;&gt;DNS. PowerDNS Recursor&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2023/05/26/public-dns-resolvers/&#34;&gt;Общедоступные резольверы DNS&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;организация-обучения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;12&lt;/span&gt; Организация обучения&lt;/h2&gt;
 &lt;ul&gt;

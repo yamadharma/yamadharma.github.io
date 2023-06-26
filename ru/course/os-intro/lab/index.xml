@@ -1,1882 +1,1612 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Лабораторные работы | Д. С. Кулябов</title>
-    <link>https://yamadharma.github.io/ru/course/os-intro/lab/</link>
-      <atom:link href="https://yamadharma.github.io/ru/course/os-intro/lab/index.xml" rel="self" type="application/rss+xml" />
-    <description>Лабораторные работы</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2023 Dmitry S. Kulyabov</copyright><lastBuildDate>Tue, 27 Dec 2022 13:30:00 +0300</lastBuildDate>
-    <image>
-      <url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url>
-      <title>Лабораторные работы</title>
-      <link>https://yamadharma.github.io/ru/course/os-intro/lab/</link>
-    </image>
-    
-    <item>
-      <title>Лабораторная работа Установка ОС Linux</title>
-      <link>https://yamadharma.github.io/ru/course/os-intro/lab/lab-linux-install/</link>
-      <pubDate>Mon, 04 Apr 2022 13:40:00 +0300</pubDate>
-      <guid>https://yamadharma.github.io/ru/course/os-intro/lab/lab-linux-install/</guid>
-      <description>&lt;p&gt;Лабораторная работа &lt;em&gt;Установка ОС Linux&lt;/em&gt;.&lt;/p&gt;
-&lt;h2 id=&#34;цель-работы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Цель работы&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Целью данной работы является приобретение практических навыков установки операционной системы на виртуальную машину, настройки минимально необходимых для дальнейшей работы сервисов.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;указания-к-работе&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Указания к работе&lt;/h2&gt;
-&lt;h3 id=&#34;техническое-обеспечение&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Техническое обеспечение&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Лабораторная работа подразумевает установку на виртуальную машину VirtualBox (&lt;a href=&#34;https://www.virtualbox.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.virtualbox.org/&lt;/a&gt;) операционной системы Linux (дистрибутив Fedora).&lt;/li&gt;
-&lt;li&gt;Выполнение работы возможно как в дисплейном классе факультета физико-математических и естественных наук РУДН, так и дома. Описание выполнения работы приведено для дисплейного класса со следующими характеристиками техники:
-&lt;ul&gt;
-&lt;li&gt;Intel Core i3-550 3.2 GHz, 4 GB оперативной памяти, 80 GB свободного места на жёстком диске;&lt;/li&gt;
-&lt;li&gt;ОС Linux Gentoo (&lt;a href=&#34;http://www.gentoo.ru/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;http://www.gentoo.ru/&lt;/a&gt;);&lt;/li&gt;
-&lt;li&gt;VirtualBox версии 7.0 или новее.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Для установки в виртуальную машину используется дистрибутив Linux Fedora (&lt;a href=&#34;https://getfedora.org&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://getfedora.org&lt;/a&gt;), вариант с менеджером окон &lt;em&gt;i3&lt;/em&gt; (&lt;a href=&#34;https://spins.fedoraproject.org/i3/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://spins.fedoraproject.org/i3/&lt;/a&gt;).&lt;/li&gt;
-&lt;li&gt;При выполнении лабораторной работы на своей технике вам необходимо скачать необходимый образ операционной системы (&lt;a href=&#34;https://spins.fedoraproject.org/i3/download/index.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://spins.fedoraproject.org/i3/download/index.html&lt;/a&gt;).&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;соглашения-об-именовании&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Соглашения об именовании&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;При выполнении работ следует придерживаться следующих правил именования:
-&lt;ul&gt;
-&lt;li&gt;Пользователь внутри виртуальной машины должен иметь имя, совпадающее с учётной записью студента, выполняющего лабораторную работу.&lt;/li&gt;
-&lt;li&gt;Имя хоста вашей виртуальной машины должно совпадать с учётной записью студента, выполняющего лабораторную работу.&lt;/li&gt;
-&lt;li&gt;Имя виртуальной машины должно совпадать с учётной записью студента, выполняющего лабораторную работу.&lt;/li&gt;
-&lt;li&gt;В дисплейных классах вы можете посмотреть имя вашей учётной записи, набрав в терминале команду:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;id -un
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;При установке на своей технике необходимо использовать имя вашей учётной записи дисплейных классов. Например, если студента зовут Остап Сулейманович Бендер, то его учётная запись имеет вид &lt;code&gt;osbender&lt;/code&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;последовательность-выполнения-работы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Последовательность выполнения работы&lt;/h2&gt;
-&lt;h3 id=&#34;выполнение-в-дисплейном-классе&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Выполнение в дисплейном классе&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Загрузите в дисплейном классе операционную систему Linux. Осуществите вход в систему.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&#34;настройка-каталога-для-виртуальных-машин&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1.1&lt;/span&gt; Настройка каталога для виртуальных машин&lt;/h4&gt;
-&lt;!--list-separator--&gt;
-&lt;ol&gt;
-&lt;li&gt;
-&lt;p&gt;Создание необходимых каталогов&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Запустите терминал. Перейдите в каталог &lt;code&gt;/var/tmp&lt;/code&gt;:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;cd /var/tmp
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Создайте каталог с именем пользователя (совпадающий с логином студента в дисплейном классе). Для этого можно использовать команду:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;mkdir /var/tmp/`id -un`
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Проверьте в свойствах VirtualBox &lt;strong&gt;месторасположение каталога для виртуальных машин&lt;/strong&gt;:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;/var/tmp/имя_пользователя
-&lt;/code&gt;&lt;/pre&gt;
-&lt;ul&gt;
-&lt;li&gt;Здесь &lt;code&gt;имя_пользователя&lt;/code&gt; &amp;mdash; логин (учётная запись) студента в дисплейном классе. Если указан другой каталог, то требуется изменить его.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;!--list-separator--&gt;
-&lt;ol start=&#34;2&#34;&gt;
-&lt;li&gt;
-&lt;p&gt;Папка виртуальных машин&lt;/p&gt;
-&lt;!--list-separator--&gt;
-&lt;ol&gt;
-&lt;li&gt;
-&lt;p&gt;Значения по умолчанию&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Linux: &lt;code&gt;$HOME/VirtualBox VMs&lt;/code&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;!--list-separator--&gt;
-&lt;ol start=&#34;2&#34;&gt;
-&lt;li&gt;
-&lt;p&gt;Графический интерфейс&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;В меню выберите &lt;em&gt;Файл&lt;/em&gt;, &lt;em&gt;Настройки&lt;/em&gt;.&lt;/li&gt;
-&lt;li&gt;Выберите &lt;em&gt;Общие&lt;/em&gt;, поле &lt;em&gt;Папка для машин по умолчанию&lt;/em&gt;.&lt;/li&gt;
-&lt;li&gt;Установите новое значение, например &lt;code&gt;/var/tmp/имя_пользователя&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Нажмите ОК, чтобы сохранить изменения.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;!--list-separator--&gt;
-&lt;ol start=&#34;3&#34;&gt;
-&lt;li&gt;
-&lt;p&gt;Командная строка&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Установим папку для виртуальных машине в &lt;code&gt;/var/tmp/имя_пользователя&lt;/code&gt;:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;VBoxManage setproperty machinefolder /var/tmp/имя_пользователя
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h4 id=&#34;настройка-хост-клавиши&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1.2&lt;/span&gt; Настройка хост-клавиши&lt;/h4&gt;
-&lt;ul&gt;
-&lt;li&gt;Хост-клавишей по умолчанию является правый &lt;code&gt;Ctrl&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;По умолчанию в дисплейных классах на клавише правый &lt;code&gt;Ctrl&lt;/code&gt; находится переключатель языка ввода.&lt;/li&gt;
-&lt;li&gt;Эти значения могут конфликтовать.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;!--list-separator--&gt;
-&lt;ol&gt;
-&lt;li&gt;
-&lt;p&gt;Графический интерфейс&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;В меню выберите &lt;em&gt;Файл&lt;/em&gt;, &lt;em&gt;Настройки&lt;/em&gt;.&lt;/li&gt;
-&lt;li&gt;Выберите &lt;em&gt;Ввод&lt;/em&gt;, вкладка &lt;em&gt;Виртуальная машина&lt;/em&gt;.&lt;/li&gt;
-&lt;li&gt;Выберите &lt;em&gt;Сочетание клавиш&lt;/em&gt; в строке &lt;em&gt;Хост-комбинация&lt;/em&gt;.&lt;/li&gt;
-&lt;li&gt;Нажмите новое сочетание клавиш.&lt;/li&gt;
-&lt;li&gt;Нажмите ОК, чтобы сохранить изменения.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;!--list-separator--&gt;
-&lt;ol start=&#34;2&#34;&gt;
-&lt;li&gt;
-&lt;p&gt;Командная строка&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Проверьте текущую комбинацию для хост-клавиши:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;VBoxManage getextradata global GUI/Input/HostKeyCombination
-&lt;/code&gt;&lt;/pre&gt;
-&lt;ul&gt;
-&lt;li&gt;По умолчанию установлена комбинация &lt;code&gt;65508&lt;/code&gt;, соответствующая правой клавише &lt;code&gt;Ctrl&lt;/code&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Установите нужную клавишу (в примере клавиша &lt;em&gt;Menu&lt;/em&gt;):&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;VBoxManage setextradata global GUI/Input/HostKeyCombination 65383
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Комбинации клавиш можно, например, посмотреть на странице &lt;a href=&#34;https://pythonhosted.org/pyglet/api/pyglet.window.key-module.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://pythonhosted.org/pyglet/api/pyglet.window.key-module.html&lt;/a&gt;.&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h3 id=&#34;создание-виртуальной-машины&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.2&lt;/span&gt; Создание виртуальной машины&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Запустите менеджер виртуальных машин, введя в командной строке:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;VirtualBox &amp;amp;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;Создайте новую виртуальную машину.&lt;/li&gt;
-&lt;li&gt;Укажите имя виртуальной машины (ваш логин в дисплейном классе), тип операционной системы &amp;mdash; Linux, Fedora.&lt;/li&gt;
-&lt;li&gt;Укажите размер основной памяти виртуальной машины &amp;mdash; от 2048 МБ.&lt;/li&gt;
-&lt;li&gt;Задайте конфигурацию жёсткого диска &amp;mdash; загрузочный, VDI (VirtualBox Disk Image), динамический виртуальный диск.&lt;/li&gt;
-&lt;li&gt;Задайте размер диска &amp;mdash; 80 ГБ (или больше), его расположение &amp;mdash; в данном случае &lt;code&gt;/var/tmp/имя_пользователя/fedora.vdi&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Выберите в VirtualBox Вашей виртуальной машины. Добавьте новый привод оптических дисков и выберите образ.&lt;/li&gt;
-&lt;li&gt;При установке на собственной технике используйте скачанный образ операционной системы Fedora.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&#34;видео-создание-виртуальной-машины&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.2.1&lt;/span&gt; Видео: Создание виртуальной машины&lt;/h4&gt;
-&lt;nav&gt;
-	&lt;div class=&#34;nav nav-tabs&#34; id=&#34;nav-tab&#34; role=&#34;tablist&#34;&gt;
-
-		
-		
-		
-		
-
-		
-
-		&lt;a class=&#34;nav-item nav-link  active &#34;
-		   id=&#34;nav-bfecad&#34; data-toggle=&#34;tab&#34; href=&#34;#bfecad&#34;
-		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;RuTube&lt;/a&gt;
-
-		
-
-		&lt;a class=&#34;nav-item nav-link &#34;
-		   id=&#34;nav-bfdaec&#34; data-toggle=&#34;tab&#34; href=&#34;#bfdaec&#34;
-		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;Youtube&lt;/a&gt;
-
-		
-
-	&lt;/div&gt;
-&lt;/nav&gt;
-
-&lt;div class=&#34;tab-content&#34; id=&#34;nav-tab-content&#34;&gt;
-
-	
-
-
-
-
-
-&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;bfecad&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
-
-	
-
-&lt;div class=&#34;embed video-player&#34;&gt;
-  &lt;iframe class=&#34;rutube-player&#34; type=&#34;text/html&#34;
-	  width=&#34;720&#34; height=&#34;405&#34;
-	  src=&#34;https://rutube.ru/play/embed/f4e38867368ced9e13556341023c2c03&#34;
-	  webkitAllowFullScreen mozallowfullscreen allowFullScreen
-	  allow=&#34;clipboard-write&#34; frameborder=&#34;0&#34;&gt;
-  &lt;/iframe&gt;
-&lt;/div&gt;
-
-
-
-
-&lt;/div&gt;
-
-
-
-
-
-
-&lt;div class=&#34;tab-pane fade show &#34; id=&#34;bfdaec&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
-
-	
-
-
-&lt;div style=&#34;position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;&#34;&gt;
-  &lt;iframe src=&#34;https://www.youtube.com/embed/9_Vt7R57Yw4&#34; style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;&#34; allowfullscreen title=&#34;YouTube Video&#34;&gt;&lt;/iframe&gt;
-&lt;/div&gt;
-
-
-
-
-&lt;/div&gt;
-
-
-
-&lt;/div&gt;
-&lt;h3 id=&#34;установка-операционной-системы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.3&lt;/span&gt; Установка операционной системы&lt;/h3&gt;
-&lt;h4 id=&#34;запуск-приложения-для-установки-системы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.3.1&lt;/span&gt; Запуск приложения для установки системы&lt;/h4&gt;
-&lt;ul&gt;
-&lt;li&gt;Загрузите LiveCD.&lt;/li&gt;
-&lt;li&gt;Появится интерфейс начальной конфигурации.&lt;/li&gt;
-&lt;li&gt;Нажмите &lt;em&gt;Enter&lt;/em&gt; для создания конфигурации по умолчанию.&lt;/li&gt;
-&lt;li&gt;Нажмите &lt;em&gt;Enter&lt;/em&gt;, чтобы выбрать в качестве модификатора клавишу &lt;em&gt;Win&lt;/em&gt; (она же клавиша &lt;em&gt;Super&lt;/em&gt;).&lt;/li&gt;
-&lt;li&gt;В файле конфигурации эта клавиша будет обозначена как &lt;code&gt;$Mod&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Нажмите комбинацию &lt;em&gt;Win+Enter&lt;/em&gt; для запуска терминала.&lt;/li&gt;
-&lt;li&gt;В терминале запустите &lt;code&gt;liveinst&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Для перехода к раскладке окон с табами нажмите &lt;em&gt;Win+w&lt;/em&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&#34;установка-системы-на-диск&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.3.2&lt;/span&gt; Установка системы на диск&lt;/h4&gt;
-&lt;ul&gt;
-&lt;li&gt;Выберите язык интерфейса и перейдите к настройкам установки операционной системы.&lt;/li&gt;
-&lt;li&gt;При необходимости скорректируйте часовой пояс, раскладку клавиатуры (рекомендуется в качестве языка по умолчанию указать английский язык).&lt;/li&gt;
-&lt;li&gt;Место установки ОС оставьте без изменения.&lt;/li&gt;
-&lt;li&gt;Установите имя и пароль для пользователя &lt;code&gt;root&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Установите имя и пароль для Вашего пользователя.&lt;/li&gt;
-&lt;li&gt;Задайте сетевое имя Вашего компьютера.&lt;/li&gt;
-&lt;li&gt;После завершения установки операционной системы корректно перезапустите виртуальную машину.&lt;/li&gt;
-&lt;li&gt;В VirtualBox оптический диск должен отключиться автоматически, но если это не произошло, то необходимо отключить носитель информации с образом.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&#34;видео-установка-операционной-системы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.3.3&lt;/span&gt; Видео: Установка операционной системы&lt;/h4&gt;
-&lt;nav&gt;
-	&lt;div class=&#34;nav nav-tabs&#34; id=&#34;nav-tab&#34; role=&#34;tablist&#34;&gt;
-
-		
-		
-		
-		
-
-		
-
-		&lt;a class=&#34;nav-item nav-link  active &#34;
-		   id=&#34;nav-bdcfae&#34; data-toggle=&#34;tab&#34; href=&#34;#bdcfae&#34;
-		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;RuTube&lt;/a&gt;
-
-		
-
-		&lt;a class=&#34;nav-item nav-link &#34;
-		   id=&#34;nav-ceadbf&#34; data-toggle=&#34;tab&#34; href=&#34;#ceadbf&#34;
-		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;Youtube&lt;/a&gt;
-
-		
-
-	&lt;/div&gt;
-&lt;/nav&gt;
-
-&lt;div class=&#34;tab-content&#34; id=&#34;nav-tab-content&#34;&gt;
-
-	
-
-
-
-
-
-&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;bdcfae&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
-
-	
-
-&lt;div class=&#34;embed video-player&#34;&gt;
-  &lt;iframe class=&#34;rutube-player&#34; type=&#34;text/html&#34;
-	  width=&#34;720&#34; height=&#34;405&#34;
-	  src=&#34;https://rutube.ru/play/embed/603fc8f3cf968d3c4151073aa7a4789f&#34;
-	  webkitAllowFullScreen mozallowfullscreen allowFullScreen
-	  allow=&#34;clipboard-write&#34; frameborder=&#34;0&#34;&gt;
-  &lt;/iframe&gt;
-&lt;/div&gt;
-
-
-
-
-&lt;/div&gt;
-
-
-
-
-
-
-&lt;div class=&#34;tab-pane fade show &#34; id=&#34;ceadbf&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
-
-	
-
-
-&lt;div style=&#34;position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;&#34;&gt;
-  &lt;iframe src=&#34;https://www.youtube.com/embed/XYYbl5ABN9Q&#34; style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;&#34; allowfullscreen title=&#34;YouTube Video&#34;&gt;&lt;/iframe&gt;
-&lt;/div&gt;
-
-
-
-
-&lt;/div&gt;
-
-
-
-&lt;/div&gt;
-&lt;h3 id=&#34;после-установки&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.4&lt;/span&gt; После установки&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Войдите в ОС под заданной вами при установке учётной записью.&lt;/li&gt;
-&lt;li&gt;Нажмите комбинацию &lt;em&gt;Win+Enter&lt;/em&gt; для запуска терминала.&lt;/li&gt;
-&lt;li&gt;Переключитесь на роль супер-пользователя:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sudo -i
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&#34;обновления&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.4.1&lt;/span&gt; Обновления&lt;/h4&gt;
-&lt;ul&gt;
-&lt;li&gt;Обновить все пакеты
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf -y update
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&#34;повышение-комфорта-работы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.4.2&lt;/span&gt; Повышение комфорта работы&lt;/h4&gt;
-&lt;ul&gt;
-&lt;li&gt;Программы для удобства работы в консоли:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install tmux mc
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&#34;автоматическое-обновление&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.4.3&lt;/span&gt; Автоматическое обновление&lt;/h4&gt;
-&lt;ul&gt;
-&lt;li&gt;При необходимости можно использовать автоматическое обновление (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/09/25/redhat-based-systems-auto-update/&#34;&gt;Автообновление систем на базе деривативов RedHat&lt;/a&gt;).&lt;/li&gt;
-&lt;li&gt;Установка программного обеспечения:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install dnf-automatic
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;Задаёте необходимую конфигурацию в файле &lt;code&gt;/etc/dnf/automatic.conf&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Запустите таймер:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;systemctl enable --now dnf-automatic.timer
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&#34;отключение-selinux&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.4.4&lt;/span&gt; Отключение SELinux&lt;/h4&gt;
-&lt;ul&gt;
-&lt;li&gt;В данном курсе мы не будем рассматривать работу с системой безопасности SELinux.&lt;/li&gt;
-&lt;li&gt;Поэтому отключим его.&lt;/li&gt;
-&lt;li&gt;В файле &lt;code&gt;/etc/selinux/config&lt;/code&gt; замените значение
-&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;SELINUX=enforcing
-&lt;/code&gt;&lt;/pre&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Лабораторные работы | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/course/os-intro/lab/</link><atom:link href="https://yamadharma.github.io/ru/course/os-intro/lab/index.xml" rel="self" type="application/rss+xml"/><description>Лабораторные работы</description><generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2023 Dmitry S. Kulyabov</copyright><lastBuildDate>Tue, 27 Dec 2022 13:30:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url><title>Лабораторные работы</title><link>https://yamadharma.github.io/ru/course/os-intro/lab/</link></image><item><title>Лабораторная работа Установка ОС Linux</title><link>https://yamadharma.github.io/ru/course/os-intro/lab/lab-linux-install/</link><pubDate>Mon, 04 Apr 2022 13:40:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/course/os-intro/lab/lab-linux-install/</guid><description>&lt;p>Лабораторная работа &lt;em>Установка ОС Linux&lt;/em>.&lt;/p>
+&lt;h2 id="цель-работы">&lt;span class="section-num">1&lt;/span> Цель работы&lt;/h2>
+&lt;ul>
+&lt;li>Целью данной работы является приобретение практических навыков установки операционной системы на виртуальную машину, настройки минимально необходимых для дальнейшей работы сервисов.&lt;/li>
+&lt;/ul>
+&lt;h2 id="указания-к-работе">&lt;span class="section-num">2&lt;/span> Указания к работе&lt;/h2>
+&lt;h3 id="техническое-обеспечение">&lt;span class="section-num">2.1&lt;/span> Техническое обеспечение&lt;/h3>
+&lt;ul>
+&lt;li>Лабораторная работа подразумевает установку на виртуальную машину VirtualBox (&lt;a href="https://www.virtualbox.org/" target="_blank" rel="noopener">https://www.virtualbox.org/&lt;/a>) операционной системы Linux (дистрибутив Fedora).&lt;/li>
+&lt;li>Выполнение работы возможно как в дисплейном классе факультета физико-математических и естественных наук РУДН, так и дома. Описание выполнения работы приведено для дисплейного класса со следующими характеристиками техники:
+&lt;ul>
+&lt;li>Intel Core i3-550 3.2 GHz, 4 GB оперативной памяти, 80 GB свободного места на жёстком диске;&lt;/li>
+&lt;li>ОС Linux Gentoo (&lt;a href="http://www.gentoo.ru/" target="_blank" rel="noopener">http://www.gentoo.ru/&lt;/a>);&lt;/li>
+&lt;li>VirtualBox версии 7.0 или новее.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Для установки в виртуальную машину используется дистрибутив Linux Fedora (&lt;a href="https://getfedora.org" target="_blank" rel="noopener">https://getfedora.org&lt;/a>), вариант с менеджером окон &lt;em>i3&lt;/em> (&lt;a href="https://spins.fedoraproject.org/i3/" target="_blank" rel="noopener">https://spins.fedoraproject.org/i3/&lt;/a>).&lt;/li>
+&lt;li>При выполнении лабораторной работы на своей технике вам необходимо скачать необходимый образ операционной системы (&lt;a href="https://spins.fedoraproject.org/i3/download/index.html" target="_blank" rel="noopener">https://spins.fedoraproject.org/i3/download/index.html&lt;/a>).&lt;/li>
+&lt;/ul>
+&lt;h3 id="соглашения-об-именовании">&lt;span class="section-num">2.2&lt;/span> Соглашения об именовании&lt;/h3>
+&lt;ul>
+&lt;li>При выполнении работ следует придерживаться следующих правил именования:
+&lt;ul>
+&lt;li>Пользователь внутри виртуальной машины должен иметь имя, совпадающее с учётной записью студента, выполняющего лабораторную работу.&lt;/li>
+&lt;li>Имя хоста вашей виртуальной машины должно совпадать с учётной записью студента, выполняющего лабораторную работу.&lt;/li>
+&lt;li>Имя виртуальной машины должно совпадать с учётной записью студента, выполняющего лабораторную работу.&lt;/li>
+&lt;li>В дисплейных классах вы можете посмотреть имя вашей учётной записи, набрав в терминале команду:
+&lt;pre>&lt;code class="language-shell">id -un
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>При установке на своей технике необходимо использовать имя вашей учётной записи дисплейных классов. Например, если студента зовут Остап Сулейманович Бендер, то его учётная запись имеет вид &lt;code>osbender&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h2 id="последовательность-выполнения-работы">&lt;span class="section-num">3&lt;/span> Последовательность выполнения работы&lt;/h2>
+&lt;h3 id="выполнение-в-дисплейном-классе">&lt;span class="section-num">3.1&lt;/span> Выполнение в дисплейном классе&lt;/h3>
+&lt;ul>
+&lt;li>Загрузите в дисплейном классе операционную систему Linux. Осуществите вход в систему.&lt;/li>
+&lt;/ul>
+&lt;h4 id="настройка-каталога-для-виртуальных-машин">&lt;span class="section-num">3.1.1&lt;/span> Настройка каталога для виртуальных машин&lt;/h4>
+&lt;!--list-separator-->
+&lt;ol>
+&lt;li>
+&lt;p>Создание необходимых каталогов&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>Запустите терминал. Перейдите в каталог &lt;code>/var/tmp&lt;/code>:&lt;/p>
+&lt;pre>&lt;code class="language-shell">cd /var/tmp
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Создайте каталог с именем пользователя (совпадающий с логином студента в дисплейном классе). Для этого можно использовать команду:&lt;/p>
+&lt;pre>&lt;code class="language-shell">mkdir /var/tmp/`id -un`
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Проверьте в свойствах VirtualBox &lt;strong>месторасположение каталога для виртуальных машин&lt;/strong>:&lt;/p>
+&lt;pre>&lt;code class="language-shell">/var/tmp/имя_пользователя
+&lt;/code>&lt;/pre>
+&lt;ul>
+&lt;li>Здесь &lt;code>имя_пользователя&lt;/code> &amp;mdash; логин (учётная запись) студента в дисплейном классе. Если указан другой каталог, то требуется изменить его.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;!--list-separator-->
+&lt;ol start="2">
+&lt;li>
+&lt;p>Папка виртуальных машин&lt;/p>
+&lt;!--list-separator-->
+&lt;ol>
+&lt;li>
+&lt;p>Значения по умолчанию&lt;/p>
+&lt;ul>
+&lt;li>Linux: &lt;code>$HOME/VirtualBox VMs&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;!--list-separator-->
+&lt;ol start="2">
+&lt;li>
+&lt;p>Графический интерфейс&lt;/p>
+&lt;ul>
+&lt;li>В меню выберите &lt;em>Файл&lt;/em>, &lt;em>Настройки&lt;/em>.&lt;/li>
+&lt;li>Выберите &lt;em>Общие&lt;/em>, поле &lt;em>Папка для машин по умолчанию&lt;/em>.&lt;/li>
+&lt;li>Установите новое значение, например &lt;code>/var/tmp/имя_пользователя&lt;/code>.&lt;/li>
+&lt;li>Нажмите ОК, чтобы сохранить изменения.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;!--list-separator-->
+&lt;ol start="3">
+&lt;li>
+&lt;p>Командная строка&lt;/p>
+&lt;ul>
+&lt;li>Установим папку для виртуальных машине в &lt;code>/var/tmp/имя_пользователя&lt;/code>:
+&lt;pre>&lt;code class="language-shell">VBoxManage setproperty machinefolder /var/tmp/имя_пользователя
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;/ol>
+&lt;h4 id="настройка-хост-клавиши">&lt;span class="section-num">3.1.2&lt;/span> Настройка хост-клавиши&lt;/h4>
+&lt;ul>
+&lt;li>Хост-клавишей по умолчанию является правый &lt;code>Ctrl&lt;/code>.&lt;/li>
+&lt;li>По умолчанию в дисплейных классах на клавише правый &lt;code>Ctrl&lt;/code> находится переключатель языка ввода.&lt;/li>
+&lt;li>Эти значения могут конфликтовать.&lt;/li>
+&lt;/ul>
+&lt;!--list-separator-->
+&lt;ol>
+&lt;li>
+&lt;p>Графический интерфейс&lt;/p>
+&lt;ul>
+&lt;li>В меню выберите &lt;em>Файл&lt;/em>, &lt;em>Настройки&lt;/em>.&lt;/li>
+&lt;li>Выберите &lt;em>Ввод&lt;/em>, вкладка &lt;em>Виртуальная машина&lt;/em>.&lt;/li>
+&lt;li>Выберите &lt;em>Сочетание клавиш&lt;/em> в строке &lt;em>Хост-комбинация&lt;/em>.&lt;/li>
+&lt;li>Нажмите новое сочетание клавиш.&lt;/li>
+&lt;li>Нажмите ОК, чтобы сохранить изменения.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;!--list-separator-->
+&lt;ol start="2">
+&lt;li>
+&lt;p>Командная строка&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>Проверьте текущую комбинацию для хост-клавиши:&lt;/p>
+&lt;pre>&lt;code class="language-shell">VBoxManage getextradata global GUI/Input/HostKeyCombination
+&lt;/code>&lt;/pre>
+&lt;ul>
+&lt;li>По умолчанию установлена комбинация &lt;code>65508&lt;/code>, соответствующая правой клавише &lt;code>Ctrl&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Установите нужную клавишу (в примере клавиша &lt;em>Menu&lt;/em>):&lt;/p>
+&lt;pre>&lt;code class="language-shell">VBoxManage setextradata global GUI/Input/HostKeyCombination 65383
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Комбинации клавиш можно, например, посмотреть на странице &lt;a href="https://pythonhosted.org/pyglet/api/pyglet.window.key-module.html" target="_blank" rel="noopener">https://pythonhosted.org/pyglet/api/pyglet.window.key-module.html&lt;/a>.&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;h3 id="создание-виртуальной-машины">&lt;span class="section-num">3.2&lt;/span> Создание виртуальной машины&lt;/h3>
+&lt;ul>
+&lt;li>Запустите менеджер виртуальных машин, введя в командной строке:
+&lt;pre>&lt;code class="language-shell">VirtualBox &amp;amp;
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>Создайте новую виртуальную машину.&lt;/li>
+&lt;li>Укажите имя виртуальной машины (ваш логин в дисплейном классе), тип операционной системы &amp;mdash; Linux, Fedora.&lt;/li>
+&lt;li>Укажите размер основной памяти виртуальной машины &amp;mdash; от 2048 МБ.&lt;/li>
+&lt;li>Задайте конфигурацию жёсткого диска &amp;mdash; загрузочный, VDI (VirtualBox Disk Image), динамический виртуальный диск.&lt;/li>
+&lt;li>Задайте размер диска &amp;mdash; 80 ГБ (или больше), его расположение &amp;mdash; в данном случае &lt;code>/var/tmp/имя_пользователя/fedora.vdi&lt;/code>.&lt;/li>
+&lt;li>Выберите в VirtualBox Вашей виртуальной машины. Добавьте новый привод оптических дисков и выберите образ.&lt;/li>
+&lt;li>При установке на собственной технике используйте скачанный образ операционной системы Fedora.&lt;/li>
+&lt;/ul>
+&lt;h4 id="видео-создание-виртуальной-машины">&lt;span class="section-num">3.2.1&lt;/span> Видео: Создание виртуальной машины&lt;/h4>
+&lt;nav>
+&lt;div class="nav nav-tabs" id="nav-tab" role="tablist">
+&lt;a class="nav-item nav-link active "
+id="nav-cfdabe" data-toggle="tab" href="#cfdabe"
+role="tab" aria-controls="nav-home" aria-selected="true">RuTube&lt;/a>
+&lt;a class="nav-item nav-link "
+id="nav-debfca" data-toggle="tab" href="#debfca"
+role="tab" aria-controls="nav-home" aria-selected="true">Youtube&lt;/a>
+&lt;/div>
+&lt;/nav>
+&lt;div class="tab-content" id="nav-tab-content">
+&lt;div class="tab-pane fade show active " id="cfdabe" role="tabpanel" aria-labelledby="nav-1">
+&lt;div class="embed video-player">
+&lt;iframe class="rutube-player" type="text/html"
+width="720" height="405"
+src="https://rutube.ru/play/embed/f4e38867368ced9e13556341023c2c03"
+webkitAllowFullScreen mozallowfullscreen allowFullScreen
+allow="clipboard-write" frameborder="0">
+&lt;/iframe>
+&lt;/div>
+&lt;/div>
+&lt;div class="tab-pane fade show " id="debfca" role="tabpanel" aria-labelledby="nav-1">
+&lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+&lt;iframe src="https://www.youtube.com/embed/9_Vt7R57Yw4" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video">&lt;/iframe>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;h3 id="установка-операционной-системы">&lt;span class="section-num">3.3&lt;/span> Установка операционной системы&lt;/h3>
+&lt;h4 id="запуск-приложения-для-установки-системы">&lt;span class="section-num">3.3.1&lt;/span> Запуск приложения для установки системы&lt;/h4>
+&lt;ul>
+&lt;li>Загрузите LiveCD.&lt;/li>
+&lt;li>Появится интерфейс начальной конфигурации.&lt;/li>
+&lt;li>Нажмите &lt;em>Enter&lt;/em> для создания конфигурации по умолчанию.&lt;/li>
+&lt;li>Нажмите &lt;em>Enter&lt;/em>, чтобы выбрать в качестве модификатора клавишу &lt;em>Win&lt;/em> (она же клавиша &lt;em>Super&lt;/em>).&lt;/li>
+&lt;li>В файле конфигурации эта клавиша будет обозначена как &lt;code>$Mod&lt;/code>.&lt;/li>
+&lt;li>Нажмите комбинацию &lt;em>Win+Enter&lt;/em> для запуска терминала.&lt;/li>
+&lt;li>В терминале запустите &lt;code>liveinst&lt;/code>.&lt;/li>
+&lt;li>Для перехода к раскладке окон с табами нажмите &lt;em>Win+w&lt;/em>.&lt;/li>
+&lt;/ul>
+&lt;h4 id="установка-системы-на-диск">&lt;span class="section-num">3.3.2&lt;/span> Установка системы на диск&lt;/h4>
+&lt;ul>
+&lt;li>Выберите язык интерфейса и перейдите к настройкам установки операционной системы.&lt;/li>
+&lt;li>При необходимости скорректируйте часовой пояс, раскладку клавиатуры (рекомендуется в качестве языка по умолчанию указать английский язык).&lt;/li>
+&lt;li>Место установки ОС оставьте без изменения.&lt;/li>
+&lt;li>Установите имя и пароль для пользователя &lt;code>root&lt;/code>.&lt;/li>
+&lt;li>Установите имя и пароль для Вашего пользователя.&lt;/li>
+&lt;li>Задайте сетевое имя Вашего компьютера.&lt;/li>
+&lt;li>После завершения установки операционной системы корректно перезапустите виртуальную машину.&lt;/li>
+&lt;li>В VirtualBox оптический диск должен отключиться автоматически, но если это не произошло, то необходимо отключить носитель информации с образом.&lt;/li>
+&lt;/ul>
+&lt;h4 id="видео-установка-операционной-системы">&lt;span class="section-num">3.3.3&lt;/span> Видео: Установка операционной системы&lt;/h4>
+&lt;nav>
+&lt;div class="nav nav-tabs" id="nav-tab" role="tablist">
+&lt;a class="nav-item nav-link active "
+id="nav-afbced" data-toggle="tab" href="#afbced"
+role="tab" aria-controls="nav-home" aria-selected="true">RuTube&lt;/a>
+&lt;a class="nav-item nav-link "
+id="nav-cdeafb" data-toggle="tab" href="#cdeafb"
+role="tab" aria-controls="nav-home" aria-selected="true">Youtube&lt;/a>
+&lt;/div>
+&lt;/nav>
+&lt;div class="tab-content" id="nav-tab-content">
+&lt;div class="tab-pane fade show active " id="afbced" role="tabpanel" aria-labelledby="nav-1">
+&lt;div class="embed video-player">
+&lt;iframe class="rutube-player" type="text/html"
+width="720" height="405"
+src="https://rutube.ru/play/embed/603fc8f3cf968d3c4151073aa7a4789f"
+webkitAllowFullScreen mozallowfullscreen allowFullScreen
+allow="clipboard-write" frameborder="0">
+&lt;/iframe>
+&lt;/div>
+&lt;/div>
+&lt;div class="tab-pane fade show " id="cdeafb" role="tabpanel" aria-labelledby="nav-1">
+&lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+&lt;iframe src="https://www.youtube.com/embed/XYYbl5ABN9Q" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video">&lt;/iframe>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;h3 id="после-установки">&lt;span class="section-num">3.4&lt;/span> После установки&lt;/h3>
+&lt;ul>
+&lt;li>Войдите в ОС под заданной вами при установке учётной записью.&lt;/li>
+&lt;li>Нажмите комбинацию &lt;em>Win+Enter&lt;/em> для запуска терминала.&lt;/li>
+&lt;li>Переключитесь на роль супер-пользователя:
+&lt;pre>&lt;code class="language-shell">sudo -i
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="обновления">&lt;span class="section-num">3.4.1&lt;/span> Обновления&lt;/h4>
+&lt;ul>
+&lt;li>Обновить все пакеты
+&lt;pre>&lt;code class="language-shell">dnf -y update
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="повышение-комфорта-работы">&lt;span class="section-num">3.4.2&lt;/span> Повышение комфорта работы&lt;/h4>
+&lt;ul>
+&lt;li>Программы для удобства работы в консоли:
+&lt;pre>&lt;code class="language-shell">dnf install tmux mc
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="автоматическое-обновление">&lt;span class="section-num">3.4.3&lt;/span> Автоматическое обновление&lt;/h4>
+&lt;ul>
+&lt;li>При необходимости можно использовать автоматическое обновление (см. &lt;a href="https://yamadharma.github.io/ru/post/2022/09/25/redhat-based-systems-auto-update/">Автообновление систем на базе деривативов RedHat&lt;/a>).&lt;/li>
+&lt;li>Установка программного обеспечения:
+&lt;pre>&lt;code class="language-shell">dnf install dnf-automatic
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>Задаёте необходимую конфигурацию в файле &lt;code>/etc/dnf/automatic.conf&lt;/code>.&lt;/li>
+&lt;li>Запустите таймер:
+&lt;pre>&lt;code class="language-shell">systemctl enable --now dnf-automatic.timer
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="отключение-selinux">&lt;span class="section-num">3.4.4&lt;/span> Отключение SELinux&lt;/h4>
+&lt;ul>
+&lt;li>В данном курсе мы не будем рассматривать работу с системой безопасности SELinux.&lt;/li>
+&lt;li>Поэтому отключим его.&lt;/li>
+&lt;li>В файле &lt;code>/etc/selinux/config&lt;/code> замените значение
+&lt;pre>&lt;code class="language-conf-unix">SELINUX=enforcing
+&lt;/code>&lt;/pre>
 на значение
-&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;SELINUX=permissive
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;Перегрузите виртуальную машину:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;reboot
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;установка-драйверов-для-virtualbox&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.5&lt;/span&gt; Установка драйверов для VirtualBox&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Войдите в ОС под заданной вами при установке учётной записью.&lt;/li&gt;
-&lt;li&gt;Нажмите комбинацию &lt;em&gt;Win+Enter&lt;/em&gt; для запуска терминала.&lt;/li&gt;
-&lt;li&gt;Запустите терминальный мультиплексор &lt;em&gt;tmux&lt;/em&gt;:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;tmux
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;Переключитесь на роль супер-пользователя:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sudo -i
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;Установите пакет &lt;em&gt;DKMS&lt;/em&gt;:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf -y install dkms
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;В меню виртуальной машины подключите образ диска дополнений гостевой ОС.&lt;/li&gt;
-&lt;li&gt;Подмонтируйте диск:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;mount /dev/sr0 /media
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;Установите драйвера:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;/media/VBoxLinuxAdditions.run
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;Перегрузите виртуальную машину:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;reboot
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;настройка-раскладки-клавиатуры&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.6&lt;/span&gt; Настройка раскладки клавиатуры&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Войдите в ОС под заданной вами при установке учётной записью.&lt;/li&gt;
-&lt;li&gt;Нажмите комбинацию &lt;em&gt;Win+Enter&lt;/em&gt; для запуска терминала.&lt;/li&gt;
-&lt;li&gt;Запустите терминальный мультиплексор &lt;em&gt;tmux&lt;/em&gt;:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;tmux
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;Переключитесь на роль супер-пользователя:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sudo -i
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;Отредактируйте конфигурационный файл &lt;code&gt;/etc/X11/xorg.conf.d/00-keyboard.conf&lt;/code&gt;:
-&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;Section &amp;quot;InputClass&amp;quot;
-        Identifier &amp;quot;system-keyboard&amp;quot;
-        MatchIsKeyboard &amp;quot;on&amp;quot;
-        Option &amp;quot;XkbLayout&amp;quot; &amp;quot;us,ru&amp;quot;
-        Option &amp;quot;XkbVariant&amp;quot; &amp;quot;,winkeys&amp;quot;
-        Option &amp;quot;XkbOptions&amp;quot; &amp;quot;grp:rctrl_toggle,compose:ralt,terminate:ctrl_alt_bksp&amp;quot;
+&lt;pre>&lt;code class="language-conf-unix">SELINUX=permissive
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>Перегрузите виртуальную машину:
+&lt;pre>&lt;code class="language-shell">reboot
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="установка-драйверов-для-virtualbox">&lt;span class="section-num">3.5&lt;/span> Установка драйверов для VirtualBox&lt;/h3>
+&lt;ul>
+&lt;li>Войдите в ОС под заданной вами при установке учётной записью.&lt;/li>
+&lt;li>Нажмите комбинацию &lt;em>Win+Enter&lt;/em> для запуска терминала.&lt;/li>
+&lt;li>Запустите терминальный мультиплексор &lt;em>tmux&lt;/em>:
+&lt;pre>&lt;code class="language-shell">tmux
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>Переключитесь на роль супер-пользователя:
+&lt;pre>&lt;code class="language-shell">sudo -i
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>Установите пакет &lt;em>DKMS&lt;/em>:
+&lt;pre>&lt;code class="language-shell">dnf -y install dkms
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>В меню виртуальной машины подключите образ диска дополнений гостевой ОС.&lt;/li>
+&lt;li>Подмонтируйте диск:
+&lt;pre>&lt;code class="language-shell">mount /dev/sr0 /media
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>Установите драйвера:
+&lt;pre>&lt;code class="language-shell">/media/VBoxLinuxAdditions.run
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>Перегрузите виртуальную машину:
+&lt;pre>&lt;code class="language-shell">reboot
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="настройка-раскладки-клавиатуры">&lt;span class="section-num">3.6&lt;/span> Настройка раскладки клавиатуры&lt;/h3>
+&lt;ul>
+&lt;li>Войдите в ОС под заданной вами при установке учётной записью.&lt;/li>
+&lt;li>Нажмите комбинацию &lt;em>Win+Enter&lt;/em> для запуска терминала.&lt;/li>
+&lt;li>Запустите терминальный мультиплексор &lt;em>tmux&lt;/em>:
+&lt;pre>&lt;code class="language-shell">tmux
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>Переключитесь на роль супер-пользователя:
+&lt;pre>&lt;code class="language-shell">sudo -i
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>Отредактируйте конфигурационный файл &lt;code>/etc/X11/xorg.conf.d/00-keyboard.conf&lt;/code>:
+&lt;pre>&lt;code class="language-conf-unix">Section &amp;quot;InputClass&amp;quot;
+Identifier &amp;quot;system-keyboard&amp;quot;
+MatchIsKeyboard &amp;quot;on&amp;quot;
+Option &amp;quot;XkbLayout&amp;quot; &amp;quot;us,ru&amp;quot;
+Option &amp;quot;XkbVariant&amp;quot; &amp;quot;,winkeys&amp;quot;
+Option &amp;quot;XkbOptions&amp;quot; &amp;quot;grp:rctrl_toggle,compose:ralt,terminate:ctrl_alt_bksp&amp;quot;
 EndSection
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;Для этого можно использовать файловый менеджер &lt;code&gt;mc&lt;/code&gt; и его встроенный редактор.&lt;/li&gt;
-&lt;li&gt;Перегрузите виртуальную машину:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;reboot
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&#34;видео-настройка-раскладки-клавиатуры&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.6.1&lt;/span&gt; Видео: Настройка раскладки клавиатуры&lt;/h4&gt;
-&lt;nav&gt;
-	&lt;div class=&#34;nav nav-tabs&#34; id=&#34;nav-tab&#34; role=&#34;tablist&#34;&gt;
-
-		
-		
-		
-		
-
-		
-
-		&lt;a class=&#34;nav-item nav-link  active &#34;
-		   id=&#34;nav-ecabfd&#34; data-toggle=&#34;tab&#34; href=&#34;#ecabfd&#34;
-		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;RuTube&lt;/a&gt;
-
-		
-
-		&lt;a class=&#34;nav-item nav-link &#34;
-		   id=&#34;nav-efcdab&#34; data-toggle=&#34;tab&#34; href=&#34;#efcdab&#34;
-		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;Youtube&lt;/a&gt;
-
-		
-
-	&lt;/div&gt;
-&lt;/nav&gt;
-
-&lt;div class=&#34;tab-content&#34; id=&#34;nav-tab-content&#34;&gt;
-
-	
-
-
-
-
-
-&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;ecabfd&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
-
-	
-
-&lt;div class=&#34;embed video-player&#34;&gt;
-  &lt;iframe class=&#34;rutube-player&#34; type=&#34;text/html&#34;
-	  width=&#34;720&#34; height=&#34;405&#34;
-	  src=&#34;https://rutube.ru/play/embed/f1004d77e929bfb0f856f8aa471aa67c&#34;
-	  webkitAllowFullScreen mozallowfullscreen allowFullScreen
-	  allow=&#34;clipboard-write&#34; frameborder=&#34;0&#34;&gt;
-  &lt;/iframe&gt;
-&lt;/div&gt;
-
-
-
-
-&lt;/div&gt;
-
-
-
-
-
-
-&lt;div class=&#34;tab-pane fade show &#34; id=&#34;efcdab&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
-
-	
-
-
-&lt;div style=&#34;position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;&#34;&gt;
-  &lt;iframe src=&#34;https://www.youtube.com/embed/ayLha0dDiQw&#34; style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;&#34; allowfullscreen title=&#34;YouTube Video&#34;&gt;&lt;/iframe&gt;
-&lt;/div&gt;
-
-
-
-
-&lt;/div&gt;
-
-
-
-&lt;/div&gt;
-&lt;h3 id=&#34;установка-имени-пользователя-и-названия-хоста&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.7&lt;/span&gt; Установка имени пользователя и названия хоста&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Если при установке виртуальной машины вы задали имя пользователя или имя хоста, не удовлетворяющее соглашению об именовании, то вам необходимо исправить это.&lt;/li&gt;
-&lt;li&gt;Запустите виртуальную машину и залогиньтесь.&lt;/li&gt;
-&lt;li&gt;Нажмите комбинацию &lt;em&gt;Win+Enter&lt;/em&gt; для запуска терминала.&lt;/li&gt;
-&lt;li&gt;Запустите терминальный мультиплексор &lt;em&gt;tmux&lt;/em&gt;:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;tmux
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;Переключитесь на роль супер-пользователя:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sudo -i
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;Создайте пользователя (вместо &lt;code&gt;username&lt;/code&gt; укажите ваш логин в дисплейном классе):
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;adduser -G wheel username
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;Задайте пароль для пользователя (вместо &lt;code&gt;username&lt;/code&gt; укажите ваш логин в дисплейном классе):
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;passwd username
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;Установите имя хоста (вместо &lt;code&gt;username&lt;/code&gt; укажите ваш логин в дисплейном классе):
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;hostnamectl set-hostname username
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;Проверьте, что имя хоста установлено верно:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;hostnamectl
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&#34;видео-имя-пользователя-и-хоста&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.7.1&lt;/span&gt; Видео: Имя пользователя и хоста&lt;/h4&gt;
-&lt;nav&gt;
-	&lt;div class=&#34;nav nav-tabs&#34; id=&#34;nav-tab&#34; role=&#34;tablist&#34;&gt;
-
-		
-		
-		
-		
-
-		
-
-		&lt;a class=&#34;nav-item nav-link  active &#34;
-		   id=&#34;nav-fdcbae&#34; data-toggle=&#34;tab&#34; href=&#34;#fdcbae&#34;
-		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;RuTube&lt;/a&gt;
-
-		
-
-		&lt;a class=&#34;nav-item nav-link &#34;
-		   id=&#34;nav-ecabfd&#34; data-toggle=&#34;tab&#34; href=&#34;#ecabfd&#34;
-		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;Youtube&lt;/a&gt;
-
-		
-
-	&lt;/div&gt;
-&lt;/nav&gt;
-
-&lt;div class=&#34;tab-content&#34; id=&#34;nav-tab-content&#34;&gt;
-
-	
-
-
-
-
-
-&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;fdcbae&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
-
-	
-
-&lt;div class=&#34;embed video-player&#34;&gt;
-  &lt;iframe class=&#34;rutube-player&#34; type=&#34;text/html&#34;
-	  width=&#34;720&#34; height=&#34;405&#34;
-	  src=&#34;https://rutube.ru/play/embed/a1a2bac5dbd805b11d5d5390cdfcee50&#34;
-	  webkitAllowFullScreen mozallowfullscreen allowFullScreen
-	  allow=&#34;clipboard-write&#34; frameborder=&#34;0&#34;&gt;
-  &lt;/iframe&gt;
-&lt;/div&gt;
-
-
-
-
-&lt;/div&gt;
-
-
-
-
-
-
-&lt;div class=&#34;tab-pane fade show &#34; id=&#34;ecabfd&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
-
-	
-
-
-&lt;div style=&#34;position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;&#34;&gt;
-  &lt;iframe src=&#34;https://www.youtube.com/embed/zU1x8rx4JjA&#34; style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;&#34; allowfullscreen title=&#34;YouTube Video&#34;&gt;&lt;/iframe&gt;
-&lt;/div&gt;
-
-
-
-
-&lt;/div&gt;
-
-
-
-&lt;/div&gt;
-&lt;h3 id=&#34;установка-программного-обеспечения-для-создания-документации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.8&lt;/span&gt; Установка программного обеспечения для создания документации&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Нажмите комбинацию &lt;em&gt;Win+Enter&lt;/em&gt; для запуска терминала.&lt;/li&gt;
-&lt;li&gt;Запустите терминальный мультиплексор &lt;em&gt;tmux&lt;/em&gt;:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;tmux
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;Переключитесь на роль супер-пользователя:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sudo -i
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&#34;pandoc&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.8.1&lt;/span&gt; pandoc&lt;/h4&gt;
-&lt;ul&gt;
-&lt;li&gt;Установим &lt;code&gt;pandoc&lt;/code&gt;:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf -y install pandoc
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;Установите необходимые расширения:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;pip install pandoc-fignos pandoc-eqnos pandoc-tablenos pandoc-secnos --user
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&#34;texlive&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.8.2&lt;/span&gt; texlive&lt;/h4&gt;
-&lt;ul&gt;
-&lt;li&gt;Установим дистрибутив TeXlive (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/04/23/install-texlive/&#34;&gt;Установка TeX Live&lt;/a&gt;):
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf -y install texlive texlive-\*
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&#34;видео-установка-tex&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.8.3&lt;/span&gt; Видео: Установка TeX&lt;/h4&gt;
-&lt;nav&gt;
-	&lt;div class=&#34;nav nav-tabs&#34; id=&#34;nav-tab&#34; role=&#34;tablist&#34;&gt;
-
-		
-		
-		
-		
-
-		
-
-		&lt;a class=&#34;nav-item nav-link  active &#34;
-		   id=&#34;nav-fceadb&#34; data-toggle=&#34;tab&#34; href=&#34;#fceadb&#34;
-		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;RuTube&lt;/a&gt;
-
-		
-
-		&lt;a class=&#34;nav-item nav-link &#34;
-		   id=&#34;nav-abedcf&#34; data-toggle=&#34;tab&#34; href=&#34;#abedcf&#34;
-		   role=&#34;tab&#34; aria-controls=&#34;nav-home&#34; aria-selected=&#34;true&#34;&gt;Youtube&lt;/a&gt;
-
-		
-
-	&lt;/div&gt;
-&lt;/nav&gt;
-
-&lt;div class=&#34;tab-content&#34; id=&#34;nav-tab-content&#34;&gt;
-
-	
-
-
-
-
-
-&lt;div class=&#34;tab-pane fade show active &#34; id=&#34;fceadb&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
-
-	
-
-&lt;div class=&#34;embed video-player&#34;&gt;
-  &lt;iframe class=&#34;rutube-player&#34; type=&#34;text/html&#34;
-	  width=&#34;720&#34; height=&#34;405&#34;
-	  src=&#34;https://rutube.ru/play/embed/a60d71c8e5644c1fa42b445670fb43c8&#34;
-	  webkitAllowFullScreen mozallowfullscreen allowFullScreen
-	  allow=&#34;clipboard-write&#34; frameborder=&#34;0&#34;&gt;
-  &lt;/iframe&gt;
-&lt;/div&gt;
-
-
-
-
-&lt;/div&gt;
-
-
-
-
-
-
-&lt;div class=&#34;tab-pane fade show &#34; id=&#34;abedcf&#34; role=&#34;tabpanel&#34; aria-labelledby=&#34;nav-1&#34;&gt;
-
-	
-
-
-&lt;div style=&#34;position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;&#34;&gt;
-  &lt;iframe src=&#34;https://www.youtube.com/embed/65yj0KvKZGM&#34; style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;&#34; allowfullscreen title=&#34;YouTube Video&#34;&gt;&lt;/iframe&gt;
-&lt;/div&gt;
-
-
-
-
-&lt;/div&gt;
-
-
-
-&lt;/div&gt;
-&lt;h2 id=&#34;домашнее-задание&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Домашнее задание&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Дождитесь загрузки графического окружения и откройте терминал. В окне терминала проанализируйте последовательность загрузки системы, выполнив команду &lt;code&gt;dmesg&lt;/code&gt;. Можно просто просмотреть вывод этой команды:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dmesg | less
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;Можно использовать поиск с помощью &lt;code&gt;grep&lt;/code&gt;:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dmesg | grep -i &amp;quot;то, что ищем&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;Получите следующую информацию.
-&lt;ul&gt;
-&lt;li&gt;Версия ядра Linux (Linux version).&lt;/li&gt;
-&lt;li&gt;Частота процессора (Detected Mhz processor).&lt;/li&gt;
-&lt;li&gt;Модель процессора (CPU0).&lt;/li&gt;
-&lt;li&gt;Объём доступной оперативной памяти (Memory available).&lt;/li&gt;
-&lt;li&gt;Тип обнаруженного гипервизора (Hypervisor detected).&lt;/li&gt;
-&lt;li&gt;Тип файловой системы корневого раздела.&lt;/li&gt;
-&lt;li&gt;Последовательность монтирования файловых систем.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;содержание-отчёта&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Содержание отчёта&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Отчёт должен включать:
-&lt;ul&gt;
-&lt;li&gt;титульный лист;&lt;/li&gt;
-&lt;li&gt;формулировку задания работы;&lt;/li&gt;
-&lt;li&gt;описание результатов выполнения задания:
-&lt;ul&gt;
-&lt;li&gt;краткое описание действия;&lt;/li&gt;
-&lt;li&gt;вводимую команду или команды;&lt;/li&gt;
-&lt;li&gt;результаты выполнения команд (снимок экрана);&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;выводы, согласованные с заданием работы;&lt;/li&gt;
-&lt;li&gt;ответы на контрольные вопросы;&lt;/li&gt;
-&lt;li&gt;отчёт о выполнении дополнительного задания.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;контрольные-вопросы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6&lt;/span&gt; Контрольные вопросы&lt;/h2&gt;
-&lt;ol&gt;
-&lt;li&gt;
-&lt;p&gt;Какую информацию содержит учётная запись пользователя?&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Укажите команды терминала и приведите примеры:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;для получения справки по команде;&lt;/li&gt;
-&lt;li&gt;для перемещения по файловой системе;&lt;/li&gt;
-&lt;li&gt;для просмотра содержимого каталога;&lt;/li&gt;
-&lt;li&gt;для определения объёма каталога;&lt;/li&gt;
-&lt;li&gt;для создания / удаления каталогов / файлов;&lt;/li&gt;
-&lt;li&gt;для задания определённых прав на файл / каталог;&lt;/li&gt;
-&lt;li&gt;для просмотра истории команд.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Что такое файловая система? Приведите примеры с краткой характеристикой.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Как посмотреть, какие файловые системы подмонтированы в ОС?&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Как удалить зависший процесс?&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;При ответах на контрольные вопросы рекомендуется ознакомиться с информацией из  [&lt;a href=&#34;#citeproc_bib_item_1&#34;&gt;1&lt;/a&gt;,&lt;a href=&#34;#citeproc_bib_item_1&#34;&gt;1&lt;/a&gt;–&lt;a href=&#34;#citeproc_bib_item_7&#34;&gt;7&lt;/a&gt;].&lt;/p&gt;
-&lt;h2 id=&#34;литература&#34;&gt;Литература&lt;/h2&gt;
-&lt;style&gt;.csl-left-margin{float: left; padding-right: 0em;}
- .csl-right-inline{margin: 0 0 0 1em;}&lt;/style&gt;&lt;div class=&#34;csl-bib-body&#34;&gt;
-  &lt;div class=&#34;csl-entry&#34;&gt;&lt;a id=&#34;citeproc_bib_item_1&#34;&gt;&lt;/a&gt;
-    &lt;div class=&#34;csl-left-margin&#34;&gt;1.&lt;/div&gt;&lt;div class=&#34;csl-right-inline&#34;&gt;Dash P. Getting started with oracle vm virtualbox. Packt Publishing Ltd, 2013. 86 p.&lt;/div&gt;
-  &lt;/div&gt;
-  &lt;div class=&#34;csl-entry&#34;&gt;&lt;a id=&#34;citeproc_bib_item_2&#34;&gt;&lt;/a&gt;
-    &lt;div class=&#34;csl-left-margin&#34;&gt;2.&lt;/div&gt;&lt;div class=&#34;csl-right-inline&#34;&gt;Colvin H. Virtualbox: An ultimate guide book on virtualization with virtualbox. CreateSpace Independent Publishing Platform, 2015. 70 p.&lt;/div&gt;
-  &lt;/div&gt;
-  &lt;div class=&#34;csl-entry&#34;&gt;&lt;a id=&#34;citeproc_bib_item_3&#34;&gt;&lt;/a&gt;
-    &lt;div class=&#34;csl-left-margin&#34;&gt;3.&lt;/div&gt;&lt;div class=&#34;csl-right-inline&#34;&gt;van Vugt S. Red hat rhcsa/rhce 7 cert guide : Red hat enterprise linux 7 (ex200 and ex300). Pearson IT Certification, 2016. 1008 p.&lt;/div&gt;
-  &lt;/div&gt;
-  &lt;div class=&#34;csl-entry&#34;&gt;&lt;a id=&#34;citeproc_bib_item_4&#34;&gt;&lt;/a&gt;
-    &lt;div class=&#34;csl-left-margin&#34;&gt;4.&lt;/div&gt;&lt;div class=&#34;csl-right-inline&#34;&gt;Робачевский А., Немнюгин С., Стесик О. Операционная система unix. 2-е изд. Санкт-Петербург: БХВ-Петербург, 2010. 656 p.&lt;/div&gt;
-  &lt;/div&gt;
-  &lt;div class=&#34;csl-entry&#34;&gt;&lt;a id=&#34;citeproc_bib_item_5&#34;&gt;&lt;/a&gt;
-    &lt;div class=&#34;csl-left-margin&#34;&gt;5.&lt;/div&gt;&lt;div class=&#34;csl-right-inline&#34;&gt;Немет Э. et al. Unix и Linux: руководство системного администратора. 4-е изд. Вильямс, 2014. 1312 p.&lt;/div&gt;
-  &lt;/div&gt;
-  &lt;div class=&#34;csl-entry&#34;&gt;&lt;a id=&#34;citeproc_bib_item_6&#34;&gt;&lt;/a&gt;
-    &lt;div class=&#34;csl-left-margin&#34;&gt;6.&lt;/div&gt;&lt;div class=&#34;csl-right-inline&#34;&gt;Колисниченко Д.Н. Самоучитель системного администратора Linux. СПб.: БХВ-Петербург, 2011. 544 p.&lt;/div&gt;
-  &lt;/div&gt;
-  &lt;div class=&#34;csl-entry&#34;&gt;&lt;a id=&#34;citeproc_bib_item_7&#34;&gt;&lt;/a&gt;
-    &lt;div class=&#34;csl-left-margin&#34;&gt;7.&lt;/div&gt;&lt;div class=&#34;csl-right-inline&#34;&gt;Robbins A. Bash pocket reference. O’Reilly Media, 2016. 156 p.&lt;/div&gt;
-  &lt;/div&gt;
-&lt;/div&gt;</description>
-    </item>
-    
-    <item>
-      <title>Лабораторная работа Первоначальна настройка git</title>
-      <link>https://yamadharma.github.io/ru/course/os-intro/lab/lab-initial-git-setup/</link>
-      <pubDate>Wed, 06 Apr 2022 18:06:00 +0300</pubDate>
-      <guid>https://yamadharma.github.io/ru/course/os-intro/lab/lab-initial-git-setup/</guid>
-      <description>&lt;p&gt;Лабораторная работа &lt;em&gt;Первоначальна настройка git&lt;/em&gt;.&lt;/p&gt;
-&lt;h2 id=&#34;цель-работы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Цель работы&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Изучить идеологию и применение средств контроля версий.&lt;/li&gt;
-&lt;li&gt;Освоить умения по работе с git.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;теоретические-сведения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Теоретические сведения&lt;/h2&gt;
-&lt;h3 id=&#34;системы-контроля-версий-dot-общие-понятия&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Системы контроля версий. Общие понятия&lt;/h3&gt;
-&lt;p&gt;&lt;em&gt;Системы контроля версий (Version Control System, VCS)&lt;/em&gt; применяются при работе нескольких человек над одним проектом. Обычно основное дерево проекта хранится в локальном или удалённом репозитории, к которому настроен доступ для участников проекта. При внесении изменений в содержание проекта система контроля версий позволяет их фиксировать, совмещать изменения, произведённые разными участниками проекта, производить откат к любой более ранней версии проекта, если это требуется.&lt;/p&gt;
-&lt;p&gt;В классических системах контроля версий используется централизованная модель, предполагающая наличие единого репозитория для хранения файлов. Выполнение большинства функций по управлению версиями осуществляется специальным сервером. Участник проекта (пользователь) перед началом работы посредством определённых команд получает нужную ему версию файлов. После внесения изменений, пользователь размещает новую версию в хранилище. При этом предыдущие версии не удаляются из центрального хранилища и к ним можно вернуться в любой момент. Сервер может сохранять не полную версию изменённых файлов, а производить так называемую дельта-компрессию &amp;mdash; сохранять только изменения между последовательными версиями, что позволяет уменьшить объём хранимых данных.&lt;/p&gt;
-&lt;p&gt;Системы контроля версий поддерживают возможность отслеживания и разрешения конфликтов, которые могут возникнуть при работе нескольких человек над одним файлом. Можно объединить (слить) изменения, сделанные разными участниками (автоматически или вручную), вручную выбрать нужную версию, отменить изменения вовсе или заблокировать файлы для изменения. В зависимости от настроек блокировка не позволяет другим пользователям получить рабочую копию или препятствует изменению рабочей копии файла средствами файловой системы ОС, обеспечивая таким образом, привилегированный доступ только одному пользователю, работающему с файлом.&lt;/p&gt;
-&lt;p&gt;Системы контроля версий также могут обеспечивать дополнительные, более гибкие функциональные возможности. Например, они могут поддерживать работу с несколькими версиями одного файла, сохраняя общую историю изменений до точки ветвления версий и собственные истории изменений каждой ветви. Кроме того, обычно доступна информация о том, кто из участников, когда и какие изменения вносил. Обычно такого рода информация хранится в журнале изменений, доступ к которому можно ограничить.&lt;/p&gt;
-&lt;p&gt;В отличие от классических, в распределённых системах контроля версий центральный репозиторий не является обязательным.&lt;/p&gt;
-&lt;p&gt;Среди классических VCS наиболее известны CVS, Subversion, а среди распределённых &amp;mdash; Git, Bazaar, Mercurial. Принципы их работы схожи, отличаются они в основном синтаксисом используемых в работе команд.&lt;/p&gt;
-&lt;h3 id=&#34;примеры-использования-git&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Примеры использования git&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Система контроля версий Git представляет собой набор программ командной строки. Доступ к ним можно получить из терминала посредством ввода команды &lt;code&gt;git&lt;/code&gt; с различными опциями.&lt;/li&gt;
-&lt;li&gt;Благодаря тому, что Git является распределённой системой контроля версий, резервную копию локального хранилища можно сделать простым копированием или архивацией.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&#34;основные-команды-git&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2.1&lt;/span&gt; Основные команды git&lt;/h4&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Перечислим наиболее часто используемые команды &lt;code&gt;git&lt;/code&gt;.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Создание основного дерева репозитория:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;git init
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Получение обновлений (изменений) текущего дерева из центрального репозитория:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;git pull
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Отправка всех произведённых изменений локального дерева в центральный репозиторий:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;git push
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Просмотр списка изменённых файлов в текущей директории:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;git status
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Просмотр текущих изменений:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;git diff
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Сохранение текущих изменений:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;добавить все изменённые и/или созданные файлы и/или каталоги:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;git add .
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;добавить конкретные изменённые и/или созданные файлы и/или каталоги:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;git add имена_файлов
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;удалить файл и/или каталог из индекса репозитория (при этом файл и/или каталог остаётся в локальной директории):&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;git rm имена_файлов
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Сохранение добавленных изменений:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;сохранить все добавленные изменения и все изменённые файлы:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;git commit -am &#39;Описание коммита&#39;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;сохранить добавленные изменения с внесением комментария через встроенный редактор:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;git commit
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;создание новой ветки, базирующейся на текущей:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;git checkout -b имя_ветки
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;переключение на некоторую ветку:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;git checkout имя_ветки
-&lt;/code&gt;&lt;/pre&gt;
-&lt;ul&gt;
-&lt;li&gt;(при переключении на ветку, которой ещё нет в локальном репозитории, она будет создана и связана с удалённой)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;отправка изменений конкретной ветки в центральный репозиторий:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;git push origin имя_ветки
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;слияние ветки с текущим деревом:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;git merge --no-ff имя_ветки
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Удаление ветки:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;удаление локальной уже слитой с основным деревом ветки:
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;git branch -d имя_ветки
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;принудительное удаление локальной ветки:
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;git branch -D имя_ветки
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;удаление ветки с центрального репозитория:
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;git push origin :имя_ветки
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&#34;стандартные-процедуры-работы-при-наличии-центрального-репозитория&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2.2&lt;/span&gt; Стандартные процедуры работы при наличии центрального репозитория&lt;/h4&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Работа пользователя со своей веткой начинается с проверки и получения изменений из центрального репозитория (при этом в локальное дерево до начала этой процедуры не должно было вноситься изменений):&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;git checkout master
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>Для этого можно использовать файловый менеджер &lt;code>mc&lt;/code> и его встроенный редактор.&lt;/li>
+&lt;li>Перегрузите виртуальную машину:
+&lt;pre>&lt;code class="language-shell">reboot
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="видео-настройка-раскладки-клавиатуры">&lt;span class="section-num">3.6.1&lt;/span> Видео: Настройка раскладки клавиатуры&lt;/h4>
+&lt;nav>
+&lt;div class="nav nav-tabs" id="nav-tab" role="tablist">
+&lt;a class="nav-item nav-link active "
+id="nav-bedfac" data-toggle="tab" href="#bedfac"
+role="tab" aria-controls="nav-home" aria-selected="true">RuTube&lt;/a>
+&lt;a class="nav-item nav-link "
+id="nav-edcfab" data-toggle="tab" href="#edcfab"
+role="tab" aria-controls="nav-home" aria-selected="true">Youtube&lt;/a>
+&lt;/div>
+&lt;/nav>
+&lt;div class="tab-content" id="nav-tab-content">
+&lt;div class="tab-pane fade show active " id="bedfac" role="tabpanel" aria-labelledby="nav-1">
+&lt;div class="embed video-player">
+&lt;iframe class="rutube-player" type="text/html"
+width="720" height="405"
+src="https://rutube.ru/play/embed/f1004d77e929bfb0f856f8aa471aa67c"
+webkitAllowFullScreen mozallowfullscreen allowFullScreen
+allow="clipboard-write" frameborder="0">
+&lt;/iframe>
+&lt;/div>
+&lt;/div>
+&lt;div class="tab-pane fade show " id="edcfab" role="tabpanel" aria-labelledby="nav-1">
+&lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+&lt;iframe src="https://www.youtube.com/embed/ayLha0dDiQw" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video">&lt;/iframe>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;h3 id="установка-имени-пользователя-и-названия-хоста">&lt;span class="section-num">3.7&lt;/span> Установка имени пользователя и названия хоста&lt;/h3>
+&lt;ul>
+&lt;li>Если при установке виртуальной машины вы задали имя пользователя или имя хоста, не удовлетворяющее соглашению об именовании, то вам необходимо исправить это.&lt;/li>
+&lt;li>Запустите виртуальную машину и залогиньтесь.&lt;/li>
+&lt;li>Нажмите комбинацию &lt;em>Win+Enter&lt;/em> для запуска терминала.&lt;/li>
+&lt;li>Запустите терминальный мультиплексор &lt;em>tmux&lt;/em>:
+&lt;pre>&lt;code class="language-shell">tmux
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>Переключитесь на роль супер-пользователя:
+&lt;pre>&lt;code class="language-shell">sudo -i
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>Создайте пользователя (вместо &lt;code>username&lt;/code> укажите ваш логин в дисплейном классе):
+&lt;pre>&lt;code class="language-shell">adduser -G wheel username
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>Задайте пароль для пользователя (вместо &lt;code>username&lt;/code> укажите ваш логин в дисплейном классе):
+&lt;pre>&lt;code class="language-shell">passwd username
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>Установите имя хоста (вместо &lt;code>username&lt;/code> укажите ваш логин в дисплейном классе):
+&lt;pre>&lt;code class="language-shell">hostnamectl set-hostname username
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>Проверьте, что имя хоста установлено верно:
+&lt;pre>&lt;code class="language-shell">hostnamectl
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="видео-имя-пользователя-и-хоста">&lt;span class="section-num">3.7.1&lt;/span> Видео: Имя пользователя и хоста&lt;/h4>
+&lt;nav>
+&lt;div class="nav nav-tabs" id="nav-tab" role="tablist">
+&lt;a class="nav-item nav-link active "
+id="nav-ebdfca" data-toggle="tab" href="#ebdfca"
+role="tab" aria-controls="nav-home" aria-selected="true">RuTube&lt;/a>
+&lt;a class="nav-item nav-link "
+id="nav-dcefba" data-toggle="tab" href="#dcefba"
+role="tab" aria-controls="nav-home" aria-selected="true">Youtube&lt;/a>
+&lt;/div>
+&lt;/nav>
+&lt;div class="tab-content" id="nav-tab-content">
+&lt;div class="tab-pane fade show active " id="ebdfca" role="tabpanel" aria-labelledby="nav-1">
+&lt;div class="embed video-player">
+&lt;iframe class="rutube-player" type="text/html"
+width="720" height="405"
+src="https://rutube.ru/play/embed/a1a2bac5dbd805b11d5d5390cdfcee50"
+webkitAllowFullScreen mozallowfullscreen allowFullScreen
+allow="clipboard-write" frameborder="0">
+&lt;/iframe>
+&lt;/div>
+&lt;/div>
+&lt;div class="tab-pane fade show " id="dcefba" role="tabpanel" aria-labelledby="nav-1">
+&lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+&lt;iframe src="https://www.youtube.com/embed/zU1x8rx4JjA" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video">&lt;/iframe>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;h3 id="установка-программного-обеспечения-для-создания-документации">&lt;span class="section-num">3.8&lt;/span> Установка программного обеспечения для создания документации&lt;/h3>
+&lt;ul>
+&lt;li>Нажмите комбинацию &lt;em>Win+Enter&lt;/em> для запуска терминала.&lt;/li>
+&lt;li>Запустите терминальный мультиплексор &lt;em>tmux&lt;/em>:
+&lt;pre>&lt;code class="language-shell">tmux
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>Переключитесь на роль супер-пользователя:
+&lt;pre>&lt;code class="language-shell">sudo -i
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="pandoc">&lt;span class="section-num">3.8.1&lt;/span> pandoc&lt;/h4>
+&lt;ul>
+&lt;li>Установим &lt;code>pandoc&lt;/code>:
+&lt;pre>&lt;code class="language-shell">dnf -y install pandoc
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>Установите необходимые расширения:
+&lt;pre>&lt;code class="language-shell">pip install pandoc-fignos pandoc-eqnos pandoc-tablenos pandoc-secnos --user
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="texlive">&lt;span class="section-num">3.8.2&lt;/span> texlive&lt;/h4>
+&lt;ul>
+&lt;li>Установим дистрибутив TeXlive (см. &lt;a href="https://yamadharma.github.io/ru/post/2021/04/23/install-texlive/">Установка TeX Live&lt;/a>):
+&lt;pre>&lt;code class="language-shell">dnf -y install texlive texlive-\*
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="видео-установка-tex">&lt;span class="section-num">3.8.3&lt;/span> Видео: Установка TeX&lt;/h4>
+&lt;nav>
+&lt;div class="nav nav-tabs" id="nav-tab" role="tablist">
+&lt;a class="nav-item nav-link active "
+id="nav-cfbdea" data-toggle="tab" href="#cfbdea"
+role="tab" aria-controls="nav-home" aria-selected="true">RuTube&lt;/a>
+&lt;a class="nav-item nav-link "
+id="nav-febdac" data-toggle="tab" href="#febdac"
+role="tab" aria-controls="nav-home" aria-selected="true">Youtube&lt;/a>
+&lt;/div>
+&lt;/nav>
+&lt;div class="tab-content" id="nav-tab-content">
+&lt;div class="tab-pane fade show active " id="cfbdea" role="tabpanel" aria-labelledby="nav-1">
+&lt;div class="embed video-player">
+&lt;iframe class="rutube-player" type="text/html"
+width="720" height="405"
+src="https://rutube.ru/play/embed/a60d71c8e5644c1fa42b445670fb43c8"
+webkitAllowFullScreen mozallowfullscreen allowFullScreen
+allow="clipboard-write" frameborder="0">
+&lt;/iframe>
+&lt;/div>
+&lt;/div>
+&lt;div class="tab-pane fade show " id="febdac" role="tabpanel" aria-labelledby="nav-1">
+&lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+&lt;iframe src="https://www.youtube.com/embed/65yj0KvKZGM" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video">&lt;/iframe>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;h2 id="домашнее-задание">&lt;span class="section-num">4&lt;/span> Домашнее задание&lt;/h2>
+&lt;ul>
+&lt;li>Дождитесь загрузки графического окружения и откройте терминал. В окне терминала проанализируйте последовательность загрузки системы, выполнив команду &lt;code>dmesg&lt;/code>. Можно просто просмотреть вывод этой команды:
+&lt;pre>&lt;code class="language-shell">dmesg | less
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>Можно использовать поиск с помощью &lt;code>grep&lt;/code>:
+&lt;pre>&lt;code class="language-shell">dmesg | grep -i &amp;quot;то, что ищем&amp;quot;
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>Получите следующую информацию.
+&lt;ul>
+&lt;li>Версия ядра Linux (Linux version).&lt;/li>
+&lt;li>Частота процессора (Detected Mhz processor).&lt;/li>
+&lt;li>Модель процессора (CPU0).&lt;/li>
+&lt;li>Объём доступной оперативной памяти (Memory available).&lt;/li>
+&lt;li>Тип обнаруженного гипервизора (Hypervisor detected).&lt;/li>
+&lt;li>Тип файловой системы корневого раздела.&lt;/li>
+&lt;li>Последовательность монтирования файловых систем.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="содержание-отчёта">&lt;span class="section-num">5&lt;/span> Содержание отчёта&lt;/h2>
+&lt;ul>
+&lt;li>Отчёт должен включать:
+&lt;ul>
+&lt;li>титульный лист;&lt;/li>
+&lt;li>формулировку задания работы;&lt;/li>
+&lt;li>описание результатов выполнения задания:
+&lt;ul>
+&lt;li>краткое описание действия;&lt;/li>
+&lt;li>вводимую команду или команды;&lt;/li>
+&lt;li>результаты выполнения команд (снимок экрана);&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>выводы, согласованные с заданием работы;&lt;/li>
+&lt;li>ответы на контрольные вопросы;&lt;/li>
+&lt;li>отчёт о выполнении дополнительного задания.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="контрольные-вопросы">&lt;span class="section-num">6&lt;/span> Контрольные вопросы&lt;/h2>
+&lt;ol>
+&lt;li>
+&lt;p>Какую информацию содержит учётная запись пользователя?&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Укажите команды терминала и приведите примеры:&lt;/p>
+&lt;ul>
+&lt;li>для получения справки по команде;&lt;/li>
+&lt;li>для перемещения по файловой системе;&lt;/li>
+&lt;li>для просмотра содержимого каталога;&lt;/li>
+&lt;li>для определения объёма каталога;&lt;/li>
+&lt;li>для создания / удаления каталогов / файлов;&lt;/li>
+&lt;li>для задания определённых прав на файл / каталог;&lt;/li>
+&lt;li>для просмотра истории команд.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Что такое файловая система? Приведите примеры с краткой характеристикой.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Как посмотреть, какие файловые системы подмонтированы в ОС?&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Как удалить зависший процесс?&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>При ответах на контрольные вопросы рекомендуется ознакомиться с информацией из [&lt;a href="#citeproc_bib_item_1">1&lt;/a>,&lt;a href="#citeproc_bib_item_1">1&lt;/a>–&lt;a href="#citeproc_bib_item_7">7&lt;/a>].&lt;/p>
+&lt;h2 id="литература">Литература&lt;/h2>
+&lt;style>.csl-left-margin{float: left; padding-right: 0em;}
+.csl-right-inline{margin: 0 0 0 1em;}&lt;/style>&lt;div class="csl-bib-body">
+&lt;div class="csl-entry">&lt;a id="citeproc_bib_item_1">&lt;/a>
+&lt;div class="csl-left-margin">1.&lt;/div>&lt;div class="csl-right-inline">Dash P. Getting started with oracle vm virtualbox. Packt Publishing Ltd, 2013. 86 p.&lt;/div>
+&lt;/div>
+&lt;div class="csl-entry">&lt;a id="citeproc_bib_item_2">&lt;/a>
+&lt;div class="csl-left-margin">2.&lt;/div>&lt;div class="csl-right-inline">Colvin H. Virtualbox: An ultimate guide book on virtualization with virtualbox. CreateSpace Independent Publishing Platform, 2015. 70 p.&lt;/div>
+&lt;/div>
+&lt;div class="csl-entry">&lt;a id="citeproc_bib_item_3">&lt;/a>
+&lt;div class="csl-left-margin">3.&lt;/div>&lt;div class="csl-right-inline">van Vugt S. Red hat rhcsa/rhce 7 cert guide : Red hat enterprise linux 7 (ex200 and ex300). Pearson IT Certification, 2016. 1008 p.&lt;/div>
+&lt;/div>
+&lt;div class="csl-entry">&lt;a id="citeproc_bib_item_4">&lt;/a>
+&lt;div class="csl-left-margin">4.&lt;/div>&lt;div class="csl-right-inline">Робачевский А., Немнюгин С., Стесик О. Операционная система unix. 2-е изд. Санкт-Петербург: БХВ-Петербург, 2010. 656 p.&lt;/div>
+&lt;/div>
+&lt;div class="csl-entry">&lt;a id="citeproc_bib_item_5">&lt;/a>
+&lt;div class="csl-left-margin">5.&lt;/div>&lt;div class="csl-right-inline">Немет Э. et al. Unix и Linux: руководство системного администратора. 4-е изд. Вильямс, 2014. 1312 p.&lt;/div>
+&lt;/div>
+&lt;div class="csl-entry">&lt;a id="citeproc_bib_item_6">&lt;/a>
+&lt;div class="csl-left-margin">6.&lt;/div>&lt;div class="csl-right-inline">Колисниченко Д.Н. Самоучитель системного администратора Linux. СПб.: БХВ-Петербург, 2011. 544 p.&lt;/div>
+&lt;/div>
+&lt;div class="csl-entry">&lt;a id="citeproc_bib_item_7">&lt;/a>
+&lt;div class="csl-left-margin">7.&lt;/div>&lt;div class="csl-right-inline">Robbins A. Bash pocket reference. O’Reilly Media, 2016. 156 p.&lt;/div>
+&lt;/div>
+&lt;/div></description></item><item><title>Лабораторная работа Первоначальна настройка git</title><link>https://yamadharma.github.io/ru/course/os-intro/lab/lab-initial-git-setup/</link><pubDate>Wed, 06 Apr 2022 18:06:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/course/os-intro/lab/lab-initial-git-setup/</guid><description>&lt;p>Лабораторная работа &lt;em>Первоначальна настройка git&lt;/em>.&lt;/p>
+&lt;h2 id="цель-работы">&lt;span class="section-num">1&lt;/span> Цель работы&lt;/h2>
+&lt;ul>
+&lt;li>Изучить идеологию и применение средств контроля версий.&lt;/li>
+&lt;li>Освоить умения по работе с git.&lt;/li>
+&lt;/ul>
+&lt;h2 id="теоретические-сведения">&lt;span class="section-num">2&lt;/span> Теоретические сведения&lt;/h2>
+&lt;h3 id="системы-контроля-версий-dot-общие-понятия">&lt;span class="section-num">2.1&lt;/span> Системы контроля версий. Общие понятия&lt;/h3>
+&lt;p>&lt;em>Системы контроля версий (Version Control System, VCS)&lt;/em> применяются при работе нескольких человек над одним проектом. Обычно основное дерево проекта хранится в локальном или удалённом репозитории, к которому настроен доступ для участников проекта. При внесении изменений в содержание проекта система контроля версий позволяет их фиксировать, совмещать изменения, произведённые разными участниками проекта, производить откат к любой более ранней версии проекта, если это требуется.&lt;/p>
+&lt;p>В классических системах контроля версий используется централизованная модель, предполагающая наличие единого репозитория для хранения файлов. Выполнение большинства функций по управлению версиями осуществляется специальным сервером. Участник проекта (пользователь) перед началом работы посредством определённых команд получает нужную ему версию файлов. После внесения изменений, пользователь размещает новую версию в хранилище. При этом предыдущие версии не удаляются из центрального хранилища и к ним можно вернуться в любой момент. Сервер может сохранять не полную версию изменённых файлов, а производить так называемую дельта-компрессию &amp;mdash; сохранять только изменения между последовательными версиями, что позволяет уменьшить объём хранимых данных.&lt;/p>
+&lt;p>Системы контроля версий поддерживают возможность отслеживания и разрешения конфликтов, которые могут возникнуть при работе нескольких человек над одним файлом. Можно объединить (слить) изменения, сделанные разными участниками (автоматически или вручную), вручную выбрать нужную версию, отменить изменения вовсе или заблокировать файлы для изменения. В зависимости от настроек блокировка не позволяет другим пользователям получить рабочую копию или препятствует изменению рабочей копии файла средствами файловой системы ОС, обеспечивая таким образом, привилегированный доступ только одному пользователю, работающему с файлом.&lt;/p>
+&lt;p>Системы контроля версий также могут обеспечивать дополнительные, более гибкие функциональные возможности. Например, они могут поддерживать работу с несколькими версиями одного файла, сохраняя общую историю изменений до точки ветвления версий и собственные истории изменений каждой ветви. Кроме того, обычно доступна информация о том, кто из участников, когда и какие изменения вносил. Обычно такого рода информация хранится в журнале изменений, доступ к которому можно ограничить.&lt;/p>
+&lt;p>В отличие от классических, в распределённых системах контроля версий центральный репозиторий не является обязательным.&lt;/p>
+&lt;p>Среди классических VCS наиболее известны CVS, Subversion, а среди распределённых &amp;mdash; Git, Bazaar, Mercurial. Принципы их работы схожи, отличаются они в основном синтаксисом используемых в работе команд.&lt;/p>
+&lt;h3 id="примеры-использования-git">&lt;span class="section-num">2.2&lt;/span> Примеры использования git&lt;/h3>
+&lt;ul>
+&lt;li>Система контроля версий Git представляет собой набор программ командной строки. Доступ к ним можно получить из терминала посредством ввода команды &lt;code>git&lt;/code> с различными опциями.&lt;/li>
+&lt;li>Благодаря тому, что Git является распределённой системой контроля версий, резервную копию локального хранилища можно сделать простым копированием или архивацией.&lt;/li>
+&lt;/ul>
+&lt;h4 id="основные-команды-git">&lt;span class="section-num">2.2.1&lt;/span> Основные команды git&lt;/h4>
+&lt;ul>
+&lt;li>
+&lt;p>Перечислим наиболее часто используемые команды &lt;code>git&lt;/code>.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Создание основного дерева репозитория:&lt;/p>
+&lt;pre>&lt;code class="language-sh">git init
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Получение обновлений (изменений) текущего дерева из центрального репозитория:&lt;/p>
+&lt;pre>&lt;code class="language-sh">git pull
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Отправка всех произведённых изменений локального дерева в центральный репозиторий:&lt;/p>
+&lt;pre>&lt;code class="language-sh">git push
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Просмотр списка изменённых файлов в текущей директории:&lt;/p>
+&lt;pre>&lt;code class="language-sh">git status
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Просмотр текущих изменений:&lt;/p>
+&lt;pre>&lt;code class="language-sh">git diff
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Сохранение текущих изменений:&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>добавить все изменённые и/или созданные файлы и/или каталоги:&lt;/p>
+&lt;pre>&lt;code class="language-sh">git add .
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>добавить конкретные изменённые и/или созданные файлы и/или каталоги:&lt;/p>
+&lt;pre>&lt;code class="language-sh">git add имена_файлов
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>удалить файл и/или каталог из индекса репозитория (при этом файл и/или каталог остаётся в локальной директории):&lt;/p>
+&lt;pre>&lt;code class="language-sh">git rm имена_файлов
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Сохранение добавленных изменений:&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>сохранить все добавленные изменения и все изменённые файлы:&lt;/p>
+&lt;pre>&lt;code class="language-sh">git commit -am 'Описание коммита'
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>сохранить добавленные изменения с внесением комментария через встроенный редактор:&lt;/p>
+&lt;pre>&lt;code class="language-sh">git commit
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>создание новой ветки, базирующейся на текущей:&lt;/p>
+&lt;pre>&lt;code class="language-sh">git checkout -b имя_ветки
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>переключение на некоторую ветку:&lt;/p>
+&lt;pre>&lt;code class="language-sh">git checkout имя_ветки
+&lt;/code>&lt;/pre>
+&lt;ul>
+&lt;li>(при переключении на ветку, которой ещё нет в локальном репозитории, она будет создана и связана с удалённой)&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>отправка изменений конкретной ветки в центральный репозиторий:&lt;/p>
+&lt;pre>&lt;code class="language-sh">git push origin имя_ветки
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>слияние ветки с текущим деревом:&lt;/p>
+&lt;pre>&lt;code class="language-sh">git merge --no-ff имя_ветки
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Удаление ветки:&lt;/p>
+&lt;ul>
+&lt;li>удаление локальной уже слитой с основным деревом ветки:
+&lt;pre>&lt;code class="language-sh">git branch -d имя_ветки
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>принудительное удаление локальной ветки:
+&lt;pre>&lt;code class="language-sh">git branch -D имя_ветки
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>удаление ветки с центрального репозитория:
+&lt;pre>&lt;code class="language-sh">git push origin :имя_ветки
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="стандартные-процедуры-работы-при-наличии-центрального-репозитория">&lt;span class="section-num">2.2.2&lt;/span> Стандартные процедуры работы при наличии центрального репозитория&lt;/h4>
+&lt;ul>
+&lt;li>
+&lt;p>Работа пользователя со своей веткой начинается с проверки и получения изменений из центрального репозитория (при этом в локальное дерево до начала этой процедуры не должно было вноситься изменений):&lt;/p>
+&lt;pre>&lt;code class="language-sh">git checkout master
 git pull
 git checkout -b имя_ветки
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Затем можно вносить изменения в локальном дереве и/или ветке.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;После завершения внесения какого-то изменения в файлы и/или каталоги проекта необходимо разместить их в центральном репозитории. Для этого необходимо проверить, какие файлы изменились к текущему моменту:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;git status
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;При необходимости удаляем лишние файлы, которые не хотим отправлять в центральный репозиторий.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Затем полезно просмотреть текст изменений на предмет соответствия правилам ведения чистых коммитов:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;git diff
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Если какие-либо файлы не должны попасть в коммит, то помечаем только те файлы, изменения которых нужно сохранить. Для этого используем команды добавления и/или удаления с нужными опциями:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;git add …
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Затем можно вносить изменения в локальном дереве и/или ветке.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>После завершения внесения какого-то изменения в файлы и/или каталоги проекта необходимо разместить их в центральном репозитории. Для этого необходимо проверить, какие файлы изменились к текущему моменту:&lt;/p>
+&lt;pre>&lt;code class="language-sh">git status
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>При необходимости удаляем лишние файлы, которые не хотим отправлять в центральный репозиторий.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Затем полезно просмотреть текст изменений на предмет соответствия правилам ведения чистых коммитов:&lt;/p>
+&lt;pre>&lt;code class="language-sh">git diff
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Если какие-либо файлы не должны попасть в коммит, то помечаем только те файлы, изменения которых нужно сохранить. Для этого используем команды добавления и/или удаления с нужными опциями:&lt;/p>
+&lt;pre>&lt;code class="language-sh">git add …
 git rm …
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Если нужно сохранить все изменения в текущем каталоге, то используем:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;git add .
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Затем сохраняем изменения, поясняя, что было сделано:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;git commit -am &amp;quot;Some commit message&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Отправляем изменения в центральный репозиторий:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;git push origin имя_ветки
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;или&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;git push
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&#34;работа-с-локальным-репозиторием&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2.3&lt;/span&gt; Работа с локальным репозиторием&lt;/h4&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Создадим локальный репозиторий.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Сначала сделаем предварительную конфигурацию, указав имя и email владельца репозитория:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;git config --global user.name &amp;quot;Имя Фамилия&amp;quot;
-git config --global  user.email &amp;quot;work@mail&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Настроим utf-8 в выводе сообщений &lt;code&gt;git&lt;/code&gt;:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;git config --global quotepath false
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Для инициализации локального репозитория, расположенного, например, в каталоге &lt;code&gt;~/tutorial&lt;/code&gt;, необходимо ввести в командной строке:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;cd
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Если нужно сохранить все изменения в текущем каталоге, то используем:&lt;/p>
+&lt;pre>&lt;code class="language-sh">git add .
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Затем сохраняем изменения, поясняя, что было сделано:&lt;/p>
+&lt;pre>&lt;code class="language-sh">git commit -am &amp;quot;Some commit message&amp;quot;
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Отправляем изменения в центральный репозиторий:&lt;/p>
+&lt;pre>&lt;code class="language-sh">git push origin имя_ветки
+&lt;/code>&lt;/pre>
+&lt;p>или&lt;/p>
+&lt;pre>&lt;code class="language-sh">git push
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="работа-с-локальным-репозиторием">&lt;span class="section-num">2.2.3&lt;/span> Работа с локальным репозиторием&lt;/h4>
+&lt;ul>
+&lt;li>
+&lt;p>Создадим локальный репозиторий.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Сначала сделаем предварительную конфигурацию, указав имя и email владельца репозитория:&lt;/p>
+&lt;pre>&lt;code class="language-sh">git config --global user.name &amp;quot;Имя Фамилия&amp;quot;
+git config --global user.email &amp;quot;work@mail&amp;quot;
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Настроим utf-8 в выводе сообщений &lt;code>git&lt;/code>:&lt;/p>
+&lt;pre>&lt;code class="language-sh">git config --global quotepath false
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Для инициализации локального репозитория, расположенного, например, в каталоге &lt;code>~/tutorial&lt;/code>, необходимо ввести в командной строке:&lt;/p>
+&lt;pre>&lt;code class="language-sh">cd
 mkdir tutorial
 cd tutorial
 git init
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;После это в каталоге &lt;code&gt;tutorial&lt;/code&gt; появится каталог &lt;code&gt;.git&lt;/code&gt;, в котором будет храниться история изменений.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Создадим тестовый текстовый файл &lt;code&gt;hello.txt&lt;/code&gt; и добавим его в локальный репозиторий:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;echo &#39;hello world&#39; &amp;gt; hello.txt
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>После это в каталоге &lt;code>tutorial&lt;/code> появится каталог &lt;code>.git&lt;/code>, в котором будет храниться история изменений.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Создадим тестовый текстовый файл &lt;code>hello.txt&lt;/code> и добавим его в локальный репозиторий:&lt;/p>
+&lt;pre>&lt;code class="language-sh">echo 'hello world' &amp;gt; hello.txt
 git add hello.txt
-git commit -am &#39;Новый файл&#39;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Воспользуемся командой &lt;code&gt;status&lt;/code&gt; для просмотра изменений в рабочем каталоге, сделанных с момента последней ревизии:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;git status
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Во время работы над проектом так или иначе могут создаваться файлы, которые не требуется добавлять в последствии в репозиторий. Например, временные файлы, создаваемые редакторами, или объектные файлы, создаваемые компиляторами. Можно прописать шаблоны игнорируемых при добавлении в репозиторий типов файлов в файл &lt;code&gt;.gitignore&lt;/code&gt; с помощью сервисов. Для этого сначала нужно получить список имеющихся шаблонов:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;curl -L -s https://www.gitignore.io/api/list
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Затем скачать шаблон, например, для C и C++&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;curl -L -s https://www.gitignore.io/api/c &amp;gt;&amp;gt; .gitignore
+git commit -am 'Новый файл'
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Воспользуемся командой &lt;code>status&lt;/code> для просмотра изменений в рабочем каталоге, сделанных с момента последней ревизии:&lt;/p>
+&lt;pre>&lt;code class="language-sh">git status
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Во время работы над проектом так или иначе могут создаваться файлы, которые не требуется добавлять в последствии в репозиторий. Например, временные файлы, создаваемые редакторами, или объектные файлы, создаваемые компиляторами. Можно прописать шаблоны игнорируемых при добавлении в репозиторий типов файлов в файл &lt;code>.gitignore&lt;/code> с помощью сервисов. Для этого сначала нужно получить список имеющихся шаблонов:&lt;/p>
+&lt;pre>&lt;code class="language-sh">curl -L -s https://www.gitignore.io/api/list
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Затем скачать шаблон, например, для C и C++&lt;/p>
+&lt;pre>&lt;code class="language-sh">curl -L -s https://www.gitignore.io/api/c &amp;gt;&amp;gt; .gitignore
 curl -L -s https://www.gitignore.io/api/c++ &amp;gt;&amp;gt; .gitignore
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&#34;работа-с-сервером-репозиториев&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2.4&lt;/span&gt; Работа с сервером репозиториев&lt;/h4&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Для последующей идентификации пользователя на сервере репозиториев необходимо сгенерировать пару ключей (приватный и открытый):&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;ssh-keygen -C &amp;quot;Имя Фамилия &amp;lt;work@mail&amp;gt;&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Ключи сохраняться в каталоге &lt;code&gt;~/.ssh/&lt;/code&gt;.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Существует несколько доступных серверов репозиториев с возможностью бесплатного размещения данных. Например, &lt;a href=&#34;https://github.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/&lt;/a&gt;.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Для работы с ним необходимо сначала завести на сайте &lt;a href=&#34;https://github.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/&lt;/a&gt; учётную запись. Затем необходимо загрузить сгенерённый нами ранее открытый ключ.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Для этого зайти на сайт &lt;a href=&#34;https://github.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/&lt;/a&gt; под своей учётной записью и перейти в меню &lt;em&gt;GitHub setting&lt;/em&gt;.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;После этого выбрать в боковом меню &lt;em&gt;GitHub setting&amp;gt;SSH-ключи&lt;/em&gt; и нажать кнопку &lt;em&gt;Добавить ключ&lt;/em&gt;. Скопировав из локальной консоли ключ в буфер обмена:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;cat ~/.ssh/id_rsa.pub | xclip -sel clip
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Вставляем ключ в появившееся на сайте поле.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;После этого можно создать на сайте репозиторий, выбрав в меню , дать ему название и сделать общедоступным (публичным).&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Для загрузки репозитория из локального каталога на сервер выполняем следующие команды:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;git remote add origin
-  ssh://git@github.com/&amp;lt;username&amp;gt;/&amp;lt;reponame&amp;gt;.git
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="работа-с-сервером-репозиториев">&lt;span class="section-num">2.2.4&lt;/span> Работа с сервером репозиториев&lt;/h4>
+&lt;ul>
+&lt;li>
+&lt;p>Для последующей идентификации пользователя на сервере репозиториев необходимо сгенерировать пару ключей (приватный и открытый):&lt;/p>
+&lt;pre>&lt;code class="language-sh">ssh-keygen -C &amp;quot;Имя Фамилия &amp;lt;work@mail&amp;gt;&amp;quot;
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Ключи сохраняться в каталоге &lt;code>~/.ssh/&lt;/code>.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Существует несколько доступных серверов репозиториев с возможностью бесплатного размещения данных. Например, &lt;a href="https://github.com/" target="_blank" rel="noopener">https://github.com/&lt;/a>.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Для работы с ним необходимо сначала завести на сайте &lt;a href="https://github.com/" target="_blank" rel="noopener">https://github.com/&lt;/a> учётную запись. Затем необходимо загрузить сгенерённый нами ранее открытый ключ.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Для этого зайти на сайт &lt;a href="https://github.com/" target="_blank" rel="noopener">https://github.com/&lt;/a> под своей учётной записью и перейти в меню &lt;em>GitHub setting&lt;/em>.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>После этого выбрать в боковом меню &lt;em>GitHub setting&amp;gt;SSH-ключи&lt;/em> и нажать кнопку &lt;em>Добавить ключ&lt;/em>. Скопировав из локальной консоли ключ в буфер обмена:&lt;/p>
+&lt;pre>&lt;code class="language-sh">cat ~/.ssh/id_rsa.pub | xclip -sel clip
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Вставляем ключ в появившееся на сайте поле.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>После этого можно создать на сайте репозиторий, выбрав в меню , дать ему название и сделать общедоступным (публичным).&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Для загрузки репозитория из локального каталога на сервер выполняем следующие команды:&lt;/p>
+&lt;pre>&lt;code class="language-sh">git remote add origin
+ssh://git@github.com/&amp;lt;username&amp;gt;/&amp;lt;reponame&amp;gt;.git
 git push -u origin master
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Далее на локальном компьютере можно выполнять стандартные процедуры для работы с &lt;code&gt;git&lt;/code&gt; при наличии центрального репозитория.&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;базовая-настройка-git&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; Базовая настройка git&lt;/h3&gt;
-&lt;h4 id=&#34;первичная-настройка-параметров-git&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3.1&lt;/span&gt; Первичная настройка параметров git&lt;/h4&gt;
-&lt;ul&gt;
-&lt;li&gt;Зададим имя и email владельца репозитория:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;git config --global user.name &amp;quot;Name Surname&amp;quot;
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Далее на локальном компьютере можно выполнять стандартные процедуры для работы с &lt;code>git&lt;/code> при наличии центрального репозитория.&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="базовая-настройка-git">&lt;span class="section-num">2.3&lt;/span> Базовая настройка git&lt;/h3>
+&lt;h4 id="первичная-настройка-параметров-git">&lt;span class="section-num">2.3.1&lt;/span> Первичная настройка параметров git&lt;/h4>
+&lt;ul>
+&lt;li>Зададим имя и email владельца репозитория:
+&lt;pre>&lt;code class="language-shell">git config --global user.name &amp;quot;Name Surname&amp;quot;
 git config --global user.email &amp;quot;work@mail&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;Настроим utf-8 в выводе сообщений git:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;git config --global core.quotepath false
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;Настройте верификацию и подписание коммитов git (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/01/28/verifying-git-commits-gpg/&#34;&gt;Верификация коммитов git с помощью GPG&lt;/a&gt;).&lt;/li&gt;
-&lt;li&gt;Зададим имя начальной ветки (будем называть её &lt;code&gt;master&lt;/code&gt;):
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;git config --global init.defaultBranch master
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&#34;учёт-переносов-строк&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3.2&lt;/span&gt; Учёт переносов строк&lt;/h4&gt;
-&lt;ul&gt;
-&lt;li&gt;В разных операционных системах приняты разные символы для перевода строк:
-&lt;ul&gt;
-&lt;li&gt;Windows: &lt;code&gt;\r\n&lt;/code&gt; (&lt;code&gt;CR&lt;/code&gt; и &lt;code&gt;LF&lt;/code&gt;);&lt;/li&gt;
-&lt;li&gt;Unix: &lt;code&gt;\n&lt;/code&gt; (&lt;code&gt;LF&lt;/code&gt;);&lt;/li&gt;
-&lt;li&gt;Mac: &lt;code&gt;\r&lt;/code&gt; (&lt;code&gt;CR&lt;/code&gt;).&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Посмотреть значения переносов строк в репозитории можно командой:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;git ls-files --eol
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;!--list-separator--&gt;
-&lt;ol&gt;
-&lt;li&gt;
-&lt;p&gt;Параметр &lt;code&gt;autocrlf&lt;/code&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Настройка &lt;code&gt;core.autocrlf&lt;/code&gt; предназначена для того, чтобы в главном репозитории все переводы строк текстовых файлах были одинаковы.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Настройка &lt;code&gt;core.autocrlf&lt;/code&gt; с параметрами &lt;code&gt;true&lt;/code&gt; и &lt;code&gt;input&lt;/code&gt; делает все переводы строк текстовых файлов в главном репозитории одинаковыми.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;core.autocrlf true&lt;/code&gt;: конвертация &lt;code&gt;CRLF-&amp;gt;LF&lt;/code&gt; при коммите и обратно &lt;code&gt;LF-&amp;gt;CRLF&lt;/code&gt; при выгрузке кода из репозитория на файловую систему (обычно используется в Windows).&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;core.autocrlf input&lt;/code&gt;: конвертация &lt;code&gt;CRLF-&amp;gt;LF&lt;/code&gt; только при коммитах (используются в MacOS/Linux).&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Варианты конвертации&lt;/p&gt;
-&lt;div class=&#34;table-caption&#34;&gt;
-  &lt;span class=&#34;table-number&#34;&gt;&amp;#1058;&amp;#1072;&amp;#1073;&amp;#1083;&amp;#1080;&amp;#1094;&amp;#1072; 1:&lt;/span&gt;
-  Варианты конвертации для разных значений параметра core.autocrlf
-&lt;/div&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;core.autocrlf&lt;/th&gt;
-&lt;th&gt;false&lt;/th&gt;
-&lt;th&gt;input&lt;/th&gt;
-&lt;th&gt;true&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;git commit&lt;/td&gt;
-&lt;td&gt;LF -&amp;gt; LF&lt;/td&gt;
-&lt;td&gt;LF -&amp;gt; LF&lt;/td&gt;
-&lt;td&gt;LF -&amp;gt; CRLF&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;td&gt;CR -&amp;gt; CR&lt;/td&gt;
-&lt;td&gt;CR -&amp;gt; CR&lt;/td&gt;
-&lt;td&gt;CR -&amp;gt; CR&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;td&gt;CRLF -&amp;gt; CRLF&lt;/td&gt;
-&lt;td&gt;CRLF -&amp;gt; LF&lt;/td&gt;
-&lt;td&gt;CRLF -&amp;gt; CRLF&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;git checkout&lt;/td&gt;
-&lt;td&gt;LF -&amp;gt; LF&lt;/td&gt;
-&lt;td&gt;LF -&amp;gt; LF&lt;/td&gt;
-&lt;td&gt;LF -&amp;gt; CRLF&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;td&gt;CR -&amp;gt; CR&lt;/td&gt;
-&lt;td&gt;CR -&amp;gt; CR&lt;/td&gt;
-&lt;td&gt;CR -&amp;gt; CR&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;td&gt;CRLF -&amp;gt; CRLF&lt;/td&gt;
-&lt;td&gt;CRLF -&amp;gt; CRLF&lt;/td&gt;
-&lt;td&gt;CRLF -&amp;gt; CRLF&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Установка параметра:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Для Windows
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;git config --global core.autocrlf true
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;Для Linux
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;git config --global core.autocrlf input
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;!--list-separator--&gt;
-&lt;ol start=&#34;2&#34;&gt;
-&lt;li&gt;
-&lt;p&gt;Параметр &lt;code&gt;safecrlf&lt;/code&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Настройка &lt;code&gt;core.safecrlf&lt;/code&gt;  предназначена для проверки, является ли окончаний строк обратимым для текущей настройки &lt;code&gt;core.autocrlf&lt;/code&gt;.
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;core.safecrlf true&lt;/code&gt;: запрещается необратимое преобразование &lt;code&gt;lf&amp;lt;-&amp;gt;crlf&lt;/code&gt;. Полезно, когда существуют бинарные файлы, похожие на текстовые файлы.&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;core.safecrlf warn&lt;/code&gt;: печать предупреждения, но коммиты с необратимым переходом принимаются.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Установка параметра:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;git config --global core.safecrlf warn
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h3 id=&#34;создание-ключа-ssh&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.4&lt;/span&gt; Создание ключа ssh&lt;/h3&gt;
-&lt;h4 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.4.1&lt;/span&gt; Общая информация&lt;/h4&gt;
-&lt;!--list-separator--&gt;
-&lt;ol&gt;
-&lt;li&gt;
-&lt;p&gt;Алгоритмы шифрования ssh&lt;/p&gt;
-&lt;!--list-separator--&gt;
-&lt;ol&gt;
-&lt;li&gt;
-&lt;p&gt;Аутентификация&lt;/p&gt;
-&lt;p&gt;В SSH поддерживается четыре алгоритма аутентификации по открытым ключам:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;DSA:
-&lt;ul&gt;
-&lt;li&gt;размер ключей DSA не может превышать 1024, его следует отключить;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;RSA:
-&lt;ul&gt;
-&lt;li&gt;следует создавать ключ большого размера: 4096 бит;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;ECDSA:
-&lt;ul&gt;
-&lt;li&gt;ECDSA завязан на технологиях NIST, его следует отключить;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Ed25519:
-&lt;ul&gt;
-&lt;li&gt;используется пока не везде.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;!--list-separator--&gt;
-&lt;ol start=&#34;2&#34;&gt;
-&lt;li&gt;
-&lt;p&gt;Симметричные шифры&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Из 15 поддерживаемых в SSH алгоритмов симметричного шифрования, безопасными можно считать:
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;chacha20-poly1305&lt;/code&gt;;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;aes*-ctr&lt;/code&gt;;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;aes*-gcm&lt;/code&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Шифры &lt;code&gt;3des-cbc&lt;/code&gt; и &lt;code&gt;arcfour&lt;/code&gt; потенциально уязвимы в силу использования DES и RC4.&lt;/li&gt;
-&lt;li&gt;Шифр &lt;code&gt;cast128-cbc&lt;/code&gt; применяет слишком короткий размер блока (64 бит).&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;!--list-separator--&gt;
-&lt;ol start=&#34;3&#34;&gt;
-&lt;li&gt;
-&lt;p&gt;Обмен ключами&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Применяемые в SSH методы обмена ключей  DH (Diffie-Hellman) и ECDH (Elliptic Curve Diffie-Hellman) можно считать безопасными.&lt;/li&gt;
-&lt;li&gt;Из 8 поддерживаемых в SSH протоколов обмена ключами вызывают подозрения три,  основанные на рекомендациях NIST:
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;ecdh-sha2-nistp256&lt;/code&gt;;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;ecdh-sha2-nistp384&lt;/code&gt;;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;ecdh-sha2-nistp521&lt;/code&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Не стоит использовать протоколы, основанные на &lt;em&gt;SHA1&lt;/em&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;!--list-separator--&gt;
-&lt;ol start=&#34;2&#34;&gt;
-&lt;li&gt;
-&lt;p&gt;Файлы ssh-ключей&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;По умолчанию пользовательские ssh-ключи сохраняются в каталоге &lt;code&gt;~/.ssh&lt;/code&gt; в домашнем каталоге пользователя.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Убедитесь, что у вас ещё нет ключа.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Файлы закрытых ключей имеют названия типа &lt;code&gt;id_&amp;lt;алгоритм&amp;gt;&lt;/code&gt; (например, &lt;code&gt;id_dsa&lt;/code&gt;, &lt;code&gt;id_rsa&lt;/code&gt;).&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;По умолчанию закрытые ключи имеют имена:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;id_dsa
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>Настроим utf-8 в выводе сообщений git:
+&lt;pre>&lt;code class="language-shell">git config --global core.quotepath false
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>Настройте верификацию и подписание коммитов git (см. &lt;a href="https://yamadharma.github.io/ru/post/2021/01/28/verifying-git-commits-gpg/">Верификация коммитов git с помощью GPG&lt;/a>).&lt;/li>
+&lt;li>Зададим имя начальной ветки (будем называть её &lt;code>master&lt;/code>):
+&lt;pre>&lt;code class="language-shell">git config --global init.defaultBranch master
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="учёт-переносов-строк">&lt;span class="section-num">2.3.2&lt;/span> Учёт переносов строк&lt;/h4>
+&lt;ul>
+&lt;li>В разных операционных системах приняты разные символы для перевода строк:
+&lt;ul>
+&lt;li>Windows: &lt;code>\r\n&lt;/code> (&lt;code>CR&lt;/code> и &lt;code>LF&lt;/code>);&lt;/li>
+&lt;li>Unix: &lt;code>\n&lt;/code> (&lt;code>LF&lt;/code>);&lt;/li>
+&lt;li>Mac: &lt;code>\r&lt;/code> (&lt;code>CR&lt;/code>).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Посмотреть значения переносов строк в репозитории можно командой:
+&lt;pre>&lt;code class="language-shell">git ls-files --eol
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;!--list-separator-->
+&lt;ol>
+&lt;li>
+&lt;p>Параметр &lt;code>autocrlf&lt;/code>&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>Настройка &lt;code>core.autocrlf&lt;/code> предназначена для того, чтобы в главном репозитории все переводы строк текстовых файлах были одинаковы.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Настройка &lt;code>core.autocrlf&lt;/code> с параметрами &lt;code>true&lt;/code> и &lt;code>input&lt;/code> делает все переводы строк текстовых файлов в главном репозитории одинаковыми.&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>core.autocrlf true&lt;/code>: конвертация &lt;code>CRLF-&amp;gt;LF&lt;/code> при коммите и обратно &lt;code>LF-&amp;gt;CRLF&lt;/code> при выгрузке кода из репозитория на файловую систему (обычно используется в Windows).&lt;/li>
+&lt;li>&lt;code>core.autocrlf input&lt;/code>: конвертация &lt;code>CRLF-&amp;gt;LF&lt;/code> только при коммитах (используются в MacOS/Linux).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Варианты конвертации&lt;/p>
+&lt;div class="table-caption">
+&lt;span class="table-number">&amp;#1058;&amp;#1072;&amp;#1073;&amp;#1083;&amp;#1080;&amp;#1094;&amp;#1072; 1:&lt;/span>
+Варианты конвертации для разных значений параметра core.autocrlf
+&lt;/div>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>core.autocrlf&lt;/th>
+&lt;th>false&lt;/th>
+&lt;th>input&lt;/th>
+&lt;th>true&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>git commit&lt;/td>
+&lt;td>LF -&amp;gt; LF&lt;/td>
+&lt;td>LF -&amp;gt; LF&lt;/td>
+&lt;td>LF -&amp;gt; CRLF&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;/td>
+&lt;td>CR -&amp;gt; CR&lt;/td>
+&lt;td>CR -&amp;gt; CR&lt;/td>
+&lt;td>CR -&amp;gt; CR&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;/td>
+&lt;td>CRLF -&amp;gt; CRLF&lt;/td>
+&lt;td>CRLF -&amp;gt; LF&lt;/td>
+&lt;td>CRLF -&amp;gt; CRLF&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>git checkout&lt;/td>
+&lt;td>LF -&amp;gt; LF&lt;/td>
+&lt;td>LF -&amp;gt; LF&lt;/td>
+&lt;td>LF -&amp;gt; CRLF&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;/td>
+&lt;td>CR -&amp;gt; CR&lt;/td>
+&lt;td>CR -&amp;gt; CR&lt;/td>
+&lt;td>CR -&amp;gt; CR&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;/td>
+&lt;td>CRLF -&amp;gt; CRLF&lt;/td>
+&lt;td>CRLF -&amp;gt; CRLF&lt;/td>
+&lt;td>CRLF -&amp;gt; CRLF&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;/li>
+&lt;li>
+&lt;p>Установка параметра:&lt;/p>
+&lt;ul>
+&lt;li>Для Windows
+&lt;pre>&lt;code class="language-shell">git config --global core.autocrlf true
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>Для Linux
+&lt;pre>&lt;code class="language-shell">git config --global core.autocrlf input
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;!--list-separator-->
+&lt;ol start="2">
+&lt;li>
+&lt;p>Параметр &lt;code>safecrlf&lt;/code>&lt;/p>
+&lt;ul>
+&lt;li>Настройка &lt;code>core.safecrlf&lt;/code> предназначена для проверки, является ли окончаний строк обратимым для текущей настройки &lt;code>core.autocrlf&lt;/code>.
+&lt;ul>
+&lt;li>&lt;code>core.safecrlf true&lt;/code>: запрещается необратимое преобразование &lt;code>lf&amp;lt;-&amp;gt;crlf&lt;/code>. Полезно, когда существуют бинарные файлы, похожие на текстовые файлы.&lt;/li>
+&lt;li>&lt;code>core.safecrlf warn&lt;/code>: печать предупреждения, но коммиты с необратимым переходом принимаются.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Установка параметра:
+&lt;pre>&lt;code class="language-shell">git config --global core.safecrlf warn
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;h3 id="создание-ключа-ssh">&lt;span class="section-num">2.4&lt;/span> Создание ключа ssh&lt;/h3>
+&lt;h4 id="общая-информация">&lt;span class="section-num">2.4.1&lt;/span> Общая информация&lt;/h4>
+&lt;!--list-separator-->
+&lt;ol>
+&lt;li>
+&lt;p>Алгоритмы шифрования ssh&lt;/p>
+&lt;!--list-separator-->
+&lt;ol>
+&lt;li>
+&lt;p>Аутентификация&lt;/p>
+&lt;p>В SSH поддерживается четыре алгоритма аутентификации по открытым ключам:&lt;/p>
+&lt;ul>
+&lt;li>DSA:
+&lt;ul>
+&lt;li>размер ключей DSA не может превышать 1024, его следует отключить;&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>RSA:
+&lt;ul>
+&lt;li>следует создавать ключ большого размера: 4096 бит;&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>ECDSA:
+&lt;ul>
+&lt;li>ECDSA завязан на технологиях NIST, его следует отключить;&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Ed25519:
+&lt;ul>
+&lt;li>используется пока не везде.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;!--list-separator-->
+&lt;ol start="2">
+&lt;li>
+&lt;p>Симметричные шифры&lt;/p>
+&lt;ul>
+&lt;li>Из 15 поддерживаемых в SSH алгоритмов симметричного шифрования, безопасными можно считать:
+&lt;ul>
+&lt;li>&lt;code>chacha20-poly1305&lt;/code>;&lt;/li>
+&lt;li>&lt;code>aes*-ctr&lt;/code>;&lt;/li>
+&lt;li>&lt;code>aes*-gcm&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Шифры &lt;code>3des-cbc&lt;/code> и &lt;code>arcfour&lt;/code> потенциально уязвимы в силу использования DES и RC4.&lt;/li>
+&lt;li>Шифр &lt;code>cast128-cbc&lt;/code> применяет слишком короткий размер блока (64 бит).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;!--list-separator-->
+&lt;ol start="3">
+&lt;li>
+&lt;p>Обмен ключами&lt;/p>
+&lt;ul>
+&lt;li>Применяемые в SSH методы обмена ключей DH (Diffie-Hellman) и ECDH (Elliptic Curve Diffie-Hellman) можно считать безопасными.&lt;/li>
+&lt;li>Из 8 поддерживаемых в SSH протоколов обмена ключами вызывают подозрения три, основанные на рекомендациях NIST:
+&lt;ul>
+&lt;li>&lt;code>ecdh-sha2-nistp256&lt;/code>;&lt;/li>
+&lt;li>&lt;code>ecdh-sha2-nistp384&lt;/code>;&lt;/li>
+&lt;li>&lt;code>ecdh-sha2-nistp521&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Не стоит использовать протоколы, основанные на &lt;em>SHA1&lt;/em>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;/ol>
+&lt;!--list-separator-->
+&lt;ol start="2">
+&lt;li>
+&lt;p>Файлы ssh-ключей&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>По умолчанию пользовательские ssh-ключи сохраняются в каталоге &lt;code>~/.ssh&lt;/code> в домашнем каталоге пользователя.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Убедитесь, что у вас ещё нет ключа.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Файлы закрытых ключей имеют названия типа &lt;code>id_&amp;lt;алгоритм&amp;gt;&lt;/code> (например, &lt;code>id_dsa&lt;/code>, &lt;code>id_rsa&lt;/code>).&lt;/p>
+&lt;ul>
+&lt;li>По умолчанию закрытые ключи имеют имена:
+&lt;pre>&lt;code class="language-shell">id_dsa
 id_ecdsa
 id_ed25519
 id_rsa
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Открытые ключи имеют дополнительные расширения &lt;code&gt;.pub&lt;/code&gt;.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;По умолчанию публичные ключи имеют имена:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;id_dsa.pub
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Открытые ключи имеют дополнительные расширения &lt;code>.pub&lt;/code>.&lt;/p>
+&lt;ul>
+&lt;li>По умолчанию публичные ключи имеют имена:
+&lt;pre>&lt;code class="language-shell">id_dsa.pub
 id_ecdsa.pub
 id_ed25519.pub
 id_rsa.pub
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;При создании ключа команда попросит ввести любую ключевую фразу для более надёжной защиты вашего пароля. Можно пропустить этот этап, нажав &lt;code&gt;Enter&lt;/code&gt;.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Сменить пароль на ключ можно с помощью команды:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;ssh-keygen -p
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h4 id=&#34;создание-ключа-ssh&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.4.2&lt;/span&gt; Создание ключа ssh&lt;/h4&gt;
-&lt;ul&gt;
-&lt;li&gt;Ключ ssh создаётся командой:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;ssh-keygen -t &amp;lt;алгоритм&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;Создайте ключи:
-&lt;ul&gt;
-&lt;li&gt;по алгоритму &lt;em&gt;rsa&lt;/em&gt; с ключём размером 4096 бит:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;ssh-keygen -t rsa -b 4096
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;по алгоритму &lt;em&gt;ed25519&lt;/em&gt;:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;ssh-keygen -t ed25519
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;При создании ключа команда попросит ввести любую ключевую фразу для более надёжной защиты вашего пароля. Можно пропустить этот этап, нажав &lt;code&gt;Enter&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Сменить пароль на ключ можно с помощью команды:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;ssh-keygen -p
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&#34;добавление-ssh-ключа-в-учётную-запись-github&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.4.3&lt;/span&gt; Добавление SSH-ключа в учётную запись GitHub&lt;/h4&gt;
-&lt;ul&gt;
-&lt;li&gt;Скопируйте созданный SSH-ключ в буфер обмена командой:
-&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;xclip -i &amp;lt; ~/.ssh/id_ed25519.pub
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;Откройте настройки своего аккаунта на GitHub и перейдем в раздел &lt;code&gt;SSH and GPC keys&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Нажмите кнопку &lt;code&gt;ew SSH key&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Добавьте в поле &lt;code&gt;Title&lt;/code&gt; название этого ключа, например, &lt;code&gt;ed25519@hostname&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Вставьте из буфера обмена в поле &lt;code&gt;Key&lt;/code&gt; ключ.&lt;/li&gt;
-&lt;li&gt;Нажмите кнопку &lt;code&gt;Add SSH key&lt;/code&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;верификация-коммитов-с-помощью-pgp&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.5&lt;/span&gt; Верификация коммитов с помощью &lt;em&gt;PGP&lt;/em&gt;&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Как настроить PGP-подпись коммитов с помощью &lt;code&gt;gpg&lt;/code&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.5.1&lt;/span&gt; Общая информация&lt;/h4&gt;
-&lt;ul&gt;
-&lt;li&gt;Коммиты имеют следующие свойства:
-&lt;ul&gt;
-&lt;li&gt;author (автор) &amp;mdash; контрибьютор, выполнивший работу (указывается для справки);&lt;/li&gt;
-&lt;li&gt;committer (коммитер) &amp;mdash; пользователь, который закоммитил изменения.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Эти свойства можно переопределить при совершении коммита.&lt;/li&gt;
-&lt;li&gt;Авторство коммита можно подделать.&lt;/li&gt;
-&lt;li&gt;В git есть функция подписи коммитов.&lt;/li&gt;
-&lt;li&gt;Для подписывания коммитов используется технология PGP (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2020/12/18/using-pgp/&#34;&gt;Работа с PGP&lt;/a&gt;).&lt;/li&gt;
-&lt;li&gt;Подпись коммита позволяет удостовериться в том, кто является коммитером. Авторство не проверяется.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&#34;создание-ключа&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.5.2&lt;/span&gt; Создание ключа&lt;/h4&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Генерируем ключ&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;gpg --full-generate-key
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Из предложенных опций выбираем:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;тип &lt;em&gt;RSA and RSA&lt;/em&gt;;&lt;/li&gt;
-&lt;li&gt;размер 4096;&lt;/li&gt;
-&lt;li&gt;выберите срок действия; значение по умолчанию &amp;mdash; 0 (срок действия не истекает никогда).&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;GPG запросит личную информацию, которая сохранится в ключе:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Имя (не менее 5 символов).&lt;/li&gt;
-&lt;li&gt;Адрес электронной почты.
-&lt;ul&gt;
-&lt;li&gt;При вводе email убедитесь, что он соответствует адресу, используемому на GitHub.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Комментарий. Можно ввести что угодно или нажать клавишу ввода, чтобы оставить это поле пустым.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&#34;экспорт-ключа&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.5.3&lt;/span&gt; Экспорт ключа&lt;/h4&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Выводим список ключей и копируем отпечаток приватного ключа:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;gpg --list-secret-keys --keyid-format LONG
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Отпечаток ключа &amp;mdash; это последовательность байтов, используемая для идентификации более длинного, по сравнению с самим отпечатком ключа.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Формат строки:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-text&#34;&gt;sec   Алгоритм/Отпечаток_ключа Дата_создания [Флаги] [Годен_до]
-      ID_ключа
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Экспортируем ключ в формате ASCII по его отпечатку:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;gpg --armor --export &amp;lt;PGP Fingerprint&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&#34;добавление-pgp-ключа-в-github&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.5.4&lt;/span&gt; Добавление PGP ключа в GitHub&lt;/h4&gt;
-&lt;ul&gt;
-&lt;li&gt;Копируем ключ и добавляем его в настройках профиля на GitHub (или GitLab).&lt;/li&gt;
-&lt;li&gt;Cкопируйте ваш сгенерированный PGP ключ в буфер обмена:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;gpg --armor --export &amp;lt;PGP Fingerprint&amp;gt; | xclip -sel clip
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;Перейдите в настройки GitHub (&lt;a href=&#34;https://github.com/settings/keys&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/settings/keys&lt;/a&gt;), нажмите на кнопку &lt;em&gt;New GPG key&lt;/em&gt; и вставьте полученный ключ в поле ввода.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&#34;подписывание-коммитов-git&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.5.5&lt;/span&gt; Подписывание коммитов git&lt;/h4&gt;
-&lt;ul&gt;
-&lt;li&gt;Подпись коммитов при работе через терминал:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;git commit -a -S -m &#39;your commit message&#39;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;Флаг &lt;code&gt;-S&lt;/code&gt; означает создание подписанного коммита. При этом может потребоваться ввод кодовой фразы, заданной при генерации GPG-ключа.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&#34;настройка-автоматических-подписей-коммитов-git&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.5.6&lt;/span&gt; Настройка автоматических подписей коммитов git&lt;/h4&gt;
-&lt;ul&gt;
-&lt;li&gt;Используя введёный email, укажите Git применять его при подписи коммитов:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;git config --global user.signingkey &amp;lt;PGP Fingerprint&amp;gt;
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>При создании ключа команда попросит ввести любую ключевую фразу для более надёжной защиты вашего пароля. Можно пропустить этот этап, нажав &lt;code>Enter&lt;/code>.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Сменить пароль на ключ можно с помощью команды:&lt;/p>
+&lt;pre>&lt;code class="language-shell">ssh-keygen -p
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;h4 id="создание-ключа-ssh">&lt;span class="section-num">2.4.2&lt;/span> Создание ключа ssh&lt;/h4>
+&lt;ul>
+&lt;li>Ключ ssh создаётся командой:
+&lt;pre>&lt;code class="language-shell">ssh-keygen -t &amp;lt;алгоритм&amp;gt;
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>Создайте ключи:
+&lt;ul>
+&lt;li>по алгоритму &lt;em>rsa&lt;/em> с ключём размером 4096 бит:
+&lt;pre>&lt;code class="language-shell">ssh-keygen -t rsa -b 4096
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>по алгоритму &lt;em>ed25519&lt;/em>:
+&lt;pre>&lt;code class="language-shell">ssh-keygen -t ed25519
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>При создании ключа команда попросит ввести любую ключевую фразу для более надёжной защиты вашего пароля. Можно пропустить этот этап, нажав &lt;code>Enter&lt;/code>.&lt;/li>
+&lt;li>Сменить пароль на ключ можно с помощью команды:
+&lt;pre>&lt;code class="language-shell">ssh-keygen -p
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="добавление-ssh-ключа-в-учётную-запись-github">&lt;span class="section-num">2.4.3&lt;/span> Добавление SSH-ключа в учётную запись GitHub&lt;/h4>
+&lt;ul>
+&lt;li>Скопируйте созданный SSH-ключ в буфер обмена командой:
+&lt;pre>&lt;code class="language-conf-unix">xclip -i &amp;lt; ~/.ssh/id_ed25519.pub
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>Откройте настройки своего аккаунта на GitHub и перейдем в раздел &lt;code>SSH and GPC keys&lt;/code>.&lt;/li>
+&lt;li>Нажмите кнопку &lt;code>ew SSH key&lt;/code>.&lt;/li>
+&lt;li>Добавьте в поле &lt;code>Title&lt;/code> название этого ключа, например, &lt;code>ed25519@hostname&lt;/code>.&lt;/li>
+&lt;li>Вставьте из буфера обмена в поле &lt;code>Key&lt;/code> ключ.&lt;/li>
+&lt;li>Нажмите кнопку &lt;code>Add SSH key&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h3 id="верификация-коммитов-с-помощью-pgp">&lt;span class="section-num">2.5&lt;/span> Верификация коммитов с помощью &lt;em>PGP&lt;/em>&lt;/h3>
+&lt;ul>
+&lt;li>Как настроить PGP-подпись коммитов с помощью &lt;code>gpg&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h4 id="общая-информация">&lt;span class="section-num">2.5.1&lt;/span> Общая информация&lt;/h4>
+&lt;ul>
+&lt;li>Коммиты имеют следующие свойства:
+&lt;ul>
+&lt;li>author (автор) &amp;mdash; контрибьютор, выполнивший работу (указывается для справки);&lt;/li>
+&lt;li>committer (коммитер) &amp;mdash; пользователь, который закоммитил изменения.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Эти свойства можно переопределить при совершении коммита.&lt;/li>
+&lt;li>Авторство коммита можно подделать.&lt;/li>
+&lt;li>В git есть функция подписи коммитов.&lt;/li>
+&lt;li>Для подписывания коммитов используется технология PGP (см. &lt;a href="https://yamadharma.github.io/ru/post/2020/12/18/using-pgp/">Работа с PGP&lt;/a>).&lt;/li>
+&lt;li>Подпись коммита позволяет удостовериться в том, кто является коммитером. Авторство не проверяется.&lt;/li>
+&lt;/ul>
+&lt;h4 id="создание-ключа">&lt;span class="section-num">2.5.2&lt;/span> Создание ключа&lt;/h4>
+&lt;ul>
+&lt;li>
+&lt;p>Генерируем ключ&lt;/p>
+&lt;pre>&lt;code class="language-shell">gpg --full-generate-key
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Из предложенных опций выбираем:&lt;/p>
+&lt;ul>
+&lt;li>тип &lt;em>RSA and RSA&lt;/em>;&lt;/li>
+&lt;li>размер 4096;&lt;/li>
+&lt;li>выберите срок действия; значение по умолчанию &amp;mdash; 0 (срок действия не истекает никогда).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>GPG запросит личную информацию, которая сохранится в ключе:&lt;/p>
+&lt;ul>
+&lt;li>Имя (не менее 5 символов).&lt;/li>
+&lt;li>Адрес электронной почты.
+&lt;ul>
+&lt;li>При вводе email убедитесь, что он соответствует адресу, используемому на GitHub.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Комментарий. Можно ввести что угодно или нажать клавишу ввода, чтобы оставить это поле пустым.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="экспорт-ключа">&lt;span class="section-num">2.5.3&lt;/span> Экспорт ключа&lt;/h4>
+&lt;ul>
+&lt;li>
+&lt;p>Выводим список ключей и копируем отпечаток приватного ключа:&lt;/p>
+&lt;pre>&lt;code class="language-shell">gpg --list-secret-keys --keyid-format LONG
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Отпечаток ключа &amp;mdash; это последовательность байтов, используемая для идентификации более длинного, по сравнению с самим отпечатком ключа.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Формат строки:&lt;/p>
+&lt;pre>&lt;code class="language-text">sec Алгоритм/Отпечаток_ключа Дата_создания [Флаги] [Годен_до]
+ID_ключа
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Экспортируем ключ в формате ASCII по его отпечатку:&lt;/p>
+&lt;pre>&lt;code class="language-shell">gpg --armor --export &amp;lt;PGP Fingerprint&amp;gt;
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="добавление-pgp-ключа-в-github">&lt;span class="section-num">2.5.4&lt;/span> Добавление PGP ключа в GitHub&lt;/h4>
+&lt;ul>
+&lt;li>Копируем ключ и добавляем его в настройках профиля на GitHub (или GitLab).&lt;/li>
+&lt;li>Cкопируйте ваш сгенерированный PGP ключ в буфер обмена:
+&lt;pre>&lt;code class="language-shell">gpg --armor --export &amp;lt;PGP Fingerprint&amp;gt; | xclip -sel clip
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>Перейдите в настройки GitHub (&lt;a href="https://github.com/settings/keys" target="_blank" rel="noopener">https://github.com/settings/keys&lt;/a>), нажмите на кнопку &lt;em>New GPG key&lt;/em> и вставьте полученный ключ в поле ввода.&lt;/li>
+&lt;/ul>
+&lt;h4 id="подписывание-коммитов-git">&lt;span class="section-num">2.5.5&lt;/span> Подписывание коммитов git&lt;/h4>
+&lt;ul>
+&lt;li>Подпись коммитов при работе через терминал:
+&lt;pre>&lt;code class="language-shell">git commit -a -S -m 'your commit message'
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>Флаг &lt;code>-S&lt;/code> означает создание подписанного коммита. При этом может потребоваться ввод кодовой фразы, заданной при генерации GPG-ключа.&lt;/li>
+&lt;/ul>
+&lt;h4 id="настройка-автоматических-подписей-коммитов-git">&lt;span class="section-num">2.5.6&lt;/span> Настройка автоматических подписей коммитов git&lt;/h4>
+&lt;ul>
+&lt;li>Используя введёный email, укажите Git применять его при подписи коммитов:
+&lt;pre>&lt;code class="language-shell">git config --global user.signingkey &amp;lt;PGP Fingerprint&amp;gt;
 git config --global commit.gpgsign true
 git config --global gpg.program $(which gpg2)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;проверка-коммитов-в-git&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.6&lt;/span&gt; Проверка коммитов в Git&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;GitHub и GitLab будут показывать значок &lt;em&gt;Verified&lt;/em&gt; рядом с вашими новыми коммитами.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&#34;режим-бдительности--vigilant-mode&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.6.1&lt;/span&gt; Режим бдительности (vigilant mode)&lt;/h4&gt;
-&lt;ul&gt;
-&lt;li&gt;На GitHub есть настройка &lt;a href=&#34;https://docs.github.com/en/github/authenticating-to-github/managing-commit-signature-verification/displaying-verification-statuses-for-all-of-your-commits&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;vigilant mode&lt;/a&gt;.&lt;/li&gt;
-&lt;li&gt;Все неподписанные коммиты будут явно помечены как &lt;em&gt;Unverified&lt;/em&gt;.&lt;/li&gt;
-&lt;li&gt;Включается это в настройках в разделе &lt;em&gt;SSH and GPG keys&lt;/em&gt;. Установите метку на &lt;em&gt;Flag unsigned commits as unverified&lt;/em&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;задание&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Задание&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Создать базовую конфигурацию для работы с git.&lt;/li&gt;
-&lt;li&gt;Создать ключ &lt;em&gt;SSH&lt;/em&gt;.&lt;/li&gt;
-&lt;li&gt;Создать ключ &lt;em&gt;PGP&lt;/em&gt;.&lt;/li&gt;
-&lt;li&gt;Настроить подписи git.&lt;/li&gt;
-&lt;li&gt;Зарегистрироваться на &lt;em&gt;Github&lt;/em&gt;.&lt;/li&gt;
-&lt;li&gt;Создать локальный каталог для выполнения заданий по предмету.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;последовательность-выполнения-работы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Последовательность выполнения работы&lt;/h2&gt;
-&lt;h3 id=&#34;установка-программного-обеспечения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Установка программного обеспечения&lt;/h3&gt;
-&lt;h4 id=&#34;установка-git&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1.1&lt;/span&gt; Установка git&lt;/h4&gt;
-&lt;ul&gt;
-&lt;li&gt;Установим &lt;em&gt;git&lt;/em&gt;:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install git
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&#34;установка-gh&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1.2&lt;/span&gt; Установка gh&lt;/h4&gt;
-&lt;ul&gt;
-&lt;li&gt;Fedora:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;dnf install gh
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;базовая-настройка-git&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2&lt;/span&gt; Базовая настройка git&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Зададим имя и email владельца репозитория:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;git config --global user.name &amp;quot;Name Surname&amp;quot;
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="проверка-коммитов-в-git">&lt;span class="section-num">2.6&lt;/span> Проверка коммитов в Git&lt;/h3>
+&lt;ul>
+&lt;li>GitHub и GitLab будут показывать значок &lt;em>Verified&lt;/em> рядом с вашими новыми коммитами.&lt;/li>
+&lt;/ul>
+&lt;h4 id="режим-бдительности--vigilant-mode">&lt;span class="section-num">2.6.1&lt;/span> Режим бдительности (vigilant mode)&lt;/h4>
+&lt;ul>
+&lt;li>На GitHub есть настройка &lt;a href="https://docs.github.com/en/github/authenticating-to-github/managing-commit-signature-verification/displaying-verification-statuses-for-all-of-your-commits" target="_blank" rel="noopener">vigilant mode&lt;/a>.&lt;/li>
+&lt;li>Все неподписанные коммиты будут явно помечены как &lt;em>Unverified&lt;/em>.&lt;/li>
+&lt;li>Включается это в настройках в разделе &lt;em>SSH and GPG keys&lt;/em>. Установите метку на &lt;em>Flag unsigned commits as unverified&lt;/em>.&lt;/li>
+&lt;/ul>
+&lt;h2 id="задание">&lt;span class="section-num">3&lt;/span> Задание&lt;/h2>
+&lt;ul>
+&lt;li>Создать базовую конфигурацию для работы с git.&lt;/li>
+&lt;li>Создать ключ &lt;em>SSH&lt;/em>.&lt;/li>
+&lt;li>Создать ключ &lt;em>PGP&lt;/em>.&lt;/li>
+&lt;li>Настроить подписи git.&lt;/li>
+&lt;li>Зарегистрироваться на &lt;em>Github&lt;/em>.&lt;/li>
+&lt;li>Создать локальный каталог для выполнения заданий по предмету.&lt;/li>
+&lt;/ul>
+&lt;h2 id="последовательность-выполнения-работы">&lt;span class="section-num">4&lt;/span> Последовательность выполнения работы&lt;/h2>
+&lt;h3 id="установка-программного-обеспечения">&lt;span class="section-num">4.1&lt;/span> Установка программного обеспечения&lt;/h3>
+&lt;h4 id="установка-git">&lt;span class="section-num">4.1.1&lt;/span> Установка git&lt;/h4>
+&lt;ul>
+&lt;li>Установим &lt;em>git&lt;/em>:
+&lt;pre>&lt;code class="language-shell">dnf install git
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="установка-gh">&lt;span class="section-num">4.1.2&lt;/span> Установка gh&lt;/h4>
+&lt;ul>
+&lt;li>Fedora:
+&lt;pre>&lt;code class="language-shell">dnf install gh
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="базовая-настройка-git">&lt;span class="section-num">4.2&lt;/span> Базовая настройка git&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>Зададим имя и email владельца репозитория:&lt;/p>
+&lt;pre>&lt;code class="language-shell">git config --global user.name &amp;quot;Name Surname&amp;quot;
 git config --global user.email &amp;quot;work@mail&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Настроим utf-8 в выводе сообщений git:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;git config --global core.quotepath false
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Настройте верификацию и подписание коммитов git (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/01/28/verifying-git-commits-gpg/&#34;&gt;Верификация коммитов git с помощью GPG&lt;/a&gt;).&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Зададим имя начальной ветки (будем называть её &lt;code&gt;master&lt;/code&gt;):&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;git config --global init.defaultBranch master
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Параметр &lt;code&gt;autocrlf&lt;/code&gt;:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;git config --global core.autocrlf input
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Параметр &lt;code&gt;safecrlf&lt;/code&gt;:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;git config --global core.safecrlf warn
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;создайте-ключи-ssh&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.3&lt;/span&gt; Создайте ключи &lt;em&gt;ssh&lt;/em&gt;&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;по алгоритму &lt;em&gt;rsa&lt;/em&gt; с ключём размером 4096 бит:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;ssh-keygen -t rsa -b 4096
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;по алгоритму &lt;em&gt;ed25519&lt;/em&gt;:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;ssh-keygen -t ed25519
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;создайте-ключи-pgp&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.4&lt;/span&gt; Создайте ключи &lt;em&gt;pgp&lt;/em&gt;&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Генерируем ключ
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;gpg --full-generate-key
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;Из предложенных опций выбираем:
-&lt;ul&gt;
-&lt;li&gt;тип &lt;em&gt;RSA and RSA&lt;/em&gt;;&lt;/li&gt;
-&lt;li&gt;размер 4096;&lt;/li&gt;
-&lt;li&gt;выберите срок действия; значение по умолчанию &amp;mdash; 0 (срок действия не истекает никогда).&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;GPG запросит личную информацию, которая сохранится в ключе:
-&lt;ul&gt;
-&lt;li&gt;Имя (не менее 5 символов).&lt;/li&gt;
-&lt;li&gt;Адрес электронной почты.
-&lt;ul&gt;
-&lt;li&gt;При вводе email убедитесь, что он соответствует адресу, используемому на GitHub.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Комментарий. Можно ввести что угодно или нажать клавишу ввода, чтобы оставить это поле пустым.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;настройка-github&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.5&lt;/span&gt; Настройка github&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Создайте учётную запись на &lt;a href=&#34;https://github.com&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com&lt;/a&gt;.&lt;/li&gt;
-&lt;li&gt;Заполните основные данные на &lt;a href=&#34;https://github.com&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com&lt;/a&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;добавление-pgp-ключа-в-github&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.6&lt;/span&gt; Добавление PGP ключа в GitHub&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Выводим список ключей и копируем отпечаток приватного ключа:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;gpg --list-secret-keys --keyid-format LONG
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;Отпечаток ключа &amp;mdash; это последовательность байтов, используемая для идентификации более длинного, по сравнению с самим отпечатком ключа.&lt;/li&gt;
-&lt;li&gt;Формат строки:
-&lt;pre&gt;&lt;code class=&#34;language-text&#34;&gt;sec   Алгоритм/Отпечаток_ключа Дата_создания [Флаги] [Годен_до]
-      ID_ключа
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;Cкопируйте ваш сгенерированный PGP ключ в буфер обмена:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;gpg --armor --export &amp;lt;PGP Fingerprint&amp;gt; | xclip -sel clip
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;Перейдите в настройки GitHub (&lt;a href=&#34;https://github.com/settings/keys&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/settings/keys&lt;/a&gt;), нажмите на кнопку &lt;em&gt;New GPG key&lt;/em&gt; и вставьте полученный ключ в поле ввода.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;настройка-автоматических-подписей-коммитов-git&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.7&lt;/span&gt; Настройка автоматических подписей коммитов git&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Используя введёный email, укажите Git применять его при подписи коммитов:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;git config --global user.signingkey &amp;lt;PGP Fingerprint&amp;gt;
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Настроим utf-8 в выводе сообщений git:&lt;/p>
+&lt;pre>&lt;code class="language-shell">git config --global core.quotepath false
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Настройте верификацию и подписание коммитов git (см. &lt;a href="https://yamadharma.github.io/ru/post/2021/01/28/verifying-git-commits-gpg/">Верификация коммитов git с помощью GPG&lt;/a>).&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Зададим имя начальной ветки (будем называть её &lt;code>master&lt;/code>):&lt;/p>
+&lt;pre>&lt;code class="language-shell">git config --global init.defaultBranch master
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Параметр &lt;code>autocrlf&lt;/code>:&lt;/p>
+&lt;pre>&lt;code class="language-shell">git config --global core.autocrlf input
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Параметр &lt;code>safecrlf&lt;/code>:&lt;/p>
+&lt;pre>&lt;code class="language-shell">git config --global core.safecrlf warn
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="создайте-ключи-ssh">&lt;span class="section-num">4.3&lt;/span> Создайте ключи &lt;em>ssh&lt;/em>&lt;/h3>
+&lt;ul>
+&lt;li>по алгоритму &lt;em>rsa&lt;/em> с ключём размером 4096 бит:
+&lt;pre>&lt;code class="language-shell">ssh-keygen -t rsa -b 4096
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>по алгоритму &lt;em>ed25519&lt;/em>:
+&lt;pre>&lt;code class="language-shell">ssh-keygen -t ed25519
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="создайте-ключи-pgp">&lt;span class="section-num">4.4&lt;/span> Создайте ключи &lt;em>pgp&lt;/em>&lt;/h3>
+&lt;ul>
+&lt;li>Генерируем ключ
+&lt;pre>&lt;code class="language-shell">gpg --full-generate-key
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>Из предложенных опций выбираем:
+&lt;ul>
+&lt;li>тип &lt;em>RSA and RSA&lt;/em>;&lt;/li>
+&lt;li>размер 4096;&lt;/li>
+&lt;li>выберите срок действия; значение по умолчанию &amp;mdash; 0 (срок действия не истекает никогда).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>GPG запросит личную информацию, которая сохранится в ключе:
+&lt;ul>
+&lt;li>Имя (не менее 5 символов).&lt;/li>
+&lt;li>Адрес электронной почты.
+&lt;ul>
+&lt;li>При вводе email убедитесь, что он соответствует адресу, используемому на GitHub.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Комментарий. Можно ввести что угодно или нажать клавишу ввода, чтобы оставить это поле пустым.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="настройка-github">&lt;span class="section-num">4.5&lt;/span> Настройка github&lt;/h3>
+&lt;ul>
+&lt;li>Создайте учётную запись на &lt;a href="https://github.com" target="_blank" rel="noopener">https://github.com&lt;/a>.&lt;/li>
+&lt;li>Заполните основные данные на &lt;a href="https://github.com" target="_blank" rel="noopener">https://github.com&lt;/a>.&lt;/li>
+&lt;/ul>
+&lt;h3 id="добавление-pgp-ключа-в-github">&lt;span class="section-num">4.6&lt;/span> Добавление PGP ключа в GitHub&lt;/h3>
+&lt;ul>
+&lt;li>Выводим список ключей и копируем отпечаток приватного ключа:
+&lt;pre>&lt;code class="language-shell">gpg --list-secret-keys --keyid-format LONG
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>Отпечаток ключа &amp;mdash; это последовательность байтов, используемая для идентификации более длинного, по сравнению с самим отпечатком ключа.&lt;/li>
+&lt;li>Формат строки:
+&lt;pre>&lt;code class="language-text">sec Алгоритм/Отпечаток_ключа Дата_создания [Флаги] [Годен_до]
+ID_ключа
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>Cкопируйте ваш сгенерированный PGP ключ в буфер обмена:
+&lt;pre>&lt;code class="language-shell">gpg --armor --export &amp;lt;PGP Fingerprint&amp;gt; | xclip -sel clip
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>Перейдите в настройки GitHub (&lt;a href="https://github.com/settings/keys" target="_blank" rel="noopener">https://github.com/settings/keys&lt;/a>), нажмите на кнопку &lt;em>New GPG key&lt;/em> и вставьте полученный ключ в поле ввода.&lt;/li>
+&lt;/ul>
+&lt;h3 id="настройка-автоматических-подписей-коммитов-git">&lt;span class="section-num">4.7&lt;/span> Настройка автоматических подписей коммитов git&lt;/h3>
+&lt;ul>
+&lt;li>Используя введёный email, укажите Git применять его при подписи коммитов:
+&lt;pre>&lt;code class="language-shell">git config --global user.signingkey &amp;lt;PGP Fingerprint&amp;gt;
 git config --global commit.gpgsign true
 git config --global gpg.program $(which gpg2)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;настройка-gh&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.8&lt;/span&gt; Настройка gh&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Для начала необходимо авторизоваться
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;gh auth login
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;Утилита задаст несколько наводящих вопросов.&lt;/li&gt;
-&lt;li&gt;Авторизоваться можно через броузер.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;шаблон-для-рабочего-пространства&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.9&lt;/span&gt; Шаблон для рабочего пространства&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/01/16/workspace-laboratory-work/&#34;&gt;Рабочее пространство для лабораторной работы&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Репозиторий: &lt;a href=&#34;https://github.com/yamadharma/course-directory-student-template&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/yamadharma/course-directory-student-template&lt;/a&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&#34;сознание-репозитория-курса-на-основе-шаблона&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.9.1&lt;/span&gt; Сознание репозитория курса на основе шаблона&lt;/h4&gt;
-&lt;ul&gt;
-&lt;li&gt;Необходимо создать шаблон рабочего пространства (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/01/16/workspace-laboratory-work/&#34;&gt;Рабочее пространство для лабораторной работы&lt;/a&gt;).&lt;/li&gt;
-&lt;li&gt;Например, для 2022&amp;ndash;2023 учебного года и предмета «Операционные системы» (код предмета &lt;code&gt;os-intro&lt;/code&gt;) создание репозитория примет следующий вид:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;mkdir -p ~/work/study/2022-2023/&amp;quot;Операционные системы&amp;quot;
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="настройка-gh">&lt;span class="section-num">4.8&lt;/span> Настройка gh&lt;/h3>
+&lt;ul>
+&lt;li>Для начала необходимо авторизоваться
+&lt;pre>&lt;code class="language-shell">gh auth login
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>Утилита задаст несколько наводящих вопросов.&lt;/li>
+&lt;li>Авторизоваться можно через броузер.&lt;/li>
+&lt;/ul>
+&lt;h3 id="шаблон-для-рабочего-пространства">&lt;span class="section-num">4.9&lt;/span> Шаблон для рабочего пространства&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/01/16/workspace-laboratory-work/">Рабочее пространство для лабораторной работы&lt;/a>&lt;/li>
+&lt;li>Репозиторий: &lt;a href="https://github.com/yamadharma/course-directory-student-template" target="_blank" rel="noopener">https://github.com/yamadharma/course-directory-student-template&lt;/a>.&lt;/li>
+&lt;/ul>
+&lt;h4 id="сознание-репозитория-курса-на-основе-шаблона">&lt;span class="section-num">4.9.1&lt;/span> Сознание репозитория курса на основе шаблона&lt;/h4>
+&lt;ul>
+&lt;li>Необходимо создать шаблон рабочего пространства (см. &lt;a href="https://yamadharma.github.io/ru/post/2021/01/16/workspace-laboratory-work/">Рабочее пространство для лабораторной работы&lt;/a>).&lt;/li>
+&lt;li>Например, для 2022&amp;ndash;2023 учебного года и предмета «Операционные системы» (код предмета &lt;code>os-intro&lt;/code>) создание репозитория примет следующий вид:
+&lt;pre>&lt;code class="language-shell">mkdir -p ~/work/study/2022-2023/&amp;quot;Операционные системы&amp;quot;
 cd ~/work/study/2022-2023/&amp;quot;Операционные системы&amp;quot;
 gh repo create study_2022-2023_os-intro --template=yamadharma/course-directory-student-template --public
 git clone --recursive git@github.com:&amp;lt;owner&amp;gt;/study_2022-2023_os-intro.git os-intro
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&#34;настройка-каталога-курса&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.9.2&lt;/span&gt; Настройка каталога курса&lt;/h4&gt;
-&lt;ul&gt;
-&lt;li&gt;Перейдите в каталог курса:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;cd ~/work/study/2022-2023/&amp;quot;Операционные системы&amp;quot;/os-intro
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;Удалите лишние файлы:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;rm package.json
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;Создайте необходимые каталоги:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;echo os-intro &amp;gt; COURSE
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="настройка-каталога-курса">&lt;span class="section-num">4.9.2&lt;/span> Настройка каталога курса&lt;/h4>
+&lt;ul>
+&lt;li>Перейдите в каталог курса:
+&lt;pre>&lt;code class="language-shell">cd ~/work/study/2022-2023/&amp;quot;Операционные системы&amp;quot;/os-intro
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>Удалите лишние файлы:
+&lt;pre>&lt;code class="language-shell">rm package.json
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>Создайте необходимые каталоги:
+&lt;pre>&lt;code class="language-shell">echo os-intro &amp;gt; COURSE
 make
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;Отправьте файлы на сервер:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;git add .
-git commit -am &#39;feat(main): make course structure&#39;
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>Отправьте файлы на сервер:
+&lt;pre>&lt;code class="language-shell">git add .
+git commit -am 'feat(main): make course structure'
 git push
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;содержание-отчёта&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Содержание отчёта&lt;/h2&gt;
-&lt;ol&gt;
-&lt;li&gt;Титульный лист с указанием номера лабораторной работы и ФИО студента.&lt;/li&gt;
-&lt;li&gt;Формулировка цели работы.&lt;/li&gt;
-&lt;li&gt;Описание результатов выполнения задания:
-&lt;ul&gt;
-&lt;li&gt;скриншоты (снимки экрана), фиксирующие выполнение лабораторной работы;&lt;/li&gt;
-&lt;li&gt;листинги (исходный код) программ (если они есть);&lt;/li&gt;
-&lt;li&gt;результаты выполнения программ (текст или снимок экрана в зависимости от задания).&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Выводы, согласованные с целью работы.&lt;/li&gt;
-&lt;li&gt;Ответы на контрольные вопросы.&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2 id=&#34;контрольные-вопросы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6&lt;/span&gt; Контрольные вопросы&lt;/h2&gt;
-&lt;ol&gt;
-&lt;li&gt;Что такое системы контроля версий (VCS) и для решения каких задач они предназначаются?&lt;/li&gt;
-&lt;li&gt;Объясните следующие понятия VCS и их отношения: хранилище, commit, история, рабочая копия.&lt;/li&gt;
-&lt;li&gt;Что представляют собой и чем отличаются централизованные и децентрализованные VCS? Приведите примеры VCS каждого вида.&lt;/li&gt;
-&lt;li&gt;Опишите действия с VCS при единоличной работе с хранилищем.&lt;/li&gt;
-&lt;li&gt;Опишите порядок работы с общим хранилищем VCS.&lt;/li&gt;
-&lt;li&gt;Каковы основные задачи, решаемые инструментальным средством &lt;code&gt;git&lt;/code&gt;?&lt;/li&gt;
-&lt;li&gt;Назовите и дайте краткую характеристику командам &lt;code&gt;git&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Приведите примеры использования при работе с локальным и удалённым репозиториями.&lt;/li&gt;
-&lt;li&gt;Что такое и зачем могут быть нужны ветви (branches)?&lt;/li&gt;
-&lt;li&gt;Как и зачем можно игнорировать некоторые файлы при commit?&lt;/li&gt;
-&lt;/ol&gt;</description>
-    </item>
-    
-    <item>
-      <title>Лабораторная работа Продвинутое использование git</title>
-      <link>https://yamadharma.github.io/ru/course/os-intro/lab/lab-extended-git-setup/</link>
-      <pubDate>Sat, 07 Jan 2023 17:50:00 +0300</pubDate>
-      <guid>https://yamadharma.github.io/ru/course/os-intro/lab/lab-extended-git-setup/</guid>
-      <description>&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
-  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
-  &lt;nav id=&#34;TableOfContents&#34;&gt;
-  &lt;ul&gt;
-    &lt;li&gt;&lt;a href=&#34;#цель-работы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Цель работы&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#теоретические-сведения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Теоретические сведения&lt;/a&gt;
-      &lt;ul&gt;
-        &lt;li&gt;&lt;a href=&#34;#рабочий-процесс-gitflow&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Рабочий процесс Gitflow&lt;/a&gt;
-          &lt;ul&gt;
-            &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1.1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
-            &lt;li&gt;&lt;a href=&#34;#процесс-работы-с-gitflow&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1.2&lt;/span&gt; Процесс работы с Gitflow&lt;/a&gt;&lt;/li&gt;
-          &lt;/ul&gt;
-        &lt;/li&gt;
-      &lt;/ul&gt;
-    &lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#задание&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Задание&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#последовательность-выполнения-работы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Последовательность выполнения работы&lt;/a&gt;
-      &lt;ul&gt;
-        &lt;li&gt;&lt;a href=&#34;#установка-программного-обеспечения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Установка программного обеспечения&lt;/a&gt;
-          &lt;ul&gt;
-            &lt;li&gt;&lt;a href=&#34;#установка-git-flow&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1.1&lt;/span&gt; Установка git-flow&lt;/a&gt;&lt;/li&gt;
-          &lt;/ul&gt;
-        &lt;/li&gt;
-      &lt;/ul&gt;
-    &lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/nav&gt;
-&lt;/details&gt;
-
-&lt;h2 id=&#34;цель-работы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Цель работы&lt;/h2&gt;
-&lt;h2 id=&#34;теоретические-сведения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Теоретические сведения&lt;/h2&gt;
-&lt;h3 id=&#34;рабочий-процесс-gitflow&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Рабочий процесс Gitflow&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Рабочий процесс &lt;em&gt;Gitflow Workflow&lt;/em&gt;. Будем описывать его с использованием пакета &lt;code&gt;git-flow&lt;/code&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1.1&lt;/span&gt; Общая информация&lt;/h4&gt;
-&lt;ul&gt;
-&lt;li&gt;Gitflow Workflow опубликована и популяризована Винсентом Дриссеном.&lt;/li&gt;
-&lt;li&gt;Gitflow Workflow предполагает выстраивание строгой модели ветвления с учётом выпуска проекта.&lt;/li&gt;
-&lt;li&gt;Данная модель отлично подходит для организации рабочего процесса на основе релизов.&lt;/li&gt;
-&lt;li&gt;Работа по модели Gitflow включает создание отдельной ветки для исправлений ошибок в рабочей среде.&lt;/li&gt;
-&lt;li&gt;Последовательность действий при работе по модели Gitflow:
-&lt;ul&gt;
-&lt;li&gt;Из ветки &lt;code&gt;master&lt;/code&gt; создаётся ветка &lt;code&gt;develop&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Из ветки &lt;code&gt;develop&lt;/code&gt; создаётся ветка &lt;code&gt;release&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Из ветки &lt;code&gt;develop&lt;/code&gt; создаются ветки &lt;code&gt;feature&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Когда работа над веткой &lt;code&gt;feature&lt;/code&gt; завершена, она сливается с веткой &lt;code&gt;develop&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Когда работа над веткой релиза &lt;code&gt;release&lt;/code&gt; завершена, она сливается в ветки &lt;code&gt;develop&lt;/code&gt; и &lt;code&gt;master&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Если в &lt;code&gt;master&lt;/code&gt; обнаружена проблема, из &lt;code&gt;master&lt;/code&gt; создаётся ветка &lt;code&gt;hotfix&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Когда работа над веткой исправления &lt;code&gt;hotfix&lt;/code&gt; завершена, она сливается в ветки &lt;code&gt;develop&lt;/code&gt; и &lt;code&gt;master&lt;/code&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&#34;процесс-работы-с-gitflow&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1.2&lt;/span&gt; Процесс работы с Gitflow&lt;/h4&gt;
-&lt;!--list-separator--&gt;
-&lt;ol&gt;
-&lt;li&gt;
-&lt;p&gt;Основные ветки (master) и ветки разработки (develop)&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Для фиксации истории проекта в рамках этого процесса вместо одной ветки &lt;code&gt;master&lt;/code&gt; используются две ветки. В ветке &lt;code&gt;master&lt;/code&gt; хранится официальная история релиза, а ветка &lt;code&gt;develop&lt;/code&gt; предназначена для объединения всех функций. Кроме того, для удобства рекомендуется присваивать всем коммитам в ветке &lt;code&gt;master&lt;/code&gt; номер версии.&lt;/li&gt;
-&lt;li&gt;При использовании библиотеки расширений &lt;code&gt;git-flow&lt;/code&gt; нужно инициализировать структуру в существующем репозитории:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;git flow init
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;Для github параметр &lt;code&gt;Version tag prefix&lt;/code&gt; следует установить в &lt;code&gt;v&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;После этого проверьте, на какой ветке Вы находитесь:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;git branch
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;!--list-separator--&gt;
-&lt;ol start=&#34;2&#34;&gt;
-&lt;li&gt;
-&lt;p&gt;Функциональные ветки (feature)&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Под каждую новую функцию должна быть отведена собственная ветка, которую можно отправлять в центральный репозиторий для создания резервной копии или совместной работы команды. Ветки &lt;code&gt;feature&lt;/code&gt; создаются не на основе &lt;code&gt;master&lt;/code&gt;, а на основе &lt;code&gt;develop&lt;/code&gt;. Когда работа над функцией завершается, соответствующая ветка сливается обратно с веткой &lt;code&gt;develop&lt;/code&gt;. Функции не следует отправлять напрямую в ветку &lt;code&gt;master&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Как правило, ветки &lt;code&gt;feature&lt;/code&gt; создаются на основе последней ветки &lt;code&gt;develop&lt;/code&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;!--list-separator--&gt;
-&lt;ol&gt;
-&lt;li&gt;
-&lt;p&gt;Создание функциональной ветки&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Создадим новую функциональную ветку:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;git flow feature start feature_branch
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Далее работаем как обычно.&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;!--list-separator--&gt;
-&lt;ol start=&#34;2&#34;&gt;
-&lt;li&gt;
-&lt;p&gt;Окончание работы с функциональной веткой&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;По завершении работы над функцией следует объединить ветку &lt;code&gt;feature_branch&lt;/code&gt; с &lt;code&gt;develop&lt;/code&gt;:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;git flow feature finish feature_branch
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;!--list-separator--&gt;
-&lt;ol start=&#34;3&#34;&gt;
-&lt;li&gt;
-&lt;p&gt;Ветки выпуска (release)&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Когда в ветке &lt;code&gt;develop&lt;/code&gt; оказывается достаточно функций для выпуска, из ветки develop создаётся ветка &lt;code&gt;release&lt;/code&gt;. Создание этой ветки запускает следующий цикл выпуска, и с этого момента новые функции добавить больше нельзя &amp;mdash; допускается лишь отладка, создание документации и решение других задач. Когда подготовка релиза завершается, ветка &lt;code&gt;release&lt;/code&gt; сливается с &lt;code&gt;master&lt;/code&gt; и ей присваивается номер версии. После нужно выполнить слияние с веткой &lt;code&gt;develop&lt;/code&gt;, в которой с момента создания ветки релиза могли возникнуть изменения.&lt;/li&gt;
-&lt;li&gt;Благодаря тому, что для подготовки выпусков используется специальная ветка, одна команда может дорабатывать текущий выпуск, в то время как другая команда продолжает работу над функциями для следующего.&lt;/li&gt;
-&lt;li&gt;Создать новую ветку release можно с помощью следующей команды:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;git flow release start 1.0.0
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;Для завершения работы на ветке &lt;code&gt;release&lt;/code&gt; используются следующие команды:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;git flow release finish 1.0.0
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;!--list-separator--&gt;
-&lt;ol start=&#34;4&#34;&gt;
-&lt;li&gt;
-&lt;p&gt;Ветки исправления (hotfix)&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Ветки поддержки или ветки &lt;code&gt;hotfix&lt;/code&gt; используются для быстрого внесения исправлений в рабочие релизы. Они создаются от ветки &lt;code&gt;master&lt;/code&gt;. Это единственная ветка, которая должна быть создана непосредственно от master. Как только исправление завершено, ветку следует объединить с &lt;code&gt;master&lt;/code&gt; и &lt;code&gt;develop&lt;/code&gt;. Ветка &lt;code&gt;master&lt;/code&gt; должна быть помечена обновлённым номером версии.&lt;/li&gt;
-&lt;li&gt;Наличие специальной ветки для исправления ошибок позволяет команде решать проблемы, не прерывая остальную часть рабочего процесса и не ожидая следующего цикла релиза.&lt;/li&gt;
-&lt;li&gt;Ветку &lt;code&gt;hotfix&lt;/code&gt; можно создать с помощью следующих команд:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;git flow hotfix start hotfix_branch
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;По завершении работы ветка &lt;code&gt;hotfix&lt;/code&gt; объединяется с &lt;code&gt;master&lt;/code&gt; и &lt;code&gt;develop&lt;/code&gt;:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;git flow hotfix finish hotfix_branch
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2 id=&#34;задание&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Задание&lt;/h2&gt;
-&lt;h2 id=&#34;последовательность-выполнения-работы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Последовательность выполнения работы&lt;/h2&gt;
-&lt;h3 id=&#34;установка-программного-обеспечения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Установка программного обеспечения&lt;/h3&gt;
-&lt;h4 id=&#34;установка-git-flow&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1.1&lt;/span&gt; Установка git-flow&lt;/h4&gt;
-&lt;ul&gt;
-&lt;li&gt;Linux
-&lt;ul&gt;
-&lt;li&gt;Fedora
-&lt;ul&gt;
-&lt;li&gt;Установка из коллекции репозиториев &lt;em&gt;Copr&lt;/em&gt; (&lt;a href=&#34;https://copr.fedorainfracloud.org/coprs/elegos/gitflow/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://copr.fedorainfracloud.org/coprs/elegos/gitflow/&lt;/a&gt;):
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;# Enable the copr repository
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="содержание-отчёта">&lt;span class="section-num">5&lt;/span> Содержание отчёта&lt;/h2>
+&lt;ol>
+&lt;li>Титульный лист с указанием номера лабораторной работы и ФИО студента.&lt;/li>
+&lt;li>Формулировка цели работы.&lt;/li>
+&lt;li>Описание результатов выполнения задания:
+&lt;ul>
+&lt;li>скриншоты (снимки экрана), фиксирующие выполнение лабораторной работы;&lt;/li>
+&lt;li>листинги (исходный код) программ (если они есть);&lt;/li>
+&lt;li>результаты выполнения программ (текст или снимок экрана в зависимости от задания).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Выводы, согласованные с целью работы.&lt;/li>
+&lt;li>Ответы на контрольные вопросы.&lt;/li>
+&lt;/ol>
+&lt;h2 id="контрольные-вопросы">&lt;span class="section-num">6&lt;/span> Контрольные вопросы&lt;/h2>
+&lt;ol>
+&lt;li>Что такое системы контроля версий (VCS) и для решения каких задач они предназначаются?&lt;/li>
+&lt;li>Объясните следующие понятия VCS и их отношения: хранилище, commit, история, рабочая копия.&lt;/li>
+&lt;li>Что представляют собой и чем отличаются централизованные и децентрализованные VCS? Приведите примеры VCS каждого вида.&lt;/li>
+&lt;li>Опишите действия с VCS при единоличной работе с хранилищем.&lt;/li>
+&lt;li>Опишите порядок работы с общим хранилищем VCS.&lt;/li>
+&lt;li>Каковы основные задачи, решаемые инструментальным средством &lt;code>git&lt;/code>?&lt;/li>
+&lt;li>Назовите и дайте краткую характеристику командам &lt;code>git&lt;/code>.&lt;/li>
+&lt;li>Приведите примеры использования при работе с локальным и удалённым репозиториями.&lt;/li>
+&lt;li>Что такое и зачем могут быть нужны ветви (branches)?&lt;/li>
+&lt;li>Как и зачем можно игнорировать некоторые файлы при commit?&lt;/li>
+&lt;/ol></description></item><item><title>Лабораторная работа Продвинутое использование git</title><link>https://yamadharma.github.io/ru/course/os-intro/lab/lab-extended-git-setup/</link><pubDate>Sat, 07 Jan 2023 17:50:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/course/os-intro/lab/lab-extended-git-setup/</guid><description>&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#цель-работы">&lt;span class="section-num">1&lt;/span> Цель работы&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#теоретические-сведения">&lt;span class="section-num">2&lt;/span> Теоретические сведения&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#рабочий-процесс-gitflow">&lt;span class="section-num">2.1&lt;/span> Рабочий процесс Gitflow&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">2.1.1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#процесс-работы-с-gitflow">&lt;span class="section-num">2.1.2&lt;/span> Процесс работы с Gitflow&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#задание">&lt;span class="section-num">3&lt;/span> Задание&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#последовательность-выполнения-работы">&lt;span class="section-num">4&lt;/span> Последовательность выполнения работы&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#установка-программного-обеспечения">&lt;span class="section-num">4.1&lt;/span> Установка программного обеспечения&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#установка-git-flow">&lt;span class="section-num">4.1.1&lt;/span> Установка git-flow&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="цель-работы">&lt;span class="section-num">1&lt;/span> Цель работы&lt;/h2>
+&lt;h2 id="теоретические-сведения">&lt;span class="section-num">2&lt;/span> Теоретические сведения&lt;/h2>
+&lt;h3 id="рабочий-процесс-gitflow">&lt;span class="section-num">2.1&lt;/span> Рабочий процесс Gitflow&lt;/h3>
+&lt;ul>
+&lt;li>Рабочий процесс &lt;em>Gitflow Workflow&lt;/em>. Будем описывать его с использованием пакета &lt;code>git-flow&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h4 id="общая-информация">&lt;span class="section-num">2.1.1&lt;/span> Общая информация&lt;/h4>
+&lt;ul>
+&lt;li>Gitflow Workflow опубликована и популяризована Винсентом Дриссеном.&lt;/li>
+&lt;li>Gitflow Workflow предполагает выстраивание строгой модели ветвления с учётом выпуска проекта.&lt;/li>
+&lt;li>Данная модель отлично подходит для организации рабочего процесса на основе релизов.&lt;/li>
+&lt;li>Работа по модели Gitflow включает создание отдельной ветки для исправлений ошибок в рабочей среде.&lt;/li>
+&lt;li>Последовательность действий при работе по модели Gitflow:
+&lt;ul>
+&lt;li>Из ветки &lt;code>master&lt;/code> создаётся ветка &lt;code>develop&lt;/code>.&lt;/li>
+&lt;li>Из ветки &lt;code>develop&lt;/code> создаётся ветка &lt;code>release&lt;/code>.&lt;/li>
+&lt;li>Из ветки &lt;code>develop&lt;/code> создаются ветки &lt;code>feature&lt;/code>.&lt;/li>
+&lt;li>Когда работа над веткой &lt;code>feature&lt;/code> завершена, она сливается с веткой &lt;code>develop&lt;/code>.&lt;/li>
+&lt;li>Когда работа над веткой релиза &lt;code>release&lt;/code> завершена, она сливается в ветки &lt;code>develop&lt;/code> и &lt;code>master&lt;/code>.&lt;/li>
+&lt;li>Если в &lt;code>master&lt;/code> обнаружена проблема, из &lt;code>master&lt;/code> создаётся ветка &lt;code>hotfix&lt;/code>.&lt;/li>
+&lt;li>Когда работа над веткой исправления &lt;code>hotfix&lt;/code> завершена, она сливается в ветки &lt;code>develop&lt;/code> и &lt;code>master&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="процесс-работы-с-gitflow">&lt;span class="section-num">2.1.2&lt;/span> Процесс работы с Gitflow&lt;/h4>
+&lt;!--list-separator-->
+&lt;ol>
+&lt;li>
+&lt;p>Основные ветки (master) и ветки разработки (develop)&lt;/p>
+&lt;ul>
+&lt;li>Для фиксации истории проекта в рамках этого процесса вместо одной ветки &lt;code>master&lt;/code> используются две ветки. В ветке &lt;code>master&lt;/code> хранится официальная история релиза, а ветка &lt;code>develop&lt;/code> предназначена для объединения всех функций. Кроме того, для удобства рекомендуется присваивать всем коммитам в ветке &lt;code>master&lt;/code> номер версии.&lt;/li>
+&lt;li>При использовании библиотеки расширений &lt;code>git-flow&lt;/code> нужно инициализировать структуру в существующем репозитории:
+&lt;pre>&lt;code class="language-shell">git flow init
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>Для github параметр &lt;code>Version tag prefix&lt;/code> следует установить в &lt;code>v&lt;/code>.&lt;/li>
+&lt;li>После этого проверьте, на какой ветке Вы находитесь:
+&lt;pre>&lt;code class="language-shell">git branch
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;!--list-separator-->
+&lt;ol start="2">
+&lt;li>
+&lt;p>Функциональные ветки (feature)&lt;/p>
+&lt;ul>
+&lt;li>Под каждую новую функцию должна быть отведена собственная ветка, которую можно отправлять в центральный репозиторий для создания резервной копии или совместной работы команды. Ветки &lt;code>feature&lt;/code> создаются не на основе &lt;code>master&lt;/code>, а на основе &lt;code>develop&lt;/code>. Когда работа над функцией завершается, соответствующая ветка сливается обратно с веткой &lt;code>develop&lt;/code>. Функции не следует отправлять напрямую в ветку &lt;code>master&lt;/code>.&lt;/li>
+&lt;li>Как правило, ветки &lt;code>feature&lt;/code> создаются на основе последней ветки &lt;code>develop&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;!--list-separator-->
+&lt;ol>
+&lt;li>
+&lt;p>Создание функциональной ветки&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>Создадим новую функциональную ветку:&lt;/p>
+&lt;pre>&lt;code class="language-shell">git flow feature start feature_branch
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Далее работаем как обычно.&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;!--list-separator-->
+&lt;ol start="2">
+&lt;li>
+&lt;p>Окончание работы с функциональной веткой&lt;/p>
+&lt;ul>
+&lt;li>По завершении работы над функцией следует объединить ветку &lt;code>feature_branch&lt;/code> с &lt;code>develop&lt;/code>:
+&lt;pre>&lt;code class="language-shell">git flow feature finish feature_branch
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;/ol>
+&lt;!--list-separator-->
+&lt;ol start="3">
+&lt;li>
+&lt;p>Ветки выпуска (release)&lt;/p>
+&lt;ul>
+&lt;li>Когда в ветке &lt;code>develop&lt;/code> оказывается достаточно функций для выпуска, из ветки develop создаётся ветка &lt;code>release&lt;/code>. Создание этой ветки запускает следующий цикл выпуска, и с этого момента новые функции добавить больше нельзя &amp;mdash; допускается лишь отладка, создание документации и решение других задач. Когда подготовка релиза завершается, ветка &lt;code>release&lt;/code> сливается с &lt;code>master&lt;/code> и ей присваивается номер версии. После нужно выполнить слияние с веткой &lt;code>develop&lt;/code>, в которой с момента создания ветки релиза могли возникнуть изменения.&lt;/li>
+&lt;li>Благодаря тому, что для подготовки выпусков используется специальная ветка, одна команда может дорабатывать текущий выпуск, в то время как другая команда продолжает работу над функциями для следующего.&lt;/li>
+&lt;li>Создать новую ветку release можно с помощью следующей команды:
+&lt;pre>&lt;code class="language-shell">git flow release start 1.0.0
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>Для завершения работы на ветке &lt;code>release&lt;/code> используются следующие команды:
+&lt;pre>&lt;code class="language-shell">git flow release finish 1.0.0
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;!--list-separator-->
+&lt;ol start="4">
+&lt;li>
+&lt;p>Ветки исправления (hotfix)&lt;/p>
+&lt;ul>
+&lt;li>Ветки поддержки или ветки &lt;code>hotfix&lt;/code> используются для быстрого внесения исправлений в рабочие релизы. Они создаются от ветки &lt;code>master&lt;/code>. Это единственная ветка, которая должна быть создана непосредственно от master. Как только исправление завершено, ветку следует объединить с &lt;code>master&lt;/code> и &lt;code>develop&lt;/code>. Ветка &lt;code>master&lt;/code> должна быть помечена обновлённым номером версии.&lt;/li>
+&lt;li>Наличие специальной ветки для исправления ошибок позволяет команде решать проблемы, не прерывая остальную часть рабочего процесса и не ожидая следующего цикла релиза.&lt;/li>
+&lt;li>Ветку &lt;code>hotfix&lt;/code> можно создать с помощью следующих команд:
+&lt;pre>&lt;code class="language-shell">git flow hotfix start hotfix_branch
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>По завершении работы ветка &lt;code>hotfix&lt;/code> объединяется с &lt;code>master&lt;/code> и &lt;code>develop&lt;/code>:
+&lt;pre>&lt;code class="language-shell">git flow hotfix finish hotfix_branch
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;h2 id="задание">&lt;span class="section-num">3&lt;/span> Задание&lt;/h2>
+&lt;h2 id="последовательность-выполнения-работы">&lt;span class="section-num">4&lt;/span> Последовательность выполнения работы&lt;/h2>
+&lt;h3 id="установка-программного-обеспечения">&lt;span class="section-num">4.1&lt;/span> Установка программного обеспечения&lt;/h3>
+&lt;h4 id="установка-git-flow">&lt;span class="section-num">4.1.1&lt;/span> Установка git-flow&lt;/h4>
+&lt;ul>
+&lt;li>Linux
+&lt;ul>
+&lt;li>Fedora
+&lt;ul>
+&lt;li>Установка из коллекции репозиториев &lt;em>Copr&lt;/em> (&lt;a href="https://copr.fedorainfracloud.org/coprs/elegos/gitflow/" target="_blank" rel="noopener">https://copr.fedorainfracloud.org/coprs/elegos/gitflow/&lt;/a>):
+&lt;pre>&lt;code class="language-shell"># Enable the copr repository
 dnf copr enable elegos/gitflow
 # Install gitflow
 dnf install gitflow
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;</description>
-    </item>
-    
-  </channel>
-</rss>
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul></description></item></channel></rss>

@@ -1,1833 +1,1066 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>seedling | Д. С. Кулябов</title>
-    <link>https://yamadharma.github.io/ru/tag/seedling/</link>
-      <atom:link href="https://yamadharma.github.io/ru/tag/seedling/index.xml" rel="self" type="application/rss+xml" />
-    <description>seedling</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2023 Dmitry S. Kulyabov</copyright><lastBuildDate>Tue, 30 May 2023 11:58:00 +0300</lastBuildDate>
-    <image>
-      <url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url>
-      <title>seedling</title>
-      <link>https://yamadharma.github.io/ru/tag/seedling/</link>
-    </image>
-    
-    <item>
-      <title>IPv6. Туннелирование. 6to4</title>
-      <link>https://yamadharma.github.io/ru/post/2023/05/30/ipv6-tunneling-6to4/</link>
-      <pubDate>Tue, 30 May 2023 11:58:00 +0300</pubDate>
-      <guid>https://yamadharma.github.io/ru/post/2023/05/30/ipv6-tunneling-6to4/</guid>
-      <description>&lt;p&gt;Технология туннелирования 6to4.&lt;/p&gt;
-&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
-  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
-  &lt;nav id=&#34;TableOfContents&#34;&gt;
-  &lt;ul&gt;
-    &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#как-работает-6to4&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Как работает 6to4&lt;/a&gt;
-      &lt;ul&gt;
-        &lt;li&gt;&lt;a href=&#34;#выделение-блока-адресов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Выделение блока адресов&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#инкапсуляция&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Инкапсуляция&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#маршрутизация-между-6to4-и-другими-ipv6-сетями&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; Маршрутизация между 6to4 и другими IPv6 сетями&lt;/a&gt;&lt;/li&gt;
-      &lt;/ul&gt;
-    &lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#настройка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Настройка&lt;/a&gt;
-      &lt;ul&gt;
-        &lt;li&gt;&lt;a href=&#34;#вычисление-префикса-6to4&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Вычисление префикса 6to4&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#настройка-командой-ip&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.2&lt;/span&gt; Настройка командой &lt;code&gt;ip&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#скрипт&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.3&lt;/span&gt; Скрипт&lt;/a&gt;&lt;/li&gt;
-      &lt;/ul&gt;
-    &lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#раздача-6to4-ipv6-в-локальную-сеть&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Раздача 6to4 IPv6 в локальную сеть&lt;/a&gt;
-      &lt;ul&gt;
-        &lt;li&gt;&lt;a href=&#34;#назначение-адреса-внутреннему-интерфейсу&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Назначение адреса внутреннему интерфейсу&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#настройка-radvd&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2&lt;/span&gt; Настройка radvd&lt;/a&gt;&lt;/li&gt;
-      &lt;/ul&gt;
-    &lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/nav&gt;
-&lt;/details&gt;
-
-&lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Автоматическое туннелирование посредством механизма 6to4 было признано устаревшим (deprecated) и не рекомендованным к использованию.&lt;/li&gt;
-&lt;li&gt;Публичному адресу IPv4 сопоставляется IPv6-подсеть с префиксом 48.&lt;/li&gt;
-&lt;li&gt;Фиксированный anycast IPv4 адресом: &lt;code&gt;192.88.99.1&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Протокол полностью автоконфигурируемый, ручная настройка невозможна.&lt;/li&gt;
-&lt;li&gt;Использует префикс &lt;code&gt;2002::/16&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Не работает через NAT.&lt;/li&gt;
-&lt;li&gt;Связь между двумя пользователями 6to4 осуществляется не через туннельный сервер, а напрямую, с нулевой дополнительной задержкой.&lt;/li&gt;
-&lt;li&gt;Не требуется регистрации.&lt;/li&gt;
-&lt;li&gt;Оптимальный (самый близкий) шлюз выбирается автоматически.&lt;/li&gt;
-&lt;li&gt;Даёт IPv6-подсеть с префиксом 48.&lt;/li&gt;
-&lt;li&gt;Ближайший шлюз, через который пакеты будут направляться другим пользователям IPv6, выбирается полностью автоматически.&lt;/li&gt;
-&lt;li&gt;Если сайт использует статический глобальный IPv4-адрес, то возможно делегировать обратную DNS зону для 48-битного блока адресов полученного через 6to4.
-&lt;ul&gt;
-&lt;li&gt;Регистрация обратной DNS-зоны производится Number Resource Organization в зоне 2.0.0.2.ip6.arpa на сайте 6to4.nro.net. Процесс полностью автоматизирован.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;как-работает-6to4&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Как работает 6to4&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Основные функции 6to4:
-&lt;ul&gt;
-&lt;li&gt;Выделение блока /48 адресного пространства IPv6 каждому узлу, у которого есть глобальный IPv4-адрес.&lt;/li&gt;
-&lt;li&gt;Инкапсуляция IPv6-пакеты в IPv4-пакеты для передачи по сети IPv4.&lt;/li&gt;
-&lt;li&gt;Передача пакеты между 6to4-узлами и узлами с прямым подключением к IPv6-Интернету.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;выделение-блока-адресов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Выделение блока адресов&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Для каждого глобального адреса IPv4 выделена 48-битный префикс IPv6-адреса.&lt;/li&gt;
-&lt;li&gt;Он может быть создана на основе IPv4-адреса.&lt;/li&gt;
-&lt;li&gt;При этом адрес IPv4 ставится после префикса &lt;code&gt;2002::/16&lt;/code&gt; в шестнадцатеричном виде.
-&lt;ul&gt;
-&lt;li&gt;Например, IPv6-префикс для IPv4-адреса 192.0.2.4 равен 2002:C000:0204::/48.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;инкапсуляция&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Инкапсуляция&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;6to4-узел вкладывает пакет IPv6 в пакет IPv4.&lt;/li&gt;
-&lt;li&gt;Тип протокола 41 («IPv6 (encapsulation)»).&lt;/li&gt;
-&lt;li&gt;Перед тем, как отправить 6to4-пакет, узел проверяет адрес назначения на принадлежность к 6to4-сети и, если этот адрес соответствует 6to4, то он извлекает IPv4-адрес из 6to4-адреса и отправляет пакет по полученному адресу.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;маршрутизация-между-6to4-и-другими-ipv6-сетями&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; Маршрутизация между 6to4 и другими IPv6 сетями&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Для отправлки пакета в другие IPv6-сети используются 6to4-ретрансляторы, которые подключены как к IPv4-сети, так и к IPv6-сети.&lt;/li&gt;
-&lt;li&gt;Когда 6to4-узлу нужно отправить IPv6-пакет, он отправляет его по anycast адресу 192.88.99.1.&lt;/li&gt;
-&lt;li&gt;Ретранслятор, получив 6to4-пакет, извлекает IPv6-пакет и отправляет его по IPv6-сети.&lt;/li&gt;
-&lt;li&gt;Для IPv6-узлов 6to4-узлы выглядят как обычные IPv6-узлы и IPv6-пакет будет передан на ближайший 6to4-ретранслятор, анонсирующий префикс сети 2002::/16.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;настройка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Настройка&lt;/h2&gt;
-&lt;h3 id=&#34;вычисление-префикса-6to4&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Вычисление префикса 6to4&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Пусть адрес IPv4: &lt;code&gt;1.2.3.4&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Сгенерированный префикс 6to4: &lt;code&gt;2002:0102:0304::&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Локальным шлюзам 6to4 следует (но не обязательно) назначать суффикс &lt;code&gt;::1&lt;/code&gt;, поэтому ваш локальный адрес 6to4 будет: &lt;code&gt;2002:0102:0304::1&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Для автоматической генерации можно использовать скрипт:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;ipv4=&amp;quot;1.2.3.4&amp;quot;; printf &amp;quot;2002:%02x%02x:%02x%02x::1&amp;quot; `echo $ipv4 | tr &amp;quot;.&amp;quot; &amp;quot; &amp;quot;`
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;настройка-командой-ip&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.2&lt;/span&gt; Настройка командой &lt;code&gt;ip&lt;/code&gt;&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Создайте новое туннельное устройство:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;/sbin/ip tunnel add tun6to4 mode sit ttl &amp;lt;ttldefault&amp;gt; remote any local &amp;lt;localipv4address&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;Необходимо указать TTL, поскольку значение по умолчанию равно 0.&lt;/li&gt;
-&lt;li&gt;Поднимите интерфейс:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;/sbin/ip link set dev tun6to4 up
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;Добавьте в интерфейс локальный адрес 6to4 (префикс обязательно равен 16):
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;/sbin/ip -6 addr add &amp;lt;local6to4address&amp;gt;/16 dev tun6to4
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;Добавить маршрут по умолчанию в глобальную сеть IPv6, используя заданный адрес IPv4:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;/sbin/ip -6 route add default via ::192.88.99.1 dev tun6to4 metric 1
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;Некоторые версии команды &lt;code&gt;ip&lt;/code&gt; не поддерживают совместимые с IPv4 IPv6-адреса для шлюзов, в этом случае необходимо использовать соответствующий IPv6-адрес:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;/sbin/ip -6 route add default via 2002:c058:6301::1 dev tun6to4 metric 1
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;скрипт&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.3&lt;/span&gt; Скрипт&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Соберём в один скрипт &lt;code&gt;6to4&lt;/code&gt;:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#!/bin/sh
-
-IF=$1
-STATE=$2
-
-if [ -z &amp;quot;$IF&amp;quot; ]
-then
-    echo &amp;quot;$0: called with no interface&amp;quot; 1&amp;gt;&amp;amp;2
-    exit 1
-fi
-
-if [ &amp;quot;$STATE&amp;quot; = &amp;quot;up&amp;quot; ]
-then
-    IPV4=`/sbin/ip -4 addr show dev $IF|grep &amp;quot;^ *inet&amp;quot;|sed -r -e &#39;s:.*inet ([0-9\.]+)/.*:\1:&#39;`
-    IPV4STRIP=`echo $IPV4 | tr &amp;quot;.&amp;quot; &amp;quot; &amp;quot;`
-    IPV6=`printf &amp;quot;2002:%02x%02x:%02x%02x::1&amp;quot; $IPV4STRIP`
-
-    echo $IPV4 &amp;gt;&amp;gt; /tmp/IPV6DEBUG
-    echo $IPV4STRIP &amp;gt;&amp;gt; /tmp/IPV6DEBUG
-    echo $IPV6 &amp;gt;&amp;gt; /tmp/IPV6DEBUG
-
-    /sbin/ip tunnel add tun6to4 mode sit ttl 64 remote any local $IPV4 2&amp;gt;&amp;amp;1 &amp;gt;&amp;gt; /tmp/IPV6DEBUG
-    /sbin/ip link set dev tun6to4 up 2&amp;gt;&amp;amp;1 &amp;gt;&amp;gt; /tmp/IPV6DEBUG
-    /sbin/ip -6 addr add $IPV6/16 dev tun6to4 2&amp;gt;&amp;amp;1 &amp;gt;&amp;gt; /tmp/IPV6DEBUG
-    /sbin/ip -6 route add 2000::/3 via ::192.88.99.1 dev tun6to4 metric 1 2&amp;gt;&amp;amp;1 &amp;gt;&amp;gt; /tmp/IPV6DEBUG
-
-else
-
-    /sbin/ip -6 route del 2000::/3 via ::192.88.99.1 dev tun6to4 2&amp;gt;&amp;amp;1 &amp;gt;&amp;gt; /tmp/IPV6DEBUG
-    /sbin/ip link set dev tun6to4 down 2&amp;gt;&amp;amp;1 &amp;gt;&amp;gt; /tmp/IPV6DEBUG
-    /sbin/ip tunnel del tun6to4
-
-fi
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;Запуск:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;./6to4 eth0 up
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;Останов:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;./6to4 eth0 down
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;Для автоматического запуска добавьте скрипт в каталог &lt;code&gt;/etc/NetworkManager/dispatcher.d&lt;/code&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;раздача-6to4-ipv6-в-локальную-сеть&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Раздача 6to4 IPv6 в локальную сеть&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Пусть ваша сеть: &lt;code&gt;2002:aabb:ccdd::/48&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Для подсети выделим &lt;code&gt;2002:aabb:ccdd:e::/64&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Локальный интерфейс &amp;mdash; &lt;code&gt;eth0&lt;/code&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;назначение-адреса-внутреннему-интерфейсу&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Назначение адреса внутреннему интерфейсу&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Для роутеров часто используется адрес с &lt;code&gt;::1&lt;/code&gt; :&lt;/li&gt;
-&lt;/ul&gt;
-&lt;!--listend--&gt;
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;ip addr add 2002:aabb:ccdd:e::1/64 dev eth0
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&#34;настройка-radvd&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.2&lt;/span&gt; Настройка radvd&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Изменяем файл &lt;code&gt;/etc/radvd.conf&lt;/code&gt;:&lt;/li&gt;
-&lt;/ul&gt;
-&lt;!--listend--&gt;
-&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;interface eth0
-{
-   AdvSendAdvert on;
-   prefix 2002:aabb:ccdd:e::/64
-   {
-       AdvOnLink on;
-       AdvAutonomous on;
-   };
-};
-&lt;/code&gt;&lt;/pre&gt;
-&lt;ul&gt;
-&lt;li&gt;Включаем маршрутизацию IPv6.&lt;/li&gt;
-&lt;li&gt;Для этого, нужно добавить в &lt;code&gt;/etc/sysctl.conf&lt;/code&gt; следующие строки:
-&lt;pre&gt;&lt;code class=&#34;language-conf-unix&#34;&gt;net.ipv6.conf.all.forwarding=1
-net.ipv6.conf.default.forwarding=1
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;Загрузим эти значения:
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sysctl -p
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;Запустите &lt;code&gt;radvd&lt;/code&gt;:&lt;/li&gt;
-&lt;/ul&gt;
-&lt;!--listend--&gt;
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;systemctl enable --now radvd.service
-&lt;/code&gt;&lt;/pre&gt;</description>
-    </item>
-    
-    <item>
-      <title>Технологии туннелирования IPv6</title>
-      <link>https://yamadharma.github.io/ru/post/2023/05/26/ipv6-tunneling-technologies/</link>
-      <pubDate>Fri, 26 May 2023 19:17:00 +0300</pubDate>
-      <guid>https://yamadharma.github.io/ru/post/2023/05/26/ipv6-tunneling-technologies/</guid>
-      <description>&lt;p&gt;Технологии туннелирования IPv6.&lt;/p&gt;
-&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
-  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
-  &lt;nav id=&#34;TableOfContents&#34;&gt;
-  &lt;ul&gt;
-    &lt;li&gt;&lt;a href=&#34;#сводная-таблица&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Сводная таблица&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#6in4&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; 6in4&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#6over4&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; 6over4&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#6to4&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; 6to4&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#6rd&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; 6rd&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#ayiya&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6&lt;/span&gt; AYIYA&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#isatap&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7&lt;/span&gt; ISATAP&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#teredo&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8&lt;/span&gt; Teredo&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#6a44&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;9&lt;/span&gt; 6a44&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#6bed4&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;10&lt;/span&gt; 6bed4&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#lisp&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;11&lt;/span&gt; LISP&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#seal&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;12&lt;/span&gt; SEAL&lt;/a&gt;&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/nav&gt;
-&lt;/details&gt;
-
-&lt;h2 id=&#34;сводная-таблица&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Сводная таблица&lt;/h2&gt;
-&lt;div class=&#34;table-caption&#34;&gt;
-  &lt;span class=&#34;table-number&#34;&gt;&amp;#1058;&amp;#1072;&amp;#1073;&amp;#1083;&amp;#1080;&amp;#1094;&amp;#1072; 1:&lt;/span&gt;
-  Сводная таблица по протоколам туннелирования
-&lt;/div&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Протокол&lt;/th&gt;
-&lt;th&gt;Туннелей на IPv4-адрес&lt;/th&gt;
-&lt;th&gt;IPv6-хостов на туннель&lt;/th&gt;
-&lt;th&gt;Публичный IPv4&lt;/th&gt;
-&lt;th&gt;NAT-совместимость&lt;/th&gt;
-&lt;th&gt;P2P&lt;/th&gt;
-&lt;th&gt;Gateway принадлежит&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;6to4&lt;/td&gt;
-&lt;td&gt;Один&lt;/td&gt;
-&lt;td&gt;Много&lt;/td&gt;
-&lt;td&gt;Требуется&lt;/td&gt;
-&lt;td&gt;Нет&lt;/td&gt;
-&lt;td&gt;Глобальный&lt;/td&gt;
-&lt;td&gt;ISP или публичный&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;LISP&lt;/td&gt;
-&lt;td&gt;Один&lt;/td&gt;
-&lt;td&gt;Много&lt;/td&gt;
-&lt;td&gt;Требуется&lt;/td&gt;
-&lt;td&gt;Нет&lt;/td&gt;
-&lt;td&gt;Настраивается&lt;/td&gt;
-&lt;td&gt;ISP или Tunnel Broker&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;6rd&lt;/td&gt;
-&lt;td&gt;Один&lt;/td&gt;
-&lt;td&gt;Много&lt;/td&gt;
-&lt;td&gt;Не требуется&lt;/td&gt;
-&lt;td&gt;Нет&lt;/td&gt;
-&lt;td&gt;Внутри домена&lt;/td&gt;
-&lt;td&gt;ISP&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;6in4&lt;/td&gt;
-&lt;td&gt;Один&lt;/td&gt;
-&lt;td&gt;Много&lt;/td&gt;
-&lt;td&gt;Не требуется&lt;/td&gt;
-&lt;td&gt;Ограниченная&lt;/td&gt;
-&lt;td&gt;Нет&lt;/td&gt;
-&lt;td&gt;ISP или Tunnel Broker&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;Teredo&lt;/td&gt;
-&lt;td&gt;Много&lt;/td&gt;
-&lt;td&gt;Один&lt;/td&gt;
-&lt;td&gt;Не требуется&lt;/td&gt;
-&lt;td&gt;Да, с ограничениями&lt;/td&gt;
-&lt;td&gt;Глобальный&lt;/td&gt;
-&lt;td&gt;Публичный релей&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;6bed4&lt;/td&gt;
-&lt;td&gt;Много&lt;/td&gt;
-&lt;td&gt;Много&lt;/td&gt;
-&lt;td&gt;Не требуется&lt;/td&gt;
-&lt;td&gt;Да&lt;/td&gt;
-&lt;td&gt;Глобальный&lt;/td&gt;
-&lt;td&gt;ISP, Tunnel Broker или публичный релей&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;6a44&lt;/td&gt;
-&lt;td&gt;Много&lt;/td&gt;
-&lt;td&gt;Много&lt;/td&gt;
-&lt;td&gt;Не требуется&lt;/td&gt;
-&lt;td&gt;Да&lt;/td&gt;
-&lt;td&gt;Внутри домена&lt;/td&gt;
-&lt;td&gt;ISP&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;AYIYA&lt;/td&gt;
-&lt;td&gt;Много&lt;/td&gt;
-&lt;td&gt;Много&lt;/td&gt;
-&lt;td&gt;Не требуется&lt;/td&gt;
-&lt;td&gt;Да&lt;/td&gt;
-&lt;td&gt;Нет&lt;/td&gt;
-&lt;td&gt;ISP или Tunnel Broker&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;SEAL&lt;/td&gt;
-&lt;td&gt;Много&lt;/td&gt;
-&lt;td&gt;Много&lt;/td&gt;
-&lt;td&gt;Не требуется&lt;/td&gt;
-&lt;td&gt;Да&lt;/td&gt;
-&lt;td&gt;Настраивается&lt;/td&gt;
-&lt;td&gt;ISP или Tunnel Broker&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;h2 id=&#34;6in4&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; 6in4&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Разработан в 1996 году.&lt;/li&gt;
-&lt;li&gt;Крупные туннельные брокеры: Hurricane Electric, SIXXS.&lt;/li&gt;
-&lt;li&gt;Номер протокол: 41.&lt;/li&gt;
-&lt;li&gt;Не работает через NAT.&lt;/li&gt;
-&lt;li&gt;Не подразумевает каких-либо фиксированных адресов и префиксов.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;6over4&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; 6over4&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;6over4 использует IPv4 как виртуальный ethernet для IPv6.&lt;/li&gt;
-&lt;li&gt;Например, multicast-адрес &lt;code&gt;ff02::1&lt;/code&gt; превращается в IPv4 multicast-адрес &lt;code&gt;239.192.0.1&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Протокол поддерживает генерацию Link-Local адреса, Neighbor Discovery и конфигурируется автоматически.&lt;/li&gt;
-&lt;li&gt;Все маршрутизаторы в сети должны поддерживать Multicast.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;6to4&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; 6to4&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2023/05/30/ipv6-tunneling-6to4/&#34;&gt;IPv6. Туннелирование. 6to4&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Признан устаревшим (deprecated) и не рекомендованным к использованию.&lt;/li&gt;
-&lt;li&gt;Вариант 6in4 с правилами использования.&lt;/li&gt;
-&lt;li&gt;Публичному адресу IPv4 сопоставляется IPv6-подсеть с префиксом 48.&lt;/li&gt;
-&lt;li&gt;Фиксированный anycast IPv4 адресом: &lt;code&gt;192.88.99.1&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Протокол полностью автоконфигурируемый, ручная настройка невозможна.&lt;/li&gt;
-&lt;li&gt;Использует префикс &lt;code&gt;2002::/16&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Не работает через NAT.&lt;/li&gt;
-&lt;li&gt;Связь между двумя пользователями 6to4 осуществляется не через туннельный сервер, а напрямую, с нулевой дополнительной задержкой.&lt;/li&gt;
-&lt;li&gt;Не требуется регистрации.&lt;/li&gt;
-&lt;li&gt;Оптимальный (самый близкий) шлюз выбирается автоматически.&lt;/li&gt;
-&lt;li&gt;Даёт IPv6-подсеть с префиксом 48.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;6rd&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; 6rd&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Основан на 6to4.&lt;/li&gt;
-&lt;li&gt;Предназначен для развертывания внутри большой организации или ISP.&lt;/li&gt;
-&lt;li&gt;Использует обычный (провайдерский) диапазон адресов вместо префикса &lt;code&gt;2002::/16&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Может автоматически настраиваться через DHCPv4 специальным параметром.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;ayiya&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6&lt;/span&gt; AYIYA&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;AYIYA &amp;mdash; Anything In Anything.&lt;/li&gt;
-&lt;li&gt;Разработан туннель-брокером SIXXS.&lt;/li&gt;
-&lt;li&gt;В основном используется как IPv4-UDP-AYIYA-IPv6.&lt;/li&gt;
-&lt;li&gt;Работает через NAT.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;isatap&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7&lt;/span&gt; ISATAP&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Похож на 6over4, но не использует (и не поддерживает) Multicast.&lt;/li&gt;
-&lt;li&gt;IPv6-адреса генерируются на основе IPv4-адреса.&lt;/li&gt;
-&lt;li&gt;Предполагается, что IPv4-адрес будет уникальным,&lt;/li&gt;
-&lt;li&gt;Не работает с NAT.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;teredo&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8&lt;/span&gt; Teredo&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Не требует настроек.&lt;/li&gt;
-&lt;li&gt;В Windows настроен и включён по умолчанию.&lt;/li&gt;
-&lt;li&gt;В Linux работает на основе Miredo.&lt;/li&gt;
-&lt;li&gt;Необходимо указать Teredo-сервер.&lt;/li&gt;
-&lt;li&gt;Работает через NAT (не всегда).&lt;/li&gt;
-&lt;li&gt;Не требуется регистрация.&lt;/li&gt;
-&lt;li&gt;Связь между двумя пользователями Teredo осуществляется не через туннельный сервер, а напрямую, с нулевой дополнительной задержкой.&lt;/li&gt;
-&lt;li&gt;Даётся всего один адрес IPv6, невозможно получить несколько Teredo-адресов и раздать их в локальную сеть.&lt;/li&gt;
-&lt;li&gt;Маршрутизация между Teredo и нативным IPv6 (а также другими видами туннелей) происходит через шлюзы.&lt;/li&gt;
-&lt;li&gt;Teredo-адреса генерируются из IPv4-адресов и использованного при подключении UDP-порта, поэтому всегда являются динамическими.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;6a44&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;9&lt;/span&gt; 6a44&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Сделан под влиянием Teredo, но предназначен для развертывания средствами ISP.&lt;/li&gt;
-&lt;li&gt;Клиентам выдаётся IPv6-префикс провайдера.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;6bed4&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;10&lt;/span&gt; 6bed4&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Peer-to-Peer IPv6 on Any Internetwork.&lt;/li&gt;
-&lt;li&gt;Предназначен для создания p2p IPv6-сети внутри IPv4-сети, не запрещающей p2p-соединения между хостами.&lt;/li&gt;
-&lt;li&gt;Является гибридом 6to4 и Teredo: IPv6-адрес формируется из IPv4 и UDP-порта, если p2p-соединение невозможно, используется релей, который может быть запущен ISP или просто сторонней организацией.&lt;/li&gt;
-&lt;li&gt;Работает через NAT.&lt;/li&gt;
-&lt;li&gt;Поддерживает как автоконфигурирование, так и ручную настройку.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;lisp&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;11&lt;/span&gt; LISP&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;LISP &amp;mdash; Locator/ID Separation Protocol.&lt;/li&gt;
-&lt;li&gt;Основная цель &amp;mdash; убрать зависимость IPv6-адреса от местоположения клиента.&lt;/li&gt;
-&lt;li&gt;Например, можно использовать свой (предположим, домашний) IPv6-адрес вне вашей сети, без проксирования трафика.&lt;/li&gt;
-&lt;li&gt;По концепции схож с Proxy Mobile IPv6.&lt;/li&gt;
-&lt;li&gt;Не работает через NAT.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;seal&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;12&lt;/span&gt; SEAL&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;SEAL &amp;mdash; Subnetwork Encapsulation and Adaptation Layer.&lt;/li&gt;
-&lt;li&gt;Поддерживает несколько IPv4-линков и multihoming.&lt;/li&gt;
-&lt;li&gt;Есть аутентификация и anti-replay механизм.&lt;/li&gt;
-&lt;li&gt;SEAL Control Message Protocol используется для обменом служебными данными между хостами.&lt;/li&gt;
-&lt;/ul&gt;</description>
-    </item>
-    
-    <item>
-      <title>Белый список журналов Минобрнауки</title>
-      <link>https://yamadharma.github.io/ru/post/2023/05/18/white-list-journals/</link>
-      <pubDate>Thu, 18 May 2023 21:07:00 +0300</pubDate>
-      <guid>https://yamadharma.github.io/ru/post/2023/05/18/white-list-journals/</guid>
-      <description>&lt;p&gt;Белый список журналов Минобрнауки.&lt;/p&gt;
-&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
-  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
-  &lt;nav id=&#34;TableOfContents&#34;&gt;
-  &lt;ul&gt;
-    &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#критерии&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Критерии&lt;/a&gt;&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/nav&gt;
-&lt;/details&gt;
-
-&lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Предполагается использовать для задач мониторинга и оценки публикационной активности российских учёных.&lt;/li&gt;
-&lt;li&gt;В Белый список включены пока только журналы, индексируемые в RSCI, Scopus, WoS.&lt;/li&gt;
-&lt;li&gt;Сайт: &lt;a href=&#34;https://journalrank.rcsi.science/ru/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://journalrank.rcsi.science/ru/&lt;/a&gt;.&lt;/li&gt;
-&lt;li&gt;О методике ранжирования: &lt;a href=&#34;https://www.minobrnauki.gov.ru/press-center/news/nauka/68029/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.minobrnauki.gov.ru/press-center/news/nauka/68029/&lt;/a&gt;.&lt;/li&gt;
-&lt;li&gt;Файл с методикой оценки и ранжирования: &lt;a href=&#34;https://www.minobrnauki.gov.ru/%D0%9C%D0%B5%D1%82%D0%BE%D0%B4%D0%B8%D0%BA%D0%B0_%D1%83%D1%82%D0%B2%D0%B5%D1%80%D0%B6%D0%B4%D0%B5%D0%BD%D0%BD%D0%B0%D1%8F.pdf&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.minobrnauki.gov.ru/%D0%9C%D0%B5%D1%82%D0%BE%D0%B4%D0%B8%D0%BA%D0%B0_%D1%83%D1%82%D0%B2%D0%B5%D1%80%D0%B6%D0%B4%D0%B5%D0%BD%D0%BD%D0%B0%D1%8F.pdf&lt;/a&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;критерии&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Критерии&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Требования к журналам:
-&lt;ul&gt;
-&lt;li&gt;журнал должен иметь веб-сайт с доступными в машиночитаемых форматах метаданными публикаций и списками процитированных источников;&lt;/li&gt;
-&lt;li&gt;журнал должен присваивать публикациям цифровой идентификатор DOI (CrossRef, DataCite, mEDRA или др.) или российский аналог;&lt;/li&gt;
-&lt;li&gt;статьи из журнала должны иметь цитирования в публикациях других журналов «Белого списка»;&lt;/li&gt;
-&lt;li&gt;журнал должен публиковать преимущественно научные публикации и проводить рецензирование всех поступающих и публикуемых материалов;&lt;/li&gt;
-&lt;li&gt;научный уровень публикуемых материалов, репутация журнала и его известность должны получить положительную оценку специалистов в соответствующей предметной области;&lt;/li&gt;
-&lt;li&gt;главный редактор и большинство членов редколлегии журнала должны иметь публикации в ведущих изданиях «Белого списка» (помимо рассматриваемого журнала) за последние годы;&lt;/li&gt;
-&lt;li&gt;сведения о возможностях предоставления издателем журнала коммерческих услуг, в том числе публикации статей в открытом доступе, должны присутствовать на сайте издания.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;</description>
-    </item>
-    
-    <item>
-      <title>Бытовая техника</title>
-      <link>https://yamadharma.github.io/ru/post/2023/05/14/household-appliances/</link>
-      <pubDate>Sun, 14 May 2023 19:44:00 +0300</pubDate>
-      <guid>https://yamadharma.github.io/ru/post/2023/05/14/household-appliances/</guid>
-      <description>&lt;p&gt;Бытовая техника.&lt;/p&gt;
-&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
-  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
-  &lt;nav id=&#34;TableOfContents&#34;&gt;
-  &lt;ul&gt;
-    &lt;li&gt;&lt;a href=&#34;#телевизионная-техника&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Телевизионная техника&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#уборка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Уборка&lt;/a&gt;&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/nav&gt;
-&lt;/details&gt;
-
-&lt;h2 id=&#34;телевизионная-техника&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Телевизионная техника&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2023/05/14/smarttv-operating-systems/&#34;&gt;SmartTV. Операционные системы&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;уборка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Уборка&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2023/05/09/criteria-choosing-robot-cleaner/&#34;&gt;Критерии выбора робота-пылесоса&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2023/05/15/robot-vacuum-cleaner-iclebo-o5/&#34;&gt;Робот-пылесос iCLEBO O5&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</description>
-    </item>
-    
-    <item>
-      <title>Редактирование. Discrete and Continuous Models. Scopus</title>
-      <link>https://yamadharma.github.io/ru/post/2023/05/10/editing-discrete-continuous-models-scopus/</link>
-      <pubDate>Wed, 10 May 2023 10:32:00 +0300</pubDate>
-      <guid>https://yamadharma.github.io/ru/post/2023/05/10/editing-discrete-continuous-models-scopus/</guid>
-      <description>&lt;p&gt;Подача журнала в Scopus.&lt;/p&gt;
-&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
-  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
-  &lt;nav id=&#34;TableOfContents&#34;&gt;
-  &lt;ul&gt;
-    &lt;li&gt;&lt;a href=&#34;#подготовка-материалов-к-подачи-в-scopus&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Подготовка материалов к подачи в Scopus&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#проверить-статус-подачи-журнала-в-scopus&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Проверить статус подачи журнала в Scopus&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#письмо-из-scopus&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Письмо из Scopus&lt;/a&gt;&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/nav&gt;
-&lt;/details&gt;
-
-&lt;h2 id=&#34;подготовка-материалов-к-подачи-в-scopus&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Подготовка материалов к подачи в Scopus&lt;/h2&gt;
-&lt;h2 id=&#34;проверить-статус-подачи-журнала-в-scopus&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Проверить статус подачи журнала в Scopus&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;После отправки в Scopus присылается код для отслеживания процесса рецензирования.&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://suggestor.step.scopus.com/progressTracker&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://suggestor.step.scopus.com/progressTracker&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;письмо-из-scopus&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Письмо из Scopus&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;span class=&#34;timestamp-wrapper&#34;&gt;&lt;span class=&#34;timestamp&#34;&gt;[2023-05-10 Ср] &lt;/span&gt;&lt;/span&gt; пришло письмо из Scopus.&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;From: Scopus Title Evaluation Team &amp;lt;titlesuggestion@scopus.com&amp;gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>seedling | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/seedling/</link><atom:link href="https://yamadharma.github.io/ru/tag/seedling/index.xml" rel="self" type="application/rss+xml"/><description>seedling</description><generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2023 Dmitry S. Kulyabov</copyright><lastBuildDate>Thu, 18 May 2023 21:07:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url><title>seedling</title><link>https://yamadharma.github.io/ru/tag/seedling/</link></image><item><title>Белый список журналов Минобрнауки</title><link>https://yamadharma.github.io/ru/post/2023/05/18/white-list-journals/</link><pubDate>Thu, 18 May 2023 21:07:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/05/18/white-list-journals/</guid><description>&lt;p>Белый список журналов Минобрнауки.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#критерии">&lt;span class="section-num">2&lt;/span> Критерии&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>Предполагается использовать для задач мониторинга и оценки публикационной активности российских учёных.&lt;/li>
+&lt;li>В Белый список включены пока только журналы, индексируемые в RSCI, Scopus, WoS.&lt;/li>
+&lt;li>Сайт: &lt;a href="https://journalrank.rcsi.science/ru/" target="_blank" rel="noopener">https://journalrank.rcsi.science/ru/&lt;/a>.&lt;/li>
+&lt;li>О методике ранжирования: &lt;a href="https://www.minobrnauki.gov.ru/press-center/news/nauka/68029/" target="_blank" rel="noopener">https://www.minobrnauki.gov.ru/press-center/news/nauka/68029/&lt;/a>.&lt;/li>
+&lt;li>Файл с методикой оценки и ранжирования: &lt;a href="https://www.minobrnauki.gov.ru/%D0%9C%D0%B5%D1%82%D0%BE%D0%B4%D0%B8%D0%BA%D0%B0_%D1%83%D1%82%D0%B2%D0%B5%D1%80%D0%B6%D0%B4%D0%B5%D0%BD%D0%BD%D0%B0%D1%8F.pdf" target="_blank" rel="noopener">https://www.minobrnauki.gov.ru/%D0%9C%D0%B5%D1%82%D0%BE%D0%B4%D0%B8%D0%BA%D0%B0_%D1%83%D1%82%D0%B2%D0%B5%D1%80%D0%B6%D0%B4%D0%B5%D0%BD%D0%BD%D0%B0%D1%8F.pdf&lt;/a>.&lt;/li>
+&lt;/ul>
+&lt;h2 id="критерии">&lt;span class="section-num">2&lt;/span> Критерии&lt;/h2>
+&lt;ul>
+&lt;li>Требования к журналам:
+&lt;ul>
+&lt;li>журнал должен иметь веб-сайт с доступными в машиночитаемых форматах метаданными публикаций и списками процитированных источников;&lt;/li>
+&lt;li>журнал должен присваивать публикациям цифровой идентификатор DOI (CrossRef, DataCite, mEDRA или др.) или российский аналог;&lt;/li>
+&lt;li>статьи из журнала должны иметь цитирования в публикациях других журналов «Белого списка»;&lt;/li>
+&lt;li>журнал должен публиковать преимущественно научные публикации и проводить рецензирование всех поступающих и публикуемых материалов;&lt;/li>
+&lt;li>научный уровень публикуемых материалов, репутация журнала и его известность должны получить положительную оценку специалистов в соответствующей предметной области;&lt;/li>
+&lt;li>главный редактор и большинство членов редколлегии журнала должны иметь публикации в ведущих изданиях «Белого списка» (помимо рассматриваемого журнала) за последние годы;&lt;/li>
+&lt;li>сведения о возможностях предоставления издателем журнала коммерческих услуг, в том числе публикации статей в открытом доступе, должны присутствовать на сайте издания.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul></description></item><item><title>Бытовая техника</title><link>https://yamadharma.github.io/ru/post/2023/05/14/household-appliances/</link><pubDate>Sun, 14 May 2023 19:44:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/05/14/household-appliances/</guid><description>&lt;p>Бытовая техника.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#телевизионная-техника">&lt;span class="section-num">1&lt;/span> Телевизионная техника&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#уборка">&lt;span class="section-num">2&lt;/span> Уборка&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="телевизионная-техника">&lt;span class="section-num">1&lt;/span> Телевизионная техника&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/05/14/smarttv-operating-systems/">SmartTV. Операционные системы&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="уборка">&lt;span class="section-num">2&lt;/span> Уборка&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/05/09/criteria-choosing-robot-cleaner/">Критерии выбора робота-пылесоса&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/05/15/robot-vacuum-cleaner-iclebo-o5/">Робот-пылесос iCLEBO O5&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>Редактирование. Discrete and Continuous Models. Scopus</title><link>https://yamadharma.github.io/ru/post/2023/05/10/editing-discrete-continuous-models-scopus/</link><pubDate>Wed, 10 May 2023 10:32:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/05/10/editing-discrete-continuous-models-scopus/</guid><description>&lt;p>Подача журнала в Scopus.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#подготовка-материалов-к-подачи-в-scopus">&lt;span class="section-num">1&lt;/span> Подготовка материалов к подачи в Scopus&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#проверить-статус-подачи-журнала-в-scopus">&lt;span class="section-num">2&lt;/span> Проверить статус подачи журнала в Scopus&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#письмо-из-scopus">&lt;span class="section-num">3&lt;/span> Письмо из Scopus&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="подготовка-материалов-к-подачи-в-scopus">&lt;span class="section-num">1&lt;/span> Подготовка материалов к подачи в Scopus&lt;/h2>
+&lt;h2 id="проверить-статус-подачи-журнала-в-scopus">&lt;span class="section-num">2&lt;/span> Проверить статус подачи журнала в Scopus&lt;/h2>
+&lt;ul>
+&lt;li>После отправки в Scopus присылается код для отслеживания процесса рецензирования.&lt;/li>
+&lt;li>&lt;a href="https://suggestor.step.scopus.com/progressTracker" target="_blank" rel="noopener">https://suggestor.step.scopus.com/progressTracker&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="письмо-из-scopus">&lt;span class="section-num">3&lt;/span> Письмо из Scopus&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>&lt;span class="timestamp-wrapper">&lt;span class="timestamp">[2023-05-10 Ср] &lt;/span>&lt;/span> пришло письмо из Scopus.&lt;/p>
+&lt;blockquote>
+&lt;p>From: Scopus Title Evaluation Team &amp;lt;titlesuggestion@scopus.com&amp;gt;
 Subject: The review of your title for Scopus is complete
-To: &lt;a href=&#34;mailto:kulyabov-ds@rudn.ru&#34;&gt;kulyabov-ds@rudn.ru&lt;/a&gt;
+To: &lt;a href="mailto:kulyabov-ds@rudn.ru">kulyabov-ds@rudn.ru&lt;/a>
 Date: Wed, 10 May 2023 08:52:35 +0200 (CEST) (50 minutes, 35 seconds ago)
 Flags: seen
-Maildir: /kulyabov_&lt;a href=&#34;mailto:ds@pfur.ru&#34;&gt;ds@pfur.ru&lt;/a&gt;/Inbox&lt;/p&gt;
-&lt;p&gt;Subject Chair - Default - Final decision: Accept&lt;/p&gt;
-&lt;p&gt;Title: Discrete and Continuous Models and Applied Computational Science ISSN / E-ISSN: 2658-4670 / 2658-7149 Publisher: Peoples’ Friendship University of Russia (RUDN University)&lt;/p&gt;
-&lt;p&gt;Dear Dmitriy S. Kulyabov,&lt;/p&gt;
-&lt;p&gt;Congratulations, your Discrete and Continuous Models and Applied Computational Science has been accepted for
-Scopus.&lt;/p&gt;
-&lt;p&gt;The Scopus Content Selection &amp;amp; Advisory Board (CSAB) has reviewed your application and approved it for
-coverage.&lt;/p&gt;
-&lt;p&gt;For your information, the reviewer comments are copied below:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;The journal consistently includes articles that are academically sound and relevant to an international&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;academic audience in the field.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;The journal has clear aims and policies that are consistent with the journal’s content.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;What’s Next?&lt;/p&gt;
-&lt;p&gt;If Scopus already has a license agreement in place with your organization for content access or your title has a
+Maildir: /kulyabov_&lt;a href="mailto:ds@pfur.ru">ds@pfur.ru&lt;/a>/Inbox&lt;/p>
+&lt;p>Subject Chair - Default - Final decision: Accept&lt;/p>
+&lt;p>Title: Discrete and Continuous Models and Applied Computational Science ISSN / E-ISSN: 2658-4670 / 2658-7149 Publisher: Peoples’ Friendship University of Russia (RUDN University)&lt;/p>
+&lt;p>Dear Dmitriy S. Kulyabov,&lt;/p>
+&lt;p>Congratulations, your Discrete and Continuous Models and Applied Computational Science has been accepted for
+Scopus.&lt;/p>
+&lt;p>The Scopus Content Selection &amp;amp; Advisory Board (CSAB) has reviewed your application and approved it for
+coverage.&lt;/p>
+&lt;p>For your information, the reviewer comments are copied below:&lt;/p>
+&lt;ul>
+&lt;li>The journal consistently includes articles that are academically sound and relevant to an international&lt;/li>
+&lt;/ul>
+&lt;p>academic audience in the field.&lt;/p>
+&lt;ul>
+&lt;li>The journal has clear aims and policies that are consistent with the journal’s content.&lt;/li>
+&lt;/ul>
+&lt;p>What’s Next?&lt;/p>
+&lt;p>If Scopus already has a license agreement in place with your organization for content access or your title has a
 CC-BY license, no further action is needed from your end at this point.
 If we do not have a license agreement in place, and you are the journal editor or publisher, your Engagement
 Manager will reach out to you within 4 weeks to discuss next steps on the content access set-up. Your
 Engagement Manager’s role is to guide your through the Scopus onboarding process and ensure that everything
 runs smoothly. You can learn more about the onboarding process in the Scopus Content Provider FAQ and a
 specific timeline can be found here: Onboarding timeline
-Practical information for journal editors can be found in our Role of an editor FAQ.&lt;/p&gt;
-&lt;p&gt;In general, all recently accepted titles will be listed separately in the Scopus Title list within 1 month after
+Practical information for journal editors can be found in our Role of an editor FAQ.&lt;/p>
+&lt;p>In general, all recently accepted titles will be listed separately in the Scopus Title list within 1 month after
 acceptance, see the second tab &amp;lsquo;Accepted titles&amp;rsquo;. If you can&amp;rsquo;t find your title there, please check the tab
-&amp;lsquo;Scopus sources&amp;rsquo;.&lt;/p&gt;
-&lt;p&gt;Sincerely,&lt;/p&gt;
-&lt;p&gt;Scopus Title Evaluation Support
-&lt;a href=&#34;mailto:titlesuggestion@scopus.com&#34;&gt;titlesuggestion@scopus.com&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;_&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;Notice: Scopus is owned by Elsevier B.V. and Elsevier is solely responsible for the content selection policy of
+&amp;lsquo;Scopus sources&amp;rsquo;.&lt;/p>
+&lt;p>Sincerely,&lt;/p>
+&lt;p>Scopus Title Evaluation Support
+&lt;a href="mailto:titlesuggestion@scopus.com">titlesuggestion@scopus.com&lt;/a>&lt;/p>
+&lt;p>&lt;span class="underline">&lt;span class="underline">&lt;span class="underline">&lt;span class="underline">&lt;span class="underline">&lt;span class="underline">&lt;span class="underline">&lt;span class="underline">&lt;span class="underline">&lt;span class="underline">&lt;span class="underline">&lt;span class="underline">&lt;span class="underline">&lt;span class="underline">&lt;span class="underline">&lt;span class="underline">&lt;span class="underline">&lt;span class="underline">&lt;span class="underline">&lt;span class="underline">&lt;span class="underline">&lt;span class="underline">&lt;span class="underline">&lt;span class="underline">&lt;span class="underline">&lt;span class="underline">&lt;span class="underline">&lt;span class="underline">&lt;span class="underline">&lt;span class="underline">&lt;span class="underline">&lt;span class="underline">&lt;span class="underline">_&lt;/span>&lt;/span>&lt;/span>&lt;/span>&lt;/span>&lt;/span>&lt;/span>&lt;/span>&lt;/span>&lt;/span>&lt;/span>&lt;/span>&lt;/span>&lt;/span>&lt;/span>&lt;/span>&lt;/span>&lt;/span>&lt;/span>&lt;/span>&lt;/span>&lt;/span>&lt;/span>&lt;/span>&lt;/span>&lt;/span>&lt;/span>&lt;/span>&lt;/span>&lt;/span>&lt;/span>&lt;/span>&lt;/span>&lt;/p>
+&lt;p>Notice: Scopus is owned by Elsevier B.V. and Elsevier is solely responsible for the content selection policy of
 Scopus. In order to come to a decision to accept or reject a title for Scopus, Elsevier follows the independent
 advice from the Scopus Content Selection &amp;amp; Advisory Board (CSAB). However, Elsevier and the CSAB reserve the
 right to change decisions, adjust the selection criteria, or re-evaluate titles that are accepted for Scopus
 without prior notice. Decisions made by the CSAB do not guarantee inclusion into Scopus due to not being able to
 come to terms with the publisher on a licensing agreement. In no event shall Elsevier be liable for any indirect,
 incidental, special, consequential or punitive damages arising out of or in connection with any advice disclosed
-or any selection decision made. This statement must not be used for advertisement purposes.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;blockquote&gt;
-&lt;p&gt;От: Sridhar, Kalyani (ELS-CHN) &amp;lt;Ka.Sridhar@elsevier.com&amp;gt;
+or any selection decision made. This statement must not be used for advertisement purposes.&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;blockquote>
+&lt;p>От: Sridhar, Kalyani (ELS-CHN) &amp;lt;Ka.Sridhar@elsevier.com&amp;gt;
 Отправлено: 2 июня 2023 г. 13:26
-Тема: Request permission for Discrete and Continuous Models and Applied Computational Science /PR-00029646&lt;/p&gt;
-&lt;p&gt;Dear Reader,&lt;/p&gt;
-&lt;p&gt;I am reaching you on behalf of Elsevier’s research databases namely Scopus , Embase etc.&lt;/p&gt;
-&lt;p&gt;We require a formal permission to initiate indexing your publication. Could you please let me know the
-appropriate person who could give us a consent and sign the permission form.&lt;/p&gt;
-&lt;p&gt;Looking forward to hearing from you.&lt;/p&gt;
-&lt;p&gt;​​​​​​​Regards,
-Kalyani&lt;/p&gt;
-&lt;p&gt;Note: Please address missing contents via - Scopus web form and for queries on indexing please write to &lt;a href=&#34;mailto:bd-scm@elsevier.com&#34;&gt;bd-scm@elsevier.com&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Kalyani Sridhar&lt;/p&gt;
-&lt;p&gt;Sr. Engagement Manager&lt;/p&gt;
-&lt;p&gt;ELSEVIER  | Content and Data Sourcing - Data-Operations&lt;/p&gt;
-&lt;p&gt;RELX India Private Limited&lt;/p&gt;
-&lt;p&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;&lt;span class=&#34;underline&#34;&gt;_&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;International Tech Park | Crest –12th Floor | Taramani Road | Taramani | Chennai 600 113 |India&lt;/p&gt;
-&lt;p&gt;Tel: +91 44 42994442 | Fax: +91 44 42994568&lt;/p&gt;
-&lt;p&gt;E-mail &lt;a href=&#34;mailto:ka.sridhar@elsevier.com&#34;&gt;ka.sridhar@elsevier.com&lt;/a&gt;  URL: &lt;a href=&#34;https://www.elsevier.com&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;www.elsevier.com&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;/li&gt;
-&lt;/ul&gt;</description>
-    </item>
-    
-    <item>
-      <title>Критерии выбора робота-пылесоса</title>
-      <link>https://yamadharma.github.io/ru/post/2023/05/09/criteria-choosing-robot-cleaner/</link>
-      <pubDate>Tue, 09 May 2023 19:11:00 +0300</pubDate>
-      <guid>https://yamadharma.github.io/ru/post/2023/05/09/criteria-choosing-robot-cleaner/</guid>
-      <description>&lt;p&gt;Критерии выбора робота-пылесоса.&lt;/p&gt;
-&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
-  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
-  &lt;nav id=&#34;TableOfContents&#34;&gt;
-  &lt;ul&gt;
-    &lt;li&gt;&lt;a href=&#34;#основные-требования-к-роботу-пылесосу&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Основные требования к роботу-пылесосу&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#основные-производители&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Основные производители&lt;/a&gt;
-      &lt;ul&gt;
-        &lt;li&gt;&lt;a href=&#34;#irobot&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; iRobot&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#xiaomi&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Xiaomi&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#iplus&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; iPlus&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#iclebo&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.4&lt;/span&gt; iClebo&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#другие-известные-производители&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.5&lt;/span&gt; Другие известные производители&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#честный-китай&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.6&lt;/span&gt; Честный китай&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#русские-бренды&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.7&lt;/span&gt; Русские бренды&lt;/a&gt;&lt;/li&gt;
-      &lt;/ul&gt;
-    &lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#виды-навигации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Виды навигации&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#влажная-уборка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Влажная уборка&lt;/a&gt;
-      &lt;ul&gt;
-        &lt;li&gt;&lt;a href=&#34;#недостатки&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Недостатки&lt;/a&gt;&lt;/li&gt;
-      &lt;/ul&gt;
-    &lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#турбощетка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Турбощетка&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#форма-робота-пылесоса&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6&lt;/span&gt; Форма робота-пылесоса&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#аккумулятор&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7&lt;/span&gt; Аккумулятор&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#время-уборки&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8&lt;/span&gt; Время уборки&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#разные-параметры&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;9&lt;/span&gt; Разные параметры&lt;/a&gt;&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/nav&gt;
-&lt;/details&gt;
-
-&lt;h2 id=&#34;основные-требования-к-роботу-пылесосу&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Основные требования к роботу-пылесосу&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Задача робота-пылесоса &amp;mdash; поддерживающая &lt;em&gt;сухая&lt;/em&gt; уборка.
-&lt;ul&gt;
-&lt;li&gt;Робот не сможет убрать весь мусор.&lt;/li&gt;
-&lt;li&gt;Робот не сможет выполнять влажную уборку с эффективностью человека.&lt;/li&gt;
-&lt;li&gt;В любом случае придётся регулярно убираться самостоятельно.&lt;/li&gt;
-&lt;li&gt;Робот способен убирать только мелкий мусор.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Незаметность и минимум внимания.
-&lt;ul&gt;
-&lt;li&gt;В долгосрочной перспективе лучшая стратегия &amp;mdash; настроить робота так, чтобы он убирался, пока вас нет дома, а вы только время от времени (раз в неделю) очищали пылесборник и щётки.&lt;/li&gt;
-&lt;li&gt;Идеальная ситуация: купил, разобрался, один раз настроил и пользуешься.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Подходит для твердых покрытий.
-&lt;ul&gt;
-&lt;li&gt;Предназначен для очистки ламината, кафеля, паркета.&lt;/li&gt;
-&lt;li&gt;С трудом чистит ковёр.&lt;/li&gt;
-&lt;li&gt;Буксует на бахроме.&lt;/li&gt;
-&lt;li&gt;Турбощётка помогает частично.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Легко разобраться, как работает.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;основные-производители&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Основные производители&lt;/h2&gt;
-&lt;h3 id=&#34;irobot&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; iRobot&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Первыми начали производить автоматические пылесосы.&lt;/li&gt;
-&lt;li&gt;В США роботы-пылесосы до сих пор называют &lt;em&gt;румба&lt;/em&gt; &amp;mdash; по названию первой серии iRobot Roomba.&lt;/li&gt;
-&lt;li&gt;Хороший iRobot стоит от 40 тысяч рублей.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;xiaomi&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Xiaomi&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Продаёт под своей маркой других производителей.&lt;/li&gt;
-&lt;li&gt;Агрессивно вырвался как производитель первой цены.&lt;/li&gt;
-&lt;li&gt;Сейчас цены зачастую даже завышены.&lt;/li&gt;
-&lt;li&gt;Проблемы:
-&lt;ul&gt;
-&lt;li&gt;долговечность;&lt;/li&gt;
-&lt;li&gt;нет официального сервиса в России;&lt;/li&gt;
-&lt;li&gt;приложение не полностью переведено на русский, иногда вылезают сообщения с иероглифами.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;iplus&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; iPlus&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Бренд японский, производство в Китае.&lt;/li&gt;
-&lt;li&gt;Полноценно представлен в России: полная локализация, сеть сервисных центров.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;iclebo&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.4&lt;/span&gt; iClebo&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Сайт: &lt;a href=&#34;https://iclebo.com.ru/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://iclebo.com.ru/&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Корейский производитель.&lt;/li&gt;
-&lt;li&gt;Полноценно представлен в России: полная локализация, сеть сервисных центров.&lt;/li&gt;
-&lt;li&gt;Моделей не много.&lt;/li&gt;
-&lt;li&gt;Не самые свежие.&lt;/li&gt;
-&lt;li&gt;Сборка качественна.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;другие-известные-производители&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.5&lt;/span&gt; Другие известные производители&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Samsung, LG, Tefal и прочие не смогли создать ничего выдающегося.&lt;/li&gt;
-&lt;li&gt;Техника разочаровывающая.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;честный-китай&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.6&lt;/span&gt; Честный китай&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Deebot, iLife и так далее.&lt;/li&gt;
-&lt;li&gt;Недорогие, с неплохим функционалом.&lt;/li&gt;
-&lt;li&gt;Инструкции и настройки на смеси английского с китайским.&lt;/li&gt;
-&lt;li&gt;Нет сервиса в России.&lt;/li&gt;
-&lt;li&gt;Стоят от 25 тысяч рублей.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;русские-бренды&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.7&lt;/span&gt; Русские бренды&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Redmond, Polaris, Vitek.&lt;/li&gt;
-&lt;li&gt;Есть сервис в России.&lt;/li&gt;
-&lt;li&gt;Цена от 40 тысяч рублей.&lt;/li&gt;
-&lt;li&gt;Перелицованные китайские модели.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;виды-навигации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Виды навигации&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Навигация влияет на отношения робота с окружающей средой.&lt;/li&gt;
-&lt;li&gt;Робот-пылесос с плохой навигацией обязательно будет ударяться о препятствия, застревать, проезжать дважды (или ни разу) по одному и тому же месту.&lt;/li&gt;
-&lt;li&gt;Эволюция технологий навигации:
-&lt;ul&gt;
-&lt;li&gt;Сенсор
-&lt;ul&gt;
-&lt;li&gt;В старых дешёвых моделях был установлен датчик на бампере.&lt;/li&gt;
-&lt;li&gt;Робот-пылесос просто едет прямо до тех пор, пока не упрётся бампером.&lt;/li&gt;
-&lt;li&gt;Далее он пытался повернуть на некий угол.&lt;/li&gt;
-&lt;li&gt;Если поворот удавался, робот ехал дальше, если нет &amp;mdash; пробовал повернуть снова.&lt;/li&gt;
-&lt;li&gt;Ездил случайным образом.&lt;/li&gt;
-&lt;li&gt;убирал основную часть мусора за несколько подходов.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Гироскоп.
-&lt;ul&gt;
-&lt;li&gt;Гироскоп помогает ориентироваться в пространстве и отслеживать перемещение.&lt;/li&gt;
-&lt;li&gt;Во время движения робот-пылесос запоминает направление, расстояние и угол поворота.&lt;/li&gt;
-&lt;li&gt;На основе этой информации робот строит карту окружающего пространства.&lt;/li&gt;
-&lt;li&gt;Модели с гироскопом: iPlus X700, Hobot Legee 688, модели iRobot дешевле 35-40 тысяч рублей.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Камера.
-&lt;ul&gt;
-&lt;li&gt;Обрабатывается изображение с камеры.&lt;/li&gt;
-&lt;li&gt;Стоимость: 2 USD.&lt;/li&gt;
-&lt;li&gt;Ставиться несколько штук на пылесос.&lt;/li&gt;
-&lt;li&gt;При недостаточном освещении возможны ошибки.&lt;/li&gt;
-&lt;li&gt;Возможно вмешательство в частную жизнь.&lt;/li&gt;
-&lt;li&gt;Модели с камерой: iRobot Roomba S9+, Xiaomi Mijia 1T, iLIFE W450.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Лидар.
-&lt;ul&gt;
-&lt;li&gt;Лидар (лазерный дальномер) определяет расстояние до предметов.&lt;/li&gt;
-&lt;li&gt;Устройство посылает лазерный импульс и определяет время, затраченное на то, чтобы луч достиг объекта и отразился обратно.&lt;/li&gt;
-&lt;li&gt;Стоимость: 20&amp;ndash;30 USD.&lt;/li&gt;
-&lt;li&gt;Из-за дороговизны ставят только один лидар.&lt;/li&gt;
-&lt;li&gt;У роботов-пылесосов лидар расположен внутри башенки наверху корпуса.&lt;/li&gt;
-&lt;li&gt;Башенка вращается на 360°.&lt;/li&gt;
-&lt;li&gt;Карта получается достаточно точной.&lt;/li&gt;
-&lt;li&gt;Модели: Xiaomi Roborock S50, iPlus L100, Ecovacs Deebot OZMO 950.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;влажная-уборка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Влажная уборка&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Эта функция представляет собой режим, при котором робот &lt;em&gt;протирает&lt;/em&gt; пол.&lt;/li&gt;
-&lt;li&gt;Есть еще комбинированная уборка: в таком режиме робот всасывает пыль, затем из навесного или встроенного бака подаётся вода, и с помощью специальной тряпки робот протирает пол.&lt;/li&gt;
-&lt;li&gt;Для влажной уборки лучше использовать отдельный робот-полотёр.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;недостатки&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Недостатки&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Подходит только для поддерживающей уборки.
-&lt;ul&gt;
-&lt;li&gt;С серьёзными загрязнениями робот-пылесос не справится.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Требует много внимания.
-&lt;ul&gt;
-&lt;li&gt;Влажная уборка требует много времени на обслуживание.&lt;/li&gt;
-&lt;li&gt;Нужно наливать воду, цеплять тряпку, запускать робота в этом режиме.&lt;/li&gt;
-&lt;li&gt;Когда вода закончится, нужно наполнить бак.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Бак может протечь.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;турбощетка&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Турбощетка&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Турбощетка &amp;mdash; вращающийся валик с пучками жёстких щетин, расположенных по спирали.&lt;/li&gt;
-&lt;li&gt;Можно выделить три варианта: с турбощёткой, без турбощётки, съёмная турбощётка.&lt;/li&gt;
-&lt;li&gt;Считается, что робот с турбощеткой убирает мусор лучше, особенно с ковров.&lt;/li&gt;
-&lt;li&gt;Турбощетка действительно собирает мусор лучше, потому что вычесывает ковёр, поднимая мусор вверх, к пылесборнику.&lt;/li&gt;
-&lt;li&gt;Часть мусора наматывается на саму щётку.&lt;/li&gt;
-&lt;li&gt;Турбощётка эффективна, когда есть ковры и животные.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;форма-робота-пылесоса&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6&lt;/span&gt; Форма робота-пылесоса&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Форма робота-пылесоса не имеет значения.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;аккумулятор&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7&lt;/span&gt; Аккумулятор&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Аккумулятор брать литиевый.&lt;/li&gt;
-&lt;li&gt;Ёмкость от 4000 мА/ч.&lt;/li&gt;
-&lt;li&gt;iRobot ранее ставил Ni-MH батареи.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;время-уборки&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8&lt;/span&gt; Время уборки&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;На время уборки влияют:
-&lt;ul&gt;
-&lt;li&gt;Мощность всасывания.&lt;/li&gt;
-&lt;li&gt;Система навигации.&lt;/li&gt;
-&lt;li&gt;Функция &lt;em&gt;Возобновление уборки после подзарядки&lt;/em&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;разные-параметры&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;9&lt;/span&gt; Разные параметры&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Габариты (чтобы не застревал)
-&lt;ul&gt;
-&lt;li&gt;Роботы-пылесосы с лидаром выше примерно на 2 см.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Боковых щеток должно быть две.
-&lt;ul&gt;
-&lt;li&gt;Две щетки вращаются навстречу друг другу и вовнутрь, чтобы сметать мусор к центру, откуда он попадает во всасывающее отверстие.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Уровень шума.
-&lt;ul&gt;
-&lt;li&gt;Не очень важно.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Размер мусоросборника.
-&lt;ul&gt;
-&lt;li&gt;От 400 мл.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;</description>
-    </item>
-    
-    <item>
-      <title>Учёный и инженер</title>
-      <link>https://yamadharma.github.io/ru/post/2023/05/09/scientist-engineer/</link>
-      <pubDate>Tue, 09 May 2023 11:30:00 +0300</pubDate>
-      <guid>https://yamadharma.github.io/ru/post/2023/05/09/scientist-engineer/</guid>
-      <description>&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
-  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
-  &lt;nav id=&#34;TableOfContents&#34;&gt;
-  &lt;ul&gt;
-    &lt;li&gt;&lt;a href=&#34;#общие-замечания&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общие замечания&lt;/a&gt;&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/nav&gt;
-&lt;/details&gt;
-
-&lt;h2 id=&#34;общие-замечания&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общие замечания&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Отличие практиков от ученых-теоретиков: для последних отсутствие результата &amp;mdash; тоже результат.
-&lt;ul&gt;
-&lt;li&gt;Для первых &amp;mdash; ситуация иная, отсутствие результата решения проблемы не порождает решений для творческих задач, т.е. не приносит основной пользы.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Результат работы учёных &amp;mdash; знания, статьи. Они природные или технические явления превращают в знание.
-&lt;ul&gt;
-&lt;li&gt;Инженер, базируясь на разработанных знаниях создают технические артефакты.&lt;/li&gt;
-&lt;li&gt;Одно перетекает в другое.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;</description>
-    </item>
-    
-    <item>
-      <title>Junior, Middle, Senior</title>
-      <link>https://yamadharma.github.io/ru/post/2023/05/08/junior-middle-senior/</link>
-      <pubDate>Mon, 08 May 2023 17:00:00 +0300</pubDate>
-      <guid>https://yamadharma.github.io/ru/post/2023/05/08/junior-middle-senior/</guid>
-      <description>&lt;p&gt;Уровни развития в специальности.&lt;/p&gt;
-&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
-  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
-  &lt;nav id=&#34;TableOfContents&#34;&gt;
-  &lt;ul&gt;
-    &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#junior&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Junior&lt;/a&gt;
-      &lt;ul&gt;
-        &lt;li&gt;&lt;a href=&#34;#разработка-программного-обеспечения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Разработка программного обеспечения&lt;/a&gt;&lt;/li&gt;
-      &lt;/ul&gt;
-    &lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#middle&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Middle&lt;/a&gt;
-      &lt;ul&gt;
-        &lt;li&gt;&lt;a href=&#34;#разработка-программного-обеспечения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Разработка программного обеспечения&lt;/a&gt;&lt;/li&gt;
-      &lt;/ul&gt;
-    &lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#middle-plus&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Middle+&lt;/a&gt;
-      &lt;ul&gt;
-        &lt;li&gt;&lt;a href=&#34;#разработка-программного-обеспечения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Разработка программного обеспечения&lt;/a&gt;&lt;/li&gt;
-      &lt;/ul&gt;
-    &lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#senior&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Senior&lt;/a&gt;
-      &lt;ul&gt;
-        &lt;li&gt;&lt;a href=&#34;#рабочие-специальности&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.1&lt;/span&gt; Рабочие специальности&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#разработка-программного-обеспечения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.2&lt;/span&gt; Разработка программного обеспечения&lt;/a&gt;&lt;/li&gt;
-      &lt;/ul&gt;
-    &lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#leader&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6&lt;/span&gt; Leader&lt;/a&gt;&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/nav&gt;
-&lt;/details&gt;
-
-&lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Уровни относятся не только к области информационных технологий, но и в общем к разным специальностям.&lt;/li&gt;
-&lt;li&gt;Следует разделять уровни развития для рабочих и инженерных специальностей (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2023/04/02/collar-color/&#34;&gt;Цветные воротнички&lt;/a&gt;).&lt;/li&gt;
-&lt;li&gt;Также можно учитывать аспекты семиотики (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2023/05/08/syntax-semantics-pragmatics/&#34;&gt;Синтаксис, семантика, прагматика&lt;/a&gt;).&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;junior&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Junior&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Уровень синтаксиса.
-&lt;ul&gt;
-&lt;li&gt;Знает конкретный инструментарий, умеет им пользоваться.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Минимально жизнеспособный персонаж.&lt;/li&gt;
-&lt;li&gt;Умеет выполнять конкретную узкую работу.&lt;/li&gt;
-&lt;li&gt;Ремесленник по решению творческих задач.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;разработка-программного-обеспечения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Разработка программного обеспечения&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Знает базовые алгоритмы и может решить задачу, если кто-то расскажет ему как.&lt;/li&gt;
-&lt;li&gt;Обычно выпускник университета или курсов по программированию.&lt;/li&gt;
-&lt;li&gt;Хорошо брать на стабильных этапах, когда появляются рутинные некритические задачи, которые никто не хочет делать.
-&lt;ul&gt;
-&lt;li&gt;Компания дешево закрывает рутину, джун набирается опыта на ошибках, а сеньоры их менторят.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Опыт до 2-3 лет, не более&lt;/li&gt;
-&lt;li&gt;Как собеседовать.
-&lt;ul&gt;
-&lt;li&gt;Самое важное: горящие глаза, желание учиться и умение копать базовые штуки для вашей области.&lt;/li&gt;
-&lt;li&gt;На собеседованиях можно поставить простенькую задачку из той области, где ему придётся работать.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Самое важное на этом этапе: научиться писать код.&lt;/li&gt;
-&lt;li&gt;Продолжительность: 2&amp;ndash;3 года.&lt;/li&gt;
-&lt;li&gt;Книги для продвижения дальше: любые, в названии которых есть название вашего языка программирования. Плюс «Совершенный Код», Кормен «Алгоритмы».&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;middle&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Middle&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Уровень семантики.&lt;/li&gt;
-&lt;li&gt;Знает выполняемые задачи, может подобрать к ним инструментарий.&lt;/li&gt;
-&lt;li&gt;Самостоятельный, но не автономный.&lt;/li&gt;
-&lt;li&gt;Может решить любую поставленную техническую задачу.&lt;/li&gt;
-&lt;li&gt;Способен задавать правильные вопросы и делать работающие решения.&lt;/li&gt;
-&lt;li&gt;Ремесленник, решающий задачи, распаковывая чужие решения проблем.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;разработка-программного-обеспечения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Разработка программного обеспечения&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Всё еще считает программирование самым важным этапом разработки.&lt;/li&gt;
-&lt;li&gt;Может самостоятельно сделать всё, о чем его попросят.&lt;/li&gt;
-&lt;li&gt;Это последний уровень, который можно собеседовать исключительно по хард-скиллам.&lt;/li&gt;
-&lt;li&gt;Самое важное на данном этапе: перестать дрочить код и начать понимать бизнес-требования.&lt;/li&gt;
-&lt;li&gt;Продолжительность: 3&amp;ndash;5 лет.&lt;/li&gt;
-&lt;li&gt;Книги: Фаулер «Рефакторинг», «Банда Четырех», «Программист Прагматик», «Олифер Олифер Компьютерные Сети», «Книга Шифров».&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;middle-plus&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Middle+&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Промежуточный уровень между мидлом и сеньором.&lt;/li&gt;
-&lt;li&gt;Почти сеньор.&lt;/li&gt;
-&lt;li&gt;Автономен.&lt;/li&gt;
-&lt;li&gt;Не хватает уровня.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;разработка-программного-обеспечения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4.1&lt;/span&gt; Разработка программного обеспечения&lt;/h3&gt;
-&lt;h2 id=&#34;senior&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Senior&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Автономный персонаж с опытом, личной экспертизой и софт-скиллами.&lt;/li&gt;
-&lt;li&gt;Фокусируется на вопросе зачем это делается, а не какой инструментарий использовать.&lt;/li&gt;
-&lt;li&gt;Мастер, решающий проблемы.&lt;/li&gt;
-&lt;li&gt;Решённая проблема переводит целый пласт схожих вопросов в категорию творческих задач, значительно понижая требования к задействованным специалистам.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;рабочие-специальности&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.1&lt;/span&gt; Рабочие специальности&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Слесарь 6 разряда.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;разработка-программного-обеспечения&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5.2&lt;/span&gt; Разработка программного обеспечения&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Опыт: более 10+ лет.&lt;/li&gt;
-&lt;li&gt;Самое важное: понять что делать дальше.&lt;/li&gt;
-&lt;li&gt;Продолжительность: сколько угодно.&lt;/li&gt;
-&lt;li&gt;Книги: любые не по программированию.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;leader&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6&lt;/span&gt; Leader&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Возрастает доля административной работы.&lt;/li&gt;
-&lt;li&gt;Может быть лидером группы (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/11/05/lances-fournies/&#34;&gt;Рыцарское копьё&lt;/a&gt;).&lt;/li&gt;
-&lt;/ul&gt;</description>
-    </item>
-    
-    <item>
-      <title>Синтаксис, семантика, прагматика</title>
-      <link>https://yamadharma.github.io/ru/post/2023/05/08/syntax-semantics-pragmatics/</link>
-      <pubDate>Mon, 08 May 2023 16:32:00 +0300</pubDate>
-      <guid>https://yamadharma.github.io/ru/post/2023/05/08/syntax-semantics-pragmatics/</guid>
-      <description>&lt;p&gt;Синтаксис, семантика, прагматика.&lt;/p&gt;
-&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
-  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
-  &lt;nav id=&#34;TableOfContents&#34;&gt;
-  &lt;ul&gt;
-    &lt;li&gt;&lt;a href=&#34;#общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#синтаксис&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Синтаксис&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#семантика&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Семантика&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#прагматика&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Прагматика&lt;/a&gt;&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/nav&gt;
-&lt;/details&gt;
-
-&lt;h2 id=&#34;общая-информация&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Семиотика выделяет три основных аспекта изучения знака и знаковой системы
-&lt;ul&gt;
-&lt;li&gt;синтактику, изучающую отношения между знаками, т.е. внутренние свойства систем знаков (правила построения знаков в рамках знаковой системы);&lt;/li&gt;
-&lt;li&gt;семантику, изучающую отношения между знаками и обозначаемыми предметами &amp;mdash; внешним миром и внутренним миром человека, т.е. содержание знаков;&lt;/li&gt;
-&lt;li&gt;прагматику,изучающую отношение между знаком и человеком, т.е, те, кто пользуется знаками: говорящим, слушающим, пишущим, читающим.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Разделение на семантику, синтактику и прагматику ввел американский философ Ч. Моррис.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;синтаксис&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Синтаксис&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Отвечает на вопрос: &lt;em&gt;Как?&lt;/em&gt;&lt;/li&gt;
-&lt;li&gt;Например: Как ходить?&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;семантика&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Семантика&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Отвечает на вопрос: &lt;em&gt;Что?&lt;/em&gt;&lt;/li&gt;
-&lt;li&gt;Например: Куда идти?&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;прагматика&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Прагматика&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Отвечает на вопрос: &lt;em&gt;Зачем?&lt;/em&gt;&lt;/li&gt;
-&lt;li&gt;Например: Зачем идти?&lt;/li&gt;
-&lt;/ul&gt;</description>
-    </item>
-    
-    <item>
-      <title>Книги. История</title>
-      <link>https://yamadharma.github.io/ru/post/2023/05/06/books-history/</link>
-      <pubDate>Sat, 06 May 2023 10:29:00 +0300</pubDate>
-      <guid>https://yamadharma.github.io/ru/post/2023/05/06/books-history/</guid>
-      <description>&lt;p&gt;Чтение книг по истории.&lt;/p&gt;
-&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
-  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
-  &lt;nav id=&#34;TableOfContents&#34;&gt;
-  &lt;ul&gt;
-    &lt;li&gt;&lt;a href=&#34;#средневековье&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Средневековье&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#литература&#34;&gt;Литература&lt;/a&gt;&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/nav&gt;
-&lt;/details&gt;
-
-&lt;h2 id=&#34;средневековье&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Средневековье&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/01/01/garanina_book_notes-historical-gossip_ru/&#34;&gt;Гаранина, М. Б. (2021): Записки исторической сплетницы&lt;/a&gt; [&lt;a href=&#34;#citeproc_bib_item_1&#34;&gt;1&lt;/a&gt;]&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;литература&#34;&gt;Литература&lt;/h2&gt;
-&lt;div class=&#34;csl-bib-body&#34;&gt;
-  &lt;div class=&#34;csl-entry&#34;&gt;&lt;a id=&#34;citeproc_bib_item_1&#34;&gt;&lt;/a&gt;1.	Гаранина М. Б. &lt;a href=&#34;https://libgen.li/ads.php?md5=56CFC627008DE188A854F134963C6A04&#34;&gt;Записки исторической сплетницы: О жизни королевских особ и аристократов xii-xviii вв.&lt;/a&gt; Записки исторической сплетницы / М. Б.  Гаранина. – Москва : Эксмо, 2021. – 352 сс.&lt;/div&gt;
-&lt;/div&gt;</description>
-    </item>
-    
-    <item>
-      <title>Выбор научного руководителя</title>
-      <link>https://yamadharma.github.io/ru/post/2023/05/01/choice-scientific-adviser/</link>
-      <pubDate>Mon, 01 May 2023 10:52:00 +0300</pubDate>
-      <guid>https://yamadharma.github.io/ru/post/2023/05/01/choice-scientific-adviser/</guid>
-      <description>&lt;p&gt;Как выбрать научного руководителя.&lt;/p&gt;
-&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
-  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
-  &lt;nav id=&#34;TableOfContents&#34;&gt;
-  &lt;ul&gt;
-    &lt;li&gt;&lt;a href=&#34;#роль-научного-руководителя&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Роль научного руководителя&lt;/a&gt;
-      &lt;ul&gt;
-        &lt;li&gt;&lt;a href=&#34;#формальная-роль-научного-руководителя&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Формальная роль научного руководителя&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#дополнительная-реальная-роль-научного-руководителя&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Дополнительная реальная роль научного руководителя&lt;/a&gt;&lt;/li&gt;
-      &lt;/ul&gt;
-    &lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#когда-искать&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Когда искать&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#критерии&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Критерии&lt;/a&gt;
-      &lt;ul&gt;
-        &lt;li&gt;&lt;a href=&#34;#сбор-информации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Сбор информации&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#публикации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.2&lt;/span&gt; Публикации&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#научный-руководитель-администратор&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.3&lt;/span&gt; Научный руководитель &amp;mdash; администратор&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#отрицательные-сигналы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.4&lt;/span&gt; Отрицательные сигналы&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#личная-встреча&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.5&lt;/span&gt; Личная встреча&lt;/a&gt;&lt;/li&gt;
-      &lt;/ul&gt;
-    &lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/nav&gt;
-&lt;/details&gt;
-
-&lt;h2 id=&#34;роль-научного-руководителя&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Роль научного руководителя&lt;/h2&gt;
-&lt;h3 id=&#34;формальная-роль-научного-руководителя&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Формальная роль научного руководителя&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Научить соискателя деятельности, необходимой для научной работы по определённой тематике (работа с оборудованием, профессиональными базами данных, программным обеспечением).&lt;/li&gt;
-&lt;li&gt;Объяснить соискателю писаные и неписаные правила научной жизни и научной работы.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;дополнительная-реальная-роль-научного-руководителя&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Дополнительная реальная роль научного руководителя&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Обеспечить соискателю стартовые материальные ресурсы.
-&lt;ul&gt;
-&lt;li&gt;У руководителя есть лаборатория/комната/реактивы/приборы или доступ к ним.&lt;/li&gt;
-&lt;li&gt;Научный руководитель обычно делится деньгами (гранты, проекты), или помогает получить доступ к финансированию (помогает получить должность или другую работу).&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Предоставляет принадлежность к группе.
-&lt;ul&gt;
-&lt;li&gt;Соискатель воспринимается и внутри организации, и за её пределами как человек руководителя.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;когда-искать&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Когда искать&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Соискатель &amp;mdash; дипломник или магистрант.
-&lt;ul&gt;
-&lt;li&gt;Научрука назначат с учётом или без учёта пожеланий соискателя.&lt;/li&gt;
-&lt;li&gt;Следует озаботиться поиском научного руководителя как можно раньше.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Соискатель хочет поработать в науке и есть объявление о поиске сотрудников.&lt;/li&gt;
-&lt;li&gt;Соискатель хочет поработать в науке, но объявлений нет, а есть только желание и слухи, что кто-то не против взять себе студента, аспиранта и т.д.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;критерии&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Критерии&lt;/h2&gt;
-&lt;h3 id=&#34;сбор-информации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Сбор информации&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Начать надо со сбора информации, причем чем раньше, тем лучше.&lt;/li&gt;
-&lt;li&gt;Больше всего можно узнать от людей, кто работал:
-&lt;ul&gt;
-&lt;li&gt;у твоего предполагаемого научрука;&lt;/li&gt;
-&lt;li&gt;в том же подразделении;&lt;/li&gt;
-&lt;li&gt;в той же организации.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Источники информации:
-&lt;ul&gt;
-&lt;li&gt;студенты,&lt;/li&gt;
-&lt;li&gt;аспиранты,&lt;/li&gt;
-&lt;li&gt;другие научные руководители.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Что нужно узнать:
-&lt;ul&gt;
-&lt;li&gt;психологический портрет (важна личностная совместимость);&lt;/li&gt;
-&lt;li&gt;иерархия и отношения внутри коллектива;&lt;/li&gt;
-&lt;li&gt;отношения внутри организации (у научрука могут быть конфликты с коллегами, администрацией);&lt;/li&gt;
-&lt;li&gt;контакты с другими коллективами и кто в них участвует:
-&lt;ul&gt;
-&lt;li&gt;хорошо, если группа участвует в какой-либо коллаборации;&lt;/li&gt;
-&lt;li&gt;обратить внимание, вовлечены ли в эту работу студенты или аспиранты.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;деньги:
-&lt;ul&gt;
-&lt;li&gt;приход денег;&lt;/li&gt;
-&lt;li&gt;траты денег (до работников деньги могут просто не доходить).&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;оснащение:
-&lt;ul&gt;
-&lt;li&gt;помещения;&lt;/li&gt;
-&lt;li&gt;лаборатории;&lt;/li&gt;
-&lt;li&gt;компьютерная техника.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;публикации:
-&lt;ul&gt;
-&lt;li&gt;какое количество публикаций у группы;&lt;/li&gt;
-&lt;li&gt;есть ли публикации у молодых сотрудников.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;дополнительные преференции:
-&lt;ul&gt;
-&lt;li&gt;поездки на научные конференции;&lt;/li&gt;
-&lt;li&gt;поездки на научные школы;&lt;/li&gt;
-&lt;li&gt;финансирование поездок.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;наличие информации о научном руководителе в Интернете;
-&lt;ul&gt;
-&lt;li&gt;профили научрука в соцсетях;&lt;/li&gt;
-&lt;li&gt;сайты грантодателей.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;публикации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.2&lt;/span&gt; Публикации&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Следует посмотреть библиографические базы данных.&lt;/li&gt;
-&lt;li&gt;Если научрук &amp;mdash; научник (более фундаментальный, чем прикладной), то публикации &amp;mdash; основной критерий успешности.&lt;/li&gt;
-&lt;li&gt;Следует посмотреть:
-&lt;ul&gt;
-&lt;li&gt;сколько у научного руководителя статей;&lt;/li&gt;
-&lt;li&gt;в каких журналах они вышли;&lt;/li&gt;
-&lt;li&gt;как они цитируются.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Для естественных наук следует обратить внимание на индексацию в Scopus или Web of Science.&lt;/li&gt;
-&lt;li&gt;Уровень статей Scopus/Web of Science:
-&lt;ul&gt;
-&lt;li&gt;российские журналы, имеющие переводную версию;&lt;/li&gt;
-&lt;li&gt;иностранные журналы.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Помимо статей следует обратить внимание на материалы конференций, индексируемые Scopus и/или Web of Science.
-&lt;ul&gt;
-&lt;li&gt;В некоторых науках (технарей, программисты) эти публикации котируются, в некоторых (естественные науки) &amp;mdash; не котируются.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;научный-руководитель-администратор&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.3&lt;/span&gt; Научный руководитель &amp;mdash; администратор&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Если научный руководитель (или руководитель научной группы) является высокопоставленным администратором, то многие мелкие рутинные вопросы внутри организации решаются лучше и быстрее.
-&lt;ul&gt;
-&lt;li&gt;Однако при этом у него больше недоброжелателей.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Если формальным научруком становится крупный администратор, то фактически он делегирует полномочия кому-то ниже.
-&lt;ul&gt;
-&lt;li&gt;Следует понимать, с кем реально придётся иметь дело.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;отрицательные-сигналы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.4&lt;/span&gt; Отрицательные сигналы&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;У потенциального научрука давно не было студентов, аспирантов.&lt;/li&gt;
-&lt;li&gt;Конфликт научного руководителя с коллегами.&lt;/li&gt;
-&lt;li&gt;Научный руководитель &amp;mdash; фрик, часто разговор переходит, например, на следующие темы:
-&lt;ul&gt;
-&lt;li&gt;рептилоидов;&lt;/li&gt;
-&lt;li&gt;всемирный жидомасонский заговор;&lt;/li&gt;
-&lt;li&gt;опровержения теории относительности;&lt;/li&gt;
-&lt;li&gt;воинствующий феминизм, экоактивизм и т.д.;&lt;/li&gt;
-&lt;li&gt;религиозные темы, не связанные с областью исследования.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Научный руководитель &amp;mdash; нарцисс:
-&lt;ul&gt;
-&lt;li&gt;членство в разного рода общественных академиях;&lt;/li&gt;
-&lt;li&gt;развешивание членских дипломов по кабинету;&lt;/li&gt;
-&lt;li&gt;сделанная самостоятельно страничка в википедии.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;личная-встреча&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.5&lt;/span&gt; Личная встреча&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Следует договориться о встрече с потенциальным научруком.&lt;/li&gt;
-&lt;li&gt;Чаще всего встреча проходит на рабочем месте научного руководителя.&lt;/li&gt;
-&lt;li&gt;спрашивать или нет о плюшках, которые ты можешь получить - вопрос сложный. Кто-то любит такую постановку вопроса, кто-то (справедливо) считает, что вначале ты должен показать себя, а плюшки уже потом. Действуй по ситуации.&lt;/li&gt;
-&lt;li&gt;На что обратить внимание:
-&lt;ul&gt;
-&lt;li&gt;ещё раз посмотреть на помещения и оснащение своими глазами;&lt;/li&gt;
-&lt;li&gt;позвали попить чаю/кофе с народом &amp;mdash; соглашайся;&lt;/li&gt;
-&lt;li&gt;физическое состояние и возраст научного руководителя;&lt;/li&gt;
-&lt;li&gt;отношение научного руководителя к разным гендерам (не является ли начуный руководитель женоненавистником либо мужененавистницей);&lt;/li&gt;
-&lt;li&gt;половой состав научной группы; если коллектив явно однополый, то это будет влиять на стиль общения.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Не следует торопиться с решением.&lt;/li&gt;
-&lt;/ul&gt;</description>
-    </item>
-    
-    <item>
-      <title>Оформление аффилиации РУДН</title>
-      <link>https://yamadharma.github.io/ru/post/2023/04/27/rudn-affiliation/</link>
-      <pubDate>Thu, 27 Apr 2023 13:37:00 +0300</pubDate>
-      <guid>https://yamadharma.github.io/ru/post/2023/04/27/rudn-affiliation/</guid>
-      <description>&lt;p&gt;Оформление аффилиации РУДН.&lt;/p&gt;
-&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
-  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
-  &lt;nav id=&#34;TableOfContents&#34;&gt;
-  &lt;ul&gt;
-    &lt;li&gt;&lt;a href=&#34;#актуальный-вид-аффилиации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Актуальный вид аффилиации&lt;/a&gt;&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/nav&gt;
-&lt;/details&gt;
-
-&lt;h2 id=&#34;актуальный-вид-аффилиации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Актуальный вид аффилиации&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Приказ № 216 от 24 апреля 2023 года.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;На английском языке:&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;RUDN University&lt;/p&gt;
-&lt;p&gt;6 Miklukho-Maklaya St, Moscow, 117198, Russian Federation&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;На русском языке:&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Российский университет дружбы народов&lt;/p&gt;
-&lt;p&gt;117198, Москва, ул. Миклухо-Маклая, д. 6&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;/li&gt;
-&lt;/ul&gt;</description>
-    </item>
-    
-    <item>
-      <title>Реформа высшего образования</title>
-      <link>https://yamadharma.github.io/ru/post/2023/04/22/higher-education-reform/</link>
-      <pubDate>Sat, 22 Apr 2023 14:09:00 +0300</pubDate>
-      <guid>https://yamadharma.github.io/ru/post/2023/04/22/higher-education-reform/</guid>
-      <description>&lt;p&gt;Реформа высшего образования в России, 2023 год.&lt;/p&gt;
-
-
-&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
-  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
-  &lt;nav id=&#34;TableOfContents&#34;&gt;
-  &lt;ul&gt;
-    &lt;li&gt;&lt;a href=&#34;#история&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; История&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#структура-новой--пост-болонской--системы-высшего-образования&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Структура новой (пост-болонской) системы высшего образования&lt;/a&gt;
-      &lt;ul&gt;
-        &lt;li&gt;&lt;a href=&#34;#уровне-высшего-образования&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Уровне высшего образования&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#уровни-профессионального-образования&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Уровни профессионального образования&lt;/a&gt;&lt;/li&gt;
-      &lt;/ul&gt;
-    &lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#базовое-высшее-образование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Базовое высшее образование&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#специализированное-высшее-образование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Специализированное высшее образование&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#аспирантура&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Аспирантура&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#пилотный-проект&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6&lt;/span&gt; Пилотный проект&lt;/a&gt;&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/nav&gt;
-&lt;/details&gt;
-
-&lt;h2 id=&#34;история&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; История&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;span class=&#34;timestamp-wrapper&#34;&gt;&lt;span class=&#34;timestamp&#34;&gt;[2023-04-19 Ср] &lt;/span&gt;&lt;/span&gt; Выступил глава Минобрнауки России Валерий Фальков
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://ria.ru/20230419/obrazovanie-1866291666.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://ria.ru/20230419/obrazovanie-1866291666.html&lt;/a&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;span class=&#34;timestamp-wrapper&#34;&gt;&lt;span class=&#34;timestamp&#34;&gt;[2023-05-12 Пт] &lt;/span&gt;&lt;/span&gt; Опубликован Указ Президента
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://fgosvo.ru/uploadfiles//zakony/UK12.pdf&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://fgosvo.ru/uploadfiles//zakony/UK12.pdf&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;структура-новой--пост-болонской--системы-высшего-образования&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Структура новой (пост-болонской) системы высшего образования&lt;/h2&gt;
-&lt;h3 id=&#34;уровне-высшего-образования&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Уровне высшего образования&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Базовое высшее образование.&lt;/li&gt;
-&lt;li&gt;Специализированное высшее образование.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;уровни-профессионального-образования&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Уровни профессионального образования&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Аспирантура.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;базовое-высшее-образование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Базовое высшее образование&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Базовое (основное) высшее образование&lt;/li&gt;
-&lt;li&gt;Срок обучения от четырёх до шести лет.&lt;/li&gt;
-&lt;li&gt;Базовый уровень – это как бы бакалавриат или специалитет.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;специализированное-высшее-образование&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Специализированное высшее образование&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Специализированное высшее образование:
-&lt;ul&gt;
-&lt;li&gt;магистратура;&lt;/li&gt;
-&lt;li&gt;ординатура;&lt;/li&gt;
-&lt;li&gt;ассистентура-стажировка.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Срок обучения от одного года до трех лет.&lt;/li&gt;
-&lt;li&gt;Не является получением второго или последующего высшего образования.&lt;/li&gt;
-&lt;li&gt;Специализированное высшее образование обеспечит углублённую подготовку, но только для тех, кто закончил первую ступень.&lt;/li&gt;
-&lt;li&gt;Магистратура становится скорее интенсивной программой ДПО для профессионалов.&lt;/li&gt;
-&lt;li&gt;Магистратура станет специализированным высшим образованием.
-&lt;ul&gt;
-&lt;li&gt;Поступать в магистратуру можно, имея базовое высшее  образование, с правом поступления на конкурсной основе на бюджетное место.&lt;/li&gt;
-&lt;li&gt;Так как магистратура становится специализированным высшим образованием, то без профильного (или смежного с ним) базового образования поступить в магистратуру станет невозможно.
-&lt;ul&gt;
-&lt;li&gt;Невозможна станет ситуация, когда физик становился магистром юриспруденции, а инженер заканчивал магистратуру по психологии.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Два вида магистратуры:
-&lt;ul&gt;
-&lt;li&gt;академическая;
-&lt;ul&gt;
-&lt;li&gt;финансируется за счет бюджета;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;профессиональная;
-&lt;ul&gt;
-&lt;li&gt;может софинансироваться за счет отдельных компаний и отраслей.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Магистратура останется не во всех вузах.&lt;/li&gt;
-&lt;li&gt;Будет проводиться отбор вузов, которым будет разрешено реализовывать магистерские программы.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;аспирантура&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Аспирантура&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Аспирантура (адъюнктура) &amp;mdash; третья ступень образования.
-&lt;ul&gt;
-&lt;li&gt;Аспирантура будет выделена в отдельный уровень образования, направленный на подготовку научных и научно-практических кадров.&lt;/li&gt;
-&lt;li&gt;Поступить в аспирантуру смогут те, кто окончил базовую ступень со сроком обучения не менее пяти лет или получил специализированное высшее образование.
-&lt;ul&gt;
-&lt;li&gt;То есть два пути в аспирантуру:
-&lt;ul&gt;
-&lt;li&gt;5&amp;ndash;6-летнее базовое образование;&lt;/li&gt;
-&lt;li&gt;наличии магистерской подготовки.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Остались вопросы.
-&lt;ul&gt;
-&lt;li&gt;Как будет реализована идея об индивидуальных образовательных траекториях 2+2+2.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;пилотный-проект&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6&lt;/span&gt; Пилотный проект&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;С сентября 2023 года предлагается запустить пилотный проект.&lt;/li&gt;
-&lt;li&gt;Вузы в пилотном проекте:
-&lt;ul&gt;
-&lt;li&gt;федеральное государственное автономное образовательное учреждение высшего образования «Балтийский федеральный университет имени Иммануила Канта»;&lt;/li&gt;
-&lt;li&gt;федеральное государственное бюджетное образовательное учреждение высшего образования «Московский авиационный институт (национальный исследовательский университет)»;&lt;/li&gt;
-&lt;li&gt;федеральное государственное автономное образовательное учреждение высшего образования «Национальный исследовательский технологический университет МИСиС»;&lt;/li&gt;
-&lt;li&gt;федеральное государственное бюджетное образовательное учреждение высшего образования «Московский педагогический государственный университет»;&lt;/li&gt;
-&lt;li&gt;федеральное государственное бюджетное образовательное учреждение высшего образования «Санкт-Петербургский горный университет»;&lt;/li&gt;
-&lt;li&gt;федеральное государственное автономное образовательное учреждение высшего образования «Национальный исследовательский Томский государственный университет».&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;</description>
-    </item>
-    
-    <item>
-      <title>Переход на домен pfur.ru</title>
-      <link>https://yamadharma.github.io/ru/post/2023/04/20/switching-domain-pfur/</link>
-      <pubDate>Thu, 20 Apr 2023 18:18:00 +0300</pubDate>
-      <guid>https://yamadharma.github.io/ru/post/2023/04/20/switching-domain-pfur/</guid>
-      <description>&lt;p&gt;Перевод инфраструктуры доменов Windows на домен &lt;code&gt;pfur.ru&lt;/code&gt;.&lt;/p&gt;
-
-
-&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
-  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
-  &lt;nav id=&#34;TableOfContents&#34;&gt;&lt;/nav&gt;
-&lt;/details&gt;</description>
-    </item>
-    
-    <item>
-      <title>Бытие науки</title>
-      <link>https://yamadharma.github.io/ru/post/2021/02/04/being-science/</link>
-      <pubDate>Thu, 04 Feb 2021 19:24:00 +0300</pubDate>
-      <guid>https://yamadharma.github.io/ru/post/2021/02/04/being-science/</guid>
-      <description>&lt;p&gt;&lt;em&gt;Бытие науки&lt;/em&gt;. Разрозненные мысли.&lt;/p&gt;
-&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
-  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
-  &lt;nav id=&#34;TableOfContents&#34;&gt;
-  &lt;ul&gt;
-    &lt;li&gt;&lt;a href=&#34;#составляющие-науки&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Составляющие науки&lt;/a&gt;
-      &lt;ul&gt;
-        &lt;li&gt;&lt;a href=&#34;#наука-как-деятельность&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Наука как деятельность&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#наука-как-система-научных-знаний&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Наука как система научных знаний&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#наука-как-социальный-институт&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.3&lt;/span&gt; Наука как социальный институт&lt;/a&gt;&lt;/li&gt;
-      &lt;/ul&gt;
-    &lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#люди-в-науке&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Люди в науке&lt;/a&gt;
-      &lt;ul&gt;
-        &lt;li&gt;&lt;a href=&#34;#профессор&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Профессор&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#научный-руководитель&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Научный руководитель&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#исследователи&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; Исследователи&lt;/a&gt;&lt;/li&gt;
-      &lt;/ul&gt;
-    &lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#система-публикаций&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Система публикаций&lt;/a&gt;&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/nav&gt;
-&lt;/details&gt;
-
-&lt;h2 id=&#34;составляющие-науки&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Составляющие науки&lt;/h2&gt;
-&lt;h3 id=&#34;наука-как-деятельность&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Наука как деятельность&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/08/09/scientific-journal-business-models/&#34;&gt;Бизнес-модели научных журналов&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;наука-как-система-научных-знаний&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.2&lt;/span&gt; Наука как система научных знаний&lt;/h3&gt;
-&lt;h3 id=&#34;наука-как-социальный-институт&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.3&lt;/span&gt; Наука как социальный институт&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/10/08/academic-degrees-ranks/&#34;&gt;Учёные степени и звания&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/06/22/scientific-pseudo-popularization/&#34;&gt;Научная лже-популяризация&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;люди-в-науке&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Люди в науке&lt;/h2&gt;
-&lt;h3 id=&#34;профессор&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Профессор&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Профессор является базовой научной единицей.&lt;/li&gt;
-&lt;li&gt;Обычно профессор собирает вокруг себя группу, которую можно уподобить рыцарскому копью (см. &lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/11/05/lances-fournies/&#34;&gt;Рыцарское копьё&lt;/a&gt;).&lt;/li&gt;
-&lt;li&gt;Заведующий кафедрой при таком взгляде руководит хоругвью, то есть является рыцарем-баннеретом.&lt;/li&gt;
-&lt;li&gt;А доцент есть рыцарь-башелье.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;научный-руководитель&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Научный руководитель&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2023/05/01/choice-scientific-adviser/&#34;&gt;Выбор научного руководителя&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;исследователи&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.3&lt;/span&gt; Исследователи&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2023/06/01/classification-researchers/&#34;&gt;Классификация исследователей&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2023/05/08/junior-middle-senior/&#34;&gt;Junior, Middle, Senior&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;система-публикаций&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Система публикаций&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2023/05/18/hac-list-quartiles/&#34;&gt;Квартили списка ВАК&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2023/05/18/hac-list/&#34;&gt;Список журналов ВАК&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2023/05/18/white-list-journals/&#34;&gt;Белый список журналов Минобрнауки&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</description>
-    </item>
-    
-    <item>
-      <title>Научно-исследовательская деятельность</title>
-      <link>https://yamadharma.github.io/ru/post/2021/02/01/research/</link>
-      <pubDate>Mon, 01 Feb 2021 20:18:00 +0300</pubDate>
-      <guid>https://yamadharma.github.io/ru/post/2021/02/01/research/</guid>
-      <description>&lt;p&gt;Мои научные исследования.&lt;/p&gt;
-&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
-  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
-  &lt;nav id=&#34;TableOfContents&#34;&gt;
-  &lt;ul&gt;
-    &lt;li&gt;&lt;a href=&#34;#направления-исследования&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Направления исследования&lt;/a&gt;
-      &lt;ul&gt;
-        &lt;li&gt;&lt;a href=&#34;#геометризация-полевых-теорий&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Геометризация полевых теорий&lt;/a&gt;&lt;/li&gt;
-      &lt;/ul&gt;
-    &lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#публикации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Публикации&lt;/a&gt;
-      &lt;ul&gt;
-        &lt;li&gt;&lt;a href=&#34;#подготовка-публикаций&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Подготовка публикаций&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#мои-публикации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Мои публикации&lt;/a&gt;&lt;/li&gt;
-      &lt;/ul&gt;
-    &lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#опыт-участия-в-работе-советов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Опыт участия в работе советов&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#научное-руководство&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Научное руководство&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#научные-проекты&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Научные проекты&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#исследования-в-оияи&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6&lt;/span&gt; Исследования в ОИЯИ&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#научная-группа&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7&lt;/span&gt; Научная группа&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#гранты&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8&lt;/span&gt; Гранты&lt;/a&gt;
-      &lt;ul&gt;
-        &lt;li&gt;&lt;a href=&#34;#выполненные-гранты&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8.1&lt;/span&gt; Выполненные гранты&lt;/a&gt;
-          &lt;ul&gt;
-            &lt;li&gt;&lt;a href=&#34;#сводный-список&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8.1.1&lt;/span&gt; Сводный список&lt;/a&gt;&lt;/li&gt;
-          &lt;/ul&gt;
-        &lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#подготовка-грантов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8.2&lt;/span&gt; Подготовка грантов&lt;/a&gt;&lt;/li&gt;
-      &lt;/ul&gt;
-    &lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#научные-журналы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;9&lt;/span&gt; Научные журналы&lt;/a&gt;
-      &lt;ul&gt;
-        &lt;li&gt;&lt;a href=&#34;#научные-издательства&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;9.1&lt;/span&gt; Научные издательства&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#научные-журналы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;9.2&lt;/span&gt; Научные журналы&lt;/a&gt;&lt;/li&gt;
-      &lt;/ul&gt;
-    &lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#конференции&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;10&lt;/span&gt; Конференции&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#научные-семинары&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;11&lt;/span&gt; Научные семинары&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#контакты&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;12&lt;/span&gt; Контакты&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#библиометрические-показатели&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;13&lt;/span&gt; Библиометрические показатели&lt;/a&gt;
-      &lt;ul&gt;
-        &lt;li&gt;&lt;a href=&#34;#scopus&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;13.1&lt;/span&gt; Scopus&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#wos&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;13.2&lt;/span&gt; WoS&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#elibrary&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;13.3&lt;/span&gt; eLibrary&lt;/a&gt;&lt;/li&gt;
-      &lt;/ul&gt;
-    &lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#научные-информационные-системы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;14&lt;/span&gt; Научные информационные системы&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#социальные-сети&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;15&lt;/span&gt; Социальные сети&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#репозитории-кода&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;16&lt;/span&gt; Репозитории кода&lt;/a&gt;&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/nav&gt;
-&lt;/details&gt;
-
-&lt;h2 id=&#34;направления-исследования&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Направления исследования&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/02/04/history-science/&#34;&gt;История науки&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/02/08/computer-science/&#34;&gt;Computer science&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/02/21/mathematical-modeling/&#34;&gt;Математическое моделирование&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/02/22/research-methodical-notes/&#34;&gt;Научно-исследовательская деятельность. Методические заметки&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/10/14/markup-languages/&#34;&gt;Языки разметки&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/08/26/scientific-programming/&#34;&gt;Научное программирование&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/10/23/sociological-notes/&#34;&gt;Социологические заметки&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;геометризация-полевых-теорий&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1.1&lt;/span&gt; Геометризация полевых теорий&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/04/06/geometrization-electrodynamics/&#34;&gt;Геометризация электродинамики&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;публикации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Публикации&lt;/h2&gt;
-&lt;h3 id=&#34;подготовка-публикаций&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.1&lt;/span&gt; Подготовка публикаций&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/08/25/scientific-writing/&#34;&gt;Научная писанина&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;мои-публикации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2.2&lt;/span&gt; Мои публикации&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/08/23/science-articles/&#34;&gt;Научные статьи&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2023/05/16/registration-computer-programs/&#34;&gt;Регистрация программ для ЭВМ&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;опыт-участия-в-работе-советов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Опыт участия в работе советов&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/02/03/doctoral-committee/&#34;&gt;Диссертационный совет&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;научное-руководство&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;4&lt;/span&gt; Научное руководство&lt;/h2&gt;
-&lt;h2 id=&#34;научные-проекты&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;5&lt;/span&gt; Научные проекты&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/08/08/research-mininet/&#34;&gt;Исследования. Mininet&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/06/20/research-surrogate-modeling/&#34;&gt;Исследования. Суррогатное моделирование&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;исследования-в-оияи&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;6&lt;/span&gt; Исследования в ОИЯИ&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/06/22/work-plan-jinr/&#34;&gt;План работ в ОИЯИ&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;2022
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/12/11/work-report-jinr-2022/&#34;&gt;Отчёт по работе в ОИЯИ за 2022&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;научная-группа&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;7&lt;/span&gt; Научная группа&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/09/05/scientific-activity-our-group/&#34;&gt;Научная деятельность нашей группы&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;гранты&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8&lt;/span&gt; Гранты&lt;/h2&gt;
-&lt;h3 id=&#34;выполненные-гранты&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8.1&lt;/span&gt; Выполненные гранты&lt;/h3&gt;
-&lt;h4 id=&#34;сводный-список&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8.1.1&lt;/span&gt; Сводный список&lt;/h4&gt;
-&lt;ul&gt;
-&lt;li&gt;22-79-10128 (РНФ), (2022&amp;ndash;) Алгоритмы и модели обеспечения показателей качества обслуживания в беспроводных гетерогенных сетях шестого поколения, ответственный исполнитель.&lt;/li&gt;
-&lt;li&gt;19-01-00645 (РФФИ), Математические методы, алгоритмы и программы для моделирования нелинейных квазиравновесных и локально-неравновесных процессов (РФФИ, 2019&amp;ndash;2021, руководитель Айрян Э. А., ОИЯИ, Дубна).&lt;/li&gt;
-&lt;li&gt;Компьютерное моделирование и численно-аналитические методы исследования сложных физико-технических систем и инфокоммуникационных технологий (РУДН, 2017&amp;ndash;2019, руководитель Кореньков В. В., РУДН).&lt;/li&gt;
-&lt;li&gt;16-07-00556 (РФФИ), Программный комплекс для численных и символьных расчётов в распределеной среде для работы статистических и стохастических моделей на основе операторного метода (РФФИ, 2016&amp;ndash;2018, руководитель Гостев И. М., Национальный исследовательский университет «Высшая школа экономики»).&lt;/li&gt;
-&lt;li&gt;15-07-08795 (РФФИ), Разработка методики компьютерного проектирования стохастических моделей систем методом вычислительного эксперимента (РФФИ, 2015&amp;ndash;2017, руководитель Севастьянов Л. А., РУДН).&lt;/li&gt;
-&lt;li&gt;Ф14Д-002 Разработка методов аппроксимации нелинейных функционалов и операторов с детерминированными и стохастическими параметрами (БФФИ, 2014&amp;ndash;2016, руководитель Малютин В. Б., Институт математики Национальной академии наук Беларуси).&lt;/li&gt;
-&lt;li&gt;14-01-00628 Математические методы, алгоритмы и программы для моделирования сложных физических систем и процессов с применением высокопроизводительных вычислительных систем (РФФИ, 2014&amp;ndash;2016, руководитель Айрян Э. А., ОИЯИ).&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;подготовка-грантов&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;8.2&lt;/span&gt; Подготовка грантов&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/10/09/grants-preparation/&#34;&gt;Подготовка грантов&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;научные-журналы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;9&lt;/span&gt; Научные журналы&lt;/h2&gt;
-&lt;h3 id=&#34;научные-издательства&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;9.1&lt;/span&gt; Научные издательства&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/01/17/mdpi-publishing-house/&#34;&gt;Издательство MDPI&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;научные-журналы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;9.2&lt;/span&gt; Научные журналы&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/07/15/journal-mathematics/&#34;&gt;Журнал Mathematics&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2021/02/26/editing-discrete-continuous-models/&#34;&gt;Редактирование. Discrete and Continuous Models&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;конференции&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;10&lt;/span&gt; Конференции&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2023/05/06/scientific-conferences-participation/&#34;&gt;Участие в научных конференциях&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;научные-семинары&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;11&lt;/span&gt; Научные семинары&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/02/18/workshop-mathematical-modeling/&#34;&gt;Научный семинар Математическое моделирование&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;контакты&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;12&lt;/span&gt; Контакты&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://yamadharma.github.io/ru/post/2022/05/07/scientific-contacts/&#34;&gt;Научные контакты&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;библиометрические-показатели&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;13&lt;/span&gt; Библиометрические показатели&lt;/h2&gt;
-&lt;h3 id=&#34;scopus&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;13.1&lt;/span&gt; Scopus&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.scopus.com/authid/detail.uri?authorId=35194130800&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.scopus.com/authid/detail.uri?authorId=35194130800&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Индекс Хирша: 8&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;wos&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;13.2&lt;/span&gt; WoS&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.webofscience.com/wos/author/rid/I-3183-2013&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.webofscience.com/wos/author/rid/I-3183-2013&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Индекс Хирша: 5&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;elibrary&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;13.3&lt;/span&gt; eLibrary&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.elibrary.ru/author_profile.asp?authorid=360953&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.elibrary.ru/author_profile.asp?authorid=360953&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Индекс Хирша по всем публикациям на elibrary.ru: 13&lt;/li&gt;
-&lt;li&gt;Индекс Хирша по публикациям в РИНЦ: 13&lt;/li&gt;
-&lt;li&gt;Индекс Хирша по ядру РИНЦ: 8&lt;/li&gt;
-&lt;li&gt;Индекс Хирша без учета самоцитирований: 9&lt;/li&gt;
-&lt;li&gt;Индекс Хирша с учетом только статей в журналах: 6&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;научные-информационные-системы&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;14&lt;/span&gt; Научные информационные системы&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Orcid: &lt;a href=&#34;https://orcid.org/0000-0002-0877-7063&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://orcid.org/0000-0002-0877-7063&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;E-library: &lt;a href=&#34;https://www.elibrary.ru/author_profile.asp?authorid=360953&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.elibrary.ru/author_profile.asp?authorid=360953&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;ResearcherID: &lt;a href=&#34;https://www.webofscience.com/wos/author/rid/I-3183-2013&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.webofscience.com/wos/author/rid/I-3183-2013&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Scopus: &lt;a href=&#34;https://www.scopus.com/authid/detail.uri?authorId=35194130800&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.scopus.com/authid/detail.uri?authorId=35194130800&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;DBLP: &lt;a href=&#34;https://dblp.uni-trier.de/pers/hd/k/Kulyabov:Dmitry_S=&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://dblp.uni-trier.de/pers/hd/k/Kulyabov:Dmitry_S=&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Google Scholar: &lt;a href=&#34;https://scholar.google.com/citations?user=D5XLDn4AAAAJ&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://scholar.google.com/citations?user=D5XLDn4AAAAJ&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;ResearchGate: &lt;a href=&#34;https://www.researchgate.net/profile/Dmitry_Kulyabov&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.researchgate.net/profile/Dmitry_Kulyabov&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Academia.edu: &lt;a href=&#34;https://rudn.academia.edu/DmitryKulyabov&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://rudn.academia.edu/DmitryKulyabov&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;arXiv: &lt;a href=&#34;http://arxiv.org/a/kulyabov_d_1&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;http://arxiv.org/a/kulyabov_d_1&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;социальные-сети&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;15&lt;/span&gt; Социальные сети&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Youtube: &lt;a href=&#34;https://www.youtube.com/c/DmitryKulyabov&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.youtube.com/c/DmitryKulyabov&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Linkedin: &lt;a href=&#34;https://www.linkedin.com/in/dmitry-kulyabov&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.linkedin.com/in/dmitry-kulyabov&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;репозитории-кода&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;16&lt;/span&gt; Репозитории кода&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Bitbucket: &lt;a href=&#34;https://bitbucket.org/yamadharma/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://bitbucket.org/yamadharma/&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Github: &lt;a href=&#34;https://github.com/yamadharma&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/yamadharma&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Gitlab: &lt;a href=&#34;https://gitlab.com/yamadharma&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://gitlab.com/yamadharma&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</description>
-    </item>
-    
-    <item>
-      <title>Хоссенфельдер, С. (2021): Уродливая Вселенная Как поиски красоты заводят физиков в тупик</title>
-      <link>https://yamadharma.github.io/ru/post/2021/01/06/hossenfelder_book_lost-math_ru/</link>
-      <pubDate>Wed, 06 Jan 2021 14:25:00 +0300</pubDate>
-      <guid>https://yamadharma.github.io/ru/post/2021/01/06/hossenfelder_book_lost-math_ru/</guid>
-      <description>&lt;ul&gt;
-&lt;li&gt;Хоссенфельдер, С. (2021): Уродливая Вселенная Как поиски красоты заводят физиков в тупик [&lt;a href=&#34;#citeproc_bib_item_2&#34;&gt;2&lt;/a&gt;].&lt;/li&gt;
-&lt;li&gt;Hossenfelder, Sabine (2018): Lost in Math [&lt;a href=&#34;#citeproc_bib_item_1&#34;&gt;1&lt;/a&gt;].&lt;/li&gt;
-&lt;/ul&gt;
-&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
-  &lt;summary class=&#34;font-weight-bold&#34;&gt;Содержание&lt;/summary&gt;
-  &lt;nav id=&#34;TableOfContents&#34;&gt;
-  &lt;ul&gt;
-    &lt;li&gt;&lt;a href=&#34;#впечатления-о-книге&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Впечатления о книге&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#основные-тезисы-книги&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Основные тезисы книги&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#чтобы-улучшить-сложившуюся-ситуацию-необходимо-применять-разные-меры&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Чтобы улучшить сложившуюся ситуацию, необходимо применять разные меры&lt;/a&gt;
-      &lt;ul&gt;
-        &lt;li&gt;&lt;a href=&#34;#учёные&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Учёные&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#представители-администрации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.2&lt;/span&gt; Представители администрации&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#популяризаторы-науки&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.3&lt;/span&gt; Популяризаторы науки&lt;/a&gt;&lt;/li&gt;
-      &lt;/ul&gt;
-    &lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#литература&#34;&gt;Литература&lt;/a&gt;&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/nav&gt;
-&lt;/details&gt;
-
-&lt;h2 id=&#34;впечатления-о-книге&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;1&lt;/span&gt; Впечатления о книге&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Не секрет, что на данный момент физика (и, соответственно, вся наука) находится в кризисе.&lt;/li&gt;
-&lt;li&gt;В физике основные позиции захватили несколько теорий:
-&lt;ul&gt;
-&lt;li&gt;теория струн;&lt;/li&gt;
-&lt;li&gt;теория суперсимметрии;&lt;/li&gt;
-&lt;li&gt;смесь струн и суперсимметрии.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Физика перестала ориентироваться на опыт.&lt;/li&gt;
-&lt;li&gt;Критериями истинности стали разные умозрительные концепты: красота, естественность, симметричность.&lt;/li&gt;
-&lt;li&gt;Физики, вместо того, чтобы решать эти проблемы, плывут по течению.&lt;/li&gt;
-&lt;li&gt;Автор пытается понять, что происходит и что делать.&lt;/li&gt;
-&lt;li&gt;Впрочем, решения так и не находит.&lt;/li&gt;
-&lt;li&gt;Блог автора: &lt;a href=&#34;http://backreaction.blogspot.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;http://backreaction.blogspot.com/&lt;/a&gt;.&lt;/li&gt;
-&lt;li&gt;Канал автора на youtube: &lt;a href=&#34;https://youtube.com/c/sabinehossenfeldermusicvideos&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://youtube.com/c/sabinehossenfeldermusicvideos&lt;/a&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;основные-тезисы-книги&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;2&lt;/span&gt; Основные тезисы книги&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Физика &amp;mdash; не математика: разработка теорий требует данных для контроля.&lt;/li&gt;
-&lt;li&gt;В некоторых областях физики новых данных не было уже много лет.&lt;/li&gt;
-&lt;li&gt;В отсутствие экспериментов, направляющих исследование, теоретики прибегают к эстетическим критериям.&lt;/li&gt;
-&lt;li&gt;Учёные с давних пор использовали красоту в качестве руководящего принципа. Он не всегда оказывался верным.&lt;/li&gt;
-&lt;li&gt;В теоретической физике симметрии принесли очень большую пользу. Теперь они считаются красивыми.&lt;/li&gt;
-&lt;li&gt;Специалисты по физике элементарных частиц также думают, что теория красива, если содержит &lt;em&gt;естественные&lt;/em&gt; числа.&lt;/li&gt;
-&lt;li&gt;&lt;em&gt;Естественные&lt;/em&gt; числа близки к единице. Неестественное число называют &lt;em&gt;тонко настроенным&lt;/em&gt;.&lt;/li&gt;
-&lt;li&gt;Иногда предлагается ослабить требования к научному методу так, чтобы ученые могли выбирать теории по критериям, не связанным со способностью теории объяснить наблюдения.&lt;/li&gt;
-&lt;li&gt;То, что сейчас мы считаем самыми фундаментальными законами природы, выстроено на принципах симметрии.&lt;/li&gt;
-&lt;li&gt;Красота &amp;mdash; не научный критерий, однако может быть критерием, основанным на опыте.&lt;/li&gt;
-&lt;li&gt;Естественность использовалась в качестве руководящего принципа при разработке теорий как минимум с XVI столетия. Иногда этот принцип срабатывал, иногда нет.&lt;/li&gt;
-&lt;li&gt;Естественность &amp;mdash; не математический критерий. Это математически сформулированное требование красоты.&lt;/li&gt;
-&lt;li&gt;Отсутствие каких-либо успехов на счету естественности не оправдывает ее использования даже как основанной на опыте.&lt;/li&gt;
-&lt;li&gt;Физики-теоретики используют простоту, естественность и элегантность в качестве критериев при разработке теорий.&lt;/li&gt;
-&lt;li&gt;Квантовая механика работает изумительно, однако многие физики жалуются, что она не понятна интуитивно и уродлива.&lt;/li&gt;
-&lt;li&gt;Наука за последние десятилетия очень сильно изменилась, однако научные сообщества не адаптировались к этим изменениям.&lt;/li&gt;
-&lt;li&gt;Нынешняя организация научного мира поощряет учёных присоединяться к уже лидирующим исследовательским программам и не поощряет критику собственной области исследований.&lt;/li&gt;
-&lt;li&gt;Поддержка сообщества единомышленников влияет на то, как ученые оценивают полезность и потенциал теорий, над которыми решают работать.&lt;/li&gt;
-&lt;li&gt;Проблемы согласованности служат эффективными подсказками при поиске новых законов природы. И это не вопрос эстетики.&lt;/li&gt;
-&lt;li&gt;Но даже проблемы согласованности нельзя разрешить исключительно математически, без экспериментальной помощи, потому что сама формулировка проблемы зависит от допущений, принятых как истинные.&lt;/li&gt;
-&lt;li&gt;Физики-теоретики виновны в том, что сложные вопросы заметают под ковер, а упор делают на тех вопросах, которые с большей вероятностью дадут пригодные для публикации результаты за короткое время.&lt;/li&gt;
-&lt;li&gt;Причина сегодняшнего отсутствия прогресса может быть в том, что мы усиленно занимаемся не теми вопросами.&lt;/li&gt;
-&lt;li&gt;Современная структура научного мира откровенно поощряет идеи, распространяющиеся быстро и широко, &amp;mdash; например красивые, но трудно проверяемые теории.&lt;/li&gt;
-&lt;li&gt;Контакт с философами мог бы помочь физикам определиться, какие вопросы стоит задавать, но в настоящее время такого контакта почти нет.&lt;/li&gt;
-&lt;li&gt;Доверие физиков-теоретиков критериям красоты и наблюдаемое отсутствие прогресса демонстрируют неспособность науки к самокорректировке.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;чтобы-улучшить-сложившуюся-ситуацию-необходимо-применять-разные-меры&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3&lt;/span&gt; Чтобы улучшить сложившуюся ситуацию, необходимо применять разные меры&lt;/h2&gt;
-&lt;h3 id=&#34;учёные&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.1&lt;/span&gt; Учёные&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Узнайте подробнее о когнитивных искажениях, в том числе социально обусловленных.&lt;/li&gt;
-&lt;li&gt;Предотвращайте проявление когнитивных искажений.&lt;/li&gt;
-&lt;li&gt;Помните о влиянии средств массовой информации и социальных сетей.&lt;/li&gt;
-&lt;li&gt;Выстраивайте культуру критицизма.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;представители-администрации&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.2&lt;/span&gt; Представители администрации&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Занимайтесь своим делом.&lt;/li&gt;
-&lt;li&gt;Используйте чёткие инструкции.&lt;/li&gt;
-&lt;li&gt;Берите на себя обязательства.&lt;/li&gt;
-&lt;li&gt;Поддерживайте изменения области исследований.&lt;/li&gt;
-&lt;li&gt;Нанимайте рецензентов на полную занятость.&lt;/li&gt;
-&lt;li&gt;Поддерживайте публикацию критических разборов и отрицательных результатов.&lt;/li&gt;
-&lt;li&gt;Допускайте разделение труда.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;популяризаторы-науки&#34;&gt;&lt;span class=&#34;section-num&#34;&gt;3.3&lt;/span&gt; Популяризаторы науки&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Задавайте вопросы.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;литература&#34;&gt;Литература&lt;/h2&gt;
-&lt;div class=&#34;csl-bib-body&#34;&gt;
-  &lt;div class=&#34;csl-entry&#34;&gt;&lt;a id=&#34;citeproc_bib_item_1&#34;&gt;&lt;/a&gt;1.	Hossenfelder S. Lost in math: How beauty leads physics astray. Lost in math / S.  Hossenfelder. – Basic Books, 2018. – 304 сс.&lt;/div&gt;
-  &lt;div class=&#34;csl-entry&#34;&gt;&lt;a id=&#34;citeproc_bib_item_2&#34;&gt;&lt;/a&gt;2.	Хоссенфельдер С. &lt;a href=&#34;https://libgen.li/ads.php?md5=dae26ba7013c44dcd7b5a2bf02e4e3d6&#34;&gt;Уродливая вселенная: Как поиски красоты заводят физиков в тупик&lt;/a&gt; : Сенсация в науке. Уродливая вселенная / С.  Хоссенфельдер; пер. А. О.  Якименко. – Москва : Эксмо, 2021. – 304 сс.&lt;/div&gt;
-&lt;/div&gt;</description>
-    </item>
-    
-  </channel>
-</rss>
+Тема: Request permission for Discrete and Continuous Models and Applied Computational Science /PR-00029646&lt;/p>
+&lt;p>Dear Reader,&lt;/p>
+&lt;p>I am reaching you on behalf of Elsevier’s research databases namely Scopus , Embase etc.&lt;/p>
+&lt;p>We require a formal permission to initiate indexing your publication. Could you please let me know the
+appropriate person who could give us a consent and sign the permission form.&lt;/p>
+&lt;p>Looking forward to hearing from you.&lt;/p>
+&lt;p>​​​​​​​Regards,
+Kalyani&lt;/p>
+&lt;p>Note: Please address missing contents via - Scopus web form and for queries on indexing please write to &lt;a href="mailto:bd-scm@elsevier.com">bd-scm@elsevier.com&lt;/a>&lt;/p>
+&lt;p>Kalyani Sridhar&lt;/p>
+&lt;p>Sr. Engagement Manager&lt;/p>
+&lt;p>ELSEVIER | Content and Data Sourcing - Data-Operations&lt;/p>
+&lt;p>RELX India Private Limited&lt;/p>
+&lt;p>&lt;span class="underline">&lt;span class="underline">&lt;span class="underline">&lt;span class="underline">&lt;span class="underline">&lt;span class="underline">&lt;span class="underline">&lt;span class="underline">&lt;span class="underline">&lt;span class="underline">&lt;span class="underline">&lt;span class="underline">&lt;span class="underline">&lt;span class="underline">&lt;span class="underline">&lt;span class="underline">&lt;span class="underline">&lt;span class="underline">&lt;span class="underline">_&lt;/span>&lt;/span>&lt;/span>&lt;/span>&lt;/span>&lt;/span>&lt;/span>&lt;/span>&lt;/span>&lt;/span>&lt;/span>&lt;/span>&lt;/span>&lt;/span>&lt;/span>&lt;/span>&lt;/span>&lt;/span>&lt;/span>&lt;/p>
+&lt;p>International Tech Park | Crest –12th Floor | Taramani Road | Taramani | Chennai 600 113 |India&lt;/p>
+&lt;p>Tel: +91 44 42994442 | Fax: +91 44 42994568&lt;/p>
+&lt;p>E-mail &lt;a href="mailto:ka.sridhar@elsevier.com">ka.sridhar@elsevier.com&lt;/a> URL: &lt;a href="https://www.elsevier.com" target="_blank" rel="noopener">www.elsevier.com&lt;/a>&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;/ul></description></item><item><title>Критерии выбора робота-пылесоса</title><link>https://yamadharma.github.io/ru/post/2023/05/09/criteria-choosing-robot-cleaner/</link><pubDate>Tue, 09 May 2023 19:11:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/05/09/criteria-choosing-robot-cleaner/</guid><description>&lt;p>Критерии выбора робота-пылесоса.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#основные-требования-к-роботу-пылесосу">&lt;span class="section-num">1&lt;/span> Основные требования к роботу-пылесосу&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#основные-производители">&lt;span class="section-num">2&lt;/span> Основные производители&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#irobot">&lt;span class="section-num">2.1&lt;/span> iRobot&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#xiaomi">&lt;span class="section-num">2.2&lt;/span> Xiaomi&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#iplus">&lt;span class="section-num">2.3&lt;/span> iPlus&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#iclebo">&lt;span class="section-num">2.4&lt;/span> iClebo&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#другие-известные-производители">&lt;span class="section-num">2.5&lt;/span> Другие известные производители&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#честный-китай">&lt;span class="section-num">2.6&lt;/span> Честный китай&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#русские-бренды">&lt;span class="section-num">2.7&lt;/span> Русские бренды&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#виды-навигации">&lt;span class="section-num">3&lt;/span> Виды навигации&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#влажная-уборка">&lt;span class="section-num">4&lt;/span> Влажная уборка&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#недостатки">&lt;span class="section-num">4.1&lt;/span> Недостатки&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#турбощетка">&lt;span class="section-num">5&lt;/span> Турбощетка&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#форма-робота-пылесоса">&lt;span class="section-num">6&lt;/span> Форма робота-пылесоса&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#аккумулятор">&lt;span class="section-num">7&lt;/span> Аккумулятор&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#время-уборки">&lt;span class="section-num">8&lt;/span> Время уборки&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#разные-параметры">&lt;span class="section-num">9&lt;/span> Разные параметры&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="основные-требования-к-роботу-пылесосу">&lt;span class="section-num">1&lt;/span> Основные требования к роботу-пылесосу&lt;/h2>
+&lt;ul>
+&lt;li>Задача робота-пылесоса &amp;mdash; поддерживающая &lt;em>сухая&lt;/em> уборка.
+&lt;ul>
+&lt;li>Робот не сможет убрать весь мусор.&lt;/li>
+&lt;li>Робот не сможет выполнять влажную уборку с эффективностью человека.&lt;/li>
+&lt;li>В любом случае придётся регулярно убираться самостоятельно.&lt;/li>
+&lt;li>Робот способен убирать только мелкий мусор.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Незаметность и минимум внимания.
+&lt;ul>
+&lt;li>В долгосрочной перспективе лучшая стратегия &amp;mdash; настроить робота так, чтобы он убирался, пока вас нет дома, а вы только время от времени (раз в неделю) очищали пылесборник и щётки.&lt;/li>
+&lt;li>Идеальная ситуация: купил, разобрался, один раз настроил и пользуешься.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Подходит для твердых покрытий.
+&lt;ul>
+&lt;li>Предназначен для очистки ламината, кафеля, паркета.&lt;/li>
+&lt;li>С трудом чистит ковёр.&lt;/li>
+&lt;li>Буксует на бахроме.&lt;/li>
+&lt;li>Турбощётка помогает частично.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Легко разобраться, как работает.&lt;/li>
+&lt;/ul>
+&lt;h2 id="основные-производители">&lt;span class="section-num">2&lt;/span> Основные производители&lt;/h2>
+&lt;h3 id="irobot">&lt;span class="section-num">2.1&lt;/span> iRobot&lt;/h3>
+&lt;ul>
+&lt;li>Первыми начали производить автоматические пылесосы.&lt;/li>
+&lt;li>В США роботы-пылесосы до сих пор называют &lt;em>румба&lt;/em> &amp;mdash; по названию первой серии iRobot Roomba.&lt;/li>
+&lt;li>Хороший iRobot стоит от 40 тысяч рублей.&lt;/li>
+&lt;/ul>
+&lt;h3 id="xiaomi">&lt;span class="section-num">2.2&lt;/span> Xiaomi&lt;/h3>
+&lt;ul>
+&lt;li>Продаёт под своей маркой других производителей.&lt;/li>
+&lt;li>Агрессивно вырвался как производитель первой цены.&lt;/li>
+&lt;li>Сейчас цены зачастую даже завышены.&lt;/li>
+&lt;li>Проблемы:
+&lt;ul>
+&lt;li>долговечность;&lt;/li>
+&lt;li>нет официального сервиса в России;&lt;/li>
+&lt;li>приложение не полностью переведено на русский, иногда вылезают сообщения с иероглифами.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="iplus">&lt;span class="section-num">2.3&lt;/span> iPlus&lt;/h3>
+&lt;ul>
+&lt;li>Бренд японский, производство в Китае.&lt;/li>
+&lt;li>Полноценно представлен в России: полная локализация, сеть сервисных центров.&lt;/li>
+&lt;/ul>
+&lt;h3 id="iclebo">&lt;span class="section-num">2.4&lt;/span> iClebo&lt;/h3>
+&lt;ul>
+&lt;li>Сайт: &lt;a href="https://iclebo.com.ru/" target="_blank" rel="noopener">https://iclebo.com.ru/&lt;/a>&lt;/li>
+&lt;li>Корейский производитель.&lt;/li>
+&lt;li>Полноценно представлен в России: полная локализация, сеть сервисных центров.&lt;/li>
+&lt;li>Моделей не много.&lt;/li>
+&lt;li>Не самые свежие.&lt;/li>
+&lt;li>Сборка качественна.&lt;/li>
+&lt;/ul>
+&lt;h3 id="другие-известные-производители">&lt;span class="section-num">2.5&lt;/span> Другие известные производители&lt;/h3>
+&lt;ul>
+&lt;li>Samsung, LG, Tefal и прочие не смогли создать ничего выдающегося.&lt;/li>
+&lt;li>Техника разочаровывающая.&lt;/li>
+&lt;/ul>
+&lt;h3 id="честный-китай">&lt;span class="section-num">2.6&lt;/span> Честный китай&lt;/h3>
+&lt;ul>
+&lt;li>Deebot, iLife и так далее.&lt;/li>
+&lt;li>Недорогие, с неплохим функционалом.&lt;/li>
+&lt;li>Инструкции и настройки на смеси английского с китайским.&lt;/li>
+&lt;li>Нет сервиса в России.&lt;/li>
+&lt;li>Стоят от 25 тысяч рублей.&lt;/li>
+&lt;/ul>
+&lt;h3 id="русские-бренды">&lt;span class="section-num">2.7&lt;/span> Русские бренды&lt;/h3>
+&lt;ul>
+&lt;li>Redmond, Polaris, Vitek.&lt;/li>
+&lt;li>Есть сервис в России.&lt;/li>
+&lt;li>Цена от 40 тысяч рублей.&lt;/li>
+&lt;li>Перелицованные китайские модели.&lt;/li>
+&lt;/ul>
+&lt;h2 id="виды-навигации">&lt;span class="section-num">3&lt;/span> Виды навигации&lt;/h2>
+&lt;ul>
+&lt;li>Навигация влияет на отношения робота с окружающей средой.&lt;/li>
+&lt;li>Робот-пылесос с плохой навигацией обязательно будет ударяться о препятствия, застревать, проезжать дважды (или ни разу) по одному и тому же месту.&lt;/li>
+&lt;li>Эволюция технологий навигации:
+&lt;ul>
+&lt;li>Сенсор
+&lt;ul>
+&lt;li>В старых дешёвых моделях был установлен датчик на бампере.&lt;/li>
+&lt;li>Робот-пылесос просто едет прямо до тех пор, пока не упрётся бампером.&lt;/li>
+&lt;li>Далее он пытался повернуть на некий угол.&lt;/li>
+&lt;li>Если поворот удавался, робот ехал дальше, если нет &amp;mdash; пробовал повернуть снова.&lt;/li>
+&lt;li>Ездил случайным образом.&lt;/li>
+&lt;li>убирал основную часть мусора за несколько подходов.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Гироскоп.
+&lt;ul>
+&lt;li>Гироскоп помогает ориентироваться в пространстве и отслеживать перемещение.&lt;/li>
+&lt;li>Во время движения робот-пылесос запоминает направление, расстояние и угол поворота.&lt;/li>
+&lt;li>На основе этой информации робот строит карту окружающего пространства.&lt;/li>
+&lt;li>Модели с гироскопом: iPlus X700, Hobot Legee 688, модели iRobot дешевле 35-40 тысяч рублей.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Камера.
+&lt;ul>
+&lt;li>Обрабатывается изображение с камеры.&lt;/li>
+&lt;li>Стоимость: 2 USD.&lt;/li>
+&lt;li>Ставиться несколько штук на пылесос.&lt;/li>
+&lt;li>При недостаточном освещении возможны ошибки.&lt;/li>
+&lt;li>Возможно вмешательство в частную жизнь.&lt;/li>
+&lt;li>Модели с камерой: iRobot Roomba S9+, Xiaomi Mijia 1T, iLIFE W450.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Лидар.
+&lt;ul>
+&lt;li>Лидар (лазерный дальномер) определяет расстояние до предметов.&lt;/li>
+&lt;li>Устройство посылает лазерный импульс и определяет время, затраченное на то, чтобы луч достиг объекта и отразился обратно.&lt;/li>
+&lt;li>Стоимость: 20&amp;ndash;30 USD.&lt;/li>
+&lt;li>Из-за дороговизны ставят только один лидар.&lt;/li>
+&lt;li>У роботов-пылесосов лидар расположен внутри башенки наверху корпуса.&lt;/li>
+&lt;li>Башенка вращается на 360°.&lt;/li>
+&lt;li>Карта получается достаточно точной.&lt;/li>
+&lt;li>Модели: Xiaomi Roborock S50, iPlus L100, Ecovacs Deebot OZMO 950.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="влажная-уборка">&lt;span class="section-num">4&lt;/span> Влажная уборка&lt;/h2>
+&lt;ul>
+&lt;li>Эта функция представляет собой режим, при котором робот &lt;em>протирает&lt;/em> пол.&lt;/li>
+&lt;li>Есть еще комбинированная уборка: в таком режиме робот всасывает пыль, затем из навесного или встроенного бака подаётся вода, и с помощью специальной тряпки робот протирает пол.&lt;/li>
+&lt;li>Для влажной уборки лучше использовать отдельный робот-полотёр.&lt;/li>
+&lt;/ul>
+&lt;h3 id="недостатки">&lt;span class="section-num">4.1&lt;/span> Недостатки&lt;/h3>
+&lt;ul>
+&lt;li>Подходит только для поддерживающей уборки.
+&lt;ul>
+&lt;li>С серьёзными загрязнениями робот-пылесос не справится.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Требует много внимания.
+&lt;ul>
+&lt;li>Влажная уборка требует много времени на обслуживание.&lt;/li>
+&lt;li>Нужно наливать воду, цеплять тряпку, запускать робота в этом режиме.&lt;/li>
+&lt;li>Когда вода закончится, нужно наполнить бак.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Бак может протечь.&lt;/li>
+&lt;/ul>
+&lt;h2 id="турбощетка">&lt;span class="section-num">5&lt;/span> Турбощетка&lt;/h2>
+&lt;ul>
+&lt;li>Турбощетка &amp;mdash; вращающийся валик с пучками жёстких щетин, расположенных по спирали.&lt;/li>
+&lt;li>Можно выделить три варианта: с турбощёткой, без турбощётки, съёмная турбощётка.&lt;/li>
+&lt;li>Считается, что робот с турбощеткой убирает мусор лучше, особенно с ковров.&lt;/li>
+&lt;li>Турбощетка действительно собирает мусор лучше, потому что вычесывает ковёр, поднимая мусор вверх, к пылесборнику.&lt;/li>
+&lt;li>Часть мусора наматывается на саму щётку.&lt;/li>
+&lt;li>Турбощётка эффективна, когда есть ковры и животные.&lt;/li>
+&lt;/ul>
+&lt;h2 id="форма-робота-пылесоса">&lt;span class="section-num">6&lt;/span> Форма робота-пылесоса&lt;/h2>
+&lt;ul>
+&lt;li>Форма робота-пылесоса не имеет значения.&lt;/li>
+&lt;/ul>
+&lt;h2 id="аккумулятор">&lt;span class="section-num">7&lt;/span> Аккумулятор&lt;/h2>
+&lt;ul>
+&lt;li>Аккумулятор брать литиевый.&lt;/li>
+&lt;li>Ёмкость от 4000 мА/ч.&lt;/li>
+&lt;li>iRobot ранее ставил Ni-MH батареи.&lt;/li>
+&lt;/ul>
+&lt;h2 id="время-уборки">&lt;span class="section-num">8&lt;/span> Время уборки&lt;/h2>
+&lt;ul>
+&lt;li>На время уборки влияют:
+&lt;ul>
+&lt;li>Мощность всасывания.&lt;/li>
+&lt;li>Система навигации.&lt;/li>
+&lt;li>Функция &lt;em>Возобновление уборки после подзарядки&lt;/em>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="разные-параметры">&lt;span class="section-num">9&lt;/span> Разные параметры&lt;/h2>
+&lt;ul>
+&lt;li>Габариты (чтобы не застревал)
+&lt;ul>
+&lt;li>Роботы-пылесосы с лидаром выше примерно на 2 см.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Боковых щеток должно быть две.
+&lt;ul>
+&lt;li>Две щетки вращаются навстречу друг другу и вовнутрь, чтобы сметать мусор к центру, откуда он попадает во всасывающее отверстие.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Уровень шума.
+&lt;ul>
+&lt;li>Не очень важно.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Размер мусоросборника.
+&lt;ul>
+&lt;li>От 400 мл.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul></description></item><item><title>Учёный и инженер</title><link>https://yamadharma.github.io/ru/post/2023/05/09/scientist-engineer/</link><pubDate>Tue, 09 May 2023 11:30:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/05/09/scientist-engineer/</guid><description>&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общие-замечания">&lt;span class="section-num">1&lt;/span> Общие замечания&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="общие-замечания">&lt;span class="section-num">1&lt;/span> Общие замечания&lt;/h2>
+&lt;ul>
+&lt;li>Отличие практиков от ученых-теоретиков: для последних отсутствие результата &amp;mdash; тоже результат.
+&lt;ul>
+&lt;li>Для первых &amp;mdash; ситуация иная, отсутствие результата решения проблемы не порождает решений для творческих задач, т.е. не приносит основной пользы.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Результат работы учёных &amp;mdash; знания, статьи. Они природные или технические явления превращают в знание.
+&lt;ul>
+&lt;li>Инженер, базируясь на разработанных знаниях создают технические артефакты.&lt;/li>
+&lt;li>Одно перетекает в другое.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul></description></item><item><title>Junior, Middle, Senior</title><link>https://yamadharma.github.io/ru/post/2023/05/08/junior-middle-senior/</link><pubDate>Mon, 08 May 2023 17:00:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/05/08/junior-middle-senior/</guid><description>&lt;p>Уровни развития в специальности.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#junior">&lt;span class="section-num">2&lt;/span> Junior&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#разработка-программного-обеспечения">&lt;span class="section-num">2.1&lt;/span> Разработка программного обеспечения&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#middle">&lt;span class="section-num">3&lt;/span> Middle&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#разработка-программного-обеспечения">&lt;span class="section-num">3.1&lt;/span> Разработка программного обеспечения&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#middle-plus">&lt;span class="section-num">4&lt;/span> Middle+&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#разработка-программного-обеспечения">&lt;span class="section-num">4.1&lt;/span> Разработка программного обеспечения&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#senior">&lt;span class="section-num">5&lt;/span> Senior&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#рабочие-специальности">&lt;span class="section-num">5.1&lt;/span> Рабочие специальности&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#разработка-программного-обеспечения">&lt;span class="section-num">5.2&lt;/span> Разработка программного обеспечения&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#leader">&lt;span class="section-num">6&lt;/span> Leader&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>Уровни относятся не только к области информационных технологий, но и в общем к разным специальностям.&lt;/li>
+&lt;li>Следует разделять уровни развития для рабочих и инженерных специальностей (см. &lt;a href="https://yamadharma.github.io/ru/post/2023/04/02/collar-color/">Цветные воротнички&lt;/a>).&lt;/li>
+&lt;li>Также можно учитывать аспекты семиотики (см. &lt;a href="https://yamadharma.github.io/ru/post/2023/05/08/syntax-semantics-pragmatics/">Синтаксис, семантика, прагматика&lt;/a>).&lt;/li>
+&lt;/ul>
+&lt;h2 id="junior">&lt;span class="section-num">2&lt;/span> Junior&lt;/h2>
+&lt;ul>
+&lt;li>Уровень синтаксиса.
+&lt;ul>
+&lt;li>Знает конкретный инструментарий, умеет им пользоваться.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Минимально жизнеспособный персонаж.&lt;/li>
+&lt;li>Умеет выполнять конкретную узкую работу.&lt;/li>
+&lt;li>Ремесленник по решению творческих задач.&lt;/li>
+&lt;/ul>
+&lt;h3 id="разработка-программного-обеспечения">&lt;span class="section-num">2.1&lt;/span> Разработка программного обеспечения&lt;/h3>
+&lt;ul>
+&lt;li>Знает базовые алгоритмы и может решить задачу, если кто-то расскажет ему как.&lt;/li>
+&lt;li>Обычно выпускник университета или курсов по программированию.&lt;/li>
+&lt;li>Хорошо брать на стабильных этапах, когда появляются рутинные некритические задачи, которые никто не хочет делать.
+&lt;ul>
+&lt;li>Компания дешево закрывает рутину, джун набирается опыта на ошибках, а сеньоры их менторят.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Опыт до 2-3 лет, не более&lt;/li>
+&lt;li>Как собеседовать.
+&lt;ul>
+&lt;li>Самое важное: горящие глаза, желание учиться и умение копать базовые штуки для вашей области.&lt;/li>
+&lt;li>На собеседованиях можно поставить простенькую задачку из той области, где ему придётся работать.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Самое важное на этом этапе: научиться писать код.&lt;/li>
+&lt;li>Продолжительность: 2&amp;ndash;3 года.&lt;/li>
+&lt;li>Книги для продвижения дальше: любые, в названии которых есть название вашего языка программирования. Плюс «Совершенный Код», Кормен «Алгоритмы».&lt;/li>
+&lt;/ul>
+&lt;h2 id="middle">&lt;span class="section-num">3&lt;/span> Middle&lt;/h2>
+&lt;ul>
+&lt;li>Уровень семантики.&lt;/li>
+&lt;li>Знает выполняемые задачи, может подобрать к ним инструментарий.&lt;/li>
+&lt;li>Самостоятельный, но не автономный.&lt;/li>
+&lt;li>Может решить любую поставленную техническую задачу.&lt;/li>
+&lt;li>Способен задавать правильные вопросы и делать работающие решения.&lt;/li>
+&lt;li>Ремесленник, решающий задачи, распаковывая чужие решения проблем.&lt;/li>
+&lt;/ul>
+&lt;h3 id="разработка-программного-обеспечения">&lt;span class="section-num">3.1&lt;/span> Разработка программного обеспечения&lt;/h3>
+&lt;ul>
+&lt;li>Всё еще считает программирование самым важным этапом разработки.&lt;/li>
+&lt;li>Может самостоятельно сделать всё, о чем его попросят.&lt;/li>
+&lt;li>Это последний уровень, который можно собеседовать исключительно по хард-скиллам.&lt;/li>
+&lt;li>Самое важное на данном этапе: перестать дрочить код и начать понимать бизнес-требования.&lt;/li>
+&lt;li>Продолжительность: 3&amp;ndash;5 лет.&lt;/li>
+&lt;li>Книги: Фаулер «Рефакторинг», «Банда Четырех», «Программист Прагматик», «Олифер Олифер Компьютерные Сети», «Книга Шифров».&lt;/li>
+&lt;/ul>
+&lt;h2 id="middle-plus">&lt;span class="section-num">4&lt;/span> Middle+&lt;/h2>
+&lt;ul>
+&lt;li>Промежуточный уровень между мидлом и сеньором.&lt;/li>
+&lt;li>Почти сеньор.&lt;/li>
+&lt;li>Автономен.&lt;/li>
+&lt;li>Не хватает уровня.&lt;/li>
+&lt;/ul>
+&lt;h3 id="разработка-программного-обеспечения">&lt;span class="section-num">4.1&lt;/span> Разработка программного обеспечения&lt;/h3>
+&lt;h2 id="senior">&lt;span class="section-num">5&lt;/span> Senior&lt;/h2>
+&lt;ul>
+&lt;li>Автономный персонаж с опытом, личной экспертизой и софт-скиллами.&lt;/li>
+&lt;li>Фокусируется на вопросе зачем это делается, а не какой инструментарий использовать.&lt;/li>
+&lt;li>Мастер, решающий проблемы.&lt;/li>
+&lt;li>Решённая проблема переводит целый пласт схожих вопросов в категорию творческих задач, значительно понижая требования к задействованным специалистам.&lt;/li>
+&lt;/ul>
+&lt;h3 id="рабочие-специальности">&lt;span class="section-num">5.1&lt;/span> Рабочие специальности&lt;/h3>
+&lt;ul>
+&lt;li>Слесарь 6 разряда.&lt;/li>
+&lt;/ul>
+&lt;h3 id="разработка-программного-обеспечения">&lt;span class="section-num">5.2&lt;/span> Разработка программного обеспечения&lt;/h3>
+&lt;ul>
+&lt;li>Опыт: более 10+ лет.&lt;/li>
+&lt;li>Самое важное: понять что делать дальше.&lt;/li>
+&lt;li>Продолжительность: сколько угодно.&lt;/li>
+&lt;li>Книги: любые не по программированию.&lt;/li>
+&lt;/ul>
+&lt;h2 id="leader">&lt;span class="section-num">6&lt;/span> Leader&lt;/h2>
+&lt;ul>
+&lt;li>Возрастает доля административной работы.&lt;/li>
+&lt;li>Может быть лидером группы (см. &lt;a href="https://yamadharma.github.io/ru/post/2022/11/05/lances-fournies/">Рыцарское копьё&lt;/a>).&lt;/li>
+&lt;/ul></description></item><item><title>Синтаксис, семантика, прагматика</title><link>https://yamadharma.github.io/ru/post/2023/05/08/syntax-semantics-pragmatics/</link><pubDate>Mon, 08 May 2023 16:32:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/05/08/syntax-semantics-pragmatics/</guid><description>&lt;p>Синтаксис, семантика, прагматика.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#синтаксис">&lt;span class="section-num">2&lt;/span> Синтаксис&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#семантика">&lt;span class="section-num">3&lt;/span> Семантика&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#прагматика">&lt;span class="section-num">4&lt;/span> Прагматика&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>Семиотика выделяет три основных аспекта изучения знака и знаковой системы
+&lt;ul>
+&lt;li>синтактику, изучающую отношения между знаками, т.е. внутренние свойства систем знаков (правила построения знаков в рамках знаковой системы);&lt;/li>
+&lt;li>семантику, изучающую отношения между знаками и обозначаемыми предметами &amp;mdash; внешним миром и внутренним миром человека, т.е. содержание знаков;&lt;/li>
+&lt;li>прагматику,изучающую отношение между знаком и человеком, т.е, те, кто пользуется знаками: говорящим, слушающим, пишущим, читающим.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Разделение на семантику, синтактику и прагматику ввел американский философ Ч. Моррис.&lt;/li>
+&lt;/ul>
+&lt;h2 id="синтаксис">&lt;span class="section-num">2&lt;/span> Синтаксис&lt;/h2>
+&lt;ul>
+&lt;li>Отвечает на вопрос: &lt;em>Как?&lt;/em>&lt;/li>
+&lt;li>Например: Как ходить?&lt;/li>
+&lt;/ul>
+&lt;h2 id="семантика">&lt;span class="section-num">3&lt;/span> Семантика&lt;/h2>
+&lt;ul>
+&lt;li>Отвечает на вопрос: &lt;em>Что?&lt;/em>&lt;/li>
+&lt;li>Например: Куда идти?&lt;/li>
+&lt;/ul>
+&lt;h2 id="прагматика">&lt;span class="section-num">4&lt;/span> Прагматика&lt;/h2>
+&lt;ul>
+&lt;li>Отвечает на вопрос: &lt;em>Зачем?&lt;/em>&lt;/li>
+&lt;li>Например: Зачем идти?&lt;/li>
+&lt;/ul></description></item><item><title>Книги. История</title><link>https://yamadharma.github.io/ru/post/2023/05/06/books-history/</link><pubDate>Sat, 06 May 2023 10:29:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/05/06/books-history/</guid><description>&lt;p>Чтение книг по истории.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#средневековье">&lt;span class="section-num">1&lt;/span> Средневековье&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#литература">Литература&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="средневековье">&lt;span class="section-num">1&lt;/span> Средневековье&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/01/01/garanina_book_notes-historical-gossip_ru/">Гаранина, М. Б. (2021): Записки исторической сплетницы&lt;/a> [&lt;a href="#citeproc_bib_item_1">1&lt;/a>]&lt;/li>
+&lt;/ul>
+&lt;h2 id="литература">Литература&lt;/h2>
+&lt;div class="csl-bib-body">
+&lt;div class="csl-entry">&lt;a id="citeproc_bib_item_1">&lt;/a>1. Гаранина М. Б. &lt;a href="https://libgen.li/ads.php?md5=56CFC627008DE188A854F134963C6A04">Записки исторической сплетницы: О жизни королевских особ и аристократов xii-xviii вв.&lt;/a> Записки исторической сплетницы / М. Б.  Гаранина. – Москва : Эксмо, 2021. – 352 сс.&lt;/div>
+&lt;/div></description></item><item><title>Выбор научного руководителя</title><link>https://yamadharma.github.io/ru/post/2023/05/01/choice-scientific-adviser/</link><pubDate>Mon, 01 May 2023 10:52:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/05/01/choice-scientific-adviser/</guid><description>&lt;p>Как выбрать научного руководителя.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#роль-научного-руководителя">&lt;span class="section-num">1&lt;/span> Роль научного руководителя&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#формальная-роль-научного-руководителя">&lt;span class="section-num">1.1&lt;/span> Формальная роль научного руководителя&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#дополнительная-реальная-роль-научного-руководителя">&lt;span class="section-num">1.2&lt;/span> Дополнительная реальная роль научного руководителя&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#когда-искать">&lt;span class="section-num">2&lt;/span> Когда искать&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#критерии">&lt;span class="section-num">3&lt;/span> Критерии&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#сбор-информации">&lt;span class="section-num">3.1&lt;/span> Сбор информации&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#публикации">&lt;span class="section-num">3.2&lt;/span> Публикации&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#научный-руководитель-администратор">&lt;span class="section-num">3.3&lt;/span> Научный руководитель &amp;mdash; администратор&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#отрицательные-сигналы">&lt;span class="section-num">3.4&lt;/span> Отрицательные сигналы&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#личная-встреча">&lt;span class="section-num">3.5&lt;/span> Личная встреча&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="роль-научного-руководителя">&lt;span class="section-num">1&lt;/span> Роль научного руководителя&lt;/h2>
+&lt;h3 id="формальная-роль-научного-руководителя">&lt;span class="section-num">1.1&lt;/span> Формальная роль научного руководителя&lt;/h3>
+&lt;ul>
+&lt;li>Научить соискателя деятельности, необходимой для научной работы по определённой тематике (работа с оборудованием, профессиональными базами данных, программным обеспечением).&lt;/li>
+&lt;li>Объяснить соискателю писаные и неписаные правила научной жизни и научной работы.&lt;/li>
+&lt;/ul>
+&lt;h3 id="дополнительная-реальная-роль-научного-руководителя">&lt;span class="section-num">1.2&lt;/span> Дополнительная реальная роль научного руководителя&lt;/h3>
+&lt;ul>
+&lt;li>Обеспечить соискателю стартовые материальные ресурсы.
+&lt;ul>
+&lt;li>У руководителя есть лаборатория/комната/реактивы/приборы или доступ к ним.&lt;/li>
+&lt;li>Научный руководитель обычно делится деньгами (гранты, проекты), или помогает получить доступ к финансированию (помогает получить должность или другую работу).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Предоставляет принадлежность к группе.
+&lt;ul>
+&lt;li>Соискатель воспринимается и внутри организации, и за её пределами как человек руководителя.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="когда-искать">&lt;span class="section-num">2&lt;/span> Когда искать&lt;/h2>
+&lt;ul>
+&lt;li>Соискатель &amp;mdash; дипломник или магистрант.
+&lt;ul>
+&lt;li>Научрука назначат с учётом или без учёта пожеланий соискателя.&lt;/li>
+&lt;li>Следует озаботиться поиском научного руководителя как можно раньше.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Соискатель хочет поработать в науке и есть объявление о поиске сотрудников.&lt;/li>
+&lt;li>Соискатель хочет поработать в науке, но объявлений нет, а есть только желание и слухи, что кто-то не против взять себе студента, аспиранта и т.д.&lt;/li>
+&lt;/ul>
+&lt;h2 id="критерии">&lt;span class="section-num">3&lt;/span> Критерии&lt;/h2>
+&lt;h3 id="сбор-информации">&lt;span class="section-num">3.1&lt;/span> Сбор информации&lt;/h3>
+&lt;ul>
+&lt;li>Начать надо со сбора информации, причем чем раньше, тем лучше.&lt;/li>
+&lt;li>Больше всего можно узнать от людей, кто работал:
+&lt;ul>
+&lt;li>у твоего предполагаемого научрука;&lt;/li>
+&lt;li>в том же подразделении;&lt;/li>
+&lt;li>в той же организации.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Источники информации:
+&lt;ul>
+&lt;li>студенты,&lt;/li>
+&lt;li>аспиранты,&lt;/li>
+&lt;li>другие научные руководители.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Что нужно узнать:
+&lt;ul>
+&lt;li>психологический портрет (важна личностная совместимость);&lt;/li>
+&lt;li>иерархия и отношения внутри коллектива;&lt;/li>
+&lt;li>отношения внутри организации (у научрука могут быть конфликты с коллегами, администрацией);&lt;/li>
+&lt;li>контакты с другими коллективами и кто в них участвует:
+&lt;ul>
+&lt;li>хорошо, если группа участвует в какой-либо коллаборации;&lt;/li>
+&lt;li>обратить внимание, вовлечены ли в эту работу студенты или аспиранты.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>деньги:
+&lt;ul>
+&lt;li>приход денег;&lt;/li>
+&lt;li>траты денег (до работников деньги могут просто не доходить).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>оснащение:
+&lt;ul>
+&lt;li>помещения;&lt;/li>
+&lt;li>лаборатории;&lt;/li>
+&lt;li>компьютерная техника.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>публикации:
+&lt;ul>
+&lt;li>какое количество публикаций у группы;&lt;/li>
+&lt;li>есть ли публикации у молодых сотрудников.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>дополнительные преференции:
+&lt;ul>
+&lt;li>поездки на научные конференции;&lt;/li>
+&lt;li>поездки на научные школы;&lt;/li>
+&lt;li>финансирование поездок.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>наличие информации о научном руководителе в Интернете;
+&lt;ul>
+&lt;li>профили научрука в соцсетях;&lt;/li>
+&lt;li>сайты грантодателей.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="публикации">&lt;span class="section-num">3.2&lt;/span> Публикации&lt;/h3>
+&lt;ul>
+&lt;li>Следует посмотреть библиографические базы данных.&lt;/li>
+&lt;li>Если научрук &amp;mdash; научник (более фундаментальный, чем прикладной), то публикации &amp;mdash; основной критерий успешности.&lt;/li>
+&lt;li>Следует посмотреть:
+&lt;ul>
+&lt;li>сколько у научного руководителя статей;&lt;/li>
+&lt;li>в каких журналах они вышли;&lt;/li>
+&lt;li>как они цитируются.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Для естественных наук следует обратить внимание на индексацию в Scopus или Web of Science.&lt;/li>
+&lt;li>Уровень статей Scopus/Web of Science:
+&lt;ul>
+&lt;li>российские журналы, имеющие переводную версию;&lt;/li>
+&lt;li>иностранные журналы.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Помимо статей следует обратить внимание на материалы конференций, индексируемые Scopus и/или Web of Science.
+&lt;ul>
+&lt;li>В некоторых науках (технарей, программисты) эти публикации котируются, в некоторых (естественные науки) &amp;mdash; не котируются.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="научный-руководитель-администратор">&lt;span class="section-num">3.3&lt;/span> Научный руководитель &amp;mdash; администратор&lt;/h3>
+&lt;ul>
+&lt;li>Если научный руководитель (или руководитель научной группы) является высокопоставленным администратором, то многие мелкие рутинные вопросы внутри организации решаются лучше и быстрее.
+&lt;ul>
+&lt;li>Однако при этом у него больше недоброжелателей.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Если формальным научруком становится крупный администратор, то фактически он делегирует полномочия кому-то ниже.
+&lt;ul>
+&lt;li>Следует понимать, с кем реально придётся иметь дело.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="отрицательные-сигналы">&lt;span class="section-num">3.4&lt;/span> Отрицательные сигналы&lt;/h3>
+&lt;ul>
+&lt;li>У потенциального научрука давно не было студентов, аспирантов.&lt;/li>
+&lt;li>Конфликт научного руководителя с коллегами.&lt;/li>
+&lt;li>Научный руководитель &amp;mdash; фрик, часто разговор переходит, например, на следующие темы:
+&lt;ul>
+&lt;li>рептилоидов;&lt;/li>
+&lt;li>всемирный жидомасонский заговор;&lt;/li>
+&lt;li>опровержения теории относительности;&lt;/li>
+&lt;li>воинствующий феминизм, экоактивизм и т.д.;&lt;/li>
+&lt;li>религиозные темы, не связанные с областью исследования.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Научный руководитель &amp;mdash; нарцисс:
+&lt;ul>
+&lt;li>членство в разного рода общественных академиях;&lt;/li>
+&lt;li>развешивание членских дипломов по кабинету;&lt;/li>
+&lt;li>сделанная самостоятельно страничка в википедии.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="личная-встреча">&lt;span class="section-num">3.5&lt;/span> Личная встреча&lt;/h3>
+&lt;ul>
+&lt;li>Следует договориться о встрече с потенциальным научруком.&lt;/li>
+&lt;li>Чаще всего встреча проходит на рабочем месте научного руководителя.&lt;/li>
+&lt;li>спрашивать или нет о плюшках, которые ты можешь получить - вопрос сложный. Кто-то любит такую постановку вопроса, кто-то (справедливо) считает, что вначале ты должен показать себя, а плюшки уже потом. Действуй по ситуации.&lt;/li>
+&lt;li>На что обратить внимание:
+&lt;ul>
+&lt;li>ещё раз посмотреть на помещения и оснащение своими глазами;&lt;/li>
+&lt;li>позвали попить чаю/кофе с народом &amp;mdash; соглашайся;&lt;/li>
+&lt;li>физическое состояние и возраст научного руководителя;&lt;/li>
+&lt;li>отношение научного руководителя к разным гендерам (не является ли начуный руководитель женоненавистником либо мужененавистницей);&lt;/li>
+&lt;li>половой состав научной группы; если коллектив явно однополый, то это будет влиять на стиль общения.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Не следует торопиться с решением.&lt;/li>
+&lt;/ul></description></item><item><title>Реформа высшего образования</title><link>https://yamadharma.github.io/ru/post/2023/04/22/higher-education-reform/</link><pubDate>Sat, 22 Apr 2023 14:09:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/04/22/higher-education-reform/</guid><description>&lt;p>Реформа высшего образования в России, 2023 год.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#история">&lt;span class="section-num">1&lt;/span> История&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#структура-новой--пост-болонской--системы-высшего-образования">&lt;span class="section-num">2&lt;/span> Структура новой (пост-болонской) системы высшего образования&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#уровне-высшего-образования">&lt;span class="section-num">2.1&lt;/span> Уровне высшего образования&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#уровни-профессионального-образования">&lt;span class="section-num">2.2&lt;/span> Уровни профессионального образования&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#базовое-высшее-образование">&lt;span class="section-num">3&lt;/span> Базовое высшее образование&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#специализированное-высшее-образование">&lt;span class="section-num">4&lt;/span> Специализированное высшее образование&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#аспирантура">&lt;span class="section-num">5&lt;/span> Аспирантура&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#пилотный-проект">&lt;span class="section-num">6&lt;/span> Пилотный проект&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="история">&lt;span class="section-num">1&lt;/span> История&lt;/h2>
+&lt;ul>
+&lt;li>&lt;span class="timestamp-wrapper">&lt;span class="timestamp">[2023-04-19 Ср] &lt;/span>&lt;/span> Выступил глава Минобрнауки России Валерий Фальков
+&lt;ul>
+&lt;li>&lt;a href="https://ria.ru/20230419/obrazovanie-1866291666.html" target="_blank" rel="noopener">https://ria.ru/20230419/obrazovanie-1866291666.html&lt;/a>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;span class="timestamp-wrapper">&lt;span class="timestamp">[2023-05-12 Пт] &lt;/span>&lt;/span> Опубликован Указ Президента
+&lt;ul>
+&lt;li>&lt;a href="https://fgosvo.ru/uploadfiles//zakony/UK12.pdf" target="_blank" rel="noopener">https://fgosvo.ru/uploadfiles//zakony/UK12.pdf&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="структура-новой--пост-болонской--системы-высшего-образования">&lt;span class="section-num">2&lt;/span> Структура новой (пост-болонской) системы высшего образования&lt;/h2>
+&lt;h3 id="уровне-высшего-образования">&lt;span class="section-num">2.1&lt;/span> Уровне высшего образования&lt;/h3>
+&lt;ul>
+&lt;li>Базовое высшее образование.&lt;/li>
+&lt;li>Специализированное высшее образование.&lt;/li>
+&lt;/ul>
+&lt;h3 id="уровни-профессионального-образования">&lt;span class="section-num">2.2&lt;/span> Уровни профессионального образования&lt;/h3>
+&lt;ul>
+&lt;li>Аспирантура.&lt;/li>
+&lt;/ul>
+&lt;h2 id="базовое-высшее-образование">&lt;span class="section-num">3&lt;/span> Базовое высшее образование&lt;/h2>
+&lt;ul>
+&lt;li>Базовое (основное) высшее образование&lt;/li>
+&lt;li>Срок обучения от четырёх до шести лет.&lt;/li>
+&lt;li>Базовый уровень – это как бы бакалавриат или специалитет.&lt;/li>
+&lt;/ul>
+&lt;h2 id="специализированное-высшее-образование">&lt;span class="section-num">4&lt;/span> Специализированное высшее образование&lt;/h2>
+&lt;ul>
+&lt;li>Специализированное высшее образование:
+&lt;ul>
+&lt;li>магистратура;&lt;/li>
+&lt;li>ординатура;&lt;/li>
+&lt;li>ассистентура-стажировка.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Срок обучения от одного года до трех лет.&lt;/li>
+&lt;li>Не является получением второго или последующего высшего образования.&lt;/li>
+&lt;li>Специализированное высшее образование обеспечит углублённую подготовку, но только для тех, кто закончил первую ступень.&lt;/li>
+&lt;li>Магистратура становится скорее интенсивной программой ДПО для профессионалов.&lt;/li>
+&lt;li>Магистратура станет специализированным высшим образованием.
+&lt;ul>
+&lt;li>Поступать в магистратуру можно, имея базовое высшее образование, с правом поступления на конкурсной основе на бюджетное место.&lt;/li>
+&lt;li>Так как магистратура становится специализированным высшим образованием, то без профильного (или смежного с ним) базового образования поступить в магистратуру станет невозможно.
+&lt;ul>
+&lt;li>Невозможна станет ситуация, когда физик становился магистром юриспруденции, а инженер заканчивал магистратуру по психологии.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Два вида магистратуры:
+&lt;ul>
+&lt;li>академическая;
+&lt;ul>
+&lt;li>финансируется за счет бюджета;&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>профессиональная;
+&lt;ul>
+&lt;li>может софинансироваться за счет отдельных компаний и отраслей.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Магистратура останется не во всех вузах.&lt;/li>
+&lt;li>Будет проводиться отбор вузов, которым будет разрешено реализовывать магистерские программы.&lt;/li>
+&lt;/ul>
+&lt;h2 id="аспирантура">&lt;span class="section-num">5&lt;/span> Аспирантура&lt;/h2>
+&lt;ul>
+&lt;li>Аспирантура (адъюнктура) &amp;mdash; третья ступень образования.
+&lt;ul>
+&lt;li>Аспирантура будет выделена в отдельный уровень образования, направленный на подготовку научных и научно-практических кадров.&lt;/li>
+&lt;li>Поступить в аспирантуру смогут те, кто окончил базовую ступень со сроком обучения не менее пяти лет или получил специализированное высшее образование.
+&lt;ul>
+&lt;li>То есть два пути в аспирантуру:
+&lt;ul>
+&lt;li>5&amp;ndash;6-летнее базовое образование;&lt;/li>
+&lt;li>наличии магистерской подготовки.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Остались вопросы.
+&lt;ul>
+&lt;li>Как будет реализована идея об индивидуальных образовательных траекториях 2+2+2.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="пилотный-проект">&lt;span class="section-num">6&lt;/span> Пилотный проект&lt;/h2>
+&lt;ul>
+&lt;li>С сентября 2023 года предлагается запустить пилотный проект.&lt;/li>
+&lt;li>Вузы в пилотном проекте:
+&lt;ul>
+&lt;li>федеральное государственное автономное образовательное учреждение высшего образования «Балтийский федеральный университет имени Иммануила Канта»;&lt;/li>
+&lt;li>федеральное государственное бюджетное образовательное учреждение высшего образования «Московский авиационный институт (национальный исследовательский университет)»;&lt;/li>
+&lt;li>федеральное государственное автономное образовательное учреждение высшего образования «Национальный исследовательский технологический университет МИСиС»;&lt;/li>
+&lt;li>федеральное государственное бюджетное образовательное учреждение высшего образования «Московский педагогический государственный университет»;&lt;/li>
+&lt;li>федеральное государственное бюджетное образовательное учреждение высшего образования «Санкт-Петербургский горный университет»;&lt;/li>
+&lt;li>федеральное государственное автономное образовательное учреждение высшего образования «Национальный исследовательский Томский государственный университет».&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul></description></item><item><title>Переход на домен pfur.ru</title><link>https://yamadharma.github.io/ru/post/2023/04/20/switching-domain-pfur/</link><pubDate>Thu, 20 Apr 2023 18:18:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/04/20/switching-domain-pfur/</guid><description>&lt;p>Перевод инфраструктуры доменов Windows на домен &lt;code>pfur.ru&lt;/code>.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">&lt;/nav>
+&lt;/details></description></item><item><title>Научно-исследовательская деятельность</title><link>https://yamadharma.github.io/ru/post/2021/02/01/research/</link><pubDate>Mon, 01 Feb 2021 20:18:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2021/02/01/research/</guid><description>&lt;p>Мои научные исследования.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#направления-исследования">&lt;span class="section-num">1&lt;/span> Направления исследования&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#геометризация-полевых-теорий">&lt;span class="section-num">1.1&lt;/span> Геометризация полевых теорий&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#публикации">&lt;span class="section-num">2&lt;/span> Публикации&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#подготовка-публикаций">&lt;span class="section-num">2.1&lt;/span> Подготовка публикаций&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#мои-публикации">&lt;span class="section-num">2.2&lt;/span> Мои публикации&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#опыт-участия-в-работе-советов">&lt;span class="section-num">3&lt;/span> Опыт участия в работе советов&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#научное-руководство">&lt;span class="section-num">4&lt;/span> Научное руководство&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#научные-проекты">&lt;span class="section-num">5&lt;/span> Научные проекты&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#исследования-в-оияи">&lt;span class="section-num">6&lt;/span> Исследования в ОИЯИ&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#научная-группа">&lt;span class="section-num">7&lt;/span> Научная группа&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#гранты">&lt;span class="section-num">8&lt;/span> Гранты&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#выполненные-гранты">&lt;span class="section-num">8.1&lt;/span> Выполненные гранты&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#сводный-список">&lt;span class="section-num">8.1.1&lt;/span> Сводный список&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#подготовка-грантов">&lt;span class="section-num">8.2&lt;/span> Подготовка грантов&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#научные-журналы">&lt;span class="section-num">9&lt;/span> Научные журналы&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#научные-издательства">&lt;span class="section-num">9.1&lt;/span> Научные издательства&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#научные-журналы">&lt;span class="section-num">9.2&lt;/span> Научные журналы&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#конференции">&lt;span class="section-num">10&lt;/span> Конференции&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#научные-семинары">&lt;span class="section-num">11&lt;/span> Научные семинары&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#контакты">&lt;span class="section-num">12&lt;/span> Контакты&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#библиометрические-показатели">&lt;span class="section-num">13&lt;/span> Библиометрические показатели&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#scopus">&lt;span class="section-num">13.1&lt;/span> Scopus&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#wos">&lt;span class="section-num">13.2&lt;/span> WoS&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#elibrary">&lt;span class="section-num">13.3&lt;/span> eLibrary&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#научные-информационные-системы">&lt;span class="section-num">14&lt;/span> Научные информационные системы&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#социальные-сети">&lt;span class="section-num">15&lt;/span> Социальные сети&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#репозитории-кода">&lt;span class="section-num">16&lt;/span> Репозитории кода&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="направления-исследования">&lt;span class="section-num">1&lt;/span> Направления исследования&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/02/04/history-science/">История науки&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/02/08/computer-science/">Computer science&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/02/21/mathematical-modeling/">Математическое моделирование&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/02/22/research-methodical-notes/">Научно-исследовательская деятельность. Методические заметки&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/10/14/markup-languages/">Языки разметки&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/08/26/scientific-programming/">Научное программирование&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/10/23/sociological-notes/">Социологические заметки&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="геометризация-полевых-теорий">&lt;span class="section-num">1.1&lt;/span> Геометризация полевых теорий&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/04/06/geometrization-electrodynamics/">Геометризация электродинамики&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="публикации">&lt;span class="section-num">2&lt;/span> Публикации&lt;/h2>
+&lt;h3 id="подготовка-публикаций">&lt;span class="section-num">2.1&lt;/span> Подготовка публикаций&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/08/25/scientific-writing/">Научная писанина&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="мои-публикации">&lt;span class="section-num">2.2&lt;/span> Мои публикации&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/08/23/science-articles/">Научные статьи&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/05/16/registration-computer-programs/">Регистрация программ для ЭВМ&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="опыт-участия-в-работе-советов">&lt;span class="section-num">3&lt;/span> Опыт участия в работе советов&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/02/03/doctoral-committee/">Диссертационный совет&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="научное-руководство">&lt;span class="section-num">4&lt;/span> Научное руководство&lt;/h2>
+&lt;h2 id="научные-проекты">&lt;span class="section-num">5&lt;/span> Научные проекты&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/08/08/research-mininet/">Исследования. Mininet&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/06/20/research-surrogate-modeling/">Исследования. Суррогатное моделирование&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="исследования-в-оияи">&lt;span class="section-num">6&lt;/span> Исследования в ОИЯИ&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/06/22/work-plan-jinr/">План работ в ОИЯИ&lt;/a>&lt;/li>
+&lt;li>2022
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/12/11/work-report-jinr-2022/">Отчёт по работе в ОИЯИ за 2022&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="научная-группа">&lt;span class="section-num">7&lt;/span> Научная группа&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/09/05/scientific-activity-our-group/">Научная деятельность нашей группы&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="гранты">&lt;span class="section-num">8&lt;/span> Гранты&lt;/h2>
+&lt;h3 id="выполненные-гранты">&lt;span class="section-num">8.1&lt;/span> Выполненные гранты&lt;/h3>
+&lt;h4 id="сводный-список">&lt;span class="section-num">8.1.1&lt;/span> Сводный список&lt;/h4>
+&lt;ul>
+&lt;li>22-79-10128 (РНФ), (2022&amp;ndash;) Алгоритмы и модели обеспечения показателей качества обслуживания в беспроводных гетерогенных сетях шестого поколения, ответственный исполнитель.&lt;/li>
+&lt;li>19-01-00645 (РФФИ), Математические методы, алгоритмы и программы для моделирования нелинейных квазиравновесных и локально-неравновесных процессов (РФФИ, 2019&amp;ndash;2021, руководитель Айрян Э. А., ОИЯИ, Дубна).&lt;/li>
+&lt;li>Компьютерное моделирование и численно-аналитические методы исследования сложных физико-технических систем и инфокоммуникационных технологий (РУДН, 2017&amp;ndash;2019, руководитель Кореньков В. В., РУДН).&lt;/li>
+&lt;li>16-07-00556 (РФФИ), Программный комплекс для численных и символьных расчётов в распределеной среде для работы статистических и стохастических моделей на основе операторного метода (РФФИ, 2016&amp;ndash;2018, руководитель Гостев И. М., Национальный исследовательский университет «Высшая школа экономики»).&lt;/li>
+&lt;li>15-07-08795 (РФФИ), Разработка методики компьютерного проектирования стохастических моделей систем методом вычислительного эксперимента (РФФИ, 2015&amp;ndash;2017, руководитель Севастьянов Л. А., РУДН).&lt;/li>
+&lt;li>Ф14Д-002 Разработка методов аппроксимации нелинейных функционалов и операторов с детерминированными и стохастическими параметрами (БФФИ, 2014&amp;ndash;2016, руководитель Малютин В. Б., Институт математики Национальной академии наук Беларуси).&lt;/li>
+&lt;li>14-01-00628 Математические методы, алгоритмы и программы для моделирования сложных физических систем и процессов с применением высокопроизводительных вычислительных систем (РФФИ, 2014&amp;ndash;2016, руководитель Айрян Э. А., ОИЯИ).&lt;/li>
+&lt;/ul>
+&lt;h3 id="подготовка-грантов">&lt;span class="section-num">8.2&lt;/span> Подготовка грантов&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/10/09/grants-preparation/">Подготовка грантов&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="научные-журналы">&lt;span class="section-num">9&lt;/span> Научные журналы&lt;/h2>
+&lt;h3 id="научные-издательства">&lt;span class="section-num">9.1&lt;/span> Научные издательства&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/01/17/mdpi-publishing-house/">Издательство MDPI&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="научные-журналы">&lt;span class="section-num">9.2&lt;/span> Научные журналы&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/07/15/journal-mathematics/">Журнал Mathematics&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/02/26/editing-discrete-continuous-models/">Редактирование. Discrete and Continuous Models&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="конференции">&lt;span class="section-num">10&lt;/span> Конференции&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/05/06/scientific-conferences-participation/">Участие в научных конференциях&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="научные-семинары">&lt;span class="section-num">11&lt;/span> Научные семинары&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/02/18/workshop-mathematical-modeling/">Научный семинар Математическое моделирование&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="контакты">&lt;span class="section-num">12&lt;/span> Контакты&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/05/07/scientific-contacts/">Научные контакты&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="библиометрические-показатели">&lt;span class="section-num">13&lt;/span> Библиометрические показатели&lt;/h2>
+&lt;h3 id="scopus">&lt;span class="section-num">13.1&lt;/span> Scopus&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://www.scopus.com/authid/detail.uri?authorId=35194130800" target="_blank" rel="noopener">https://www.scopus.com/authid/detail.uri?authorId=35194130800&lt;/a>&lt;/li>
+&lt;li>Индекс Хирша: 8&lt;/li>
+&lt;/ul>
+&lt;h3 id="wos">&lt;span class="section-num">13.2&lt;/span> WoS&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://www.webofscience.com/wos/author/rid/I-3183-2013" target="_blank" rel="noopener">https://www.webofscience.com/wos/author/rid/I-3183-2013&lt;/a>&lt;/li>
+&lt;li>Индекс Хирша: 5&lt;/li>
+&lt;/ul>
+&lt;h3 id="elibrary">&lt;span class="section-num">13.3&lt;/span> eLibrary&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://www.elibrary.ru/author_profile.asp?authorid=360953" target="_blank" rel="noopener">https://www.elibrary.ru/author_profile.asp?authorid=360953&lt;/a>&lt;/li>
+&lt;li>Индекс Хирша по всем публикациям на elibrary.ru: 13&lt;/li>
+&lt;li>Индекс Хирша по публикациям в РИНЦ: 13&lt;/li>
+&lt;li>Индекс Хирша по ядру РИНЦ: 8&lt;/li>
+&lt;li>Индекс Хирша без учета самоцитирований: 9&lt;/li>
+&lt;li>Индекс Хирша с учетом только статей в журналах: 6&lt;/li>
+&lt;/ul>
+&lt;h2 id="научные-информационные-системы">&lt;span class="section-num">14&lt;/span> Научные информационные системы&lt;/h2>
+&lt;ul>
+&lt;li>Orcid: &lt;a href="https://orcid.org/0000-0002-0877-7063" target="_blank" rel="noopener">https://orcid.org/0000-0002-0877-7063&lt;/a>&lt;/li>
+&lt;li>E-library: &lt;a href="https://www.elibrary.ru/author_profile.asp?authorid=360953" target="_blank" rel="noopener">https://www.elibrary.ru/author_profile.asp?authorid=360953&lt;/a>&lt;/li>
+&lt;li>ResearcherID: &lt;a href="https://www.webofscience.com/wos/author/rid/I-3183-2013" target="_blank" rel="noopener">https://www.webofscience.com/wos/author/rid/I-3183-2013&lt;/a>&lt;/li>
+&lt;li>Scopus: &lt;a href="https://www.scopus.com/authid/detail.uri?authorId=35194130800" target="_blank" rel="noopener">https://www.scopus.com/authid/detail.uri?authorId=35194130800&lt;/a>&lt;/li>
+&lt;li>DBLP: &lt;a href="https://dblp.uni-trier.de/pers/hd/k/Kulyabov:Dmitry_S=" target="_blank" rel="noopener">https://dblp.uni-trier.de/pers/hd/k/Kulyabov:Dmitry_S=&lt;/a>&lt;/li>
+&lt;li>Google Scholar: &lt;a href="https://scholar.google.com/citations?user=D5XLDn4AAAAJ" target="_blank" rel="noopener">https://scholar.google.com/citations?user=D5XLDn4AAAAJ&lt;/a>&lt;/li>
+&lt;li>ResearchGate: &lt;a href="https://www.researchgate.net/profile/Dmitry_Kulyabov" target="_blank" rel="noopener">https://www.researchgate.net/profile/Dmitry_Kulyabov&lt;/a>&lt;/li>
+&lt;li>Academia.edu: &lt;a href="https://rudn.academia.edu/DmitryKulyabov" target="_blank" rel="noopener">https://rudn.academia.edu/DmitryKulyabov&lt;/a>&lt;/li>
+&lt;li>arXiv: &lt;a href="http://arxiv.org/a/kulyabov_d_1" target="_blank" rel="noopener">http://arxiv.org/a/kulyabov_d_1&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="социальные-сети">&lt;span class="section-num">15&lt;/span> Социальные сети&lt;/h2>
+&lt;ul>
+&lt;li>Youtube: &lt;a href="https://www.youtube.com/c/DmitryKulyabov" target="_blank" rel="noopener">https://www.youtube.com/c/DmitryKulyabov&lt;/a>&lt;/li>
+&lt;li>Linkedin: &lt;a href="https://www.linkedin.com/in/dmitry-kulyabov" target="_blank" rel="noopener">https://www.linkedin.com/in/dmitry-kulyabov&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="репозитории-кода">&lt;span class="section-num">16&lt;/span> Репозитории кода&lt;/h2>
+&lt;ul>
+&lt;li>Bitbucket: &lt;a href="https://bitbucket.org/yamadharma/" target="_blank" rel="noopener">https://bitbucket.org/yamadharma/&lt;/a>&lt;/li>
+&lt;li>Github: &lt;a href="https://github.com/yamadharma" target="_blank" rel="noopener">https://github.com/yamadharma&lt;/a>&lt;/li>
+&lt;li>Gitlab: &lt;a href="https://gitlab.com/yamadharma" target="_blank" rel="noopener">https://gitlab.com/yamadharma&lt;/a>&lt;/li>
+&lt;/ul></description></item></channel></rss>

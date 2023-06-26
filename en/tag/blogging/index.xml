@@ -1,113 +1,76 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>blogging | Dmitry S. Kulyabov</title>
-    <link>https://yamadharma.github.io/en/tag/blogging/</link>
-      <atom:link href="https://yamadharma.github.io/en/tag/blogging/index.xml" rel="self" type="application/rss+xml" />
-    <description>blogging</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>© 2023 Dmitry S. Kulyabov</copyright><lastBuildDate>Sat, 21 Apr 2018 15:37:34 +0000</lastBuildDate>
-    <image>
-      <url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url>
-      <title>blogging</title>
-      <link>https://yamadharma.github.io/en/tag/blogging/</link>
-    </image>
-    
-    <item>
-      <title>Migrating from livejournal to hexo</title>
-      <link>https://yamadharma.github.io/en/post/2018/04/21/from-lj-to-hexo/</link>
-      <pubDate>Sat, 21 Apr 2018 15:37:34 +0000</pubDate>
-      <guid>https://yamadharma.github.io/en/post/2018/04/21/from-lj-to-hexo/</guid>
-      <description>&lt;h1 id=&#34;migrating-from-livejournal-to-hexo&#34;&gt;Migrating from livejournal to hexo&lt;/h1&gt;
-&lt;p&gt;Migrating from &lt;a href=&#34;https://yamadharma.livejournal.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;livejornal&lt;/a&gt; posed some problems.&lt;/p&gt;
-&lt;p&gt;I want to note that I did not transfer the comments.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://github.com/arty-name/livejournal-export&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;livejournal-export&lt;/a&gt; seemed to me the most suitable. It translates immediately to &lt;em&gt;markdown&lt;/em&gt;. However, tags are not imported.
-It uses browser session parameters for identification.&lt;/p&gt;
-&lt;p&gt;As the second option I considered &lt;a href=&#34;https://github.com/ghewgill/ljdump&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;ljdump&lt;/a&gt;. It downloads the weblog in &lt;em&gt;html&lt;/em&gt;. For identification uses login and password.&lt;/p&gt;
-&lt;p&gt;Then I had to convert to &lt;em&gt;markdown&lt;/em&gt;. To do this, I wrote the script &lt;em&gt;xml2md&lt;/em&gt;.&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;#!/usr/bin/python3
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>blogging | Dmitry S. Kulyabov</title><link>https://yamadharma.github.io/en/tag/blogging/</link><atom:link href="https://yamadharma.github.io/en/tag/blogging/index.xml" rel="self" type="application/rss+xml"/><description>blogging</description><generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>© 2023 Dmitry S. Kulyabov</copyright><lastBuildDate>Sat, 21 Apr 2018 15:37:34 +0000</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url><title>blogging</title><link>https://yamadharma.github.io/en/tag/blogging/</link></image><item><title>Migrating from livejournal to hexo</title><link>https://yamadharma.github.io/en/post/2018/04/21/from-lj-to-hexo/</link><pubDate>Sat, 21 Apr 2018 15:37:34 +0000</pubDate><guid>https://yamadharma.github.io/en/post/2018/04/21/from-lj-to-hexo/</guid><description>&lt;h1 id="migrating-from-livejournal-to-hexo">Migrating from livejournal to hexo&lt;/h1>
+&lt;p>Migrating from &lt;a href="https://yamadharma.livejournal.com/" target="_blank" rel="noopener">livejornal&lt;/a> posed some problems.&lt;/p>
+&lt;p>I want to note that I did not transfer the comments.&lt;/p>
+&lt;p>&lt;a href="https://github.com/arty-name/livejournal-export" target="_blank" rel="noopener">livejournal-export&lt;/a> seemed to me the most suitable. It translates immediately to &lt;em>markdown&lt;/em>. However, tags are not imported.
+It uses browser session parameters for identification.&lt;/p>
+&lt;p>As the second option I considered &lt;a href="https://github.com/ghewgill/ljdump" target="_blank" rel="noopener">ljdump&lt;/a>. It downloads the weblog in &lt;em>html&lt;/em>. For identification uses login and password.&lt;/p>
+&lt;p>Then I had to convert to &lt;em>markdown&lt;/em>. To do this, I wrote the script &lt;em>xml2md&lt;/em>.&lt;/p>
+&lt;pre>&lt;code class="language-python">#!/usr/bin/python3
 # -*- coding: utf-8 -*-
-
 import os
 import sys
 from lxml import etree
 import html2text
 from datetime import datetime
 from transliterate import translit, get_available_language_codes
-
-outdir = &#39;markdown&#39;
+outdir = 'markdown'
 os.makedirs(outdir, exist_ok=True)
-
 infile = sys.argv[1]
 print(infile)
-
 tree = etree.parse(infile)
 post = tree.getroot()
-
-postTitle = &#39;&#39;
-postTags = &#39;&#39;
-
+postTitle = ''
+postTags = ''
 for elem in post.getchildren():
-    if not elem.text:
-        text = &amp;quot;None&amp;quot;
-    else:
-        text = elem.text
-    # print(elem.tag + &amp;quot; =&amp;gt; &amp;quot; + text)
-    # book_dict[elem.tag] = text
-    if elem.tag == &#39;subject&#39;:
-        postTitle = text
-    if elem.tag == &#39;eventtime&#39;:
-        postDate = text
-    if elem.tag == &#39;event&#39;:
-        postContent = text
-    if elem.tag == &#39;props&#39;:
-        for propsElem in elem.getchildren():
-            if not elem.text:
-                text = &amp;quot;None&amp;quot;
-            else:
-                text = propsElem.text
-            # print(propsElem.tag + &amp;quot; =&amp;gt; &amp;quot; + text)
-            if propsElem.tag == &#39;taglist&#39;:
-                postTags = text
-            
-
-
-
-postHeader = &#39;layout: post\n&#39;+&#39;title: &#39;+postTitle+&#39;\n&#39;+&#39;date: &#39;+str(postDate)
-postHeader = postHeader+&#39;\ncategories: blog\nlang: ru&#39;
-postHeader = postHeader+&#39;\ntags: [&#39;+postTags+&#39;]&#39;
-postHeader = postHeader+&#39;\n&#39;+&#39;---&#39;
-
+if not elem.text:
+text = &amp;quot;None&amp;quot;
+else:
+text = elem.text
+# print(elem.tag + &amp;quot; =&amp;gt; &amp;quot; + text)
+# book_dict[elem.tag] = text
+if elem.tag == 'subject':
+postTitle = text
+if elem.tag == 'eventtime':
+postDate = text
+if elem.tag == 'event':
+postContent = text
+if elem.tag == 'props':
+for propsElem in elem.getchildren():
+if not elem.text:
+text = &amp;quot;None&amp;quot;
+else:
+text = propsElem.text
+# print(propsElem.tag + &amp;quot; =&amp;gt; &amp;quot; + text)
+if propsElem.tag == 'taglist':
+postTags = text
+postHeader = 'layout: post\n'+'title: '+postTitle+'\n'+'date: '+str(postDate)
+postHeader = postHeader+'\ncategories: blog\nlang: ru'
+postHeader = postHeader+'\ntags: ['+postTags+']'
+postHeader = postHeader+'\n'+'---'
 h = html2text.HTML2Text()
 h.ignore_links = False
 h.body_width = 0
 h.unicode_snob = True
 postContent = h.handle(postContent)
-
-fullPost = postHeader+&#39;\n\n\n&#39;+postContent
-
-date = datetime.strptime(postDate, &#39;%Y-%m-%d %H:%M:%S&#39;)
-outFile = &#39;{0.year}-{0.month:02d}-{0.day:02d}&#39;.format(date)
-if postTitle != &#39;&#39;:
-    translitTitle = translit(postTitle, &#39;ru&#39;, reversed=True)
-    translitTitle = translitTitle.replace(&amp;quot; &amp;quot;,&amp;quot;_&amp;quot;)
-    translitTitle = translitTitle.replace(&amp;quot;:&amp;quot;,&amp;quot;&amp;quot;)
-    translitTitle = translitTitle.replace(&amp;quot;&#39;&amp;quot;,&amp;quot;&amp;quot;)
-    translitTitle = translitTitle.replace(&amp;quot;«&amp;quot;,&amp;quot;&amp;quot;)
-    translitTitle = translitTitle.replace(&amp;quot;»&amp;quot;,&amp;quot;&amp;quot;)
-    translitTitle = translitTitle.replace(&amp;quot;;&amp;quot;,&amp;quot;&amp;quot;)
+fullPost = postHeader+'\n\n\n'+postContent
+date = datetime.strptime(postDate, '%Y-%m-%d %H:%M:%S')
+outFile = '{0.year}-{0.month:02d}-{0.day:02d}'.format(date)
+if postTitle != '':
+translitTitle = translit(postTitle, 'ru', reversed=True)
+translitTitle = translitTitle.replace(&amp;quot; &amp;quot;,&amp;quot;_&amp;quot;)
+translitTitle = translitTitle.replace(&amp;quot;:&amp;quot;,&amp;quot;&amp;quot;)
+translitTitle = translitTitle.replace(&amp;quot;'&amp;quot;,&amp;quot;&amp;quot;)
+translitTitle = translitTitle.replace(&amp;quot;«&amp;quot;,&amp;quot;&amp;quot;)
+translitTitle = translitTitle.replace(&amp;quot;»&amp;quot;,&amp;quot;&amp;quot;)
+translitTitle = translitTitle.replace(&amp;quot;;&amp;quot;,&amp;quot;&amp;quot;)
 else:
-    translitTitle = &#39;{0.hour:02d}-{0.minute:02d}-{0.second:02d}&#39;.format(date)
-outFile = outFile+&#39;-&#39;+translitTitle
-
-f = open(outdir+&#39;/&#39;+str(outFile)+&#39;.md&#39;, &#39;w&#39;)
+translitTitle = '{0.hour:02d}-{0.minute:02d}-{0.second:02d}'.format(date)
+outFile = outFile+'-'+translitTitle
+f = open(outdir+'/'+str(outFile)+'.md', 'w')
 f.write(fullPost)
 f.close()
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Conversion can be performed using the command:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;./xml2md &amp;lt;file&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;This creates the &lt;em&gt;markdown&lt;/em&gt; directory and the conversion result is placed in it.&lt;/p&gt;</description>
-    </item>
-    
-  </channel>
-</rss>
+&lt;/code>&lt;/pre>
+&lt;p>Conversion can be performed using the command:&lt;/p>
+&lt;pre>&lt;code class="language-bash">./xml2md &amp;lt;file&amp;gt;
+&lt;/code>&lt;/pre>
+&lt;p>This creates the &lt;em>markdown&lt;/em> directory and the conversion result is placed in it.&lt;/p></description></item></channel></rss>

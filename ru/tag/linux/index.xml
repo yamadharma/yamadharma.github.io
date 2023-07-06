@@ -99,6 +99,181 @@ apply_updates = yes
 &lt;pre>&lt;code class="language-shell">systemctl list-timers *dnf-* --all
 &lt;/code>&lt;/pre>
 &lt;/li>
+&lt;/ul></description></item><item><title>Стандартные каталоги Gentoo</title><link>https://yamadharma.github.io/ru/post/2022/09/17/gentoo-standard-directories/</link><pubDate>Sat, 17 Sep 2022 13:31:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/09/17/gentoo-standard-directories/</guid><description>&lt;p>Стандартные каталоги Gentoo.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#конфигурация-portage">&lt;span class="section-num">1&lt;/span> Конфигурация portage&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#основные-файлы-настройки">&lt;span class="section-num">1.1&lt;/span> Основные файлы настройки&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#информация-из-определённого-профиля">&lt;span class="section-num">1.2&lt;/span> Информация из определённого профиля&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#пользовательская-конфигурация">&lt;span class="section-num">1.3&lt;/span> Пользовательская конфигурация&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#каталоги-системы-portage">&lt;span class="section-num">2&lt;/span> Каталоги системы portage&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#изменение-расположения-каталогов">&lt;span class="section-num">2.1&lt;/span> Изменение расположения каталогов&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#миграция-каталогов">&lt;span class="section-num">2.1.1&lt;/span> Миграция каталогов&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#репозитории-ebuild-файлов">&lt;span class="section-num">2.2&lt;/span> Репозитории ebuild-файлов&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#gentoo-репозиторий-ebuild-файлов">&lt;span class="section-num">2.3&lt;/span> Gentoo репозиторий ebuild-файлов&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#двоичные-пакеты">&lt;span class="section-num">2.4&lt;/span> Двоичные пакеты&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#исходный-код">&lt;span class="section-num">2.5&lt;/span> Исходный код&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#база-состояния-portage">&lt;span class="section-num">2.6&lt;/span> База состояния Portage&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#кеш-portage">&lt;span class="section-num">2.7&lt;/span> Кеш Portage&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#временные-файлы-portage">&lt;span class="section-num">2.8&lt;/span> Временные файлы Portage&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#каталог-компиляции">&lt;span class="section-num">2.9&lt;/span> Каталог компиляции&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="конфигурация-portage">&lt;span class="section-num">1&lt;/span> Конфигурация portage&lt;/h2>
+&lt;h3 id="основные-файлы-настройки">&lt;span class="section-num">1.1&lt;/span> Основные файлы настройки&lt;/h3>
+&lt;ul>
+&lt;li>Portage поставляется с настройками по умолчанию, которые хранятся в &lt;code>/usr/share/portage/config/make.globals&lt;/code>.&lt;/li>
+&lt;li>Все настройки Portage обрабатываются с помощью переменных.&lt;/li>
+&lt;li>У portage есть конфигурационные файлы по умолчанию, которые является частью системного профиля.&lt;/li>
+&lt;li>Системный профиль задаётся с помощью символьной ссылки &lt;code>/etc/portage/make.profile&lt;/code>.&lt;/li>
+&lt;li>Для замены конфигурационных переменных следует использовать файл &lt;code>/etc/portage/make.conf&lt;/code>.&lt;/li>
+&lt;li>Пример конфигурационного файла: &lt;code>/usr/share/portage/config/make.conf.example&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h3 id="информация-из-определённого-профиля">&lt;span class="section-num">1.2&lt;/span> Информация из определённого профиля&lt;/h3>
+&lt;ul>
+&lt;li>Каталог &lt;code>/etc/portage/make.profile&lt;/code> является символьной ссылкой на один из профилей.&lt;/li>
+&lt;li>По умолчанию это &lt;code>/var/db/repos/gentoo/profiles/&lt;/code>.&lt;/li>
+&lt;li>Профиль, на который указывает символьная ссылка, и есть системный профиль.&lt;/li>
+&lt;li>Профиль содержит информацию о конкретной архитектуре и настройках программного обеспечения.&lt;/li>
+&lt;/ul>
+&lt;h3 id="пользовательская-конфигурация">&lt;span class="section-num">1.3&lt;/span> Пользовательская конфигурация&lt;/h3>
+&lt;ul>
+&lt;li>Для пользовательских настроек следует использовать файлы в &lt;code>/etc/portage/&lt;/code>.&lt;/li>
+&lt;li>Пользователи могут создать в &lt;code>/etc/portage/&lt;/code> следующие файлы:
+&lt;ul>
+&lt;li>&lt;code>package.mask&lt;/code>: список пакетов, которые Portage никогда не будет устанавливать;&lt;/li>
+&lt;li>&lt;code>package.unmask&lt;/code>: список пакетов, которые Portage будет устанавливать, даже если они заблокированы на системном уровне;&lt;/li>
+&lt;li>&lt;code>package.accept_keywords&lt;/code>: список пакетов, которые Portage будет устанавливать, даже если они не подходят для используемой системы или архитектуры;&lt;/li>
+&lt;li>&lt;code>package.use&lt;/code> список пакетов, для которых необходимо использовать специфичные USE-флаги, а не брать системные USE-флаги.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Они могут быть не файлами, а каталогами (содержимое разбито по отдельным файлам).&lt;/li>
+&lt;/ul>
+&lt;h2 id="каталоги-системы-portage">&lt;span class="section-num">2&lt;/span> Каталоги системы portage&lt;/h2>
+&lt;h3 id="изменение-расположения-каталогов">&lt;span class="section-num">2.1&lt;/span> Изменение расположения каталогов&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>На основании обсуждения &lt;a href="https://bugs.gentoo.org/662982" target="_blank" rel="noopener">#662982&lt;/a> были внесены изменения в расположение каталогов portage.&lt;/p>
+&lt;div class="table-caption">
+&lt;span class="table-number">&amp;#1058;&amp;#1072;&amp;#1073;&amp;#1083;&amp;#1080;&amp;#1094;&amp;#1072; 1:&lt;/span>
+Смена расположения каталогов системы portage
+&lt;/div>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Назначение&lt;/th>
+&lt;th>Старый путь&lt;/th>
+&lt;th>Новый путь&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Дерево portage&lt;/td>
+&lt;td>&lt;code>/usr/portage&lt;/code>&lt;/td>
+&lt;td>&lt;code>/var/db/repos/gentoo&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Исходный код пакетов&lt;/td>
+&lt;td>&lt;code>/usr/portage/distfiles&lt;/code>&lt;/td>
+&lt;td>&lt;code>/var/cache/distfiles&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Бинарные пакеты&lt;/td>
+&lt;td>&lt;code>/usr/portage/packages&lt;/code>&lt;/td>
+&lt;td>&lt;code>/var/cache/binpkgs&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="миграция-каталогов">&lt;span class="section-num">2.1.1&lt;/span> Миграция каталогов&lt;/h4>
+&lt;ul>
+&lt;li>Удалите (или закомментируйте) любые записи &lt;code>PORTDIR&lt;/code>, &lt;code>DISTDIR&lt;/code>, &lt;code>PKGDIR&lt;/code> в &lt;code>/etc/portage/make.conf&lt;/code>.&lt;/li>
+&lt;li>Значения переменных окружения можно посмотреть командой:
+&lt;pre>&lt;code class="language-shell">emerge --info -v
+emerge --info -v | grep PORTDIR
+emerge --info -v | grep DISTDIR
+emerge --info -v | grep PKGDIR
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>Если &lt;code>/var/db/repos/&lt;/code> не существует, создайте его.&lt;/li>
+&lt;li>Переместите &lt;code>/usr/portage/distfiles&lt;/code> в &lt;code>/var/cache/distfiles&lt;/code>.&lt;/li>
+&lt;li>Переместите &lt;code>/usr/portage/packages&lt;/code> в &lt;code>/var/cache/binpkgs&lt;/code>.&lt;/li>
+&lt;li>Переместите &lt;code>/usr/portage&lt;/code> в &lt;code>/var/db/repos/gentoo&lt;/code>.&lt;/li>
+&lt;li>Измените переменную &lt;code>location&lt;/code> в файле &lt;code>/etc/portage/repos.conf/gentoo.conf&lt;/code> (или аналогичном) на &lt;code>/var/db/repos/gentoo&lt;/code>.&lt;/li>
+&lt;li>Переустановите &lt;code>portage&lt;/code>:
+&lt;pre>&lt;code class="language-shell">DISTDIR=/var/cache/distfiles PKGDIR=/var/cache/binpkgs emerge --oneshot portage
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>Если вы запускаете локальное зеркало rsync, отредактируйте запись пути в &lt;code>/etc/rsyncd.conf&lt;/code> так, чтобы она указывала на &lt;code>/var/db/repos/gentoo&lt;/code>.&lt;/li>
+&lt;li>Если вы делитесь своими дистрибутивами, не забудьте обновить любую символическую ссылку или файл конфигурации, которые вам нужны для этого.&lt;/li>
+&lt;/ul>
+&lt;h3 id="репозитории-ebuild-файлов">&lt;span class="section-num">2.2&lt;/span> Репозитории ebuild-файлов&lt;/h3>
+&lt;ul>
+&lt;li>Репозитории ebuild-файлов по умолчанию находится в /var/db/repos/&amp;lt;reponame&amp;gt;.&lt;/li>
+&lt;/ul>
+&lt;h3 id="gentoo-репозиторий-ebuild-файлов">&lt;span class="section-num">2.3&lt;/span> Gentoo репозиторий ebuild-файлов&lt;/h3>
+&lt;ul>
+&lt;li>Gentoo репозиторий ebuild-файлов по умолчанию находится в &lt;code>/var/db/repos/gentoo&lt;/code>.&lt;/li>
+&lt;li>Месторасположение определяется файлом &lt;code>repos.conf&lt;/code>, пример которого можно найти в &lt;code>/usr/share/portage/config/repos.conf&lt;/code>.&lt;/li>
+&lt;li>Чтобы изменить значения по умолчанию, скопируйте этот файл в &lt;code>/etc/portage/repos.conf/gentoo.conf&lt;/code> и измените &lt;code>location&lt;/code>.&lt;/li>
+&lt;li>Не забудьте сменить символьную ссылку на &lt;code>/etc/portage/make.profile&lt;/code>, если хотите хранить (меняя переменную) Gentoo репозиторий ebuild-файлов в другом месте.&lt;/li>
+&lt;li>После изменения настройки location в &lt;code>/etc/portage/repos.conf/gentoo.conf&lt;/code> рекомендуется изменить следующие переменные &lt;code>/etc/portage/make.conf&lt;/code>, так как они не заметят изменений в &lt;code>location&lt;/code>: &lt;code>PKGDIR&lt;/code>, &lt;code>DISTDIR&lt;/code>, &lt;code>RPMDIR&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h3 id="двоичные-пакеты">&lt;span class="section-num">2.4&lt;/span> Двоичные пакеты&lt;/h3>
+&lt;ul>
+&lt;li>Бинарные пакеты находятся в каталоге &lt;code>/var/cache/binpkgs&lt;/code>.&lt;/li>
+&lt;li>Этот каталог определяется переменной &lt;code>PKGDIR&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h3 id="исходный-код">&lt;span class="section-num">2.5&lt;/span> Исходный код&lt;/h3>
+&lt;ul>
+&lt;li>По умолчанию исходный код для приложений хранится в каталоге &lt;code>/var/cache/distfiles&lt;/code>.&lt;/li>
+&lt;li>Этот каталог определяется переменной &lt;code>DISTDIR&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h3 id="база-состояния-portage">&lt;span class="section-num">2.6&lt;/span> База состояния Portage&lt;/h3>
+&lt;ul>
+&lt;li>База состояния системы (какие пакеты установлены, какие файлы какому пакету принадлежат и т.д.) находится в каталоге &lt;code>/var/db/pkg&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h3 id="кеш-portage">&lt;span class="section-num">2.7&lt;/span> Кеш Portage&lt;/h3>
+&lt;ul>
+&lt;li>Кэш portage хранится в &lt;code>/var/cache/edb&lt;/code>.&lt;/li>
+&lt;li>Можно отчистить это каталог, если на данный момент не запущено никаких приложений Portage.&lt;/li>
+&lt;/ul>
+&lt;h3 id="временные-файлы-portage">&lt;span class="section-num">2.8&lt;/span> Временные файлы Portage&lt;/h3>
+&lt;ul>
+&lt;li>Временные файлы Portage по умолчанию хранятся в &lt;code>/var/tmp/&lt;/code>.&lt;/li>
+&lt;li>Этот каталог определяется с помощью переменной &lt;code>PORTAGE_TMPDIR&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h3 id="каталог-компиляции">&lt;span class="section-num">2.9&lt;/span> Каталог компиляции&lt;/h3>
+&lt;ul>
+&lt;li>Portage создаёт специальные каталоги в &lt;code>/var/tmp/portage/&lt;/code> для всех компилируемых пакетов.&lt;/li>
+&lt;li>Этот каталог определяется переменной &lt;code>PORTAGE_TMPDIR&lt;/code>.&lt;/li>
+&lt;/ul></description></item><item><title>Linux. Дистрибутив Gentoo</title><link>https://yamadharma.github.io/ru/post/2022/09/17/linux-gentoo-distribution/</link><pubDate>Sat, 17 Sep 2022 13:18:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/09/17/linux-gentoo-distribution/</guid><description>&lt;p>Дистрибутив Gentoo.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#администрирование-gentoo">&lt;span class="section-num">2&lt;/span> Администрирование Gentoo&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;h2 id="администрирование-gentoo">&lt;span class="section-num">2&lt;/span> Администрирование Gentoo&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/09/17/gentoo-standard-directories/">Стандартные каталоги Gentoo&lt;/a>&lt;/li>
 &lt;/ul></description></item><item><title>Rocky Linux. Установка сервера</title><link>https://yamadharma.github.io/ru/post/2022/08/12/rockylinux-server-installation/</link><pubDate>Fri, 12 Aug 2022 13:57:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/08/12/rockylinux-server-installation/</guid><description>&lt;p>Установка базисного сервера на Rocky Linux.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>

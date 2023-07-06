@@ -329,11 +329,11 @@ ef-themes-variable-pitch-ui t)
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
 &lt;nav id="TableOfContents">
 &lt;ul>
-&lt;li>&lt;a href="#список-тем">&lt;span class="section-num">1&lt;/span> Список тем&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#список-наборов-тем">&lt;span class="section-num">1&lt;/span> Список наборов тем&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/nav>
 &lt;/details>
-&lt;h2 id="список-тем">&lt;span class="section-num">1&lt;/span> Список тем&lt;/h2>
+&lt;h2 id="список-наборов-тем">&lt;span class="section-num">1&lt;/span> Список наборов тем&lt;/h2>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/02/15/emacs-themes-spacemacs-theme/">Emacs. Темы. Spacemacs-theme&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/02/15/emacs-themes-doom-themes/">Emacs. Темы. Doom-themes&lt;/a>&lt;/li>
@@ -382,6 +382,798 @@ ef-themes-variable-pitch-ui t)
 &lt;li>&lt;code>manual&lt;/code> : переключение должно быть разрешено вызовом &lt;code>org-appear-manual-start&lt;/code>. &lt;code>org-appear-manual-stop&lt;/code> используется для отключения переключения с этой опцией.&lt;/li>
 &lt;/ul>
 &lt;/li>
+&lt;/ul></description></item><item><title>Наборы конфигураций Emacs</title><link>https://yamadharma.github.io/ru/post/2022/12/23/emacs-configuration-sets/</link><pubDate>Fri, 23 Dec 2022 15:41:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/12/23/emacs-configuration-sets/</guid><description>&lt;p>Наборы конфигураций Emacs.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">&lt;/nav>
+&lt;/details></description></item><item><title>Emacs. Устаревшая библиотека cl</title><link>https://yamadharma.github.io/ru/post/2022/12/23/emacs-deprecated-cl/</link><pubDate>Fri, 23 Dec 2022 15:11:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/12/23/emacs-deprecated-cl/</guid><description>&lt;p>Как локализовать пакеты, использующие устаревшую библиотеку &lt;code>cl&lt;/code>.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#симптомы">&lt;span class="section-num">1&lt;/span> Симптомы&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#устранение">&lt;span class="section-num">2&lt;/span> Устранение&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="симптомы">&lt;span class="section-num">1&lt;/span> Симптомы&lt;/h2>
+&lt;ul>
+&lt;li>При запуске Emacs выдаётся предупреждение: &lt;em>Package cl is deprecated&lt;/em>.&lt;/li>
+&lt;/ul>
+&lt;h2 id="устранение">&lt;span class="section-num">2&lt;/span> Устранение&lt;/h2>
+&lt;ul>
+&lt;li>Необходимо обнаружить пакеты, использующие библиотеку &lt;code>cl&lt;/code>.&lt;/li>
+&lt;li>По возможности следует удалить (или заменить) эти пакеты.&lt;/li>
+&lt;li>Для этого в буфер &lt;code>*scratch*&lt;/code> добавьте следующий код:
+&lt;pre>&lt;code class="language-emacs-lisp">(require 'loadhist)
+(file-dependents (feature-file 'cl))
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>Выполнить команды:
+&lt;ul>
+&lt;li>исполнить каждую строчку (комбинацией клавиш &lt;code>C-j&lt;/code>): результаты будут отображаться в этом же буфере;&lt;/li>
+&lt;li>исполнить каждую строчку (команда &lt;code>eval-last-sexp&lt;/code>; соответствующая комбинация клавиш &lt;code>C-x C-e&lt;/code>): результаты будут отображаться в минибуфере.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>В результате мы получим список файлов, использующих библиотеку &lt;code>cl&lt;/code>.&lt;/li>
+&lt;/ul></description></item><item><title>Emacs. Автодополнение. Helm</title><link>https://yamadharma.github.io/ru/post/2022/12/14/emacs-completion-helm/</link><pubDate>Wed, 14 Dec 2022 20:25:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/12/14/emacs-completion-helm/</guid><description>&lt;p>Helm &amp;mdash; фреймворк автодополнения (completion) и сужения выбора для Emacs.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#конфигурирование">&lt;span class="section-num">2&lt;/span> Конфигурирование&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#использование">&lt;span class="section-num">3&lt;/span> Использование&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#преимущества-helm">&lt;span class="section-num">4&lt;/span> Преимущества Helm&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#работа-с-текстом-под-курсором">&lt;span class="section-num">5&lt;/span> Работа с текстом под курсором&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#автоматическое-изменение-размера">&lt;span class="section-num">6&lt;/span> Автоматическое изменение размера&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#команды">&lt;span class="section-num">7&lt;/span> Команды&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#команда-helm-m-x">&lt;span class="section-num">7.1&lt;/span> Команда &lt;code>helm-M-x&lt;/code>&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#команда-helm-show-kill-ring">&lt;span class="section-num">7.2&lt;/span> Команда &lt;code>helm-show-kill-ring&lt;/code>&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#команда-helm-mini">&lt;span class="section-num">7.3&lt;/span> Команда &lt;code>helm-mini&lt;/code>&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#команда-helm-man-woman">&lt;span class="section-num">7.4&lt;/span> Команда &lt;code>helm-man-woman&lt;/code>&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#сводка-сочетаний-клавиш">&lt;span class="section-num">8&lt;/span> Сводка сочетаний клавиш&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>Репозиторий: &lt;a href="https://github.com/emacs-helm/helm" target="_blank" rel="noopener">https://github.com/emacs-helm/helm&lt;/a>.&lt;/li>
+&lt;li>Helm является форком пакета &lt;code>anything.el&lt;/code> и может считаться его преемником.&lt;/li>
+&lt;/ul>
+&lt;h2 id="конфигурирование">&lt;span class="section-num">2&lt;/span> Конфигурирование&lt;/h2>
+&lt;ul>
+&lt;li>Минимальная конфигурация:
+&lt;pre>&lt;code class="language-emacs-lisp">(require 'helm-config)
+(helm-mode 1)
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>Расширенная конфигурация:
+&lt;pre>&lt;code class="language-emacs-lisp">(require 'helm)
+(require 'helm-config)
+;; The default &amp;quot;C-x c&amp;quot; is quite close to &amp;quot;C-x C-c&amp;quot;, which quits Emacs.
+;; Changed to &amp;quot;C-c h&amp;quot;. Note: We must set &amp;quot;C-c h&amp;quot; globally, because we
+;; cannot change `helm-command-prefix-key' once `helm-config' is loaded.
+(global-set-key (kbd &amp;quot;C-c h&amp;quot;) 'helm-command-prefix)
+(global-unset-key (kbd &amp;quot;C-x c&amp;quot;))
+(define-key helm-map (kbd &amp;quot;&amp;lt;tab&amp;gt;&amp;quot;) 'helm-execute-persistent-action) ; rebind tab to run persistent action
+(define-key helm-map (kbd &amp;quot;C-i&amp;quot;) 'helm-execute-persistent-action) ; make TAB work in terminal
+(define-key helm-map (kbd &amp;quot;C-z&amp;quot;) 'helm-select-action) ; list actions using C-z
+(when (executable-find &amp;quot;curl&amp;quot;)
+(setq helm-google-suggest-use-curl-p t))
+(setq helm-split-window-in-side-p t ; open helm buffer inside current window, not occupy whole other window
+helm-move-to-line-cycle-in-source t ; move to end or beginning of source when reaching top or bottom of source.
+helm-ff-search-library-in-sexp t ; search for library in `require' and `declare-function' sexp.
+helm-scroll-amount 8 ; scroll 8 lines other window using M-&amp;lt;next&amp;gt;/M-&amp;lt;prior&amp;gt;
+helm-ff-file-name-history-use-recentf t
+helm-echo-input-in-header-line t)
+(defun spacemacs//helm-hide-minibuffer-maybe ()
+&amp;quot;Hide minibuffer in Helm session if we use the header line as input field.&amp;quot;
+(when (with-helm-buffer helm-echo-input-in-header-line)
+(let ((ov (make-overlay (point-min) (point-max) nil nil t)))
+(overlay-put ov 'window (selected-window))
+(overlay-put ov 'face
+(let ((bg-color (face-background 'default nil)))
+`(:background ,bg-color :foreground ,bg-color)))
+(setq-local cursor-type nil))))
+(add-hook 'helm-minibuffer-set-up-hook
+'spacemacs//helm-hide-minibuffer-maybe)
+(setq helm-autoresize-max-height 0)
+(setq helm-autoresize-min-height 20)
+(helm-autoresize-mode 1)
+(helm-mode 1)
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>По умолчанию Helm в качестве основного префикса использует &lt;code>C-x c&lt;/code>.&lt;/li>
+&lt;li>В этой конфигурации предлагается в качестве префикса использовать &lt;code>C-c h&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h2 id="использование">&lt;span class="section-num">3&lt;/span> Использование&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>Интерфейс автодополнения с помощью &lt;em>Helm&lt;/em> несколько отличается стандартного.&lt;/p>
+&lt;ul>
+&lt;li>Вместо явного нажатия табуляции в &lt;em>Helm&lt;/em> вы вводите части строки, которую хотите найти, разделённые пробелами. В &lt;em>Helm&lt;/em> эти строки называются шаблонами. Шаблоны также могут быть регулярными выражениями.&lt;/li>
+&lt;li>&lt;em>Helm&lt;/em> попытается выполнить поиск и сортировку по наибольшему соответствию сверху вниз. Лучшее совпадение находится вверху, можно нажать &lt;code>RET&lt;/code> и выбрать его.&lt;/li>
+&lt;li>Можно перемещаться по буферу &lt;em>Helm&lt;/em> с помощью:
+&lt;ul>
+&lt;li>&lt;code>C-n&lt;/code> и &lt;code>C-p&lt;/code> (или стрелок &lt;code>&amp;lt;up&amp;gt;&lt;/code> и &lt;code>&amp;lt;down&amp;gt;&lt;/code>) для перемещения вверх/вниз;&lt;/li>
+&lt;li>&lt;code>C-v&lt;/code> и =M-v =для перехода к следующей/предыдущей странице;&lt;/li>
+&lt;li>&lt;code>M-&amp;lt;&lt;/code> и &lt;code>M-&amp;gt;&lt;/code> для перемещения в начало и конец буфера.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Можно отметить кандидатов с помощью &lt;code>C-SPC&lt;/code> (когда вам нужно выполнить действие со несколькими кандидатами по выбору). &lt;code>M-a&lt;/code> выделяет всё.&lt;/li>
+&lt;li>Можно вставить отмеченные кандидаты в текущий буфер с помощью &lt;code>C-c C-i&lt;/code>.&lt;/li>
+&lt;li>Если текущее горизонтальное окно &lt;em>Helm&lt;/em> мало, то можно переключить его на вертикальное окно с помощью &lt;code>C-t&lt;/code>. Повторное нажатие &lt;code>C-t&lt;/code> снова возвращает окно &lt;em>Helm&lt;/em> в горизонтальное положение.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;code>C-x b&lt;/code> запускает &lt;code>helm-mini&lt;/code> (список буферов). Если вы отмечаете более одного буфера, &lt;code>RET&lt;/code> открывает выбранные буферы.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Когда используется &lt;em>Helm&lt;/em>, то никогда не используется &lt;code>TAB&lt;/code> для завершения префиксов (в отличии от &lt;code>Ido&lt;/code>).&lt;/p>
+&lt;ul>
+&lt;li>В &lt;em>Helm&lt;/em> во время ввода список кандидатов автоматически обновляются.&lt;/li>
+&lt;li>В &lt;em>Ido&lt;/em> необходимо нажать &lt;code>TAB&lt;/code>, чтобы получить список кандидатов.&lt;/li>
+&lt;li>В &lt;em>Helm&lt;/em> необходимо забыть о привычке использовать &lt;code>TAB&lt;/code> для поиска кандидатов. Это необычно для людей, переходящих на &lt;em>Helm&lt;/em>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Когда вы выполняете команду &lt;em>Helm&lt;/em>, вы входите в сеанс &lt;em>Helm&lt;/em>.&lt;/p>
+&lt;ul>
+&lt;li>Сеанс &lt;em>Helm&lt;/em> &amp;mdash; это специальное состояние для работы с функциями &lt;em>Helm&lt;/em>.&lt;/li>
+&lt;li>Во время сеанса &lt;em>Helm&lt;/em> всегда открыт выделенный буфер &lt;em>Helm&lt;/em>.&lt;/li>
+&lt;li>Когда вы выходите из сеанса &lt;em>Helm&lt;/em>, буфер &lt;em>Helm&lt;/em> закрывается.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>В &lt;em>Helm&lt;/em> чаще всего используются 3 команды:&lt;/p>
+&lt;ul>
+&lt;li>Вход в меню действий &amp;mdash; с помощью &lt;code>TAB&lt;/code>.
+&lt;ul>
+&lt;li>Действие &amp;mdash; это команда, которая выполняется для отмеченных кандидатов (одного или нескольких) и завершает текущий сеанс &lt;em>Helm&lt;/em>.&lt;/li>
+&lt;li>Меню действий &amp;mdash; это текстовое меню, в котором перечислены действия, которые вы можете выполнить.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;code>C-z&lt;/code> выполняет функцию &lt;code>helm-execute-persistent-action&lt;/code>. Постоянное действие &amp;mdash; это действие, не завершающее сеанс, используемое в сеансе &lt;em>Helm&lt;/em>.&lt;/li>
+&lt;li>В некоторых сеансах &lt;em>Helm&lt;/em>, таких как &lt;code>helm-find-files&lt;/code> или &lt;code>helm-mini&lt;/code>, вы можете выбрать более одного кандидата и выполнить над ними какие-либо действия.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Можно для удобства поменять местами &lt;code>TAB&lt;/code> и &lt;code>C-z&lt;/code> в приведённых выше настройках, поскольку &lt;code>helm-execute-persistent-action&lt;/code> используется чаще, чем &lt;code>helm-select-action&lt;/code>:&lt;/p>
+&lt;pre>&lt;code class="language-emacs-lisp">(define-key helm-map (kbd &amp;quot;&amp;lt;tab&amp;gt;&amp;quot;) 'helm-execute-persistent-action) ; rebind tab to do persistent action
+(define-key helm-map (kbd &amp;quot;C-i&amp;quot;) 'helm-execute-persistent-action) ; make TAB works in terminal
+(define-key helm-map (kbd &amp;quot;C-z&amp;quot;) 'helm-select-action) ; list actions using C-z
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>В сеансе &lt;em>Helm&lt;/em>, если вам нужна помощь, используйте &lt;code>C-c ?&lt;/code>.&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="преимущества-helm">&lt;span class="section-num">4&lt;/span> Преимущества Helm&lt;/h2>
+&lt;ul>
+&lt;li>Простой и последовательный интерфейс.
+&lt;ul>
+&lt;li>Каждый сеанс Helm начинается с одного и того же: подсказка для ввода шаблонов поиска и буфер &lt;em>Helm&lt;/em> для отображения результатов по мере ввода пользователем.используют Helm.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Интерактивность.
+&lt;ul>
+&lt;li>По своей природе &lt;em>Helm&lt;/em> очень интерактивен: когда пользователь вводит текст, результаты немедленно обновляются в буфере &lt;em>Helm&lt;/em>.&lt;/li>
+&lt;li>Сосредоточьтесь на том, чтобы сначала найти то, что вы хотите, а потом решить, что с этим делать. С &lt;em>Helm&lt;/em> не нужно думать о том, что вы собираетесь делать с кандидатом, пока вы его не найдёте.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Механизм сопоставления.
+&lt;ul>
+&lt;li>Поиск с помощью регулярных выражений.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Производительность.&lt;/li>
+&lt;/ul>
+&lt;h2 id="работа-с-текстом-под-курсором">&lt;span class="section-num">5&lt;/span> Работа с текстом под курсором&lt;/h2>
+&lt;ul>
+&lt;li>Если вы уже находитесь в сеансе &lt;em>Helm&lt;/em>, вы все равно можете получить доступ к текущему буферу редактирования с помощью следующих комбинаций клавиш:
+&lt;ul>
+&lt;li>&lt;code>C-w&lt;/code> копирует слово за курсором, начиная с курсора до конца слова, в приглашение Helm (минибуфер);&lt;/li>
+&lt;li>&lt;code>M-n&lt;/code> копирует символ под курсором.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Если параметр &lt;code>helm-mode&lt;/code> активирован, команды справки также автоматически распознают символы под курсором и используют интерфейс &lt;em>Helm&lt;/em> для интерактивного выбора. Например:
+&lt;ul>
+&lt;li>&lt;code>C-h f&lt;/code> (&lt;code>describe-function&lt;/code>) автоматически принимает слово под курсором как значение по умолчанию для поиска функции.&lt;/li>
+&lt;li>&lt;code>C-h v&lt;/code> (&lt;code>describe-variable&lt;/code>) автоматически принимает слово под курсором как значение по умолчанию для поиска переменной.&lt;/li>
+&lt;li>&lt;code>C-h w&lt;/code> (&lt;code>where-is&lt;/code>) автоматически принимает слово под курсором для отображения привязки клавиш для команды.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="автоматическое-изменение-размера">&lt;span class="section-num">6&lt;/span> Автоматическое изменение размера&lt;/h2>
+&lt;ul>
+&lt;li>&lt;em>Helm&lt;/em> может автоматически изменять размер своего буфера, чтобы соответствовать количеству кандидатов, если вы включить &lt;code>helm-autoresize-mode&lt;/code>:
+&lt;pre>&lt;code class="language-emacs-lisp">(helm-autoresize-mode t)
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>Можно настроить минимальную и максимальную высоту, которую Helm может принимать с помощью переменных &lt;code>helm-autoresize-max-height&lt;/code> и &lt;code>helm-autoresize-min-height&lt;/code>.
+&lt;ul>
+&lt;li>По умолчанию &lt;code>helm-autoresize-max-height&lt;/code> установлено в значение 40, что означает, что буфер &lt;em>Helm&lt;/em> имеет максимальную высоту 40% от высоты текущего фрейма.&lt;/li>
+&lt;li>&lt;code>helm-autoresize-min-height&lt;/code> указывает минимальную высоту для буфера &lt;em>Helm&lt;/em> в процентах от текущей высоты фрейма.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Если вы не хотите, чтобы размер окна &lt;em>Helm&lt;/em> изменялся, вы можете установить &lt;code>helm-autoresize-max-height&lt;/code> равным &lt;code>helm-autoresize-min-height&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h2 id="команды">&lt;span class="section-num">7&lt;/span> Команды&lt;/h2>
+&lt;h3 id="команда-helm-m-x">&lt;span class="section-num">7.1&lt;/span> Команда &lt;code>helm-M-x&lt;/code>&lt;/h3>
+&lt;p>Привязка ключей :&lt;/p>
+&lt;p>Нет привязки клавиш по умолчанию. Мы должны дать ему один:&lt;/p>
+&lt;p>( global-set-key ( kbd &amp;ldquo;Mx&amp;rdquo; ) &amp;lsquo;helm-Mx )
+Описание :&lt;/p>
+&lt;p>M-xи увидеть разницу. Вы увидите буфер со списком команд в Emacs. Некоторым из вас это может не понравиться, потому что поначалу это кажется излишним. Однако, даже если вам действительно не нравится, пожалуйста, потерпите меня до конца.&lt;/p>
+&lt;p>Теперь введите li pa; правильно li, пробел и pa. Вы увидите, list-packagesнаходится на вершине. Сюрприз! Попробуем другой ввод. Теперь введите pa ^li, и вы получите list-packageв качестве первой записи.&lt;/p>
+&lt;p>helm-M-xтакже лучше, чем по умолчанию M-x, потому что он предоставляет привязки клавиш прямо рядом с командами, а TAB предоставляет вам встроенную документацию этой команды в другом буфере.&lt;/p>
+&lt;p>Начиная с версии 1.6.5, helm-M-xвозможно нечеткое сопоставление кандидатов, но по умолчанию это не включено. Чтобы включить нечеткое сопоставление, добавьте следующий параметр:&lt;/p>
+&lt;p>( setq helm-Mx-fuzzy-match t ) ;; опциональное нечеткое сопоставление для helm-Mx
+ПРИМЕЧАНИЕ . Вы должны выполнить привязку helm-M-xк Mx вручную. В противном случае вы все равно получите завершение Helm, но с помощью vanilla Mx , который не предоставляет вышеуказанных функций, таких как отображение привязок клавиш и TAB для открытия встроенной документации. Еще одна важная вещь: вы должны передать аргумент префикса ПОСЛЕ того, как вы запустите helm-M-x, потому что ваш аргумент префикса будет отображаться в модельной линии, когда он находится в helm-M-x буфере. Передача аргумента префикса BEFORE helm-M-x не имеет никакого эффекта .&lt;/p>
+&lt;p>Демо :&lt;/p>
+&lt;p>helm-mx.gif&lt;/p>
+&lt;h3 id="команда-helm-show-kill-ring">&lt;span class="section-num">7.2&lt;/span> Команда &lt;code>helm-show-kill-ring&lt;/code>&lt;/h3>
+&lt;p>Привязка ключей :&lt;/p>
+&lt;p>Нет привязки клавиш по умолчанию. Мы должны дать ему один:&lt;/p>
+&lt;p>( global-set-key ( kbd &amp;ldquo;My&amp;rdquo; ) &amp;lsquo;helm-show-kill-ring )
+Описание :&lt;/p>
+&lt;p>Вы помните связывающий C-y цикл kill ring ? Тем не менее, работа со стандартным списком убийств болезненна, потому что у вас есть бремя помнить невидимую вещь, то есть список убийств, в какой позиции вы что убиваете. Чтобы просмотреть список убийств, вы должны нажать Ch v и ввести текст kill-ring , чтобы увидеть содержимое списка убийств, а это некрасиво.&lt;/p>
+&lt;p>helm-show-kill-ringрешает эту проблему: Helm показывает список убийств в удобочитаемом формате и позволяет сузить список, введя подстроки кандидатов. Вы освобождаетесь от когнитивного бремени стандартного My .&lt;/p>
+&lt;p>Если вы следуете моей конфигурации Helm, M-yпривязывается к helm-show-kill-ring. Попробуйте и посмотрите! Гораздо проще, чем по умолчанию.&lt;/p>
+&lt;p>Демо :&lt;/p>
+&lt;p>helm-kill-ringв действии (демонстрация начинается, когда вы видите STARTв минибуфере):&lt;/p>
+&lt;p>helm-kill-ring.gif&lt;/p>
+&lt;h3 id="команда-helm-mini">&lt;span class="section-num">7.3&lt;/span> Команда &lt;code>helm-mini&lt;/code>&lt;/h3>
+&lt;p>Привязка ключей :&lt;/p>
+&lt;p>Нет привязки клавиш по умолчанию. Мы должны дать ему один:&lt;/p>
+&lt;p>( global-set-key ( kbd &amp;ldquo;Cx b&amp;rdquo; ) &amp;lsquo;helm-mini )
+Чтобы включить нечеткое сопоставление, добавьте следующие настройки:&lt;/p>
+&lt;p>( setq helm-buffers-fuzzy-matching t
+helm-recentf-fuzzy-match t )
+helm-miniсостоит из нескольких источников:&lt;/p>
+&lt;p>Текущие открытые буферы под заголовком Buffers.
+Недавно открытые файлы в шапке Recentf.
+Позволяет создать новый буфер, нажав RET под заголовком Create Buffer.
+Вы можете перемещаться между группами с помощью клавиш со стрелками &amp;lt;влево&amp;gt; и &amp;lt;вправо&amp;gt; . Или вы можете просто прокрутить вниз/вверх с помощью Cv и Mv .&lt;/p>
+&lt;p>Вы можете отфильтровать буферы по основному режиму, используя шаблон *&amp;lt;major-mode&amp;gt;. Например, *diredсужается до буферов Dired. Вы также можете отфильтровать буферы, принадлежащие к основному режиму, добавив !их в шаблон. Например, *!diredвыберите все буферы, которые не находятся в режиме Dired.&lt;/p>
+&lt;p>Вы также можете выбрать буферы в определенном каталоге, используя шаблон &lt;em>directory. Например, /.emacs.d/сужается до буферов, которые находятся только внутри .emacs.d. Добавьте !перед шаблоном для обратной версии. Например, !&lt;/em>.emacs.d/сужается до буферов не в .emacs.d.&lt;/p>
+&lt;p>Вы даже можете использовать helm-miniдля сужения до буферов, которые содержат регулярное выражение в своем содержимом, добавляя @перед шаблоном поиска. Например, вы можете выбрать буферы, которые содержат только строку «тест»: @test. Если вы хотите увидеть расположение строки в буферах, отметьте весь буфер с помощью Ma и Cs во время helm-miniсеанса, чтобы переключиться на helm-moccur. Вы можете пометить буферы для поиска с помощью C-SPC . При переключении на helm-moccurотображаются совпадения, находящиеся в выбранных буферах. Вы также можете работать occur только с текущим буфером с аргументом префикса: Cu Cs; это полезно, когда вы уже пометили буферы, но не хотите снимать пометку только для просмотра только в буфере. Однако в целом Cu Cs вам не понадобится .&lt;/p>
+&lt;p>Значение цветов и префиксов для буферов:&lt;/p>
+&lt;p>Удаленные буферы имеют префикс «@».
+Красный =&amp;gt; Файл буфера был изменен на диске внешним процессом.
+Indianred2 =&amp;gt; Буфер существует, но его файл удален.
+Оранжевый =&amp;gt; Буфер изменен, и его файл не сохранен на диск.
+Курсив =&amp;gt; Нефайловый буфер.
+Некоторые темы Emacs меняют цвета. Вы должны проверить соответствующий цвет в своих цветовых темах.&lt;/p>
+&lt;p>Пример:&lt;/p>
+&lt;p>Если я ввожу шаблон: *lisp ^helm @moc, Helm сужает список, выбирая только буферы, которые находятся в режиме lisp, запускают helm и сопоставляют «moc» в их содержимом.
+Если я хочу указать более одного основного режима, разделите их с помощью ,, например, *!lisp,!sh,!funбудут перечислены все буферы, кроме тех, которые находятся в режиме lisp, sh-mode и фундаментальном режиме.
+Если я ввожу шаблон: *lisp ^helm moc. Обратите внимание, что на @этот раз helm не будет искать буферы режима lisp, начинающиеся с «helm» и имеющие в своем имени «moc».
+Если я введу шаблон: *!lisp !helmHelm сузится до буферов, которые не находятся в режиме «шепелявости» и не соответствуют «рулю».
+Если я введу шаблон: &lt;em>helm&lt;/em> w3Helm сузит буферы, которые находятся в любом подкаталоге «helm» и соответствуют w3.&lt;/p>
+&lt;p>helm-miniпохож на интерактивную версию ibuffer.&lt;/p>
+&lt;p>Демо :&lt;/p>
+&lt;p>руль-мини.gif&lt;/p>
+&lt;p>Демонстрация начинается, когда вы видите Eval: STARTв минибуфере. Обратите внимание, что демонстрационное использование helm-buffers-listпочти такое же, как и helm-mini. Единственная разница в том, что helm-buffers-listиспользуется ido-virtual-buffersдля перечисления недавно использованных файлов, а helm-miniиспользует recentf.&lt;/p>
+&lt;p>Все буферы C выбираются с использованием шаблона *C. В демонстрации я также выбираю буферы Tcl с помощью *Tcl, а затем снова переключаюсь на буферы C с помощью *C.
+Я только хочу иметь буферы, которые содержат только строку crash. Для этого я добавляю пробел, затем добавляю шаблон @crash. После начального шаблона поиска я передаю текущий выделенный буфер helm-moccur( moccurс интерфейсом Helm ) с помощью Cs . Кандидатов можно фильтровать постепенно, добавляя больше шаблонов, например, я добавил memoryдля фильтрации буферов, содержащих строку «memory», среди буферов, содержащих crash. Вы также можете пометить несколько буферов с помощью C-SPC или пометить все буферы с помощью Ma для поиска всех буферов, перечисленных в helm-mini.
+Как видите, по мере того, как я фильтровал, количество кандидатов уменьшалось, как показано в модели. В конце концов, в результате фильтрации осталось 12 буферов, а не всего 253 буфера.
+Демонстрация выше теперь является частью домашней страницы Helm .&lt;/p>
+&lt;p>Похожие команды :&lt;/p>
+&lt;p>helm-multi-files: эта команда выводит список буферов и последних файлов и файлов в текущем каталоге. Однако, когда совпадений не найдено, helm-miniспрашивает, хотите ли вы создать новый буфер, выделив единственную запись, которая выглядит следующим образом:&lt;/p>
+&lt;p>helm-новый-файл-buffer.gif&lt;/p>
+&lt;p>пока helm-multi-filesпоказывает пустой буфер. Однако вы можете начать helm-locateсеанс поиска нужного файла по всей файловой системе, нажав Cc p . По умолчанию helm-for-files привязан к &amp;lt;prefix&amp;gt; f(текущий префикс Cc h ).&lt;/p>
+&lt;p>helm-buffer-list: аналогично helm-mini, но вместо списка последних файлов из recentf, он использует ido-virtual-buffers, который является списком недавно посещенных файлов, управляемых ido. Виртуальные буферы не содержат путей. В зависимости от ваших предпочтений вы можете использовать эту команду вместо helm-mini. Чтобы включить нечеткое сопоставление ido-virtual-buffers, если вы уже установили helm-buffers-fuzzy-matching, tвы также получите нечеткое сопоставление для ido-virtual-buffers.
+Команда:helm-find-files
+Привязка ключей :&lt;/p>
+&lt;p>&amp;lt;prefix&amp;gt; Cx Cf или Cx Cf (префикс Cx c по умолчанию или Cc h , если установлен). Это довольно длинная последовательность клавиш, и *=helm-find-files= заслуживает лучшей привязки:&lt;/p>
+&lt;p>( global-set-key ( kbd &amp;ldquo;Cx Cf&amp;rdquo; ) &amp;lsquo;helm-find-files )
+Описание :&lt;/p>
+&lt;p>helm-find-filesэто навигация по файлам на стероидах:&lt;/p>
+&lt;p>helm-find-filesможет выполнять нечеткое сопоставление кандидатов в текущем каталоге. например, &amp;ldquo;fob&amp;rdquo; или &amp;ldquo;fbr&amp;rdquo; завершат &amp;ldquo;foobar&amp;rdquo;.
+Вы также можете выполнить постоянное действие, которое привязано к Cz (по умолчанию) или TAB , если вы используете мою конфигурацию, чтобы сузить текущий кандидат выделения; Cz или TAB еще раз, чтобы просмотреть содержимое буфера. Вы можете прокручивать другой буфер вверх/вниз с помощью M-&amp;lt;next&amp;gt; и M-&amp;lt;preor&amp;gt; .
+В качестве альтернативы вы можете нажать Cj , чтобы сузить список до кандидата выделения, и еще раз Cj , чтобы просмотреть содержимое другого буфера. Кл возвращается.
+Вы также можете подняться на один уровень каталога с помощью Cl . ПРИМЕЧАНИЕ : если вы используете Cl , Helm поднимается на один уровень вверх и помещает курсор в каталог, из которого вы только что вышли. Если вы хотите подняться и навести курсор на родительский каталог, в командной строке Helm введите ../.
+После того, как вы поднялись с помощью Cl , вы можете вернуться к точно посещенным каталогам с помощью Cr .
+Чтобы создать каталог, введите новое имя, которого нет в текущем каталоге, и добавьте /его в конце. После создания каталога Helm продолжает работу в этом каталоге.
+Чтобы создать новый файл, введите имя и выберите верхнюю строку, рядом [?]с которой стоит символ. По умолчанию Helm всегда выбирает первое совпадение в каталоге.
+Вы можете вызвать grepтекущую выделенную запись с помощью Cs . Cu Cs выполняет рекурсивный grep.
+Введите ~/в конце шаблона, чтобы быстро добраться до домашнего каталога.
+Введите /в конце шаблона, чтобы быстро добраться до корня вашей файловой системы.
+Введите ./в конце шаблона, чтобы быстро добраться до каталога по умолчанию (начальный запуск сеанса). Если вы находитесь в каталоге по умолчанию, переместите курсор вверх.
+Вы можете выполнить дополнительные действия с выделенной записью, запустив helm-select-action, которая привязана к TAB по умолчанию и Cz в моей конфигурации. Гайд по каждому действию в меню действий написан в гайде Изучение больших проектов с помощью Projectile и Helm Projectile . Это написано там, потому что вы в конечном итоге будете использовать Projectile (управление проектами для Emacs, представленное в следующем разделе) для более эффективной навигации по файлам в любом месте и в любое время.&lt;/p>
+&lt;p>Демо :&lt;/p>
+&lt;p>Мне нужно было ввести в подсказку всего несколько символов, чтобы получить кандидата, которого я хотел среди множества кандидатов. Демонстрация начинается, когда вы видите STARTв минибуфере:&lt;/p>
+&lt;p>helm-find-files.gif&lt;/p>
+&lt;p>Найти файл в точке :
+Вы знали команду ffap? Он был представлен в части 1, но вот демонстрация:&lt;/p>
+&lt;p>ffap.gif&lt;/p>
+&lt;p>helm-find-filesЭто тоже можно сделать: все, что вам нужно сделать, это переместить точку на правильный путь к файлу, и Helm найдет правильный путь для вас, как на скриншоте. Теперь вам больше не нужно использовать отдельную команду для открытия файла в точке, а использовать ту же Cx Cf. Это действительно удобно.&lt;/p>
+&lt;p>Истории файлов и каталогов :
+С аргументом префикса helm-find-filesотображает список посещенных каталогов. Если он выбран в точке, он helm-find-filesзапускается в этом каталоге, и вы можете перемещаться оттуда.&lt;/p>
+&lt;p>Во время helm-find-filesсеанса вы можете получить список посещенных файлов и каталогов с помощью Cc h . Оттуда действие по умолчанию — RET , чтобы открыть файл/каталог в точке или продолжить, helm-find-filesначиная с этого файла/каталога.&lt;/p>
+&lt;p>Вы можете использовать Mp и Mn для перемещения назад и вперед между ранее посещенными каталогами.&lt;/p>
+&lt;p>Команда: helm-ff-do-grep, live grep в Helm
+Привязка ключей :&lt;/p>
+&lt;p>Изнутри helm-find-filesсеанса вы можете вызвать helm-ff-run-grepс помощью Cs поиск файла/каталога в выделенной записи в буфере Helm. С префиксным аргументом Cu рекурсивно ищет выбранный каталог.&lt;/p>
+&lt;p>Вы также можете сохранить результат в буфер Grep, используя действие Save results in Grep buffer. Обратите внимание, что этот буфер Grep создается Helm, а не Grep-буфер Emacs по умолчанию. Он имеет минимальные привязки клавиш. В *hgrep*буфере нажмите Ch m , чтобы просмотреть все привязки клавиш.&lt;/p>
+&lt;p>Описание :&lt;/p>
+&lt;p>Каждый раз, когда вы вводите символ, результат немедленно helmобновляется . grepВы можете использовать ack-grepдля замены grepэтой конфигурации:&lt;/p>
+&lt;p>( когда ( исполняемый файл-найти &amp;ldquo;ack-grep&amp;rdquo; )
+( setq helm-grep-default-command &amp;ldquo;ack-grep -Hn &amp;ndash;no-group &amp;ndash;no-color %e %p %f&amp;rdquo;
+helm-grep-default- рекурсивная команда &amp;ldquo;ack-grep -H &amp;ndash;no-group &amp;ndash;no-color %e %p %f&amp;rdquo; ) )
+Демо :&lt;/p>
+&lt;p>live_grep.gif&lt;/p>
+&lt;p>Команда:helm-semantic-or-imenu
+Привязка ключей :&lt;/p>
+&lt;p>&amp;lt;prefix&amp;gt; i (префикс Cx c по умолчанию или Cc h , если установлен).&lt;/p>
+&lt;p>Описание :&lt;/p>
+&lt;p>Средство Imenu предлагает способ поиска основных определений, таких как определения функций или определений переменных, в файле по имени. Вы можете запустить imenuкоманду индивидуально.&lt;/p>
+&lt;p>Semantic — это пакет, предоставляющий команды редактирования с учетом языка на основе «парсеров исходного кода». Если этот параметр включен, каждый посещаемый вами файл анализируется автоматически. Semantic обеспечивает превосходную поддержку C/C++. Чтобы включить семантический режим, выполните (semantic-mode 1).&lt;/p>
+&lt;p>Helm предлагает интерфейс как для Semantic, так и для Imenu одновременно: если в текущем буфере активен `semantic-mode&amp;rsquo;, используйте семантику для генерации тегов, в противном случае вернитесь к imenu. Если точка находится на символе, helm по умолчанию передает символ в подсказку ввода.&lt;/p>
+&lt;p>helm-semantic-or-imenuработает со многими режимами, такими как C/C++, Java, Python, Ruby, Emacs Lisp и Lisp в целом, сценарий оболочки, организационный режим…&lt;/p>
+&lt;p>Чтобы включить нечеткое сопоставление как для списка, так Semanticи для Imenuлистинга, добавьте следующий параметр:&lt;/p>
+&lt;p>( setq helm-semantic-fuzzy-match t
+helm-imenu-fuzzy-match t )
+Использование :&lt;/p>
+&lt;p>Вызовите команду (по умолчанию Cc hi ).
+Вы можете использовать клавиши со стрелками или Cp/Cn для перемещения вверх и вниз между кандидатами. Вы также можете использовать C-&amp;lt;down&amp;gt; и C-&amp;lt;up&amp;gt; ; когда вы перемещаете выделение между тегами внутри семантического буфера Helm, точка также перемещается между местоположениями тегов.
+Приятной особенностью helm-semantic-or-imenuявляется то, что всякий раз, когда вы активируете команду, если точка находится внутри семантического тега (например, определения функции), выбор располагается в теге в буфере Helm. Это хорошо работает в сочетании с C-&amp;lt;down&amp;gt; и C-&amp;lt;up&amp;gt; для перемещения между определениями в вашем буфере.
+Helm дает вам более точный контроль: вы можете перемещаться между функциями, используя beginning-of-defun(привязанный к CMa ) и end-of-defun(привязанный к CMe ), но он также будет перемещать точку и прокручивать ваш буфер. Используя helm-semantic-or-imenu, у вас будет похожее поведение, и у вас будет больше вариантов: либо C-gвернуться обратно в позицию, где вы первоначально вызвали helm-semantic-or-imenu, потому что вам нужно было только просмотреть интерфейс функции (например, чтобы увидеть, какие типы параметров принимает функция), либо RETперейти к местоположению тега. helm-semantic-or-imenuВ настоящее время поддерживается только семантическая часть . Если буфер imenuподдерживается только командой, вы не сможете использовать эту функцию.&lt;/p>
+&lt;p>helm-semantic-or-imenuпредоставляет следующие типы семантических тегов:&lt;/p>
+&lt;p>Dependencies: зависимости текущего файла, определенные текущим основным режимом. Например, Dependenciesв C/C++ включают файлы заголовков. Когда вы выполняете постоянное действие над зависимостью, точка перемещается к местоположению этой зависимости в текущем окне.
+Variables: переменные, определенные в текущем буфере.
+Functions: функция определена в текущем буфере
+Provides: модули, которые предоставляет этот буфер; например, (provide &amp;hellip;)выражение в Emacs Lisp.
+Если вы хотите отфильтровать по типу тега, введите знак вставки ^ (начало строки в регулярном выражении) и следуйте за первым символом этого типа. Например, чтобы увидеть только функциональные теги, введите ^fприглашение.&lt;/p>
+&lt;p>Демонстрация 1 :&lt;/p>
+&lt;p>DEMO (начать, когда START DEMOнаходится в минибуфере):&lt;/p>
+&lt;p>Во- первых, я использую helm-semantic-or-imenuдля перехода к функции helm-define-key-with-subkeys и перемещаю туда точку.
+Затем я начинаю helm-semantic-or-imenuснова, и предварительно выбран helm-define-key-with-subkeys.
+Затем я перемещаю точку на переменную helm-mapи helm-semantic-or-imenuснова выполняю две функции: helm-next-source и helm-previous-source. На этот раз вместо отображения текущего семантического тега, с которым я работаю (это helm-map), он показывает два других тега в семантическом буфере Helm. Это связано с тем, что я предоставил аргумент префикса перед запуском команды.&lt;/p>
+&lt;p>helm-semantic-or-imenu-2.gif&lt;/p>
+&lt;p>Демонстрация 2 :&lt;/p>
+&lt;p>Вот helm-semantic-or-imenuв действии, обратите внимание на подсказку &amp;ldquo;pattern: &amp;quot; в минибуфере:&lt;/p>
+&lt;p>Сначала я ограничиваюсь кандидатами, которые являются функциями с этим шаблоном в подсказке: Functi.
+Затем я сужаюсь до кандидатов, которые являются функциями и содержат voidв себе этот шаблон: functi void, эффективно выбирая функции, которые имеют тип void или принимают voidаргументы.
+Затем я сужаюсь до кандидатов, которые являются функциями и содержат int в себе этот шаблон: functi int, эффективно выбирая функции, которые имеют тип int или принимают intаргументы.
+Затем я сужаю список кандидатов, которые являются переменными и содержат u16 в них, эффективно выбирая только переменные, имеющие тип u16; то же самое для u32демо.&lt;/p>
+&lt;p>helm-semantic-or-imenu.gif&lt;/p>
+&lt;p>Нажмите RET , чтобы посетить место кандидата. Приведенные выше примеры являются просто демонстрационными примерами. Вы можете сузить поиск до всего, что захотите, с шаблонами поиска, разделенными пробелами, например, вы можете использовать два шаблона, «func» и часть имени функции, и Helm может сузить до него.&lt;/p>
+&lt;p>В демо вы видите такие вещи, как class u16и class u32; это потому, что u16и u32определены typedef.&lt;/p>
+&lt;h3 id="команда-helm-man-woman">&lt;span class="section-num">7.4&lt;/span> Команда &lt;code>helm-man-woman&lt;/code>&lt;/h3>
+&lt;p>Привязка ключей :&lt;/p>
+&lt;p>&amp;lt;prefix&amp;gt; m (префикс Cx c по умолчанию или Cc h , если установлен).&lt;/p>
+&lt;p>Описание :&lt;/p>
+&lt;p>С помощью helm-man-woman, вы можете быстро перейти к любой записи man, используя интерфейс Helm, либо введя приглашение Helm, либо, если точка находится на символе, открыв справочную страницу в точке. Чтобы включить справочную страницу в точке, добавьте следующий код:&lt;/p>
+&lt;p>( добавить в список &amp;lsquo;helm-sources-using-default-as-input&amp;rsquo; helm-source-man-pages )
+Демо:&lt;/p>
+&lt;p>руль-мужчина-женщина.gif&lt;/p>
+&lt;p>Команда:helm-find
+Привязка ключей :&lt;/p>
+&lt;p>&amp;lt;prefix&amp;gt; / (префикс Cx c по умолчанию или Cc h , если установлен).&lt;/p>
+&lt;p>Описание :&lt;/p>
+&lt;p>Обычно вы используете findкоманду с аргументами в терминале, затем нажимаете RET и ждете большого списка результатов, и если результат не такой, как ожидалось, повторяете все это. Вы можете сократить этот процесс, интерактивно получая результаты от Unix findдля каждого символа, который вы вводите в приглашение Helm.&lt;/p>
+&lt;p>Вы можете разделять шаблоны поиска пробелами. Однако, поскольку Helm использует findутилиту Unix, вам необходимо вводить шаблоны поиска в соответствии со строкой поиска find; используйте helm-man-womanдля чтения find справочной страницы.&lt;/p>
+&lt;p>По умолчанию при вызове helm-findвыполняется поиск только в текущем каталоге. С префиксным аргументом C-u(т . е C-u C-c h /. ) подсказка запрашивает каталог для поиска. helm-findможет быть вызван в helm-find-files сеансе с помощью Cc / . Чтобы открыть более одного файла, отметьте отдельных кандидатов с помощью C-SPC или отметьте все с помощью Ma , а затем RET . Вы можете переключиться на helm-find-filesCx Cf .&lt;/p>
+&lt;p>Если вы используете helm-findбольшой каталог и чувствуете, что обновление в реальном времени слишком медленное, вы всегда можете приостановить обновление в реальном времени с помощью C-! и возобновите обновление в реальном времени с помощью C-! потом.&lt;/p>
+&lt;p>Демо :&lt;/p>
+&lt;p>helm-find.gif&lt;/p>
+&lt;p>Команда:helm-locate
+Привязка ключей :&lt;/p>
+&lt;p>&amp;lt;prefix&amp;gt; l (префикс Cx c по умолчанию или Cc h , если установлен).&lt;/p>
+&lt;p>Описание :&lt;/p>
+&lt;p>Аналогичен helm-find, но использует locateкоманду и принимает шаблоны поиска в соответствии с locateвходными данными. Используйте helm-man-womanдля чтения locateсправочной страницы. В Mac OS mdfindвместо этого используется . В Windows необходимо установить поисковую систему Everything ; как только вы установили Everything и представили es.exeEmacs через переменную окружения PATH, helm-locateвы будете использовать Everythingи работать из коробки без какой-либо настройки.&lt;/p>
+&lt;p>Чтобы использовать локальную базу данных, выполните helm-locateс аргументом префикса C-u.&lt;/p>
+&lt;p>Если вы используете helm-locateбольшой жесткий диск и чувствуете, что обновление в режиме реального времени слишком медленное, вы всегда можете приостановить обновление в режиме реального времени с помощью C-! и возобновите обновление в реальном времени с помощью C-! потом.&lt;/p>
+&lt;p>Чтобы включить нечеткое сопоставление в helm-locate, добавьте этот параметр:&lt;/p>
+&lt;p>( setq helm-locate-fuzzy-match t )
+Обратите внимание, что в настоящее время он работает с locateкомандой в Linux. Если вы находитесь на другой платформе, не устанавливайте его, иначе у вас не будет никакого результата.&lt;/p>
+&lt;p>Демо :&lt;/p>
+&lt;p>helm-locate.gif&lt;/p>
+&lt;p>Команда:helm-occur
+Привязка ключей :&lt;/p>
+&lt;p>&amp;lt;prefix&amp;gt; Ms o (префикс Cx c по умолчанию или Cc h , если установлен). Так как это довольно длинная привязка, нам следует привязать более удобную последовательность клавиш:&lt;/p>
+&lt;p>( global-set-key ( kbd &amp;ldquo;Cch o&amp;rdquo; ) &amp;lsquo;helm-occur )
+Описание :&lt;/p>
+&lt;p>Аналогично occur, но с использованием интерфейса Helm. По мере ввода совпадающие строки немедленно обновляются. Это удобно, когда вы хотите иметь список совпадений в текущем буфере для перехода туда и обратно. Нажмите TAB , чтобы временно переместить точку в положение выделенного в данный момент совпадения. Cg отменяет текущий сеанс Helm и возвращается в исходное место, где helm-occurон был вызван. RET при совпадении переходит к этому совпадению.&lt;/p>
+&lt;p>Демо :&lt;/p>
+&lt;p>Вы можете видеть, что кандидаты продолжают обновляться, когда я печатаю. Демонстрация начинается, когда вы видите STARTв минибуфере.&lt;/p>
+&lt;p>helm-occur.gif&lt;/p>
+&lt;p>Команда:helm-apropos
+Привязка ключей :&lt;/p>
+&lt;p>&amp;lt;prefix&amp;gt; a (префикс Cx c по умолчанию или Cc h , если установлен).&lt;/p>
+&lt;p>Описание :&lt;/p>
+&lt;p>Предварительно настроенный руль для описания команд, функций, переменных и лиц - все в одной команде!. Он похож на Ch a , который работает apropos-command, но интерактив включает в себя больше, чем просто команды. helm-aproposобъединяет 5 источников:&lt;/p>
+&lt;p>Команды : Список всех доступных команд.
+Функция : Список всех доступных функций.
+Классы : Список всех классов, созданных defclass. См . Классы построения .
+Общие функции : Список всех функций, созданных defmethod. См. Методы написания
+Переменные : список всех доступных переменных.
+Лица : список всех доступных лиц.
+Атрибуты Helm : список всех атрибутов, которые можно использовать для создания исходного кода Helm. Полезно, если вы хотите написать расширение с помощью Helm.
+Чтобы включить нечеткое сопоставление, добавьте этот параметр:&lt;/p>
+&lt;p>( setq helm-apropos-fuzzy-match t )
+Команда:helm-info-*
+Привязка ключей :&lt;/p>
+&lt;p>&amp;lt;prefix&amp;gt; h &amp;lt;key&amp;gt; (префикс Cx c по умолчанию или Cc h , если установлен); &amp;lt;key&amp;gt; по умолчанию является одним из g , i или r :&lt;/p>
+&lt;p>Ключ Связывание
+&amp;lt;префикс&amp;gt; хг Команда:helm-info-gnus
+&amp;lt;префикс&amp;gt; привет Команда:helm-info-at-point
+&amp;lt;префикс&amp;gt; час Команда:helm-info-emacs
+Описание :&lt;/p>
+&lt;p>Префикс для информационных команд — &amp;lt;prefix&amp;gt; h. Вы можете думать, h что это означает помощь , а &amp;lt;key&amp;gt; — это одна из информационных тем, чтобы ее было легче запомнить.&lt;/p>
+&lt;p>helmпредлагает широкий спектр информационных команд для различных тем. M-x helm infoчтобы увидеть эти команды, т.е. helm-info-as, helm-info-gdb… Вы можете легко искать информационные узлы с помощью интерфейса Helm и нажимать TAB на записи для просмотра. M-&amp;lt;next&amp;gt; переходит на следующую страницу, а M-&amp;lt;preor&amp;gt; переходит на предыдущую страницу в другом буфере.&lt;/p>
+&lt;p>У вас может быть больше helm-info-команд, например:&lt;/p>
+&lt;p>helm-info-gdb.
+helm-info-find.
+helm-info-elisp.
+….&lt;/p>
+&lt;p>Используйте M-x helm-infoдля просмотра списка helm-info-команд, использующих префикс info по умолчанию: &amp;lt;prefix&amp;gt; hили привязки клавиш по вашему выбору.&lt;/p>
+&lt;p>Команда:helm-lisp-completion-at-point
+Привязка ключей :&lt;/p>
+&lt;p>&amp;lt;prefix&amp;gt; &amp;lt;tab&amp;gt; (префикс Cx c по умолчанию или Cc h , если установлен).&lt;/p>
+&lt;p>Описание :&lt;/p>
+&lt;p>Если вы работаете с Emacs Lisp, эта команда предоставляет список доступных загруженных функций в Emacs. Чтобы получить список дополнений, сначала нужно написать префикс, пусть даже всего один символ. Затем выполните команду и получите список кандидатов на завершение. Чтобы включить нечеткое сопоставление, добавьте этот параметр:&lt;/p>
+&lt;p>( setq helm-lisp-fuzzy-completion t )
+Команда:helm-resume
+Привязка ключей :&lt;/p>
+&lt;p>&amp;lt;prefix&amp;gt; b (префикс Cx c по умолчанию или Cc h , если установлен).&lt;/p>
+&lt;p>Описание :&lt;/p>
+&lt;p>Эта команда позволяет вам возобновить предыдущий сеанс Helm вместе с вашими предыдущими шаблонами в приглашении. Например, если ваш последний сеанс helm был helm-ff-run-grepи вы ввели шаблоны в приглашении Helm, helm-resumeвозобновится этот сеанс вместе с вашим предыдущим вводом.&lt;/p>
+&lt;p>С аргументом префикса helm-resumeпозволяет выбирать среди всех существующих буферов Helm. helm-miniили helm-buffer-listне показывает существующие буферы Helm; они игнорируют его по умолчанию; но если вы запустите ibuffer, вы увидите список видимых там буферов Helm. Не убивайте их, иначе вы не сможете возобновить игру.&lt;/p>
+&lt;p>Это действительно удобно, когда у вас сложный ввод и этапы подготовки. Например, если в предыдущем сеансе Helm у вас было несколько шаблонов регулярных выражений, вам не нужно вводить их снова. Или в вашем предыдущем сеансе Helm вам нужно перейти в глубокий каталог, и helm-resumeэто поможет вам повторно использовать предыдущий сеанс, не повторяя все проблемы.&lt;/p>
+&lt;p>Команда:helm-all-mark-rings
+Привязка ключей :&lt;/p>
+&lt;p>&amp;lt;prefix&amp;gt; Cc SPC (префикс Cx c по умолчанию или Cc h , если установлен). Это довольно длинная последовательность клавиш, эта команда заслуживает лучшей привязки, например:&lt;/p>
+&lt;p>( global-set-key ( kbd &amp;ldquo;Ch SPC&amp;rdquo; ) &amp;lsquo;helm-all-mark-rings )
+Описание :&lt;/p>
+&lt;p>Одна удобная команда. Это позволяет вам просматривать содержимое как локальных, так и глобальных колец меток в удобном интерфейсе, поэтому вы всегда можете вернуться туда, где вы были. Без этой команды, если вы хотите просмотреть кольца меток, вы должны запустить M-: и ввести mark-ringили global-mark-ringдля просмотра их содержимого. И даже в этом случае Emacs отображает только голое содержимое списков mark-ringи , то есть номер строки и ее буфер, вот так:global-mark-ring&lt;/p>
+&lt;p>(#&amp;lt;marker at 23614 in helm.org&amp;gt; #&amp;lt;marker at 2343 in setup-helm.el&amp;gt; #&amp;lt;marker at 4280 in helm.org&amp;gt; #&amp;lt;marker in no buffer&amp;gt; #&amp;lt;marker at 1271 in helm.org&amp;gt; #&amp;lt;marker at 643 in emacs-tutor.org&amp;gt; #&amp;lt;marker in no buffer&amp;gt; #&amp;lt;marker at 1 in setup-applications.el&amp;gt; #&amp;lt;marker at 1 in emacs-tutor3.org&amp;gt;)&lt;/p>
+&lt;p>С helm-all-mark-rings, у вас есть этот приятный интерфейс с подсветкой строки и синтаксиса:&lt;/p>
+&lt;p>helm-all-mark-rings.gif&lt;/p>
+&lt;p>Команда:helm-regexp
+Привязка клавиш : &amp;lt;prefix&amp;gt; r (префикс Cx c по умолчанию или Cc h , если он установлен).&lt;/p>
+&lt;p>Описание :&lt;/p>
+&lt;p>Предварительно настроенный руль для создания регулярных выражений. Эта команда полезна, когда вы хотите протестировать регулярное выражение в интерактивном режиме. С Cz доступны следующие действия :&lt;/p>
+&lt;p>Ключ Действие
+[f1] Kill regexp as sexp
+Сохраняет регулярное выражение в виде строки вkill-ring
+[f2] Query Replace Regexp
+Вызов query-replaceс текущим регулярным выражением для замены
+[ф3] Kill regexp
+Сохраняет регулярное выражение как есть в текущей подсказке Helm.
+Демо :&lt;/p>
+&lt;p>helm-regexp.gif&lt;/p>
+&lt;p>Команда:helm-register
+Привязка ключей :&lt;/p>
+&lt;p>&amp;lt;prefix&amp;gt; Cx ri (префикс Cx c по умолчанию или Cc h , если установлен). Давайте свяжем его с чем-то другим:&lt;/p>
+&lt;p>( global-set-key ( kbd &amp;ldquo;Cc h x&amp;rdquo; ) &amp;lsquo;управляющий-регистр )
+Предварительно настроен для просмотра регистров Emacs. Просто выполнив helm-register, вы можете просмотреть, что находится в регистрах. RET или TAB вставляет содержимое выбранного регистра.&lt;/p>
+&lt;p>Ключ Действие
+[f1] Insert Register
+Вставить содержимое регистра в буфер
+[f2] Append Region to Register
+Добавить активную область к текущему содержимому
+в выбранном регистре
+[ф3] Prepend Region to Register
+Добавить активную область к текущему содержимому
+в выбранном регистре
+Демо :&lt;/p>
+&lt;p>helm-registers.gif&lt;/p>
+&lt;p>Команда:helm-top
+Привязка ключей :&lt;/p>
+&lt;p>&amp;lt;prefix&amp;gt; t (префикс Cx c по умолчанию или Cc h , если установлен).&lt;/p>
+&lt;p>Описание :&lt;/p>
+&lt;p>Эта команда предоставляет интерфейс Helm для topпрограммы. Вы можете взаимодействовать с каждым процессом с помощью следующих действий:&lt;/p>
+&lt;p>Ключ Связывание
+[f1] убить (SIGTERM)
+[f2] убить (SIGKILL)
+[ф3] убить (СИГИНТ)
+[f4] убить (выбрать сигнал)
+helm-topконкретные команды:&lt;/p>
+&lt;p>Ключ Связывание
+Копия Cu Обновитьhelm-top
+МС Сортировать по командам оболочки
+депутат Сортировать по загрузке ЦП
+МЮ Сортировать по пользователю
+мм Сортировать по памяти
+userи shell commandsотсортированы по алфавиту.&lt;/p>
+&lt;p>Демо :&lt;/p>
+&lt;p>helm-top.gif&lt;/p>
+&lt;p>Команда:helm-surfraw
+Привязка ключей :&lt;/p>
+&lt;p>&amp;lt;prefix&amp;gt; s (префикс Cx c по умолчанию или Cc h , если установлен).&lt;/p>
+&lt;p>Описание :&lt;/p>
+&lt;p>surfrawпредоставляет быстрый интерфейс командной строки UNIX для множества популярных поисковых систем WWW и других мощных артефактов. Он восстанавливает google, altavista, dejanews, freshmeat, research index, slashdot…&lt;/p>
+&lt;p>helm-surfrawпредоставляет интерфейс Helm для surfrawпрограммы, который прост в использовании. Все, что вам нужно сделать, это ввести поисковый запрос, а затем Helm предоставляет ряд сервисов, таких как Google, Stackoverflow… для использования.&lt;/p>
+&lt;p>Демо :&lt;/p>
+&lt;p>helm-surfraw.gif&lt;/p>
+&lt;p>Команда:helm-google-suggest
+Привязка ключей :&lt;/p>
+&lt;p>&amp;lt;префикс&amp;gt; Cc g (префикс Cx c по умолчанию или Cc h , если установлен). Давайте свяжем его с чем-то другим:&lt;/p>
+&lt;p>( global-set-key ( kbd &amp;ldquo;Cc h g&amp;rdquo; ) &amp;lsquo;helm-google-suggest )
+Описание :&lt;/p>
+&lt;p>Эта команда позволяет интерактивно вводить условия поиска и получать результаты от Google в буфере Helm. Затем вы можете открыть одного из кандидатов в других сервисах, таких как Google, Wikipedia, Youtube, Imbd, Google Maps, Google News. Если вы работаете в Windows, не печатайте слишком быстро, иначе вы получите ошибку, и вам придется отказаться от этого сеанса Helm.&lt;/p>
+&lt;p>Демо :&lt;/p>
+&lt;p>helm-google-suggest.gif&lt;/p>
+&lt;p>Команда:helm-color
+Привязка ключей :&lt;/p>
+&lt;p>&amp;lt;prefix&amp;gt; c (префикс Cx c по умолчанию или Cc h , если установлен).&lt;/p>
+&lt;p>Описание :&lt;/p>
+&lt;p>Если вы хотите быстро просматривать и копировать шестнадцатеричные значения цветов, helm-colorпредусмотрена такая функция. Но helm-colorэто не просто палитра цветов. Реальное использование helm-colorдля настройки лица: команда перечисляет ВСЕ доступные лица с предварительным просмотром каждого лица в той же строке. Это делает настройку темы очень быстрой, потому что вы можете быстро просмотреть лицо с его цветом. Благодаря тому, как работает Helm, вы можете смотреть на группу лиц вместе, чтобы получить общее представление о том, хорошо ли цвета сочетаются друг с другом.&lt;/p>
+&lt;p>helm-colorсодержит две группы, с действиями в каждой:&lt;/p>
+&lt;p>Цвета:
+Ключ Действие
+[f1] или Cc N Copy Name
+Скопируйте название цвета в kill-ring
+[f2] или Cc R Copy RGB
+Скопируйте шестнадцатеричное значение в kill-ring
+[f3] или Cc n Insert Name
+Вставить название цвета в текущий буфер
+[f4] или Cc r Insert RGB
+Вставить шестнадцатеричное значение в текущий буфер
+Настроить лицо:
+Ключ Действие
+[f1] Customize
+Открыть окно настройки
+[f2] Copy Name
+Копировать имя лица
+Демо :&lt;/p>
+&lt;p>helm-color.gif&lt;/p>
+&lt;p>Команда:helm-eval-expression-with-eldoc
+Привязка ключей :&lt;/p>
+&lt;p>&amp;lt;prefix&amp;gt; C-: (префикс Cx c по умолчанию или Cc h , если установлен). C-: немного сложно нажимать, было бы лучше с:&lt;/p>
+&lt;p>( global-set-key ( kbd &amp;ldquo;Cc h M-:&amp;rdquo; ) &amp;lsquo;helm-eval-expression-with-eldoc )
+Описание :&lt;/p>
+&lt;p>Эта команда позволяет вам вводить выражения Emacs Lisp и получать мгновенные результаты в буфере Helm для каждого введенного вами символа. Измененная привязка клавиш выше облегчает запоминание, поскольку запас eval-expressionпривязывается к M-: . Итак, с этого момента для оценки выражения без оперативного обновления используйте M-: , а с оперативным обновлением используйте Cc h M-: . Эта команда полезна, когда вы хотите опробовать команду с различными входными данными и хотите как можно быстрее увидеть результаты.&lt;/p>
+&lt;p>Демо :&lt;/p>
+&lt;p>helm-eval-expression.gif&lt;/p>
+&lt;p>Команда:helm-calcul-expression
+Привязка ключей :&lt;/p>
+&lt;p>&amp;lt;prefix&amp;gt; C-, (префикс Cx c по умолчанию или Cc h , если установлен).&lt;/p>
+&lt;p>Описание :&lt;/p>
+&lt;p>Эти команды предоставляют интерфейс Helm для calcкоманды. Что такое calc? Согласно Calc Manual :&lt;/p>
+&lt;p>Calc — это расширенный калькулятор и математический инструмент, работающий как часть среды GNU Emacs. Очень грубо основанный на калькуляторах серии HP-28/48, его многие функции включают в себя:&lt;/p>
+&lt;p>Выбор алгебраического или RPN (на основе стека) ввода вычислений.
+Целые числа произвольной точности и числа с плавающей запятой.
+Арифметика рациональных чисел, комплексных чисел (прямоугольных и полярных), форм ошибок со стандартными отклонениями, открытых и закрытых интервалов, векторов и матриц, дат и времени, бесконечностей, множеств, величин с единицами и алгебраических формул.
+Математические операции, такие как логарифмы и тригонометрические функции.
+Возможности программиста (побитовые операции, недесятичные числа).
+Финансовые функции, такие как будущая стоимость и внутренняя норма прибыли.
+Теоретико-числовые функции, такие как простая факторизация и арифметический модуль m для любого m.
+Особенности алгебраических манипуляций, включая символьное исчисление.
+Перемещение данных в обычные буферы редактирования и из них.
+Встроенный режим для работы с формулами и данными Calc непосредственно внутри любого буфера редактирования.
+Графика с использованием GNUPLOT, универсальной (и бесплатной) программы для построения графиков.
+Простое программирование с использованием макросов клавиатуры, алгебраических формул, алгебраических правил перезаписи или расширенного Emacs Lisp.
+Вы можете вводить допустимые calcматематические выражения, такие как +, -,*, /, sin, cos, tan, sqrt…. Чтобы извлечь максимальную пользу из этой команды, очевидно, вам следует внимательно изучить calcее, прочитав Руководство по Calc .&lt;/p>
+&lt;p>Демо :&lt;/p>
+&lt;p>helm-calc.gif&lt;/p>
+&lt;p>Команда:helm-eshell-history
+Привязка ключей :&lt;/p>
+&lt;p>Нет привязки к ключу. Давайте привяжем его к ключу, который будет использоваться в Eshell:&lt;/p>
+&lt;p>( требуется &amp;rsquo; helm-eshell )&lt;/p>
+&lt;p>( add-hook &amp;rsquo;eshell-mode-hook
+#&amp;rsquo; ( lambda ()
+( define-key eshell-mode-map ( kbd &amp;ldquo;Cc Cl&amp;rdquo; ) &amp;lsquo;helm-eshell-history ) ) ) )
+Описание :&lt;/p>
+&lt;p>Если вы обычно повторно выполняете старую команду оболочки в Eshell с помощью Mr , helm-eshell-historyэто обеспечивает простой и эффективный способ работы с историей команд. Используя стандартный Mr , вы должны активно помнить прошлые команды, с которыми вы работали; иначе Eshell не сможет найти команду. Если вы забудете, вам придется ввести команду history , чтобы освежить память. helm-eshell-historyсочетает в себе два: вы можете интерактивно использовать регулярное выражение для выбора прошлых команд и получать живую обратную связь со списком команд, которые удовлетворяют поиску. Теперь вам не нужно запоминать, какие команды существуют. Позвольте Helm решить эту проблему за вас.&lt;/p>
+&lt;p>Демо :&lt;/p>
+&lt;p>helm-eshell-history.gif&lt;/p>
+&lt;p>Команда:helm-comint-input-ring
+Аналогично helm-eshell-history, но используется для M-x shell.&lt;/p>
+&lt;p>( определить-ключ-ключ-режим-карта ( kbd &amp;ldquo;Cc Cl&amp;rdquo; ) &amp;lsquo;кольцо-ввода-шлема-коминта )
+Команда:helm-mini-buffer-history
+Вы когда-нибудь чувствовали себя неловко, работая с историей минибуфера, когда она становится большой (скажем, сотни элементов истории)? Если это так, Helm может помочь вам легко управлять большим количеством элементов в списке истории с помощью интерфейса Helm.&lt;/p>
+&lt;p>( определить-ключ минибуфер-локальная-карта ( kbd &amp;ldquo;Cc Cl&amp;rdquo; ) &amp;lsquo;хелм-минибуфер-история )
+Упаковка:helm-projectile
+Автор : Божидар Бацов ,bozhidar@batsov.com&lt;/p>
+&lt;p>Домашняя страница : GitHub&lt;/p>
+&lt;p>Особенности :&lt;/p>
+&lt;p>Предоставьте интерфейс Helm для быстрого выбора файлов в проекте с помощью Projectile.&lt;/p>
+&lt;p>helm_projectile.gif&lt;/p>
+&lt;p>Установка :&lt;/p>
+&lt;p>M-x list-packagesи выберите пакет helm-projectile , затем установите его. После завершения установки вы можете helm-projectile сразу начать использовать.&lt;/p>
+&lt;p>Использование :&lt;/p>
+&lt;p>Для базового использования Cc ph для запуска helm-projectileи выбора файлов в вашем проекте. Пожалуйста, обратитесь к полному руководству .&lt;/p>
+&lt;p>Упаковка:helm-descbinds
+Автор&lt;/p>
+&lt;p>2008-2010: Тайки СУГАВАРА,buzz.taiki@gmail.com
+2012-2013 Майкл Маркерт,markert.michael@googlemail.com
+2013-настоящее время: Дэниел Хакниdan@haxney.org
+Домашняя страница : GitHub&lt;/p>
+&lt;p>Особенности : Helm Descbinds предоставляет интерфейс для Emacs describe-bindings, делая активные в данный момент привязки клавиш интерактивными для поиска с помощью helm.&lt;/p>
+&lt;p>Кроме того, у вас есть следующие действия&lt;/p>
+&lt;p>Выполните команду
+Опишите команду
+Найдите команду
+Установка :&lt;/p>
+&lt;p>M-x list-packagesи выберите пакет helm-descbinds , затем установите его. После завершения установки добавьте этот фрагмент кода, чтобы активировать пакет:&lt;/p>
+&lt;p>;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ПАКЕТ: руль-дескбиндс ;;
+;; ;;
+;; ГРУППА: Удобство -&amp;gt; Руль -&amp;gt; Руль Дескбиндс ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+( требуется &amp;rsquo; helm-descbinds )
+( режим helm-descbinds )
+Использование :&lt;/p>
+&lt;p>Введите ключ префикса и Ch после него. Вы увидите список привязок, использующих интерфейс Helm для сужения.&lt;/p>
+&lt;h2 id="сводка-сочетаний-клавиш">&lt;span class="section-num">8&lt;/span> Сводка сочетаний клавиш&lt;/h2>
+&lt;ul>
+&lt;li>Обобщим привязки клавиш.&lt;/li>
+&lt;/ul>
+&lt;div class="table-caption">
+&lt;span class="table-number">&amp;#1058;&amp;#1072;&amp;#1073;&amp;#1083;&amp;#1080;&amp;#1094;&amp;#1072; 1:&lt;/span>
+Сводка сочетаний клавиш Helm
+&lt;/div>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Комбинация клавиш&lt;/th>
+&lt;th>Команда&lt;/th>
+&lt;th>Описание&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>M-x&lt;/code>&lt;/td>
+&lt;td>&lt;code>helm-M-x&lt;/code>&lt;/td>
+&lt;td>Список команд&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>M-y&lt;/code>&lt;/td>
+&lt;td>&lt;code>helm-show-kill-ring&lt;/code>&lt;/td>
+&lt;td>Показывает содержимое списка буфера обмена&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>C-x b&lt;/code>&lt;/td>
+&lt;td>&lt;code>helm-mini&lt;/code>&lt;/td>
+&lt;td>Показывает открытые буферы, недавно открытые файлы&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>C-x C-f&lt;/code>&lt;/td>
+&lt;td>&lt;code>helm-find-files&lt;/code>&lt;/td>
+&lt;td>Helm-версия &lt;code>find-file&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>C-s&lt;/code>&lt;/td>
+&lt;td>&lt;code>helm-ff-run-grep&lt;/code>&lt;/td>
+&lt;td>Запустите &lt;code>grep&lt;/code> из &lt;code>helm-find-files&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>C-c h i&lt;/code>&lt;/td>
+&lt;td>&lt;code>helm-semantic-or-imenu&lt;/code>&lt;/td>
+&lt;td>Интерфейс Helm для семантики/именю&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>C-c h m&lt;/code>&lt;/td>
+&lt;td>&lt;code>helm-man-woman&lt;/code>&lt;/td>
+&lt;td>Перейти к любой мужской записи&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>C-c h /&lt;/code>&lt;/td>
+&lt;td>&lt;code>helm-find&lt;/code>&lt;/td>
+&lt;td>Интерфейс Helm для поиска&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>C-c h l&lt;/code>&lt;/td>
+&lt;td>&lt;code>helm-locate&lt;/code>&lt;/td>
+&lt;td>Интерфейс Helm для поиска&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>C-c h o&lt;/code>&lt;/td>
+&lt;td>&lt;code>helm-occur&lt;/code>&lt;/td>
+&lt;td>Интерфейс Helm для события&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>C-c h a&lt;/code>&lt;/td>
+&lt;td>&lt;code>helm-apropos&lt;/code>&lt;/td>
+&lt;td>Описывает команды, функции, переменные, …&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>C-c h h g&lt;/code>&lt;/td>
+&lt;td>&lt;code>helm-info-gnus&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>C-c h h i&lt;/code>&lt;/td>
+&lt;td>&lt;code>helm-info-at-point&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>C-c h h r&lt;/code>&lt;/td>
+&lt;td>&lt;code>helm-info-emacs&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>C-c h &amp;lt;tab&amp;gt;&lt;/code>&lt;/td>
+&lt;td>&lt;code>helm-lisp-completion-at-point&lt;/code>&lt;/td>
+&lt;td>Предоставляет список доступных функций&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>C-c h b&lt;/code>&lt;/td>
+&lt;td>&lt;code>helm-resume&lt;/code>&lt;/td>
+&lt;td>Возобновляет предыдущий сеанс управления&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>C-h SPC&lt;/code>&lt;/td>
+&lt;td>&lt;code>helm-all-mark-rings&lt;/code>&lt;/td>
+&lt;td>Просмотр содержимого локальных и глобальных колец меток&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>C-c h r&lt;/code>&lt;/td>
+&lt;td>&lt;code>helm-regex&lt;/code>&lt;/td>
+&lt;td>Визуализирует совпадения регулярных выражений&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>C-c h x&lt;/code>&lt;/td>
+&lt;td>&lt;code>helm-register&lt;/code>&lt;/td>
+&lt;td>Показывает содержимое регистров&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>C-c h t&lt;/code>&lt;/td>
+&lt;td>&lt;code>helm-top&lt;/code>&lt;/td>
+&lt;td>Интерфейс Helm наверх&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>C-c h s&lt;/code>&lt;/td>
+&lt;td>&lt;code>helm-surfraw&lt;/code>&lt;/td>
+&lt;td>Интерфейс командной строки для многих поисковых систем&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>C-c h g&lt;/code>&lt;/td>
+&lt;td>&lt;code>helm-google-suggest&lt;/code>&lt;/td>
+&lt;td>Интерактивно вводите условия поиска и получайте результаты от Google в буфере управления&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>C-c h c&lt;/code>&lt;/td>
+&lt;td>&lt;code>helm-color&lt;/code>&lt;/td>
+&lt;td>Список всех доступных лиц&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>C-c h M-:&lt;/code>&lt;/td>
+&lt;td>&lt;code>helm-eval-expression-with-eldoc&lt;/code>&lt;/td>
+&lt;td>Получите мгновенные результаты для выражений Emacs lisp в буфере управления&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>C-c h C-,&lt;/code>&lt;/td>
+&lt;td>&lt;code>helm-calcul-expression&lt;/code>&lt;/td>
+&lt;td>Интерфейс Helm для расчета&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>C-c C-l&lt;/code>&lt;/td>
+&lt;td>&lt;code>helm-eshell-history&lt;/code>&lt;/td>
+&lt;td>Интерфейс к истории &lt;code>eshell&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>C-c C-l&lt;/code>&lt;/td>
+&lt;td>&lt;code>helm-comint-input-ring&lt;/code>&lt;/td>
+&lt;td>Интерфейс к истории оболочки&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>C-c C-l&lt;/code>&lt;/td>
+&lt;td>&lt;code>helm-mini-buffer-history&lt;/code>&lt;/td>
+&lt;td>Интерфейс к истории мини-буфера&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table></description></item><item><title>Org-mode. Поддержка LaTeX</title><link>https://yamadharma.github.io/ru/post/2022/11/27/org-mode-latex-support/</link><pubDate>Sun, 27 Nov 2022 19:14:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/11/27/org-mode-latex-support/</guid><description>&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#форматирование-уравнений">&lt;span class="section-num">2&lt;/span> Форматирование уравнений&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;h2 id="форматирование-уравнений">&lt;span class="section-num">2&lt;/span> Форматирование уравнений&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/11/27/org-mode-latex-equation-numbering/">Org-mode. Нумерация уравнений LaTeX&lt;/a>&lt;/li>
 &lt;/ul></description></item><item><title>Org-roam</title><link>https://yamadharma.github.io/ru/post/2022/11/23/org-roam/</link><pubDate>Wed, 23 Nov 2022 19:43:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/11/23/org-roam/</guid><description>&lt;p>Emacs-пакет org-roam.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
@@ -423,6 +1215,88 @@ ef-themes-variable-pitch-ui t)
 &lt;h2 id="ресурсы">&lt;span class="section-num">4&lt;/span> Ресурсы&lt;/h2>
 &lt;ul>
 &lt;li>Awesome org-roam: &lt;a href="https://github.com/kot-behemoth/awesome-org-roam" target="_blank" rel="noopener">https://github.com/kot-behemoth/awesome-org-roam&lt;/a>.&lt;/li>
+&lt;/ul></description></item><item><title>Emacs. Plantuml</title><link>https://yamadharma.github.io/ru/post/2022/10/20/emacs-plantuml/</link><pubDate>Thu, 20 Oct 2022 13:07:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/10/20/emacs-plantuml/</guid><description>&lt;p>Поддержка Plantuml (см. &lt;a href="https://yamadharma.github.io/ru/post/2022/02/01/diagrams-plantuml/">Диаграммы. PlantUML&lt;/a>) в Emacs.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#поддержка-кодового-блока-babel">&lt;span class="section-num">1&lt;/span> Поддержка кодового блока Babel&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#поддержка-редактирования-кода-plantuml">&lt;span class="section-num">2&lt;/span> Поддержка редактирования кода Plantuml&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#режимы-выполнения">&lt;span class="section-num">2.1&lt;/span> Режимы выполнения&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#настройка">&lt;span class="section-num">2.2&lt;/span> Настройка&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#комбинации-клавиш">&lt;span class="section-num">2.3&lt;/span> Комбинации клавиш&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="поддержка-кодового-блока-babel">&lt;span class="section-num">1&lt;/span> Поддержка кодового блока Babel&lt;/h2>
+&lt;ul>
+&lt;li>Пакет &lt;code>ob-plantuml.el&lt;/code> входит в поставку &lt;em>org-mode&lt;/em>.&lt;/li>
+&lt;li>Подключение пакета:
+&lt;pre>&lt;code class="language-emacs-lisp">(require 'ob-plantuml)
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>Нужно установить вариант запуска plantuml, например:
+&lt;pre>&lt;code class="language-emacs-lisp">(setq org-plantuml-exec-mode 'plantuml)
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>Варианты следующие:
+&lt;ul>
+&lt;li>&lt;code>jar&lt;/code> : использование jar-архива (установка по умолчанию).
+&lt;ul>
+&lt;li>Необходимо ещё установить расположение этого файла в переменной &lt;code>org-plantuml-jar-path&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;code>plantuml&lt;/code> : использование исполняемого файла (по умолчанию &lt;code>plantuml&lt;/code>).
+&lt;ul>
+&lt;li>Исполняемый файл задаётся переменной &lt;code>org-plantuml-executable-path&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="поддержка-редактирования-кода-plantuml">&lt;span class="section-num">2&lt;/span> Поддержка редактирования кода Plantuml&lt;/h2>
+&lt;ul>
+&lt;li>Пакет &lt;code>plantuml-mode&lt;/code>.&lt;/li>
+&lt;li>Репозиторий: &lt;a href="https://github.com/skuro/plantuml-mode" target="_blank" rel="noopener">https://github.com/skuro/plantuml-mode&lt;/a>.&lt;/li>
+&lt;/ul>
+&lt;h3 id="режимы-выполнения">&lt;span class="section-num">2.1&lt;/span> Режимы выполнения&lt;/h3>
+&lt;ul>
+&lt;li>&lt;code>jar&lt;/code> : (режим по умолчанию) запуск PlantUML с помощью локального jar-файла.&lt;/li>
+&lt;li>&lt;code>server&lt;/code> : использует &lt;code>plantuml-server&lt;/code> для отображения предварительного просмотра.&lt;/li>
+&lt;li>&lt;code>executable&lt;/code> : запуск PlantUML как локального исполняемого файла.&lt;/li>
+&lt;/ul>
+&lt;h3 id="настройка">&lt;span class="section-num">2.2&lt;/span> Настройка&lt;/h3>
+&lt;ul>
+&lt;li>Пример настройки:
+&lt;ul>
+&lt;li>режим &lt;code>jar&lt;/code>:
+&lt;pre>&lt;code class="language-emacs-lisp">;; Sample jar configuration
+(setq plantuml-jar-path &amp;quot;/path/to/your/copy/of/plantuml.jar&amp;quot;)
+(setq plantuml-default-exec-mode 'jar)
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>режим &lt;code>executable&lt;/code>:
+&lt;pre>&lt;code class="language-emacs-lisp">;; Sample executable configuration
+(setq plantuml-executable-path &amp;quot;/path/to/your/copy/of/plantuml.bin&amp;quot;)
+(setq plantuml-default-exec-mode 'executable)
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Можно включить &lt;code>plantuml-mode&lt;/code> для файлов с расширением &lt;code>plantuml&lt;/code>:
+&lt;pre>&lt;code class="language-emacs-lisp">;; Enable plantuml-mode for PlantUML files
+(add-to-list 'auto-mode-alist '(&amp;quot;\\.plantuml\\'&amp;quot; . plantuml-mode))
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="комбинации-клавиш">&lt;span class="section-num">2.3&lt;/span> Комбинации клавиш&lt;/h3>
+&lt;ul>
+&lt;li>&lt;code>C-c C-c&lt;/code> : предварительный просмотр диаграмм с помощью (&lt;code>plantuml-preview&lt;/code>).&lt;/li>
+&lt;li>&lt;code>C-u C-c C-c&lt;/code> : предварительный просмотр в другом окне.&lt;/li>
+&lt;li>&lt;code>C-u C-u C-c C-c&lt;/code> : предварительный просмотр в другом фрейме.&lt;/li>
 &lt;/ul></description></item><item><title>Emacs. Org Babel</title><link>https://yamadharma.github.io/ru/post/2022/10/15/emacs-org-babel/</link><pubDate>Sat, 15 Oct 2022 21:21:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/10/15/emacs-org-babel/</guid><description>&lt;p>Org Babel.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
@@ -2020,15 +2894,13 @@ org-msg-startup &amp;quot;hidestars indent inlineimages&amp;quot;)
 &lt;/ul>
 &lt;h3 id="настройка">&lt;span class="section-num">1.3&lt;/span> Настройка&lt;/h3>
 &lt;ul>
-&lt;li>
-&lt;p>Пакет модифицирует настройки &lt;em>outline-mode&lt;/em>:&lt;/p>
+&lt;li>Пакет модифицирует настройки &lt;em>outline-mode&lt;/em>:
 &lt;pre>&lt;code class="language-emacs-lisp">(require 'bicycle)
 (define-key outline-minor-mode-map (kbd &amp;quot;&amp;lt;C-tab&amp;gt;&amp;quot;) #'bicycle-cycle)
 (define-key outline-minor-mode-map (kbd &amp;quot;&amp;lt;S-tab&amp;gt;&amp;quot;) #'bicycle-cycle-global)
 &lt;/code>&lt;/pre>
 &lt;/li>
-&lt;li>
-&lt;p>Его можно активировать для разных старших мод:&lt;/p>
+&lt;li>Его можно активировать для разных старших мод:
 &lt;pre>&lt;code class="language-emacs-lisp">(add-hook 'prog-mode-hook #'outline-minor-mode)
 (add-hook 'markdown-mode-hook #'outline-minor-mode)
 (add-hook 'TeX-mode-hook #'outline-minor-mode)
@@ -2117,26 +2989,19 @@ org-msg-startup &amp;quot;hidestars indent inlineimages&amp;quot;)
 &lt;h2 id="внешний-вид">&lt;span class="section-num">1&lt;/span> Внешний вид&lt;/h2>
 &lt;h3 id="изображения">&lt;span class="section-num">1.1&lt;/span> Изображения&lt;/h3>
 &lt;ul>
-&lt;li>
-&lt;p>Изображение можно вставлять просто в виде имени файла:&lt;/p>
+&lt;li>Изображение можно вставлять просто в виде имени файла:
 &lt;pre>&lt;code class="language-org">./img/cat.jpg
 &lt;/code>&lt;/pre>
 &lt;/li>
-&lt;li>
-&lt;p>Можно задать заголовок и метку для изображения. Тогда изображение вставляется в виде ссылки.&lt;/p>
+&lt;li>Можно задать заголовок и метку для изображения. Тогда изображение вставляется в виде ссылки.
 &lt;pre>&lt;code class="language-org">#+CAPTION: Заголовок изображения
 #+NAME: fig:image-a
 [[./img/a.jpg]]
 &lt;/code>&lt;/pre>
 &lt;/li>
-&lt;li>
-&lt;p>Такие изображения можно отобразить в буфере с помощью команды: &lt;code>C-c C-x C-v&lt;/code> (&lt;code>org-toggle-inline-images&lt;/code>).&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>При вызове с префиксом также отображать изображения, у которых есть заголовок: &lt;code>C-u C-c C-x C-v&lt;/code>.&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>Можно активировать отображение встроенных изображений при запуске:&lt;/p>
+&lt;li>Такие изображения можно отобразить в буфере с помощью команды: &lt;code>C-c C-x C-v&lt;/code> (&lt;code>org-toggle-inline-images&lt;/code>).&lt;/li>
+&lt;li>При вызове с префиксом также отображать изображения, у которых есть заголовок: &lt;code>C-u C-c C-x C-v&lt;/code>.&lt;/li>
+&lt;li>Можно активировать отображение встроенных изображений при запуске:
 &lt;ul>
 &lt;li>настроив переменную &lt;code>org-startup-with-inline-images&lt;/code>;&lt;/li>
 &lt;li>установив в буфере параметр &lt;code>STARTUP&lt;/code> в &lt;code>inlineimages&lt;/code> (или &lt;code>noinlineimages&lt;/code>).&lt;/li>
@@ -2298,6 +3163,11 @@ org-msg-startup &amp;quot;hidestars indent inlineimages&amp;quot;)
 &lt;/nav>
 &lt;/details>
 &lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>Сайт: &lt;a href="https://joostkremers.github.io/ebib/" target="_blank" rel="noopener">https://joostkremers.github.io/ebib/&lt;/a>&lt;/li>
+&lt;li>Репозиторий: &lt;a href="https://github.com/joostkremers/ebib" target="_blank" rel="noopener">https://github.com/joostkremers/ebib&lt;/a>&lt;/li>
+&lt;li>Документация: &lt;a href="https://joostkremers.github.io/ebib/ebib-manual.html" target="_blank" rel="noopener">https://joostkremers.github.io/ebib/ebib-manual.html&lt;/a>&lt;/li>
+&lt;/ul>
 &lt;h2 id="организация-библиографической-информации">&lt;span class="section-num">2&lt;/span> Организация библиографической информации&lt;/h2>
 &lt;h2 id="управление-списками-чтения">&lt;span class="section-num">3&lt;/span> Управление списками чтения&lt;/h2>
 &lt;h3 id="общая-информация">&lt;span class="section-num">3.1&lt;/span> Общая информация&lt;/h3>
@@ -2357,8 +3227,7 @@ org-msg-startup &amp;quot;hidestars indent inlineimages&amp;quot;)
 &lt;/ul>
 &lt;h4 id="пример-шаблона-захвата">&lt;span class="section-num">3.3.2&lt;/span> Пример шаблона захвата&lt;/h4>
 &lt;ul>
-&lt;li>
-&lt;p>Шаблон по умолчанию имеет вид:&lt;/p>
+&lt;li>Шаблон по умолчанию имеет вид:
 &lt;pre>&lt;code class="language-elisp">(setq ebib-reading-list-template &amp;quot;* %M %T\n:PROPERTIES:\n%K\n:END:\n%F\n&amp;quot;)
 &lt;/code>&lt;/pre>
 &lt;/li>
@@ -2577,7 +3446,7 @@ org-msg-startup &amp;quot;hidestars indent inlineimages&amp;quot;)
 &lt;li>&lt;a href="#прокрутка-календаря">&lt;span class="section-num">3.2&lt;/span> Прокрутка календаря&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#подсчёт-дней">&lt;span class="section-num">3.3&lt;/span> Подсчёт дней&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#другие-команды-календаря">&lt;span class="section-num">3.4&lt;/span> Другие команды календаря&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#latex--и-календарь">&lt;span class="section-num">3.5&lt;/span> \(\LaTeX\) и календарь&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#latex-и-календарь">&lt;span class="section-num">3.5&lt;/span> \(\LaTeX\) и календарь&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#праздники">&lt;span class="section-num">3.6&lt;/span> Праздники&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#время-восхода-и-заката-солнца">&lt;span class="section-num">3.7&lt;/span> Время восхода и заката Солнца&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#фазы-луны">&lt;span class="section-num">3.8&lt;/span> Фазы Луны&lt;/a>&lt;/li>
@@ -2595,8 +3464,7 @@ org-msg-startup &amp;quot;hidestars indent inlineimages&amp;quot;)
 &lt;/details>
 &lt;h2 id="настройка">&lt;span class="section-num">1&lt;/span> Настройка&lt;/h2>
 &lt;ul>
-&lt;li>
-&lt;p>Локализация для русского языка:&lt;/p>
+&lt;li>Локализация для русского языка:
 &lt;pre>&lt;code class="language-elisp">(setq calendar-week-start-day 1
 calendar-day-name-array [&amp;quot;Воскресенье&amp;quot; &amp;quot;Понедельник&amp;quot; &amp;quot;Вторник&amp;quot; &amp;quot;Среда&amp;quot; &amp;quot;Четверг&amp;quot; &amp;quot;Пятница&amp;quot; &amp;quot;Суббота&amp;quot;]
 calendar-day-header-array [&amp;quot;Вс&amp;quot; &amp;quot;Пн&amp;quot; &amp;quot;Вт&amp;quot; &amp;quot;Ср&amp;quot; &amp;quot;Чт&amp;quot; &amp;quot;Пт&amp;quot; &amp;quot;Сб&amp;quot;]
@@ -2684,7 +3552,7 @@ calendar-month-abbrev-array [&amp;quot;Янв&amp;quot; &amp;quot;Фев&amp;quo
 &lt;li>&lt;code>SPC&lt;/code> прокручивает следующее окно (&lt;code>scroll-other-window&lt;/code>).&lt;/li>
 &lt;li>&lt;code>q&lt;/code> выходит из календаря (&lt;code>exit-calendar&lt;/code>).&lt;/li>
 &lt;/ul>
-&lt;h3 id="latex--и-календарь">&lt;span class="section-num">3.5&lt;/span> \(\LaTeX\) и календарь&lt;/h3>
+&lt;h3 id="latex-и-календарь">&lt;span class="section-num">3.5&lt;/span> \(\LaTeX\) и календарь&lt;/h3>
 &lt;ul>
 &lt;li>Команды календаря для работы с \(\LaTeX\) генерируют буфер с \(\LaTeX\)-кодом, который печатает календарь.
 &lt;ul>
@@ -2729,8 +3597,7 @@ calendar-month-abbrev-array [&amp;quot;Янв&amp;quot; &amp;quot;Фев&amp;quo
 &lt;/ul>
 &lt;h3 id="время-восхода-и-заката-солнца">&lt;span class="section-num">3.7&lt;/span> Время восхода и заката Солнца&lt;/h3>
 &lt;ul>
-&lt;li>
-&lt;p>Команды календаря могут сообщить вам с точностью до минуты-двух времена восхода и заката Солнца для любой даты.&lt;/p>
+&lt;li>Команды календаря могут сообщить вам с точностью до минуты-двух времена восхода и заката Солнца для любой даты.
 &lt;ul>
 &lt;li>&lt;code>S&lt;/code> показывает времена восхода и заката Солнца для выбранной даты (&lt;code>calendar-sunrise-sunset&lt;/code>).&lt;/li>
 &lt;li>&lt;code>Mouse-2 Sunrise/Sunset&lt;/code> показывает времена восхода и заката Солнца для даты, на которой вы щёлкнули.&lt;/li>
@@ -2743,35 +3610,24 @@ calendar-month-abbrev-array [&amp;quot;Янв&amp;quot; &amp;quot;Фев&amp;quo
 &lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;li>
-&lt;p>Поскольку время восхода и заката Солнца зависит от положения на Земле, перед использованием этих команд необходимо указать Emacs широту, долготу и название местности. Вот пример задаваемых значений:&lt;/p>
+&lt;li>Поскольку время восхода и заката Солнца зависит от положения на Земле, перед использованием этих команд необходимо указать Emacs широту, долготу и название местности. Вот пример задаваемых значений:
 &lt;pre>&lt;code class="language-elisp">(setq calendar-latitude 40.1)
 (setq calendar-longitude -88.2)
 (setq calendar-location-name &amp;quot;Urbana, IL&amp;quot;)
 &lt;/code>&lt;/pre>
 &lt;/li>
-&lt;li>
-&lt;p>Задавайте значения &lt;code>calendar-latitude&lt;/code> и &lt;code>calendar-longitude&lt;/code> с точностью до одной десятой.&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>Часовой пояс также влияет на время восхода и заката.&lt;/p>
+&lt;li>Задавайте значения &lt;code>calendar-latitude&lt;/code> и &lt;code>calendar-longitude&lt;/code> с точностью до одной десятой.&lt;/li>
+&lt;li>Часовой пояс также влияет на время восхода и заката.
 &lt;ul>
-&lt;li>
-&lt;p>Обычно Emacs получает информацию о часовом поясе от операционной системы.&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>Можно установить их самим:&lt;/p>
+&lt;li>Обычно Emacs получает информацию о часовом поясе от операционной системы.&lt;/li>
+&lt;li>Можно установить их самим:
 &lt;pre>&lt;code class="language-elisp">(setq calendar-time-zone -360)
 (setq calendar-standard-time-zone-name &amp;quot;CST&amp;quot;)
 (setq calendar-daylight-time-zone-name &amp;quot;CDT&amp;quot;)
 &lt;/code>&lt;/pre>
 &lt;/li>
-&lt;li>
-&lt;p>Значение &lt;code>calendar-time-zone&lt;/code> &amp;mdash; это разница между местным стандартным и универсальным координированным (гринвичским) временем, выраженная в минутах.&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>Значения &lt;code>calendar-standard-time-zone-name&lt;/code> и &lt;code>calendar-daylight-time-zone-name&lt;/code> &amp;mdash; это сокращения, принятые для обозначения вашего часового пояса.&lt;/p>
-&lt;/li>
+&lt;li>Значение &lt;code>calendar-time-zone&lt;/code> &amp;mdash; это разница между местным стандартным и универсальным координированным (гринвичским) временем, выраженная в минутах.&lt;/li>
+&lt;li>Значения &lt;code>calendar-standard-time-zone-name&lt;/code> и &lt;code>calendar-daylight-time-zone-name&lt;/code> &amp;mdash; это сокращения, принятые для обозначения вашего часового пояса.&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
@@ -2918,6 +3774,7 @@ calendar-month-abbrev-array [&amp;quot;Янв&amp;quot; &amp;quot;Фев&amp;quo
 &lt;li>&lt;code>@self_management&lt;/code>: Информация по самоорганизации, управлением временем, организации дел.
 &lt;ul>
 &lt;li>&lt;code>gtd&lt;/code>: &lt;a href="https://yamadharma.github.io/ru/post/2021/07/12/gtd-method/">Метод GTD&lt;/a>&lt;/li>
+&lt;li>&lt;code>zettelkasten&lt;/code>: &lt;a href="https://yamadharma.github.io/ru/post/2021/02/18/zettelkasten-method/">Метод Zettelkasten&lt;/a>&lt;/li>
 &lt;li>&lt;code>blog&lt;/code>: &lt;a href="https://yamadharma.github.io/ru/post/2023/03/17/blogging/">Ведение блога&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
@@ -2927,6 +3784,7 @@ calendar-month-abbrev-array [&amp;quot;Янв&amp;quot; &amp;quot;Фев&amp;quo
 &lt;li>&lt;code>culture&lt;/code>&lt;sup id="fnref:3">&lt;a href="#fn:3" class="footnote-ref" role="doc-noteref">3&lt;/a>&lt;/sup>: &lt;a href="https://yamadharma.github.io/ru/post/2021/01/10/books-culture/">Книги. Культура&lt;/a>&lt;/li>
 &lt;li>&lt;code>science_philosophy&lt;/code>: &lt;a href="https://yamadharma.github.io/ru/post/2021/01/06/books-science-philosophy/">Книги. Философия науки&lt;/a>&lt;/li>
 &lt;li>&lt;code>history&lt;/code>: &lt;a href="https://yamadharma.github.io/ru/post/2023/05/06/books-history/">Книги. История&lt;/a>&lt;/li>
+&lt;li>&lt;code>physics&lt;/code>: &lt;a href="https://yamadharma.github.io/ru/post/2023/07/01/books-physics/">Книги. Физика&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>&lt;code>@life&lt;/code>: &lt;a href="https://yamadharma.github.io/ru/post/2021/11/26/life/">Жизнь&lt;/a>
@@ -3143,25 +4001,25 @@ calendar-month-abbrev-array [&amp;quot;Янв&amp;quot; &amp;quot;Фев&amp;quo
 &lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#конфигурация-emacs">&lt;span class="section-num">2&lt;/span> Конфигурация Emacs&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#типы-операций-выполняемые-в-emacs">&lt;span class="section-num">3&lt;/span> Типы операций, выполняемые в Emacs&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#разное">&lt;span class="section-num">4&lt;/span> Разное&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#настройка">&lt;span class="section-num">5&lt;/span> Настройка&lt;/a>
+&lt;li>&lt;a href="#настройка">&lt;span class="section-num">4&lt;/span> Настройка&lt;/a>
 &lt;ul>
-&lt;li>&lt;a href="#поддержка-языков-программирования">&lt;span class="section-num">5.1&lt;/span> Поддержка языков программирования&lt;/a>
+&lt;li>&lt;a href="#поддержка-языков-программирования">&lt;span class="section-num">4.1&lt;/span> Поддержка языков программирования&lt;/a>
 &lt;ul>
-&lt;li>&lt;a href="#julia">&lt;span class="section-num">5.1.1&lt;/span> Julia&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#julia">&lt;span class="section-num">4.1.1&lt;/span> Julia&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;li>&lt;a href="#языки-разметки">&lt;span class="section-num">5.2&lt;/span> Языки разметки&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#работа-с-текстом">&lt;span class="section-num">5.3&lt;/span> Работа с текстом&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#внешний-вид">&lt;span class="section-num">5.4&lt;/span> Внешний вид&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#языки-разметки">&lt;span class="section-num">4.2&lt;/span> Языки разметки&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#работа-с-текстом">&lt;span class="section-num">4.3&lt;/span> Работа с текстом&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#внешний-вид">&lt;span class="section-num">4.4&lt;/span> Внешний вид&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;li>&lt;a href="#пакеты">&lt;span class="section-num">6&lt;/span> Пакеты&lt;/a>
+&lt;li>&lt;a href="#пакеты">&lt;span class="section-num">5&lt;/span> Пакеты&lt;/a>
 &lt;ul>
-&lt;li>&lt;a href="#поддержка-языков-программирования">&lt;span class="section-num">6.1&lt;/span> Поддержка языков программирования&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#поддержка-языков-программирования">&lt;span class="section-num">5.1&lt;/span> Поддержка языков программирования&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;li>&lt;a href="#фреймворки">&lt;span class="section-num">7&lt;/span> Фреймворки&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#фреймворки">&lt;span class="section-num">6&lt;/span> Фреймворки&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#разное">&lt;span class="section-num">7&lt;/span> Разное&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/nav>
 &lt;/details>
@@ -3175,7 +4033,46 @@ calendar-month-abbrev-array [&amp;quot;Янв&amp;quot; &amp;quot;Фев&amp;quo
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/10/03/emacs-directory-browsing/">Emacs. Просмотр каталогов&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;h2 id="разное">&lt;span class="section-num">4&lt;/span> Разное&lt;/h2>
+&lt;h2 id="настройка">&lt;span class="section-num">4&lt;/span> Настройка&lt;/h2>
+&lt;ul>
+&lt;li>Работа с почтой (см. &lt;a href="https://yamadharma.github.io/ru/post/2020/12/23/emacs-mail/">Emacs. Почта&lt;/a>)&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/06/15/emacs-calendar/">Emacs. Календарь&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/09/11/emacs-contacts/">Emacs. Контакты&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/10/19/emacs-bibliography/">Emacs. Работа с библиографией&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/11/23/org-roam/">Org-roam&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="поддержка-языков-программирования">&lt;span class="section-num">4.1&lt;/span> Поддержка языков программирования&lt;/h3>
+&lt;h4 id="julia">&lt;span class="section-num">4.1.1&lt;/span> Julia&lt;/h4>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/01/21/emacs-julia/">Emacs. Julia&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="языки-разметки">&lt;span class="section-num">4.2&lt;/span> Языки разметки&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/10/14/org-mode/">Org-mode&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="работа-с-текстом">&lt;span class="section-num">4.3&lt;/span> Работа с текстом&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/08/01/emacs-spellchecking/">Emacs. Проверка правописания&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="внешний-вид">&lt;span class="section-num">4.4&lt;/span> Внешний вид&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/02/15/emacs-themes/">Emacs. Темы&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="пакеты">&lt;span class="section-num">5&lt;/span> Пакеты&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/12/25/emacs-outline-cycling/">Emacs. Режим структуры&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/05/19/emacs-languagetool-support/">Emacs. Поддержка LanguageTool&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="поддержка-языков-программирования">&lt;span class="section-num">5.1&lt;/span> Поддержка языков программирования&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/09/29/emacs-latex-support/">Emacs. Поддержка LaTeX&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/10/20/emacs-plantuml/">Emacs. Plantuml&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="фреймворки">&lt;span class="section-num">6&lt;/span> Фреймворки&lt;/h2>
+&lt;ul>
+&lt;li>Системы завершения: &lt;a href="https://yamadharma.github.io/ru/post/2022/08/15/emacs-completion-systems/">Emacs. Completion systems&lt;/a>.&lt;/li>
+&lt;/ul>
+&lt;h2 id="разное">&lt;span class="section-num">7&lt;/span> Разное&lt;/h2>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/01/03/emacs-basics/">Emacs. Основы работы&lt;/a>&lt;/li>
 &lt;li>Написание кода для конфигурирования Emacs
@@ -3184,45 +4081,6 @@ calendar-month-abbrev-array [&amp;quot;Янв&amp;quot; &amp;quot;Фев&amp;quo
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/07/12/emacs-lisp-comments/">Виды комментариев в Emacs Lisp&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;/ul>
-&lt;h2 id="настройка">&lt;span class="section-num">5&lt;/span> Настройка&lt;/h2>
-&lt;ul>
-&lt;li>Работа с почтой (см. &lt;a href="https://yamadharma.github.io/ru/post/2020/12/23/emacs-mail/">Emacs. Почта&lt;/a>)&lt;/li>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/06/15/emacs-calendar/">Emacs. Календарь&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/09/11/emacs-contacts/">Emacs. Контакты&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/10/19/emacs-bibliography/">Emacs. Работа с библиографией&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/11/23/org-roam/">Org-roam&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;h3 id="поддержка-языков-программирования">&lt;span class="section-num">5.1&lt;/span> Поддержка языков программирования&lt;/h3>
-&lt;h4 id="julia">&lt;span class="section-num">5.1.1&lt;/span> Julia&lt;/h4>
-&lt;ul>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/01/21/emacs-julia/">Emacs. Julia&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;h3 id="языки-разметки">&lt;span class="section-num">5.2&lt;/span> Языки разметки&lt;/h3>
-&lt;ul>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/10/14/org-mode/">Org-mode&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;h3 id="работа-с-текстом">&lt;span class="section-num">5.3&lt;/span> Работа с текстом&lt;/h3>
-&lt;ul>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/08/01/emacs-spellchecking/">Emacs. Проверка правописания&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;h3 id="внешний-вид">&lt;span class="section-num">5.4&lt;/span> Внешний вид&lt;/h3>
-&lt;ul>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/02/15/emacs-themes/">Emacs. Темы&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;h2 id="пакеты">&lt;span class="section-num">6&lt;/span> Пакеты&lt;/h2>
-&lt;ul>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/12/25/emacs-outline-cycling/">Emacs. Режим структуры&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/05/19/emacs-languagetool-support/">Emacs. Поддержка LanguageTool&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;h3 id="поддержка-языков-программирования">&lt;span class="section-num">6.1&lt;/span> Поддержка языков программирования&lt;/h3>
-&lt;ul>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/09/29/emacs-latex-support/">Emacs. Поддержка LaTeX&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/10/20/emacs-plantuml/">Emacs. Plantuml&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;h2 id="фреймворки">&lt;span class="section-num">7&lt;/span> Фреймворки&lt;/h2>
-&lt;ul>
-&lt;li>Системы завершения: &lt;a href="https://yamadharma.github.io/ru/post/2022/08/15/emacs-completion-systems/">Emacs. Completion systems&lt;/a>.&lt;/li>
 &lt;/ul></description></item><item><title>Emacs. Почта. Mu4e</title><link>https://yamadharma.github.io/ru/post/2020/12/24/emacs-mail-mu4e/</link><pubDate>Thu, 24 Dec 2020 15:32:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2020/12/24/emacs-mail-mu4e/</guid><description>&lt;p>Mu4e &amp;mdash; режим для чтения почты в Emacs.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
@@ -3907,11 +4765,6 @@ mu init --maildir=~/Maildir $list_imap
 &lt;ul>
 &lt;li>&lt;a href="#соглашение-об-именовании">Соглашение об именовании&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#внешние-ссылки">Внешние ссылки&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#backlinks">Backlinks&lt;/a>
-&lt;ul>
-&lt;li>&lt;a href="#emacs">&lt;a href="https://yamadharma.github.io/ru/post/2020/12/24/emacs/">Emacs&lt;/a>&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;/li>
 &lt;/ul>
 &lt;/nav>
 &lt;/details>
@@ -3930,9 +4783,6 @@ mu init --maildir=~/Maildir $list_imap
 &lt;ul>
 &lt;li>&lt;a href="https://github.com/bbatsov/emacs-lisp-style-guide" target="_blank" rel="noopener">A community-driven Emacs Lisp style guide&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;h2 id="backlinks">Backlinks&lt;/h2>
-&lt;h3 id="emacs">&lt;a href="https://yamadharma.github.io/ru/post/2020/12/24/emacs/">Emacs&lt;/a>&lt;/h3>
-&lt;p>&lt;a href="https://yamadharma.github.io/ru/post/2020/12/20/elisp-coding-conventions/">Соглашение о кодировании. Emacs lisp&lt;/a>&lt;/p>
 &lt;div class="footnotes" role="doc-endnotes">
 &lt;hr>
 &lt;ol>
@@ -4943,4 +5793,17 @@ Content
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2020/12/17/org-mode-export-hugo/">Org-mode. Экспорт в Hugo&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2020/12/14/org-mode-export-latex/">Org-mode. Экспорт в LaTeX&lt;/a>&lt;/li>
-&lt;/ul></description></item></channel></rss>
+&lt;/ul></description></item><item><title>Использование org-roam</title><link>https://yamadharma.github.io/ru/post/2020/10/05/use-org-roam/</link><pubDate>Mon, 05 Oct 2020 15:26:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2020/10/05/use-org-roam/</guid><description>&lt;p>Организация жизни и работы.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#создание-файла">&lt;span class="section-num">1&lt;/span> Создание файла&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#org-mode">&lt;span class="section-num">2&lt;/span> Org-mode&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="создание-файла">&lt;span class="section-num">1&lt;/span> Создание файла&lt;/h2>
+&lt;pre>&lt;code class="language-emacs">M-x org-roam-find-file
+&lt;/code>&lt;/pre>
+&lt;h2 id="org-mode">&lt;span class="section-num">2&lt;/span> Org-mode&lt;/h2></description></item></channel></rss>

@@ -519,6 +519,65 @@ dns_rfc2136_algorithm = HMAC-SHA512
 &lt;li>Как и для проверки HTTP-01, настраивать нужно ответ от каждого web-сервера.&lt;/li>
 &lt;/ul>
 &lt;/li>
+&lt;/ul></description></item><item><title>Тип ключа ssh</title><link>https://yamadharma.github.io/ru/post/2022/02/03/ssh-key-type/</link><pubDate>Thu, 03 Feb 2022 14:48:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/02/03/ssh-key-type/</guid><description>&lt;p>При подключении по &lt;em>ssh&lt;/em> получаю сообщение &lt;em>no matching host key type found. Their offer: ssh-rsa,ssh-dss&lt;/em>.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#описание-ситуации">&lt;span class="section-num">1&lt;/span> Описание ситуации&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#решение">&lt;span class="section-num">2&lt;/span> Решение&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#однократное-подключение">&lt;span class="section-num">2.1&lt;/span> Однократное подключение&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#конфигурация-для-конкретного-хоста">&lt;span class="section-num">2.2&lt;/span> Конфигурация для конкретного хоста&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#конфигурация-для-группы-хостов">&lt;span class="section-num">2.3&lt;/span> Конфигурация для группы хостов&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="описание-ситуации">&lt;span class="section-num">1&lt;/span> Описание ситуации&lt;/h2>
+&lt;ul>
+&lt;li>После перехода на openssh-8.8 при подключении к серверам со старыми версиями системы появляется сообщение типа: &lt;em>no matching host key type found. Their offer: ssh-rsa,ssh-dss&lt;/em>.&lt;/li>
+&lt;li>Старый ssh поддерживал механизмы ssh-rsa и ssh-dss, а в новой версии их отключили.&lt;/li>
+&lt;/ul>
+&lt;h2 id="решение">&lt;span class="section-num">2&lt;/span> Решение&lt;/h2>
+&lt;ul>
+&lt;li>Будем считать, что мы подключаемся к хосту &lt;code>192.168.0.10&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h3 id="однократное-подключение">&lt;span class="section-num">2.1&lt;/span> Однократное подключение&lt;/h3>
+&lt;ul>
+&lt;li>Зададим алгоритм подключения как опции командной строки:
+&lt;pre>&lt;code class="language-shell">ssh -oHostKeyAlgorithms=+ssh-rsa root@192.168.0.10
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="конфигурация-для-конкретного-хоста">&lt;span class="section-num">2.2&lt;/span> Конфигурация для конкретного хоста&lt;/h3>
+&lt;ul>
+&lt;li>Зададим конфигурацию конкретного хоста в файле &lt;code>~/.ssh/config&lt;/code>:
+&lt;pre>&lt;code class="language-conf-unix">Host 192.168.0.10
+HostKeyAlgorithms=+ssh-rsa
+PubkeyAcceptedKeyTypes +ssh-rsa
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="конфигурация-для-группы-хостов">&lt;span class="section-num">2.3&lt;/span> Конфигурация для группы хостов&lt;/h3>
+&lt;ul>
+&lt;li>Можно задать группу хостов в виде шаблонов командной строки (wildcards).
+&lt;ul>
+&lt;li>Например, правило для сети:
+&lt;pre>&lt;code class="language-conf-unix">Host 192.168.0.*
+HostKeyAlgorithms=+ssh-rsa
+PubkeyAcceptedKeyTypes +ssh-rsa
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>Можно задать привило для всех хостов:
+&lt;pre>&lt;code class="language-conf-unix">Host *
+HostKeyAlgorithms=+ssh-rsa
+PubkeyAcceptedKeyTypes +ssh-rsa
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
 &lt;/ul></description></item><item><title>Подготовка программы Кибербезопасность и Интернет вещей</title><link>https://yamadharma.github.io/ru/post/2021/04/24/mathematical-disciplines-specialty-cybersecurity/</link><pubDate>Sat, 24 Apr 2021 17:12:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2021/04/24/mathematical-disciplines-specialty-cybersecurity/</guid><description>&lt;p>Подготовка программы высшего образования &lt;em>Кибербезопасность и Интернет вещей&lt;/em>.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>

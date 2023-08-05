@@ -10,343 +10,343 @@
 <span class=middot-divider></span>
 <span class=article-reading-time>14 мин. для прочтения</span>
 <span class=middot-divider></span>
-<span class=article-categories><i class="fas fa-folder mr-1"></i><a href=https://yamadharma.github.io/ru/category/computer-science/>computer-science</a></span></div></div><div class=article-container><div class=article-style><p>Менеджер окон <em>i3</em>.</p><details class="toc-inpage d-print-none" open><summary class=font-weight-bold>Содержание</summary><nav id=TableOfContents><ul><li><a href=#общая-информация><span class=section-num>1</span> Общая информация</a></li><li><a href=#репозиторий-конфигурации><span class=section-num>2</span> Репозиторий конфигурации</a></li><li><a href=#файл-конфигурации><span class=section-num>3</span> Файл конфигурации</a></li><li><a href=#навигация><span class=section-num>4</span> Навигация</a><ul><li><a href=#клавиша-модификатор><span class=section-num>4.1</span> Клавиша-модификатор</a></li><li><a href=#основные-комбинации-клавиш><span class=section-num>4.2</span> Основные комбинации клавиш</a></li><li><a href=#перемещение-фокуса><span class=section-num>4.3</span> Перемещение фокуса</a></li><li><a href=#перемещение-окон><span class=section-num>4.4</span> Перемещение окон</a></li><li><a href=#modifying-windows><span class=section-num>4.5</span> Modifying windows</a></li><li><a href=#структура-расположения-контейнеров><span class=section-num>4.6</span> Структура расположения контейнеров</a></li><li><a href=#floating><span class=section-num>4.7</span> Floating</a></li><li><a href=#рабочие-области--workspaces><span class=section-num>4.8</span> Рабочие области (workspaces)</a></li><li><a href=#opening-applications-closing-windows><span class=section-num>4.9</span> Opening applications / Closing windows</a></li><li><a href=#выход-перезапуск><span class=section-num>4.10</span> Выход/Перезапуск</a></li></ul></li><li><a href=#настройка><span class=section-num>5</span> Настройка</a><ul><li><a href=#терминал><span class=section-num>5.1</span> Терминал</a></li><li><a href=#управление-окном-с-помощью-мышки><span class=section-num>5.2</span> Управление окном с помощью мышки</a></li><li><a href=#строка-статуса><span class=section-num>5.3</span> Строка статуса</a><ul><li><a href=#i3bar><span class=section-num>5.3.1</span> i3bar</a></li><li><a href=#py3status><span class=section-num>5.3.2</span> py3status</a></li><li><a href=#polybar><span class=section-num>5.3.3</span> polybar</a></li></ul></li><li><a href=#запуск-приложений><span class=section-num>5.4</span> Запуск приложений</a><ul><li><a href=#rofi><span class=section-num>5.4.1</span> rofi</a></li></ul></li><li><a href=#блокировка-экрана><span class=section-num>5.5</span> Блокировка экрана</a><ul><li><a href=#блокировщик-экрана-i3lock><span class=section-num>5.5.1</span> Блокировщик экрана <code>i3lock</code></a></li><li><a href=#блокировщик-экрана-i3lock-color><span class=section-num>5.5.2</span> Блокировщик экрана <code>i3lock-color</code></a></li></ul></li></ul></li><li><a href=#приложения><span class=section-num>6</span> Приложения</a><ul><li><a href=#снимки-экрана><span class=section-num>6.1</span> Снимки экрана</a></li></ul></li><li><a href=#совместимость-приложений><span class=section-num>7</span> Совместимость приложений</a><ul><li><a href=#java><span class=section-num>7.1</span> Java</a><ul><li><a href=#серое-окно-приложения-не-меняют-размер-с-помощью-wm-меню-сразу-закрываются><span class=section-num>7.1.1</span> Серое окно, приложения не меняют размер с помощью WM, меню сразу закрываются</a></li><li><a href=#меню-в-приложениях-плавает-отдельно-им-невозможно-пользоваться><span class=section-num>7.1.2</span> Меню в приложениях плавает отдельно, им невозможно пользоваться</a></li></ul></li></ul></li></ul></nav></details><h2 id=общая-информация><span class=section-num>1</span> Общая информация</h2><ul><li>Тайловый менеджер окон.</li><li><a href=https://i3wm.org/ target=_blank rel=noopener>https://i3wm.org/</a></li></ul><h2 id=репозиторий-конфигурации><span class=section-num>2</span> Репозиторий конфигурации</h2><ul><li>Я сделал репозиторий со своей конфигурацией: <a href=https://github.com/yamadharma/config-i3 target=_blank rel=noopener>https://github.com/yamadharma/config-i3</a></li></ul><h2 id=файл-конфигурации><span class=section-num>3</span> Файл конфигурации</h2><ul><li>Файлы конфигурации просматриваются в следующем порядке:<ul><li><code>$XDG_CONFIG_HOME/i3/config</code> (<code>~/.config/i3/config</code>);</li><li><code>~/.i3/config</code>;</li><li><code>$XDG_CONFIG_DIRS/i3/config</code> (<code>/etc/xdg/i3/config</code>);</li><li><code>/etc/i3/config</code>.</li></ul></li><li>Начиная с версии 4.20, можно подключать другие файлы конфигурации из основного файла конфигурации <em>i3</em>.<ul><li>Примеры использования директивы <code>include</code>:<pre><code class=language-cfg># Тильда преобразуется в домашний каталог пользователя
-include ~/.config/i3/assignments.conf
-
-# Переменные среды разыменовываются
-include $HOME/.config/i3/assignments.conf
-
-# Символы подстановки раскрываются
-include ~/.config/i3/config.d/*.conf
-
-# Можно выполнять команду
-include ~/.config/i3/`hostname`.conf
-
-# Каждый путь загружается только один раз
-include ~/.config/i3/config
-
-# Относительные пути интерпретируются относительно каталога конфигурационного файла
-include assignments.conf
-</code></pre></li></ul></li></ul><h2 id=навигация><span class=section-num>4</span> Навигация</h2><h3 id=клавиша-модификатор><span class=section-num>4.1</span> Клавиша-модификатор</h3><ul><li>В качестве модификатора обычно используется:<ul><li><code>Alt</code>:<pre><code class=language-conf-unix>set $mod Mod1
-</code></pre></li><li><code>Super</code> (Клавиша со значком <em>Windows</em>):<pre><code class=language-conf-unix>set $mod Mod4
-</code></pre></li><li>Предпочитаю <code>Super</code>, чтобы не конфликтовать с Emacs.</li></ul></li></ul><h3 id=основные-комбинации-клавиш><span class=section-num>4.2</span> Основные комбинации клавиш</h3><ul><li><code>Mod</code> + <code>Enter</code>: открыть терминал.</li></ul><h3 id=перемещение-фокуса><span class=section-num>4.3</span> Перемещение фокуса</h3><ul><li>Фокус можно перемещать как с помощью стрелок, так и с помощью буквенных клавиш, как в редакторе <em>vi</em>.<ul><li><code>Mod</code> + <code>h</code> или <code>Mod</code> + <code>Left</code>: сдвиг фокуса влево.</li><li><code>Mod</code> + <code>j</code> или <code>Mod</code> + <code>Down</code>: сдвиг фокуса вниз.</li><li><code>Mod</code> + <code>k</code> или <code>Mod</code> + <code>Up</code>: сдвиг фокуса вверх.</li><li><code>Mod</code> + <code>l</code> или <code>Mod</code> + <code>Right</code>: сдвиг фокуса вправо.</li></ul></li><li>Конфигурация выглядит следующим образом:<pre><code class=language-conf-unix>## Home row direction keys, like vim
-set $left h
-set $down j
-set $up k
-set $right l
-## Move your focus around
-bindsym $mod+$left focus left
-bindsym $mod+$down focus down
-bindsym $mod+$up focus up
-bindsym $mod+$right focus right
-## Or use $mod+[up|down|left|right]
-bindsym $mod+Left focus left
-bindsym $mod+Down focus down
-bindsym $mod+Up focus up
-bindsym $mod+Right focus right
-</code></pre></li><li>Впрочем, следует заметить, что также могут использоваться и другие соглашения:<ul><li><code>j</code>: влево;</li><li><code>k</code>: вниз;</li><li><code>l</code>: вверх;</li><li><code>;</code>: вправо.</li></ul></li><li>Поскольку в данном менеджере окон поддерживаются контейнеры, то можно переключить фокус на родительский контейнер:<ul><li><code>Mod</code> + <code>a</code>: переключить фокус на родительский контейнер.</li><li>Конфигурация:<pre><code class=language-conf-unix>## Move focus to the parent container
-bindsym $mod+a focus parent
-</code></pre></li></ul></li><li><code>Mod</code> + <code>Space</code>: переключить режим фокуса.</li></ul><h3 id=перемещение-окон><span class=section-num>4.4</span> Перемещение окон</h3><ul><li>Делается аналогично перемещению фокуса, но с добавлением модификатора <code>Shift</code>:<ul><li><code>Mod</code> + <code>Shift</code> + <code>h</code> или <code>Mod</code> + <code>Shift</code> + <code>Left</code>: перемещение влево;</li><li><code>Mod</code> + <code>Shift</code> + <code>j</code> или <code>Mod</code> + <code>Shift</code> + <code>Down</code>: перемещение вниз;</li><li><code>Mod</code> + <code>Shift</code> + <code>k</code> или <code>Mod</code> + <code>Shift</code> + <code>Up</code>: перемещение вверх;</li><li><code>Mod</code> + <code>Shift</code> + <code>l</code> или <code>Mod</code> + <code>Shift</code> + <code>Right</code>: перемещение вправо.</li></ul></li><li>Конфигурация выглядит следующим образом:<pre><code class=language-conf-unix>## Move the focused window with the same, but add Shift
-bindsym $mod+Shift+$left move left
-bindsym $mod+Shift+$down move down
-bindsym $mod+Shift+$up move up
-bindsym $mod+Shift+$right move right
-## Ditto, with arrow keys
-bindsym $mod+Shift+Left move left
-bindsym $mod+Shift+Down move down
-bindsym $mod+Shift+Up move up
-bindsym $mod+Shift+Right move right
-</code></pre></li></ul><h3 id=modifying-windows><span class=section-num>4.5</span> Modifying windows</h3><ul><li><code>Mod</code> + f toggle fullscreen</li><li><code>Mod</code> + v split a window vertically</li><li><code>Mod</code> + h split a window horizontally</li><li><code>Mod</code> + r resize mode</li></ul><h3 id=структура-расположения-контейнеров><span class=section-num>4.6</span> Структура расположения контейнеров</h3><ul><li>Поддерживаются следующие расположения контейнеров:<ul><li><code>Mod</code> + <code>e</code>: переключение разделённого расположения (split layout);</li><li><code>Mod</code> + <code>s</code>: стековое размещение (stacking layout);</li><li><code>Mod</code> + <code>w</code>: размещение с табами (tabbed layout).</li></ul></li><li>Конфигурация:<pre><code class=language-conf-unix>## Switch the current container between different layout styles
-bindsym $mod+s layout stacking
-bindsym $mod+w layout tabbed
-bindsym $mod+e layout toggle split
-</code></pre></li><li>Для раскладки по умолчанию я использую табы:<pre><code class=language-conf-unix>### Layout mode for new containers
-## default|stacking|tabbed
-workspace_layout tabbed
-</code></pre></li></ul><h3 id=floating><span class=section-num>4.7</span> Floating</h3><ul><li><code>Mod</code> + Shift + Space toggle floating</li><li><code>Mod</code> + Left click drag floating</li></ul><h3 id=рабочие-области--workspaces><span class=section-num>4.8</span> Рабочие области (workspaces)</h3><ul><li>Сконфигурим рабочие области:<pre><code class=language-conf-unix>## Define names for workspaces
-set $ws1    1
-set $ws2    2
-set $ws3    3
-set $ws4    4
-set $ws5    5
-set $ws6    6
-set $ws7    7
-set $ws8    8
-set $ws9    9
-set $ws10   10
-</code></pre></li><li><code>Mod</code> + <code>0</code> &ndash; <code>9</code>: переключиться на соответствующую рабочую область:<pre><code class=language-conf-unix>## Switch to workspace
-bindsym $mod+1 workspace $ws1
-bindsym $mod+2 workspace $ws2
-bindsym $mod+3 workspace $ws3
-bindsym $mod+4 workspace $ws4
-bindsym $mod+5 workspace $ws5
-bindsym $mod+6 workspace $ws6
-bindsym $mod+7 workspace $ws7
-bindsym $mod+8 workspace $ws8
-bindsym $mod+9 workspace $ws9
-bindsym $mod+0 workspace $ws10
-</code></pre></li><li><code>Mod</code> + <code>Shift</code> + <code>0</code> &ndash; <code>9</code>: перенести окно на соответствующую рабочую область:<pre><code class=language-conf-unix>## Move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace $ws1
-bindsym $mod+Shift+2 move container to workspace $ws2
-bindsym $mod+Shift+3 move container to workspace $ws3
-bindsym $mod+Shift+4 move container to workspace $ws4
-bindsym $mod+Shift+5 move container to workspace $ws5
-bindsym $mod+Shift+6 move container to workspace $ws6
-bindsym $mod+Shift+7 move container to workspace $ws7
-bindsym $mod+Shift+8 move container to workspace $ws8
-bindsym $mod+Shift+9 move container to workspace $ws9
-bindsym $mod+Shift+0 move container to workspace $ws10
-</code></pre></li></ul><h3 id=opening-applications-closing-windows><span class=section-num>4.9</span> Opening applications / Closing windows</h3><ul><li><code>Mod</code> + d open application launcher (dmenu)</li><li><code>Mod</code> + Shift + q kill a window</li></ul><h3 id=выход-перезапуск><span class=section-num>4.10</span> Выход/Перезапуск</h3><ul><li><code>Mod</code> + <code>Shift</code> + <code>c</code>: перечитать конфигурационный файл.<pre><code class=language-conf-unix>## ~/.config/i3/config
-
-## reload the configuration file
-bindsym $mod+Shift+c reload
-</code></pre></li><li><code>Mod</code> + <code>Shift</code> + <code>r</code>: перестартовать <em>i3</em>, сохранив сессию.<pre><code class=language-conf-unix>## ~/.config/i3/config
-
-## restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $mod+Shift+r restart
-</code></pre></li><li><code>Mod</code> + <code>Shift</code> + <code>e</code>: выход из <em>i3</em>.<pre><code class=language-conf-unix>## ~/.config/i3/config
-
-## exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec &quot;i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'&quot;
-</code></pre></li></ul><h2 id=настройка><span class=section-num>5</span> Настройка</h2><h3 id=терминал><span class=section-num>5.1</span> Терминал</h3><ul><li><p>В качестве терминала я использую kitty.</p></li><li><p>Конфигурация запуска терминала:</p><pre><code class=language-conf-unix>set $term kitty
-bindsym $mod+Return exec $term
-</code></pre><ul><li>В этом случае запускается одно окно терминала.</li></ul></li><li><p>Для работы я использую специальную настройку сессии терминала. Я её запускаю при входе в сессию. Для этого я приспособил комбинацию <code>Mod</code> + <code>Shift</code> + <code>Enter</code>:</p><pre><code class=language-conf-unix>bindsym $mod+Shift+Return exec kitty --session ~/.config/kitty/startup
-</code></pre></li></ul><h3 id=управление-окном-с-помощью-мышки><span class=section-num>5.2</span> Управление окном с помощью мышки</h3><ul><li><p>Можно управлять окнами с помощью мышки.</p></li><li><p>Привязка осуществляется следующей командой:</p><pre><code class=language-conf-unix>bindsym [--release] [--border] [--whole-window] [--exclude-titlebar] [&lt;Modifiers&gt;+]button&lt;n&gt; command
-</code></pre><ul><li>По умолчанию привязка запускается только при нажатии на строку заголовка окна.</li><li>Если указан флаг <code>--release</code>, он запустится, когда кнопка мыши будет отпущена.</li><li>Если указан флаг <code>--whole-window</code>, то привязка также будет выполняться при щелчке по любой части окна, за исключением границы.</li><li>Чтобы привязка выполнялась при щелчке границы, нужно указать флаг <code>--border</code>.</li><li>Если задан флаг <code>--exclude-titlebar</code>, заголовок не будет учитываться для привязки клавиш.</li></ul></li><li><p>Примеры.</p><ul><li>Средняя кнопка на заголовке закрывает окно:<pre><code class=language-conf-unix>bindsym --release button2 kill
-</code></pre></li><li>Средняя кнопка и модификатор над любой частью окна закрывает окно:<pre><code class=language-conf-unix>bindsym --whole-window $mod+button2 kill
-</code></pre></li><li>Правая кнопка мыши переключает плавающий режим:<pre><code class=language-conf-unix>bindsym button3 floating toggle
-bindsym $mod+button3 floating toggle
-</code></pre></li><li>Боковые кнопки мыши перемещают окно:<pre><code class=language-conf-unix>bindsym button9 move left
-bindsym button8 move right
-</code></pre></li></ul></li></ul><h3 id=строка-статуса><span class=section-num>5.3</span> Строка статуса</h3><h4 id=i3bar><span class=section-num>5.3.1</span> i3bar</h4><ul><li>Отрисовку панели осуществляет утилита <code>i3bar</code>.</li><li>Отображается вверху или внизу экрана.</li><li>Содержит:<ul><li>область с кнопками переключения рабочих областей <em>i3</em>;</li><li>системную строку, генерируемую при помощи <code>i3status</code> или аналогов;</li><li>системный трей с иконками программ.</li></ul></li><li>В конфигурационном файле задаётся следующим образом (<a href=https://i3wm.org/docs/userguide.html#_configuring_i3bar target=_blank rel=noopener>https://i3wm.org/docs/userguide.html#_configuring_i3bar</a>):<pre><code class=language-conf-unix># ~/.config/i3/config -*- mode: conf-unix; -*-
-## Start i3bar to display a workspace bar
-bar {
-    status_command i3status
-    position top
-}
-</code></pre></li></ul><ol><li><p>Поддержка иконок в i3bar</p><ul><li>В <code>i3bar</code> можно использовать шрифты иконок (см. <a href=https://yamadharma.github.io/ru/post/2021/05/21/monospace-fonts/>Моноширинные шрифты</a>).</li><li>Наиболее распространённым является шрифт <a href=https://fontawesome.com/ target=_blank rel=noopener>Font Awesome</a>.</li><li>Установка:<ul><li>Gentoo<pre><code class=language-shell>emerge media-fonts/fontawesome
-</code></pre></li></ul></li><li>Для вставки шрифта в файл можно использовать список кодов для иконок <a href=https://fontawesome.com/cheatsheet target=_blank rel=noopener>https://fontawesome.com/cheatsheet</a>.</li><li>Шрифт лучше явно обозначить в конфигурации:<pre><code class=language-conf-unix>## ~/.config/i3/config
-bar {
-    …
-    font pango:Source Sans Pro, FontAwesome 5 Free 10
-    …
-}
-</code></pre></li><li>Для набора символа по его коду следует использовать конфигурации клавиш. Например, для набора символа с кодом <code>0xf004</code>, требуется набрать:<ul><li>приложения на основе GTK: <code>Ctrl</code> + <code>Shift</code> + <code>u</code>, <code>f004</code>, <code>Enter</code>;</li><li>emacs: <code>Ctrl</code> + <code>x</code>, <code>8</code>, <code>Enter</code>, <code>f004</code>, <code>Enter</code>;</li><li>vim: <code>Ctrl</code> + <code>v</code>, <code>uf004</code>;</li><li>urxvt: удерживая <code>Ctrl</code> + <code>Shift</code>, наберите <code>f004</code>.</li></ul></li></ul></li></ol><ol start=2><li><p>i3status</p><ul><li>Использовано <a href=https://igancev.ru/2020-05-11-configuring-i3status-in-i3wm target=_blank rel=noopener>https://igancev.ru/2020-05-11-configuring-i3status-in-i3wm</a>.</li><li><code>i3status</code> генерирует строку состояния для <code>i3bar</code>.</li><li>Содержит встроенные модули:<ul><li>IPv6 &mdash; получает и выводит IPv6 адрес.</li><li>Disk &mdash; отображает информацию о занятом и свободном месте в файловой системе.</li><li>Run-watch &mdash; мониторинг определённого процесса в системе.</li><li>Path-exists &mdash; проверяет на существование путь в файловой системе.</li><li>Wireless &mdash; позволяет выводить подключения к WIFI сети, уровень сигнала, имя точки доступа.</li><li>Ethernet &mdash; предоставляет IP адрес и скорость соединения сетевого интерфейса.</li><li>Battery &mdash; показ уровня заряда батареи.</li><li>CPU-Temperature &mdash; показ температуры процессора.</li><li>CPU Usage &mdash; использование процессора в процентах.</li><li>Memory &mdash; использование оперативной памяти.</li><li>Load &mdash; среднее значение загрузки системы за 1, 5 и 15 минут (Load Overage).</li><li>Time &mdash; время в текущей временной зоне.</li><li>TzTime &mdash; время в заданной временной зоне.</li><li>DDate &mdash; дата.</li><li>Volume &mdash; управление громкостью звука.</li><li>File Contents &mdash; вывод содержимого указанного файла.</li></ul></li><li>Модули в строке можно переиспользовать по нескольку раз, управляя порядком вывода.</li><li>Конфигурацию условно можно разделить на 3 части:<ul><li>блок <code>general</code> &mdash; содержит общие параметры;</li><li>переменная <code>order</code> &mdash; в неё записывается порядок вывода интересующих модулей;</li><li>блоки конфигурации модулей &mdash; непосредственно настройки самих блоков с метриками.</li></ul></li><li>В конфигурации i3bar задаётся конфигурационный файл для i3status:<pre><code class=language-conf-unix># ~/.config/i3/config -*- mode: conf-unix; -*-
-## Start i3bar to display a workspace bar
-bar {
-    font pango:Source Sans Pro, FontAwesome 5 Free 10
-    status_command	i3status --config ~/.config/i3/i3status/config
-    position		top
-}
-</code></pre></li><li>Структура информационной панели задаётся в конфигурационном файле:<pre><code class=language-conf-unix>### -*- mode: conf-unix; -*-
-## ~/.config/i3/i3status/config
-
-general {
-    colors = true # включение/выключение поддержки цветов true/false
-    interval = 1 # интервал обновления строки статуса, в секундах
-    output_format = &quot;i3bar&quot; # формат вывода, устанавливаем i3bar (JSON)
-}
-
-# порядок вывода модулей
-order += &quot;run_watch openvpn&quot;
-order += &quot;run_watch openconnect&quot;
-order += &quot;volume master&quot;
-order += &quot;wireless _first_&quot;
-order += &quot;battery all&quot;
-order += &quot;disk /&quot;
-order += &quot;memory&quot;
-order += &quot;cpu_usage&quot;
-order += &quot;cpu_temperature 0&quot;
-order += &quot;tztime local&quot;
-
-# отслеживание процесса openvpn
-# служит как индикатор работы openvpn клиента
-# при запуске openvpn необходимо
-# указывать параметр --writepid /var/run/openvpn.pid
-run_watch openvpn {
-    pidfile = &quot;/var/run/openvpn.pid&quot;
-    format = &quot; openvpn&quot;
-    # если пареметр format_down оставить пустым,
-    # то при неактивном процессе блок будет отсутствовать
-    format_down=&quot;&quot;
-}
-
-# аналогичный блок индикатор openconnect vpn клиента
-# требуется запуск клиента с параметром --pid-file=/var/run/openconnect.pid
-run_watch openconnect {
-    pidfile = &quot;/var/run/openconnect.pid&quot;
-    format = &quot; openconnect vpn&quot;
-    format_down=&quot;&quot;
-}
-
-# управление громкостью звука
-volume master {
-    format = &quot; %volume&quot; # шаблон громкости в активном состоянии
-    format_muted = &quot; %volume&quot; # шаблон громкости в состоянии muted (без звука)
-    device = &quot;default&quot;
-    mixer = &quot;Master&quot;
-    mixer_idx = 0
-}
-
-# индикатор WIFI
-wireless _first_ {
-    # шаблон вывода, можно дополнить
-    # наименованием подключения %essid
-    # и ip адресом %ip
-    format_up = &quot;%quality %frequency&quot;
-    format_down = &quot;&quot;
-}
-
-# состояние заряда батареи
-battery all {
-    # шаблон вывода, можно дополнить
-    # оставшимся временем работы %emptytime
-    # энергопотреблением %consumption в ваттах
-    format = &quot;%status %percentage&quot;
-
-    # true - показ процента заряда от 0 до 100
-    # false - показ процента заряда от 0 до n, с учетом
-    # изношенности аккумулятора
-    last_full_capacity = true
-    format_down = &quot;&quot;
-    status_chr = &quot;&quot; # статус подзарядки
-    status_bat = &quot;&quot; # статус в режиме работы от батареи
-    status_unk = &quot;? UNK&quot; # неизвестный статус
-    status_full = &quot;&quot; # статус полного заряда
-    path = &quot;/sys/class/power_supply/BAT%d/uevent&quot;
-
-    # нижний порог заряда, после которого блок
-    # будет окрашен в &quot;color_bad&quot; (по умолчанию красный)
-    # подробнее в man i3status
-    low_threshold = 10
-}
-
-# отслеживаемый накопитель
-disk &quot;/&quot; {
-    # доступные переменные:
-    # %used, %percentage_used - занятое пространство
-    # %free, %percentage_free - свободное пространство
-    # %avail, %percentage_avail - доступное пространство
-    # %total - всего
-    format = &quot; %avail&quot;
-
-    # будет окрашен в &quot;color_bad&quot; (по умолчанию красный)
-    # при достижении нижнего порога менее 10GB доступного пространства
-    low_threshold = &quot;10&quot;
-    threshold_type = &quot;gbytes_avail&quot;
-    format_below_threshold = &quot; Warning: %avail&quot;
-}
-
-# миниторинг оперативной памяти
-memory {
-    # доступные переменные:
-    # %total, percentage_total
-    # %used, percentage_used
-    # %free, percentage_free
-    # %available, percentage_available
-    # %shared, percentage_shared
-    format = &quot; %used&quot;
-
-    # порог, при котором вывод окрасится в
-    # желтый (degraded) или красный (critical)
-    # а формат вывода изменится на format_degraded
-    threshold_degraded = &quot;1G&quot;
-    threshold_critical = &quot;200M&quot;
-    format_degraded = &quot;MEMORY &lt; %available&quot;
-}
-
-# температура процессора
-cpu_temperature 0 {
-    format = &quot; %degrees&quot;
-
-    # верхний порог температуры, при достижении которого
-    # вывод окрасится красным,
-    # и формат изменится на format_above_threshold
-    max_threshold = &quot;80&quot;
-    format_above_threshold = &quot; %degrees&quot;
-    path = &quot;/sys/class/thermal/thermal_zone0/temp&quot;
-}
-
-# использование центрального процессора
-cpu_usage {
-    # %usage - процентное использование ЦП
-    # %cpu&lt;N&gt; - начиная с %cpu0 и далее показывает использование ядер
-    format = &quot; %usage&quot;
-
-    # доступны параметры:
-    # degraded_threshold, окрас в желтый, по умолчанию 90
-    # max_threshold, окрас в красный, по умолчанию 95
-    # и кастомные форматы для них
-    # format_above_degraded_threshold и format_above_threshold
-}
-
-# вывод даты и времени по заданному формату
-tztime local {
-    format = &quot; %d %b %Y  %H:%M:%S&quot;
-}
-</code></pre></li></ul></li></ol><h4 id=py3status><span class=section-num>5.3.2</span> py3status</h4><ul><li><code>py3status</code> &mdash; это расширяемая оболочка для <code>i3status</code>, написанная на python.</li><li>Сайт: <a href=https://py3status.readthedocs.io/ target=_blank rel=noopener>https://py3status.readthedocs.io/</a>.</li><li>Репозиторий: <a href=https://github.com/ultrabug/py3status target=_blank rel=noopener>https://github.com/ultrabug/py3status</a>.</li><li>Можно управлять <code>i3bar</code>:<ul><li>используя один из доступных модулей, поставляемых с <code>py3status</code>;</li><li>группировать несколько модулей и автоматически или вручную циклически отображать их отображение;</li><li>писать свои собственные модули и отображать их вывод на панели;</li><li>обрабатывать события кликов на <code>i3bar</code>.</li></ul></li><li>Отображается вверху или внизу экрана.</li><li>Содержит:<ul><li>область с кнопками переключения рабочих областей <em>i3</em>;</li><li>системную строку;</li><li>системный трей с иконками программ.</li></ul></li></ul><ol><li><p>Запуск py3status</p><ul><li>Запускается вместо <code>i3bar</code>:<pre><code class=language-conf-unix># ~/.config/i3/config -*- mode: conf-unix; -*-
-## Start py3status to display a workspace bar
-bar {
-    font pango:Iosevka Nerd Font 12
-    status_command py3status
-    position top
-}
-</code></pre></li><li>Использует конфигурационный файл от <code>i3status</code> или собственную конфигурацию.</li><li>Порядок поиска конфигурационного файла:<ul><li><code>$XDG_CONFIG_HOME/py3status/config</code>;</li><li><code>$XDG_CONFIG_HOME/i3status/config</code>;</li><li><code>$XDG_CONFIG_HOME/i3/i3status.conf</code>;</li><li><code>~/.i3status.conf</code>;</li><li><code>~/.i3/i3status.conf</code>;</li><li><code>$XDG_CONFIG_DIRS/i3status/config</code>;</li><li><code>/etc/i3status.conf</code>.</li></ul></li></ul></li></ol><h4 id=polybar><span class=section-num>5.3.3</span> polybar</h4><ul><li><p>Отдельное приложение для строки статуса.</p></li><li><p>Применяется для замены <em>i3bar</em>.</p></li><li><p><a href=https://polybar.github.io/ target=_blank rel=noopener>https://polybar.github.io/</a></p></li><li><p><a href=https://github.com/polybar/polybar target=_blank rel=noopener>https://github.com/polybar/polybar</a></p></li><li><p>Темы для <em>polybar</em>: <a href=https://github.com/adi1090x/polybar-themes target=_blank rel=noopener>https://github.com/adi1090x/polybar-themes</a></p></li><li><p>Одним из побудительных мотивов установки <em>polybar</em> может быть то, что здесь можно без проблем настроить индикатор раскладки клавиатуры.</p></li><li><p>Установка</p><ul><li>Gentoo:<pre><code class=language-shell>USE=&quot;i3wm&quot; emerge x11-misc/polybar
-</code></pre></li></ul></li><li><p>Конфигурационный файл:</p><ul><li>стандартное расположение: <code>~/.config/polybar/config</code> (<code>$XDG_CONFIG_HOME/polybar/config</code>);</li><li>использую для локальных настроек только для <em>i3</em>: <code>~/.config/i3/polybar/config</code>.</li></ul></li></ul><ol><li><p>Скрипт запуска</p><ul><li>Создадим скрипт запуска <code>polybar</code>.<pre><code class=language-shell>#!/bin/bash
-# ~/.config/i3/polybar/launch.sh
-
-# Terminate already running bar instances
-killall -q polybar
-# If all your bars have ipc enabled, you can also use
-# polybar-msg cmd quit
-
-# Wait until the processes have been shut down
-while pgrep -u $UID -x polybar &gt;/dev/null; do sleep 1; done
-
-# Launch Polybar, using config location ~/.config/i3/polybar/config
-polybar --config=~/.config/i3/polybar/config i3 &amp;
-
-echo &quot;Polybar launched...&quot;
-</code></pre></li><li>Установим права на исполнение:<pre><code class=language-shell>chmod +x ~/.config/i3/polybar/launch.sh
-</code></pre></li><li>Добавим вызов <code>polybar</code> в файл конфигурации <em>i3</em>. Конфигурацию для <em>i3bar</em> следует закомментировать.<pre><code class=language-conf-unix>## ~/.config/i3/config
-
-## Start i3bar to display a workspace bar
-# bar {
-#     font pango:Source Sans Pro, FontAwesome 5 Free 10
-#     status_command	i3status --config ~/.config/i3/i3status/config
-#     position		top
-# }
-
-## Start polybar
-exec_always --no-startup-id ~/.config/i3/polybar/launch.sh
-</code></pre></li></ul></li></ol><h3 id=запуск-приложений><span class=section-num>5.4</span> Запуск приложений</h3><ul><li>По умолчанию используется <code>dmenu</code>.</li><li>Можно заменить на <code>rofi</code> (см. <a href=https://yamadharma.github.io/ru/post/2021/11/19/launcher_rofi/>Запуск приложений. Rofi</a>).</li></ul><h4 id=rofi><span class=section-num>5.4.1</span> rofi</h4><ul><li>Используется для запуска приложений, переключения окон.</li><li><a href=https://github.com/davatorium/rofi target=_blank rel=noopener>https://github.com/davatorium/rofi</a></li><li>Конфигурация по умолчанию находится в <code>~/.config/rofi/config</code>.</li><li>Для выбора темы можно использовать команду:<pre><code class=language-shell>rofi-theme-selector
-</code></pre></li><li>Для запуска программ используется несколько мод:<ul><li><code>run</code>: запускать приложения из пути (<code>$PATH</code>) с возможностью запуска в терминале.</li><li><code>drun</code>: запускать приложения на основе desctop-файлов (по стандарту XDG).</li><li><code>window</code>: переключение между окнами в оконном менеджере, совместимом со спецификацией EWMH.</li><li><code>ssh</code>: подключение к удаленному хосту через <code>ssh</code>.</li><li><code>file-browser</code>: базовый файловый броузер для открытия файлов.</li><li><code>keys</code>: список внутренних привязок клавиш.</li><li><code>script</code>: использование простых скриптов.</li><li><code>combi</code>: объединяет несколько мод в одну.</li></ul></li><li>Использование запятых в файле настроек <em>i3</em> может привести к проблемам. Лучше использовать файл настроек <em>rofi</em> или замените запятые символом <code>#</code>, например, заменить строку<pre><code class=language-conf-unix>rofi -combi-modi window,drun,ssh
-</code></pre>на<pre><code class=language-conf-unix>rofi -combi-modi window#drun#ssh
-</code></pre></li><li>Возможная конфигурация в командной строке команды <code>rofi</code>:<pre><code class=language-conf-unix>## ~/.config/i3/config
-set $menu rofi -combi-modi window#drun -show combi -modi combi -show-icons
-</code></pre></li><li>Конфигурация с помощью конфигурационного файла (поместим его в <code>~/.config/i3/rofi/config</code>).</li></ul><h3 id=блокировка-экрана><span class=section-num>5.5</span> Блокировка экрана</h3><ul><li><p>Для отключения экрана можно использовать DPMS:</p><pre><code class=language-cfg>exec --no-startup-id xset dpms 1800
-</code></pre><ul><li>Отключается через 30 минут.</li></ul></li></ul><h4 id=блокировщик-экрана-i3lock><span class=section-num>5.5.1</span> Блокировщик экрана <code>i3lock</code></h4><ul><li><p>В качестве блокировщика экрана используем <code>i3lock</code>.</p><ul><li>Установка<ul><li>Gentoo<pre><code class=language-shell>emerge x11-misc/i3lock
-</code></pre></li></ul></li></ul></li><li><p>Использование в конфигурационном файле:</p><pre><code class=language-cfg>set $Locker i3lock --color=000000 &amp;&amp; sleep 1
-</code></pre><ul><li><code>sleep 1</code> добавляет небольшую задержку, чтобы предотвратить возможное состояние гонки.</li></ul></li><li><p>Для блокировки экрана после заданного периода времени можно использовать <code>xautolock</code> или <code>xss-lock</code>.</p></li><li><p>Использование <code>xautolock</code>.</p></li><li><p>Установка</p><ul><li>Gentoo<pre><code class=language-shell>emerge x11-misc/xautolock
-</code></pre></li></ul></li><li><p>Использование в конфигурационном файле:</p><pre><code class=language-cfg>exec --no-startup-id xautolock -time 10 -locker &quot;$Locker&quot;
-</code></pre><ul><li>Блокирует через 10 минут.</li></ul></li><li><p>Использование <code>xss-lock</code>.</p></li><li><p>Установка</p><ul><li>Gentoo<pre><code class=language-shell>emerge x11-misc/xss-lock
-</code></pre></li></ul></li><li><p>Использование в конфигурационном файле:</p><pre><code class=language-cfg>exec --no-startup-id xss-lock -- &quot;$Locker&quot;
-</code></pre></li></ul><h4 id=блокировщик-экрана-i3lock-color><span class=section-num>5.5.2</span> Блокировщик экрана <code>i3lock-color</code></h4><ul><li>Репозиторий: <a href=https://github.com/Raymo111/i3lock-color target=_blank rel=noopener>https://github.com/Raymo111/i3lock-color</a></li></ul><ol><li><p>Дополнительные возможности в i3lock-color</p><ul><li>Дополнительное управление цветом элементов.</li><li>Размытие текущего экрана и использование его в качестве фона блокировки.</li><li>Отображение часов в индикаторе.</li><li>Обновление по таймеру, а не при каждом нажатии клавиши.</li><li>Отображение раскладки клавиатуры.</li></ul></li></ol><ol start=2><li><p>Установка</p><ul><li>Gentoo<ul><li>Порт находится в оверлее <code>guru</code>:<pre><code class=language-shell>emerge x11-misc/i3lock-color
-</code></pre></li></ul></li></ul></li></ol><h2 id=приложения><span class=section-num>6</span> Приложения</h2><h3 id=снимки-экрана><span class=section-num>6.1</span> Снимки экрана</h3><ul><li><p>Для скриншотов можно использовать <a href=https://github.com/resurrecting-open-source-projects/scrot target=_blank rel=noopener>scrot</a>.</p><ul><li>Gentoo<pre><code class=language-shell>emerge media-gfx/scrot
-</code></pre></li></ul></li><li><p>Добавим в конфигурационный файл:</p><pre><code class=language-conf-unix>## Screenshot
-
-## Screenshot active display
-bindsym --release Print exec --no-startup-id scrot '%Y-%m-%d_%H-%M-%S_$wx$h.png' -e 'mv $f `xdg-user-dir PICTURES` 2&gt;/dev/null'
-
-## Screenshot current window
-bindsym --release $mod+Print exec --no-startup-id scrot -u '%Y-%m-%d_%H-%M-%S_$wx$h.png' -e 'mv $f `xdg-user-dir PICTURES` 2&gt;/dev/null'
-
-## Screenshot selected region
-bindsym --release $mod+Shift+Print exec --no-startup-id scrot -s '%Y-%m-%d_%H-%M-%S_$wx$h.png' -e 'mv $f `xdg-user-dir PICTURES` 2&gt;/dev/null'
-</code></pre><ul><li>По клавише <code>PrtScr</code> делается скриншот.</li><li>По клавише <code>mod</code> + <code>PrtScr</code> делается скриншот активного окна.</li><li>По клавише <code>mod</code> + <code>Shift</code> + <code>PrtScr</code> предлагается выделить область экрана, скриншот которой следует сделать.</li><li>Скриншоты переносятся в каталог $XDG_PICTURES_DIR (обычно <code>~/Pictures</code> или <code>~/Изображения</code>) (см. <a href=https://yamadharma.github.io/ru/post/2021/09/16/xdg-user-directories/>XDG. Пользовательские каталоги</a>).</li></ul></li></ul><h2 id=совместимость-приложений><span class=section-num>7</span> Совместимость приложений</h2><h3 id=java><span class=section-num>7.1</span> Java</h3><h4 id=серое-окно-приложения-не-меняют-размер-с-помощью-wm-меню-сразу-закрываются><span class=section-num>7.1.1</span> Серое окно, приложения не меняют размер с помощью WM, меню сразу закрываются</h4><ul><li>В стандартных тулкитах для Java жестко зашит список оконных менеджеров.</li><li>Следует установить переменную окружения:<pre><code class=language-shell>export _JAVA_AWT_WM_NONREPARENTING=1
-</code></pre></li></ul><h4 id=меню-в-приложениях-плавает-отдельно-им-невозможно-пользоваться><span class=section-num>7.1.2</span> Меню в приложениях плавает отдельно, им невозможно пользоваться</h4><ul><li>В выпусках Java до версии 9 GTK интерфейс ориентирован на GTK2, в последующих версиях на GTK3.</li><li>GTK LookAndFeel может работать с GTK версий 2, 2.2 и 3.</li><li>По умолчанию используется GTK3.</li><li>Следует явно задать более старую версию:<pre><code class=language-shell>export JAVA_TOOL_OPTIONS='-Djdk.gtk.version=2.2'
-</code></pre></li></ul><hr><div class=bl-section><h4>Links to this note</h4><div class=backlinks><ul><li><a href=https://yamadharma.github.io/ru/post/2023/06/19/tiling-window-manager/>Тайловые оконные менеджеры</a></li><li><a href=https://yamadharma.github.io/ru/post/2021/04/10/system-administration/>Системное администрирование</a></li><li><a href=https://yamadharma.github.io/ru/post/2020/09/10/migration-sway/>Переход на Sway</a></li></ul></div></div></div><div class=article-tags><a class="badge badge-light" href=https://yamadharma.github.io/ru/tag/gentoo/>gentoo</a>
-<a class="badge badge-light" href=https://yamadharma.github.io/ru/tag/sysadmin/>sysadmin</a></div><div class=share-box><ul class=share><li><a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fyamadharma.github.io%2Fru%2Fpost%2F2021%2F05%2F14%2Fwindow-manager-i3%2F&amp;text=Window+manager+i3" target=_blank rel=noopener class=share-btn-twitter aria-label=twitter><i class="fab fa-twitter"></i></a></li><li><a href="https://www.facebook.com/sharer.php?u=https%3A%2F%2Fyamadharma.github.io%2Fru%2Fpost%2F2021%2F05%2F14%2Fwindow-manager-i3%2F&amp;t=Window+manager+i3" target=_blank rel=noopener class=share-btn-facebook aria-label=facebook><i class="fab fa-facebook"></i></a></li><li><a href="mailto:?subject=Window%20manager%20i3&amp;body=https%3A%2F%2Fyamadharma.github.io%2Fru%2Fpost%2F2021%2F05%2F14%2Fwindow-manager-i3%2F" target=_blank rel=noopener class=share-btn-email aria-label=envelope><i class="fas fa-envelope"></i></a></li><li><a href="https://www.linkedin.com/shareArticle?url=https%3A%2F%2Fyamadharma.github.io%2Fru%2Fpost%2F2021%2F05%2F14%2Fwindow-manager-i3%2F&amp;title=Window+manager+i3" target=_blank rel=noopener class=share-btn-linkedin aria-label=linkedin-in><i class="fab fa-linkedin-in"></i></a></li><li><a href="whatsapp://send?text=Window+manager+i3%20https%3A%2F%2Fyamadharma.github.io%2Fru%2Fpost%2F2021%2F05%2F14%2Fwindow-manager-i3%2F" target=_blank rel=noopener class=share-btn-whatsapp aria-label=whatsapp><i class="fab fa-whatsapp"></i></a></li><li><a href="https://service.weibo.com/share/share.php?url=https%3A%2F%2Fyamadharma.github.io%2Fru%2Fpost%2F2021%2F05%2F14%2Fwindow-manager-i3%2F&amp;title=Window+manager+i3" target=_blank rel=noopener class=share-btn-weibo aria-label=weibo><i class="fab fa-weibo"></i></a></li></ul></div><div class="media author-card content-widget-hr"><a href=https://yamadharma.github.io/><img class="avatar mr-3 avatar-circle" src="https://s.gravatar.com/avatar/6196459c2beaa74e930539ef4dc180db?s=200" alt="Дмитрий Сергеевич Кулябов"></a><div class=media-body><h5 class=card-title><a href=https://yamadharma.github.io/>Дмитрий Сергеевич Кулябов</a></h5><h6 class=card-subtitle>Профессор кафедры прикладной информатики и теории вероятностей</h6><p class=card-text>Мои научные интересы включают физику, администрирование Unix и сетей.</p><ul class=network-icon aria-hidden=true><li><a href=https://yamadharma.github.io/ru/#contact><i class="fas fa-envelope"></i></a></li><li><a href=https://twitter.com/dskulyabov target=_blank rel=noopener><i class="fab fa-twitter"></i></a></li><li><a href=https://www.youtube.com/c/DmitryKulyabov target=_blank rel=noopener><i class="fab fa-youtube"></i></a></li><li><a href=https://orcid.org/0000-0002-0877-7063 target=_blank rel=noopener><i class="ai ai-orcid"></i></a></li><li><a href="https://www.elibrary.ru/author_profile.asp?authorid=360953" target=_blank rel=noopener><i class="fab fa-erlang"></i></a></li><li><a href=https://profiles.impactstory.org/u/0000-0002-0877-7063 target=_blank rel=noopener><i class="ai ai-impactstory"></i></a></li><li><a href=https://www.webofscience.com/wos/author/rid/I-3183-2013 target=_blank rel=noopener><i class="ai ai-researcherid"></i></a></li><li><a href="https://www.scopus.com/authid/detail.uri?authorId=35194130800" target=_blank rel=noopener><i class="ai ai-scopus"></i></a></li><li><a href="https://dblp.uni-trier.de/pers/hd/k/Kulyabov:Dmitry_S=" target=_blank rel=noopener><i class="ai ai-dblp"></i></a></li><li><a href="https://scholar.google.com/citations?user=D5XLDn4AAAAJ" target=_blank rel=noopener><i class="ai ai-google-scholar"></i></a></li><li><a href=https://www.researchgate.net/profile/Dmitry_Kulyabov target=_blank rel=noopener><i class="ai ai-researchgate"></i></a></li><li><a href=https://rudn.academia.edu/DmitryKulyabov target=_blank rel=noopener><i class="ai ai-academia"></i></a></li><li><a href=https://osf.io/5ya7v/ target=_blank rel=noopener><i class="ai ai-osf"></i></a></li><li><a href=https://www.linkedin.com/in/dmitry-kulyabov target=_blank rel=noopener><i class="fab fa-linkedin"></i></a></li><li><a href=http://arxiv.org/a/kulyabov_d_1 target=_blank rel=noopener><i class="ai ai-arxiv"></i></a></li><li><a href=https://bitbucket.org/yamadharma/ target=_blank rel=noopener><i class="fab fa-bitbucket"></i></a></li><li><a href=https://github.com/yamadharma target=_blank rel=noopener><i class="fab fa-github"></i></a></li><li><a href=https://gitlab.com/yamadharma target=_blank rel=noopener><i class="fab fa-gitlab"></i></a></li></ul></div></div><div class="article-widget content-widget-hr"><h3>Похожие</h3><ul><li><a href=https://yamadharma.github.io/ru/post/2021/05/21/installing-linux-btrfs/>Перенос Linux на btrfs</a></li><li><a href=https://yamadharma.github.io/ru/post/2021/04/28/pipewire-multimedia-server/>Мультимедиа сервер PipeWire</a></li><li><a href=https://yamadharma.github.io/ru/post/2020/09/10/migration-sway/>Переход на Sway</a></li><li><a href=https://yamadharma.github.io/ru/post/2023/06/19/tiling-window-manager/>Тайловые оконные менеджеры</a></li><li><a href=https://yamadharma.github.io/ru/post/2023/06/14/update-bitbucket-ssh-host-keys/>Обновление хостовых ключей ssh Bitbucket Cloud</a></li></ul></div></div></article></div><div class=page-footer><div class=container><footer class=site-footer><p class="powered-by copyright-license-text">© 2006—2023 Dmitry S. Kulyabov. This work is licensed under <a href=https://creativecommons.org/licenses/by/4.0 rel="noopener noreferrer" target=_blank>CC BY 4.0</a></p><p class="powered-by footer-license-icons"><a href=https://creativecommons.org/licenses/by/4.0 rel="noopener noreferrer" target=_blank aria-label="Creative Commons"><i class="fab fa-creative-commons fa-2x" aria-hidden=true></i>
+<span class=article-categories><i class="fas fa-folder mr-1"></i><a href=https://yamadharma.github.io/ru/category/computer-science/>computer-science</a></span></div></div><div class=article-container><div class=article-style><p>Менеджер окон <em>i3</em>.</p><details class="toc-inpage d-print-none" open><summary class=font-weight-bold>Содержание</summary><nav id=TableOfContents><ul><li><a href=#общая-информация><span class=section-num>1</span> Общая информация</a></li><li><a href=#репозиторий-конфигурации><span class=section-num>2</span> Репозиторий конфигурации</a></li><li><a href=#файл-конфигурации><span class=section-num>3</span> Файл конфигурации</a></li><li><a href=#навигация><span class=section-num>4</span> Навигация</a><ul><li><a href=#клавиша-модификатор><span class=section-num>4.1</span> Клавиша-модификатор</a></li><li><a href=#основные-комбинации-клавиш><span class=section-num>4.2</span> Основные комбинации клавиш</a></li><li><a href=#перемещение-фокуса><span class=section-num>4.3</span> Перемещение фокуса</a></li><li><a href=#перемещение-окон><span class=section-num>4.4</span> Перемещение окон</a></li><li><a href=#modifying-windows><span class=section-num>4.5</span> Modifying windows</a></li><li><a href=#структура-расположения-контейнеров><span class=section-num>4.6</span> Структура расположения контейнеров</a></li><li><a href=#floating><span class=section-num>4.7</span> Floating</a></li><li><a href=#рабочие-области--workspaces><span class=section-num>4.8</span> Рабочие области (workspaces)</a></li><li><a href=#opening-applications-closing-windows><span class=section-num>4.9</span> Opening applications / Closing windows</a></li><li><a href=#выход-перезапуск><span class=section-num>4.10</span> Выход/Перезапуск</a></li></ul></li><li><a href=#настройка><span class=section-num>5</span> Настройка</a><ul><li><a href=#терминал><span class=section-num>5.1</span> Терминал</a></li><li><a href=#управление-окном-с-помощью-мышки><span class=section-num>5.2</span> Управление окном с помощью мышки</a></li><li><a href=#строка-статуса><span class=section-num>5.3</span> Строка статуса</a><ul><li><a href=#i3bar><span class=section-num>5.3.1</span> i3bar</a></li><li><a href=#py3status><span class=section-num>5.3.2</span> py3status</a></li><li><a href=#polybar><span class=section-num>5.3.3</span> polybar</a></li></ul></li><li><a href=#запуск-приложений><span class=section-num>5.4</span> Запуск приложений</a><ul><li><a href=#rofi><span class=section-num>5.4.1</span> rofi</a></li></ul></li><li><a href=#блокировка-экрана><span class=section-num>5.5</span> Блокировка экрана</a><ul><li><a href=#блокировщик-экрана-i3lock><span class=section-num>5.5.1</span> Блокировщик экрана <code>i3lock</code></a></li><li><a href=#блокировщик-экрана-i3lock-color><span class=section-num>5.5.2</span> Блокировщик экрана <code>i3lock-color</code></a></li></ul></li></ul></li><li><a href=#приложения><span class=section-num>6</span> Приложения</a><ul><li><a href=#снимки-экрана><span class=section-num>6.1</span> Снимки экрана</a></li></ul></li><li><a href=#совместимость-приложений><span class=section-num>7</span> Совместимость приложений</a><ul><li><a href=#java><span class=section-num>7.1</span> Java</a><ul><li><a href=#серое-окно-приложения-не-меняют-размер-с-помощью-wm-меню-сразу-закрываются><span class=section-num>7.1.1</span> Серое окно, приложения не меняют размер с помощью WM, меню сразу закрываются</a></li><li><a href=#меню-в-приложениях-плавает-отдельно-им-невозможно-пользоваться><span class=section-num>7.1.2</span> Меню в приложениях плавает отдельно, им невозможно пользоваться</a></li></ul></li></ul></li></ul></nav></details><h2 id=общая-информация><span class=section-num>1</span> Общая информация</h2><ul><li>Тайловый менеджер окон.</li><li><a href=https://i3wm.org/ target=_blank rel=noopener>https://i3wm.org/</a></li></ul><h2 id=репозиторий-конфигурации><span class=section-num>2</span> Репозиторий конфигурации</h2><ul><li>Я сделал репозиторий со своей конфигурацией: <a href=https://github.com/yamadharma/config-i3 target=_blank rel=noopener>https://github.com/yamadharma/config-i3</a></li></ul><h2 id=файл-конфигурации><span class=section-num>3</span> Файл конфигурации</h2><ul><li>Файлы конфигурации просматриваются в следующем порядке:<ul><li><code>$XDG_CONFIG_HOME/i3/config</code> (<code>~/.config/i3/config</code>);</li><li><code>~/.i3/config</code>;</li><li><code>$XDG_CONFIG_DIRS/i3/config</code> (<code>/etc/xdg/i3/config</code>);</li><li><code>/etc/i3/config</code>.</li></ul></li><li>Начиная с версии 4.20, можно подключать другие файлы конфигурации из основного файла конфигурации <em>i3</em>.<ul><li>Примеры использования директивы <code>include</code>:<div class=highlight><pre tabindex=0 class=chroma><code class=language-cfg data-lang=cfg><span class=line><span class=cl><span class=c1># Тильда преобразуется в домашний каталог пользователя</span>
+</span></span><span class=line><span class=cl><span class=na>include ~/.config/i3/assignments.conf</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Переменные среды разыменовываются</span>
+</span></span><span class=line><span class=cl><span class=na>include $HOME/.config/i3/assignments.conf</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Символы подстановки раскрываются</span>
+</span></span><span class=line><span class=cl><span class=na>include ~/.config/i3/config.d/*.conf</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Можно выполнять команду</span>
+</span></span><span class=line><span class=cl><span class=na>include ~/.config/i3/`hostname`.conf</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Каждый путь загружается только один раз</span>
+</span></span><span class=line><span class=cl><span class=na>include ~/.config/i3/config</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Относительные пути интерпретируются относительно каталога конфигурационного файла</span>
+</span></span><span class=line><span class=cl><span class=na>include assignments.conf</span>
+</span></span></code></pre></div></li></ul></li></ul><h2 id=навигация><span class=section-num>4</span> Навигация</h2><h3 id=клавиша-модификатор><span class=section-num>4.1</span> Клавиша-модификатор</h3><ul><li>В качестве модификатора обычно используется:<ul><li><code>Alt</code>:<div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>set $mod Mod1
+</span></span></code></pre></div></li><li><code>Super</code> (Клавиша со значком <em>Windows</em>):<div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>set $mod Mod4
+</span></span></code></pre></div></li><li>Предпочитаю <code>Super</code>, чтобы не конфликтовать с Emacs.</li></ul></li></ul><h3 id=основные-комбинации-клавиш><span class=section-num>4.2</span> Основные комбинации клавиш</h3><ul><li><code>Mod</code> + <code>Enter</code>: открыть терминал.</li></ul><h3 id=перемещение-фокуса><span class=section-num>4.3</span> Перемещение фокуса</h3><ul><li>Фокус можно перемещать как с помощью стрелок, так и с помощью буквенных клавиш, как в редакторе <em>vi</em>.<ul><li><code>Mod</code> + <code>h</code> или <code>Mod</code> + <code>Left</code>: сдвиг фокуса влево.</li><li><code>Mod</code> + <code>j</code> или <code>Mod</code> + <code>Down</code>: сдвиг фокуса вниз.</li><li><code>Mod</code> + <code>k</code> или <code>Mod</code> + <code>Up</code>: сдвиг фокуса вверх.</li><li><code>Mod</code> + <code>l</code> или <code>Mod</code> + <code>Right</code>: сдвиг фокуса вправо.</li></ul></li><li>Конфигурация выглядит следующим образом:<div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>## Home row direction keys, like vim
+</span></span><span class=line><span class=cl>set $left h
+</span></span><span class=line><span class=cl>set $down j
+</span></span><span class=line><span class=cl>set $up k
+</span></span><span class=line><span class=cl>set $right l
+</span></span><span class=line><span class=cl>## Move your focus around
+</span></span><span class=line><span class=cl>bindsym $mod+$left focus left
+</span></span><span class=line><span class=cl>bindsym $mod+$down focus down
+</span></span><span class=line><span class=cl>bindsym $mod+$up focus up
+</span></span><span class=line><span class=cl>bindsym $mod+$right focus right
+</span></span><span class=line><span class=cl>## Or use $mod+[up|down|left|right]
+</span></span><span class=line><span class=cl>bindsym $mod+Left focus left
+</span></span><span class=line><span class=cl>bindsym $mod+Down focus down
+</span></span><span class=line><span class=cl>bindsym $mod+Up focus up
+</span></span><span class=line><span class=cl>bindsym $mod+Right focus right
+</span></span></code></pre></div></li><li>Впрочем, следует заметить, что также могут использоваться и другие соглашения:<ul><li><code>j</code>: влево;</li><li><code>k</code>: вниз;</li><li><code>l</code>: вверх;</li><li><code>;</code>: вправо.</li></ul></li><li>Поскольку в данном менеджере окон поддерживаются контейнеры, то можно переключить фокус на родительский контейнер:<ul><li><code>Mod</code> + <code>a</code>: переключить фокус на родительский контейнер.</li><li>Конфигурация:<div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>## Move focus to the parent container
+</span></span><span class=line><span class=cl>bindsym $mod+a focus parent
+</span></span></code></pre></div></li></ul></li><li><code>Mod</code> + <code>Space</code>: переключить режим фокуса.</li></ul><h3 id=перемещение-окон><span class=section-num>4.4</span> Перемещение окон</h3><ul><li>Делается аналогично перемещению фокуса, но с добавлением модификатора <code>Shift</code>:<ul><li><code>Mod</code> + <code>Shift</code> + <code>h</code> или <code>Mod</code> + <code>Shift</code> + <code>Left</code>: перемещение влево;</li><li><code>Mod</code> + <code>Shift</code> + <code>j</code> или <code>Mod</code> + <code>Shift</code> + <code>Down</code>: перемещение вниз;</li><li><code>Mod</code> + <code>Shift</code> + <code>k</code> или <code>Mod</code> + <code>Shift</code> + <code>Up</code>: перемещение вверх;</li><li><code>Mod</code> + <code>Shift</code> + <code>l</code> или <code>Mod</code> + <code>Shift</code> + <code>Right</code>: перемещение вправо.</li></ul></li><li>Конфигурация выглядит следующим образом:<div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>## Move the focused window with the same, but add Shift
+</span></span><span class=line><span class=cl>bindsym $mod+Shift+$left move left
+</span></span><span class=line><span class=cl>bindsym $mod+Shift+$down move down
+</span></span><span class=line><span class=cl>bindsym $mod+Shift+$up move up
+</span></span><span class=line><span class=cl>bindsym $mod+Shift+$right move right
+</span></span><span class=line><span class=cl>## Ditto, with arrow keys
+</span></span><span class=line><span class=cl>bindsym $mod+Shift+Left move left
+</span></span><span class=line><span class=cl>bindsym $mod+Shift+Down move down
+</span></span><span class=line><span class=cl>bindsym $mod+Shift+Up move up
+</span></span><span class=line><span class=cl>bindsym $mod+Shift+Right move right
+</span></span></code></pre></div></li></ul><h3 id=modifying-windows><span class=section-num>4.5</span> Modifying windows</h3><ul><li><code>Mod</code> + f toggle fullscreen</li><li><code>Mod</code> + v split a window vertically</li><li><code>Mod</code> + h split a window horizontally</li><li><code>Mod</code> + r resize mode</li></ul><h3 id=структура-расположения-контейнеров><span class=section-num>4.6</span> Структура расположения контейнеров</h3><ul><li>Поддерживаются следующие расположения контейнеров:<ul><li><code>Mod</code> + <code>e</code>: переключение разделённого расположения (split layout);</li><li><code>Mod</code> + <code>s</code>: стековое размещение (stacking layout);</li><li><code>Mod</code> + <code>w</code>: размещение с табами (tabbed layout).</li></ul></li><li>Конфигурация:<div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>## Switch the current container between different layout styles
+</span></span><span class=line><span class=cl>bindsym $mod+s layout stacking
+</span></span><span class=line><span class=cl>bindsym $mod+w layout tabbed
+</span></span><span class=line><span class=cl>bindsym $mod+e layout toggle split
+</span></span></code></pre></div></li><li>Для раскладки по умолчанию я использую табы:<div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>### Layout mode for new containers
+</span></span><span class=line><span class=cl>## default|stacking|tabbed
+</span></span><span class=line><span class=cl>workspace_layout tabbed
+</span></span></code></pre></div></li></ul><h3 id=floating><span class=section-num>4.7</span> Floating</h3><ul><li><code>Mod</code> + Shift + Space toggle floating</li><li><code>Mod</code> + Left click drag floating</li></ul><h3 id=рабочие-области--workspaces><span class=section-num>4.8</span> Рабочие области (workspaces)</h3><ul><li>Сконфигурим рабочие области:<div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>## Define names for workspaces
+</span></span><span class=line><span class=cl>set $ws1    1
+</span></span><span class=line><span class=cl>set $ws2    2
+</span></span><span class=line><span class=cl>set $ws3    3
+</span></span><span class=line><span class=cl>set $ws4    4
+</span></span><span class=line><span class=cl>set $ws5    5
+</span></span><span class=line><span class=cl>set $ws6    6
+</span></span><span class=line><span class=cl>set $ws7    7
+</span></span><span class=line><span class=cl>set $ws8    8
+</span></span><span class=line><span class=cl>set $ws9    9
+</span></span><span class=line><span class=cl>set $ws10   10
+</span></span></code></pre></div></li><li><code>Mod</code> + <code>0</code> &ndash; <code>9</code>: переключиться на соответствующую рабочую область:<div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>## Switch to workspace
+</span></span><span class=line><span class=cl>bindsym $mod+1 workspace $ws1
+</span></span><span class=line><span class=cl>bindsym $mod+2 workspace $ws2
+</span></span><span class=line><span class=cl>bindsym $mod+3 workspace $ws3
+</span></span><span class=line><span class=cl>bindsym $mod+4 workspace $ws4
+</span></span><span class=line><span class=cl>bindsym $mod+5 workspace $ws5
+</span></span><span class=line><span class=cl>bindsym $mod+6 workspace $ws6
+</span></span><span class=line><span class=cl>bindsym $mod+7 workspace $ws7
+</span></span><span class=line><span class=cl>bindsym $mod+8 workspace $ws8
+</span></span><span class=line><span class=cl>bindsym $mod+9 workspace $ws9
+</span></span><span class=line><span class=cl>bindsym $mod+0 workspace $ws10
+</span></span></code></pre></div></li><li><code>Mod</code> + <code>Shift</code> + <code>0</code> &ndash; <code>9</code>: перенести окно на соответствующую рабочую область:<div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>## Move focused container to workspace
+</span></span><span class=line><span class=cl>bindsym $mod+Shift+1 move container to workspace $ws1
+</span></span><span class=line><span class=cl>bindsym $mod+Shift+2 move container to workspace $ws2
+</span></span><span class=line><span class=cl>bindsym $mod+Shift+3 move container to workspace $ws3
+</span></span><span class=line><span class=cl>bindsym $mod+Shift+4 move container to workspace $ws4
+</span></span><span class=line><span class=cl>bindsym $mod+Shift+5 move container to workspace $ws5
+</span></span><span class=line><span class=cl>bindsym $mod+Shift+6 move container to workspace $ws6
+</span></span><span class=line><span class=cl>bindsym $mod+Shift+7 move container to workspace $ws7
+</span></span><span class=line><span class=cl>bindsym $mod+Shift+8 move container to workspace $ws8
+</span></span><span class=line><span class=cl>bindsym $mod+Shift+9 move container to workspace $ws9
+</span></span><span class=line><span class=cl>bindsym $mod+Shift+0 move container to workspace $ws10
+</span></span></code></pre></div></li></ul><h3 id=opening-applications-closing-windows><span class=section-num>4.9</span> Opening applications / Closing windows</h3><ul><li><code>Mod</code> + d open application launcher (dmenu)</li><li><code>Mod</code> + Shift + q kill a window</li></ul><h3 id=выход-перезапуск><span class=section-num>4.10</span> Выход/Перезапуск</h3><ul><li><code>Mod</code> + <code>Shift</code> + <code>c</code>: перечитать конфигурационный файл.<div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>## ~/.config/i3/config
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>## reload the configuration file
+</span></span><span class=line><span class=cl>bindsym $mod+Shift+c reload
+</span></span></code></pre></div></li><li><code>Mod</code> + <code>Shift</code> + <code>r</code>: перестартовать <em>i3</em>, сохранив сессию.<div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>## ~/.config/i3/config
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>## restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+</span></span><span class=line><span class=cl>bindsym $mod+Shift+r restart
+</span></span></code></pre></div></li><li><code>Mod</code> + <code>Shift</code> + <code>e</code>: выход из <em>i3</em>.<div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>## ~/.config/i3/config
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>## exit i3 (logs you out of your X session)
+</span></span><span class=line><span class=cl>bindsym $mod+Shift+e exec &#34;i3-nagbar -t warning -m &#39;You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.&#39; -B &#39;Yes, exit i3&#39; &#39;i3-msg exit&#39;&#34;
+</span></span></code></pre></div></li></ul><h2 id=настройка><span class=section-num>5</span> Настройка</h2><h3 id=терминал><span class=section-num>5.1</span> Терминал</h3><ul><li><p>В качестве терминала я использую kitty.</p></li><li><p>Конфигурация запуска терминала:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>set $term kitty
+</span></span><span class=line><span class=cl>bindsym $mod+Return exec $term
+</span></span></code></pre></div><ul><li>В этом случае запускается одно окно терминала.</li></ul></li><li><p>Для работы я использую специальную настройку сессии терминала. Я её запускаю при входе в сессию. Для этого я приспособил комбинацию <code>Mod</code> + <code>Shift</code> + <code>Enter</code>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>bindsym $mod+Shift+Return exec kitty --session ~/.config/kitty/startup
+</span></span></code></pre></div></li></ul><h3 id=управление-окном-с-помощью-мышки><span class=section-num>5.2</span> Управление окном с помощью мышки</h3><ul><li><p>Можно управлять окнами с помощью мышки.</p></li><li><p>Привязка осуществляется следующей командой:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>bindsym [--release] [--border] [--whole-window] [--exclude-titlebar] [&lt;Modifiers&gt;+]button&lt;n&gt; command
+</span></span></code></pre></div><ul><li>По умолчанию привязка запускается только при нажатии на строку заголовка окна.</li><li>Если указан флаг <code>--release</code>, он запустится, когда кнопка мыши будет отпущена.</li><li>Если указан флаг <code>--whole-window</code>, то привязка также будет выполняться при щелчке по любой части окна, за исключением границы.</li><li>Чтобы привязка выполнялась при щелчке границы, нужно указать флаг <code>--border</code>.</li><li>Если задан флаг <code>--exclude-titlebar</code>, заголовок не будет учитываться для привязки клавиш.</li></ul></li><li><p>Примеры.</p><ul><li>Средняя кнопка на заголовке закрывает окно:<div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>bindsym --release button2 kill
+</span></span></code></pre></div></li><li>Средняя кнопка и модификатор над любой частью окна закрывает окно:<div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>bindsym --whole-window $mod+button2 kill
+</span></span></code></pre></div></li><li>Правая кнопка мыши переключает плавающий режим:<div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>bindsym button3 floating toggle
+</span></span><span class=line><span class=cl>bindsym $mod+button3 floating toggle
+</span></span></code></pre></div></li><li>Боковые кнопки мыши перемещают окно:<div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>bindsym button9 move left
+</span></span><span class=line><span class=cl>bindsym button8 move right
+</span></span></code></pre></div></li></ul></li></ul><h3 id=строка-статуса><span class=section-num>5.3</span> Строка статуса</h3><h4 id=i3bar><span class=section-num>5.3.1</span> i3bar</h4><ul><li>Отрисовку панели осуществляет утилита <code>i3bar</code>.</li><li>Отображается вверху или внизу экрана.</li><li>Содержит:<ul><li>область с кнопками переключения рабочих областей <em>i3</em>;</li><li>системную строку, генерируемую при помощи <code>i3status</code> или аналогов;</li><li>системный трей с иконками программ.</li></ul></li><li>В конфигурационном файле задаётся следующим образом (<a href=https://i3wm.org/docs/userguide.html#_configuring_i3bar target=_blank rel=noopener>https://i3wm.org/docs/userguide.html#_configuring_i3bar</a>):<div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl># ~/.config/i3/config -*- mode: conf-unix; -*-
+</span></span><span class=line><span class=cl>## Start i3bar to display a workspace bar
+</span></span><span class=line><span class=cl>bar {
+</span></span><span class=line><span class=cl>    status_command i3status
+</span></span><span class=line><span class=cl>    position top
+</span></span><span class=line><span class=cl>}
+</span></span></code></pre></div></li></ul><ol><li><p>Поддержка иконок в i3bar</p><ul><li>В <code>i3bar</code> можно использовать шрифты иконок (см. <a href=https://yamadharma.github.io/ru/post/2021/05/21/monospace-fonts/>Моноширинные шрифты</a>).</li><li>Наиболее распространённым является шрифт <a href=https://fontawesome.com/ target=_blank rel=noopener>Font Awesome</a>.</li><li>Установка:<ul><li>Gentoo<div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>emerge media-fonts/fontawesome
+</span></span></code></pre></div></li></ul></li><li>Для вставки шрифта в файл можно использовать список кодов для иконок <a href=https://fontawesome.com/cheatsheet target=_blank rel=noopener>https://fontawesome.com/cheatsheet</a>.</li><li>Шрифт лучше явно обозначить в конфигурации:<div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>## ~/.config/i3/config
+</span></span><span class=line><span class=cl>bar {
+</span></span><span class=line><span class=cl>    …
+</span></span><span class=line><span class=cl>    font pango:Source Sans Pro, FontAwesome 5 Free 10
+</span></span><span class=line><span class=cl>    …
+</span></span><span class=line><span class=cl>}
+</span></span></code></pre></div></li><li>Для набора символа по его коду следует использовать конфигурации клавиш. Например, для набора символа с кодом <code>0xf004</code>, требуется набрать:<ul><li>приложения на основе GTK: <code>Ctrl</code> + <code>Shift</code> + <code>u</code>, <code>f004</code>, <code>Enter</code>;</li><li>emacs: <code>Ctrl</code> + <code>x</code>, <code>8</code>, <code>Enter</code>, <code>f004</code>, <code>Enter</code>;</li><li>vim: <code>Ctrl</code> + <code>v</code>, <code>uf004</code>;</li><li>urxvt: удерживая <code>Ctrl</code> + <code>Shift</code>, наберите <code>f004</code>.</li></ul></li></ul></li></ol><ol start=2><li><p>i3status</p><ul><li>Использовано <a href=https://igancev.ru/2020-05-11-configuring-i3status-in-i3wm target=_blank rel=noopener>https://igancev.ru/2020-05-11-configuring-i3status-in-i3wm</a>.</li><li><code>i3status</code> генерирует строку состояния для <code>i3bar</code>.</li><li>Содержит встроенные модули:<ul><li>IPv6 &mdash; получает и выводит IPv6 адрес.</li><li>Disk &mdash; отображает информацию о занятом и свободном месте в файловой системе.</li><li>Run-watch &mdash; мониторинг определённого процесса в системе.</li><li>Path-exists &mdash; проверяет на существование путь в файловой системе.</li><li>Wireless &mdash; позволяет выводить подключения к WIFI сети, уровень сигнала, имя точки доступа.</li><li>Ethernet &mdash; предоставляет IP адрес и скорость соединения сетевого интерфейса.</li><li>Battery &mdash; показ уровня заряда батареи.</li><li>CPU-Temperature &mdash; показ температуры процессора.</li><li>CPU Usage &mdash; использование процессора в процентах.</li><li>Memory &mdash; использование оперативной памяти.</li><li>Load &mdash; среднее значение загрузки системы за 1, 5 и 15 минут (Load Overage).</li><li>Time &mdash; время в текущей временной зоне.</li><li>TzTime &mdash; время в заданной временной зоне.</li><li>DDate &mdash; дата.</li><li>Volume &mdash; управление громкостью звука.</li><li>File Contents &mdash; вывод содержимого указанного файла.</li></ul></li><li>Модули в строке можно переиспользовать по нескольку раз, управляя порядком вывода.</li><li>Конфигурацию условно можно разделить на 3 части:<ul><li>блок <code>general</code> &mdash; содержит общие параметры;</li><li>переменная <code>order</code> &mdash; в неё записывается порядок вывода интересующих модулей;</li><li>блоки конфигурации модулей &mdash; непосредственно настройки самих блоков с метриками.</li></ul></li><li>В конфигурации i3bar задаётся конфигурационный файл для i3status:<div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl># ~/.config/i3/config -*- mode: conf-unix; -*-
+</span></span><span class=line><span class=cl>## Start i3bar to display a workspace bar
+</span></span><span class=line><span class=cl>bar {
+</span></span><span class=line><span class=cl>    font pango:Source Sans Pro, FontAwesome 5 Free 10
+</span></span><span class=line><span class=cl>    status_command	i3status --config ~/.config/i3/i3status/config
+</span></span><span class=line><span class=cl>    position		top
+</span></span><span class=line><span class=cl>}
+</span></span></code></pre></div></li><li>Структура информационной панели задаётся в конфигурационном файле:<div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>### -*- mode: conf-unix; -*-
+</span></span><span class=line><span class=cl>## ~/.config/i3/i3status/config
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>general {
+</span></span><span class=line><span class=cl>    colors = true # включение/выключение поддержки цветов true/false
+</span></span><span class=line><span class=cl>    interval = 1 # интервал обновления строки статуса, в секундах
+</span></span><span class=line><span class=cl>    output_format = &#34;i3bar&#34; # формат вывода, устанавливаем i3bar (JSON)
+</span></span><span class=line><span class=cl>}
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl># порядок вывода модулей
+</span></span><span class=line><span class=cl>order += &#34;run_watch openvpn&#34;
+</span></span><span class=line><span class=cl>order += &#34;run_watch openconnect&#34;
+</span></span><span class=line><span class=cl>order += &#34;volume master&#34;
+</span></span><span class=line><span class=cl>order += &#34;wireless _first_&#34;
+</span></span><span class=line><span class=cl>order += &#34;battery all&#34;
+</span></span><span class=line><span class=cl>order += &#34;disk /&#34;
+</span></span><span class=line><span class=cl>order += &#34;memory&#34;
+</span></span><span class=line><span class=cl>order += &#34;cpu_usage&#34;
+</span></span><span class=line><span class=cl>order += &#34;cpu_temperature 0&#34;
+</span></span><span class=line><span class=cl>order += &#34;tztime local&#34;
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl># отслеживание процесса openvpn
+</span></span><span class=line><span class=cl># служит как индикатор работы openvpn клиента
+</span></span><span class=line><span class=cl># при запуске openvpn необходимо
+</span></span><span class=line><span class=cl># указывать параметр --writepid /var/run/openvpn.pid
+</span></span><span class=line><span class=cl>run_watch openvpn {
+</span></span><span class=line><span class=cl>    pidfile = &#34;/var/run/openvpn.pid&#34;
+</span></span><span class=line><span class=cl>    format = &#34; openvpn&#34;
+</span></span><span class=line><span class=cl>    # если пареметр format_down оставить пустым,
+</span></span><span class=line><span class=cl>    # то при неактивном процессе блок будет отсутствовать
+</span></span><span class=line><span class=cl>    format_down=&#34;&#34;
+</span></span><span class=line><span class=cl>}
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl># аналогичный блок индикатор openconnect vpn клиента
+</span></span><span class=line><span class=cl># требуется запуск клиента с параметром --pid-file=/var/run/openconnect.pid
+</span></span><span class=line><span class=cl>run_watch openconnect {
+</span></span><span class=line><span class=cl>    pidfile = &#34;/var/run/openconnect.pid&#34;
+</span></span><span class=line><span class=cl>    format = &#34; openconnect vpn&#34;
+</span></span><span class=line><span class=cl>    format_down=&#34;&#34;
+</span></span><span class=line><span class=cl>}
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl># управление громкостью звука
+</span></span><span class=line><span class=cl>volume master {
+</span></span><span class=line><span class=cl>    format = &#34; %volume&#34; # шаблон громкости в активном состоянии
+</span></span><span class=line><span class=cl>    format_muted = &#34; %volume&#34; # шаблон громкости в состоянии muted (без звука)
+</span></span><span class=line><span class=cl>    device = &#34;default&#34;
+</span></span><span class=line><span class=cl>    mixer = &#34;Master&#34;
+</span></span><span class=line><span class=cl>    mixer_idx = 0
+</span></span><span class=line><span class=cl>}
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl># индикатор WIFI
+</span></span><span class=line><span class=cl>wireless _first_ {
+</span></span><span class=line><span class=cl>    # шаблон вывода, можно дополнить
+</span></span><span class=line><span class=cl>    # наименованием подключения %essid
+</span></span><span class=line><span class=cl>    # и ip адресом %ip
+</span></span><span class=line><span class=cl>    format_up = &#34;%quality %frequency&#34;
+</span></span><span class=line><span class=cl>    format_down = &#34;&#34;
+</span></span><span class=line><span class=cl>}
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl># состояние заряда батареи
+</span></span><span class=line><span class=cl>battery all {
+</span></span><span class=line><span class=cl>    # шаблон вывода, можно дополнить
+</span></span><span class=line><span class=cl>    # оставшимся временем работы %emptytime
+</span></span><span class=line><span class=cl>    # энергопотреблением %consumption в ваттах
+</span></span><span class=line><span class=cl>    format = &#34;%status %percentage&#34;
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    # true - показ процента заряда от 0 до 100
+</span></span><span class=line><span class=cl>    # false - показ процента заряда от 0 до n, с учетом
+</span></span><span class=line><span class=cl>    # изношенности аккумулятора
+</span></span><span class=line><span class=cl>    last_full_capacity = true
+</span></span><span class=line><span class=cl>    format_down = &#34;&#34;
+</span></span><span class=line><span class=cl>    status_chr = &#34;&#34; # статус подзарядки
+</span></span><span class=line><span class=cl>    status_bat = &#34;&#34; # статус в режиме работы от батареи
+</span></span><span class=line><span class=cl>    status_unk = &#34;? UNK&#34; # неизвестный статус
+</span></span><span class=line><span class=cl>    status_full = &#34;&#34; # статус полного заряда
+</span></span><span class=line><span class=cl>    path = &#34;/sys/class/power_supply/BAT%d/uevent&#34;
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    # нижний порог заряда, после которого блок
+</span></span><span class=line><span class=cl>    # будет окрашен в &#34;color_bad&#34; (по умолчанию красный)
+</span></span><span class=line><span class=cl>    # подробнее в man i3status
+</span></span><span class=line><span class=cl>    low_threshold = 10
+</span></span><span class=line><span class=cl>}
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl># отслеживаемый накопитель
+</span></span><span class=line><span class=cl>disk &#34;/&#34; {
+</span></span><span class=line><span class=cl>    # доступные переменные:
+</span></span><span class=line><span class=cl>    # %used, %percentage_used - занятое пространство
+</span></span><span class=line><span class=cl>    # %free, %percentage_free - свободное пространство
+</span></span><span class=line><span class=cl>    # %avail, %percentage_avail - доступное пространство
+</span></span><span class=line><span class=cl>    # %total - всего
+</span></span><span class=line><span class=cl>    format = &#34; %avail&#34;
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    # будет окрашен в &#34;color_bad&#34; (по умолчанию красный)
+</span></span><span class=line><span class=cl>    # при достижении нижнего порога менее 10GB доступного пространства
+</span></span><span class=line><span class=cl>    low_threshold = &#34;10&#34;
+</span></span><span class=line><span class=cl>    threshold_type = &#34;gbytes_avail&#34;
+</span></span><span class=line><span class=cl>    format_below_threshold = &#34; Warning: %avail&#34;
+</span></span><span class=line><span class=cl>}
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl># миниторинг оперативной памяти
+</span></span><span class=line><span class=cl>memory {
+</span></span><span class=line><span class=cl>    # доступные переменные:
+</span></span><span class=line><span class=cl>    # %total, percentage_total
+</span></span><span class=line><span class=cl>    # %used, percentage_used
+</span></span><span class=line><span class=cl>    # %free, percentage_free
+</span></span><span class=line><span class=cl>    # %available, percentage_available
+</span></span><span class=line><span class=cl>    # %shared, percentage_shared
+</span></span><span class=line><span class=cl>    format = &#34; %used&#34;
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    # порог, при котором вывод окрасится в
+</span></span><span class=line><span class=cl>    # желтый (degraded) или красный (critical)
+</span></span><span class=line><span class=cl>    # а формат вывода изменится на format_degraded
+</span></span><span class=line><span class=cl>    threshold_degraded = &#34;1G&#34;
+</span></span><span class=line><span class=cl>    threshold_critical = &#34;200M&#34;
+</span></span><span class=line><span class=cl>    format_degraded = &#34;MEMORY &lt; %available&#34;
+</span></span><span class=line><span class=cl>}
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl># температура процессора
+</span></span><span class=line><span class=cl>cpu_temperature 0 {
+</span></span><span class=line><span class=cl>    format = &#34; %degrees&#34;
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    # верхний порог температуры, при достижении которого
+</span></span><span class=line><span class=cl>    # вывод окрасится красным,
+</span></span><span class=line><span class=cl>    # и формат изменится на format_above_threshold
+</span></span><span class=line><span class=cl>    max_threshold = &#34;80&#34;
+</span></span><span class=line><span class=cl>    format_above_threshold = &#34; %degrees&#34;
+</span></span><span class=line><span class=cl>    path = &#34;/sys/class/thermal/thermal_zone0/temp&#34;
+</span></span><span class=line><span class=cl>}
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl># использование центрального процессора
+</span></span><span class=line><span class=cl>cpu_usage {
+</span></span><span class=line><span class=cl>    # %usage - процентное использование ЦП
+</span></span><span class=line><span class=cl>    # %cpu&lt;N&gt; - начиная с %cpu0 и далее показывает использование ядер
+</span></span><span class=line><span class=cl>    format = &#34; %usage&#34;
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    # доступны параметры:
+</span></span><span class=line><span class=cl>    # degraded_threshold, окрас в желтый, по умолчанию 90
+</span></span><span class=line><span class=cl>    # max_threshold, окрас в красный, по умолчанию 95
+</span></span><span class=line><span class=cl>    # и кастомные форматы для них
+</span></span><span class=line><span class=cl>    # format_above_degraded_threshold и format_above_threshold
+</span></span><span class=line><span class=cl>}
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl># вывод даты и времени по заданному формату
+</span></span><span class=line><span class=cl>tztime local {
+</span></span><span class=line><span class=cl>    format = &#34; %d %b %Y  %H:%M:%S&#34;
+</span></span><span class=line><span class=cl>}
+</span></span></code></pre></div></li></ul></li></ol><h4 id=py3status><span class=section-num>5.3.2</span> py3status</h4><ul><li><code>py3status</code> &mdash; это расширяемая оболочка для <code>i3status</code>, написанная на python.</li><li>Сайт: <a href=https://py3status.readthedocs.io/ target=_blank rel=noopener>https://py3status.readthedocs.io/</a>.</li><li>Репозиторий: <a href=https://github.com/ultrabug/py3status target=_blank rel=noopener>https://github.com/ultrabug/py3status</a>.</li><li>Можно управлять <code>i3bar</code>:<ul><li>используя один из доступных модулей, поставляемых с <code>py3status</code>;</li><li>группировать несколько модулей и автоматически или вручную циклически отображать их отображение;</li><li>писать свои собственные модули и отображать их вывод на панели;</li><li>обрабатывать события кликов на <code>i3bar</code>.</li></ul></li><li>Отображается вверху или внизу экрана.</li><li>Содержит:<ul><li>область с кнопками переключения рабочих областей <em>i3</em>;</li><li>системную строку;</li><li>системный трей с иконками программ.</li></ul></li></ul><ol><li><p>Запуск py3status</p><ul><li>Запускается вместо <code>i3bar</code>:<div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl># ~/.config/i3/config -*- mode: conf-unix; -*-
+</span></span><span class=line><span class=cl>## Start py3status to display a workspace bar
+</span></span><span class=line><span class=cl>bar {
+</span></span><span class=line><span class=cl>    font pango:Iosevka Nerd Font 12
+</span></span><span class=line><span class=cl>    status_command py3status
+</span></span><span class=line><span class=cl>    position top
+</span></span><span class=line><span class=cl>}
+</span></span></code></pre></div></li><li>Использует конфигурационный файл от <code>i3status</code> или собственную конфигурацию.</li><li>Порядок поиска конфигурационного файла:<ul><li><code>$XDG_CONFIG_HOME/py3status/config</code>;</li><li><code>$XDG_CONFIG_HOME/i3status/config</code>;</li><li><code>$XDG_CONFIG_HOME/i3/i3status.conf</code>;</li><li><code>~/.i3status.conf</code>;</li><li><code>~/.i3/i3status.conf</code>;</li><li><code>$XDG_CONFIG_DIRS/i3status/config</code>;</li><li><code>/etc/i3status.conf</code>.</li></ul></li></ul></li></ol><h4 id=polybar><span class=section-num>5.3.3</span> polybar</h4><ul><li><p>Отдельное приложение для строки статуса.</p></li><li><p>Применяется для замены <em>i3bar</em>.</p></li><li><p><a href=https://polybar.github.io/ target=_blank rel=noopener>https://polybar.github.io/</a></p></li><li><p><a href=https://github.com/polybar/polybar target=_blank rel=noopener>https://github.com/polybar/polybar</a></p></li><li><p>Темы для <em>polybar</em>: <a href=https://github.com/adi1090x/polybar-themes target=_blank rel=noopener>https://github.com/adi1090x/polybar-themes</a></p></li><li><p>Одним из побудительных мотивов установки <em>polybar</em> может быть то, что здесь можно без проблем настроить индикатор раскладки клавиатуры.</p></li><li><p>Установка</p><ul><li>Gentoo:<div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=nv>USE</span><span class=o>=</span><span class=s2>&#34;i3wm&#34;</span> emerge x11-misc/polybar
+</span></span></code></pre></div></li></ul></li><li><p>Конфигурационный файл:</p><ul><li>стандартное расположение: <code>~/.config/polybar/config</code> (<code>$XDG_CONFIG_HOME/polybar/config</code>);</li><li>использую для локальных настроек только для <em>i3</em>: <code>~/.config/i3/polybar/config</code>.</li></ul></li></ul><ol><li><p>Скрипт запуска</p><ul><li>Создадим скрипт запуска <code>polybar</code>.<div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=cp>#!/bin/bash
+</span></span></span><span class=line><span class=cl><span class=cp></span><span class=c1># ~/.config/i3/polybar/launch.sh</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Terminate already running bar instances</span>
+</span></span><span class=line><span class=cl>killall -q polybar
+</span></span><span class=line><span class=cl><span class=c1># If all your bars have ipc enabled, you can also use</span>
+</span></span><span class=line><span class=cl><span class=c1># polybar-msg cmd quit</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Wait until the processes have been shut down</span>
+</span></span><span class=line><span class=cl><span class=k>while</span> pgrep -u <span class=nv>$UID</span> -x polybar &gt;/dev/null<span class=p>;</span> <span class=k>do</span> sleep 1<span class=p>;</span> <span class=k>done</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Launch Polybar, using config location ~/.config/i3/polybar/config</span>
+</span></span><span class=line><span class=cl>polybar --config<span class=o>=</span>~/.config/i3/polybar/config i3 <span class=p>&amp;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;Polybar launched...&#34;</span>
+</span></span></code></pre></div></li><li>Установим права на исполнение:<div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>chmod +x ~/.config/i3/polybar/launch.sh
+</span></span></code></pre></div></li><li>Добавим вызов <code>polybar</code> в файл конфигурации <em>i3</em>. Конфигурацию для <em>i3bar</em> следует закомментировать.<div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>## ~/.config/i3/config
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>## Start i3bar to display a workspace bar
+</span></span><span class=line><span class=cl># bar {
+</span></span><span class=line><span class=cl>#     font pango:Source Sans Pro, FontAwesome 5 Free 10
+</span></span><span class=line><span class=cl>#     status_command	i3status --config ~/.config/i3/i3status/config
+</span></span><span class=line><span class=cl>#     position		top
+</span></span><span class=line><span class=cl># }
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>## Start polybar
+</span></span><span class=line><span class=cl>exec_always --no-startup-id ~/.config/i3/polybar/launch.sh
+</span></span></code></pre></div></li></ul></li></ol><h3 id=запуск-приложений><span class=section-num>5.4</span> Запуск приложений</h3><ul><li>По умолчанию используется <code>dmenu</code>.</li><li>Можно заменить на <code>rofi</code> (см. <a href=https://yamadharma.github.io/ru/post/2021/11/19/launcher_rofi/>Запуск приложений. Rofi</a>).</li></ul><h4 id=rofi><span class=section-num>5.4.1</span> rofi</h4><ul><li>Используется для запуска приложений, переключения окон.</li><li><a href=https://github.com/davatorium/rofi target=_blank rel=noopener>https://github.com/davatorium/rofi</a></li><li>Конфигурация по умолчанию находится в <code>~/.config/rofi/config</code>.</li><li>Для выбора темы можно использовать команду:<div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>rofi-theme-selector
+</span></span></code></pre></div></li><li>Для запуска программ используется несколько мод:<ul><li><code>run</code>: запускать приложения из пути (<code>$PATH</code>) с возможностью запуска в терминале.</li><li><code>drun</code>: запускать приложения на основе desctop-файлов (по стандарту XDG).</li><li><code>window</code>: переключение между окнами в оконном менеджере, совместимом со спецификацией EWMH.</li><li><code>ssh</code>: подключение к удаленному хосту через <code>ssh</code>.</li><li><code>file-browser</code>: базовый файловый броузер для открытия файлов.</li><li><code>keys</code>: список внутренних привязок клавиш.</li><li><code>script</code>: использование простых скриптов.</li><li><code>combi</code>: объединяет несколько мод в одну.</li></ul></li><li>Использование запятых в файле настроек <em>i3</em> может привести к проблемам. Лучше использовать файл настроек <em>rofi</em> или замените запятые символом <code>#</code>, например, заменить строку<div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>rofi -combi-modi window,drun,ssh
+</span></span></code></pre></div>на<div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>rofi -combi-modi window#drun#ssh
+</span></span></code></pre></div></li><li>Возможная конфигурация в командной строке команды <code>rofi</code>:<div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>## ~/.config/i3/config
+</span></span><span class=line><span class=cl>set $menu rofi -combi-modi window#drun -show combi -modi combi -show-icons
+</span></span></code></pre></div></li><li>Конфигурация с помощью конфигурационного файла (поместим его в <code>~/.config/i3/rofi/config</code>).</li></ul><h3 id=блокировка-экрана><span class=section-num>5.5</span> Блокировка экрана</h3><ul><li><p>Для отключения экрана можно использовать DPMS:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-cfg data-lang=cfg><span class=line><span class=cl><span class=na>exec --no-startup-id xset dpms 1800</span>
+</span></span></code></pre></div><ul><li>Отключается через 30 минут.</li></ul></li></ul><h4 id=блокировщик-экрана-i3lock><span class=section-num>5.5.1</span> Блокировщик экрана <code>i3lock</code></h4><ul><li><p>В качестве блокировщика экрана используем <code>i3lock</code>.</p><ul><li>Установка<ul><li>Gentoo<div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>emerge x11-misc/i3lock
+</span></span></code></pre></div></li></ul></li></ul></li><li><p>Использование в конфигурационном файле:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-cfg data-lang=cfg><span class=line><span class=cl><span class=na>set $Locker i3lock --color</span><span class=o>=</span><span class=s>000000 &amp;&amp; sleep 1</span>
+</span></span></code></pre></div><ul><li><code>sleep 1</code> добавляет небольшую задержку, чтобы предотвратить возможное состояние гонки.</li></ul></li><li><p>Для блокировки экрана после заданного периода времени можно использовать <code>xautolock</code> или <code>xss-lock</code>.</p></li><li><p>Использование <code>xautolock</code>.</p></li><li><p>Установка</p><ul><li>Gentoo<div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>emerge x11-misc/xautolock
+</span></span></code></pre></div></li></ul></li><li><p>Использование в конфигурационном файле:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-cfg data-lang=cfg><span class=line><span class=cl><span class=na>exec --no-startup-id xautolock -time 10 -locker &#34;$Locker&#34;</span>
+</span></span></code></pre></div><ul><li>Блокирует через 10 минут.</li></ul></li><li><p>Использование <code>xss-lock</code>.</p></li><li><p>Установка</p><ul><li>Gentoo<div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>emerge x11-misc/xss-lock
+</span></span></code></pre></div></li></ul></li><li><p>Использование в конфигурационном файле:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-cfg data-lang=cfg><span class=line><span class=cl><span class=na>exec --no-startup-id xss-lock -- &#34;$Locker&#34;</span>
+</span></span></code></pre></div></li></ul><h4 id=блокировщик-экрана-i3lock-color><span class=section-num>5.5.2</span> Блокировщик экрана <code>i3lock-color</code></h4><ul><li>Репозиторий: <a href=https://github.com/Raymo111/i3lock-color target=_blank rel=noopener>https://github.com/Raymo111/i3lock-color</a></li></ul><ol><li><p>Дополнительные возможности в i3lock-color</p><ul><li>Дополнительное управление цветом элементов.</li><li>Размытие текущего экрана и использование его в качестве фона блокировки.</li><li>Отображение часов в индикаторе.</li><li>Обновление по таймеру, а не при каждом нажатии клавиши.</li><li>Отображение раскладки клавиатуры.</li></ul></li></ol><ol start=2><li><p>Установка</p><ul><li>Gentoo<ul><li>Порт находится в оверлее <code>guru</code>:<div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>emerge x11-misc/i3lock-color
+</span></span></code></pre></div></li></ul></li></ul></li></ol><h2 id=приложения><span class=section-num>6</span> Приложения</h2><h3 id=снимки-экрана><span class=section-num>6.1</span> Снимки экрана</h3><ul><li><p>Для скриншотов можно использовать <a href=https://github.com/resurrecting-open-source-projects/scrot target=_blank rel=noopener>scrot</a>.</p><ul><li>Gentoo<div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>emerge media-gfx/scrot
+</span></span></code></pre></div></li></ul></li><li><p>Добавим в конфигурационный файл:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>## Screenshot
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>## Screenshot active display
+</span></span><span class=line><span class=cl>bindsym --release Print exec --no-startup-id scrot &#39;%Y-%m-%d_%H-%M-%S_$wx$h.png&#39; -e &#39;mv $f `xdg-user-dir PICTURES` 2&gt;/dev/null&#39;
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>## Screenshot current window
+</span></span><span class=line><span class=cl>bindsym --release $mod+Print exec --no-startup-id scrot -u &#39;%Y-%m-%d_%H-%M-%S_$wx$h.png&#39; -e &#39;mv $f `xdg-user-dir PICTURES` 2&gt;/dev/null&#39;
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>## Screenshot selected region
+</span></span><span class=line><span class=cl>bindsym --release $mod+Shift+Print exec --no-startup-id scrot -s &#39;%Y-%m-%d_%H-%M-%S_$wx$h.png&#39; -e &#39;mv $f `xdg-user-dir PICTURES` 2&gt;/dev/null&#39;
+</span></span></code></pre></div><ul><li>По клавише <code>PrtScr</code> делается скриншот.</li><li>По клавише <code>mod</code> + <code>PrtScr</code> делается скриншот активного окна.</li><li>По клавише <code>mod</code> + <code>Shift</code> + <code>PrtScr</code> предлагается выделить область экрана, скриншот которой следует сделать.</li><li>Скриншоты переносятся в каталог $XDG_PICTURES_DIR (обычно <code>~/Pictures</code> или <code>~/Изображения</code>) (см. <a href=https://yamadharma.github.io/ru/post/2021/09/16/xdg-user-directories/>XDG. Пользовательские каталоги</a>).</li></ul></li></ul><h2 id=совместимость-приложений><span class=section-num>7</span> Совместимость приложений</h2><h3 id=java><span class=section-num>7.1</span> Java</h3><h4 id=серое-окно-приложения-не-меняют-размер-с-помощью-wm-меню-сразу-закрываются><span class=section-num>7.1.1</span> Серое окно, приложения не меняют размер с помощью WM, меню сразу закрываются</h4><ul><li>В стандартных тулкитах для Java жестко зашит список оконных менеджеров.</li><li>Следует установить переменную окружения:<div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=nb>export</span> <span class=nv>_JAVA_AWT_WM_NONREPARENTING</span><span class=o>=</span><span class=m>1</span>
+</span></span></code></pre></div></li></ul><h4 id=меню-в-приложениях-плавает-отдельно-им-невозможно-пользоваться><span class=section-num>7.1.2</span> Меню в приложениях плавает отдельно, им невозможно пользоваться</h4><ul><li>В выпусках Java до версии 9 GTK интерфейс ориентирован на GTK2, в последующих версиях на GTK3.</li><li>GTK LookAndFeel может работать с GTK версий 2, 2.2 и 3.</li><li>По умолчанию используется GTK3.</li><li>Следует явно задать более старую версию:<div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=nb>export</span> <span class=nv>JAVA_TOOL_OPTIONS</span><span class=o>=</span><span class=s1>&#39;-Djdk.gtk.version=2.2&#39;</span>
+</span></span></code></pre></div></li></ul><hr><div class=bl-section><h4>Links to this note</h4><div class=backlinks><ul><li><a href=https://yamadharma.github.io/ru/post/2023/07/30/configuration-file-management-repo/>Управление файлами конфигурации. Домашний каталог. Репозиторий</a></li><li><a href=https://yamadharma.github.io/ru/post/2023/06/19/tiling-window-manager/>Тайловые оконные менеджеры</a></li><li><a href=https://yamadharma.github.io/ru/post/2021/04/10/system-administration/>Системное администрирование</a></li><li><a href=https://yamadharma.github.io/ru/post/2020/09/10/migration-sway/>Переход на Sway</a></li></ul></div></div></div><div class=article-tags><a class="badge badge-light" href=https://yamadharma.github.io/ru/tag/gentoo/>gentoo</a>
+<a class="badge badge-light" href=https://yamadharma.github.io/ru/tag/sysadmin/>sysadmin</a></div><div class=share-box><ul class=share><li><a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fyamadharma.github.io%2Fru%2Fpost%2F2021%2F05%2F14%2Fwindow-manager-i3%2F&amp;text=Window+manager+i3" target=_blank rel=noopener class=share-btn-twitter aria-label=twitter><i class="fab fa-twitter"></i></a></li><li><a href="https://www.facebook.com/sharer.php?u=https%3A%2F%2Fyamadharma.github.io%2Fru%2Fpost%2F2021%2F05%2F14%2Fwindow-manager-i3%2F&amp;t=Window+manager+i3" target=_blank rel=noopener class=share-btn-facebook aria-label=facebook><i class="fab fa-facebook"></i></a></li><li><a href="mailto:?subject=Window%20manager%20i3&amp;body=https%3A%2F%2Fyamadharma.github.io%2Fru%2Fpost%2F2021%2F05%2F14%2Fwindow-manager-i3%2F" target=_blank rel=noopener class=share-btn-email aria-label=envelope><i class="fas fa-envelope"></i></a></li><li><a href="https://www.linkedin.com/shareArticle?url=https%3A%2F%2Fyamadharma.github.io%2Fru%2Fpost%2F2021%2F05%2F14%2Fwindow-manager-i3%2F&amp;title=Window+manager+i3" target=_blank rel=noopener class=share-btn-linkedin aria-label=linkedin-in><i class="fab fa-linkedin-in"></i></a></li><li><a href="whatsapp://send?text=Window+manager+i3%20https%3A%2F%2Fyamadharma.github.io%2Fru%2Fpost%2F2021%2F05%2F14%2Fwindow-manager-i3%2F" target=_blank rel=noopener class=share-btn-whatsapp aria-label=whatsapp><i class="fab fa-whatsapp"></i></a></li><li><a href="https://service.weibo.com/share/share.php?url=https%3A%2F%2Fyamadharma.github.io%2Fru%2Fpost%2F2021%2F05%2F14%2Fwindow-manager-i3%2F&amp;title=Window+manager+i3" target=_blank rel=noopener class=share-btn-weibo aria-label=weibo><i class="fab fa-weibo"></i></a></li></ul></div><div class="media author-card content-widget-hr"><a href=https://yamadharma.github.io/><img class="avatar mr-3 avatar-circle" src="https://s.gravatar.com/avatar/6196459c2beaa74e930539ef4dc180db?s=200" alt="Дмитрий Сергеевич Кулябов"></a><div class=media-body><h5 class=card-title><a href=https://yamadharma.github.io/>Дмитрий Сергеевич Кулябов</a></h5><h6 class=card-subtitle>Профессор кафедры прикладной информатики и теории вероятностей</h6><p class=card-text>Мои научные интересы включают физику, администрирование Unix и сетей.</p><ul class=network-icon aria-hidden=true><li><a href=https://yamadharma.github.io/ru/#contact><i class="fas fa-envelope"></i></a></li><li><a href=https://twitter.com/dskulyabov target=_blank rel=noopener><i class="fab fa-twitter"></i></a></li><li><a href=https://www.youtube.com/c/DmitryKulyabov target=_blank rel=noopener><i class="fab fa-youtube"></i></a></li><li><a href=https://orcid.org/0000-0002-0877-7063 target=_blank rel=noopener><i class="ai ai-orcid"></i></a></li><li><a href="https://www.elibrary.ru/author_profile.asp?authorid=360953" target=_blank rel=noopener><i class="fab fa-erlang"></i></a></li><li><a href=https://profiles.impactstory.org/u/0000-0002-0877-7063 target=_blank rel=noopener><i class="ai ai-impactstory"></i></a></li><li><a href=https://www.webofscience.com/wos/author/rid/I-3183-2013 target=_blank rel=noopener><i class="ai ai-researcherid"></i></a></li><li><a href="https://www.scopus.com/authid/detail.uri?authorId=35194130800" target=_blank rel=noopener><i class="ai ai-scopus"></i></a></li><li><a href="https://dblp.uni-trier.de/pers/hd/k/Kulyabov:Dmitry_S=" target=_blank rel=noopener><i class="ai ai-dblp"></i></a></li><li><a href="https://scholar.google.com/citations?user=D5XLDn4AAAAJ" target=_blank rel=noopener><i class="ai ai-google-scholar"></i></a></li><li><a href=https://www.researchgate.net/profile/Dmitry_Kulyabov target=_blank rel=noopener><i class="ai ai-researchgate"></i></a></li><li><a href=https://rudn.academia.edu/DmitryKulyabov target=_blank rel=noopener><i class="ai ai-academia"></i></a></li><li><a href=https://osf.io/5ya7v/ target=_blank rel=noopener><i class="ai ai-osf"></i></a></li><li><a href=https://www.linkedin.com/in/dmitry-kulyabov target=_blank rel=noopener><i class="fab fa-linkedin"></i></a></li><li><a href=http://arxiv.org/a/kulyabov_d_1 target=_blank rel=noopener><i class="ai ai-arxiv"></i></a></li><li><a href=https://bitbucket.org/yamadharma/ target=_blank rel=noopener><i class="fab fa-bitbucket"></i></a></li><li><a href=https://github.com/yamadharma target=_blank rel=noopener><i class="fab fa-github"></i></a></li><li><a href=https://gitlab.com/yamadharma target=_blank rel=noopener><i class="fab fa-gitlab"></i></a></li></ul></div></div><div class="article-widget content-widget-hr"><h3>Похожие</h3><ul><li><a href=https://yamadharma.github.io/ru/post/2021/05/21/installing-linux-btrfs/>Перенос Linux на btrfs</a></li><li><a href=https://yamadharma.github.io/ru/post/2021/04/28/pipewire-multimedia-server/>Мультимедиа сервер PipeWire</a></li><li><a href=https://yamadharma.github.io/ru/post/2020/09/10/migration-sway/>Переход на Sway</a></li><li><a href=https://yamadharma.github.io/ru/post/2023/07/30/configuration-file-management-repo/>Управление файлами конфигурации. Домашний каталог. Репозиторий</a></li><li><a href=https://yamadharma.github.io/ru/post/2023/07/21/btrfs-recovery/>Восстановление btrfs</a></li></ul></div></div></article></div><div class=page-footer><div class=container><footer class=site-footer><p class="powered-by copyright-license-text">© 2006—2023 Dmitry S. Kulyabov. This work is licensed under <a href=https://creativecommons.org/licenses/by/4.0 rel="noopener noreferrer" target=_blank>CC BY 4.0</a></p><p class="powered-by footer-license-icons"><a href=https://creativecommons.org/licenses/by/4.0 rel="noopener noreferrer" target=_blank aria-label="Creative Commons"><i class="fab fa-creative-commons fa-2x" aria-hidden=true></i>
 <i class="fab fa-creative-commons-by fa-2x" aria-hidden=true></i></a></p><p class=powered-by>Published with <a href="https://wowchemy.com/?utm_campaign=poweredby" target=_blank rel=noopener>Wowchemy</a> — the free, <a href=https://github.com/wowchemy/wowchemy-hugo-themes target=_blank rel=noopener>open source</a> website builder that empowers creators.</p></footer></div></div><script src=https://yamadharma.github.io/js/vendor-bundle.min.f64289d8217e08e3afcd597d60836062.js></script>
 <script src=https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.min.js integrity crossorigin=anonymous></script>
 <script id=search-hit-fuse-template type=text/x-template>

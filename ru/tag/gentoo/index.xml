@@ -101,21 +101,19 @@
 &lt;ul>
 &lt;li>Удалите (или закомментируйте) любые записи &lt;code>PORTDIR&lt;/code>, &lt;code>DISTDIR&lt;/code>, &lt;code>PKGDIR&lt;/code> в &lt;code>/etc/portage/make.conf&lt;/code>.&lt;/li>
 &lt;li>Значения переменных окружения можно посмотреть командой:
-&lt;pre>&lt;code class="language-shell">emerge --info -v
-emerge --info -v | grep PORTDIR
-emerge --info -v | grep DISTDIR
-emerge --info -v | grep PKGDIR
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge --info -v
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">emerge --info -v &lt;span class="p">|&lt;/span> grep PORTDIR
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">emerge --info -v &lt;span class="p">|&lt;/span> grep DISTDIR
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">emerge --info -v &lt;span class="p">|&lt;/span> grep PKGDIR
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Если &lt;code>/var/db/repos/&lt;/code> не существует, создайте его.&lt;/li>
 &lt;li>Переместите &lt;code>/usr/portage/distfiles&lt;/code> в &lt;code>/var/cache/distfiles&lt;/code>.&lt;/li>
 &lt;li>Переместите &lt;code>/usr/portage/packages&lt;/code> в &lt;code>/var/cache/binpkgs&lt;/code>.&lt;/li>
 &lt;li>Переместите &lt;code>/usr/portage&lt;/code> в &lt;code>/var/db/repos/gentoo&lt;/code>.&lt;/li>
 &lt;li>Измените переменную &lt;code>location&lt;/code> в файле &lt;code>/etc/portage/repos.conf/gentoo.conf&lt;/code> (или аналогичном) на &lt;code>/var/db/repos/gentoo&lt;/code>.&lt;/li>
 &lt;li>Переустановите &lt;code>portage&lt;/code>:
-&lt;pre>&lt;code class="language-shell">DISTDIR=/var/cache/distfiles PKGDIR=/var/cache/binpkgs emerge --oneshot portage
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nv">DISTDIR&lt;/span>&lt;span class="o">=&lt;/span>/var/cache/distfiles &lt;span class="nv">PKGDIR&lt;/span>&lt;span class="o">=&lt;/span>/var/cache/binpkgs emerge --oneshot portage
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Если вы запускаете локальное зеркало rsync, отредактируйте запись пути в &lt;code>/etc/rsyncd.conf&lt;/code> так, чтобы она указывала на &lt;code>/var/db/repos/gentoo&lt;/code>.&lt;/li>
 &lt;li>Если вы делитесь своими дистрибутивами, не забудьте обновить любую символическую ссылку или файл конфигурации, которые вам нужны для этого.&lt;/li>
 &lt;/ul>
@@ -227,200 +225,169 @@ emerge --info -v | grep PKGDIR
 &lt;li>Создадим файловые системы:
 &lt;ul>
 &lt;li>p1 (&lt;code>EFI&lt;/code>):
-&lt;pre>&lt;code class="language-shell">mkfs.vfat -F32 -n EFI /dev/sda1
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mkfs.vfat -F32 -n EFI /dev/sda1
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>p2 (&lt;code>/boot&lt;/code>):
-&lt;pre>&lt;code class="language-shell">mkfs.ext4 -L boot /dev/sda2
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mkfs.ext4 -L boot /dev/sda2
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>p3 (&lt;code>swap&lt;/code> в случае отдельной партиции):
-&lt;pre>&lt;code class="language-shell">mkswap -L swap /dev/sda3
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mkswap -L swap /dev/sda3
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>p4 (&lt;code>btrfs&lt;/code>)
-&lt;pre>&lt;code class="language-shell">mkfs.btrfs /dev/sda4
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mkfs.btrfs /dev/sda4
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
 &lt;h2 id="подготовка-раздела-с-btrfs">&lt;span class="section-num">3&lt;/span> Подготовка раздела с btrfs&lt;/h2>
 &lt;ul>
 &lt;li>Подмонтируем раздел с btrfs:
-&lt;pre>&lt;code class="language-shell">mkdir /mnt/gentoo
-mount -tbtrfs -orelatime,discard,autodefrag,compress=zstd:9 /dev/sda4 /mnt/gentoo/
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mkdir /mnt/gentoo
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mount -tbtrfs -orelatime,discard,autodefrag,compress&lt;span class="o">=&lt;/span>zstd:9 /dev/sda4 /mnt/gentoo/
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Создадим подтома на btrfs (см. &lt;a href="https://yamadharma.github.io/ru/post/2021/08/27/btrfs-subvolumes/">Подтома btrfs&lt;/a>):
-&lt;pre>&lt;code class="language-shell">cd /mnt/gentoo/
-btrfs subvol create @
-btrfs subvol create @var
-btrfs subvol create @var_tmp
-btrfs subvol create @var_log
-btrfs subvol create @vm
-btrfs subvol create @home
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> /mnt/gentoo/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">btrfs subvol create @
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">btrfs subvol create @var
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">btrfs subvol create @var_tmp
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">btrfs subvol create @var_log
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">btrfs subvol create @vm
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">btrfs subvol create @home
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>И подтома специально для &lt;em>Gentoo Linux&lt;/em>:
-&lt;pre>&lt;code class="language-shell">cd /mnt/gentoo/
-btrfs subvol create @portage
-btrfs subvol create @portage_local
-btrfs subvol create @portage_com
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> /mnt/gentoo/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">btrfs subvol create @portage
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">btrfs subvol create @portage_local
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">btrfs subvol create @portage_com
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Если используется файл подкачки на файловой системе, то создадим для него подтом:
-&lt;pre>&lt;code class="language-shell">cd /mnt/gentoo/
-btrfs subvol create @swap
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> /mnt/gentoo/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">btrfs subvol create @swap
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h2 id="копирование-существующих-файловых-систем">&lt;span class="section-num">4&lt;/span> Копирование существующих файловых систем&lt;/h2>
 &lt;ul>
 &lt;li>Создадим точку монтирования:
-&lt;pre>&lt;code class="language-shell">mkdir /mnt/from
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mkdir /mnt/from
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Подмонтируем и скопируем root-партицию:
-&lt;pre>&lt;code class="language-shell">mount /dev/vgs/root /mnt/from/
-rsync -av -HS --delete /mnt/from/ /mnt/gentoo/@
-umount /mnt/from/
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mount /dev/vgs/root /mnt/from/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">rsync -av -HS --delete /mnt/from/ /mnt/gentoo/@
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">umount /mnt/from/
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Подмонтируем и скопируем &lt;code>/var&lt;/code>:
-&lt;pre>&lt;code class="language-shell">mount /dev/vgs/var /mnt/from/
-rsync -av -HS --delete /mnt/from/ /mnt/gentoo/@var
-umount /mnt/from/
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mount /dev/vgs/var /mnt/from/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">rsync -av -HS --delete /mnt/from/ /mnt/gentoo/@var
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">umount /mnt/from/
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Подмонтируем и скопируем &lt;code>portage&lt;/code>:
-&lt;pre>&lt;code class="language-shell">mount /dev/vgs/portage /mnt/from/
-rsync -av -HS --delete /mnt/from/ /mnt/gentoo/@portage
-umount /mnt/from/
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mount /dev/vgs/portage /mnt/from/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">rsync -av -HS --delete /mnt/from/ /mnt/gentoo/@portage
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">umount /mnt/from/
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Подмонтируем и скопируем &lt;code>portage_local&lt;/code>:
-&lt;pre>&lt;code class="language-shell">mount /dev/vgs/portage_local /mnt/from/
-rsync -av -HS --delete /mnt/from/ /mnt/gentoo/@portage_local
-umount /mnt/from/
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mount /dev/vgs/portage_local /mnt/from/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">rsync -av -HS --delete /mnt/from/ /mnt/gentoo/@portage_local
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">umount /mnt/from/
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Подмонтируем и скопируем &lt;code>/boot&lt;/code>:
-&lt;pre>&lt;code class="language-shell">mkdir /mnt/to/
-mount /dev/sda2 /mnt/to
-mount /dev/sdb2 /mnt/from/
-rsync -av -HS --delete /mnt/from/ /mnt/to/
-umount /mnt/to
-umount /mnt/from
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mkdir /mnt/to/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mount /dev/sda2 /mnt/to
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mount /dev/sdb2 /mnt/from/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">rsync -av -HS --delete /mnt/from/ /mnt/to/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">umount /mnt/to
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">umount /mnt/from
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h2 id="установка-загрузчика">&lt;span class="section-num">5&lt;/span> Установка загрузчика&lt;/h2>
 &lt;ul>
 &lt;li>Перемонтируем файловую систему &lt;code>btrfs&lt;/code>:
-&lt;pre>&lt;code class="language-shell">umount /mnt/gentoo
-mount -tbtrfs -orelatime,discard,autodefrag,compress=zstd:9,subvol=@ /dev/sda4 /mnt/gentoo/
-mount -tbtrfs -orelatime,discard,autodefrag,compress=zstd:9,subvol=@var /dev/sda4 /mnt/gentoo/var
-mount -tbtrfs -orelatime,discard,autodefrag,compress=zstd:9,subvol=@var_tmp /dev/sda4 /mnt/gentoo/var/tmp
-mount /dev/sda2 /mnt/gentoo/boot/
-mount /dev/sda1 /mnt/gentoo/boot/efi
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">umount /mnt/gentoo
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mount -tbtrfs -orelatime,discard,autodefrag,compress&lt;span class="o">=&lt;/span>zstd:9,subvol&lt;span class="o">=&lt;/span>@ /dev/sda4 /mnt/gentoo/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mount -tbtrfs -orelatime,discard,autodefrag,compress&lt;span class="o">=&lt;/span>zstd:9,subvol&lt;span class="o">=&lt;/span>@var /dev/sda4 /mnt/gentoo/var
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mount -tbtrfs -orelatime,discard,autodefrag,compress&lt;span class="o">=&lt;/span>zstd:9,subvol&lt;span class="o">=&lt;/span>@var_tmp /dev/sda4 /mnt/gentoo/var/tmp
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mount /dev/sda2 /mnt/gentoo/boot/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mount /dev/sda1 /mnt/gentoo/boot/efi
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Подмонтируем псевдо-файловые системы:
-&lt;pre>&lt;code class="language-shell">mount -o bind /dev /mnt/gentoo/dev/
-mount -o bind /proc /mnt/gentoo/proc/
-mount -o bind /sys /mnt/gentoo/sys/
-mount -o bind /run /mnt/gentoo/run/
-mount -t efivarfs efivarfs /mnt/gentoo/sys/firmware/efi/efivars
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mount -o &lt;span class="nb">bind&lt;/span> /dev /mnt/gentoo/dev/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mount -o &lt;span class="nb">bind&lt;/span> /proc /mnt/gentoo/proc/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mount -o &lt;span class="nb">bind&lt;/span> /sys /mnt/gentoo/sys/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mount -o &lt;span class="nb">bind&lt;/span> /run /mnt/gentoo/run/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mount -t efivarfs efivarfs /mnt/gentoo/sys/firmware/efi/efivars
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Установим загрузчик:
-&lt;pre>&lt;code class="language-shell">cd /mnt/gentoo/
-chroot /mnt/gentoo/ /bin/bash
-grub-install /boot/
-grub-mkconfig -o /boot/grub/grub.cfg
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> /mnt/gentoo/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">chroot /mnt/gentoo/ /bin/bash
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">grub-install /boot/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">grub-mkconfig -o /boot/grub/grub.cfg
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h2 id="создадим-файл-монтирования-fstab">&lt;span class="section-num">6&lt;/span> Создадим файл монтирования fstab&lt;/h2>
 &lt;ul>
 &lt;li>Узнаем идентификатор партиции с файловой системой btrfs:
-&lt;pre>&lt;code class="language-shell">blkid /dev/sda4
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">blkid /dev/sda4
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Получим строчку:
-&lt;pre>&lt;code class="language-shell">UUID=&amp;quot;&amp;lt;uuid_number&amp;gt;&amp;quot;
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nv">UUID&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;&amp;lt;uuid_number&amp;gt;&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Создадим файл &lt;code>/mnt/gentoo/etc/fstab&lt;/code>:
-&lt;pre>&lt;code class="language-conf-unix">LABEL=&amp;quot;boot&amp;quot; /boot ext4 relatime,discard 1 1
-LABEL=&amp;quot;EFI&amp;quot; /boot/efi vfat defaults,discard,flush,tz=UTC 0 0
-LABEL=&amp;quot;swap&amp;quot; none swap sw 0 0
-UUID=&amp;quot;&amp;lt;uuid_number&amp;gt;&amp;quot; / btrfs relatime,discard,autodefrag,compress=zstd:9,subvol=@ 0 0
-UUID=&amp;quot;&amp;lt;uuid_number&amp;gt;&amp;quot; /var btrfs relatime,discard,autodefrag,compress=zstd:9,subvol=@var 0 0
-UUID=&amp;quot;&amp;lt;uuid_number&amp;gt;&amp;quot; /var/tmp btrfs relatime,discard,autodefrag,compress=zstd:9,subvol=@var_tmp 0 0
-UUID=&amp;quot;&amp;lt;uuid_number&amp;gt;&amp;quot; /var/vm btrfs relatime,discard,autodefrag,compress=zstd:9,subvol=@vm 0 0
-UUID=&amp;quot;&amp;lt;uuid_number&amp;gt;&amp;quot; /home btrfs relatime,discard,autodefrag,compress=zstd:9,subvol=@home 0 0
-UUID=&amp;quot;&amp;lt;uuid_number&amp;gt;&amp;quot; /usr/portage btrfs relatime,discard,autodefrag,compress=zstd:9,subvol=@portage 0 0
-UUID=&amp;quot;&amp;lt;uuid_number&amp;gt;&amp;quot; /usr/local/share/portage btrfs relatime,discard,autodefrag,compress=zstd:9,subvol=@portage_local 0 0
-UUID=&amp;quot;&amp;lt;uuid_number&amp;gt;&amp;quot; /com/lib/portage btrfs relatime,discard,autodefrag,compress=zstd:9,subvol=@portage_com 0 0
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">LABEL=&amp;#34;boot&amp;#34; /boot ext4 relatime,discard 1 1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">LABEL=&amp;#34;EFI&amp;#34; /boot/efi vfat defaults,discard,flush,tz=UTC 0 0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">LABEL=&amp;#34;swap&amp;#34; none swap sw 0 0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">UUID=&amp;#34;&amp;lt;uuid_number&amp;gt;&amp;#34; / btrfs relatime,discard,autodefrag,compress=zstd:9,subvol=@ 0 0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">UUID=&amp;#34;&amp;lt;uuid_number&amp;gt;&amp;#34; /var btrfs relatime,discard,autodefrag,compress=zstd:9,subvol=@var 0 0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">UUID=&amp;#34;&amp;lt;uuid_number&amp;gt;&amp;#34; /var/tmp btrfs relatime,discard,autodefrag,compress=zstd:9,subvol=@var_tmp 0 0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">UUID=&amp;#34;&amp;lt;uuid_number&amp;gt;&amp;#34; /var/vm btrfs relatime,discard,autodefrag,compress=zstd:9,subvol=@vm 0 0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">UUID=&amp;#34;&amp;lt;uuid_number&amp;gt;&amp;#34; /home btrfs relatime,discard,autodefrag,compress=zstd:9,subvol=@home 0 0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">UUID=&amp;#34;&amp;lt;uuid_number&amp;gt;&amp;#34; /usr/portage btrfs relatime,discard,autodefrag,compress=zstd:9,subvol=@portage 0 0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">UUID=&amp;#34;&amp;lt;uuid_number&amp;gt;&amp;#34; /usr/local/share/portage btrfs relatime,discard,autodefrag,compress=zstd:9,subvol=@portage_local 0 0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">UUID=&amp;#34;&amp;lt;uuid_number&amp;gt;&amp;#34; /com/lib/portage btrfs relatime,discard,autodefrag,compress=zstd:9,subvol=@portage_com 0 0
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Если используется файл подкачки, то вместо отдельной партиции следует подключить этот файл в &lt;code>/mnt/gentoo/etc/fstab&lt;/code>:
-&lt;pre>&lt;code class="language-conf-unix">UUID=&amp;quot;&amp;lt;uuid_number&amp;gt;&amp;quot; /swap btrfs relatime,discard,autodefrag,compress=zstd:9,subvol=@swap 0 0
-/swap/swapfile none swap sw 0 0
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">UUID=&amp;#34;&amp;lt;uuid_number&amp;gt;&amp;#34; /swap btrfs relatime,discard,autodefrag,compress=zstd:9,subvol=@swap 0 0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">/swap/swapfile none swap sw 0 0
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="копирование-специальных-файловых-систем">&lt;span class="section-num">6.1&lt;/span> Копирование специальных файловых систем&lt;/h3>
 &lt;ul>
 &lt;li>Файловые системы с отключённым CoW (copy-on-write) копируются после монтирования каталога.&lt;/li>
 &lt;li>Скопируем файлы:
-&lt;pre>&lt;code class="language-shell">mount /dev/vgs/vm /mnt/from/
-rsync -av -HS --delete /mnt/from/ /mnt/gentoo/var/vm
-umount /mnt/from/
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mount /dev/vgs/vm /mnt/from/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">rsync -av -HS --delete /mnt/from/ /mnt/gentoo/var/vm
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">umount /mnt/from/
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h2 id="файл-подкачки-на-файловой-системе-btrfs">&lt;span class="section-num">7&lt;/span> Файл подкачки на файловой системе btrfs&lt;/h2>
 &lt;ul>
 &lt;li>Для раздела файла подкачки следует отключить CoW (copy-on-write).&lt;/li>
 &lt;li>Подмонтируем файловую систему &lt;code>btrfs&lt;/code>:
-&lt;pre>&lt;code class="language-shell">mount -tbtrfs -orelatime,discard,autodefrag,compress=zstd:9,subvol=@ /dev/sda4 /mnt/gentoo/
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mount -tbtrfs -orelatime,discard,autodefrag,compress&lt;span class="o">=&lt;/span>zstd:9,subvol&lt;span class="o">=&lt;/span>@ /dev/sda4 /mnt/gentoo/
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Создадим точку монтирования:
-&lt;pre>&lt;code class="language-shell">mkdir /mnt/gentoo/swap
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mkdir /mnt/gentoo/swap
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Подмонтируем подтом &lt;code>@swap&lt;/code>:
-&lt;pre>&lt;code class="language-shell">mount -o subvol=@swap /dev/sda4 /mnt/gentoo/swap
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mount -o &lt;span class="nv">subvol&lt;/span>&lt;span class="o">=&lt;/span>@swap /dev/sda4 /mnt/gentoo/swap
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Отключим для этого подтома CoW:
-&lt;pre>&lt;code class="language-shell">chattr +C /mnt/gentoo/swap
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">chattr +C /mnt/gentoo/swap
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Создадим файл подкачки:
-&lt;pre>&lt;code class="language-shell">truncate -s 0 /mnt/gentoo/swap/swapfile
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">truncate -s &lt;span class="m">0&lt;/span> /mnt/gentoo/swap/swapfile
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Установим права доступа &lt;code>600&lt;/code> к файлу подкачки:
-&lt;pre>&lt;code class="language-shell">chmod 600 /mnt/gentoo/swap/swapfile
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">chmod &lt;span class="m">600&lt;/span> /mnt/gentoo/swap/swapfile
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Установим размер файла подкачки исходя из размера оперативной памяти:
-&lt;pre>&lt;code class="language-shell">fallocate -l $(free -h --si | awk 'NR == 2 {print $2}') /mnt/gentoo/swap/swapfile
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">fallocate -l &lt;span class="k">$(&lt;/span>free -h --si &lt;span class="p">|&lt;/span> awk &lt;span class="s1">&amp;#39;NR == 2 {print $2}&amp;#39;&lt;/span>&lt;span class="k">)&lt;/span> /mnt/gentoo/swap/swapfile
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Отформатируем файл подкачки:
-&lt;pre>&lt;code class="language-shell">mkswap /mnt/gentoo/swap/swapfile
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mkswap /mnt/gentoo/swap/swapfile
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Активируем файл подкачки:
-&lt;pre>&lt;code class="language-shell">swapon /mnt/gentoo/swap/swapfile
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">swapon /mnt/gentoo/swap/swapfile
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul></description></item><item><title>Window manager i3</title><link>https://yamadharma.github.io/ru/post/2021/05/14/window-manager-i3/</link><pubDate>Fri, 14 May 2021 11:32:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2021/05/14/window-manager-i3/</guid><description>&lt;p>Менеджер окон &lt;em>i3&lt;/em>.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
@@ -507,20 +474,24 @@ umount /mnt/from/
 &lt;li>Начиная с версии 4.20, можно подключать другие файлы конфигурации из основного файла конфигурации &lt;em>i3&lt;/em>.
 &lt;ul>
 &lt;li>Примеры использования директивы &lt;code>include&lt;/code>:
-&lt;pre>&lt;code class="language-cfg"># Тильда преобразуется в домашний каталог пользователя
-include ~/.config/i3/assignments.conf
-# Переменные среды разыменовываются
-include $HOME/.config/i3/assignments.conf
-# Символы подстановки раскрываются
-include ~/.config/i3/config.d/*.conf
-# Можно выполнять команду
-include ~/.config/i3/`hostname`.conf
-# Каждый путь загружается только один раз
-include ~/.config/i3/config
-# Относительные пути интерпретируются относительно каталога конфигурационного файла
-include assignments.conf
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-cfg" data-lang="cfg">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Тильда преобразуется в домашний каталог пользователя&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="na">include ~/.config/i3/assignments.conf&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Переменные среды разыменовываются&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="na">include $HOME/.config/i3/assignments.conf&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Символы подстановки раскрываются&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="na">include ~/.config/i3/config.d/*.conf&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Можно выполнять команду&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="na">include ~/.config/i3/`hostname`.conf&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Каждый путь загружается только один раз&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="na">include ~/.config/i3/config&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Относительные пути интерпретируются относительно каталога конфигурационного файла&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="na">include assignments.conf&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
@@ -530,13 +501,11 @@ include assignments.conf
 &lt;li>В качестве модификатора обычно используется:
 &lt;ul>
 &lt;li>&lt;code>Alt&lt;/code>:
-&lt;pre>&lt;code class="language-conf-unix">set $mod Mod1
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">set $mod Mod1
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>&lt;code>Super&lt;/code> (Клавиша со значком &lt;em>Windows&lt;/em>):
-&lt;pre>&lt;code class="language-conf-unix">set $mod Mod4
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">set $mod Mod4
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Предпочитаю &lt;code>Super&lt;/code>, чтобы не конфликтовать с Emacs.&lt;/li>
 &lt;/ul>
 &lt;/li>
@@ -556,23 +525,22 @@ include assignments.conf
 &lt;/ul>
 &lt;/li>
 &lt;li>Конфигурация выглядит следующим образом:
-&lt;pre>&lt;code class="language-conf-unix">## Home row direction keys, like vim
-set $left h
-set $down j
-set $up k
-set $right l
-## Move your focus around
-bindsym $mod+$left focus left
-bindsym $mod+$down focus down
-bindsym $mod+$up focus up
-bindsym $mod+$right focus right
-## Or use $mod+[up|down|left|right]
-bindsym $mod+Left focus left
-bindsym $mod+Down focus down
-bindsym $mod+Up focus up
-bindsym $mod+Right focus right
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">## Home row direction keys, like vim
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">set $left h
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">set $down j
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">set $up k
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">set $right l
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">## Move your focus around
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+$left focus left
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+$down focus down
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+$up focus up
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+$right focus right
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">## Or use $mod+[up|down|left|right]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+Left focus left
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+Down focus down
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+Up focus up
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+Right focus right
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Впрочем, следует заметить, что также могут использоваться и другие соглашения:
 &lt;ul>
 &lt;li>&lt;code>j&lt;/code>: влево;&lt;/li>
@@ -585,10 +553,9 @@ bindsym $mod+Right focus right
 &lt;ul>
 &lt;li>&lt;code>Mod&lt;/code> + &lt;code>a&lt;/code>: переключить фокус на родительский контейнер.&lt;/li>
 &lt;li>Конфигурация:
-&lt;pre>&lt;code class="language-conf-unix">## Move focus to the parent container
-bindsym $mod+a focus parent
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">## Move focus to the parent container
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+a focus parent
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>&lt;code>Mod&lt;/code> + &lt;code>Space&lt;/code>: переключить режим фокуса.&lt;/li>
@@ -604,18 +571,17 @@ bindsym $mod+a focus parent
 &lt;/ul>
 &lt;/li>
 &lt;li>Конфигурация выглядит следующим образом:
-&lt;pre>&lt;code class="language-conf-unix">## Move the focused window with the same, but add Shift
-bindsym $mod+Shift+$left move left
-bindsym $mod+Shift+$down move down
-bindsym $mod+Shift+$up move up
-bindsym $mod+Shift+$right move right
-## Ditto, with arrow keys
-bindsym $mod+Shift+Left move left
-bindsym $mod+Shift+Down move down
-bindsym $mod+Shift+Up move up
-bindsym $mod+Shift+Right move right
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">## Move the focused window with the same, but add Shift
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+Shift+$left move left
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+Shift+$down move down
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+Shift+$up move up
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+Shift+$right move right
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">## Ditto, with arrow keys
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+Shift+Left move left
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+Shift+Down move down
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+Shift+Up move up
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+Shift+Right move right
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="modifying-windows">&lt;span class="section-num">4.5&lt;/span> Modifying windows&lt;/h3>
 &lt;ul>
@@ -634,18 +600,16 @@ bindsym $mod+Shift+Right move right
 &lt;/ul>
 &lt;/li>
 &lt;li>Конфигурация:
-&lt;pre>&lt;code class="language-conf-unix">## Switch the current container between different layout styles
-bindsym $mod+s layout stacking
-bindsym $mod+w layout tabbed
-bindsym $mod+e layout toggle split
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">## Switch the current container between different layout styles
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+s layout stacking
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+w layout tabbed
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+e layout toggle split
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Для раскладки по умолчанию я использую табы:
-&lt;pre>&lt;code class="language-conf-unix">### Layout mode for new containers
-## default|stacking|tabbed
-workspace_layout tabbed
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">### Layout mode for new containers
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">## default|stacking|tabbed
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">workspace_layout tabbed
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="floating">&lt;span class="section-num">4.7&lt;/span> Floating&lt;/h3>
 &lt;ul>
@@ -655,47 +619,44 @@ workspace_layout tabbed
 &lt;h3 id="рабочие-области--workspaces">&lt;span class="section-num">4.8&lt;/span> Рабочие области (workspaces)&lt;/h3>
 &lt;ul>
 &lt;li>Сконфигурим рабочие области:
-&lt;pre>&lt;code class="language-conf-unix">## Define names for workspaces
-set $ws1 1
-set $ws2 2
-set $ws3 3
-set $ws4 4
-set $ws5 5
-set $ws6 6
-set $ws7 7
-set $ws8 8
-set $ws9 9
-set $ws10 10
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">## Define names for workspaces
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">set $ws1 1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">set $ws2 2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">set $ws3 3
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">set $ws4 4
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">set $ws5 5
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">set $ws6 6
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">set $ws7 7
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">set $ws8 8
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">set $ws9 9
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">set $ws10 10
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>&lt;code>Mod&lt;/code> + &lt;code>0&lt;/code> &amp;ndash; &lt;code>9&lt;/code>: переключиться на соответствующую рабочую область:
-&lt;pre>&lt;code class="language-conf-unix">## Switch to workspace
-bindsym $mod+1 workspace $ws1
-bindsym $mod+2 workspace $ws2
-bindsym $mod+3 workspace $ws3
-bindsym $mod+4 workspace $ws4
-bindsym $mod+5 workspace $ws5
-bindsym $mod+6 workspace $ws6
-bindsym $mod+7 workspace $ws7
-bindsym $mod+8 workspace $ws8
-bindsym $mod+9 workspace $ws9
-bindsym $mod+0 workspace $ws10
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">## Switch to workspace
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+1 workspace $ws1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+2 workspace $ws2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+3 workspace $ws3
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+4 workspace $ws4
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+5 workspace $ws5
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+6 workspace $ws6
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+7 workspace $ws7
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+8 workspace $ws8
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+9 workspace $ws9
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+0 workspace $ws10
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>&lt;code>Mod&lt;/code> + &lt;code>Shift&lt;/code> + &lt;code>0&lt;/code> &amp;ndash; &lt;code>9&lt;/code>: перенести окно на соответствующую рабочую область:
-&lt;pre>&lt;code class="language-conf-unix">## Move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace $ws1
-bindsym $mod+Shift+2 move container to workspace $ws2
-bindsym $mod+Shift+3 move container to workspace $ws3
-bindsym $mod+Shift+4 move container to workspace $ws4
-bindsym $mod+Shift+5 move container to workspace $ws5
-bindsym $mod+Shift+6 move container to workspace $ws6
-bindsym $mod+Shift+7 move container to workspace $ws7
-bindsym $mod+Shift+8 move container to workspace $ws8
-bindsym $mod+Shift+9 move container to workspace $ws9
-bindsym $mod+Shift+0 move container to workspace $ws10
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">## Move focused container to workspace
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+Shift+1 move container to workspace $ws1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+Shift+2 move container to workspace $ws2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+Shift+3 move container to workspace $ws3
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+Shift+4 move container to workspace $ws4
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+Shift+5 move container to workspace $ws5
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+Shift+6 move container to workspace $ws6
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+Shift+7 move container to workspace $ws7
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+Shift+8 move container to workspace $ws8
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+Shift+9 move container to workspace $ws9
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+Shift+0 move container to workspace $ws10
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="opening-applications-closing-windows">&lt;span class="section-num">4.9&lt;/span> Opening applications / Closing windows&lt;/h3>
 &lt;ul>
@@ -705,23 +666,23 @@ bindsym $mod+Shift+0 move container to workspace $ws10
 &lt;h3 id="выход-перезапуск">&lt;span class="section-num">4.10&lt;/span> Выход/Перезапуск&lt;/h3>
 &lt;ul>
 &lt;li>&lt;code>Mod&lt;/code> + &lt;code>Shift&lt;/code> + &lt;code>c&lt;/code>: перечитать конфигурационный файл.
-&lt;pre>&lt;code class="language-conf-unix">## ~/.config/i3/config
-## reload the configuration file
-bindsym $mod+Shift+c reload
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">## ~/.config/i3/config
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">## reload the configuration file
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+Shift+c reload
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>&lt;code>Mod&lt;/code> + &lt;code>Shift&lt;/code> + &lt;code>r&lt;/code>: перестартовать &lt;em>i3&lt;/em>, сохранив сессию.
-&lt;pre>&lt;code class="language-conf-unix">## ~/.config/i3/config
-## restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $mod+Shift+r restart
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">## ~/.config/i3/config
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">## restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+Shift+r restart
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>&lt;code>Mod&lt;/code> + &lt;code>Shift&lt;/code> + &lt;code>e&lt;/code>: выход из &lt;em>i3&lt;/em>.
-&lt;pre>&lt;code class="language-conf-unix">## ~/.config/i3/config
-## exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec &amp;quot;i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'&amp;quot;
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">## ~/.config/i3/config
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">## exit i3 (logs you out of your X session)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+Shift+e exec &amp;#34;i3-nagbar -t warning -m &amp;#39;You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.&amp;#39; -B &amp;#39;Yes, exit i3&amp;#39; &amp;#39;i3-msg exit&amp;#39;&amp;#34;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h2 id="настройка">&lt;span class="section-num">5&lt;/span> Настройка&lt;/h2>
 &lt;h3 id="терминал">&lt;span class="section-num">5.1&lt;/span> Терминал&lt;/h3>
@@ -731,18 +692,16 @@ bindsym $mod+Shift+e exec &amp;quot;i3-nagbar -t warning -m 'You pressed the exi
 &lt;/li>
 &lt;li>
 &lt;p>Конфигурация запуска терминала:&lt;/p>
-&lt;pre>&lt;code class="language-conf-unix">set $term kitty
-bindsym $mod+Return exec $term
-&lt;/code>&lt;/pre>
-&lt;ul>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">set $term kitty
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+Return exec $term
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
 &lt;li>В этом случае запускается одно окно терминала.&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>
 &lt;p>Для работы я использую специальную настройку сессии терминала. Я её запускаю при входе в сессию. Для этого я приспособил комбинацию &lt;code>Mod&lt;/code> + &lt;code>Shift&lt;/code> + &lt;code>Enter&lt;/code>:&lt;/p>
-&lt;pre>&lt;code class="language-conf-unix">bindsym $mod+Shift+Return exec kitty --session ~/.config/kitty/startup
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">bindsym $mod+Shift+Return exec kitty --session ~/.config/kitty/startup
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="управление-окном-с-помощью-мышки">&lt;span class="section-num">5.2&lt;/span> Управление окном с помощью мышки&lt;/h3>
 &lt;ul>
@@ -751,9 +710,8 @@ bindsym $mod+Return exec $term
 &lt;/li>
 &lt;li>
 &lt;p>Привязка осуществляется следующей командой:&lt;/p>
-&lt;pre>&lt;code class="language-conf-unix">bindsym [--release] [--border] [--whole-window] [--exclude-titlebar] [&amp;lt;Modifiers&amp;gt;+]button&amp;lt;n&amp;gt; command
-&lt;/code>&lt;/pre>
-&lt;ul>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">bindsym [--release] [--border] [--whole-window] [--exclude-titlebar] [&amp;lt;Modifiers&amp;gt;+]button&amp;lt;n&amp;gt; command
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
 &lt;li>По умолчанию привязка запускается только при нажатии на строку заголовка окна.&lt;/li>
 &lt;li>Если указан флаг &lt;code>--release&lt;/code>, он запустится, когда кнопка мыши будет отпущена.&lt;/li>
 &lt;li>Если указан флаг &lt;code>--whole-window&lt;/code>, то привязка также будет выполняться при щелчке по любой части окна, за исключением границы.&lt;/li>
@@ -765,23 +723,19 @@ bindsym $mod+Return exec $term
 &lt;p>Примеры.&lt;/p>
 &lt;ul>
 &lt;li>Средняя кнопка на заголовке закрывает окно:
-&lt;pre>&lt;code class="language-conf-unix">bindsym --release button2 kill
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">bindsym --release button2 kill
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Средняя кнопка и модификатор над любой частью окна закрывает окно:
-&lt;pre>&lt;code class="language-conf-unix">bindsym --whole-window $mod+button2 kill
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">bindsym --whole-window $mod+button2 kill
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Правая кнопка мыши переключает плавающий режим:
-&lt;pre>&lt;code class="language-conf-unix">bindsym button3 floating toggle
-bindsym $mod+button3 floating toggle
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">bindsym button3 floating toggle
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+button3 floating toggle
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Боковые кнопки мыши перемещают окно:
-&lt;pre>&lt;code class="language-conf-unix">bindsym button9 move left
-bindsym button8 move right
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">bindsym button9 move left
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym button8 move right
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
@@ -798,14 +752,13 @@ bindsym button8 move right
 &lt;/ul>
 &lt;/li>
 &lt;li>В конфигурационном файле задаётся следующим образом (&lt;a href="https://i3wm.org/docs/userguide.html#_configuring_i3bar" target="_blank" rel="noopener">https://i3wm.org/docs/userguide.html#_configuring_i3bar&lt;/a>):
-&lt;pre>&lt;code class="language-conf-unix"># ~/.config/i3/config -*- mode: conf-unix; -*-
-## Start i3bar to display a workspace bar
-bar {
-status_command i3status
-position top
-}
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl"># ~/.config/i3/config -*- mode: conf-unix; -*-
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">## Start i3bar to display a workspace bar
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bar {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> status_command i3status
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> position top
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;!--list-separator-->
 &lt;ol>
@@ -817,21 +770,19 @@ position top
 &lt;li>Установка:
 &lt;ul>
 &lt;li>Gentoo
-&lt;pre>&lt;code class="language-shell">emerge media-fonts/fontawesome
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge media-fonts/fontawesome
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>Для вставки шрифта в файл можно использовать список кодов для иконок &lt;a href="https://fontawesome.com/cheatsheet" target="_blank" rel="noopener">https://fontawesome.com/cheatsheet&lt;/a>.&lt;/li>
 &lt;li>Шрифт лучше явно обозначить в конфигурации:
-&lt;pre>&lt;code class="language-conf-unix">## ~/.config/i3/config
-bar {
-…
-font pango:Source Sans Pro, FontAwesome 5 Free 10
-…
-}
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">## ~/.config/i3/config
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bar {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> …
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> font pango:Source Sans Pro, FontAwesome 5 Free 10
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> …
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Для набора символа по его коду следует использовать конфигурации клавиш. Например, для набора символа с кодом &lt;code>0xf004&lt;/code>, требуется набрать:
 &lt;ul>
 &lt;li>приложения на основе GTK: &lt;code>Ctrl&lt;/code> + &lt;code>Shift&lt;/code> + &lt;code>u&lt;/code>, &lt;code>f004&lt;/code>, &lt;code>Enter&lt;/code>;&lt;/li>
@@ -879,146 +830,162 @@ font pango:Source Sans Pro, FontAwesome 5 Free 10
 &lt;/ul>
 &lt;/li>
 &lt;li>В конфигурации i3bar задаётся конфигурационный файл для i3status:
-&lt;pre>&lt;code class="language-conf-unix"># ~/.config/i3/config -*- mode: conf-unix; -*-
-## Start i3bar to display a workspace bar
-bar {
-font pango:Source Sans Pro, FontAwesome 5 Free 10
-status_command i3status --config ~/.config/i3/i3status/config
-position top
-}
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl"># ~/.config/i3/config -*- mode: conf-unix; -*-
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">## Start i3bar to display a workspace bar
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bar {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> font pango:Source Sans Pro, FontAwesome 5 Free 10
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> status_command i3status --config ~/.config/i3/i3status/config
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> position top
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Структура информационной панели задаётся в конфигурационном файле:
-&lt;pre>&lt;code class="language-conf-unix">### -*- mode: conf-unix; -*-
-## ~/.config/i3/i3status/config
-general {
-colors = true # включение/выключение поддержки цветов true/false
-interval = 1 # интервал обновления строки статуса, в секундах
-output_format = &amp;quot;i3bar&amp;quot; # формат вывода, устанавливаем i3bar (JSON)
-}
-# порядок вывода модулей
-order += &amp;quot;run_watch openvpn&amp;quot;
-order += &amp;quot;run_watch openconnect&amp;quot;
-order += &amp;quot;volume master&amp;quot;
-order += &amp;quot;wireless _first_&amp;quot;
-order += &amp;quot;battery all&amp;quot;
-order += &amp;quot;disk /&amp;quot;
-order += &amp;quot;memory&amp;quot;
-order += &amp;quot;cpu_usage&amp;quot;
-order += &amp;quot;cpu_temperature 0&amp;quot;
-order += &amp;quot;tztime local&amp;quot;
-# отслеживание процесса openvpn
-# служит как индикатор работы openvpn клиента
-# при запуске openvpn необходимо
-# указывать параметр --writepid /var/run/openvpn.pid
-run_watch openvpn {
-pidfile = &amp;quot;/var/run/openvpn.pid&amp;quot;
-format = &amp;quot; openvpn&amp;quot;
-# если пареметр format_down оставить пустым,
-# то при неактивном процессе блок будет отсутствовать
-format_down=&amp;quot;&amp;quot;
-}
-# аналогичный блок индикатор openconnect vpn клиента
-# требуется запуск клиента с параметром --pid-file=/var/run/openconnect.pid
-run_watch openconnect {
-pidfile = &amp;quot;/var/run/openconnect.pid&amp;quot;
-format = &amp;quot; openconnect vpn&amp;quot;
-format_down=&amp;quot;&amp;quot;
-}
-# управление громкостью звука
-volume master {
-format = &amp;quot; %volume&amp;quot; # шаблон громкости в активном состоянии
-format_muted = &amp;quot; %volume&amp;quot; # шаблон громкости в состоянии muted (без звука)
-device = &amp;quot;default&amp;quot;
-mixer = &amp;quot;Master&amp;quot;
-mixer_idx = 0
-}
-# индикатор WIFI
-wireless _first_ {
-# шаблон вывода, можно дополнить
-# наименованием подключения %essid
-# и ip адресом %ip
-format_up = &amp;quot;%quality %frequency&amp;quot;
-format_down = &amp;quot;&amp;quot;
-}
-# состояние заряда батареи
-battery all {
-# шаблон вывода, можно дополнить
-# оставшимся временем работы %emptytime
-# энергопотреблением %consumption в ваттах
-format = &amp;quot;%status %percentage&amp;quot;
-# true - показ процента заряда от 0 до 100
-# false - показ процента заряда от 0 до n, с учетом
-# изношенности аккумулятора
-last_full_capacity = true
-format_down = &amp;quot;&amp;quot;
-status_chr = &amp;quot;&amp;quot; # статус подзарядки
-status_bat = &amp;quot;&amp;quot; # статус в режиме работы от батареи
-status_unk = &amp;quot;? UNK&amp;quot; # неизвестный статус
-status_full = &amp;quot;&amp;quot; # статус полного заряда
-path = &amp;quot;/sys/class/power_supply/BAT%d/uevent&amp;quot;
-# нижний порог заряда, после которого блок
-# будет окрашен в &amp;quot;color_bad&amp;quot; (по умолчанию красный)
-# подробнее в man i3status
-low_threshold = 10
-}
-# отслеживаемый накопитель
-disk &amp;quot;/&amp;quot; {
-# доступные переменные:
-# %used, %percentage_used - занятое пространство
-# %free, %percentage_free - свободное пространство
-# %avail, %percentage_avail - доступное пространство
-# %total - всего
-format = &amp;quot; %avail&amp;quot;
-# будет окрашен в &amp;quot;color_bad&amp;quot; (по умолчанию красный)
-# при достижении нижнего порога менее 10GB доступного пространства
-low_threshold = &amp;quot;10&amp;quot;
-threshold_type = &amp;quot;gbytes_avail&amp;quot;
-format_below_threshold = &amp;quot; Warning: %avail&amp;quot;
-}
-# миниторинг оперативной памяти
-memory {
-# доступные переменные:
-# %total, percentage_total
-# %used, percentage_used
-# %free, percentage_free
-# %available, percentage_available
-# %shared, percentage_shared
-format = &amp;quot; %used&amp;quot;
-# порог, при котором вывод окрасится в
-# желтый (degraded) или красный (critical)
-# а формат вывода изменится на format_degraded
-threshold_degraded = &amp;quot;1G&amp;quot;
-threshold_critical = &amp;quot;200M&amp;quot;
-format_degraded = &amp;quot;MEMORY &amp;lt; %available&amp;quot;
-}
-# температура процессора
-cpu_temperature 0 {
-format = &amp;quot; %degrees&amp;quot;
-# верхний порог температуры, при достижении которого
-# вывод окрасится красным,
-# и формат изменится на format_above_threshold
-max_threshold = &amp;quot;80&amp;quot;
-format_above_threshold = &amp;quot; %degrees&amp;quot;
-path = &amp;quot;/sys/class/thermal/thermal_zone0/temp&amp;quot;
-}
-# использование центрального процессора
-cpu_usage {
-# %usage - процентное использование ЦП
-# %cpu&amp;lt;N&amp;gt; - начиная с %cpu0 и далее показывает использование ядер
-format = &amp;quot; %usage&amp;quot;
-# доступны параметры:
-# degraded_threshold, окрас в желтый, по умолчанию 90
-# max_threshold, окрас в красный, по умолчанию 95
-# и кастомные форматы для них
-# format_above_degraded_threshold и format_above_threshold
-}
-# вывод даты и времени по заданному формату
-tztime local {
-format = &amp;quot; %d %b %Y  %H:%M:%S&amp;quot;
-}
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">### -*- mode: conf-unix; -*-
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">## ~/.config/i3/i3status/config
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">general {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> colors = true # включение/выключение поддержки цветов true/false
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> interval = 1 # интервал обновления строки статуса, в секундах
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> output_format = &amp;#34;i3bar&amp;#34; # формат вывода, устанавливаем i3bar (JSON)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># порядок вывода модулей
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">order += &amp;#34;run_watch openvpn&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">order += &amp;#34;run_watch openconnect&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">order += &amp;#34;volume master&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">order += &amp;#34;wireless _first_&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">order += &amp;#34;battery all&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">order += &amp;#34;disk /&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">order += &amp;#34;memory&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">order += &amp;#34;cpu_usage&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">order += &amp;#34;cpu_temperature 0&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">order += &amp;#34;tztime local&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># отслеживание процесса openvpn
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># служит как индикатор работы openvpn клиента
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># при запуске openvpn необходимо
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># указывать параметр --writepid /var/run/openvpn.pid
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">run_watch openvpn {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> pidfile = &amp;#34;/var/run/openvpn.pid&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> format = &amp;#34; openvpn&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # если пареметр format_down оставить пустым,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # то при неактивном процессе блок будет отсутствовать
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> format_down=&amp;#34;&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># аналогичный блок индикатор openconnect vpn клиента
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># требуется запуск клиента с параметром --pid-file=/var/run/openconnect.pid
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">run_watch openconnect {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> pidfile = &amp;#34;/var/run/openconnect.pid&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> format = &amp;#34; openconnect vpn&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> format_down=&amp;#34;&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># управление громкостью звука
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">volume master {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> format = &amp;#34; %volume&amp;#34; # шаблон громкости в активном состоянии
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> format_muted = &amp;#34; %volume&amp;#34; # шаблон громкости в состоянии muted (без звука)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> device = &amp;#34;default&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> mixer = &amp;#34;Master&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> mixer_idx = 0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># индикатор WIFI
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wireless _first_ {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # шаблон вывода, можно дополнить
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # наименованием подключения %essid
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # и ip адресом %ip
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> format_up = &amp;#34;%quality %frequency&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> format_down = &amp;#34;&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># состояние заряда батареи
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">battery all {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # шаблон вывода, можно дополнить
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # оставшимся временем работы %emptytime
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # энергопотреблением %consumption в ваттах
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> format = &amp;#34;%status %percentage&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # true - показ процента заряда от 0 до 100
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # false - показ процента заряда от 0 до n, с учетом
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # изношенности аккумулятора
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> last_full_capacity = true
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> format_down = &amp;#34;&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> status_chr = &amp;#34;&amp;#34; # статус подзарядки
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> status_bat = &amp;#34;&amp;#34; # статус в режиме работы от батареи
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> status_unk = &amp;#34;? UNK&amp;#34; # неизвестный статус
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> status_full = &amp;#34;&amp;#34; # статус полного заряда
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> path = &amp;#34;/sys/class/power_supply/BAT%d/uevent&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # нижний порог заряда, после которого блок
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # будет окрашен в &amp;#34;color_bad&amp;#34; (по умолчанию красный)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # подробнее в man i3status
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> low_threshold = 10
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># отслеживаемый накопитель
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">disk &amp;#34;/&amp;#34; {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # доступные переменные:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # %used, %percentage_used - занятое пространство
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # %free, %percentage_free - свободное пространство
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # %avail, %percentage_avail - доступное пространство
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # %total - всего
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> format = &amp;#34; %avail&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # будет окрашен в &amp;#34;color_bad&amp;#34; (по умолчанию красный)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # при достижении нижнего порога менее 10GB доступного пространства
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> low_threshold = &amp;#34;10&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> threshold_type = &amp;#34;gbytes_avail&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> format_below_threshold = &amp;#34; Warning: %avail&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># миниторинг оперативной памяти
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">memory {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # доступные переменные:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # %total, percentage_total
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # %used, percentage_used
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # %free, percentage_free
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # %available, percentage_available
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # %shared, percentage_shared
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> format = &amp;#34; %used&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # порог, при котором вывод окрасится в
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # желтый (degraded) или красный (critical)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # а формат вывода изменится на format_degraded
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> threshold_degraded = &amp;#34;1G&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> threshold_critical = &amp;#34;200M&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> format_degraded = &amp;#34;MEMORY &amp;lt; %available&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># температура процессора
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">cpu_temperature 0 {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> format = &amp;#34; %degrees&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # верхний порог температуры, при достижении которого
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # вывод окрасится красным,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # и формат изменится на format_above_threshold
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> max_threshold = &amp;#34;80&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> format_above_threshold = &amp;#34; %degrees&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> path = &amp;#34;/sys/class/thermal/thermal_zone0/temp&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># использование центрального процессора
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">cpu_usage {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # %usage - процентное использование ЦП
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # %cpu&amp;lt;N&amp;gt; - начиная с %cpu0 и далее показывает использование ядер
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> format = &amp;#34; %usage&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # доступны параметры:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # degraded_threshold, окрас в желтый, по умолчанию 90
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # max_threshold, окрас в красный, по умолчанию 95
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # и кастомные форматы для них
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # format_above_degraded_threshold и format_above_threshold
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># вывод даты и времени по заданному формату
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">tztime local {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> format = &amp;#34; %d %b %Y  %H:%M:%S&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ol>
@@ -1050,15 +1017,14 @@ format = &amp;quot; %d %b %Y  %H:%M:%S&amp;quot;
 &lt;p>Запуск py3status&lt;/p>
 &lt;ul>
 &lt;li>Запускается вместо &lt;code>i3bar&lt;/code>:
-&lt;pre>&lt;code class="language-conf-unix"># ~/.config/i3/config -*- mode: conf-unix; -*-
-## Start py3status to display a workspace bar
-bar {
-font pango:Iosevka Nerd Font 12
-status_command py3status
-position top
-}
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl"># ~/.config/i3/config -*- mode: conf-unix; -*-
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">## Start py3status to display a workspace bar
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bar {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> font pango:Iosevka Nerd Font 12
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> status_command py3status
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> position top
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Использует конфигурационный файл от &lt;code>i3status&lt;/code> или собственную конфигурацию.&lt;/li>
 &lt;li>Порядок поиска конфигурационного файла:
 &lt;ul>
@@ -1098,9 +1064,8 @@ position top
 &lt;p>Установка&lt;/p>
 &lt;ul>
 &lt;li>Gentoo:
-&lt;pre>&lt;code class="language-shell">USE=&amp;quot;i3wm&amp;quot; emerge x11-misc/polybar
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nv">USE&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;i3wm&amp;#34;&lt;/span> emerge x11-misc/polybar
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>
@@ -1117,35 +1082,38 @@ position top
 &lt;p>Скрипт запуска&lt;/p>
 &lt;ul>
 &lt;li>Создадим скрипт запуска &lt;code>polybar&lt;/code>.
-&lt;pre>&lt;code class="language-shell">#!/bin/bash
-# ~/.config/i3/polybar/launch.sh
-# Terminate already running bar instances
-killall -q polybar
-# If all your bars have ipc enabled, you can also use
-# polybar-msg cmd quit
-# Wait until the processes have been shut down
-while pgrep -u $UID -x polybar &amp;gt;/dev/null; do sleep 1; done
-# Launch Polybar, using config location ~/.config/i3/polybar/config
-polybar --config=~/.config/i3/polybar/config i3 &amp;amp;
-echo &amp;quot;Polybar launched...&amp;quot;
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#!/bin/bash
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>&lt;span class="c1"># ~/.config/i3/polybar/launch.sh&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Terminate already running bar instances&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">killall -q polybar
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># If all your bars have ipc enabled, you can also use&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># polybar-msg cmd quit&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Wait until the processes have been shut down&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">while&lt;/span> pgrep -u &lt;span class="nv">$UID&lt;/span> -x polybar &amp;gt;/dev/null&lt;span class="p">;&lt;/span> &lt;span class="k">do&lt;/span> sleep 1&lt;span class="p">;&lt;/span> &lt;span class="k">done&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Launch Polybar, using config location ~/.config/i3/polybar/config&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">polybar --config&lt;span class="o">=&lt;/span>~/.config/i3/polybar/config i3 &lt;span class="p">&amp;amp;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;Polybar launched...&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Установим права на исполнение:
-&lt;pre>&lt;code class="language-shell">chmod +x ~/.config/i3/polybar/launch.sh
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">chmod +x ~/.config/i3/polybar/launch.sh
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Добавим вызов &lt;code>polybar&lt;/code> в файл конфигурации &lt;em>i3&lt;/em>. Конфигурацию для &lt;em>i3bar&lt;/em> следует закомментировать.
-&lt;pre>&lt;code class="language-conf-unix">## ~/.config/i3/config
-## Start i3bar to display a workspace bar
-# bar {
-# font pango:Source Sans Pro, FontAwesome 5 Free 10
-# status_command i3status --config ~/.config/i3/i3status/config
-# position top
-# }
-## Start polybar
-exec_always --no-startup-id ~/.config/i3/polybar/launch.sh
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">## ~/.config/i3/config
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">## Start i3bar to display a workspace bar
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># bar {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># font pango:Source Sans Pro, FontAwesome 5 Free 10
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># status_command i3status --config ~/.config/i3/i3status/config
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># position top
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">## Start polybar
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exec_always --no-startup-id ~/.config/i3/polybar/launch.sh
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ol>
@@ -1160,9 +1128,8 @@ exec_always --no-startup-id ~/.config/i3/polybar/launch.sh
 &lt;li>&lt;a href="https://github.com/davatorium/rofi" target="_blank" rel="noopener">https://github.com/davatorium/rofi&lt;/a>&lt;/li>
 &lt;li>Конфигурация по умолчанию находится в &lt;code>~/.config/rofi/config&lt;/code>.&lt;/li>
 &lt;li>Для выбора темы можно использовать команду:
-&lt;pre>&lt;code class="language-shell">rofi-theme-selector
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">rofi-theme-selector
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Для запуска программ используется несколько мод:
 &lt;ul>
 &lt;li>&lt;code>run&lt;/code>: запускать приложения из пути (&lt;code>$PATH&lt;/code>) с возможностью запуска в терминале.&lt;/li>
@@ -1176,26 +1143,22 @@ exec_always --no-startup-id ~/.config/i3/polybar/launch.sh
 &lt;/ul>
 &lt;/li>
 &lt;li>Использование запятых в файле настроек &lt;em>i3&lt;/em> может привести к проблемам. Лучше использовать файл настроек &lt;em>rofi&lt;/em> или замените запятые символом &lt;code>#&lt;/code>, например, заменить строку
-&lt;pre>&lt;code class="language-conf-unix">rofi -combi-modi window,drun,ssh
-&lt;/code>&lt;/pre>
-на
-&lt;pre>&lt;code class="language-conf-unix">rofi -combi-modi window#drun#ssh
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">rofi -combi-modi window,drun,ssh
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>на
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">rofi -combi-modi window#drun#ssh
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Возможная конфигурация в командной строке команды &lt;code>rofi&lt;/code>:
-&lt;pre>&lt;code class="language-conf-unix">## ~/.config/i3/config
-set $menu rofi -combi-modi window#drun -show combi -modi combi -show-icons
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">## ~/.config/i3/config
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">set $menu rofi -combi-modi window#drun -show combi -modi combi -show-icons
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Конфигурация с помощью конфигурационного файла (поместим его в &lt;code>~/.config/i3/rofi/config&lt;/code>).&lt;/li>
 &lt;/ul>
 &lt;h3 id="блокировка-экрана">&lt;span class="section-num">5.5&lt;/span> Блокировка экрана&lt;/h3>
 &lt;ul>
 &lt;li>
 &lt;p>Для отключения экрана можно использовать DPMS:&lt;/p>
-&lt;pre>&lt;code class="language-cfg">exec --no-startup-id xset dpms 1800
-&lt;/code>&lt;/pre>
-&lt;ul>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-cfg" data-lang="cfg">&lt;span class="line">&lt;span class="cl">&lt;span class="na">exec --no-startup-id xset dpms 1800&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
 &lt;li>Отключается через 30 минут.&lt;/li>
 &lt;/ul>
 &lt;/li>
@@ -1208,18 +1171,16 @@ set $menu rofi -combi-modi window#drun -show combi -modi combi -show-icons
 &lt;li>Установка
 &lt;ul>
 &lt;li>Gentoo
-&lt;pre>&lt;code class="language-shell">emerge x11-misc/i3lock
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge x11-misc/i3lock
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>
 &lt;p>Использование в конфигурационном файле:&lt;/p>
-&lt;pre>&lt;code class="language-cfg">set $Locker i3lock --color=000000 &amp;amp;&amp;amp; sleep 1
-&lt;/code>&lt;/pre>
-&lt;ul>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-cfg" data-lang="cfg">&lt;span class="line">&lt;span class="cl">&lt;span class="na">set $Locker i3lock --color&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">000000 &amp;amp;&amp;amp; sleep 1&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
 &lt;li>&lt;code>sleep 1&lt;/code> добавляет небольшую задержку, чтобы предотвратить возможное состояние гонки.&lt;/li>
 &lt;/ul>
 &lt;/li>
@@ -1233,16 +1194,14 @@ set $menu rofi -combi-modi window#drun -show combi -modi combi -show-icons
 &lt;p>Установка&lt;/p>
 &lt;ul>
 &lt;li>Gentoo
-&lt;pre>&lt;code class="language-shell">emerge x11-misc/xautolock
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge x11-misc/xautolock
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>
 &lt;p>Использование в конфигурационном файле:&lt;/p>
-&lt;pre>&lt;code class="language-cfg">exec --no-startup-id xautolock -time 10 -locker &amp;quot;$Locker&amp;quot;
-&lt;/code>&lt;/pre>
-&lt;ul>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-cfg" data-lang="cfg">&lt;span class="line">&lt;span class="cl">&lt;span class="na">exec --no-startup-id xautolock -time 10 -locker &amp;#34;$Locker&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
 &lt;li>Блокирует через 10 минут.&lt;/li>
 &lt;/ul>
 &lt;/li>
@@ -1253,16 +1212,14 @@ set $menu rofi -combi-modi window#drun -show combi -modi combi -show-icons
 &lt;p>Установка&lt;/p>
 &lt;ul>
 &lt;li>Gentoo
-&lt;pre>&lt;code class="language-shell">emerge x11-misc/xss-lock
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge x11-misc/xss-lock
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>
 &lt;p>Использование в конфигурационном файле:&lt;/p>
-&lt;pre>&lt;code class="language-cfg">exec --no-startup-id xss-lock -- &amp;quot;$Locker&amp;quot;
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-cfg" data-lang="cfg">&lt;span class="line">&lt;span class="cl">&lt;span class="na">exec --no-startup-id xss-lock -- &amp;#34;$Locker&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h4 id="блокировщик-экрана-i3lock-color">&lt;span class="section-num">5.5.2&lt;/span> Блокировщик экрана &lt;code>i3lock-color&lt;/code>&lt;/h4>
 &lt;ul>
@@ -1289,9 +1246,8 @@ set $menu rofi -combi-modi window#drun -show combi -modi combi -show-icons
 &lt;li>Gentoo
 &lt;ul>
 &lt;li>Порт находится в оверлее &lt;code>guru&lt;/code>:
-&lt;pre>&lt;code class="language-shell">emerge x11-misc/i3lock-color
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge x11-misc/i3lock-color
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
@@ -1304,22 +1260,23 @@ set $menu rofi -combi-modi window#drun -show combi -modi combi -show-icons
 &lt;p>Для скриншотов можно использовать &lt;a href="https://github.com/resurrecting-open-source-projects/scrot" target="_blank" rel="noopener">scrot&lt;/a>.&lt;/p>
 &lt;ul>
 &lt;li>Gentoo
-&lt;pre>&lt;code class="language-shell">emerge media-gfx/scrot
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge media-gfx/scrot
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>
 &lt;p>Добавим в конфигурационный файл:&lt;/p>
-&lt;pre>&lt;code class="language-conf-unix">## Screenshot
-## Screenshot active display
-bindsym --release Print exec --no-startup-id scrot '%Y-%m-%d_%H-%M-%S_$wx$h.png' -e 'mv $f `xdg-user-dir PICTURES` 2&amp;gt;/dev/null'
-## Screenshot current window
-bindsym --release $mod+Print exec --no-startup-id scrot -u '%Y-%m-%d_%H-%M-%S_$wx$h.png' -e 'mv $f `xdg-user-dir PICTURES` 2&amp;gt;/dev/null'
-## Screenshot selected region
-bindsym --release $mod+Shift+Print exec --no-startup-id scrot -s '%Y-%m-%d_%H-%M-%S_$wx$h.png' -e 'mv $f `xdg-user-dir PICTURES` 2&amp;gt;/dev/null'
-&lt;/code>&lt;/pre>
-&lt;ul>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">## Screenshot
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">## Screenshot active display
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym --release Print exec --no-startup-id scrot &amp;#39;%Y-%m-%d_%H-%M-%S_$wx$h.png&amp;#39; -e &amp;#39;mv $f `xdg-user-dir PICTURES` 2&amp;gt;/dev/null&amp;#39;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">## Screenshot current window
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym --release $mod+Print exec --no-startup-id scrot -u &amp;#39;%Y-%m-%d_%H-%M-%S_$wx$h.png&amp;#39; -e &amp;#39;mv $f `xdg-user-dir PICTURES` 2&amp;gt;/dev/null&amp;#39;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">## Screenshot selected region
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym --release $mod+Shift+Print exec --no-startup-id scrot -s &amp;#39;%Y-%m-%d_%H-%M-%S_$wx$h.png&amp;#39; -e &amp;#39;mv $f `xdg-user-dir PICTURES` 2&amp;gt;/dev/null&amp;#39;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
 &lt;li>По клавише &lt;code>PrtScr&lt;/code> делается скриншот.&lt;/li>
 &lt;li>По клавише &lt;code>mod&lt;/code> + &lt;code>PrtScr&lt;/code> делается скриншот активного окна.&lt;/li>
 &lt;li>По клавише &lt;code>mod&lt;/code> + &lt;code>Shift&lt;/code> + &lt;code>PrtScr&lt;/code> предлагается выделить область экрана, скриншот которой следует сделать.&lt;/li>
@@ -1333,9 +1290,8 @@ bindsym --release $mod+Shift+Print exec --no-startup-id scrot -s '%Y-%m-%d_%H-%M
 &lt;ul>
 &lt;li>В стандартных тулкитах для Java жестко зашит список оконных менеджеров.&lt;/li>
 &lt;li>Следует установить переменную окружения:
-&lt;pre>&lt;code class="language-shell">export _JAVA_AWT_WM_NONREPARENTING=1
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">_JAVA_AWT_WM_NONREPARENTING&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h4 id="меню-в-приложениях-плавает-отдельно-им-невозможно-пользоваться">&lt;span class="section-num">7.1.2&lt;/span> Меню в приложениях плавает отдельно, им невозможно пользоваться&lt;/h4>
 &lt;ul>
@@ -1343,9 +1299,8 @@ bindsym --release $mod+Shift+Print exec --no-startup-id scrot -s '%Y-%m-%d_%H-%M
 &lt;li>GTK LookAndFeel может работать с GTK версий 2, 2.2 и 3.&lt;/li>
 &lt;li>По умолчанию используется GTK3.&lt;/li>
 &lt;li>Следует явно задать более старую версию:
-&lt;pre>&lt;code class="language-shell">export JAVA_TOOL_OPTIONS='-Djdk.gtk.version=2.2'
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">JAVA_TOOL_OPTIONS&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;-Djdk.gtk.version=2.2&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul></description></item><item><title>Мультимедиа сервер PipeWire</title><link>https://yamadharma.github.io/ru/post/2021/04/28/pipewire-multimedia-server/</link><pubDate>Wed, 28 Apr 2021 16:28:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2021/04/28/pipewire-multimedia-server/</guid><description>&lt;p>PipeWire есть новый аудио и видео сервер. В основном для Wayland. Должен заменить другие видео-серверы.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
@@ -1399,30 +1354,26 @@ bindsym --release $mod+Shift+Print exec --no-startup-id scrot -s '%Y-%m-%d_%H-%M
 &lt;/li>
 &lt;li>
 &lt;p>Добавьте в файл &lt;code>/etc/portage/package.use&lt;/code>:&lt;/p>
-&lt;pre>&lt;code class="language-conf-unix">media-video/pipewire sound-server
-media-sound/pulseaudio -daemon
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">media-video/pipewire sound-server
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">media-sound/pulseaudio -daemon
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Удалите &lt;code>media-sound/pulseaudio-daemon&lt;/code>:&lt;/p>
-&lt;pre>&lt;code class="language-shell">emerge -Cv media-sound/pulseaudio-daemon
-emerge -Cv media-sound/paprefs
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge -Cv media-sound/pulseaudio-daemon
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">emerge -Cv media-sound/paprefs
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Установить само приложение:&lt;/p>
-&lt;pre>&lt;code class="language-shell">emerge media-video/pipewire
-emerge media-video/wireplumber
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge media-video/pipewire
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">emerge media-video/wireplumber
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h2 id="настройка-пользовательской-сессии">&lt;span class="section-num">3&lt;/span> Настройка пользовательской сессии&lt;/h2>
 &lt;h3 id="права-пользователя">&lt;span class="section-num">3.1&lt;/span> Права пользователя&lt;/h3>
 &lt;ul>
 &lt;li>Желательно добавить пользователя в группу &lt;code>audio&lt;/code>:
-&lt;pre>&lt;code class="language-shell">usermod -aG audio &amp;lt;user&amp;gt;
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">usermod -aG audio &amp;lt;user&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="настройка-запуска-на-уровне-пользователя">&lt;span class="section-num">3.2&lt;/span> Настройка запуска на уровне пользователя&lt;/h3>
 &lt;ul>
@@ -1430,30 +1381,25 @@ emerge media-video/wireplumber
 &lt;li>Следует настроить его запуск для пользователя.&lt;/li>
 &lt;li>Флаг &lt;code>--now&lt;/code> позволяет одновременно активировать и запускать сервис.&lt;/li>
 &lt;li>Отключите &lt;code>pulseaudio&lt;/code>:
-&lt;pre>&lt;code class="language-shell">systemctl --user disable --now pulseaudio.socket pulseaudio.service
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">systemctl --user disable --now pulseaudio.socket pulseaudio.service
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Для каждого пользователя можно установить активацию по обращению к сокету:
-&lt;pre>&lt;code class="language-shell">systemctl --user enable --now pipewire.socket pipewire-pulse.socket
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">systemctl --user &lt;span class="nb">enable&lt;/span> --now pipewire.socket pipewire-pulse.socket
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>В качестве альтернативы можно сразу запускать необходимый процесс:
-&lt;pre>&lt;code class="language-shell">systemctl --user enable --now pipewire.service pipewire-pulse.service
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">systemctl --user &lt;span class="nb">enable&lt;/span> --now pipewire.service pipewire-pulse.service
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Отключите демон сессии &lt;code>pipewire-media-session.service&lt;/code> и запустите &lt;code>wireplumber&lt;/code>:
-&lt;pre>&lt;code class="language-shell">systemctl --user disable pipewire-media-session.service
-systemctl --user --force enable --now wireplumber.service
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">systemctl --user disable pipewire-media-session.service
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">systemctl --user --force &lt;span class="nb">enable&lt;/span> --now wireplumber.service
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="настройка-запуска-на-уровне-системы">&lt;span class="section-num">3.3&lt;/span> Настройка запуска на уровне системы&lt;/h3>
 &lt;ul>
 &lt;li>Под пользователем &lt;code>root&lt;/code> можно настроить запуск сервисов на уровне системы, заменив &lt;code>--user&lt;/code> на &lt;code>--global&lt;/code>:
-&lt;pre>&lt;code class="language-shell">systemctl --global enable pipewire.socket pipewire-pulse.socket
-systemctl --global --force enable wireplumber.service
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">systemctl --global &lt;span class="nb">enable&lt;/span> pipewire.socket pipewire-pulse.socket
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">systemctl --global --force &lt;span class="nb">enable&lt;/span> wireplumber.service
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>При выборе этого варианта службы должны быть запущены вручную под пользователем пользователем.&lt;/li>
 &lt;/ul>
 &lt;h2 id="использование-с-другими-серверами">&lt;span class="section-num">4&lt;/span> Использование с другими серверами&lt;/h2>
@@ -1472,28 +1418,24 @@ systemctl --global --force enable wireplumber.service
 &lt;/ul>
 &lt;/li>
 &lt;li>Одновременно отключим &lt;em>PulseAudio&lt;/em> и включим &lt;em>PipeWire&lt;/em> для каждого пользователя:
-&lt;pre>&lt;code class="language-shell">systemctl --user disable --now pulseaudio.socket pulseaudio.service
-systemctl --user enable --now pipewire.socket pipewire-pulse.socket wireplumber.service
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">systemctl --user disable --now pulseaudio.socket pulseaudio.service
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">systemctl --user &lt;span class="nb">enable&lt;/span> --now pipewire.socket pipewire-pulse.socket wireplumber.service
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Можно замаскировать PulseAudio (но он всё равно может стартовать автоматически):
-&lt;pre>&lt;code class="language-shell">systemctl --user mask pulseaudio.socket pulseaudio.service
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">systemctl --user mask pulseaudio.socket pulseaudio.service
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Кроме того, рекомендуется удалить файлы, оставшиеся от PulseAudio:
-&lt;pre>&lt;code class="language-shell">rm -r ~/.config/pulse/
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">rm -r ~/.config/pulse/
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h4 id="pulseaudio-без-поддержки-запуска-кок-демон">&lt;span class="section-num">4.1.2&lt;/span> PulseAudio без поддержки запуска кок демон&lt;/h4>
 &lt;ul>
 &lt;li>Теперь &lt;em>PulseAudio&lt;/em> рекомендуется собирать без поддержки демона.&lt;/li>
 &lt;li>В этом случае всё работает сразу.&lt;/li>
 &lt;li>Напомним, что на уровне пользователя следует подключить &lt;code>pipewire-pulse.socket&lt;/code>:
-&lt;pre>&lt;code class="language-shell">systemctl --user disable --now pulseaudio.socket pulseaudio.service
-systemctl --user enable --now pipewire.socket pipewire-pulse.socket wireplumber.service
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">systemctl --user disable --now pulseaudio.socket pulseaudio.service
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">systemctl --user &lt;span class="nb">enable&lt;/span> --now pipewire.socket pipewire-pulse.socket wireplumber.service
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="замена-jack">&lt;span class="section-num">4.2&lt;/span> Замена Jack&lt;/h3>
 &lt;ul>
@@ -1501,26 +1443,22 @@ systemctl --user enable --now pipewire.socket pipewire-pulse.socket wireplumber.
 &lt;p>Для маршрутизации клиентов Jack через PipeWire в настоящее время
 предпочтительно запускать их через &lt;code>pw-jack&lt;/code>, который использует
 &lt;code>LD_PRELOAD&lt;/code> для использования библиотек PipeWire вместо Jack, например:&lt;/p>
-&lt;pre>&lt;code class="language-shell">pw-jack &amp;lt;application&amp;gt;
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pw-jack &amp;lt;application&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Можно задать собственный размер буфера, установив размер_буфера/частота_дискретизации:&lt;/p>
-&lt;pre>&lt;code class="language-shell">PIPEWIRE_LATENCY=&amp;quot;128/48000&amp;quot; pw-jack &amp;lt;application&amp;gt;
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nv">PIPEWIRE_LATENCY&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;128/48000&amp;#34;&lt;/span> pw-jack &amp;lt;application&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h2 id="проверка-работы">&lt;span class="section-num">5&lt;/span> Проверка работы&lt;/h2>
 &lt;ul>
 &lt;li>
 &lt;p>Для &lt;em>PipeWire&lt;/em> возможно посмотреть информацию по серверу &lt;code>pipewire&lt;/code>:&lt;/p>
-&lt;pre>&lt;code class="language-shell">LANG=C pactl info | grep &amp;quot;Server Name&amp;quot;
-&lt;/code>&lt;/pre>
-&lt;ul>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nv">LANG&lt;/span>&lt;span class="o">=&lt;/span>C pactl info &lt;span class="p">|&lt;/span> grep &lt;span class="s2">&amp;#34;Server Name&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
 &lt;li>В результате должна присутствовать строчка типа такой:
-&lt;pre>&lt;code class="language-shell">Server Name: PulseAudio (on PipeWire 0.3.56)
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">Server Name: PulseAudio &lt;span class="o">(&lt;/span>on PipeWire 0.3.56&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
@@ -1610,9 +1548,8 @@ systemctl --user enable --now pipewire.socket pipewire-pulse.socket wireplumber.
 &lt;li>Создавался для замены i3 (см. &lt;a href="https://yamadharma.github.io/ru/post/2021/05/14/window-manager-i3/">Window manager i3&lt;/a>) под Wayland.&lt;/li>
 &lt;/ul>
 &lt;h2 id="установка-sway">&lt;span class="section-num">2&lt;/span> Установка &lt;code>sway&lt;/code>&lt;/h2>
-&lt;pre>&lt;code class="language-shell">emerge -v gui-wm/sway
-&lt;/code>&lt;/pre>
-&lt;h3 id="репозитории-gentoo">&lt;span class="section-num">2.1&lt;/span> Репозитории &lt;code>gentoo&lt;/code>&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge -v gui-wm/sway
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="репозитории-gentoo">&lt;span class="section-num">2.1&lt;/span> Репозитории &lt;code>gentoo&lt;/code>&lt;/h3>
 &lt;p>Программы для Wayland есть как в основном репозитории, так и
 дополнительных. Хочу порекомендовать для просмотра следующие
 репозитории:&lt;/p>
@@ -1620,15 +1557,13 @@ systemctl --user enable --now pipewire.socket pipewire-pulse.socket wireplumber.
 &lt;li>&lt;a href="https://github.com/epsilon-0/wayland-desktop" target="_blank" rel="noopener">wayland-desktop&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;!--listend-->
-&lt;pre>&lt;code class="language-shell">layman -a wayland-desktop
-&lt;/code>&lt;/pre>
-&lt;ul>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">layman -a wayland-desktop
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
 &lt;li>&lt;a href="https://wiki.gentoo.org/wiki/Project:GURU" target="_blank" rel="noopener">guru&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;!--listend-->
-&lt;pre>&lt;code class="language-shell">layman -a guru
-&lt;/code>&lt;/pre>
-&lt;h2 id="первоначальная-конфигурация">&lt;span class="section-num">3&lt;/span> Первоначальная конфигурация&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">layman -a guru
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="первоначальная-конфигурация">&lt;span class="section-num">3&lt;/span> Первоначальная конфигурация&lt;/h2>
 &lt;ul>
 &lt;li>Файл конфигурации ищется в следующем порядке:
 &lt;ul>
@@ -1643,10 +1578,9 @@ systemctl --user enable --now pipewire.socket pipewire-pulse.socket wireplumber.
 &lt;/li>
 &lt;li>Пакет устанавливает глобальную конфигурацию в &lt;code>/etc/sway/config&lt;/code>.&lt;/li>
 &lt;li>При желании внести изменение в конфигурацию можно скопировать файл глобальной конфигурации в локальную:
-&lt;pre>&lt;code class="language-shell">mkdir -p ~/.config/sway
-cp /etc/sway/config ~/.config/sway/
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mkdir -p ~/.config/sway
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">cp /etc/sway/config ~/.config/sway/
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h2 id="комбинации-клавиш">&lt;span class="section-num">4&lt;/span> Комбинации клавиш&lt;/h2>
 &lt;p>Основные сочетания клавиш:&lt;/p>
@@ -1681,18 +1615,18 @@ cp /etc/sway/config ~/.config/sway/
 &lt;h3 id="снимки-экрана">&lt;span class="section-num">5.2&lt;/span> Снимки экрана&lt;/h3>
 &lt;p>Исходно использовался &lt;code>scrot&lt;/code>.&lt;/p>
 &lt;p>Для Wayland перешёл на связку &lt;a href="https://github.com/emersion/grim" target="_blank" rel="noopener">grim&lt;/a> (получение снимка экрана) + &lt;a href="https://github.com/emersion/slurp" target="_blank" rel="noopener">slurp&lt;/a> (выделение области экрана):&lt;/p>
-&lt;pre>&lt;code class="language-shell">emerge -uv gui-apps/slurp gui-apps/grim
-&lt;/code>&lt;/pre>
-&lt;p>Настроим получение снимков экрана:&lt;/p>
-&lt;pre>&lt;code class="language-conf-unix"># ~/.config/sway/config.d/80-screenshots.conf
-# Screenshot active display
-bindsym Print exec grim -t png &amp;quot;$(xdg-user-dir PICTURES)&amp;quot;/$(date +%Y-%m-%d_%H-%M-%S).png
-# Screenshot current window
-bindsym $mod+Print exec grim -g &amp;quot;$(swaymsg -t get_tree | jq -r '.. | select(.pid? and .visible?) | .rect | &amp;quot;\(.x),\(.y) \(.width)x\(.height)&amp;quot;')&amp;quot; &amp;quot;$(xdg-user-dir PICTURES)&amp;quot;/$(date +%Y-%m-%d_%H-%M-%S).png
-# Screenshot selected region
-bindsym $mod+Shift+Print exec grim -t png -g &amp;quot;$(slurp)&amp;quot; &amp;quot;$(xdg-user-dir PICTURES)&amp;quot;/$(date +%Y-%m-%d_%H-%M-%S).png
-&lt;/code>&lt;/pre>
-&lt;ul>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge -uv gui-apps/slurp gui-apps/grim
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Настроим получение снимков экрана:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl"># ~/.config/sway/config.d/80-screenshots.conf
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># Screenshot active display
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym Print exec grim -t png &amp;#34;$(xdg-user-dir PICTURES)&amp;#34;/$(date +%Y-%m-%d_%H-%M-%S).png
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># Screenshot current window
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+Print exec grim -g &amp;#34;$(swaymsg -t get_tree | jq -r &amp;#39;.. | select(.pid? and .visible?) | .rect | &amp;#34;\(.x),\(.y) \(.width)x\(.height)&amp;#34;&amp;#39;)&amp;#34; &amp;#34;$(xdg-user-dir PICTURES)&amp;#34;/$(date +%Y-%m-%d_%H-%M-%S).png
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># Screenshot selected region
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+Shift+Print exec grim -t png -g &amp;#34;$(slurp)&amp;#34; &amp;#34;$(xdg-user-dir PICTURES)&amp;#34;/$(date +%Y-%m-%d_%H-%M-%S).png
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
 &lt;li>При нажатии клавиши &lt;code>PrtScr&lt;/code> делается снимок всего экрана.&lt;/li>
 &lt;li>При нажатии &lt;code>Mod4&lt;/code> + &lt;code>PrtScr&lt;/code> делается снимок активного окна.&lt;/li>
 &lt;li>При нажатии &lt;code>Mod4&lt;/code> + &lt;code>Shift&lt;/code> + &lt;code>PrtScr&lt;/code> предлагается выбрать область экрана, снимок которой следует сделать.&lt;/li>
@@ -1701,135 +1635,147 @@ bindsym $mod+Shift+Print exec grim -t png -g &amp;quot;$(slurp)&amp;quot; &amp;q
 &lt;p>Ранее использовался &lt;a href="https://www.maartenbaert.be/simplescreenrecorder/" target="_blank" rel="noopener">SimpleScreenRecorder&lt;/a>.&lt;/p>
 &lt;h4 id="видеозапись-экрана-командная-строка">&lt;span class="section-num">5.3.1&lt;/span> Видеозапись экрана &amp;ndash; командная строка&lt;/h4>
 &lt;p>Для записи из командной строки используем &lt;a href="https://github.com/ammen99/wf-recorder" target="_blank" rel="noopener">wf-recorder&lt;/a>:&lt;/p>
-&lt;pre>&lt;code class="language-shell">emerge -v gui-apps/wf-recorder
-&lt;/code>&lt;/pre>
-&lt;p>Варианты использования:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge -v gui-apps/wf-recorder
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Варианты использования:&lt;/p>
 &lt;ul>
 &lt;li>Запись всего экрана в файл &lt;code>recording.mkv&lt;/code> (только видео):&lt;/li>
 &lt;/ul>
 &lt;!--listend-->
-&lt;pre>&lt;code class="language-shell">wf-recorder -f recording$(date +%Y-%m-%d_%H-%M-%S).mkv
-&lt;/code>&lt;/pre>
-&lt;p>Если файл не указывать, запись будет в текущий каталог.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">wf-recorder -f recording&lt;span class="k">$(&lt;/span>date +%Y-%m-%d_%H-%M-%S&lt;span class="k">)&lt;/span>.mkv
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Если файл не указывать, запись будет в текущий каталог.&lt;/p>
 &lt;ul>
 &lt;li>Запись фрагмента экрана (тут имя файла задаётся по времени начала
 записи):&lt;/li>
 &lt;/ul>
 &lt;!--listend-->
-&lt;pre>&lt;code class="language-shell">wf-recorder -g &amp;quot;$(slurp)&amp;quot; -f $(date +%Y-%m-%d_%H-%M-%S).mkv
-&lt;/code>&lt;/pre>
-&lt;ul>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">wf-recorder -g &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>slurp&lt;span class="k">)&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> -f &lt;span class="k">$(&lt;/span>date +%Y-%m-%d_%H-%M-%S&lt;span class="k">)&lt;/span>.mkv
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
 &lt;li>Запись со звуком:&lt;/li>
 &lt;/ul>
 &lt;!--listend-->
-&lt;pre>&lt;code class="language-shell">wf-recorder --audio -f $(date +%Y-%m-%d_%H-%M-%S).mkv
-&lt;/code>&lt;/pre>
-&lt;ul>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">wf-recorder --audio -f &lt;span class="k">$(&lt;/span>date +%Y-%m-%d_%H-%M-%S&lt;span class="k">)&lt;/span>.mkv
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
 &lt;li>Запись с использование GPU (VAAPI интерфейс):&lt;/li>
 &lt;/ul>
 &lt;!--listend-->
-&lt;pre>&lt;code class="language-shell">wf-recorder --audio -f $(date +%Y-%m-%d_%H-%M-%S).mkv -c h264_vaapi -d /dev/dri/renderD128
-&lt;/code>&lt;/pre>
-&lt;h4 id="видеозапись-экрана-графическое-приложение">&lt;span class="section-num">5.3.2&lt;/span> Видеозапись экрана &amp;ndash; графическое приложение&lt;/h4>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">wf-recorder --audio -f &lt;span class="k">$(&lt;/span>date +%Y-%m-%d_%H-%M-%S&lt;span class="k">)&lt;/span>.mkv -c h264_vaapi -d /dev/dri/renderD128
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="видеозапись-экрана-графическое-приложение">&lt;span class="section-num">5.3.2&lt;/span> Видеозапись экрана &amp;ndash; графическое приложение&lt;/h4>
 &lt;p>Для захвата десктопа в Wayland используется плагин &lt;a href="https://hg.sr.ht/~scoopta/wlrobs" target="_blank" rel="noopener">wlrobs&lt;/a>.&lt;/p>
 &lt;h3 id="строка-состояний">&lt;span class="section-num">5.4&lt;/span> Строка состояний&lt;/h3>
 &lt;p>Sway поддерживает свою строку состояний &lt;code>sway-bar&lt;/code>. Удобное и минималистическое приложение. Однако, удручает, что иконки в трее не активны.&lt;/p>
 &lt;p>Попробуем использовать более продвинутый вариант &amp;ndash; &lt;a href="https://github.com/Alexays/Waybar" target="_blank" rel="noopener">waybar&lt;/a>&lt;/p>
-&lt;pre>&lt;code class="language-shell">emerge -v gui-apps/waybar
-&lt;/code>&lt;/pre>
-&lt;p>Конфигурация:&lt;/p>
-&lt;pre>&lt;code class="language-conf-unix">## sway-bar
-# Read `man 5 sway-bar` for more information about this section.
-# bar {
-# position top
-# # When the status_command prints a new line to stdout, swaybar updates.
-# # The default just shows the current date and time.
-# status_command while date +'%Y-%m-%d %H:%M:%S'; do sleep 1; done
-# colors {
-# statusline #ffffff
-# background #323232
-# inactive_workspace #32323200 #32323200 #5c5c5c
-# }
-# }
-## Waybar
-# &amp;lt;https://github.com/Alexays/Waybar&amp;gt;
-exec_always ~/.config/sway/scripts/waybar.sh
-# Waybar Tooltips don't steel focus
-no_focus [app_id=&amp;quot;waybar&amp;quot;]
-for_window [app_id=&amp;quot;waybar&amp;quot; floating] {
-move position cursor
-move down 60px # adjust if some menus still don't fit
-}
-&lt;/code>&lt;/pre>
-&lt;p>Конфигурацию &lt;code>waybar&lt;/code> поместил в &lt;code>~/.config/sway/other/waybar&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge -v gui-apps/waybar
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Конфигурация:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">## sway-bar
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># Read `man 5 sway-bar` for more information about this section.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># bar {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># position top
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># # When the status_command prints a new line to stdout, swaybar updates.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># # The default just shows the current date and time.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># status_command while date +&amp;#39;%Y-%m-%d %H:%M:%S&amp;#39;; do sleep 1; done
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># colors {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># statusline #ffffff
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># background #323232
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># inactive_workspace #32323200 #32323200 #5c5c5c
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">## Waybar
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># &amp;lt;https://github.com/Alexays/Waybar&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exec_always ~/.config/sway/scripts/waybar.sh
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># Waybar Tooltips don&amp;#39;t steel focus
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">no_focus [app_id=&amp;#34;waybar&amp;#34;]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">for_window [app_id=&amp;#34;waybar&amp;#34; floating] {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> move position cursor
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> move down 60px # adjust if some menus still don&amp;#39;t fit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Конфигурацию &lt;code>waybar&lt;/code> поместил в &lt;code>~/.config/sway/other/waybar&lt;/code>.&lt;/p>
 &lt;h3 id="уведомления">&lt;span class="section-num">5.5&lt;/span> Уведомления&lt;/h3>
 &lt;p>Используется &lt;a href="https://github.com/emersion/mako" target="_blank" rel="noopener">mako&lt;/a>.&lt;/p>
-&lt;pre>&lt;code class="language-shell">emerge -v gui-apps/mako
-&lt;/code>&lt;/pre>
-&lt;p>Сконфигурировал следующим образом:&lt;/p>
-&lt;pre>&lt;code class="language-conf-unix"># ~/.config/sway/config.d/80-mako.conf
-# Light
-exec_always mako --font 'Source Code Pro 10' --background-color '#fdf6e3' --text-color '#657b83' --default-timeout 5000 --width 400 --markup 1 --border-radius 5
-# Dark
-# exec_always mako --font 'Source Code Pro 10' --background-color '#002b36' --text-color '#839496' --default-timeout 5000 --width 400 --markup 1 --border-radius 5
-&lt;/code>&lt;/pre>
-&lt;h3 id="настройка-вывода">&lt;span class="section-num">5.6&lt;/span> Настройка вывода&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge -v gui-apps/mako
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Сконфигурировал следующим образом:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl"># ~/.config/sway/config.d/80-mako.conf
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># Light
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exec_always mako --font &amp;#39;Source Code Pro 10&amp;#39; --background-color &amp;#39;#fdf6e3&amp;#39; --text-color &amp;#39;#657b83&amp;#39; --default-timeout 5000 --width 400 --markup 1 --border-radius 5
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># Dark
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># exec_always mako --font &amp;#39;Source Code Pro 10&amp;#39; --background-color &amp;#39;#002b36&amp;#39; --text-color &amp;#39;#839496&amp;#39; --default-timeout 5000 --width 400 --markup 1 --border-radius 5
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="настройка-вывода">&lt;span class="section-num">5.6&lt;/span> Настройка вывода&lt;/h3>
 &lt;p>В XWindow используется программа &lt;code>xrandr&lt;/code> (с её помощью можно изменять параметры вывода изображения RandR). В &lt;code>sway&lt;/code> можно управлять с помощью &lt;code>swaymsg output&lt;/code> или с помощью утилиты &lt;a href="https://github.com/emersion/wlr-randr" target="_blank" rel="noopener">wlr-randr&lt;/a>.&lt;/p>
-&lt;pre>&lt;code class="language-shell">emerge -v gui-apps/wlr-randr
-&lt;/code>&lt;/pre>
-&lt;h3 id="меню-программ--launcher">&lt;span class="section-num">5.7&lt;/span> Меню программ (launcher)&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge -v gui-apps/wlr-randr
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="меню-программ--launcher">&lt;span class="section-num">5.7&lt;/span> Меню программ (launcher)&lt;/h3>
 &lt;p>Для запуска программы используется &lt;code>dmenu&lt;/code>. Если не нравится, можно заменить.&lt;/p>
 &lt;ul>
 &lt;li>&lt;a href="https://hg.sr.ht/~scoopta/wofi" target="_blank" rel="noopener">wofi&lt;/a> &amp;mdash; аналог &lt;code>rofi&lt;/code> для Wayland. Попроще, конечно.&lt;/li>
 &lt;/ul>
 &lt;!--listend-->
-&lt;pre>&lt;code class="language-shell">emerge -v gui-apps/wofi
-&lt;/code>&lt;/pre>
-&lt;p>В отличии от &lt;code>dmenu&lt;/code> запоминает последние выбранные команды.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge -v gui-apps/wofi
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>В отличии от &lt;code>dmenu&lt;/code> запоминает последние выбранные команды.&lt;/p>
 &lt;p>Общая конфигурация:&lt;/p>
-&lt;pre>&lt;code class="language-conf-unix"># ~/.config/sway/config.d/80-launcher.conf
-# dmenu
-set $menu dmenu_path | dmenu | xargs swaymsg exec --
-# wofi
-# --show &amp;lt;mode&amp;gt;
-# &amp;lt;mode&amp;gt;:
-# - `run` - searches $PATH for executables and allows them to be run by selecting them.
-# - `drun` - searches $XDG_DATA_HOME/applications and $XDG_DATA_DIRS/applications for desktop files and allows them to be run by selecting them.
-# - `dmenu` - reads from stdin and displays options which when selected will be output to stdout.
-# set $menu dmenu_path | wofi -c ~/.config/sway/other/wofi/config -s ~/.config/sway/other/wofi/style.css --show dmenu | xargs swaymsg exec --
-# rofi
-# set $menu rofi -combi-modi window#drun -show combi -modi combi -show-icons
-# set $menu rofi -m $(swaymsg -t get_outputs | jq 'map(select(.active) | .focused) | index(true)') -show combi -modi combi -combi-modi window#drun -show-icons -run-command 'swaymsg exec -- {cmd}'
-# gmenu
-# set $menu gtkmenu --width 500 --height 260 -no-generic
-# set $menu nwggrid
-# bemenu
-# set $menu j4-dmenu-desktop --dmenu=&amp;quot;bemenu-run.sh -l 30&amp;quot; --term=&amp;quot;alacritty&amp;quot; --no-generic
-# Start your launcher
-bindsym $mod+d exec $menu
-&lt;/code>&lt;/pre>
-&lt;h3 id="буфер-обмена">&lt;span class="section-num">5.8&lt;/span> Буфер обмена&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-mysql" data-lang="mysql">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># ~/.config/sway/config.d/80-launcher.conf
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="c1"># dmenu
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kt">set&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">$&lt;/span>&lt;span class="n">menu&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">dmenu_path&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">|&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">dmenu&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">|&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">xargs&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">swaymsg&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">exec&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c1">--
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># wofi
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># --show &amp;lt;mode&amp;gt;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># &amp;lt;mode&amp;gt;:
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># - `run` - searches $PATH for executables and allows them to be run by selecting them.
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># - `drun` - searches $XDG_DATA_HOME/applications and $XDG_DATA_DIRS/applications for desktop files and allows them to be run by selecting them.
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># - `dmenu` - reads from stdin and displays options which when selected will be output to stdout.
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="c1"># set $menu dmenu_path | wofi -c ~/.config/sway/other/wofi/config -s ~/.config/sway/other/wofi/style.css --show dmenu | xargs swaymsg exec --
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="c1"># rofi
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="c1"># set $menu rofi -combi-modi window#drun -show combi -modi combi -show-icons
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># set $menu rofi -m $(swaymsg -t get_outputs | jq &amp;#39;map(select(.active) | .focused) | index(true)&amp;#39;) -show combi -modi combi -combi-modi window#drun -show-icons -run-command &amp;#39;swaymsg exec -- {cmd}&amp;#39;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="c1"># gmenu
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="c1"># set $menu gtkmenu --width 500 --height 260 -no-generic
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># set $menu nwggrid
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="c1"># bemenu
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="c1"># set $menu j4-dmenu-desktop --dmenu=&amp;#34;bemenu-run.sh -l 30&amp;#34; --term=&amp;#34;alacritty&amp;#34; --no-generic
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="c1"># Start your launcher
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="n">bindsym&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">$&lt;/span>&lt;span class="k">mod&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="n">d&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">exec&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">$&lt;/span>&lt;span class="n">menu&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="буфер-обмена">&lt;span class="section-num">5.8&lt;/span> Буфер обмена&lt;/h3>
 &lt;p>Предлагается использовать &lt;a href="https://github.com/bugaevc/wl-clipboard" target="_blank" rel="noopener">wl-clipboard&lt;/a>.&lt;/p>
-&lt;pre>&lt;code class="language-shell">emerge -v gui-apps/wl-clipboard
-&lt;/code>&lt;/pre>
-&lt;p>Пакет содержит две утилиты: &lt;code>wl-copy&lt;/code> и &lt;code>wl-paste&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge -v gui-apps/wl-clipboard
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Пакет содержит две утилиты: &lt;code>wl-copy&lt;/code> и &lt;code>wl-paste&lt;/code>.&lt;/p>
 &lt;p>Пример использования:&lt;/p>
-&lt;pre>&lt;code class="language-shell"># copy a simple text message
-$ wl-copy Hello world!
-# copy the list of files in Downloads
-$ ls ~/Downloads | wl-copy
-# copy an image file
-$ wl-copy &amp;lt; ~/Pictures/photo.png
-# paste to a file
-$ wl-paste &amp;gt; clipboard.txt
-# grep each pasted word in file source.c
-$ for word in $(wl-paste); do grep $word source.c; done
-# copy the previous command
-$ wl-copy &amp;quot;!!&amp;quot;
-# replace the current selection with the list of types it's offered in
-$ wl-paste --list-types | wl-copy
-&lt;/code>&lt;/pre>
-&lt;h3 id="блокировка-экрана">&lt;span class="section-num">5.9&lt;/span> Блокировка экрана&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># copy a simple text message&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$ wl-copy Hello world!
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># copy the list of files in Downloads&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$ ls ~/Downloads &lt;span class="p">|&lt;/span> wl-copy
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># copy an image file&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$ wl-copy &amp;lt; ~/Pictures/photo.png
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># paste to a file&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$ wl-paste &amp;gt; clipboard.txt
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># grep each pasted word in file source.c&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$ &lt;span class="k">for&lt;/span> word in &lt;span class="k">$(&lt;/span>wl-paste&lt;span class="k">)&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="k">do&lt;/span> grep &lt;span class="nv">$word&lt;/span> source.c&lt;span class="p">;&lt;/span> &lt;span class="k">done&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># copy the previous command&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$ wl-copy &lt;span class="s2">&amp;#34;!!&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># replace the current selection with the list of types it&amp;#39;s offered in&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$ wl-paste --list-types &lt;span class="p">|&lt;/span> wl-copy
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="блокировка-экрана">&lt;span class="section-num">5.9&lt;/span> Блокировка экрана&lt;/h3>
 &lt;h4 id="swaylock">&lt;span class="section-num">5.9.1&lt;/span> swaylock&lt;/h4>
 &lt;!--list-separator-->
 &lt;ol>
@@ -1841,9 +1787,8 @@ $ wl-paste --list-types | wl-copy
 &lt;li>Установка:
 &lt;ul>
 &lt;li>Gentoo:
-&lt;pre>&lt;code class="language-shell">emerge gui-apps/swaylock
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge gui-apps/swaylock
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>В информационной панеле &lt;em>waybar&lt;/em> есть опция для отключения блокировки при простое (например, для демонстрации слайдов).&lt;/li>
@@ -1860,19 +1805,20 @@ $ wl-paste --list-types | wl-copy
 &lt;li>Включить экран при возобновлении работы.&lt;/li>
 &lt;li>Также заблокировать экран перед тем, как компьютер перейдет в спящий режим.&lt;/li>
 &lt;li>Конфигурационный файл:
-&lt;pre>&lt;code class="language-conf-unix">### ~/.config/sway/config.d/80-lock.conf
-### Idle lock
-## - Lock your screen after 300 seconds of inactivity
-## - Then turn off your displays after another 300 seconds
-## - Turn your screens back on when resumed
-## - Also lock your screen before your computer goes to sleep
-exec swayidle -w \
-timeout 300 'swaylock -f -c 000000 -k' \
-timeout 600 'swaymsg &amp;quot;output * dpms off&amp;quot;' \
-resume 'swaymsg &amp;quot;output * dpms on&amp;quot;' \
-before-sleep 'swaylock -f -c 000000 -k'
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">### ~/.config/sway/config.d/80-lock.conf
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">### Idle lock
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">## - Lock your screen after 300 seconds of inactivity
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">## - Then turn off your displays after another 300 seconds
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">## - Turn your screens back on when resumed
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">## - Also lock your screen before your computer goes to sleep
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exec swayidle -w \
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> timeout 300 &amp;#39;swaylock -f -c 000000 -k&amp;#39; \
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> timeout 600 &amp;#39;swaymsg &amp;#34;output * dpms off&amp;#34;&amp;#39; \
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> resume &amp;#39;swaymsg &amp;#34;output * dpms on&amp;#34;&amp;#39; \
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> before-sleep &amp;#39;swaylock -f -c 000000 -k&amp;#39;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ol>
@@ -1884,27 +1830,28 @@ before-sleep 'swaylock -f -c 000000 -k'
 &lt;li>&lt;code>Mod&lt;/code> + &lt;code>Ctrl&lt;/code> + &lt;code>l&lt;/code> для немедленной блокировки экрана.&lt;/li>
 &lt;li>Через 10 секунд выключить экран.&lt;/li>
 &lt;li>Конфигурационный файл:
-&lt;pre>&lt;code class="language-conf-unix">### ~/.config/sway/config.d/80-lock.conf
-### Manual lock
-## - Mod + Ctrl + l to lock the screen immediately
-## - In 10 sec also switch the screen off
-set $lockman exec bash ~/.config/sway/scripts/lockman.sh
-bindsym $mod+Ctrl+l exec $lockman
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">### ~/.config/sway/config.d/80-lock.conf
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">### Manual lock
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">## - Mod + Ctrl + l to lock the screen immediately
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">## - In 10 sec also switch the screen off
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">set $lockman exec bash ~/.config/sway/scripts/lockman.sh
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+Ctrl+l exec $lockman
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Скрипт блокировки:
-&lt;pre>&lt;code class="language-shell">#!/bin/bash
-# ~/.config/sway/scripts/lockman.sh
-# Times the screen off and puts it to background
-swayidle \
-timeout 10 'swaymsg &amp;quot;output * dpms off&amp;quot;' \
-resume 'swaymsg &amp;quot;output * dpms on&amp;quot;' &amp;amp;
-# Locks the screen immediately
-swaylock -c 550000 -k
-# Kills last background task so idle timer doesn't keep running
-kill %%
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#!/bin/bash
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>&lt;span class="c1"># ~/.config/sway/scripts/lockman.sh&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Times the screen off and puts it to background&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">swayidle &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> timeout &lt;span class="m">10&lt;/span> &lt;span class="s1">&amp;#39;swaymsg &amp;#34;output * dpms off&amp;#34;&amp;#39;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> resume &lt;span class="s1">&amp;#39;swaymsg &amp;#34;output * dpms on&amp;#34;&amp;#39;&lt;/span> &lt;span class="p">&amp;amp;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Locks the screen immediately&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">swaylock -c &lt;span class="m">550000&lt;/span> -k
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Kills last background task so idle timer doesn&amp;#39;t keep running&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">kill&lt;/span> %%
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ol>
@@ -1923,9 +1870,8 @@ kill %%
 &lt;ul>
 &lt;li>В стандартных тулкитах для Java жестко зашит список оконных менеджеров.&lt;/li>
 &lt;li>Следует установить переменную окружения:
-&lt;pre>&lt;code class="language-shell">export _JAVA_AWT_WM_NONREPARENTING=1
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">_JAVA_AWT_WM_NONREPARENTING&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h4 id="меню-в-приложениях-плавает-отдельно-им-невозможно-пользоваться">&lt;span class="section-num">6.1.2&lt;/span> Меню в приложениях плавает отдельно, им невозможно пользоваться&lt;/h4>
 &lt;ul>
@@ -1933,28 +1879,25 @@ kill %%
 &lt;li>GTK LookAndFeel может работать с GTK версий 2, 2.2 и 3.&lt;/li>
 &lt;li>По умолчанию используется GTK3.&lt;/li>
 &lt;li>Следует явно задать более старую версию:
-&lt;pre>&lt;code class="language-shell">export JAVA_TOOL_OPTIONS='-Djdk.gtk.version=2.2'
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">JAVA_TOOL_OPTIONS&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;-Djdk.gtk.version=2.2&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Например, в файле &lt;code>~/.profile&lt;/code>:
-&lt;pre>&lt;code class="language-shell">if [ &amp;quot;$XDG_SESSION_DESKTOP&amp;quot; = &amp;quot;sway&amp;quot; ] || [ &amp;quot;$XDG_SESSION_DESKTOP&amp;quot; = &amp;quot;i3&amp;quot; ]
-then
-# https://github.com/swaywm/sway/issues/595
-export _JAVA_AWT_WM_NONREPARENTING=1
-export JAVA_TOOL_OPTIONS='-Djdk.gtk.version=2.2'
-fi
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="k">if&lt;/span> &lt;span class="o">[&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$XDG_SESSION_DESKTOP&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;sway&amp;#34;&lt;/span> &lt;span class="o">]&lt;/span> &lt;span class="o">||&lt;/span> &lt;span class="o">[&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$XDG_SESSION_DESKTOP&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;i3&amp;#34;&lt;/span> &lt;span class="o">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">then&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># https://github.com/swaywm/sway/issues/595&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">export&lt;/span> &lt;span class="nv">_JAVA_AWT_WM_NONREPARENTING&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">export&lt;/span> &lt;span class="nv">JAVA_TOOL_OPTIONS&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;-Djdk.gtk.version=2.2&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">fi&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="приложения-gtk-plus-запускаются-с-задержкой">&lt;span class="section-num">6.2&lt;/span> Приложения GTK+ запускаются с задержкой&lt;/h3>
 &lt;ul>
 &lt;li>Приложения GTK+ ожидают запуск &lt;code>xdg-desktop-portal&lt;/code> через D-Bus.&lt;/li>
 &lt;li>Ожидание прекращается по таймауту потому, что активированная служба D-Bus не знает, к какому &lt;code>WAYLAND_DISPLAY&lt;/code> подключиться.&lt;/li>
 &lt;li>Это можно исправить, добавив в файл конфигурации следующее:
-&lt;pre>&lt;code class="language-shell">exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
-exec hash dbus-update-activation-environment 2&amp;gt;/dev/null &amp;amp;&amp;amp; dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">exec&lt;/span> systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">exec&lt;/span> &lt;span class="nb">hash&lt;/span> dbus-update-activation-environment 2&amp;gt;/dev/null &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="qt-приложения">&lt;span class="section-num">6.3&lt;/span> Qt приложения&lt;/h3>
 &lt;ul>
@@ -1963,45 +1906,46 @@ exec hash dbus-update-activation-environment 2&amp;gt;/dev/null &amp;amp;&amp;am
 &lt;/ul></description></item><item><title>amd64 и flash</title><link>https://yamadharma.github.io/ru/post/2006/09/24/amd64-i-flash/</link><pubDate>Sun, 24 Sep 2006 15:19:00 +0000</pubDate><guid>https://yamadharma.github.io/ru/post/2006/09/24/amd64-i-flash/</guid><description>&lt;p>Попробовал использовать сначала &lt;code>nspluginwrapper&lt;/code>. Работает хорошо. Через &lt;code>qemu&lt;/code>. Но &lt;code>qemu&lt;/code>, откомпилированный &lt;code>gcc-4&lt;/code>, не работает. Поэтому пришлось перейти на &lt;code>gnash&lt;/code>. Snapshot августовский не откомпилировался. Июньский нормально, но нет звука. Поставил из cvs &amp;mdash; проблемы с прозрачностью. Звука тоже нет.&lt;/p></description></item><item><title>Monit и gentoo rc-scripts</title><link>https://yamadharma.github.io/ru/post/2006/09/17/monit-i-gentoo-rc-scripts/</link><pubDate>Sun, 17 Sep 2006 20:55:00 +0000</pubDate><guid>https://yamadharma.github.io/ru/post/2006/09/17/monit-i-gentoo-rc-scripts/</guid><description>&lt;p>При использовании monit для перезапуска rc-скриптов в gentoo использовал killall и опцию zap.&lt;br>
 Нашёл это-же решение, но оформленное красивее.&lt;/p>
 &lt;p>Это файл /etc/monit.d/bin/kickservice&lt;/p>
-&lt;pre>&lt;code class="language-bash">##!/bin/sh
-## kickservice by Eric Radman
-## Script used by monit to kill off and restart daemons
-## /etc/monit.d/bin/kickservice
-function stop ()
-{
-    /etc/init.d/$1 pause
-    /etc/init.d/$1 zap
-    if [ &amp;quot;$2&amp;quot; == &amp;quot;kill&amp;quot; ]
-        then
-        /bin/killall $3
-    fi
-}
-function start ()
-{
-    /etc/init.d/$1 zap
-    /etc/init.d/$1 start
-}
-case &amp;quot;$1&amp;quot; in
-start)
-    start $2 $3 $4
-    ;;
-stop)
-    stop $2 $3 $4
-    ;;
-*)
-    echo &amp;quot;Usage: kickservice [start|stop] [service] kill [daemon]&amp;quot;
-    ;;
-esac
-&lt;/code>&lt;/pre>
-&lt;p>Проблема возникла из-за того, что при установке baselayout-1.12.x перестал нормально работать pppd (при подключении через pptp к VPN-серверу провайдера). Очень часто соединение не устанавливается (вина, думаю, провайдерского сервера). По идее после этого он должен перезапускаться, а он просто ничего не делал. Решил снять проблему с помощью monit.&lt;br>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">##!/bin/sh &lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">## kickservice by Eric Radman &lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">## Script used by monit to kill off and restart daemons &lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">## /etc/monit.d/bin/kickservice &lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">function&lt;/span> stop &lt;span class="o">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">     /etc/init.d/&lt;span class="nv">$1&lt;/span> pause
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">     /etc/init.d/&lt;span class="nv">$1&lt;/span> zap
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">     &lt;span class="k">if&lt;/span> &lt;span class="o">[&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$2&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="s2">&amp;#34;kill&amp;#34;&lt;/span> &lt;span class="o">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">         &lt;span class="k">then&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">         /bin/killall &lt;span class="nv">$3&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">     &lt;span class="k">fi&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">function&lt;/span> start &lt;span class="o">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">     /etc/init.d/&lt;span class="nv">$1&lt;/span> zap
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">     /etc/init.d/&lt;span class="nv">$1&lt;/span> start
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">case&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$1&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> in
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> start&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">     start &lt;span class="nv">$2&lt;/span> &lt;span class="nv">$3&lt;/span> &lt;span class="nv">$4&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">     &lt;span class="p">;;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> stop&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">     stop &lt;span class="nv">$2&lt;/span> &lt;span class="nv">$3&lt;/span> &lt;span class="nv">$4&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">     &lt;span class="p">;;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> *&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">     &lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;Usage: kickservice [start|stop] [service] kill [daemon]&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">     &lt;span class="p">;;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">esac&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Проблема возникла из-за того, что при установке baselayout-1.12.x перестал нормально работать pppd (при подключении через pptp к VPN-серверу провайдера). Очень часто соединение не устанавливается (вина, думаю, провайдерского сервера). По идее после этого он должен перезапускаться, а он просто ничего не делал. Решил снять проблему с помощью monit.&lt;br>
 Убрал net.ppp0 из загрузки, и заставил monit мониторить ppp0.&lt;/p>
 &lt;p>Вот скрипт /etc/monit.d/ppp0&lt;/p>
-&lt;pre>&lt;code class="language-bash">check process pppd with pidfile /var/run/ppp0.pid
-   start program = &amp;quot;/etc/monit.d/bin/kickservice start net.ppp0&amp;quot;
-   stop program = &amp;quot;/etc/monit.d/bin/kickservice stop net.ppp0 kill pppd&amp;quot;
-  if 5 restarts within 5 cycles then timeout
-&lt;/code>&lt;/pre>
-&lt;p>P. S. Хотел запостить скрипты, но не знаю как :(&lt;/p></description></item><item><title>Openoffice on amd64</title><link>https://yamadharma.github.io/ru/post/2006/09/04/openoffice-on-amd64/</link><pubDate>Mon, 04 Sep 2006 09:16:00 +0000</pubDate><guid>https://yamadharma.github.io/ru/post/2006/09/04/openoffice-on-amd64/</guid><description>&lt;p>Вчера откомпилил openoffice-2.0.4_rc1-r1 под amd64.&lt;/p></description></item><item><title>Gentoo: конвертация из x86 в x86_64 (2)</title><link>https://yamadharma.github.io/ru/post/2006/08/21/gentoo-konvertatsija-iz-x86-v-x86-64-2/</link><pubDate>Mon, 21 Aug 2006 12:19:00 +0000</pubDate><guid>https://yamadharma.github.io/ru/post/2006/08/21/gentoo-konvertatsija-iz-x86-v-x86-64-2/</guid><description>&lt;ol>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">check process pppd with pidfile /var/run/ppp0.pid
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">   start &lt;span class="nv">program&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;/etc/monit.d/bin/kickservice start net.ppp0&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">   stop &lt;span class="nv">program&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;/etc/monit.d/bin/kickservice stop net.ppp0 kill pppd&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">   &lt;span class="k">if&lt;/span> &lt;span class="m">5&lt;/span> restarts within &lt;span class="m">5&lt;/span> cycles &lt;span class="k">then&lt;/span> timeout
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>P. S. Хотел запостить скрипты, но не знаю как :(&lt;/p></description></item><item><title>Openoffice on amd64</title><link>https://yamadharma.github.io/ru/post/2006/09/04/openoffice-on-amd64/</link><pubDate>Mon, 04 Sep 2006 09:16:00 +0000</pubDate><guid>https://yamadharma.github.io/ru/post/2006/09/04/openoffice-on-amd64/</guid><description>&lt;p>Вчера откомпилил openoffice-2.0.4_rc1-r1 под amd64.&lt;/p></description></item><item><title>Gentoo: конвертация из x86 в x86_64 (2)</title><link>https://yamadharma.github.io/ru/post/2006/08/21/gentoo-konvertatsija-iz-x86-v-x86-64-2/</link><pubDate>Mon, 21 Aug 2006 12:19:00 +0000</pubDate><guid>https://yamadharma.github.io/ru/post/2006/08/21/gentoo-konvertatsija-iz-x86-v-x86-64-2/</guid><description>&lt;ol>
 &lt;li>Провозившись с данной проблемой выходные (и частично неделю),
 провёл конвертацию.&lt;/li>
 &lt;li>Оказалось, что всё очень просто.&lt;/li>

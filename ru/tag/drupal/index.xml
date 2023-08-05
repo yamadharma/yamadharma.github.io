@@ -14,67 +14,75 @@
 &lt;li>&lt;a href="https://gist.github.com/heidar/3707913" target="_blank" rel="noopener">https://gist.github.com/heidar/3707913&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;p>Основываясь на них, набросал скипт &lt;code>webfm-fix&lt;/code>.&lt;/p>
-&lt;pre>&lt;code class="language-python">#!/usr/bin/python2
-import MySQLdb
-# For REALY work set update = True
-update = False
-# connect to the databases
-db = MySQLdb.connect(
-host=&amp;quot;localhost&amp;quot;, # your host, usually localhost
-user=&amp;quot;username&amp;quot;, # your username
-passwd=&amp;quot;userpassword&amp;quot;, # your password
-db=&amp;quot;database&amp;quot;, # name of the data base
-use_unicode=True, charset='utf8')
-cur = db.cursor()
-# get all the file ids and paths from the old webfm table
-filename_query = &amp;quot;SELECT fid, fpath FROM webfm_file&amp;quot;
-cur.execute(filename_query)
-fid_max = 0
-filenames = {}
-for row in cur.fetchall():
-filenames[row[0]] = row[1]
-if fid_max &amp;lt; row[0]:
-fid_max = row[0]
-# find all webfm links and replace them with the actual file path
-query = &amp;quot;SELECT nid, body, teaser FROM node_revisions WHERE body like '%webfm_send%' OR teaser like '%webfm_send%'&amp;quot;
-cur.execute(query)
-for row in cur.fetchall():
-entity_id = row[0]
-body = row[1]
-teaser = row[2]
-for i in range(fid_max, 0, -1):
-webfm1 = u'ru/webfm_send/' + str(i)
-webfm2 = u'webfm_send/' + str(i)
-webfm_list = [webfm1, webfm2]
-for webfm in webfm_list:
-if i in filenames:
-sql_body = &amp;quot;UPDATE node_revisions SET body = REPLACE(body,'%s','%s') WHERE nid = %d&amp;quot; % (webfm,filenames[i],entity_id)
-sql_teaser = &amp;quot;UPDATE node_revisions SET teaser = REPLACE(teaser,'%s','%s') WHERE nid = %d&amp;quot; % (webfm,filenames[i],entity_id)
-if update:
-try:
-# Execute the SQL command
-cur.execute(sql_body)
-cur.execute(sql_teaser)
-# Commit your changes in the database
-db.commit()
-except:
-# Rollback in case there is any error
-db.rollback()
-db.close()
-&lt;/code>&lt;/pre>
-&lt;p>При написании скрипта использовал следующую информацию:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="ch">#!/usr/bin/python2&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">MySQLdb&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># For REALY work set update = True&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">update&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kc">False&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># connect to the databases&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">db&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">MySQLdb&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">connect&lt;/span>&lt;span class="p">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">host&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;localhost&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1"># your host, usually localhost&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">user&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;username&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1"># your username&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">passwd&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;userpassword&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1"># your password&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">db&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;database&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1"># name of the data base&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">use_unicode&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="kc">True&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">charset&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;utf8&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">cur&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">db&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">cursor&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># get all the file ids and paths from the old webfm table&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">filename_query&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;SELECT fid, fpath FROM webfm_file&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">cur&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">execute&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">filename_query&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">fid_max&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">filenames&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">{}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span> &lt;span class="n">row&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">cur&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">fetchall&lt;/span>&lt;span class="p">():&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">filenames&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">row&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">]]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">row&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="n">fid_max&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="n">row&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">]:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">fid_max&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">row&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># find all webfm links and replace them with the actual file path&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">query&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;SELECT nid, body, teaser FROM node_revisions WHERE body like &amp;#39;%webfm_send%&amp;#39; OR teaser like &amp;#39;%webfm_send%&amp;#39;&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">cur&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">execute&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">query&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span> &lt;span class="n">row&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">cur&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">fetchall&lt;/span>&lt;span class="p">():&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">entity_id&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">row&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">body&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">row&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">teaser&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">row&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="nb">range&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">fid_max&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">webfm1&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="sa">u&lt;/span>&lt;span class="s1">&amp;#39;ru/webfm_send/&amp;#39;&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="nb">str&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">webfm2&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="sa">u&lt;/span>&lt;span class="s1">&amp;#39;webfm_send/&amp;#39;&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="nb">str&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">webfm_list&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="n">webfm1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">webfm2&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="n">webfm&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">webfm_list&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">filenames&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">sql_body&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;UPDATE node_revisions SET body = REPLACE(body,&amp;#39;&lt;/span>&lt;span class="si">%s&lt;/span>&lt;span class="s2">&amp;#39;,&amp;#39;&lt;/span>&lt;span class="si">%s&lt;/span>&lt;span class="s2">&amp;#39;) WHERE nid = &lt;/span>&lt;span class="si">%d&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="o">%&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">webfm&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">filenames&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">],&lt;/span>&lt;span class="n">entity_id&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">sql_teaser&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;UPDATE node_revisions SET teaser = REPLACE(teaser,&amp;#39;&lt;/span>&lt;span class="si">%s&lt;/span>&lt;span class="s2">&amp;#39;,&amp;#39;&lt;/span>&lt;span class="si">%s&lt;/span>&lt;span class="s2">&amp;#39;) WHERE nid = &lt;/span>&lt;span class="si">%d&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="o">%&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">webfm&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">filenames&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">],&lt;/span>&lt;span class="n">entity_id&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="n">update&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">try&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># Execute the SQL command&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">cur&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">execute&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">sql_body&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">cur&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">execute&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">sql_teaser&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># Commit your changes in the database&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">db&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">commit&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">except&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># Rollback in case there is any error&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">db&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">rollback&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">db&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">close&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>При написании скрипта использовал следующую информацию:
 &lt;a href="https://drupal.stackexchange.com/questions/6787/where-does-drupal-store-the-content-of-a-nodes-body" target="_blank" rel="noopener">Where does Drupal store the content of a node&amp;rsquo;s body?&lt;/a>&lt;/p>
 &lt;p>In Drupal 6, content of the node&amp;rsquo;s body is saved in &lt;code>node_revisions&lt;/code> table under &lt;code>body&lt;/code> field.&lt;/p>
-&lt;pre>&lt;code class="language-bash">node_revisions.body
-&lt;/code>&lt;/pre>
-&lt;p>In Drupal 7, content of the node&amp;rsquo;s body is saved in &lt;code>field_data_body&lt;/code> table under &lt;code>body_value&lt;/code> field. In case content revisions are there then it also saves the data in &lt;code>field_revision_body&lt;/code> table under &lt;code>body_value&lt;/code> field.&lt;/p>
-&lt;pre>&lt;code class="language-bash">field_data_body.body_value
-field_revision_body.body_value
-&lt;/code>&lt;/pre>
-&lt;p>In Drupal 8, content of the node&amp;rsquo;s body is saved in &lt;code>node__body&lt;/code> table under &lt;code>body_value&lt;/code> field. In case content revisions are there then it also saves the data in &lt;code>node_revision__body&lt;/code> table under &lt;code>body_value&lt;/code> field.&lt;/p>
-&lt;pre>&lt;code class="language-bash">node__body.body_value
-node_revision__body.body_value
-&lt;/code>&lt;/pre></description></item><item><title>Миграция с Drupal-6 на Drupal-8</title><link>https://yamadharma.github.io/ru/post/2015/11/19/drupal6-to-8/</link><pubDate>Thu, 19 Nov 2015 11:39:41 +0000</pubDate><guid>https://yamadharma.github.io/ru/post/2015/11/19/drupal6-to-8/</guid><description>&lt;h2 id="информация-по-миграции">Информация по миграции&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">node_revisions.body
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>In Drupal 7, content of the node&amp;rsquo;s body is saved in &lt;code>field_data_body&lt;/code> table under &lt;code>body_value&lt;/code> field. In case content revisions are there then it also saves the data in &lt;code>field_revision_body&lt;/code> table under &lt;code>body_value&lt;/code> field.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">field_data_body.body_value
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">field_revision_body.body_value
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>In Drupal 8, content of the node&amp;rsquo;s body is saved in &lt;code>node__body&lt;/code> table under &lt;code>body_value&lt;/code> field. In case content revisions are there then it also saves the data in &lt;code>node_revision__body&lt;/code> table under &lt;code>body_value&lt;/code> field.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">node__body.body_value
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">node_revision__body.body_value
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Миграция с Drupal-6 на Drupal-8</title><link>https://yamadharma.github.io/ru/post/2015/11/19/drupal6-to-8/</link><pubDate>Thu, 19 Nov 2015 11:39:41 +0000</pubDate><guid>https://yamadharma.github.io/ru/post/2015/11/19/drupal6-to-8/</guid><description>&lt;h2 id="информация-по-миграции">Информация по миграции&lt;/h2>
 &lt;ul>
 &lt;li>
 &lt;p>&lt;a href="https://www.drupal.org/upgrade/migrate" target="_blank" rel="noopener">Upgrading from Drupal 6 or 7 to Drupal 8&lt;/a>.&lt;/p>
@@ -92,21 +100,18 @@ node_revision__body.body_value
 &lt;h2 id="обновление-php">Обновление PHP&lt;/h2>
 &lt;p>Для Drupal-8 нужен php-5.5. В Centos-7 идёт php-5.4. Обновим его до php-5.6. Вначале установним нужные репозитории
 (см. &lt;a href="https://webtatic.com/packages/php56/" target="_blank" rel="noopener">https://webtatic.com/packages/php56/&lt;/a>):&lt;/p>
-&lt;pre>&lt;code class="language-bash">rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
-&lt;/code>&lt;/pre>
-&lt;p>Сделаем подмену дистрибутивного php на php-5.6:&lt;/p>
-&lt;pre>&lt;code class="language-bash">yum install yum-plugin-replace
-yum replace php-common --replace-with=php56w-common
-yum install php56w-opcache
-&lt;/code>&lt;/pre>
-&lt;h2 id="установка-drush-8">Установка Drush 8&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Сделаем подмену дистрибутивного php на php-5.6:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">yum install yum-plugin-replace
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">yum replace php-common --replace-with&lt;span class="o">=&lt;/span>php56w-common
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">yum install php56w-opcache
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="установка-drush-8">Установка Drush 8&lt;/h2>
 &lt;p>Установим Composer:&lt;/p>
-&lt;pre>&lt;code class="language-bash">yum -y install composer
-&lt;/code>&lt;/pre>
-&lt;p>Установим Drush (dev):&lt;/p>
-&lt;pre>&lt;code class="language-bash">mkdir /usr/local/src/drush
-cd /usr/local/src/drush
-composer require drush/drush:dev-master
-ln -s /usr/local/src/drush/vendor/drush/drush/drush /usr/local/bin/drush
-&lt;/code>&lt;/pre></description></item></channel></rss>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">yum -y install composer
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Установим Drush (dev):&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">mkdir /usr/local/src/drush
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> /usr/local/src/drush
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">composer require drush/drush:dev-master
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ln -s /usr/local/src/drush/vendor/drush/drush/drush /usr/local/bin/drush
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item></channel></rss>

@@ -2,26 +2,23 @@
 &lt;li>&lt;code>setsebool&lt;/code> запускаем как с ключём &lt;code>-P&lt;/code> (для запоминания настроек), так и без него (чтобы работало в текущей сессии).&lt;/li>
 &lt;/ul>
 &lt;h2 id="a-namehead_www-servera-www-сервер">&lt;a name='head_www-server'>&lt;/a> WWW-сервер&lt;/h2>
-&lt;pre>&lt;code class="language-bash">setsebool -P httpd_unified 1
-setsebool -P httpd_can_network_connect_db 1
-setsebool -P httpd_can_network_connect 1
-setsebool -P httpd_can_network_relay 1
-setsebool -P httpd_can_sendmail 1
-setsebool -P httpd_execmem 1
-setsebool -P httpd_use_fusefs 1
-&lt;/code>&lt;/pre>
-&lt;h2 id="a-namehead_dba-базы-данных">&lt;a name='head_db'>&lt;/a> Базы данных&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">setsebool -P httpd_unified &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">setsebool -P httpd_can_network_connect_db &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">setsebool -P httpd_can_network_connect &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">setsebool -P httpd_can_network_relay &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">setsebool -P httpd_can_sendmail &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">setsebool -P httpd_execmem &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">setsebool -P httpd_use_fusefs &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="a-namehead_dba-базы-данных">&lt;a name='head_db'>&lt;/a> Базы данных&lt;/h2>
 &lt;ul>
 &lt;li>Postgres&lt;/li>
 &lt;/ul>
-&lt;pre>&lt;code class="language-bash">setsebool -P selinuxuser_postgresql_connect_enabled 1
-&lt;/code>&lt;/pre>
-&lt;ul>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">setsebool -P selinuxuser_postgresql_connect_enabled &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
 &lt;li>MySQL&lt;/li>
 &lt;/ul>
-&lt;pre>&lt;code class="language-bash">setsebool -P selinuxuser_mysql_connect_enabled 1
-&lt;/code>&lt;/pre>
-&lt;h2 id="ojs">OJS&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">setsebool -P selinuxuser_mysql_connect_enabled &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="ojs">OJS&lt;/h2>
 &lt;ul>
 &lt;li>
 &lt;p>Настраиваем &lt;a href="#head_www-server">www-сервер&lt;/a> и &lt;a href="#head_db">базу данных&lt;/a>.&lt;/p>
@@ -30,13 +27,13 @@ setsebool -P httpd_use_fusefs 1
 &lt;p>Настраиваем доступ к файловой системе.&lt;/p>
 &lt;/li>
 &lt;/ul>
-&lt;pre>&lt;code class="language-bash">semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/html/ojs/cache(/.*)?&amp;quot;
-semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/html/ojs/public(/.*)?&amp;quot;
-semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/html/ojs/config.inc.php&amp;quot;
-semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/html/ojs/plugins/generic(/.*)?&amp;quot;
-semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/data(/.*)?&amp;quot;
-&lt;/code>&lt;/pre>
-&lt;h2 id="drupal">Drupal&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">semanage fcontext --add -t httpd_sys_rw_content_t &lt;span class="s2">&amp;#34;/var/www/html/ojs/cache(/.*)?&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">semanage fcontext --add -t httpd_sys_rw_content_t &lt;span class="s2">&amp;#34;/var/www/html/ojs/public(/.*)?&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">semanage fcontext --add -t httpd_sys_rw_content_t &lt;span class="s2">&amp;#34;/var/www/html/ojs/config.inc.php&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">semanage fcontext --add -t httpd_sys_rw_content_t &lt;span class="s2">&amp;#34;/var/www/html/ojs/plugins/generic(/.*)?&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">semanage fcontext --add -t httpd_sys_rw_content_t &lt;span class="s2">&amp;#34;/var/www/data(/.*)?&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="drupal">Drupal&lt;/h2>
 &lt;ul>
 &lt;li>
 &lt;p>Настраиваем &lt;a href="#head_www-server">www-сервер&lt;/a> и &lt;a href="#head_db">базу данных&lt;/a>.&lt;/p>
@@ -45,11 +42,10 @@ semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/data(/.*)?&
 &lt;p>Настраиваем доступ к файловой системе.&lt;/p>
 &lt;/li>
 &lt;/ul>
-&lt;pre>&lt;code class="language-bash">semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/html/sites/drupal/(.*)/sites/(.*)/files(/.*)?&amp;quot;
-semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/html/sites/drupal/(.*)/cache(/.*)?&amp;quot;
-semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/html/sites/drupal/(.*)/sites/all(/.*)?&amp;quot;
-&lt;/code>&lt;/pre>
-&lt;h2 id="moodle">Moodle&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">semanage fcontext --add -t httpd_sys_rw_content_t &lt;span class="s2">&amp;#34;/var/www/html/sites/drupal/(.*)/sites/(.*)/files(/.*)?&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">semanage fcontext --add -t httpd_sys_rw_content_t &lt;span class="s2">&amp;#34;/var/www/html/sites/drupal/(.*)/cache(/.*)?&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">semanage fcontext --add -t httpd_sys_rw_content_t &lt;span class="s2">&amp;#34;/var/www/html/sites/drupal/(.*)/sites/all(/.*)?&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="moodle">Moodle&lt;/h2>
 &lt;ul>
 &lt;li>
 &lt;p>Настраиваем &lt;a href="#head_www-server">www-сервер&lt;/a> и &lt;a href="#head_db">базу данных&lt;/a>.&lt;/p>
@@ -58,13 +54,12 @@ semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/html/sites/
 &lt;p>Настраиваем доступ к файловой системе.&lt;/p>
 &lt;/li>
 &lt;/ul>
-&lt;pre>&lt;code class="language-bash">semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/moodle/web-git/mod(/.*)?&amp;quot;
-semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/moodle/web-git/local(/.*)?&amp;quot;
-semanage fcontext --add -t httpd_sys_rw_content_t &amp;quot;/var/www/moodle/web-git/theme(/.*)?&amp;quot;
-&lt;/code>&lt;/pre>
-&lt;h2 id="letsencript">LetsEncript&lt;/h2>
-&lt;pre>&lt;code class="language-bash">semanage fcontext -a -t cert_t '/etc/letsencrypt/(archive|live)(/.*)?'
-&lt;/code>&lt;/pre></description></item><item><title>Hurd</title><link>https://yamadharma.github.io/ru/post/2006/08/04/hurd/</link><pubDate>Fri, 04 Aug 2006 22:30:00 +0000</pubDate><guid>https://yamadharma.github.io/ru/post/2006/08/04/hurd/</guid><description>&lt;blockquote>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">semanage fcontext --add -t httpd_sys_rw_content_t &lt;span class="s2">&amp;#34;/var/www/moodle/web-git/mod(/.*)?&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">semanage fcontext --add -t httpd_sys_rw_content_t &lt;span class="s2">&amp;#34;/var/www/moodle/web-git/local(/.*)?&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">semanage fcontext --add -t httpd_sys_rw_content_t &lt;span class="s2">&amp;#34;/var/www/moodle/web-git/theme(/.*)?&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="letsencript">LetsEncript&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">semanage fcontext -a -t cert_t &lt;span class="s1">&amp;#39;/etc/letsencrypt/(archive|live)(/.*)?&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Hurd</title><link>https://yamadharma.github.io/ru/post/2006/08/04/hurd/</link><pubDate>Fri, 04 Aug 2006 22:30:00 +0000</pubDate><guid>https://yamadharma.github.io/ru/post/2006/08/04/hurd/</guid><description>&lt;blockquote>
 &lt;p>А оно того стоит? Насколько я знаю hurd все еще очень сыр.
 Может лучше сразу к plan9 руки прикладывать?&lt;/p>
 &lt;/blockquote>

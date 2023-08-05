@@ -46,6 +46,627 @@
 &lt;li>Сайт: &lt;a href="https://bibliostyle.ru/stil-gost-7-0-100-2018-dlya-mendeley-i-zotero-style-russian-gost-r-7-0-100-2018-csl/" target="_blank" rel="noopener">https://bibliostyle.ru/stil-gost-7-0-100-2018-dlya-mendeley-i-zotero-style-russian-gost-r-7-0-100-2018-csl/&lt;/a>&lt;/li>
 &lt;li>Файл: &lt;a href="https://bibliostyle.ru/?smd_process_download=1&amp;amp;download_id=1135" target="_blank" rel="noopener">https://bibliostyle.ru/?smd_process_download=1&amp;download_id=1135&lt;/a>&lt;/li>
 &lt;li>Название стиля: &lt;code>gost-r-7-0-100-2018-numeric-alphabetical.csl&lt;/code>.&lt;/li>
+&lt;/ul></description></item><item><title>Biblatex. Препринты</title><link>https://yamadharma.github.io/ru/post/2022/11/24/biblatex-eprints/</link><pubDate>Thu, 24 Nov 2022 16:02:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/11/24/biblatex-eprints/</guid><description>&lt;p>Поддержка препринтов в biblatex.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#поля-для-описание-препринтов">&lt;span class="section-num">2&lt;/span> Поля для описание препринтов&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#архивы-препринтов">&lt;span class="section-num">3&lt;/span> Архивы препринтов&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#medrxiv">&lt;span class="section-num">3.1&lt;/span> medRxiv&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#biorxiv">&lt;span class="section-num">3.2&lt;/span> bioRxiv&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#chemrxiv">&lt;span class="section-num">3.3&lt;/span> ChemRxiv&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#pubmed-central">&lt;span class="section-num">3.4&lt;/span> Pubmed Central&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#реферативные-базы">&lt;span class="section-num">4&lt;/span> Реферативные базы&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#pubmed">&lt;span class="section-num">4.1&lt;/span> Pubmed&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#mathematical-reviews">&lt;span class="section-num">4.2&lt;/span> Mathematical Reviews&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#zentralblatt-math">&lt;span class="section-num">4.3&lt;/span> Zentralblatt MATH&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#подходы-к-реализации-поддержки-архивов-препринтов">&lt;span class="section-num">5&lt;/span> Подходы к реализации поддержки архивов препринтов&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#определение-нового-типа-для-eprint">&lt;span class="section-num">5.1&lt;/span> Определение нового типа для &lt;code>eprint&lt;/code>&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#определение-новых-полей-через-модель-данных">&lt;span class="section-num">5.2&lt;/span> Определение новых полей через модель данных&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#реализация-поддержки-архивов-препринтов">&lt;span class="section-num">6&lt;/span> Реализация поддержки архивов препринтов&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>Biblatex по умолчанию поддерживает только препринты &lt;em>arxiv.org&lt;/em>.&lt;/li>
+&lt;li>Для подключения других типов препринтов необходимо описать их самостоятельно.&lt;/li>
+&lt;li>В bibtex только некоторые стили поддерживают препринты.&lt;/li>
+&lt;/ul>
+&lt;h2 id="поля-для-описание-препринтов">&lt;span class="section-num">2&lt;/span> Поля для описание препринтов&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>Рекомендуется использовать следующие поля для ссылки на ArXiv:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bibtex" data-lang="bibtex">&lt;span class="line">&lt;span class="cl">&lt;span class="c">archivePrefix = &amp;#34;arXiv&amp;#34;,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">eprint = &amp;#34;0707.3168&amp;#34;,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">primaryClass = &amp;#34;hep-th&amp;#34;,&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>В &lt;em>biblatex&lt;/em> используются другие названия полей (см. &lt;a href="https://yamadharma.github.io/ru/post/2022/09/11/bibtex-biblatex/">bibtex vs biblatex&lt;/a>):&lt;/p>
+&lt;div class="table-caption">
+&lt;span class="table-number">&amp;#1058;&amp;#1072;&amp;#1073;&amp;#1083;&amp;#1080;&amp;#1094;&amp;#1072; 1:&lt;/span>
+Соответствие полей BibTeX и biblatex для препринтов
+&lt;/div>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>BibTeX&lt;/th>
+&lt;th>biblatex&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>archivePrefix&lt;/td>
+&lt;td>eprinttype&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>primaryClass&lt;/td>
+&lt;td>eprintclass&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>eprint&lt;/td>
+&lt;td>eprint&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;/li>
+&lt;li>
+&lt;p>Следует заметить, что указатель секции &lt;code>primaryClass&lt;/code> на данный момент не используется в &lt;em>arXiv&lt;/em>.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Пример ссылки на статью, имеющую также вариант на arxiv.org в формате &lt;em>bibtex&lt;/em>:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bibtex" data-lang="bibtex">&lt;span class="line">&lt;span class="cl">&lt;span class="nc">@Article&lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="nl">Beneke:1997hv&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">author&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">&amp;#34;M. Beneke and G. Buchalla and I. Dunietz&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">title&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">&amp;#34;{Mixing induced CP asymmetries in inclusive B decays}&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">journal&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">&amp;#34;Phys. Lett.&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">volume&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">&amp;#34;B393&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">year&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">&amp;#34;1997&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">pages&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">&amp;#34;132-142&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">archivePrefix&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">&amp;#34;arXiv&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">eprint&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">&amp;#34;0707.3168&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">primaryClass&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">&amp;#34;hep-th&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Пример ссылки на статью, имеющую также вариант на arxiv.org в формате &lt;em>biblatex&lt;/em>:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bibtex" data-lang="bibtex">&lt;span class="line">&lt;span class="cl">&lt;span class="nc">@Article&lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="nl">Beneke:1997hv&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">author&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">&amp;#34;M. Beneke and G. Buchalla and I. Dunietz&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">title&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">&amp;#34;{Mixing induced CP asymmetries in inclusive B decays}&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">journal&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">&amp;#34;Phys. Lett.&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">volume&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">&amp;#34;B393&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">year&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">&amp;#34;1997&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">pages&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">&amp;#34;132-142&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">eprinttype&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">&amp;#34;arXiv&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">eprint&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">&amp;#34;0707.3168&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">eprintlass&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">&amp;#34;hep-th&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Ссылка может выглядеть следующим образом:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-tex" data-lang="tex">&lt;span class="line">&lt;span class="cl">[1] M. Beneke and G. Buchalla and I. Dunietz, Mixing induced CP asymmetries in inclusive B decays, Phys. Lett. B393, 132-142, 1997, hep-ph/9609357.
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>В &lt;em>BibTeX&lt;/em> не все стили поддерживают ссылки на препринты.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>В &lt;em>BibLaTeX&lt;/em> ссылки на препринты поддерживаются в ядре системы.&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="архивы-препринтов">&lt;span class="section-num">3&lt;/span> Архивы препринтов&lt;/h2>
+&lt;h3 id="medrxiv">&lt;span class="section-num">3.1&lt;/span> medRxiv&lt;/h3>
+&lt;ul>
+&lt;li>Сайт: &lt;a href="https://www.medrxiv.org/" target="_blank" rel="noopener">https://www.medrxiv.org/&lt;/a>.&lt;/li>
+&lt;/ul>
+&lt;h3 id="biorxiv">&lt;span class="section-num">3.2&lt;/span> bioRxiv&lt;/h3>
+&lt;ul>
+&lt;li>Сайт: &lt;a href="https://www.biorxiv.org/" target="_blank" rel="noopener">https://www.biorxiv.org/&lt;/a>.&lt;/li>
+&lt;/ul>
+&lt;h3 id="chemrxiv">&lt;span class="section-num">3.3&lt;/span> ChemRxiv&lt;/h3>
+&lt;ul>
+&lt;li>Сайт: &lt;a href="https://chemrxiv.org/" target="_blank" rel="noopener">https://chemrxiv.org/&lt;/a>.&lt;/li>
+&lt;/ul>
+&lt;h3 id="pubmed-central">&lt;span class="section-num">3.4&lt;/span> Pubmed Central&lt;/h3>
+&lt;ul>
+&lt;li>Идентификатор: &lt;code>PMCID&lt;/code>.&lt;/li>
+&lt;li>Ссылка на бесплатный полный текст статьи.&lt;/li>
+&lt;li>Вид ссылки: &lt;code>PMCID: PMC2943379&lt;/code>.&lt;/li>
+&lt;li>Содержание ссылки: &lt;a href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2943379/" target="_blank" rel="noopener">http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2943379/&lt;/a>.&lt;/li>
+&lt;/ul>
+&lt;h2 id="реферативные-базы">&lt;span class="section-num">4&lt;/span> Реферативные базы&lt;/h2>
+&lt;h3 id="pubmed">&lt;span class="section-num">4.1&lt;/span> Pubmed&lt;/h3>
+&lt;ul>
+&lt;li>Идентификатор: Pubmed ID (&lt;code>PMID&lt;/code>).&lt;/li>
+&lt;li>Ссылка на реферат статьи. Ссылка на полный текст статьи в основном через &lt;em>doi&lt;/em>.&lt;/li>
+&lt;li>Вид ссылки: &lt;code>PMID: 20708976&lt;/code>.&lt;/li>
+&lt;li>Содержание ссылки: &lt;a href="http://www.ncbi.nlm.nih.gov/pubmed/20708976" target="_blank" rel="noopener">http://www.ncbi.nlm.nih.gov/pubmed/20708976&lt;/a>.&lt;/li>
+&lt;/ul>
+&lt;h3 id="mathematical-reviews">&lt;span class="section-num">4.2&lt;/span> Mathematical Reviews&lt;/h3>
+&lt;ul>
+&lt;li>Реферативный математический журнал, издаваемый Американским математическим обществом с 1940 года.&lt;/li>
+&lt;li>Электронная база данных (MathSciNet).&lt;/li>
+&lt;li>Содержит рефераты книг и статей по всем разделам математики и её приложениям в информатике, механике и физике.&lt;/li>
+&lt;li>Сайт: &lt;a href="http://www.ams.org/publications/math-reviews/math-reviews" target="_blank" rel="noopener">http://www.ams.org/publications/math-reviews/math-reviews&lt;/a>&lt;/li>
+&lt;li>Идентификатор: MR.&lt;/li>
+&lt;li>Вид ссылки: &lt;code>MR: 2355127&lt;/code>.&lt;/li>
+&lt;li>Содержание ссылки: &lt;a href="http://www.ams.org/mathscinet-getitem?mr=MR2355127" target="_blank" rel="noopener">http://www.ams.org/mathscinet-getitem?mr=MR2355127&lt;/a>.&lt;/li>
+&lt;/ul>
+&lt;h3 id="zentralblatt-math">&lt;span class="section-num">4.3&lt;/span> Zentralblatt MATH&lt;/h3>
+&lt;ul>
+&lt;li>Реферативный математический журнал, основанный издательством «Шпрингер»&lt;/li>
+&lt;li>Электронная база данных «ZBMATH &amp;mdash; The database Zentralblatt MATH».&lt;/li>
+&lt;li>Вид ссылки: &lt;code>Zbl: 0544.05037&lt;/code>.&lt;/li>
+&lt;li>Содержание ссылки: &lt;a href="http://www.zentralblatt-math.org/zmath/en/search/?q=an:0544.05037" target="_blank" rel="noopener">http://www.zentralblatt-math.org/zmath/en/search/?q=an:0544.05037&lt;/a>.&lt;/li>
+&lt;/ul>
+&lt;h2 id="подходы-к-реализации-поддержки-архивов-препринтов">&lt;span class="section-num">5&lt;/span> Подходы к реализации поддержки архивов препринтов&lt;/h2>
+&lt;h3 id="определение-нового-типа-для-eprint">&lt;span class="section-num">5.1&lt;/span> Определение нового типа для &lt;code>eprint&lt;/code>&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>У biblatex не может быть двух типов поля &lt;code>eprint&lt;/code> для одной и той же записи.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Можно создать новый формат &lt;code>eprint&lt;/code>, но нельзя будет использовать разные форматы &lt;code>eprint&lt;/code> для одной библиографической записи.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Продемонстрируем на примере PMCID.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Добавим новый формат поля:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-latex" data-lang="latex">&lt;span class="line">&lt;span class="cl">&lt;span class="k">\DeclareFieldFormat&lt;/span>&lt;span class="nb">{&lt;/span>eprint:pmcid&lt;span class="nb">}{&lt;/span>&lt;span class="c">%
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span> PMCID&lt;span class="k">\addcolon\space&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\ifhyperref&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">{&lt;/span>&lt;span class="k">\href&lt;/span>&lt;span class="nb">{&lt;/span>http://www.ncbi.nlm.nih.gov/pmc/articles/#1&lt;span class="nb">}{&lt;/span>&lt;span class="k">\nolinkurl&lt;/span>&lt;span class="nb">{&lt;/span>#1&lt;span class="nb">}}}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">{&lt;/span>&lt;span class="k">\nolinkurl&lt;/span>&lt;span class="nb">{&lt;/span>#1&lt;span class="nb">}}}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">\DeclareFieldAlias&lt;/span>&lt;span class="nb">{&lt;/span>eprint:PMCID&lt;span class="nb">}{&lt;/span>eprint:pmcid&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">\DeclareFieldAlias&lt;/span>&lt;span class="nb">{&lt;/span>eprint:pmc&lt;span class="nb">}{&lt;/span>eprint:pmcid&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">\DeclareFieldAlias&lt;/span>&lt;span class="nb">{&lt;/span>eprint:PMC&lt;span class="nb">}{&lt;/span>eprint:pmcid&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Пример записи:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bibtex" data-lang="bibtex">&lt;span class="line">&lt;span class="cl">&lt;span class="nc">@article&lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="nl">ContEp&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">author&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">{Mark G. Frei and Hitten P. Zaveri and Susan Arthurs and Gregory K. Bergey and Christophe Jouny and Klaus Lehnertz and Jean Gotman and Ivan Osorio and Theoden I. Netoff and Walter J. Freeman and John Jefferys and Gregory Worrell and Michel Le Van Quyen and Steven J. Schiff and Florian Mormannn}&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">title&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">{Controversies in epilepsy}&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">subtitle&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">{Debates held during the Fourth International Workshop on Seizure Prediction}&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">journaltitle&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">{Epilepsy \&amp;amp; Behavior}&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">volume&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">{19}&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">number&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">{1}&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">pages&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">{4-16}&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">date&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">{2010-09}&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">doi&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">{10.1016/j.yebeh.2010.06.009}&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">eprint&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">{PMC2943379}&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">eprinttype&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">{pmcid}&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="определение-новых-полей-через-модель-данных">&lt;span class="section-num">5.2&lt;/span> Определение новых полей через модель данных&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>Можно создать отдельные поля для разного типа препринтов так, чтобы они не занимали слот &lt;code>eprint&lt;/code> и могли использоваться вместе.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>При объявлении модели данных нам нужно убедиться, что &lt;em>biblatex&lt;/em> действительно известен тип полей, которые мы объявляем.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Это делается с помощью необязательного аргумента &lt;code>\DeclareDatamodelFields&lt;/code>.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Определим новые поля &lt;code>pmid&lt;/code> и &lt;code>pmcid&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-latex" data-lang="latex">&lt;span class="line">&lt;span class="cl">&lt;span class="k">\DeclareDatamodelFields&lt;/span>&lt;span class="na">[type=field,datatype=verbatim]&lt;/span>&lt;span class="nb">{&lt;/span>pmid&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">\DeclareDatamodelEntryfields&lt;/span>&lt;span class="nb">{&lt;/span>pmid&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">\DeclareDatamodelFields&lt;/span>&lt;span class="na">[type=field,datatype=verbatim]&lt;/span>&lt;span class="nb">{&lt;/span>pmcid&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">\DeclareDatamodelEntryfields&lt;/span>&lt;span class="nb">{&lt;/span>pmcid&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Эти поля задаются в отдельном файле с расширением &lt;code>.dbx&lt;/code>.&lt;/li>
+&lt;li>Затем мы вызываем эту модель данных через &lt;code>datamodel=&lt;/code> в параметрах &lt;code>biblatex&lt;/code>.&lt;/li>
+&lt;li>Пусть файл называется &lt;code>eprint.dbx&lt;/code>.&lt;/li>
+&lt;li>Тогда загружаться эта модель данных будет следующим образом:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-latex" data-lang="latex">&lt;span class="line">&lt;span class="cl">&lt;span class="k">\usepackage&lt;/span>&lt;span class="na">[backend=biber, style=authoryear, datamodel=eprint]&lt;/span>&lt;span class="nb">{&lt;/span>biblatex&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Зададим форматирование для печати этих полей:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-latex" data-lang="latex">&lt;span class="line">&lt;span class="cl">&lt;span class="k">\DeclareFieldFormat&lt;/span>&lt;span class="nb">{&lt;/span>eprint:pmcid&lt;span class="nb">}{&lt;/span>&lt;span class="c">%
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span> PMCID&lt;span class="k">\addcolon\space&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\ifhyperref&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">{&lt;/span>&lt;span class="k">\href&lt;/span>&lt;span class="nb">{&lt;/span>http://www.ncbi.nlm.nih.gov/pmc/articles/#1&lt;span class="nb">}{&lt;/span>&lt;span class="k">\nolinkurl&lt;/span>&lt;span class="nb">{&lt;/span>#1&lt;span class="nb">}}}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">{&lt;/span>&lt;span class="k">\nolinkurl&lt;/span>&lt;span class="nb">{&lt;/span>#1&lt;span class="nb">}}}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">\DeclareFieldAlias&lt;/span>&lt;span class="nb">{&lt;/span>eprint:PMC&lt;span class="nb">}{&lt;/span>eprint:pmcid&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">\DeclareFieldAlias&lt;/span>&lt;span class="nb">{&lt;/span>eprint:PMCID&lt;span class="nb">}{&lt;/span>eprint:pmcid&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">\DeclareFieldAlias&lt;/span>&lt;span class="nb">{&lt;/span>eprint:pmc&lt;span class="nb">}{&lt;/span>eprint:pmcid&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">\DeclareFieldAlias&lt;/span>&lt;span class="nb">{&lt;/span>pmcid&lt;span class="nb">}{&lt;/span>eprint:pmcid&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">\DeclareFieldAlias&lt;/span>&lt;span class="nb">{&lt;/span>pmid&lt;span class="nb">}{&lt;/span>eprint:pubmed&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Задам нужно распечатать поля, это достигается переопределением макроса &lt;code>doi+eprint+url&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-latex" data-lang="latex">&lt;span class="line">&lt;span class="cl">&lt;span class="k">\renewbibmacro*&lt;/span>&lt;span class="nb">{&lt;/span>doi+eprint+url&lt;span class="nb">}{&lt;/span>&lt;span class="c">%
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span> &lt;span class="k">\iftoggle&lt;/span>&lt;span class="nb">{&lt;/span>bbx:doi&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">{&lt;/span>&lt;span class="k">\printfield&lt;/span>&lt;span class="nb">{&lt;/span>doi&lt;span class="nb">}}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">{}&lt;/span>&lt;span class="c">%
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span> &lt;span class="k">\newunit\newblock&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\printfield&lt;/span>&lt;span class="nb">{&lt;/span>pmcid&lt;span class="nb">}&lt;/span>&lt;span class="c">%
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span> &lt;span class="k">\newunit\newblock&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\printfield&lt;/span>&lt;span class="nb">{&lt;/span>pmid&lt;span class="nb">}&lt;/span>&lt;span class="c">%
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span> &lt;span class="k">\newunit\newblock&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\iftoggle&lt;/span>&lt;span class="nb">{&lt;/span>bbx:eprint&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">{&lt;/span>&lt;span class="k">\usebibmacro&lt;/span>&lt;span class="nb">{&lt;/span>eprint&lt;span class="nb">}}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">{}&lt;/span>&lt;span class="c">%
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span> &lt;span class="k">\newunit\newblock&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\iftoggle&lt;/span>&lt;span class="nb">{&lt;/span>bbx:url&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">{&lt;/span>&lt;span class="k">\usebibmacro&lt;/span>&lt;span class="nb">{&lt;/span>url+urldate&lt;span class="nb">}}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">{}}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Пример записи:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bibtex" data-lang="bibtex">&lt;span class="line">&lt;span class="cl">&lt;span class="nc">@article&lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="nl">ContEp&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">author&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">{Mark G. Frei and Hitten P. Zaveri and Susan Arthurs and Gregory K. Bergey and Christophe Jouny and Klaus Lehnertz and Jean Gotman and Ivan Osorio and Theoden I. Netoff and Walter J. Freeman and John Jefferys and Gregory Worrell and Michel Le Van Quyen and Steven J. Schiff and Florian Mormannn}&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">title&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">{Controversies in epilepsy}&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">subtitle&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">{Debates held during the Fourth International Workshop on Seizure Prediction}&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">journaltitle&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">{Epilepsy \&amp;amp; Behavior}&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">volume&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">{19}&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">number&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">{1}&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">pages&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">{4-16}&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">date&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">{2010-09}&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">doi&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">{10.1016/j.yebeh.2010.06.009}&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">pmcid&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">{PMC2943379}&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">pmid&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">{20708976}&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="реализация-поддержки-архивов-препринтов">&lt;span class="section-num">6&lt;/span> Реализация поддержки архивов препринтов&lt;/h2>
+&lt;ul>
+&lt;li>Для реализации выбираем подход задания новых типов для &lt;code>eprint&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-latex" data-lang="latex">&lt;span class="line">&lt;span class="cl">&lt;span class="c">%% Pubmed Central
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span>&lt;span class="k">\DeclareFieldFormat&lt;/span>&lt;span class="nb">{&lt;/span>eprint:pmcid&lt;span class="nb">}{&lt;/span>&lt;span class="c">%
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span> PMCID&lt;span class="k">\addcolon\space&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\ifhyperref&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">{&lt;/span>&lt;span class="k">\href&lt;/span>&lt;span class="nb">{&lt;/span>http://www.ncbi.nlm.nih.gov/pmc/articles/#1&lt;span class="nb">}{&lt;/span>&lt;span class="k">\nolinkurl&lt;/span>&lt;span class="nb">{&lt;/span>#1&lt;span class="nb">}}}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">{&lt;/span>&lt;span class="k">\nolinkurl&lt;/span>&lt;span class="nb">{&lt;/span>#1&lt;span class="nb">}}}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">\DeclareFieldAlias&lt;/span>&lt;span class="nb">{&lt;/span>eprint:PMCID&lt;span class="nb">}{&lt;/span>eprint:pmcid&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">\DeclareFieldAlias&lt;/span>&lt;span class="nb">{&lt;/span>eprint:pmc&lt;span class="nb">}{&lt;/span>eprint:pmcid&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">\DeclareFieldAlias&lt;/span>&lt;span class="nb">{&lt;/span>eprint:PMC&lt;span class="nb">}{&lt;/span>eprint:pmcid&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">%% Pubmed
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">%% medRxiv
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">%% bioRxiv
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">%% ChemRxiv
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">%% Mathematical Reviews
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span>&lt;span class="k">\DeclareFieldFormat&lt;/span>&lt;span class="nb">{&lt;/span>eprint:mr&lt;span class="nb">}{&lt;/span>&lt;span class="c">%
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span> MR&lt;span class="k">\addcolon\space&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\ifhyperref&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">{&lt;/span>&lt;span class="k">\href&lt;/span>&lt;span class="nb">{&lt;/span>http://www.ams.org/mathscinet-getitem?mr=MR#1&lt;span class="nb">}{&lt;/span>&lt;span class="k">\nolinkurl&lt;/span>&lt;span class="nb">{&lt;/span>#1&lt;span class="nb">}}}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">{&lt;/span>&lt;span class="k">\nolinkurl&lt;/span>&lt;span class="nb">{&lt;/span>#1&lt;span class="nb">}}}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">%% Zentralblatt MATH
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span>&lt;span class="k">\DeclareFieldFormat&lt;/span>&lt;span class="nb">{&lt;/span>eprint:zbl&lt;span class="nb">}{&lt;/span>&lt;span class="c">%
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span> Zbl&lt;span class="k">\addcolon\space&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\ifhyperref&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">{&lt;/span>&lt;span class="k">\href&lt;/span>&lt;span class="nb">{&lt;/span>http://zbmath.org/?q=an:#1&lt;span class="nb">}{&lt;/span>&lt;span class="k">\nolinkurl&lt;/span>&lt;span class="nb">{&lt;/span>#1&lt;span class="nb">}}}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">{&lt;/span>&lt;span class="k">\nolinkurl&lt;/span>&lt;span class="nb">{&lt;/span>#1&lt;span class="nb">}}}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">%% Jstor
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span>&lt;span class="k">\DeclareFieldAlias&lt;/span>&lt;span class="nb">{&lt;/span>jstor&lt;span class="nb">}{&lt;/span>eprint:jstor&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul></description></item><item><title>Создание bib-файла с процитированными ссылками</title><link>https://yamadharma.github.io/ru/post/2022/11/20/bib-file-cited/</link><pubDate>Sun, 20 Nov 2022 19:44:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/11/20/bib-file-cited/</guid><description>&lt;p>Как создать bib-файл, в котором будут ссылки, процитированные в тексте.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#прагматика">&lt;span class="section-num">1&lt;/span> Прагматика&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#утилиты">&lt;span class="section-num">2&lt;/span> Утилиты&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#bibexport">&lt;span class="section-num">2.1&lt;/span> bibexport&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#jabref">&lt;span class="section-num">2.2&lt;/span> Jabref&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#bibtool">&lt;span class="section-num">2.3&lt;/span> bibtool&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="прагматика">&lt;span class="section-num">1&lt;/span> Прагматика&lt;/h2>
+&lt;ul>
+&lt;li>Использования потока работ с централизованным bib-файлом.&lt;/li>
+&lt;li>Создание очищенного bib-файл для отправки публикации.&lt;/li>
+&lt;/ul>
+&lt;h2 id="утилиты">&lt;span class="section-num">2&lt;/span> Утилиты&lt;/h2>
+&lt;h3 id="bibexport">&lt;span class="section-num">2.1&lt;/span> bibexport&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>CTAN: &lt;a href="https://ctan.org/pkg/bibexport" target="_blank" rel="noopener">https://ctan.org/pkg/bibexport&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Поставляется в составе дистрибутива &lt;em>TeX Live&lt;/em>.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Работает с полями bibtex, не поддерживает biblatex (см. &lt;a href="https://yamadharma.github.io/ru/post/2022/09/11/bibtex-biblatex/">bibtex vs biblatex&lt;/a>).&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Можно добавить свои поля.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Не совместим с &lt;em>biber&lt;/em>.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Использование:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">bibexport -o extracted.bib myarticle.aux
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>&lt;code>extracted.bib&lt;/code> : имя, которое вы хотите дать своему новому bib-файлу;&lt;/li>
+&lt;li>необходимо указать расширение &lt;code>.aux&lt;/code> (или вообще не указывать расширение).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Если используется централизованная база библиографии, то можно использовать её вместо локально bib-файла:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">bibexport -r ~/work/bib/bib/main.bib -o extracted.bib myarticle.aux
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="jabref">&lt;span class="section-num">2.2&lt;/span> Jabref&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>Сайт: &lt;a href="https://www.jabref.org/" target="_blank" rel="noopener">https://www.jabref.org/&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Работает также с &lt;em>biblatex&lt;/em> и &lt;em>biber&lt;/em>.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Можно работать как в режиме командной строки, так и в режиме графического интерфейса.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Нужно устанавливать отдельно.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>В режиме командной строки:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">jabref -n -a infile&lt;span class="o">[&lt;/span>.aux&lt;span class="o">]&lt;/span>,outfile&lt;span class="o">[&lt;/span>.bib&lt;span class="o">]&lt;/span> base-BibTeX-file.bib
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>&lt;code>-n&lt;/code> : отключение графического интерфейса;&lt;/li>
+&lt;li>&lt;code>-a&lt;/code> : обработка файла &lt;code>.aux&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Удобно использовать централизованную базу bib-данных:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">jabref -n -a infile&lt;span class="o">[&lt;/span>.aux&lt;span class="o">]&lt;/span>,outfile&lt;span class="o">[&lt;/span>.bib&lt;span class="o">]&lt;/span> ~/work/bib/bib/main.bib
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Пояснение.&lt;/p>
+&lt;ul>
+&lt;li>Когда вы компилируете документ LaTeX (например, &lt;code>infile.tex&lt;/code>), создаётся файл &lt;code>.aux&lt;/code> (&lt;code>infile.aux&lt;/code>).&lt;/li>
+&lt;li>Среди прочего, он содержит список записей, используемых в вашем документе.&lt;/li>
+&lt;li>JabRef извлекает используемые ссылки из &lt;code>.bib&lt;/code>-файла &lt;code>base-BibTeX-file.bib&lt;/code> в новый &lt;code>.bib&lt;/code>-файл (&lt;code>outfile.bib&lt;/code>).&lt;/li>
+&lt;li>В результате получается подбаза данных, содержащая только записи, используемые в файле &lt;code>.tex&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="bibtool">&lt;span class="section-num">2.3&lt;/span> bibtool&lt;/h3>
+&lt;ul>
+&lt;li>Сайт: &lt;a href="http://www.gerd-neugebauer.de/software/TeX/BibTool/en/" target="_blank" rel="noopener">http://www.gerd-neugebauer.de/software/TeX/BibTool/en/&lt;/a>&lt;/li>
+&lt;li>CTAN: &lt;a href="https://www.ctan.org/pkg/bibtool" target="_blank" rel="noopener">https://www.ctan.org/pkg/bibtool&lt;/a>&lt;/li>
+&lt;li>Использование:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">bibtool -x article.aux -o NewBib.bib
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul></description></item><item><title>Emacs. Работа с библиографией. Org-cite</title><link>https://yamadharma.github.io/ru/post/2022/10/10/emacs-bibliography-org-cite/</link><pubDate>Mon, 10 Oct 2022 12:34:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/10/10/emacs-bibliography-org-cite/</guid><description>&lt;p>Библиография в org-mode на основе org-cite.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#цитирование">&lt;span class="section-num">2&lt;/span> Цитирование&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#обработка-цитирования">&lt;span class="section-num">3&lt;/span> Обработка цитирования&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">3.1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#процессоры-цитирования">&lt;span class="section-num">3.2&lt;/span> Процессоры цитирования&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#универсальные">&lt;span class="section-num">3.2.1&lt;/span> Универсальные&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#latex">&lt;span class="section-num">3.2.2&lt;/span> LaTeX&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#задание-типа-экспорта">&lt;span class="section-num">3.3&lt;/span> Задание типа экспорта&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">3.3.1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#задание-типа-экспорта-в-файле">&lt;span class="section-num">3.3.2&lt;/span> Задание типа экспорта в файле&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#глобальное-задание-типа-экспорта">&lt;span class="section-num">3.3.3&lt;/span> Глобальное задание типа экспорта&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#citeproc-dot-el">&lt;span class="section-num">4&lt;/span> Citeproc.el&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>Выпущена в 2021 году для нативной поддержки ссылок в &lt;code>org-mode&lt;/code>.&lt;/li>
+&lt;li>Задаёт родной синтаксис для цитирования.&lt;/li>
+&lt;/ul>
+&lt;h2 id="цитирование">&lt;span class="section-num">2&lt;/span> Цитирование&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>Прежде чем добавлять цитаты, сначала следует задать один или несколько файлов библиографии:&lt;/p>
+&lt;ul>
+&lt;li>глобально с помощью &lt;code>org-cite-global-bibliography&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nb">setq&lt;/span> &lt;span class="nv">org-cite-global-bibliography&lt;/span> &lt;span class="o">&amp;#39;&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;~/work/bib/bib/main.bib&amp;#34;&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>локально с помощью одного или нескольких ключевых слов &lt;code>bibliography&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-org" data-lang="org">&lt;span class="line">&lt;span class="cl">&lt;span class="cs">#+bibliography&lt;/span>&lt;span class="c">: SomeFile.bib&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cs">#+bibliography&lt;/span>&lt;span class="c">: /some/other/file.json&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cs">#+bibliography&lt;/span>&lt;span class="c">: &amp;#34;/some/file/with spaces/in its name.bib&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Цитаты можно вставлять и редактировать с помощью &lt;code>org-cite-insert&lt;/code>, или комбинации &lt;code>C-c C-x @&lt;/code>.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Для цитирования требуется один или несколько ключей цитирования элементов, идентифицирующих ссылку в библиографии:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-org" data-lang="org">&lt;span class="line">&lt;span class="cl">[cite/style:common prefix ;prefix @key suffix; ... ; common suffix]
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Каждая цитата заключена в квадратные скобки и использует ключевое слово &lt;code>cite&lt;/code>.&lt;/li>
+&lt;li>Каждый ключ начинается с символа &lt;code>@&lt;/code>.&lt;/li>
+&lt;li>Каждый ключ может быть дополнен префиксом (например, &lt;code>см.&lt;/code>) и/или суффиксом (например, &lt;code>стр. 123&lt;/code>), предоставляя информацию, полезную или необходимую для понимания цитаты, но не включенную в ссылку.&lt;/li>
+&lt;li>Одна цитата может цитировать более одной ссылки; ключи разделены точкой с запятой; форматирование таких групп цитирования определяется стилем.&lt;/li>
+&lt;li>Можно также указать стилистическую вариацию для цитат, вставив &amp;lsquo;/&amp;rsquo; и имя стиля между ключевым словом &lt;code>cite&lt;/code> и двоеточием.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Обязательными элементами являются:&lt;/p>
+&lt;ul>
+&lt;li>ключевое слово &lt;code>cite&lt;/code> и двоеточие;&lt;/li>
+&lt;li>символ &lt;code>@&lt;/code>, непосредственно предшествующий каждому ключу;&lt;/li>
+&lt;li>скобки, окружающие цитирование.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Чтобы вставить куда-либо библиографию, нужно в этом месте задать ключевое слово &lt;code>print_bibliography&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-org" data-lang="org">&lt;span class="line">&lt;span class="cl">&lt;span class="cs">#+print_bibliography&lt;/span>&lt;span class="c">:&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="обработка-цитирования">&lt;span class="section-num">3&lt;/span> Обработка цитирования&lt;/h2>
+&lt;h3 id="общая-информация">&lt;span class="section-num">3.1&lt;/span> Общая информация&lt;/h3>
+&lt;ul>
+&lt;li>Важной концепцией &lt;code>org-cite&lt;/code> являются &lt;em>экспортные процессоры&lt;/em>.&lt;/li>
+&lt;li>Хотя цитаты всегда будут иметь один и тот же формат, экспортируемый текст будет меняться в зависимости от используемого процессора.&lt;/li>
+&lt;li>Основные функции процессоров:
+&lt;ul>
+&lt;li>вставка и редактирование цитат;&lt;/li>
+&lt;li>связь ссылки и её определения;&lt;/li>
+&lt;li>выделение цитат в буфере;&lt;/li>
+&lt;li>экспорт цитат.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="процессоры-цитирования">&lt;span class="section-num">3.2&lt;/span> Процессоры цитирования&lt;/h3>
+&lt;h4 id="универсальные">&lt;span class="section-num">3.2.1&lt;/span> Универсальные&lt;/h4>
+&lt;!--list-separator-->
+&lt;ol>
+&lt;li>
+&lt;p>basic&lt;/p>
+&lt;ul>
+&lt;li>Когда обратная совместимость не требуется, а потребности в форматировании минимальны.&lt;/li>
+&lt;li>Загрузка:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nb">require&lt;/span> &lt;span class="ss">&amp;#39;oc-basic&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;!--list-separator-->
+&lt;ol start="2">
+&lt;li>
+&lt;p>csl&lt;/p>
+&lt;ul>
+&lt;li>Используется форматирование на основе Citation Style Language (см. &lt;a href="https://yamadharma.github.io/ru/post/2022/10/10/citation-style-language/">Citation Style Language (CSL)&lt;/a>).&lt;/li>
+&lt;li>Для этого используется пакет &lt;code>citeproc-el&lt;/code>.&lt;/li>
+&lt;li>Конфигурация:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nb">require&lt;/span> &lt;span class="ss">&amp;#39;oc-csl&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">;;; https://github.com/citation-style-language/styles&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">;;; https://www.zotero.org/styles&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nb">setq&lt;/span> &lt;span class="nv">org-cite-csl-styles-dir&lt;/span> &lt;span class="s">&amp;#34;~/work/bib/csl&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>&lt;code>csl&lt;/code> экспортируется в визуализированный текст.
+&lt;ul>
+&lt;li>Визуализированный текст &amp;mdash; это текст, вид которого будет совпадать с форматированием в &lt;code>org-mode&lt;/code>, например, текст, выделенный курсивом &lt;code>org-mode&lt;/code>, будет обернут в &lt;code>\emph{}&lt;/code> в LaTeX.&lt;/li>
+&lt;li>При экспорте &lt;code>[cite:@bradleyAppearanceRealityMetaphysical2011 82–5;]&lt;/code> в файл LaTeX с помощью csl-процессора, используя файл CSL для стиля цитирования &lt;em>Modern Language Association (MLA)&lt;/em>, в файле LaTeX будет следующая цитата: &lt;code>(Bradley 82–85)&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>При экспорте в LaTeX отрендеренного текста зачастую будет недостаточно.&lt;/li>
+&lt;li>Для получения доступ к более сложным или тонким функциям надо использовать процессор &lt;code>biblatex&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;h4 id="latex">&lt;span class="section-num">3.2.2&lt;/span> LaTeX&lt;/h4>
+&lt;ul>
+&lt;li>Для экспорта в LaTeX.&lt;/li>
+&lt;/ul>
+&lt;!--list-separator-->
+&lt;ol>
+&lt;li>
+&lt;p>natbib&lt;/p>
+&lt;ul>
+&lt;li>Для экспорта в BibTeX, исторический библиографический процессор, используемый с LaTeX.&lt;/li>
+&lt;li>Используются команды цитирования из пакета &lt;code>natbib&lt;/code>.&lt;/li>
+&lt;li>Загрузка:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nb">require&lt;/span> &lt;span class="ss">&amp;#39;oc-natbib&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;!--list-separator-->
+&lt;ol start="2">
+&lt;li>
+&lt;p>biblatex&lt;/p>
+&lt;ul>
+&lt;li>Для экспорта в BibLaTeX, альтернативного библиографического процессора, используемого с LaTeX (см. &lt;a href="https://yamadharma.github.io/ru/post/2022/09/11/bibtex-biblatex/">bibtex vs biblatex&lt;/a>).&lt;/li>
+&lt;li>Загрузка:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nb">require&lt;/span> &lt;span class="ss">&amp;#39;oc-biblatex&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Стиль конечного цитирования будет определяться предоставленными параметрами пакета (например, &lt;code>style=gost&lt;/code>).&lt;/li>
+&lt;li>Например, &lt;code>[cite:@bradleyAppearanceRealityMetaphysical2011 82-5;]&lt;/code> будет экспортироваться в команду LaTeX &lt;code>\cite[82-5]{bradleyAppearanceRealityMetaphysical2011}&lt;/code>.&lt;/li>
+&lt;li>Процессору BibLaTeX можно передать параметры команде &lt;code>\printbibliography&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-org" data-lang="org">&lt;span class="line">&lt;span class="cl">&lt;span class="cs">#+print_bibliography&lt;/span>&lt;span class="c">: :section 2 :heading subbibliography&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cs">#+print_bibliography&lt;/span>&lt;span class="c">: :keyword abc,xyz :title &amp;#34;Primary Sources&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;h3 id="задание-типа-экспорта">&lt;span class="section-num">3.3&lt;/span> Задание типа экспорта&lt;/h3>
+&lt;h4 id="общая-информация">&lt;span class="section-num">3.3.1&lt;/span> Общая информация&lt;/h4>
+&lt;ul>
+&lt;li>Стиль цитат и библиография зависят от трех вещей:
+&lt;ul>
+&lt;li>используемый процессор цитирования;&lt;/li>
+&lt;li>стиль цитирования;&lt;/li>
+&lt;li>стиль библиографии.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="задание-типа-экспорта-в-файле">&lt;span class="section-num">3.3.2&lt;/span> Задание типа экспорта в файле&lt;/h4>
+&lt;ul>
+&lt;li>Ключевое слово &lt;code>CITE_EXPORT&lt;/code> указывает процессор экспорта и стили цитирования (и, возможно, ссылки).&lt;/li>
+&lt;li>Зададим процессор экспорта &lt;code>basic&lt;/code> с цитатами, вставленными как имя автора, и ссылками, проиндексированными по имени автора и году.
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-org" data-lang="org">&lt;span class="line">&lt;span class="cl">&lt;span class="cs">#+cite_export&lt;/span>&lt;span class="c">: basic author author-year&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Зададим процессор &lt;code>csl&lt;/code> и стиль CSL, который в данном случае определяет числовые цитаты и числовые ссылки в соответствии с ванкуверской спецификацией:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-org" data-lang="org">&lt;span class="line">&lt;span class="cl">&lt;span class="cs">#+cite_export&lt;/span>&lt;span class="c">: csl /some/path/to/vancouver-brackets.csl&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Зададим процессор &lt;code>natbib&lt;/code> со стилем цитирования соответствующим гарвардскому стилю и спецификации издателя Wolkers-Kluwer:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-org" data-lang="org">&lt;span class="line">&lt;span class="cl">&lt;span class="cs">#+cite_export&lt;/span>&lt;span class="c">: natbib kluwer&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h4 id="глобальное-задание-типа-экспорта">&lt;span class="section-num">3.3.3&lt;/span> Глобальное задание типа экспорта&lt;/h4>
+&lt;ul>
+&lt;li>Необходимо настроить переменную &lt;code>org-cite-export-processors&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nv">org-cite-export-processors&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">&amp;#39;&lt;/span>&lt;span class="p">((&lt;/span>&lt;span class="nv">md&lt;/span> &lt;span class="o">.&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nv">csl&lt;/span> &lt;span class="s">&amp;#34;chicago-fullnote-bibliography.csl&amp;#34;&lt;/span>&lt;span class="p">))&lt;/span> &lt;span class="c1">; Footnote reliant&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nv">latex&lt;/span> &lt;span class="o">.&lt;/span> &lt;span class="nv">biblatex&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="c1">; For humanities&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nv">odt&lt;/span> &lt;span class="o">.&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nv">csl&lt;/span> &lt;span class="s">&amp;#34;chicago-fullnote-bibliography.csl&amp;#34;&lt;/span>&lt;span class="p">))&lt;/span> &lt;span class="c1">; Footnote reliant&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="no">t&lt;/span> &lt;span class="o">.&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nv">csl&lt;/span> &lt;span class="s">&amp;#34;modern-language-association.csl&amp;#34;&lt;/span>&lt;span class="p">))))&lt;/span> &lt;span class="c1">; Fallback&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="citeproc-dot-el">&lt;span class="section-num">4&lt;/span> Citeproc.el&lt;/h2>
+&lt;ul>
+&lt;li>Используется для процессора csl.&lt;/li>
+&lt;li>В настоящее время он поддерживает экспорт в:
+&lt;ul>
+&lt;li>HTML;&lt;/li>
+&lt;li>LaTeX;&lt;/li>
+&lt;li>Org;&lt;/li>
+&lt;li>Plain text.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>В настоящее время Citeproc может извлекать библиографическую информацию из следующих форматов:
+&lt;ul>
+&lt;li>CSL-JSON;&lt;/li>
+&lt;li>Bib(La)TeX;&lt;/li>
+&lt;li>org-bibtex (см. &lt;a href="https://gewhere.github.io/org-bibtex" target="_blank" rel="noopener">https://gewhere.github.io/org-bibtex&lt;/a>).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Поддержка Bib(La)TeX и org-bibtex находится в зачаточном состоянии по сравнению с CSL-JSON .&lt;/li>
+&lt;li>Если не задан стиль в &lt;code>org-cite-csl--fallback-style-file&lt;/code>, будет использоваться стиль, который по умолчанию соответствует чикагскому стилю &lt;em>автор-дата&lt;/em>.&lt;/li>
 &lt;/ul></description></item><item><title>Citation Style Language (CSL)</title><link>https://yamadharma.github.io/ru/post/2022/10/10/citation-style-language/</link><pubDate>Mon, 10 Oct 2022 10:22:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/10/10/citation-style-language/</guid><description>&lt;p>Язык стилей цитирования.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
@@ -54,6 +675,13 @@
 &lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>
 &lt;ul>
 &lt;li>&lt;a href="#история">&lt;span class="section-num">1.1&lt;/span> История&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#поддерживающие-программы">&lt;span class="section-num">2&lt;/span> Поддерживающие программы&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#соответствие-полей-csl-и-библиографических-систем">&lt;span class="section-num">3&lt;/span> Соответствие полей CSL и библиографических систем&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#стили-csl">&lt;span class="section-num">4&lt;/span> Стили CSL&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#стили-csl-для-библиографии-гост">&lt;span class="section-num">4.1&lt;/span> Стили CSL для библиографии ГОСТ&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
@@ -86,6 +714,133 @@
 &lt;li>1.0.2.&lt;/li>
 &lt;/ul>
 &lt;/li>
+&lt;/ul>
+&lt;h2 id="поддерживающие-программы">&lt;span class="section-num">2&lt;/span> Поддерживающие программы&lt;/h2>
+&lt;ul>
+&lt;li>Zotero: &lt;a href="https://www.zotero.org/" target="_blank" rel="noopener">https://www.zotero.org/&lt;/a>.&lt;/li>
+&lt;li>Mendeley: &lt;a href="http://mendeley.com/" target="_blank" rel="noopener">http://mendeley.com/&lt;/a>.&lt;/li>
+&lt;li>Pandoc (см. &lt;a href="https://yamadharma.github.io/ru/post/2021/08/28/pandoc/">Pandoc&lt;/a>) поддерживает цитаты в форматах CSL, YAML и JSON и может отображать их с использованием стилей CSL.&lt;/li>
+&lt;/ul>
+&lt;h2 id="соответствие-полей-csl-и-библиографических-систем">&lt;span class="section-num">3&lt;/span> Соответствие полей CSL и библиографических систем&lt;/h2>
+&lt;div class="table-caption">
+&lt;span class="table-number">&amp;#1058;&amp;#1072;&amp;#1073;&amp;#1083;&amp;#1080;&amp;#1094;&amp;#1072; 1:&lt;/span>
+Соответствие полей CSL и Mendeley
+&lt;/div>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>CSL&lt;/th>
+&lt;th>Mendeley&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>article&lt;/td>
+&lt;td>Generic&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>bill&lt;/td>
+&lt;td>Bill&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>book&lt;/td>
+&lt;td>Book&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>chapter&lt;/td>
+&lt;td>Book Section&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>article&lt;/td>
+&lt;td>Case&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>article&lt;/td>
+&lt;td>Computer Program&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>paper-conference&lt;/td>
+&lt;td>Conference Proceedings&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>entry-encyclopedia&lt;/td>
+&lt;td>Encyclopedia Article&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>motion_picture&lt;/td>
+&lt;td>Film&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>speech&lt;/td>
+&lt;td>Hearing&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>article-journal&lt;/td>
+&lt;td>Journal Article&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>article-magazine&lt;/td>
+&lt;td>Magazine Article&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>article-newspaper&lt;/td>
+&lt;td>Newspaper Article&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>patent&lt;/td>
+&lt;td>Patent&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>report&lt;/td>
+&lt;td>Report&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>legislation&lt;/td>
+&lt;td>Statute&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>thesis&lt;/td>
+&lt;td>Thesis&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>broadcast&lt;/td>
+&lt;td>Television Broadcast&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>webpage&lt;/td>
+&lt;td>Web Page&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>article&lt;/td>
+&lt;td>Working Paper&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h2 id="стили-csl">&lt;span class="section-num">4&lt;/span> Стили CSL&lt;/h2>
+&lt;h3 id="стили-csl-для-библиографии-гост">&lt;span class="section-num">4.1&lt;/span> Стили CSL для библиографии ГОСТ&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/12/15/csl-gost/">Библиография. CSL. ГОСТ&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>Emacs. Работа с библиографией. Org-roam-bibtex</title><link>https://yamadharma.github.io/ru/post/2022/08/30/emacs-bibliography-org-roam-bibtex/</link><pubDate>Tue, 30 Aug 2022 15:13:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/08/30/emacs-bibliography-org-roam-bibtex/</guid><description>&lt;p>Пакет для работы с библиографией &lt;em>org-roam-bibtex&lt;/em>.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>Репозиторий: &lt;a href="https://github.com/org-roam/org-roam-bibtex" target="_blank" rel="noopener">https://github.com/org-roam/org-roam-bibtex&lt;/a>&lt;/li>
+&lt;li>Расширение Org Roam, которое интегрирует Org Roam с программным обеспечением для управления библиографией/цитированием: Org Ref, Helm и Ivy BibTeX и Citar.&lt;/li>
+&lt;li>Позволяет пользователям управлять своими библиографическими примечаниями с помощью Org Roam и получать доступ к примечаниям org-roam-directory через
+&lt;ul>
+&lt;li>&lt;code>helm-bibtex&lt;/code>;&lt;/li>
+&lt;li>&lt;code>ivy-bibtex&lt;/code>;&lt;/li>
+&lt;li>&lt;code>citar-open-notes&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Использует ссылки Org-ref (&lt;code>cite:&lt;/code>) и ссылки Org-cite.&lt;/li>
 &lt;/ul></description></item><item><title>Emacs. Работа с библиографией. org-ref</title><link>https://yamadharma.github.io/ru/post/2022/08/30/emacs-bibliography-org-ref/</link><pubDate>Tue, 30 Aug 2022 13:23:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/08/30/emacs-bibliography-org-ref/</guid><description>&lt;p>Пакет для работы с библиографией &lt;em>org-ref&lt;/em>.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
@@ -98,4 +853,93 @@
 &lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
 &lt;ul>
 &lt;li>Репозиторий: &lt;a href="https://github.com/jkitchin/org-ref" target="_blank" rel="noopener">https://github.com/jkitchin/org-ref&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>Работа с библиографией. Рабочий процесс</title><link>https://yamadharma.github.io/ru/post/2021/12/05/bibliography-workflow/</link><pubDate>Sun, 05 Dec 2021 12:42:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2021/12/05/bibliography-workflow/</guid><description>&lt;p>Моя работа с библиографической информацией.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#организация-библиографии">&lt;span class="section-num">1&lt;/span> Организация библиографии&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#программы">&lt;span class="section-num">2&lt;/span> Программы&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="организация-библиографии">&lt;span class="section-num">1&lt;/span> Организация библиографии&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/10/18/bibtex-key-format/">Формат ключа BibTeX&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/11/24/biblatex-eprints/">Biblatex. Препринты&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/09/11/bibtex-biblatex/">bibtex vs biblatex&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/10/17/allowed-characters-bibtex-keys/">Допустимые символы для ключей BibTeX&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="программы">&lt;span class="section-num">2&lt;/span> Программы&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/09/14/emacs-ebib-bibliography-manager/">Emacs. Менеджер библиографической информации Ebib&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/12/13/bibtex-tydy/">Bibtex. Пакет bibtex-tydy&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/11/20/bib-file-cited/">Создание bib-файла с процитированными ссылками&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/08/30/emacs-bibliography-org-roam-bibtex/">Emacs. Работа с библиографией. Org-roam-bibtex&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/08/30/emacs-bibliography-helm-bibtex/">Emacs. Работа с библиографией. helm-bibtex&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>Emacs. Работа с библиографией</title><link>https://yamadharma.github.io/ru/post/2021/10/19/emacs-bibliography/</link><pubDate>Tue, 19 Oct 2021 14:21:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2021/10/19/emacs-bibliography/</guid><description>&lt;p>Работа с библиографией в Emacs.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#основные-пакеты-для-работы-с-библиографическими-данными">&lt;span class="section-num">1&lt;/span> Основные пакеты для работы с библиографическими данными&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#управление-библиографической-базой">&lt;span class="section-num">1.1&lt;/span> Управление библиографической базой&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#ebib">&lt;span class="section-num">1.1.1&lt;/span> Ebib&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#управление-ссылками">&lt;span class="section-num">1.2&lt;/span> Управление ссылками&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#helm-bibtex">&lt;span class="section-num">1.2.1&lt;/span> Helm-bibtex&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#org-ref">&lt;span class="section-num">1.2.2&lt;/span> Org-ref&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#org-roam-bibtex">&lt;span class="section-num">1.2.3&lt;/span> Org Roam BibTeX&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#org-cite">&lt;span class="section-num">1.2.4&lt;/span> Org-cite&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="основные-пакеты-для-работы-с-библиографическими-данными">&lt;span class="section-num">1&lt;/span> Основные пакеты для работы с библиографическими данными&lt;/h2>
+&lt;h3 id="управление-библиографической-базой">&lt;span class="section-num">1.1&lt;/span> Управление библиографической базой&lt;/h3>
+&lt;h4 id="ebib">&lt;span class="section-num">1.1.1&lt;/span> Ebib&lt;/h4>
+&lt;ul>
+&lt;li>&lt;code>ebib&lt;/code>: предоставляет инструмент для редактирования самих файлов &lt;code>.bib&lt;/code>.&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/09/14/emacs-ebib-bibliography-manager/">Emacs. Менеджер библиографической информации Ebib&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="управление-ссылками">&lt;span class="section-num">1.2&lt;/span> Управление ссылками&lt;/h3>
+&lt;h4 id="helm-bibtex">&lt;span class="section-num">1.2.1&lt;/span> Helm-bibtex&lt;/h4>
+&lt;ul>
+&lt;li>&lt;code>helm-bibtex&lt;/code>: инструмент для просмотра и манипуляции записями в файлах &lt;code>.bib&lt;/code>.&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/08/30/emacs-bibliography-helm-bibtex/">Emacs. Работа с библиографией. helm-bibtex&lt;/a>&lt;/li>
+&lt;li>Позволяет вставлять ссылки в файл.&lt;/li>
+&lt;li>Используется чаще всего как фронтенд для вставки ссылок.&lt;/li>
+&lt;li>Можно управлять базой библиографических данных, выполняя с ней разные действия.&lt;/li>
+&lt;/ul>
+&lt;h4 id="org-ref">&lt;span class="section-num">1.2.2&lt;/span> Org-ref&lt;/h4>
+&lt;ul>
+&lt;li>&lt;code>org-ref&lt;/code>: система управления ссылками, тесно интегрированная с &lt;code>org-mode&lt;/code>.&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/08/30/emacs-bibliography-org-ref/">Emacs. Работа с библиографией. org-ref&lt;/a>&lt;/li>
+&lt;li>Можно:
+&lt;ul>
+&lt;li>редактировать файлы &lt;code>bibtex&lt;/code>;&lt;/li>
+&lt;li>вставлять цитаты;&lt;/li>
+&lt;li>искать и загружать PDF-файлы для ссылок;&lt;/li>
+&lt;li>вставлять библиографические данные.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="org-roam-bibtex">&lt;span class="section-num">1.2.3&lt;/span> Org Roam BibTeX&lt;/h4>
+&lt;ul>
+&lt;li>Расширение Org Roam, которое интегрирует Org Roam с программным обеспечением для управления библиографией/цитированием: Org Ref, Helm и Ivy BibTeX и Citar.&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/08/30/emacs-bibliography-org-roam-bibtex/">Emacs. Работа с библиографией. Org-roam-bibtex&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h4 id="org-cite">&lt;span class="section-num">1.2.4&lt;/span> Org-cite&lt;/h4>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/10/10/emacs-bibliography-org-cite/">Emacs. Работа с библиографией. Org-cite&lt;/a>&lt;/li>
+&lt;li>Для цитирования в org-mode.&lt;/li>
+&lt;li>Задаёт формат ссылок.&lt;/li>
+&lt;li>Лучше использовать как бэкенд.&lt;/li>
 &lt;/ul></description></item></channel></rss>

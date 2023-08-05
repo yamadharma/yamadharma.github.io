@@ -75,32 +75,36 @@
 &lt;h2 id="примеры-настройки">&lt;span class="section-num">5&lt;/span> Примеры настройки&lt;/h2>
 &lt;ul>
 &lt;li>Настройка для Cisco (внешний IPv4: &lt;code>Y.Y.Y.Y&lt;/code>):
-&lt;pre>&lt;code class="language-shell">configure terminal
-ipv6 unicast-routing
-ipv6 cef
-ipv6 dhcp pool LAN-v6
-address prefix 2a03:e2c0:XXXX:5555::1/64
-dns-server 2a02:6b8::feed:0ff
-domain-name ipv6.orcinus.ru
-exit
-interface Tunnel1
-description IP4Market IPv6 (RUSSIA)
-no ip address
-ipv6 address 2a03:e2c0:XXXX::2/64
-ipv6 enable
-tunnel source Y.Y.Y.Y
-tunnel mode ipv6ip
-tunnel destination 193.0.203.203
-exit
-interface FastEthernet0/1
-ipv6 address 2a03:e2c0:XXXX:5555::/64
-ipv6 enable
-ipv6 nd managed-config-flag
-ipv6 dhcp server LAN-v6
-exit
-ipv6 route ::/0 Tunnel1
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">configure terminal
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ipv6 unicast-routing
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ipv6 cef
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ipv6 dhcp pool LAN-v6
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> address prefix 2a03:e2c0:XXXX:5555::1/64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> dns-server 2a02:6b8::feed:0ff
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> domain-name ipv6.orcinus.ru
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">exit&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">interface Tunnel1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> description IP4Market IPv6 &lt;span class="o">(&lt;/span>RUSSIA&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> no ip address
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ipv6 address 2a03:e2c0:XXXX::2/64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ipv6 &lt;span class="nb">enable&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> tunnel &lt;span class="nb">source&lt;/span> Y.Y.Y.Y
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> tunnel mode ipv6ip
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> tunnel destination 193.0.203.203
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">exit&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">interface FastEthernet0/1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ipv6 address 2a03:e2c0:XXXX:5555::/64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ipv6 &lt;span class="nb">enable&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ipv6 nd managed-config-flag
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ipv6 dhcp server LAN-v6
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">exit&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ipv6 route ::/0 Tunnel1
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul></description></item><item><title>Протокол IPv6</title><link>https://yamadharma.github.io/ru/post/2023/06/26/ipv6-protocol/</link><pubDate>Mon, 26 Jun 2023 19:36:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/06/26/ipv6-protocol/</guid><description>&lt;p>Протокол IPv6.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
@@ -255,72 +259,71 @@ ipv6 route ::/0 Tunnel1
 &lt;li>Сгенерированный префикс 6to4: &lt;code>2002:0102:0304::&lt;/code>.&lt;/li>
 &lt;li>Локальным шлюзам 6to4 следует (но не обязательно) назначать суффикс &lt;code>::1&lt;/code>, поэтому ваш локальный адрес 6to4 будет: &lt;code>2002:0102:0304::1&lt;/code>.&lt;/li>
 &lt;li>Для автоматической генерации можно использовать скрипт:
-&lt;pre>&lt;code class="language-shell">ipv4=&amp;quot;1.2.3.4&amp;quot;; printf &amp;quot;2002:%02x%02x:%02x%02x::1&amp;quot; `echo $ipv4 | tr &amp;quot;.&amp;quot; &amp;quot; &amp;quot;`
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nv">ipv4&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;1.2.3.4&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="nb">printf&lt;/span> &lt;span class="s2">&amp;#34;2002:%02x%02x:%02x%02x::1&amp;#34;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="nb">echo&lt;/span> &lt;span class="nv">$ipv4&lt;/span> &lt;span class="p">|&lt;/span> tr &lt;span class="s2">&amp;#34;.&amp;#34;&lt;/span> &lt;span class="s2">&amp;#34; &amp;#34;&lt;/span>&lt;span class="sb">`&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="настройка-командой-ip">&lt;span class="section-num">3.2&lt;/span> Настройка командой &lt;code>ip&lt;/code>&lt;/h3>
 &lt;ul>
 &lt;li>Создайте новое туннельное устройство:
-&lt;pre>&lt;code class="language-shell">/sbin/ip tunnel add tun6to4 mode sit ttl &amp;lt;ttldefault&amp;gt; remote any local &amp;lt;localipv4address&amp;gt;
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">/sbin/ip tunnel add tun6to4 mode sit ttl &amp;lt;ttldefault&amp;gt; remote any &lt;span class="nb">local&lt;/span> &amp;lt;localipv4address&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Необходимо указать TTL, поскольку значение по умолчанию равно 0.&lt;/li>
 &lt;li>Поднимите интерфейс:
-&lt;pre>&lt;code class="language-shell">/sbin/ip link set dev tun6to4 up
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">/sbin/ip link &lt;span class="nb">set&lt;/span> dev tun6to4 up
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Добавьте в интерфейс локальный адрес 6to4 (префикс обязательно равен 16):
-&lt;pre>&lt;code class="language-shell">/sbin/ip -6 addr add &amp;lt;local6to4address&amp;gt;/16 dev tun6to4
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">/sbin/ip -6 addr add &amp;lt;local6to4address&amp;gt;/16 dev tun6to4
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Добавить маршрут по умолчанию в глобальную сеть IPv6, используя заданный адрес IPv4:
-&lt;pre>&lt;code class="language-shell">/sbin/ip -6 route add default via ::192.88.99.1 dev tun6to4 metric 1
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">/sbin/ip -6 route add default via ::192.88.99.1 dev tun6to4 metric &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Некоторые версии команды &lt;code>ip&lt;/code> не поддерживают совместимые с IPv4 IPv6-адреса для шлюзов, в этом случае необходимо использовать соответствующий IPv6-адрес:
-&lt;pre>&lt;code class="language-shell">/sbin/ip -6 route add default via 2002:c058:6301::1 dev tun6to4 metric 1
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">/sbin/ip -6 route add default via 2002:c058:6301::1 dev tun6to4 metric &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="скрипт">&lt;span class="section-num">3.3&lt;/span> Скрипт&lt;/h3>
 &lt;ul>
 &lt;li>Соберём в один скрипт &lt;code>6to4&lt;/code>:
-&lt;pre>&lt;code class="language-shell">#!/bin/sh
-IF=$1
-STATE=$2
-if [ -z &amp;quot;$IF&amp;quot; ]
-then
-echo &amp;quot;$0: called with no interface&amp;quot; 1&amp;gt;&amp;amp;2
-exit 1
-fi
-if [ &amp;quot;$STATE&amp;quot; = &amp;quot;up&amp;quot; ]
-then
-IPV4=`/sbin/ip -4 addr show dev $IF|grep &amp;quot;^ *inet&amp;quot;|sed -r -e 's:.*inet ([0-9\.]+)/.*:\1:'`
-IPV4STRIP=`echo $IPV4 | tr &amp;quot;.&amp;quot; &amp;quot; &amp;quot;`
-IPV6=`printf &amp;quot;2002:%02x%02x:%02x%02x::1&amp;quot; $IPV4STRIP`
-echo $IPV4 &amp;gt;&amp;gt; /tmp/IPV6DEBUG
-echo $IPV4STRIP &amp;gt;&amp;gt; /tmp/IPV6DEBUG
-echo $IPV6 &amp;gt;&amp;gt; /tmp/IPV6DEBUG
-/sbin/ip tunnel add tun6to4 mode sit ttl 64 remote any local $IPV4 2&amp;gt;&amp;amp;1 &amp;gt;&amp;gt; /tmp/IPV6DEBUG
-/sbin/ip link set dev tun6to4 up 2&amp;gt;&amp;amp;1 &amp;gt;&amp;gt; /tmp/IPV6DEBUG
-/sbin/ip -6 addr add $IPV6/16 dev tun6to4 2&amp;gt;&amp;amp;1 &amp;gt;&amp;gt; /tmp/IPV6DEBUG
-/sbin/ip -6 route add 2000::/3 via ::192.88.99.1 dev tun6to4 metric 1 2&amp;gt;&amp;amp;1 &amp;gt;&amp;gt; /tmp/IPV6DEBUG
-else
-/sbin/ip -6 route del 2000::/3 via ::192.88.99.1 dev tun6to4 2&amp;gt;&amp;amp;1 &amp;gt;&amp;gt; /tmp/IPV6DEBUG
-/sbin/ip link set dev tun6to4 down 2&amp;gt;&amp;amp;1 &amp;gt;&amp;gt; /tmp/IPV6DEBUG
-/sbin/ip tunnel del tun6to4
-fi
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#!/bin/sh
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">IF&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="nv">$1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">STATE&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="nv">$2&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">if&lt;/span> &lt;span class="o">[&lt;/span> -z &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$IF&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="o">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">then&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$0&lt;/span>&lt;span class="s2">: called with no interface&amp;#34;&lt;/span> 1&amp;gt;&lt;span class="p">&amp;amp;&lt;/span>&lt;span class="m">2&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">exit&lt;/span> &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">fi&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">if&lt;/span> &lt;span class="o">[&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$STATE&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;up&amp;#34;&lt;/span> &lt;span class="o">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">then&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nv">IPV4&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>/sbin/ip -4 addr show dev &lt;span class="nv">$IF&lt;/span>&lt;span class="p">|&lt;/span>grep &lt;span class="s2">&amp;#34;^ *inet&amp;#34;&lt;/span>&lt;span class="p">|&lt;/span>sed -r -e &lt;span class="s1">&amp;#39;s:.*inet ([0-9\.]+)/.*:\1:&amp;#39;&lt;/span>&lt;span class="sb">`&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nv">IPV4STRIP&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="nb">echo&lt;/span> &lt;span class="nv">$IPV4&lt;/span> &lt;span class="p">|&lt;/span> tr &lt;span class="s2">&amp;#34;.&amp;#34;&lt;/span> &lt;span class="s2">&amp;#34; &amp;#34;&lt;/span>&lt;span class="sb">`&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nv">IPV6&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="nb">printf&lt;/span> &lt;span class="s2">&amp;#34;2002:%02x%02x:%02x%02x::1&amp;#34;&lt;/span> &lt;span class="nv">$IPV4STRIP&lt;/span>&lt;span class="sb">`&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">echo&lt;/span> &lt;span class="nv">$IPV4&lt;/span> &amp;gt;&amp;gt; /tmp/IPV6DEBUG
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">echo&lt;/span> &lt;span class="nv">$IPV4STRIP&lt;/span> &amp;gt;&amp;gt; /tmp/IPV6DEBUG
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">echo&lt;/span> &lt;span class="nv">$IPV6&lt;/span> &amp;gt;&amp;gt; /tmp/IPV6DEBUG
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> /sbin/ip tunnel add tun6to4 mode sit ttl &lt;span class="m">64&lt;/span> remote any &lt;span class="nb">local&lt;/span> &lt;span class="nv">$IPV4&lt;/span> 2&amp;gt;&lt;span class="p">&amp;amp;&lt;/span>&lt;span class="m">1&lt;/span> &amp;gt;&amp;gt; /tmp/IPV6DEBUG
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> /sbin/ip link &lt;span class="nb">set&lt;/span> dev tun6to4 up 2&amp;gt;&lt;span class="p">&amp;amp;&lt;/span>&lt;span class="m">1&lt;/span> &amp;gt;&amp;gt; /tmp/IPV6DEBUG
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> /sbin/ip -6 addr add &lt;span class="nv">$IPV6&lt;/span>/16 dev tun6to4 2&amp;gt;&lt;span class="p">&amp;amp;&lt;/span>&lt;span class="m">1&lt;/span> &amp;gt;&amp;gt; /tmp/IPV6DEBUG
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> /sbin/ip -6 route add 2000::/3 via ::192.88.99.1 dev tun6to4 metric &lt;span class="m">1&lt;/span> 2&amp;gt;&lt;span class="p">&amp;amp;&lt;/span>&lt;span class="m">1&lt;/span> &amp;gt;&amp;gt; /tmp/IPV6DEBUG
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">else&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> /sbin/ip -6 route del 2000::/3 via ::192.88.99.1 dev tun6to4 2&amp;gt;&lt;span class="p">&amp;amp;&lt;/span>&lt;span class="m">1&lt;/span> &amp;gt;&amp;gt; /tmp/IPV6DEBUG
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> /sbin/ip link &lt;span class="nb">set&lt;/span> dev tun6to4 down 2&amp;gt;&lt;span class="p">&amp;amp;&lt;/span>&lt;span class="m">1&lt;/span> &amp;gt;&amp;gt; /tmp/IPV6DEBUG
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> /sbin/ip tunnel del tun6to4
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">fi&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Запуск:
-&lt;pre>&lt;code class="language-shell">./6to4 eth0 up
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">./6to4 eth0 up
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Останов:
-&lt;pre>&lt;code class="language-shell">./6to4 eth0 down
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">./6to4 eth0 down
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Для автоматического запуска добавьте скрипт в каталог &lt;code>/etc/NetworkManager/dispatcher.d&lt;/code>.&lt;/li>
 &lt;/ul>
 &lt;h2 id="раздача-6to4-ipv6-в-локальную-сеть">&lt;span class="section-num">4&lt;/span> Раздача 6to4 IPv6 в локальную сеть&lt;/h2>
@@ -334,39 +337,35 @@ fi
 &lt;li>Для роутеров часто используется адрес с &lt;code>::1&lt;/code> :&lt;/li>
 &lt;/ul>
 &lt;!--listend-->
-&lt;pre>&lt;code class="language-shell">ip addr add 2002:aabb:ccdd:e::1/64 dev eth0
-&lt;/code>&lt;/pre>
-&lt;h3 id="настройка-radvd">&lt;span class="section-num">4.2&lt;/span> Настройка radvd&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">ip addr add 2002:aabb:ccdd:e::1/64 dev eth0
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="настройка-radvd">&lt;span class="section-num">4.2&lt;/span> Настройка radvd&lt;/h3>
 &lt;ul>
 &lt;li>Изменяем файл &lt;code>/etc/radvd.conf&lt;/code>:&lt;/li>
 &lt;/ul>
 &lt;!--listend-->
-&lt;pre>&lt;code class="language-conf-unix">interface eth0
-{
-AdvSendAdvert on;
-prefix 2002:aabb:ccdd:e::/64
-{
-AdvOnLink on;
-AdvAutonomous on;
-};
-};
-&lt;/code>&lt;/pre>
-&lt;ul>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">interface eth0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> AdvSendAdvert on;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> prefix 2002:aabb:ccdd:e::/64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> AdvOnLink on;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> AdvAutonomous on;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> };
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">};
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
 &lt;li>Включаем маршрутизацию IPv6.&lt;/li>
 &lt;li>Для этого, нужно добавить в &lt;code>/etc/sysctl.conf&lt;/code> следующие строки:
-&lt;pre>&lt;code class="language-conf-unix">net.ipv6.conf.all.forwarding=1
-net.ipv6.conf.default.forwarding=1
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">net.ipv6.conf.all.forwarding=1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">net.ipv6.conf.default.forwarding=1
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Загрузим эти значения:
-&lt;pre>&lt;code class="language-shell">sysctl -p
-&lt;/code>&lt;/pre>
-&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sysctl -p
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Запустите &lt;code>radvd&lt;/code>:&lt;/li>
 &lt;/ul>
 &lt;!--listend-->
-&lt;pre>&lt;code class="language-shell">systemctl enable --now radvd.service
-&lt;/code>&lt;/pre></description></item><item><title>Технологии туннелирования IPv6</title><link>https://yamadharma.github.io/ru/post/2023/05/26/ipv6-tunneling-technologies/</link><pubDate>Fri, 26 May 2023 19:17:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/05/26/ipv6-tunneling-technologies/</guid><description>&lt;p>Технологии туннелирования IPv6.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">systemctl &lt;span class="nb">enable&lt;/span> --now radvd.service
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Технологии туннелирования IPv6</title><link>https://yamadharma.github.io/ru/post/2023/05/26/ipv6-tunneling-technologies/</link><pubDate>Fri, 26 May 2023 19:17:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/05/26/ipv6-tunneling-technologies/</guid><description>&lt;p>Технологии туннелирования IPv6.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
 &lt;nav id="TableOfContents">

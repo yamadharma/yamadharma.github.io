@@ -456,4 +456,36 @@
 &lt;h3 id="dns-сервера">&lt;span class="section-num">4.7&lt;/span> DNS сервера&lt;/h3>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/05/23/dns-powerdns-recursor/">DNS. PowerDNS Recursor&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>CentOS 8. Изменение адресов репозиториев</title><link>https://yamadharma.github.io/ru/post/2022/02/10/centos8-changing-repository-addresses/</link><pubDate>Thu, 10 Feb 2022 14:39:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/02/10/centos8-changing-repository-addresses/</guid><description>&lt;p>С 31 января 2022 года установка пакетов или обновление репозиториев в CentOS8 выдаёт ошибку.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#ошибка">&lt;span class="section-num">1&lt;/span> Ошибка&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#причины">&lt;span class="section-num">2&lt;/span> Причины&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#устранение">&lt;span class="section-num">3&lt;/span> Устранение&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="ошибка">&lt;span class="section-num">1&lt;/span> Ошибка&lt;/h2>
+&lt;ul>
+&lt;li>При работе с репозиториями в CentOS 8 появилась ошибка:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">Error: Failed to download metadata &lt;span class="k">for&lt;/span> repo &lt;span class="s1">&amp;#39;repo_name&amp;#39;&lt;/span>: Cannot prepare internal mirrorlist: No URLs in mirrorlist
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="причины">&lt;span class="section-num">2&lt;/span> Причины&lt;/h2>
+&lt;ul>
+&lt;li>31 января 2022 года удалены все пакеты для &lt;em>CentOS8&lt;/em> с официальных зеркал.&lt;/li>
+&lt;li>Вызвано прекращением поддержки &lt;em>CentOS8&lt;/em> (см. &lt;a href="https://yamadharma.github.io/ru/post/2021/05/25/replacing-centos/">Замена Centos&lt;/a>).&lt;/li>
+&lt;li>Теперь они перенесены на &lt;a href="https://vault.centos.org" target="_blank" rel="noopener">https://vault.centos.org&lt;/a>.&lt;/li>
+&lt;/ul>
+&lt;h2 id="устранение">&lt;span class="section-num">3&lt;/span> Устранение&lt;/h2>
+&lt;ul>
+&lt;li>Следует обновить файлы описания репозиториев в &lt;code>/etc/yum.repos.d&lt;/code>.&lt;/li>
+&lt;li>Следует использовать &lt;code>vault.centos.org&lt;/code> вместо &lt;code>mirror.centos.org&lt;/code>.&lt;/li>
+&lt;li>Предлагается выполнить следующие команды:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sudo sed -i -e &lt;span class="s2">&amp;#34;s|mirrorlist=|#mirrorlist=|g&amp;#34;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>-e &lt;span class="s2">&amp;#34;s|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g&amp;#34;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>-e &lt;span class="s2">&amp;#34;s|\$contentdir|centos|g&amp;#34;&lt;/span> /etc/yum.repos.d/CentOS-*
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul></description></item></channel></rss>

@@ -1,4 +1,138 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>redhat | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/redhat/</link><atom:link href="https://yamadharma.github.io/ru/tag/redhat/index.xml" rel="self" type="application/rss+xml"/><description>redhat</description><generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2023 Dmitry S. Kulyabov</copyright><lastBuildDate>Sun, 25 Sep 2022 09:42:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url><title>redhat</title><link>https://yamadharma.github.io/ru/tag/redhat/</link></image><item><title>Автообновление систем на базе деривативов RedHat</title><link>https://yamadharma.github.io/ru/post/2022/09/25/redhat-based-systems-auto-update/</link><pubDate>Sun, 25 Sep 2022 09:42:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/09/25/redhat-based-systems-auto-update/</guid><description>&lt;p>Простое автоматическое обновление на уровне хоста.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>redhat | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/redhat/</link><atom:link href="https://yamadharma.github.io/ru/tag/redhat/index.xml" rel="self" type="application/rss+xml"/><description>redhat</description><generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2023 Dmitry S. Kulyabov</copyright><lastBuildDate>Sun, 20 Aug 2023 19:00:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url><title>redhat</title><link>https://yamadharma.github.io/ru/tag/redhat/</link></image><item><title>Использование vagrant. Установка Rocky Linux</title><link>https://yamadharma.github.io/ru/post/2023/08/20/using-vagrant-install-rocky-linux/</link><pubDate>Sun, 20 Aug 2023 19:00:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/08/20/using-vagrant-install-rocky-linux/</guid><description>&lt;p>Установка Rocky Linux из репозитория образов Vagrant.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#установка-для-virtualbox">&lt;span class="section-num">2&lt;/span> Установка для Virtualbox&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#скачивание-файла">&lt;span class="section-num">2.1&lt;/span> Скачивание файла&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#установка-дополнения-для-vagrant">&lt;span class="section-num">2.2&lt;/span> Установка дополнения для Vagrant&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#vagrantfile">&lt;span class="section-num">2.3&lt;/span> Vagrantfile&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#подключение-образа">&lt;span class="section-num">2.4&lt;/span> Подключение образа&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#образ-virtualbox">&lt;span class="section-num">2.5&lt;/span> Образ Virtualbox&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#подключитесь-к-системе">&lt;span class="section-num">2.6&lt;/span> Подключитесь к системе&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#обновление-системы">&lt;span class="section-num">2.7&lt;/span> Обновление системы&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#перезагрузка-виртуальной-машины">&lt;span class="section-num">2.8&lt;/span> Перезагрузка виртуальной машины&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#выключение-виртуальной-машины">&lt;span class="section-num">2.9&lt;/span> Выключение виртуальной машины&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#видео">&lt;span class="section-num">2.10&lt;/span> Видео&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>Будем использовать официальные образы RockyLinux: &lt;a href="https://app.vagrantup.com/rockylinux" target="_blank" rel="noopener">https://app.vagrantup.com/rockylinux&lt;/a>&lt;/li>
+&lt;li>Для определённости выберем следующую версию: &lt;a href="https://app.vagrantup.com/rockylinux/boxes/9/versions/2.0.0" target="_blank" rel="noopener">https://app.vagrantup.com/rockylinux/boxes/9/versions/2.0.0&lt;/a>&lt;/li>
+&lt;li>Название образа: &lt;code>rockylinux/9&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h2 id="установка-для-virtualbox">&lt;span class="section-num">2&lt;/span> Установка для Virtualbox&lt;/h2>
+&lt;h3 id="скачивание-файла">&lt;span class="section-num">2.1&lt;/span> Скачивание файла&lt;/h3>
+&lt;ul>
+&lt;li>Поскольку в России блокируется автоматическая скачка файла, то необходимо скачать его вручную:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">wget https://app.vagrantup.com/rockylinux/boxes/9/versions/2.0.0/providers/virtualbox.box
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Можно скачать и со страницы непосредственно.&lt;/li>
+&lt;/ul>
+&lt;h3 id="установка-дополнения-для-vagrant">&lt;span class="section-num">2.2&lt;/span> Установка дополнения для Vagrant&lt;/h3>
+&lt;ul>
+&lt;li>Дополнение автоматически устанавливает гостевые дополнения VirtualBox хоста в гостевой системе.&lt;/li>
+&lt;li>Установим дополнение, явно указав зеркало для загрузки:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vagrant plugin install --plugin-clean-sources --plugin-source https://rubygems.org vagrant-vbguest
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="vagrantfile">&lt;span class="section-num">2.3&lt;/span> Vagrantfile&lt;/h3>
+&lt;ul>
+&lt;li>Создадим заготовку файла Vagrantfile:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vagrant init rockylinux/9 --box-version 2.0.0
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="подключение-образа">&lt;span class="section-num">2.4&lt;/span> Подключение образа&lt;/h3>
+&lt;ul>
+&lt;li>Подключим скачанный файл образа:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vagrant box add rockylinux/9 virtualbox.box
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="образ-virtualbox">&lt;span class="section-num">2.5&lt;/span> Образ Virtualbox&lt;/h3>
+&lt;ul>
+&lt;li>Создадим образ Virtualbox и запустим его:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vagrant up
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="подключитесь-к-системе">&lt;span class="section-num">2.6&lt;/span> Подключитесь к системе&lt;/h3>
+&lt;ul>
+&lt;li>Войдём в консоль системы по ssh:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vagrant ssh
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="обновление-системы">&lt;span class="section-num">2.7&lt;/span> Обновление системы&lt;/h3>
+&lt;ul>
+&lt;li>Перейдём под учётную запись &lt;code>root&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">su -
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Пароль учётной записи &lt;code>root&lt;/code>: &lt;code>vagrant&lt;/code>.&lt;/li>
+&lt;li>Обновим установленную систему:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf update
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Установим дополнительное программное обеспечение:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf install tmux
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="перезагрузка-виртуальной-машины">&lt;span class="section-num">2.8&lt;/span> Перезагрузка виртуальной машины&lt;/h3>
+&lt;ul>
+&lt;li>Выйдем из оболочки машины:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">logout&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">logout&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Перезагрузим виртуальную машину:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vagrant reload
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="выключение-виртуальной-машины">&lt;span class="section-num">2.9&lt;/span> Выключение виртуальной машины&lt;/h3>
+&lt;ul>
+&lt;li>После работы выключите виртуальную машину:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vagrant halt
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="видео">&lt;span class="section-num">2.10&lt;/span> Видео&lt;/h3>
+&lt;nav>
+&lt;div class="nav nav-tabs" id="nav-tab" role="tablist">
+&lt;a class="nav-item nav-link active "
+id="nav-feabdc" data-toggle="tab" href="#feabdc"
+role="tab" aria-controls="nav-home" aria-selected="true">RuTube&lt;/a>
+&lt;a class="nav-item nav-link "
+id="nav-bdfeac" data-toggle="tab" href="#bdfeac"
+role="tab" aria-controls="nav-home" aria-selected="true">VKVideo&lt;/a>
+&lt;a class="nav-item nav-link "
+id="nav-fdabce" data-toggle="tab" href="#fdabce"
+role="tab" aria-controls="nav-home" aria-selected="true">Youtube&lt;/a>
+&lt;/div>
+&lt;/nav>
+&lt;div class="tab-content" id="nav-tab-content">
+&lt;div class="tab-pane fade show active " id="feabdc" role="tabpanel" aria-labelledby="nav-1">
+&lt;div class="embed video-player">
+&lt;iframe class="rutube-player" type="text/html"
+width="720" height="405"
+src="https://rutube.ru/play/embed/7ef1a4fdb0db4b4fd2edcad6bbf46f65"
+webkitAllowFullScreen mozallowfullscreen allowFullScreen
+allow="clipboard-write" frameborder="0">
+&lt;/iframe>
+&lt;/div>
+&lt;/div>
+&lt;div class="tab-pane fade show " id="bdfeac" role="tabpanel" aria-labelledby="nav-1">
+&lt;div class="embed video-player">
+&lt;iframe
+src="https://vk.com/video_ext.php?oid=606414976&amp;id=456239563&amp;hd=2"
+width="720" height="405" allow="autoplay; encrypted-media; fullscreen; picture-in-picture;" frameborder="0" allowfullscreen>&lt;/iframe>
+&lt;/div>
+&lt;/div>
+&lt;div class="tab-pane fade show " id="fdabce" role="tabpanel" aria-labelledby="nav-1">
+&lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+&lt;iframe src="https://www.youtube.com/embed/vTkYacxvhoc" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video">&lt;/iframe>
+&lt;/div>
+&lt;/div>
+&lt;/div></description></item><item><title>Автообновление систем на базе деривативов RedHat</title><link>https://yamadharma.github.io/ru/post/2022/09/25/redhat-based-systems-auto-update/</link><pubDate>Sun, 25 Sep 2022 09:42:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/09/25/redhat-based-systems-auto-update/</guid><description>&lt;p>Простое автоматическое обновление на уровне хоста.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
 &lt;nav id="TableOfContents">

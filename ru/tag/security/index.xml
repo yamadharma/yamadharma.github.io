@@ -1,4 +1,359 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>security | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/security/</link><atom:link href="https://yamadharma.github.io/ru/tag/security/index.xml" rel="self" type="application/rss+xml"/><description>security</description><generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2023 Dmitry S. Kulyabov</copyright><lastBuildDate>Tue, 03 May 2022 20:05:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url><title>security</title><link>https://yamadharma.github.io/ru/tag/security/</link></image><item><title>Механизм HSTS</title><link>https://yamadharma.github.io/ru/post/2022/05/03/hsts-mechanism/</link><pubDate>Tue, 03 May 2022 20:05:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/05/03/hsts-mechanism/</guid><description>&lt;p>&lt;em>HSTS&lt;/em> (&lt;em>HTTP Strict Transport Security&lt;/em>) &amp;mdash; механизм, принудительно активирующий защищённое соединение через протокол HTTPS.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>security | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/security/</link><atom:link href="https://yamadharma.github.io/ru/tag/security/index.xml" rel="self" type="application/rss+xml"/><description>security</description><generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2023 Dmitry S. Kulyabov</copyright><lastBuildDate>Thu, 24 Aug 2023 20:09:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url><title>security</title><link>https://yamadharma.github.io/ru/tag/security/</link></image><item><title>Одноразовые пароли</title><link>https://yamadharma.github.io/ru/post/2023/08/24/one-time-passwords/</link><pubDate>Thu, 24 Aug 2023 20:09:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/08/24/one-time-passwords/</guid><description>&lt;p>Одноразовые пароли.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#создание-одноразовые-пароли">&lt;span class="section-num">2&lt;/span> Создание одноразовые пароли&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#totp">&lt;span class="section-num">3&lt;/span> TOTP&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#угрозы-и-риски-при-использовании-one-time-password">&lt;span class="section-num">4&lt;/span> Угрозы и риски при использовании one time password&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>Наличие только обычных паролей зачастую недостаточно.&lt;/li>
+&lt;li>Рекомендуется использование двуфакторной аутентификации (2FA).&lt;/li>
+&lt;li>Более высокий уровень защиты может обеспечить применение одноразового пароля.&lt;/li>
+&lt;/ul>
+&lt;h2 id="создание-одноразовые-пароли">&lt;span class="section-num">2&lt;/span> Создание одноразовые пароли&lt;/h2>
+&lt;ul>
+&lt;li>Алгоритмы генерации одноразовых паролей
+&lt;ul>
+&lt;li>HOTP &amp;mdash; по событию.
+&lt;ul>
+&lt;li>HMAC-based&lt;/li>
+&lt;li>RFC4226 &lt;a href="https://www.ietf.org/rfc/rfc4226.txt" target="_blank" rel="noopener">https://www.ietf.org/rfc/rfc4226.txt&lt;/a>&lt;/li>
+&lt;li>Сервер и ОТР токен ведут учет количества процедур аутентификации, проходимых пользователем, а потом, используя в расчетах это число, генерируют пароль.&lt;/li>
+&lt;li>Проблему может вызвать несовпадение в подсчетах между сервером и токеном.&lt;/li>
+&lt;li>Такая ситуация возможна, например, если пользователь неоднократно нажимает кнопку устройства для генерации паролей и не использует этот пароль в дальнейшем.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>TOTP &amp;mdash; по времени.
+&lt;ul>
+&lt;li>Time-based&lt;/li>
+&lt;li>RFC6238 &lt;a href="https://www.ietf.org/rfc/rfc6238.txt" target="_blank" rel="noopener">https://www.ietf.org/rfc/rfc6238.txt&lt;/a>&lt;/li>
+&lt;li>При использовании этого алгоритма пароль создаётся, учитывая показания внутренних часов токена.&lt;/li>
+&lt;li>ТОТР удобен тем, что время действия пароля ограничено, он не может быть создан заранее или использован после истечения срока.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>OCRA &amp;mdash; запрос/ответ.
+&lt;ul>
+&lt;li>Происходит взаимная аутентификация пользователя и сервера.&lt;/li>
+&lt;li>В отличие от других алгоритмов, он использует в качестве входных данных случайное значение, выданное сервером.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>При использовании TOTP и OCRA алгоритмов формируются временные пароли, которые значительно усложняют процесс взлома.&lt;/li>
+&lt;/ul>
+&lt;h2 id="totp">&lt;span class="section-num">3&lt;/span> TOTP&lt;/h2>
+&lt;ul>
+&lt;li>Является улучшением HOTP (HMAC-Based One-Time Password Algorithm).&lt;/li>
+&lt;li>В качестве значения счетчика подставляется величина, зависящая от времени.&lt;/li>
+&lt;li>Является алгоритмом односторонней аутентификации &amp;mdash; сервер удостоверяется в подлинности клиента.
+Главное отличие TOTP от HOTP &amp;mdash; это генерация пароля на основе времени (время является параметром).&lt;/li>
+&lt;li>При этом обычно используется не точное указание времени, а текущий интервал с установленными заранее границами (обычно &amp;mdash; 30 секунд).&lt;/li>
+&lt;/ul>
+&lt;h2 id="угрозы-и-риски-при-использовании-one-time-password">&lt;span class="section-num">4&lt;/span> Угрозы и риски при использовании one time password&lt;/h2>
+&lt;ul>
+&lt;li>Пароль перехвачен.
+&lt;ul>
+&lt;li>Человек посередине.&lt;/li>
+&lt;li>Хакер, перехватив пароль от его имени авторизуется в системе.&lt;/li>
+&lt;li>Чтобы этого избежать, можно включить в 2FA метод подписи данных (CWYS), позволяющий учитывать при аутентификации не только пароль, но и некоторые другие параметры конкретной транзакции.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Утрата токена.
+&lt;ul>
+&lt;li>Стоит заранее предусмотреть обязательное применение PIN-кода при работе с устройством.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Попытка подбора PIN-кода.
+&lt;ul>
+&lt;li>Настройка, при которой генератор токенов будет заблокирован при неоднократном вводе неверного PIN.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Взлом программного токена.
+&lt;ul>
+&lt;li>Хакер может скопировать программу-токен и попытаться найти хранящийся там секретный ключ, используемый для генерирования ОТР.&lt;/li>
+&lt;li>Методом защиты является использование PIN-кода как одного из значений при расчёте одноразового пароля.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Злодей среди своих.
+&lt;ul>
+&lt;li>Злоумышленник и персона, которая занимается выпуском средств two factor autentication &amp;mdash; одно и то же лицо.&lt;/li>
+&lt;li>Такой человек может создать дубликаты программных средств аутентификации и с их помощью войти в систему под видом легального пользователя.&lt;/li>
+&lt;li>Чтобы предотвратить подобное, в процессе активации программного токена должен принимать участие сам пользователь.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul></description></item><item><title>Подготовка курса Информационная безопасность</title><link>https://yamadharma.github.io/ru/post/2023/08/20/course-infosec-preparation/</link><pubDate>Sun, 20 Aug 2023 18:03:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/08/20/course-infosec-preparation/</guid><description>&lt;p>Подготовка курса Информационная безопасность.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#темы-лекций">&lt;span class="section-num">1&lt;/span> Темы лекций&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#темы-докладов">&lt;span class="section-num">2&lt;/span> Темы докладов&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#лабораторные-работы">&lt;span class="section-num">3&lt;/span> Лабораторные работы&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#лабораторная-работа-1-dot-установка-и-конфигурация-операционной-системы-на-виртуальную-машину">&lt;span class="section-num">3.1&lt;/span> Лабораторная работа № 1. Установка и конфигурация операционной системы на виртуальную машину&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#лабораторная-работа-2-dot-дискреционное-разграничение-прав-в-linux-dot-основные-атрибуты">&lt;span class="section-num">3.2&lt;/span> Лабораторная работа № 2. Дискреционное разграничение прав в Linux. Основные атрибуты&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#цель-работы">&lt;span class="section-num">3.2.1&lt;/span> Цель работы&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#лабораторная-работа-3-dot-дискреционное-разграничение-прав-в-linux-dot-два-пользователя">&lt;span class="section-num">3.3&lt;/span> Лабораторная работа № 3. Дискреционное разграничение прав в Linux. Два пользователя&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#цель-работы">&lt;span class="section-num">3.3.1&lt;/span> Цель работы&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#лабораторная-работа-4-dot-дискреционное-разграничение-прав-в-linux-dot-расширенные-атрибуты">&lt;span class="section-num">3.4&lt;/span> Лабораторная работа № 4. Дискреционное разграничение прав в Linux. Расширенные атрибуты&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#цель-работы">&lt;span class="section-num">3.4.1&lt;/span> Цель работы&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#лабораторная-работа-5-dot-дискреционное-разграничение-прав-в-linux-dot-исследование-влияния-дополнительных-атрибутов">&lt;span class="section-num">3.5&lt;/span> Лабораторная работа № 5. Дискреционное разграничение прав в Linux. Исследование влияния дополнительных атрибутов&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#цель-работы">&lt;span class="section-num">3.5.1&lt;/span> Цель работы&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#лабораторная-работа-6-dot-мандатное-разграничение-прав-в-linux">&lt;span class="section-num">3.6&lt;/span> Лабораторная работа № 6. Мандатное разграничение прав в Linux&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#цели-работы">&lt;span class="section-num">3.6.1&lt;/span> Цели работы&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#лабораторная-работа-7-dot-элементы-криптографии-dot-однократное-гаммирование">&lt;span class="section-num">3.7&lt;/span> Лабораторная работа № 7. Элементы криптографии. Однократное гаммирование&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#цель-работы">&lt;span class="section-num">3.7.1&lt;/span> Цель работы&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#лабораторная-работа-8-dot-элементы-криптографии-dot-шифрование--кодирование--различных-исходных-текстов-одним-ключом">&lt;span class="section-num">3.8&lt;/span> Лабораторная работа № 8. Элементы криптографии. Шифрование (кодирование) различных исходных текстов одним ключом&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#цель-работы">&lt;span class="section-num">3.8.1&lt;/span> Цель работы&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="темы-лекций">&lt;span class="section-num">1&lt;/span> Темы лекций&lt;/h2>
+&lt;ol>
+&lt;li>Общая проблематика информационной безопасности
+&lt;ul>
+&lt;li>Социальная инженерия.&lt;/li>
+&lt;li>Вредоносные программы.
+&lt;ul>
+&lt;li>Вирусы.&lt;/li>
+&lt;li>Черви.&lt;/li>
+&lt;li>Троянские программы.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Хакерские атаки&lt;/li>
+&lt;li>Угрозы сетевой безопасности&lt;/li>
+&lt;li>Административная защита сетей
+&lt;ul>
+&lt;li>Межсетевые экраны.&lt;/li>
+&lt;li>Виртуальные частные сети.&lt;/li>
+&lt;li>IDS.&lt;/li>
+&lt;li>DSP.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Критерии безопасности информационных систем&lt;/li>
+&lt;li>Формальные модели безопасности ОС
+&lt;ul>
+&lt;li>Дискреционные модели доступа. Списки управления доступом.&lt;/li>
+&lt;li>Мандатные модели доступа.&lt;/li>
+&lt;li>Ролевые модели доступа.&lt;/li>
+&lt;li>SELinux.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Криптография
+&lt;ul>
+&lt;li>Общие вопросы шифрования.&lt;/li>
+&lt;li>Симметричное шифрование.&lt;/li>
+&lt;li>Ассиметричное шифрование.&lt;/li>
+&lt;li>Хеш-функции.&lt;/li>
+&lt;li>Цифровая подпись.&lt;/li>
+&lt;li>PKI.&lt;/li>
+&lt;li>Квантовое шифрование.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Программные уязвимости
+&lt;ul>
+&lt;li>Переполнение буфера.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;h2 id="темы-докладов">&lt;span class="section-num">2&lt;/span> Темы докладов&lt;/h2>
+&lt;ol>
+&lt;li>Общая проблематика информационной безопасности.
+&lt;ul>
+&lt;li>Основные информационные угрозы современности.&lt;/li>
+&lt;li>Ключевые принципы информационной безопасности: конфиденциальность,
+целостность, доступность, невозможность отказа.&lt;/li>
+&lt;li>Нормативные документы в области информационной безопасности.&lt;/li>
+&lt;li>Органы, обеспечивающие информационную безопасность.&lt;/li>
+&lt;li>Программно-аппаратные средства системы обеспечения информационной безопасности.&lt;/li>
+&lt;li>Организационная защита объектов информатизации.&lt;/li>
+&lt;li>Информационная безопасность предприятия.&lt;/li>
+&lt;li>Доктрина информационной безопасности Российской Федерации.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Хакерские атаки.
+&lt;ul>
+&lt;li>Социальная инженерия.&lt;/li>
+&lt;li>Вредоносные программы. Вирусы и антивирусы.&lt;/li>
+&lt;li>Вредоносные программы. Черви.&lt;/li>
+&lt;li>Вредоносные программы. Троянские программы.&lt;/li>
+&lt;li>Вредоносные программы. Руткиты.&lt;/li>
+&lt;li>Фишинг.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Угрозы сетевой безопасности.
+&lt;ul>
+&lt;li>Безопасность физического и канального уровней модели OSI. Сетевые анализаторы и «снифферы».&lt;/li>
+&lt;li>DoS: методы обнаружения DoS-атак и средства защиты от них.&lt;/li>
+&lt;li>Безопасность ARP. ARP-spoofing.&lt;/li>
+&lt;li>Безопасность сетевого уровня модели OSI и меры его защиты.&lt;/li>
+&lt;li>Безопасность транспортного уровня модели OSI и меры его защиты.&lt;/li>
+&lt;li>Безопасность прикладного уровня модели OSI и меры его защиты.&lt;/li>
+&lt;li>Характеристика и механизмы удалённых атак на распределенные вычислительные системы.&lt;/li>
+&lt;li>Характеристика и механизмы удаленных атак на хосты Internet.&lt;/li>
+&lt;li>Способы атак на DNS-сервер.&lt;/li>
+&lt;li>Классы угроз информационной безопасности.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Административная защита сетей.
+&lt;ul>
+&lt;li>Межсетевые экраны.&lt;/li>
+&lt;li>Виртуальные частные сети.&lt;/li>
+&lt;li>IDS системы. Обзор, сравнение, отечественные лидеры, мировые лидеры.&lt;/li>
+&lt;li>Система обнаружения атак Snort.&lt;/li>
+&lt;li>Применение межсетевых экранов для защиты корпоративных сетей.&lt;/li>
+&lt;li>Пакетный фильтр на базе ОС Linux.&lt;/li>
+&lt;li>Шлюзы прикладного уровня. Противодействие сетевым атакам при помощи межсетевых экранов.&lt;/li>
+&lt;li>Фильтрация пакетов: параметры и правила фильтрации.&lt;/li>
+&lt;li>DLP системы. Обзор, сравнение, отечественные лидеры, мировые лидеры.&lt;/li>
+&lt;li>Системы резервного копирования.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Критерии безопасности информационных систем.
+&lt;ul>
+&lt;li>Обеспечение высокой доступности (нейтрализация отказов и обслуживаемости).&lt;/li>
+&lt;li>Законодательный уровень информационной безопасности.&lt;/li>
+&lt;li>Информация как ценность. Понятие об информационных угрозах.&lt;/li>
+&lt;li>Информационное право и информационная безопасность.&lt;/li>
+&lt;li>Защита компьютерной информации и компьютерных систем от вредоносных программ.&lt;/li>
+&lt;li>Концепция (политика) безопасности.&lt;/li>
+&lt;li>Государственная система защиты информации.&lt;/li>
+&lt;li>Защита персональных данных в социальных сетях.&lt;/li>
+&lt;li>Защита государственной и коммерческой тайны.&lt;/li>
+&lt;li>Государственная система лицензирования. Система лицензирования деятельности в области защиты государственной тайны.&lt;/li>
+&lt;li>Цели и задачи защиты информации. Организация защиты конфиденциальной информации.&lt;/li>
+&lt;li>Политика безопасности предприятия и ее содержание.&lt;/li>
+&lt;li>Создание и функции службы безопасности на предприятии.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Формальные модели безопасности ОС.
+&lt;ul>
+&lt;li>Модели безопасности ОС.&lt;/li>
+&lt;li>Дискреционные модели доступа. Списки управления доступом.&lt;/li>
+&lt;li>Мандатные модели доступа.&lt;/li>
+&lt;li>Ролевые модели доступа.&lt;/li>
+&lt;li>SELinux.&lt;/li>
+&lt;li>Методы разграничения доступа. Общий обзор.&lt;/li>
+&lt;li>Режим секретности и конфиденциального делопроизводства.&lt;/li>
+&lt;li>Защита электронного документооборота на предприятии.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Криптография.
+&lt;ul>
+&lt;li>Общие вопросы шифрования.&lt;/li>
+&lt;li>Хеш-функции.&lt;/li>
+&lt;li>Цифровая подпись.&lt;/li>
+&lt;li>Квантовое шифрование. Квантовая передача информации.&lt;/li>
+&lt;li>Система PGP.&lt;/li>
+&lt;li>Электронные цифровые подписи. Механизмы цифровой подписи.&lt;/li>
+&lt;li>Протокол Kerberos.&lt;/li>
+&lt;li>Инфраструктура открытых ключей.&lt;/li>
+&lt;li>Техники управления ключами. Основные концепции. Жизненный цикл управления ключами.&lt;/li>
+&lt;li>Идентификация и аутентификация, управление доступом.&lt;/li>
+&lt;li>Протоколирование и аудит, шифрование, контроль целостности.&lt;/li>
+&lt;li>Биометрия.&lt;/li>
+&lt;li>Технология единого входа (OpenID и т.п.).&lt;/li>
+&lt;li>Контрольные суммы.&lt;/li>
+&lt;li>Ассиметричные криптосистемы. Обзор, виды, применение.&lt;/li>
+&lt;li>Симметричные криптосистемы. Обзор, виды, применение.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Программные уязвимости.
+&lt;ul>
+&lt;li>Переполнение буфера.&lt;/li>
+&lt;li>Нарушения безопасности доступа к памяти: переполнения буфера, висячие указатели.&lt;/li>
+&lt;li>Ошибки проверки вводимых данных: ошибки форматирующей строки, неверная поддержка интерпретации метасимволов командной оболочки.&lt;/li>
+&lt;li>Ошибки проверки вводимых данных: SQL-инъекция.&lt;/li>
+&lt;li>Ошибки проверки вводимых данных: инъекция кода.&lt;/li>
+&lt;li>Ошибки проверки вводимых данных: инъекция E-mail.&lt;/li>
+&lt;li>Ошибки проверки вводимых данных: межсайтовый скриптинг в веб-приложениях, межсайтовый скриптинг при наличии SQL-инъекции.&lt;/li>
+&lt;li>Состояния гонки: ошибки времени-проверки-ко-времени-использования, гонки символьных ссылок.&lt;/li>
+&lt;li>Ошибки путаницы привилегий: подделка межсайтовых запросов в веб-приложениях.&lt;/li>
+&lt;li>Эскалация привилегий. Shatter attack.&lt;/li>
+&lt;li>Уязвимость нулевого дня.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;h2 id="лабораторные-работы">&lt;span class="section-num">3&lt;/span> Лабораторные работы&lt;/h2>
+&lt;ul>
+&lt;li>Предлагаются к выполнению 8 лабораторных работ.&lt;/li>
+&lt;li>Отчёты по лабораторным работам выполняются студентом самостоятельно, на лабораторном занятии студент может получить консультацию и методические указания от преподавателя.&lt;/li>
+&lt;/ul>
+&lt;h3 id="лабораторная-работа-1-dot-установка-и-конфигурация-операционной-системы-на-виртуальную-машину">&lt;span class="section-num">3.1&lt;/span> Лабораторная работа № 1. Установка и конфигурация операционной системы на виртуальную машину&lt;/h3>
+&lt;ul>
+&lt;li>Пользуяся методическими указаниями установить и сконфигурировать операционную систему на виртуальную машину.&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/08/20/using-vagrant-install-rocky-linux/">Использование vagrant. Установка Rocky Linux&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="лабораторная-работа-2-dot-дискреционное-разграничение-прав-в-linux-dot-основные-атрибуты">&lt;span class="section-num">3.2&lt;/span> Лабораторная работа № 2. Дискреционное разграничение прав в Linux. Основные атрибуты&lt;/h3>
+&lt;h4 id="цель-работы">&lt;span class="section-num">3.2.1&lt;/span> Цель работы&lt;/h4>
+&lt;ul>
+&lt;li>Получение практических навыков работы в консоли с атрибутами файлов, закрепление теоретических основ дискреционного разграничения доступа в современных системах с открытым кодом на базе ОС Linux&lt;/li>
+&lt;/ul>
+&lt;h3 id="лабораторная-работа-3-dot-дискреционное-разграничение-прав-в-linux-dot-два-пользователя">&lt;span class="section-num">3.3&lt;/span> Лабораторная работа № 3. Дискреционное разграничение прав в Linux. Два пользователя&lt;/h3>
+&lt;h4 id="цель-работы">&lt;span class="section-num">3.3.1&lt;/span> Цель работы&lt;/h4>
+&lt;ul>
+&lt;li>Получение практических навыков работы в консоли с атрибутами файлов для групп пользователей.&lt;/li>
+&lt;/ul>
+&lt;h3 id="лабораторная-работа-4-dot-дискреционное-разграничение-прав-в-linux-dot-расширенные-атрибуты">&lt;span class="section-num">3.4&lt;/span> Лабораторная работа № 4. Дискреционное разграничение прав в Linux. Расширенные атрибуты&lt;/h3>
+&lt;h4 id="цель-работы">&lt;span class="section-num">3.4.1&lt;/span> Цель работы&lt;/h4>
+&lt;ul>
+&lt;li>Получение практических навыков работы в консоли с расширенными атрибутами файлов.&lt;/li>
+&lt;/ul>
+&lt;h3 id="лабораторная-работа-5-dot-дискреционное-разграничение-прав-в-linux-dot-исследование-влияния-дополнительных-атрибутов">&lt;span class="section-num">3.5&lt;/span> Лабораторная работа № 5. Дискреционное разграничение прав в Linux. Исследование влияния дополнительных атрибутов&lt;/h3>
+&lt;h4 id="цель-работы">&lt;span class="section-num">3.5.1&lt;/span> Цель работы&lt;/h4>
+&lt;ul>
+&lt;li>Изучение механизмов изменения идентификаторов, применения SetUID- и Sticky-битов.&lt;/li>
+&lt;li>Получение практических навыков работы в консоли с дополнительными атрибутами.&lt;/li>
+&lt;li>Рассмотрение работы механизма смены идентификатора процессов пользователей, а также влияние бита Sticky на запись и удаление файлов.&lt;/li>
+&lt;/ul>
+&lt;h3 id="лабораторная-работа-6-dot-мандатное-разграничение-прав-в-linux">&lt;span class="section-num">3.6&lt;/span> Лабораторная работа № 6. Мандатное разграничение прав в Linux&lt;/h3>
+&lt;h4 id="цели-работы">&lt;span class="section-num">3.6.1&lt;/span> Цели работы&lt;/h4>
+&lt;ul>
+&lt;li>Развить навыки администрирования ОС Linux.&lt;/li>
+&lt;li>Получить первое практическое знакомство с технологией SELinux.&lt;/li>
+&lt;li>Проверить работу SELinx на практике совместно с веб-сервером Apache.&lt;/li>
+&lt;/ul>
+&lt;h3 id="лабораторная-работа-7-dot-элементы-криптографии-dot-однократное-гаммирование">&lt;span class="section-num">3.7&lt;/span> Лабораторная работа № 7. Элементы криптографии. Однократное гаммирование&lt;/h3>
+&lt;h4 id="цель-работы">&lt;span class="section-num">3.7.1&lt;/span> Цель работы&lt;/h4>
+&lt;ul>
+&lt;li>Освоить на практике применение режима однократного гаммирования.&lt;/li>
+&lt;/ul>
+&lt;h3 id="лабораторная-работа-8-dot-элементы-криптографии-dot-шифрование--кодирование--различных-исходных-текстов-одним-ключом">&lt;span class="section-num">3.8&lt;/span> Лабораторная работа № 8. Элементы криптографии. Шифрование (кодирование) различных исходных текстов одним ключом&lt;/h3>
+&lt;h4 id="цель-работы">&lt;span class="section-num">3.8.1&lt;/span> Цель работы&lt;/h4>
+&lt;ul>
+&lt;li>Освоить на практике применение режима однократного гаммирования на примере кодирования различных исходных текстов одним ключом.&lt;/li>
+&lt;/ul></description></item><item><title>Механизм HSTS</title><link>https://yamadharma.github.io/ru/post/2022/05/03/hsts-mechanism/</link><pubDate>Tue, 03 May 2022 20:05:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/05/03/hsts-mechanism/</guid><description>&lt;p>&lt;em>HSTS&lt;/em> (&lt;em>HTTP Strict Transport Security&lt;/em>) &amp;mdash; механизм, принудительно активирующий защищённое соединение через протокол HTTPS.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
 &lt;nav id="TableOfContents">
@@ -701,6 +1056,495 @@
 &lt;h3 id="pwnedpasswords-dot-sh">&lt;span class="section-num">3.2&lt;/span> pwnedpasswords.sh&lt;/h3>
 &lt;ul>
 &lt;li>&lt;a href="https://github.com/jamesridgway/pwnedpasswords.sh" target="_blank" rel="noopener">https://github.com/jamesridgway/pwnedpasswords.sh&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>Менеджер паролей pass</title><link>https://yamadharma.github.io/ru/post/2021/04/28/password-manager-pass/</link><pubDate>Wed, 28 Apr 2021 18:50:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2021/04/28/password-manager-pass/</guid><description>&lt;ul>
+&lt;li>Менеджер паролей &lt;code>pass&lt;/code> &amp;mdash; программа, сделанная в рамках идеологии Unix.&lt;/li>
+&lt;li>Также носит название стандартного менеджера паролей для Unix (&lt;em>The standard Unix password manager&lt;/em>).&lt;/li>
+&lt;/ul>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#основные-свойства">&lt;span class="section-num">1&lt;/span> Основные свойства&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#структура-базы-паролей">&lt;span class="section-num">2&lt;/span> Структура базы паролей&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#семантическая-структура-базы-паролей">&lt;span class="section-num">2.1&lt;/span> Семантическая структура базы паролей&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#реализации">&lt;span class="section-num">3&lt;/span> Реализации&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#утилиты-командной-строки">&lt;span class="section-num">3.1&lt;/span> Утилиты командной строки:&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#графические-интерфейсы">&lt;span class="section-num">3.2&lt;/span> Графические интерфейсы:&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#приложения-для-android">&lt;span class="section-num">3.3&lt;/span> Приложения для Android&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#password-store">&lt;span class="section-num">3.3.1&lt;/span> Password Store&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#openkeychain-easy-pgp">&lt;span class="section-num">3.3.2&lt;/span> OpenKeychain: Easy PGP&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#пакеты-для-emacs">&lt;span class="section-num">3.4&lt;/span> Пакеты для Emacs&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#pass">&lt;span class="section-num">3.4.1&lt;/span> pass&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#helm-pass">&lt;span class="section-num">3.4.2&lt;/span> helm-pass&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#ivy-pass">&lt;span class="section-num">3.4.3&lt;/span> ivy-pass&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#установка">&lt;span class="section-num">4&lt;/span> Установка&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#настройка">&lt;span class="section-num">5&lt;/span> Настройка&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#ключи-gpg">&lt;span class="section-num">5.1&lt;/span> Ключи GPG&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#инициализация-хранилища">&lt;span class="section-num">5.2&lt;/span> Инициализация хранилища&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#pass">&lt;span class="section-num">5.2.1&lt;/span> pass&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#gopass">&lt;span class="section-num">5.2.2&lt;/span> gopass&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#qtpass">&lt;span class="section-num">5.2.3&lt;/span> qtpass&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#синхронизация-с-git">&lt;span class="section-num">5.3&lt;/span> Синхронизация с git&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#gopass">&lt;span class="section-num">5.3.1&lt;/span> gopass&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#тонкие-настройки">&lt;span class="section-num">5.4&lt;/span> Тонкие настройки&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#устранение-сбоев">&lt;span class="section-num">5.5&lt;/span> Устранение сбоев&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#невозможно-расшифровать-пароль">&lt;span class="section-num">5.5.1&lt;/span> Невозможно расшифровать пароль&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#работа-с-паролями">&lt;span class="section-num">6&lt;/span> Работа с паролями&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#создание-нового-пароля">&lt;span class="section-num">6.1&lt;/span> Создание нового пароля&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#ручная-правка-базы-паролей">&lt;span class="section-num">6.2&lt;/span> Ручная правка базы паролей&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#миграция-баз-паролей-из-других-программ">&lt;span class="section-num">7&lt;/span> Миграция баз паролей из других программ&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#скрипты-для-миграции">&lt;span class="section-num">7.1&lt;/span> Скрипты для миграции&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#pass-import">&lt;span class="section-num">7.1.1&lt;/span> pass-import&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#отдельные-скрипты">&lt;span class="section-num">7.1.2&lt;/span> Отдельные скрипты&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#конкретные-рецепты">&lt;span class="section-num">7.2&lt;/span> Конкретные рецепты&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#lastpass">&lt;span class="section-num">7.2.1&lt;/span> LastPass&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#дополнительные-возможности">&lt;span class="section-num">8&lt;/span> Дополнительные возможности&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#проверка-утечки-пароля">&lt;span class="section-num">8.1&lt;/span> Проверка утечки пароля&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#pass">&lt;span class="section-num">8.1.1&lt;/span> pass&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#gopass">&lt;span class="section-num">8.1.2&lt;/span> gopass&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#одноразовые-пароли">&lt;span class="section-num">8.2&lt;/span> Одноразовые пароли&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#интеграция-с-другими-программами">&lt;span class="section-num">9&lt;/span> Интеграция с другими программами&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="основные-свойства">&lt;span class="section-num">1&lt;/span> Основные свойства&lt;/h2>
+&lt;ul>
+&lt;li>Данные хранятся в файловой системе в виде каталогов и файлов.&lt;/li>
+&lt;li>Файлы шифруются с помощью GPG-ключа.&lt;/li>
+&lt;/ul>
+&lt;h2 id="структура-базы-паролей">&lt;span class="section-num">2&lt;/span> Структура базы паролей&lt;/h2>
+&lt;ul>
+&lt;li>Структура базы может быть произвольной, если Вы собираетесь использовать её напрямую, без промежуточного программного обеспечения. Тогда семантику структуры базы данных Вы держите в своей голове.&lt;/li>
+&lt;li>Если же необходимо использовать дополнительное программное обеспечение, необходимо семантику заложить в структуру базы паролей.&lt;/li>
+&lt;/ul>
+&lt;h3 id="семантическая-структура-базы-паролей">&lt;span class="section-num">2.1&lt;/span> Семантическая структура базы паролей&lt;/h3>
+&lt;ul>
+&lt;li>Рассмотрим пользователя &lt;code>user&lt;/code> в домене &lt;code>example.com&lt;/code>, порт &lt;code>22&lt;/code>.&lt;/li>
+&lt;li>Отсутствие имени пользователя или порта в имени файла означает, что любое имя пользователя и порт будут совпадать:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">example.com.pgp
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Соответствующее имя пользователя может быть именем файла внутри каталога, имя которого совпадает с хостом. Это полезно, если в базе есть пароли для нескольких пользователей на одном хосте:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">example.com/user.pgp
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Имя пользователя также может быть записано в виде префикса, отделенного от хоста знаком &lt;code>@&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">user@example.com.pgp
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Соответствующий порт может быть указан после хоста, отделённый двоеточием (&lt;code>:&lt;/code>):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">example.com:22.pgp
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">example.com:22/user.pgp
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">user@example.com:22.pgp
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Эти все записи могут быть расположены в произвольных каталогах, задающих Вашу собственную иерархию.&lt;/li>
+&lt;/ul>
+&lt;h2 id="реализации">&lt;span class="section-num">3&lt;/span> Реализации&lt;/h2>
+&lt;h3 id="утилиты-командной-строки">&lt;span class="section-num">3.1&lt;/span> Утилиты командной строки:&lt;/h3>
+&lt;ul>
+&lt;li>На данный момент существует 2 основных реализации:
+&lt;ul>
+&lt;li>&lt;code>pass&lt;/code> &amp;mdash; классическая реализация в виде shell-скриптов (&lt;a href="https://www.passwordstore.org/" target="_blank" rel="noopener">https://www.passwordstore.org/&lt;/a>);&lt;/li>
+&lt;li>&lt;code>gopass&lt;/code> &amp;mdash; реализация на go с дополнительными интегрированными функциями (&lt;a href="https://www.gopass.pw/" target="_blank" rel="noopener">https://www.gopass.pw/&lt;/a>).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Дальше в тексте будет использоваться программа &lt;code>pass&lt;/code>, но всё то же самое можно сделать с помощью программы &lt;code>gopass&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h3 id="графические-интерфейсы">&lt;span class="section-num">3.2&lt;/span> Графические интерфейсы:&lt;/h3>
+&lt;ul>
+&lt;li>&lt;code>qtpass&lt;/code> &amp;mdash; может работать как графический интерфейс к &lt;code>pass&lt;/code>, так и как самостоятельная программа. В настройках можно переключаться между использованием &lt;code>pass&lt;/code> и &lt;code>gnupg&lt;/code>.&lt;/li>
+&lt;li>&lt;code>gopass-ui&lt;/code> &amp;mdash; интерфейс к &lt;code>gopass&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h3 id="приложения-для-android">&lt;span class="section-num">3.3&lt;/span> Приложения для Android&lt;/h3>
+&lt;h4 id="password-store">&lt;span class="section-num">3.3.1&lt;/span> Password Store&lt;/h4>
+&lt;ul>
+&lt;li>URL: &lt;a href="https://play.google.com/store/apps/details?id=dev.msfjarvis.aps" target="_blank" rel="noopener">https://play.google.com/store/apps/details?id=dev.msfjarvis.aps&lt;/a>&lt;/li>
+&lt;li>Репозиторий с кодом: &lt;a href="https://github.com/android-password-store/Android-Password-Store" target="_blank" rel="noopener">https://github.com/android-password-store/Android-Password-Store&lt;/a>&lt;/li>
+&lt;li>Документация: &lt;a href="https://android-password-store.github.io/docs/" target="_blank" rel="noopener">https://android-password-store.github.io/docs/&lt;/a>&lt;/li>
+&lt;li>Для синхронизации с git необходимо импортировать ssh-ключи.&lt;/li>
+&lt;li>Поддерживает разблокировку по биометрическим данным.&lt;/li>
+&lt;li>Для работы требует наличия &lt;em>OpenKeychain: Easy PGP&lt;/em>.&lt;/li>
+&lt;/ul>
+&lt;h4 id="openkeychain-easy-pgp">&lt;span class="section-num">3.3.2&lt;/span> OpenKeychain: Easy PGP&lt;/h4>
+&lt;ul>
+&lt;li>URL: &lt;a href="https://play.google.com/store/apps/details?id=org.sufficientlysecure.keychain" target="_blank" rel="noopener">https://play.google.com/store/apps/details?id=org.sufficientlysecure.keychain&lt;/a>&lt;/li>
+&lt;li>Операции с ключами pgp.&lt;/li>
+&lt;li>Необходимо будет импортировать pgp-ключи.&lt;/li>
+&lt;li>Не поддерживает разблокировку по биометрическим данным. Необходимо набирать пароль ключа.&lt;/li>
+&lt;/ul>
+&lt;h3 id="пакеты-для-emacs">&lt;span class="section-num">3.4&lt;/span> Пакеты для Emacs&lt;/h3>
+&lt;h4 id="pass">&lt;span class="section-num">3.4.1&lt;/span> pass&lt;/h4>
+&lt;ul>
+&lt;li>Основной режим для управления хранилищем и редактирования записей.&lt;/li>
+&lt;li>Репозиторий: &lt;a href="https://github.com/NicolasPetton/pass" target="_blank" rel="noopener">https://github.com/NicolasPetton/pass&lt;/a>&lt;/li>
+&lt;li>Позволяет редактировать базу данных паролей.&lt;/li>
+&lt;li>Запуск:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-elisp" data-lang="elisp">&lt;span class="line">&lt;span class="cl">&lt;span class="nv">M-x&lt;/span> &lt;span class="nv">pass&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h4 id="helm-pass">&lt;span class="section-num">3.4.2&lt;/span> helm-pass&lt;/h4>
+&lt;ul>
+&lt;li>Интерфейс &lt;em>helm&lt;/em> для &lt;em>pass&lt;/em>.&lt;/li>
+&lt;li>Репозиторий: &lt;a href="https://github.com/emacs-helm/helm-pass" target="_blank" rel="noopener">https://github.com/emacs-helm/helm-pass&lt;/a>&lt;/li>
+&lt;li>Запуск:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-elisp" data-lang="elisp">&lt;span class="line">&lt;span class="cl">&lt;span class="nv">M-x&lt;/span> &lt;span class="nv">helm-pass&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Выдаёт в минибуфере список записей из базы паролей. При нажатии &lt;code>Enter&lt;/code> копирует пароль в буфер.&lt;/li>
+&lt;/ul>
+&lt;h4 id="ivy-pass">&lt;span class="section-num">3.4.3&lt;/span> ivy-pass&lt;/h4>
+&lt;ul>
+&lt;li>Интерфейс &lt;em>ivy&lt;/em> для &lt;em>pass&lt;/em>.&lt;/li>
+&lt;li>Репозиторий: &lt;a href="https://github.com/ecraven/ivy-pass" target="_blank" rel="noopener">https://github.com/ecraven/ivy-pass&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="установка">&lt;span class="section-num">4&lt;/span> Установка&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>Linux&lt;/p>
+&lt;ul>
+&lt;li>Gentoo
+&lt;ul>
+&lt;li>&lt;code>pass&lt;/code>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge app-admin/pass
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>&lt;code>gopass&lt;/code>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge app-admin/gopass
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>&lt;code>qtpass&lt;/code>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge app-admin/qtpass
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Gopass UI
+&lt;ul>
+&lt;li>Находится в оверлее awesome (&lt;a href="https://gitlab.awesome-it.de/overlays/awesome/" target="_blank" rel="noopener">https://gitlab.awesome-it.de/overlays/awesome/&lt;/a>).&lt;/li>
+&lt;li>Установка:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge app-admin/gopass-ui
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Macintosh&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">brew install pass
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Windows&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>pass&lt;/code>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install pass4win
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>&lt;code>gopass&lt;/code>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install gopass
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="настройка">&lt;span class="section-num">5&lt;/span> Настройка&lt;/h2>
+&lt;h3 id="ключи-gpg">&lt;span class="section-num">5.1&lt;/span> Ключи GPG&lt;/h3>
+&lt;ul>
+&lt;li>Просмотр списка ключей:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">gpg --list-secret-keys
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Если ключа нет, нужно создать новый:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">gpg --full-generate-key
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="инициализация-хранилища">&lt;span class="section-num">5.2&lt;/span> Инициализация хранилища&lt;/h3>
+&lt;h4 id="pass">&lt;span class="section-num">5.2.1&lt;/span> pass&lt;/h4>
+&lt;ul>
+&lt;li>Инициализируем хранилище:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pass init &amp;lt;gpg-id or email&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h4 id="gopass">&lt;span class="section-num">5.2.2&lt;/span> gopass&lt;/h4>
+&lt;ul>
+&lt;li>
+&lt;p>Для &lt;code>gopass&lt;/code> можно просто ввести:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">gopass init
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Программа запросит ключ и почту для git.&lt;/li>
+&lt;li>Будет инициализирована сразу структура git в каталоге &lt;code>~/.password-store&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="qtpass">&lt;span class="section-num">5.2.3&lt;/span> qtpass&lt;/h4>
+&lt;ul>
+&lt;li>Также можно инициализировать с помощью графического инструмента &lt;code>qtpass&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">qtpass
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="синхронизация-с-git">&lt;span class="section-num">5.3&lt;/span> Синхронизация с git&lt;/h3>
+&lt;h4 id="gopass">&lt;span class="section-num">5.3.1&lt;/span> gopass&lt;/h4>
+&lt;ul>
+&lt;li>При инициализации &lt;code>gopass&lt;/code> инициализирует также структуру git.&lt;/li>
+&lt;li>При необходимости это можно сделать отдельно:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">gopass git init
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Также можно задать адрес репозитория на хостинге (репозиторий необходимо предварительно создать):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">gopass git remote add origin git@github.com:&amp;lt;git_username&amp;gt;/&amp;lt;git_repo&amp;gt;.git
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Для синхронизации выполняется следующая команда:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">gopass sync
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="тонкие-настройки">&lt;span class="section-num">5.4&lt;/span> Тонкие настройки&lt;/h3>
+&lt;ul>
+&lt;li>По умолчанию каталог с паролями называется &lt;code>~/.password-store&lt;/code>. Но его можно задать также с помощью переменной окружения &lt;code>PASSWORD_STORE_DIR&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h3 id="устранение-сбоев">&lt;span class="section-num">5.5&lt;/span> Устранение сбоев&lt;/h3>
+&lt;h4 id="невозможно-расшифровать-пароль">&lt;span class="section-num">5.5.1&lt;/span> Невозможно расшифровать пароль&lt;/h4>
+&lt;ul>
+&lt;li>
+&lt;p>Команда &lt;code>gopass show secret&lt;/code> выдаёт &lt;code>Error: Failed to decrypt&lt;/code>.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Можно установить в &lt;code>~/.bashrc&lt;/code> или &lt;code>~/.profile&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">GPG_TTY&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>tty&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>&lt;a href="https://github.com/gopasspw/gopass/issues/208" target="_blank" rel="noopener">https://github.com/gopasspw/gopass/issues/208&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/gopasspw/gopass/issues/209" target="_blank" rel="noopener">https://github.com/gopasspw/gopass/issues/209&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="работа-с-паролями">&lt;span class="section-num">6&lt;/span> Работа с паролями&lt;/h2>
+&lt;h3 id="создание-нового-пароля">&lt;span class="section-num">6.1&lt;/span> Создание нового пароля&lt;/h3>
+&lt;h3 id="ручная-правка-базы-паролей">&lt;span class="section-num">6.2&lt;/span> Ручная правка базы паролей&lt;/h3>
+&lt;ul>
+&lt;li>Базу паролей можно редактировать и без использования специальных утилит.&lt;/li>
+&lt;li>Можно использовать для исправления структуры каталогов и имён файлов.&lt;/li>
+&lt;li>Синхронизацию с &lt;em>git&lt;/em> придётся выполнять вручную.&lt;/li>
+&lt;li>Не следует использовать символьные ссылки. Они не переносимы между разными операционными системами и могут нарушиться при синхронизации (например, с Android).&lt;/li>
+&lt;li>После ручного редактирования рекомендуется проверить структуру базы паролей:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">gopass fsck
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="миграция-баз-паролей-из-других-программ">&lt;span class="section-num">7&lt;/span> Миграция баз паролей из других программ&lt;/h2>
+&lt;h3 id="скрипты-для-миграции">&lt;span class="section-num">7.1&lt;/span> Скрипты для миграции&lt;/h3>
+&lt;h4 id="pass-import">&lt;span class="section-num">7.1.1&lt;/span> pass-import&lt;/h4>
+&lt;ul>
+&lt;li>&lt;a href="https://github.com/roddhjav/pass-import" target="_blank" rel="noopener">https://github.com/roddhjav/pass-import&lt;/a>&lt;/li>
+&lt;li>Расширение для &lt;code>pass&lt;/code>.&lt;/li>
+&lt;li>Можно использовать для разных менеджеров паролей:
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Целевой менеджер паролей&lt;/th>
+&lt;th>Формат&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>csv&lt;/td>
+&lt;td>csv&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>gopass&lt;/td>
+&lt;td>gopass&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>keepass&lt;/td>
+&lt;td>kdbx&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>keepassx2&lt;/td>
+&lt;td>kdbx&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>keepassxc&lt;/td>
+&lt;td>kdbx&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>pass&lt;/td>
+&lt;td>pass&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;/li>
+&lt;/ul>
+&lt;!--list-separator-->
+&lt;ol>
+&lt;li>
+&lt;p>Установка&lt;/p>
+&lt;ul>
+&lt;li>Gentoo
+&lt;ul>
+&lt;li>Находится в оверлее &lt;code>wjn-overlay&lt;/code> (&lt;a href="https://data.gpo.zugaina.org/wjn-overlay/" target="_blank" rel="noopener">https://data.gpo.zugaina.org/wjn-overlay/&lt;/a>).&lt;/li>
+&lt;li>Установка:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge app-admin/pass-import
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;!--list-separator-->
+&lt;ol start="2">
+&lt;li>
+&lt;p>Использование&lt;/p>
+&lt;ul>
+&lt;li>Для &lt;code>pass&lt;/code>:
+&lt;ul>
+&lt;li>Автоопределение формата источника:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pass import path/to/passwords
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Если автоопределение не сработало:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pass import &amp;lt;password_manager&amp;gt; path/to/passwords
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Если конвертация не для &lt;code>pass&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pimport &amp;lt;new_pm&amp;gt; &amp;lt;former_pm&amp;gt; path/to/passwords --out path/to/destination/pm
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;h4 id="отдельные-скрипты">&lt;span class="section-num">7.1.2&lt;/span> Отдельные скрипты&lt;/h4>
+&lt;ul>
+&lt;li>На странице &lt;a href="https://www.passwordstore.org/" target="_blank" rel="noopener">https://www.passwordstore.org/&lt;/a> приведён список отдельных скриптов для миграции из разных служб.&lt;/li>
+&lt;li>Используйте в целях эксперимента.&lt;/li>
+&lt;/ul>
+&lt;h3 id="конкретные-рецепты">&lt;span class="section-num">7.2&lt;/span> Конкретные рецепты&lt;/h3>
+&lt;h4 id="lastpass">&lt;span class="section-num">7.2.1&lt;/span> LastPass&lt;/h4>
+&lt;ul>
+&lt;li>В меню выберите &lt;em>Account options &amp;gt; Advanced &amp;gt; Export &amp;gt; LastPass CVS File&lt;/em>.&lt;/li>
+&lt;li>Сохраняем результат в файл &lt;code>lastpass_export.csv&lt;/code>.&lt;/li>
+&lt;li>Конвертация с помощью &lt;code>pass-import&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pass import lastpass lastpass_export.csv
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Альтернативный вариант. Не используйте его. Результат не соответствует структуре именования &lt;code>pass&lt;/code>.
+&lt;ul>
+&lt;li>Скачайте скрипт:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">wget https://git.zx2c4.com/password-store/plain/contrib/importers/lastpass2pass.rb
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Сделайте скрипт исполняемым:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">chmod +x lastpass2pass.rb
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Импортируйте пароли:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">./lastpass2pass.rb lastpass_export.csv
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="дополнительные-возможности">&lt;span class="section-num">8&lt;/span> Дополнительные возможности&lt;/h2>
+&lt;h3 id="проверка-утечки-пароля">&lt;span class="section-num">8.1&lt;/span> Проверка утечки пароля&lt;/h3>
+&lt;ul>
+&lt;li>Проверка утечки пароля производится с помощью сервиса &lt;a href="https://haveibeenpwned.com/" target="_blank" rel="noopener">https://haveibeenpwned.com/&lt;/a> (см. &lt;a href="https://yamadharma.github.io/ru/post/2021/05/03/have-i-been-pwned-hibp/">Have I Been Pwned (HIBP)&lt;/a>).&lt;/li>
+&lt;/ul>
+&lt;h4 id="pass">&lt;span class="section-num">8.1.1&lt;/span> pass&lt;/h4>
+&lt;ul>
+&lt;li>Проверка производится с помощью плагина &lt;code>pass-audit&lt;/code>.&lt;/li>
+&lt;li>Код: &lt;a href="https://github.com/roddhjav/pass-audit" target="_blank" rel="noopener">https://github.com/roddhjav/pass-audit&lt;/a>.&lt;/li>
+&lt;li>Установка:
+&lt;ul>
+&lt;li>Gentoo:
+Находится в репозитории &lt;a href="https://github.com/yamadharma/gentoo-portage-local" target="_blank" rel="noopener">https://github.com/yamadharma/gentoo-portage-local&lt;/a>.
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge app-admin/pass-audit
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Использование:
+&lt;ul>
+&lt;li>Проверка по парольному каталогу или по парольной записи:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pass audit &lt;span class="o">[&lt;/span>каталог или одна запись&lt;span class="o">]&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Без параметра проверяет всю базу паролей.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="gopass">&lt;span class="section-num">8.1.2&lt;/span> gopass&lt;/h4>
+&lt;!--list-separator-->
+&lt;ol>
+&lt;li>
+&lt;p>Простая проверка качества пароля&lt;/p>
+&lt;ul>
+&lt;li>Простая проверка качества пароля по парольному каталогу или по парольной записи:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">gopass audit &lt;span class="o">[&lt;/span>каталог или одна запись&lt;span class="o">]&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Без параметра проверяет всю базу паролей.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;!--list-separator-->
+&lt;ol start="2">
+&lt;li>
+&lt;p>Проверка утечки пароля&lt;/p>
+&lt;ul>
+&lt;li>Начиная с версии gopass-1.12.0 команда создания интерфейса взаимодействия с HIPB выделена в отдельную утилиту.&lt;/li>
+&lt;li>Проверка производится с помощью плагина &lt;code>gopass-hibp&lt;/code>.&lt;/li>
+&lt;li>Код: &lt;a href="https://github.com/gopasspw/gopass-hibp" target="_blank" rel="noopener">https://github.com/gopasspw/gopass-hibp&lt;/a>.&lt;/li>
+&lt;li>Установка:
+&lt;ul>
+&lt;li>Gentoo:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge app-admin/gopass-hibp
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Использование:
+&lt;ul>
+&lt;li>Использование HIBPv2 API
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">gopass-hibp api
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Сравнение хешей паролей с дампом HIBP:
+&lt;ul>
+&lt;li>Скачиваем дамп SHA-1 хешей паролей с &lt;a href="https://haveibeenpwned.com/Passwords" target="_blank" rel="noopener">https://haveibeenpwned.com/Passwords&lt;/a> и распаковываем его.&lt;/li>
+&lt;li>Проверяем пароли:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">gopass-hibp dump pwned-passwords-1.0.txt
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>Этот вариант помедленнее.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Проверяет сразу все записи в базе паролей. Один пароль проверить нельзя.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;h3 id="одноразовые-пароли">&lt;span class="section-num">8.2&lt;/span> Одноразовые пароли&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/08/24/password-manager-pass-one-time-passwords/">Менеджер паролей pass. Одноразовые пароли&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="интеграция-с-другими-программами">&lt;span class="section-num">9&lt;/span> Интеграция с другими программами&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/11/20/password-manager-pass-integration/">Менеджер паролей pass. Интеграция с другими программами&lt;/a>&lt;/li>
 &lt;/ul></description></item><item><title>Подготовка программы Кибербезопасность и Интернет вещей</title><link>https://yamadharma.github.io/ru/post/2021/04/24/mathematical-disciplines-specialty-cybersecurity/</link><pubDate>Sat, 24 Apr 2021 17:12:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2021/04/24/mathematical-disciplines-specialty-cybersecurity/</guid><description>&lt;p>Подготовка программы высшего образования &lt;em>Кибербезопасность и Интернет вещей&lt;/em>.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>

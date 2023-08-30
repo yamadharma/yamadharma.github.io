@@ -1,4 +1,472 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>sysadmin | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/sysadmin/</link><atom:link href="https://yamadharma.github.io/ru/tag/sysadmin/index.xml" rel="self" type="application/rss+xml"/><description>sysadmin</description><generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2023 Dmitry S. Kulyabov</copyright><lastBuildDate>Sat, 19 Aug 2023 13:34:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url><title>sysadmin</title><link>https://yamadharma.github.io/ru/tag/sysadmin/</link></image><item><title>Подключение к Cisco VPN</title><link>https://yamadharma.github.io/ru/post/2023/08/19/cisco-vpn-client-setup/</link><pubDate>Sat, 19 Aug 2023 13:34:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/08/19/cisco-vpn-client-setup/</guid><description>&lt;p>Подключение к Cisco AnyConnect VPN.
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>sysadmin | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/sysadmin/</link><atom:link href="https://yamadharma.github.io/ru/tag/sysadmin/index.xml" rel="self" type="application/rss+xml"/><description>sysadmin</description><generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2023 Dmitry S. Kulyabov</copyright><lastBuildDate>Mon, 28 Aug 2023 10:22:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url><title>sysadmin</title><link>https://yamadharma.github.io/ru/tag/sysadmin/</link></image><item><title>Установка сервера afs</title><link>https://yamadharma.github.io/ru/post/2023/08/28/afs-server-installation/</link><pubDate>Mon, 28 Aug 2023 10:22:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/08/28/afs-server-installation/</guid><description>&lt;p>Установка сервера afs.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#первоначальная-установка">&lt;span class="section-num">1&lt;/span> Первоначальная установка&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#предварительные-замечания">&lt;span class="section-num">2&lt;/span> Предварительные замечания&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#минимальная-установка">&lt;span class="section-num">2.1&lt;/span> Минимальная установка&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#дисковые-разделы">&lt;span class="section-num">2.2&lt;/span> Дисковые разделы&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#сеть">&lt;span class="section-num">2.3&lt;/span> Сеть&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#синхронизация-времени">&lt;span class="section-num">2.4&lt;/span> Синхронизация времени&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#брандмауэр">&lt;span class="section-num">3&lt;/span> Брандмауэр&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#сервер-kerberos">&lt;span class="section-num">3.1&lt;/span> Сервер Kerberos&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#сервер-баз-данных-openafs">&lt;span class="section-num">3.2&lt;/span> Сервер баз данных OpenAFS&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#файловый-сервер-openafs">&lt;span class="section-num">3.3&lt;/span> Файловый сервер OpenAFS&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#клиент-openafs">&lt;span class="section-num">3.4&lt;/span> Клиент OpenAFS&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#установка-kerberos">&lt;span class="section-num">4&lt;/span> Установка Kerberos&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#сервер-kerberos">&lt;span class="section-num">4.1&lt;/span> Сервер Kerberos&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#компиляция-программного-обеспечения">&lt;span class="section-num">5&lt;/span> Компиляция программного обеспечения&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#компиляция-сервера">&lt;span class="section-num">5.1&lt;/span> Компиляция сервера&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#компиляция-клиента">&lt;span class="section-num">5.2&lt;/span> Компиляция клиента&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#установка-сервера-openafs">&lt;span class="section-num">6&lt;/span> Установка сервера OpenAFS&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#установка-сервера">&lt;span class="section-num">6.1&lt;/span> Установка сервера&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#установка-клиента">&lt;span class="section-num">6.2&lt;/span> Установка клиента&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="первоначальная-установка">&lt;span class="section-num">1&lt;/span> Первоначальная установка&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/08/12/rockylinux-server-installation/">Rocky Linux. Установка сервера&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="предварительные-замечания">&lt;span class="section-num">2&lt;/span> Предварительные замечания&lt;/h2>
+&lt;h3 id="минимальная-установка">&lt;span class="section-num">2.1&lt;/span> Минимальная установка&lt;/h3>
+&lt;ul>
+&lt;li>Для простой установки можно использовать один сервер для размещения Kerberos KDC, сервера базы данных OpenAFS и файлового сервера OpenAFS.&lt;/li>
+&lt;li>Для производственной среды рекомендуется развернуть Kerberos KDC на выделенном безопасном сервере, серверы баз данных OpenAFS &amp;mdash; на трех отдельных компьютерах, а при необходимости &amp;mdash; несколько файловых серверов.&lt;/li>
+&lt;/ul>
+&lt;h3 id="дисковые-разделы">&lt;span class="section-num">2.2&lt;/span> Дисковые разделы&lt;/h3>
+&lt;ul>
+&lt;li>Понадобится хотя бы один раздел на файловом сервере для хранения томов для AFS.&lt;/li>
+&lt;li>Его надо будет примонтировать в &lt;code>/vicepa&lt;/code>.&lt;/li>
+&lt;li>Если необходимо несколько разделов, их можно смонтировать в &lt;code>/vicepb&lt;/code>, &lt;code>/vicepc&lt;/code> и т. д.&lt;/li>
+&lt;li>Файловый сервер использует файловое хранилище (не блочное).&lt;/li>
+&lt;li>Файловые системы: ext3, ext4, xfs.&lt;/li>
+&lt;li>Лучше создать для этого отдельную партицию.&lt;/li>
+&lt;/ul>
+&lt;h3 id="сеть">&lt;span class="section-num">2.3&lt;/span> Сеть&lt;/h3>
+&lt;ul>
+&lt;li>DNS должен работать правильно при прямом и обратном поиске имён.&lt;/li>
+&lt;li>Серверам необходим хотя бы один интерфейс IPv4, доступный клиентам AFS. Интерфейсы IPv6 пока не поддерживаются.&lt;/li>
+&lt;/ul>
+&lt;h3 id="синхронизация-времени">&lt;span class="section-num">2.4&lt;/span> Синхронизация времени&lt;/h3>
+&lt;ul>
+&lt;li>Kerberos и, следовательно, OpenAFS требуют хорошей синхронизации часов между клиентами и серверами.&lt;/li>
+&lt;/ul>
+&lt;h2 id="брандмауэр">&lt;span class="section-num">3&lt;/span> Брандмауэр&lt;/h2>
+&lt;ul>
+&lt;li>Настройки брандмауэра по умолчанию в RHEL будут блокировать сетевые порты, используемые Kerberos и OpenAFS.&lt;/li>
+&lt;li>Необходимо настроить правила брандмауэра на серверах, чтобы разрешить трафик через эти порты.&lt;/li>
+&lt;/ul>
+&lt;h3 id="сервер-kerberos">&lt;span class="section-num">3.1&lt;/span> Сервер Kerberos&lt;/h3>
+&lt;ul>
+&lt;li>На сервере Kerberos откройте порты udp 88 и 646:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">firewall-cmd --zone&lt;span class="o">=&lt;/span>public --add-port&lt;span class="o">=&lt;/span>88/udp
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">firewall-cmd --zone&lt;span class="o">=&lt;/span>public --add-port&lt;span class="o">=&lt;/span>646/udp
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">firewall-cmd --runtime-to-permanent
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="сервер-баз-данных-openafs">&lt;span class="section-num">3.2&lt;/span> Сервер баз данных OpenAFS&lt;/h3>
+&lt;ul>
+&lt;li>На серверах баз данных OpenAFS откройте udp-порты 7002, 7003 и 7007:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">firewall-cmd --zone&lt;span class="o">=&lt;/span>public --add-port&lt;span class="o">=&lt;/span>7002/udp
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">firewall-cmd --zone&lt;span class="o">=&lt;/span>public --add-port&lt;span class="o">=&lt;/span>7003/udp
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">firewall-cmd --zone&lt;span class="o">=&lt;/span>public --add-port&lt;span class="o">=&lt;/span>7007/udp
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">firewall-cmd --runtime-to-permanent
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="файловый-сервер-openafs">&lt;span class="section-num">3.3&lt;/span> Файловый сервер OpenAFS&lt;/h3>
+&lt;ul>
+&lt;li>На файловых серверах OpenAFS откройте udp-порты 7000, 7005 и 7007:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">firewall-cmd --zone&lt;span class="o">=&lt;/span>public --add-port&lt;span class="o">=&lt;/span>7000/udp
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">firewall-cmd --zone&lt;span class="o">=&lt;/span>public --add-port&lt;span class="o">=&lt;/span>7005/udp
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">firewall-cmd --zone&lt;span class="o">=&lt;/span>public --add-port&lt;span class="o">=&lt;/span>7007/udp
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">firewall-cmd --runtime-to-permanent
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="клиент-openafs">&lt;span class="section-num">3.4&lt;/span> Клиент OpenAFS&lt;/h3>
+&lt;ul>
+&lt;li>Клиенты OpenAFS используют порт udp 7001. Откройте порт udp 7001 в любой системе, в которой установлен клиент OpenAFS:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">firewall-cmd --zone&lt;span class="o">=&lt;/span>public --add-port&lt;span class="o">=&lt;/span>7001/udp
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">firewall-cmd --runtime-to-permanent
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="установка-kerberos">&lt;span class="section-num">4&lt;/span> Установка Kerberos&lt;/h2>
+&lt;ul>
+&lt;li>Установите серверный и клиентский пакеты Kerberos:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf install -y krb5-server krb5-workstation krb5-libs
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Замените все примеры имени хоста &lt;code>kerberos.example.com&lt;/code> фактическим именем вашего сервера Kerberos в файле &lt;code>/etc/krb5.conf&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h3 id="сервер-kerberos">&lt;span class="section-num">4.1&lt;/span> Сервер Kerberos&lt;/h3>
+&lt;ul>
+&lt;li>На машине сервера Kerberos настройте замените каждый экземпляр &lt;code>EXAMPLE.COM&lt;/code> именем своей области в следующих файлах конфигурации:&lt;/li>
+&lt;li>&lt;code>/etc/krb5.conf&lt;/code>&lt;/li>
+&lt;li>&lt;code>/var/kerberos/krb5kdc/kdc.conf&lt;/code>&lt;/li>
+&lt;li>&lt;code>/var/kerberos/krb5kdc/kadm5.acl&lt;/code>&lt;/li>
+&lt;li>Замените все примеры имени хоста &lt;code>kerberos.example.com&lt;/code> фактическим именем вашего сервера Kerberos в файле &lt;code>/etc/krb5.conf&lt;/code>.&lt;/li>
+&lt;li>Создайте базу данных Kerberos с помощью команды &lt;code>krb5_util&lt;/code> (вам будет предложено ввести основной пароль):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">/usr/sbin/kdb5_util create -s
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Запустите серверы Kerberos:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">systemctl start krb5kdc
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">systemctl start kadmin
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">systemctl &lt;span class="nb">enable&lt;/span> krb5kdc
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">systemctl &lt;span class="nb">enable&lt;/span> kadmin
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="компиляция-программного-обеспечения">&lt;span class="section-num">5&lt;/span> Компиляция программного обеспечения&lt;/h2>
+&lt;h3 id="компиляция-сервера">&lt;span class="section-num">5.1&lt;/span> Компиляция сервера&lt;/h3>
+&lt;ul>
+&lt;li>Исходные архивы OpenAFS доступны на веб-сайте OpenAFS.&lt;/li>
+&lt;li>Нужно будет собрать собрать RPM-пакеты с помощью команды &lt;code>rpmbuild&lt;/code>.&lt;/li>
+&lt;li>Установите необходимое программное обеспечение:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf install rpm-build yum-utils make perl libtool bzip2 wget -y
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Скачайте пакет исходных кодов для openafs:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">wget https://www.openafs.org/dl/openafs/&amp;lt;version&amp;gt;/openafs-&amp;lt;version&amp;gt;-1-src.rpm
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Здесь &lt;code>&amp;lt;version&amp;gt;&lt;/code> указывается версия OpenAFS, которую вы хотите установить, например &lt;code>1.8.10&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">wget https://www.openafs.org/dl/openafs/1.8.10/openafs-1.8.10-1.src.rpm
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Установите необходимы зависимости:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf builddep openafs-&amp;lt;version&amp;gt;-1.src.rpm
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Откомпилите исходные коды:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">rpmbuild --rebuild --define &lt;span class="s2">&amp;#34;build_userspace 1&amp;#34;&lt;/span> --define &lt;span class="s2">&amp;#34;build_modules 0&amp;#34;&lt;/span> openafs-&amp;lt;version&amp;gt;-1.src.rpm
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Здесь вы не компилите модули ядра, соответственно не сможете использовать сервер как клиента.&lt;/li>
+&lt;li>Можно откомпилить всё с поддержкой моделей ядра (см. компиляцию для клиентов).&lt;/li>
+&lt;/ul>
+&lt;h3 id="компиляция-клиента">&lt;span class="section-num">5.2&lt;/span> Компиляция клиента&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>Модуль ядра OpenAFS должен соответствовать вашей версии ядра.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Если вы не поддерживаете локальный репозиторий, который отслеживает каждый выпуск ядра и обновляет его сборки kmod, вам нужно будет использовать механизм DKMS для установки модуля ядра.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Установите необходимое программное обеспечение:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf install rpm-build yum-utils make perl libtool bzip2 wget -y
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Скачайте пакет исходных кодов для openafs:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">wget https://www.openafs.org/dl/openafs/&amp;lt;version&amp;gt;/openafs-&amp;lt;version&amp;gt;-1-src.rpm
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Здесь &lt;code>&amp;lt;version&amp;gt;&lt;/code> указывается версия OpenAFS, которую вы хотите установить, например &lt;code>1.8.10&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">wget https://www.openafs.org/dl/openafs/1.8.10/openafs-1.8.10-1.src.rpm
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Установите необходимы зависимости:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf builddep openafs-&amp;lt;version&amp;gt;-1.src.rpm
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Установите версия ядра для разработчиков:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf install -y &lt;span class="s2">&amp;#34;kernel-devel-uname-r == &lt;/span>&lt;span class="k">$(&lt;/span>uname -r&lt;span class="k">)&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">dnf install -y elfutils-devel
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">dnf install -y dkms gcc kernel-devel kernel-headers
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>&lt;/li>
+&lt;li>
+&lt;p>Откомпилите исходные коды:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">rpmbuild --rebuild openafs-&amp;lt;version&amp;gt;-1.src.rpm
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="установка-сервера-openafs">&lt;span class="section-num">6&lt;/span> Установка сервера OpenAFS&lt;/h2>
+&lt;h3 id="установка-сервера">&lt;span class="section-num">6.1&lt;/span> Установка сервера&lt;/h3>
+&lt;ul>
+&lt;li>Установите серверные пакеты OpenAFS из каталога RPMS rpmbuild:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> ~/rpmbuild/RPMS/x86_64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">dnf install -y openafs-&amp;lt;version&amp;gt;-1.el9.x86_64.rpm openafs-server-&amp;lt;version&amp;gt;-1.el9.x86_64.rpm openafs-docs-&amp;lt;version&amp;gt;-1.el9.x86_64.rpm openafs-krb5-&amp;lt;version&amp;gt;-1.el9.x86_64.rpm
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="установка-клиента">&lt;span class="section-num">6.2&lt;/span> Установка клиента&lt;/h3>
+&lt;ul>
+&lt;li>При установке менеджера кэша на сервере OpenAFS сначала удалите символические ссылки, созданные bosserver. Это будет мешать, если клиент установлен.
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">test&lt;/span> -h /usr/vice/etc/ThisCell &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> rm /usr/vice/etc/ThisCell
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">test&lt;/span> -h /usr/vice/etc/CellServDB &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> rm /usr/vice/etc/CellServDB
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Обязательно перезагрузитесь перед установкой модуля ядра OpenAFS.&lt;/li>
+&lt;li>Установите пакеты OpenAFS из каталога RPMS rpmbuild:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> ~/rpmbuild/RPMS/x86_64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">dnf install -y openafs-&amp;lt;version&amp;gt;-1.el9.x86_64.rpm openafs-client-&amp;lt;version&amp;gt;-1.el9.x86_64.rpm openafs-krb5-&amp;lt;version&amp;gt;-1.el9.x86_64.rpm dkms-openafs-&amp;lt;version&amp;gt;-1.el9.x86_64.rpm
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul></description></item><item><title>Файловая система afs</title><link>https://yamadharma.github.io/ru/post/2023/08/28/file-system-afs/</link><pubDate>Mon, 28 Aug 2023 10:04:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/08/28/file-system-afs/</guid><description>&lt;p>Распределённая файловая система AFS.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#развёртывание">&lt;span class="section-num">2&lt;/span> Развёртывание&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>Сайт: &lt;a href="http://www.openafs.org/" target="_blank" rel="noopener">http://www.openafs.org/&lt;/a>&lt;/li>
+&lt;li>Wiki: &lt;a href="https://wiki.openafs.org/" target="_blank" rel="noopener">https://wiki.openafs.org/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="развёртывание">&lt;span class="section-num">2&lt;/span> Развёртывание&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/08/28/afs-server-installation/">Установка сервера afs&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>Файловая система xfs</title><link>https://yamadharma.github.io/ru/post/2023/08/26/xfs-file-system/</link><pubDate>Sat, 26 Aug 2023 19:50:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/08/26/xfs-file-system/</guid><description>&lt;p>Файловая система xfs.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">&lt;/nav>
+&lt;/details></description></item><item><title>Использование vagrant. Установка Rocky Linux</title><link>https://yamadharma.github.io/ru/post/2023/08/20/using-vagrant-install-rocky-linux/</link><pubDate>Sun, 20 Aug 2023 19:00:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/08/20/using-vagrant-install-rocky-linux/</guid><description>&lt;p>Установка Rocky Linux из репозитория образов Vagrant.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#установка-для-virtualbox">&lt;span class="section-num">2&lt;/span> Установка для Virtualbox&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#скачивание-файла">&lt;span class="section-num">2.1&lt;/span> Скачивание файла&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#установка-дополнения-для-vagrant">&lt;span class="section-num">2.2&lt;/span> Установка дополнения для Vagrant&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#vagrantfile">&lt;span class="section-num">2.3&lt;/span> Vagrantfile&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#подключение-образа">&lt;span class="section-num">2.4&lt;/span> Подключение образа&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#образ-virtualbox">&lt;span class="section-num">2.5&lt;/span> Образ Virtualbox&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#подключитесь-к-системе">&lt;span class="section-num">2.6&lt;/span> Подключитесь к системе&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#обновление-системы">&lt;span class="section-num">2.7&lt;/span> Обновление системы&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#перезагрузка-виртуальной-машины">&lt;span class="section-num">2.8&lt;/span> Перезагрузка виртуальной машины&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#выключение-виртуальной-машины">&lt;span class="section-num">2.9&lt;/span> Выключение виртуальной машины&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#видео">&lt;span class="section-num">2.10&lt;/span> Видео&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>Будем использовать официальные образы RockyLinux: &lt;a href="https://app.vagrantup.com/rockylinux" target="_blank" rel="noopener">https://app.vagrantup.com/rockylinux&lt;/a>&lt;/li>
+&lt;li>Для определённости выберем следующую версию: &lt;a href="https://app.vagrantup.com/rockylinux/boxes/9/versions/2.0.0" target="_blank" rel="noopener">https://app.vagrantup.com/rockylinux/boxes/9/versions/2.0.0&lt;/a>&lt;/li>
+&lt;li>Название образа: &lt;code>rockylinux/9&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h2 id="установка-для-virtualbox">&lt;span class="section-num">2&lt;/span> Установка для Virtualbox&lt;/h2>
+&lt;h3 id="скачивание-файла">&lt;span class="section-num">2.1&lt;/span> Скачивание файла&lt;/h3>
+&lt;ul>
+&lt;li>Поскольку в России блокируется автоматическая скачка файла, то необходимо скачать его вручную:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">wget https://app.vagrantup.com/rockylinux/boxes/9/versions/2.0.0/providers/virtualbox.box
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Можно скачать и со страницы непосредственно.&lt;/li>
+&lt;/ul>
+&lt;h3 id="установка-дополнения-для-vagrant">&lt;span class="section-num">2.2&lt;/span> Установка дополнения для Vagrant&lt;/h3>
+&lt;ul>
+&lt;li>Дополнение автоматически устанавливает гостевые дополнения VirtualBox хоста в гостевой системе.&lt;/li>
+&lt;li>Установим дополнение, явно указав зеркало для загрузки:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vagrant plugin install --plugin-clean-sources --plugin-source https://rubygems.org vagrant-vbguest
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="vagrantfile">&lt;span class="section-num">2.3&lt;/span> Vagrantfile&lt;/h3>
+&lt;ul>
+&lt;li>Создадим заготовку файла Vagrantfile:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vagrant init rockylinux/9 --box-version 2.0.0
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="подключение-образа">&lt;span class="section-num">2.4&lt;/span> Подключение образа&lt;/h3>
+&lt;ul>
+&lt;li>Подключим скачанный файл образа:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vagrant box add rockylinux/9 virtualbox.box
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="образ-virtualbox">&lt;span class="section-num">2.5&lt;/span> Образ Virtualbox&lt;/h3>
+&lt;ul>
+&lt;li>Создадим образ Virtualbox и запустим его:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vagrant up
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="подключитесь-к-системе">&lt;span class="section-num">2.6&lt;/span> Подключитесь к системе&lt;/h3>
+&lt;ul>
+&lt;li>Войдём в консоль системы по ssh:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vagrant ssh
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="обновление-системы">&lt;span class="section-num">2.7&lt;/span> Обновление системы&lt;/h3>
+&lt;ul>
+&lt;li>Перейдём под учётную запись &lt;code>root&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">su -
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Пароль учётной записи &lt;code>root&lt;/code>: &lt;code>vagrant&lt;/code>.&lt;/li>
+&lt;li>Обновим установленную систему:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf update
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Установим дополнительное программное обеспечение:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf install tmux
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="перезагрузка-виртуальной-машины">&lt;span class="section-num">2.8&lt;/span> Перезагрузка виртуальной машины&lt;/h3>
+&lt;ul>
+&lt;li>Выйдем из оболочки машины:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">logout&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">logout&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Перезагрузим виртуальную машину:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vagrant reload
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="выключение-виртуальной-машины">&lt;span class="section-num">2.9&lt;/span> Выключение виртуальной машины&lt;/h3>
+&lt;ul>
+&lt;li>После работы выключите виртуальную машину:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vagrant halt
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="видео">&lt;span class="section-num">2.10&lt;/span> Видео&lt;/h3>
+&lt;nav>
+&lt;div class="nav nav-tabs" id="nav-tab" role="tablist">
+&lt;a class="nav-item nav-link active "
+id="nav-feabdc" data-toggle="tab" href="#feabdc"
+role="tab" aria-controls="nav-home" aria-selected="true">RuTube&lt;/a>
+&lt;a class="nav-item nav-link "
+id="nav-bdfeac" data-toggle="tab" href="#bdfeac"
+role="tab" aria-controls="nav-home" aria-selected="true">VKVideo&lt;/a>
+&lt;a class="nav-item nav-link "
+id="nav-fdabce" data-toggle="tab" href="#fdabce"
+role="tab" aria-controls="nav-home" aria-selected="true">Youtube&lt;/a>
+&lt;/div>
+&lt;/nav>
+&lt;div class="tab-content" id="nav-tab-content">
+&lt;div class="tab-pane fade show active " id="feabdc" role="tabpanel" aria-labelledby="nav-1">
+&lt;div class="embed video-player">
+&lt;iframe class="rutube-player" type="text/html"
+width="720" height="405"
+src="https://rutube.ru/play/embed/7ef1a4fdb0db4b4fd2edcad6bbf46f65"
+webkitAllowFullScreen mozallowfullscreen allowFullScreen
+allow="clipboard-write" frameborder="0">
+&lt;/iframe>
+&lt;/div>
+&lt;/div>
+&lt;div class="tab-pane fade show " id="bdfeac" role="tabpanel" aria-labelledby="nav-1">
+&lt;div class="embed video-player">
+&lt;iframe
+src="https://vk.com/video_ext.php?oid=606414976&amp;id=456239563&amp;hd=2"
+width="720" height="405" allow="autoplay; encrypted-media; fullscreen; picture-in-picture;" frameborder="0" allowfullscreen>&lt;/iframe>
+&lt;/div>
+&lt;/div>
+&lt;div class="tab-pane fade show " id="fdabce" role="tabpanel" aria-labelledby="nav-1">
+&lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+&lt;iframe src="https://www.youtube.com/embed/vTkYacxvhoc" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video">&lt;/iframe>
+&lt;/div>
+&lt;/div>
+&lt;/div></description></item><item><title>Использование vagrant. Virtualbox</title><link>https://yamadharma.github.io/ru/post/2023/08/20/using-vagrant-virtualbox/</link><pubDate>Sun, 20 Aug 2023 18:28:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/08/20/using-vagrant-virtualbox/</guid><description>&lt;p>Использование vagrant с системой виртуализации Virtual Box.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#запуск-vagrant-в-текущем-каталоге-для-virtualbox">&lt;span class="section-num">1&lt;/span> Запуск Vagrant в текущем каталоге для VirtualBox&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#запуск-vagrant-под-windows-в-текущем-каталоге-для-virtualbox">&lt;span class="section-num">1.1&lt;/span> Запуск Vagrant под Windows в текущем каталоге для VirtualBox&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#запуск-vagrant-под-linux-в-текущем-каталоге-для-virtualbox">&lt;span class="section-num">1.2&lt;/span> Запуск Vagrant под Linux в текущем каталоге для VirtualBox&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#используемые-расширения-для-vagrant">&lt;span class="section-num">2&lt;/span> Используемые расширения для Vagrant&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#vagrant-vbguest">&lt;span class="section-num">2.1&lt;/span> vagrant-vbguest&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="запуск-vagrant-в-текущем-каталоге-для-virtualbox">&lt;span class="section-num">1&lt;/span> Запуск Vagrant в текущем каталоге для VirtualBox&lt;/h2>
+&lt;ul>
+&lt;li>Если необходимо, чтобы все файлы находились в рабочем каталоге, то следует установить дополнительные переменные среды.&lt;/li>
+&lt;/ul>
+&lt;h3 id="запуск-vagrant-под-windows-в-текущем-каталоге-для-virtualbox">&lt;span class="section-num">1.1&lt;/span> Запуск Vagrant под Windows в текущем каталоге для VirtualBox&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>Следует задать переменные окружения&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">setx VAGRANT_HOME &lt;span class="s2">&amp;#34;X:/your/path/.vagrant.d&amp;#34;&lt;/span> /M
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">setx VAGRANT_DOTFILE_PATH &lt;span class="s2">&amp;#34;X:/your/path/.vagrant&amp;#34;&lt;/span> /M
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">setx VBOX_USER_HOME &lt;span class="s2">&amp;#34;X:/your/path/.vbox&amp;#34;&lt;/span> /M
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">setx VBOX_INSTALL_PATH &lt;span class="s2">&amp;#34;X:/your/path/vm&amp;#34;&lt;/span> /M
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Вместо &lt;code>X:&lt;/code> необходимо записать букву необходимого диска.&lt;/li>
+&lt;li>Команда &lt;code>setx&lt;/code> добавляет переменные в постоянный список переменных окружения.&lt;/li>
+&lt;li>Модификатор &lt;code>/M&lt;/code> добавляет переменные в системное окружение.&lt;/li>
+&lt;li>Без этого модификатора переменные будут добавляться в окружение пользователя.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="запуск-vagrant-под-linux-в-текущем-каталоге-для-virtualbox">&lt;span class="section-num">1.2&lt;/span> Запуск Vagrant под Linux в текущем каталоге для VirtualBox&lt;/h3>
+&lt;ul>
+&lt;li>Предлагается вместо явного задания переменных окружения использовать Makefile:&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-makefile" data-lang="makefile">&lt;span class="line">&lt;span class="cl">&lt;span class="nf">.PHONY&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="n">version&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">help&lt;/span>&lt;span class="o">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> @echo &lt;span class="s1">&amp;#39;Usage:&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> @echo &lt;span class="s1">&amp;#39; make &amp;lt;target&amp;gt;&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> @echo
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> @echo &lt;span class="s1">&amp;#39;Targets:&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> @grep -E &lt;span class="s1">&amp;#39;^[a-zA-Z_0-9.-]+:.*?## .*$$&amp;#39;&lt;/span> &lt;span class="k">$(&lt;/span>MAKEFILE_LIST&lt;span class="k">)&lt;/span> &lt;span class="p">|&lt;/span> sort &lt;span class="p">|&lt;/span> awk &lt;span class="s1">&amp;#39;BEGIN {FS = &amp;#34;:.*?## &amp;#34;}; {printf &amp;#34; \033[36m%-30s\033[0m %s\n&amp;#34;, $$1, $$2}&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> @echo
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">add&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="c">## Add the built box to Vagrant
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span> @export &lt;span class="nv">VAGRANT_HOME&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="sb">`&lt;/span>/.vagrant.d&lt;span class="p">;&lt;/span> &lt;span class="nb">export&lt;/span> &lt;span class="nv">VAGRANT_DOTFILE_PATH&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="sb">`&lt;/span>/.vagrant&lt;span class="p">;&lt;/span> vagrant box add rocky9 vagrant-virtualbox-rocky-9-x86_64.box
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">up&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="c">## Up boxies
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span> @VBoxManage setproperty machinefolder &lt;span class="sb">`&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="sb">`&lt;/span>/vm
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> -@export &lt;span class="nv">VAGRANT_HOME&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="sb">`&lt;/span>/.vagrant.d&lt;span class="p">;&lt;/span> &lt;span class="nb">export&lt;/span> &lt;span class="nv">VAGRANT_DOTFILE_PATH&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="sb">`&lt;/span>/.vagrant&lt;span class="p">;&lt;/span> &lt;span class="nb">export&lt;/span> &lt;span class="nv">VBOX_USER_HOME&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="sb">`&lt;/span>/.vbox&lt;span class="p">;&lt;/span> &lt;span class="nb">export&lt;/span> &lt;span class="nv">VBOX_INSTALL_PATH&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="sb">`&lt;/span>/vm&lt;span class="p">;&lt;/span> vagrant up
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> @VBoxManage setproperty machinefolder default
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">server&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="c">## Up server
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span> @VBoxManage setproperty machinefolder &lt;span class="sb">`&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="sb">`&lt;/span>/vm
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> -@export &lt;span class="nv">VAGRANT_HOME&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="sb">`&lt;/span>/.vagrant.d&lt;span class="p">;&lt;/span> &lt;span class="nb">export&lt;/span> &lt;span class="nv">VAGRANT_DOTFILE_PATH&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="sb">`&lt;/span>/.vagrant&lt;span class="p">;&lt;/span> &lt;span class="nb">export&lt;/span> &lt;span class="nv">VBOX_USER_HOME&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="sb">`&lt;/span>/.vbox&lt;span class="p">;&lt;/span> &lt;span class="nb">export&lt;/span> &lt;span class="nv">VBOX_INSTALL_PATH&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="sb">`&lt;/span>/vm&lt;span class="p">;&lt;/span> vagrant up server
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> @VBoxManage setproperty machinefolder default
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">client&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="c">## Up client
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span> @VBoxManage setproperty machinefolder &lt;span class="sb">`&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="sb">`&lt;/span>/vm
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> -@export &lt;span class="nv">VAGRANT_HOME&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="sb">`&lt;/span>/.vagrant.d&lt;span class="p">;&lt;/span> &lt;span class="nb">export&lt;/span> &lt;span class="nv">VAGRANT_DOTFILE_PATH&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="sb">`&lt;/span>/.vagrant&lt;span class="p">;&lt;/span> &lt;span class="nb">export&lt;/span> &lt;span class="nv">VBOX_USER_HOME&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="sb">`&lt;/span>/.vbox&lt;span class="p">;&lt;/span> &lt;span class="nb">export&lt;/span> &lt;span class="nv">VBOX_INSTALL_PATH&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="sb">`&lt;/span>/vm&lt;span class="p">;&lt;/span> vagrant up client
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> @VBoxManage setproperty machinefolder default
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">server-provision&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="c">## Up and provision server
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span> @VBoxManage setproperty machinefolder &lt;span class="sb">`&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="sb">`&lt;/span>/vm
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> -@export &lt;span class="nv">VAGRANT_HOME&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="sb">`&lt;/span>/.vagrant.d&lt;span class="p">;&lt;/span> &lt;span class="nb">export&lt;/span> &lt;span class="nv">VAGRANT_DOTFILE_PATH&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="sb">`&lt;/span>/.vagrant&lt;span class="p">;&lt;/span> &lt;span class="nb">export&lt;/span> &lt;span class="nv">VBOX_USER_HOME&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="sb">`&lt;/span>/.vbox&lt;span class="p">;&lt;/span> &lt;span class="nb">export&lt;/span> &lt;span class="nv">VBOX_INSTALL_PATH&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="sb">`&lt;/span>/vm&lt;span class="p">;&lt;/span> vagrant up server --provision
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> @VBoxManage setproperty machinefolder default
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">client-provision&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="c">## Up and provision client
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span> @VBoxManage setproperty machinefolder &lt;span class="sb">`&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="sb">`&lt;/span>/vm
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> -@export &lt;span class="nv">VAGRANT_HOME&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="sb">`&lt;/span>/.vagrant.d&lt;span class="p">;&lt;/span> &lt;span class="nb">export&lt;/span> &lt;span class="nv">VAGRANT_DOTFILE_PATH&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="sb">`&lt;/span>/.vagrant&lt;span class="p">;&lt;/span> &lt;span class="nb">export&lt;/span> &lt;span class="nv">VBOX_USER_HOME&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="sb">`&lt;/span>/.vbox&lt;span class="p">;&lt;/span> &lt;span class="nb">export&lt;/span> &lt;span class="nv">VBOX_INSTALL_PATH&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="sb">`&lt;/span>/vm&lt;span class="p">;&lt;/span> vagrant up client --provision
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> @VBoxManage setproperty machinefolder default
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">server-destroy&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="c">## Destroy server
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span> @VBoxManage setproperty machinefolder &lt;span class="sb">`&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="sb">`&lt;/span>/vm
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> -@export &lt;span class="nv">VAGRANT_HOME&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="sb">`&lt;/span>/.vagrant.d&lt;span class="p">;&lt;/span> &lt;span class="nb">export&lt;/span> &lt;span class="nv">VAGRANT_DOTFILE_PATH&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="sb">`&lt;/span>/.vagrant&lt;span class="p">;&lt;/span> &lt;span class="nb">export&lt;/span> &lt;span class="nv">VBOX_USER_HOME&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="sb">`&lt;/span>/.vbox&lt;span class="p">;&lt;/span> &lt;span class="nb">export&lt;/span> &lt;span class="nv">VBOX_INSTALL_PATH&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="sb">`&lt;/span>/vm&lt;span class="p">;&lt;/span> vagrant destroy server
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> @VBoxManage setproperty machinefolder default
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">client-destroy&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="c">## Destroy client
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span> @VBoxManage setproperty machinefolder &lt;span class="sb">`&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="sb">`&lt;/span>/vm
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> -@export &lt;span class="nv">VAGRANT_HOME&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="sb">`&lt;/span>/.vagrant.d&lt;span class="p">;&lt;/span> &lt;span class="nb">export&lt;/span> &lt;span class="nv">VAGRANT_DOTFILE_PATH&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="sb">`&lt;/span>/.vagrant&lt;span class="p">;&lt;/span> &lt;span class="nb">export&lt;/span> &lt;span class="nv">VBOX_USER_HOME&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="sb">`&lt;/span>/.vbox&lt;span class="p">;&lt;/span> &lt;span class="nb">export&lt;/span> &lt;span class="nv">VBOX_INSTALL_PATH&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="sb">`&lt;/span>/vm&lt;span class="p">;&lt;/span> vagrant destroy client
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> @VBoxManage setproperty machinefolder default
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="используемые-расширения-для-vagrant">&lt;span class="section-num">2&lt;/span> Используемые расширения для Vagrant&lt;/h2>
+&lt;h3 id="vagrant-vbguest">&lt;span class="section-num">2.1&lt;/span> vagrant-vbguest&lt;/h3>
+&lt;ul>
+&lt;li>Репозиторий: &lt;a href="https://github.com/dotless-de/vagrant-vbguest" target="_blank" rel="noopener">https://github.com/dotless-de/vagrant-vbguest&lt;/a>&lt;/li>
+&lt;li>Автоматически устанавливает гостевые дополнения VirtualBox хоста в гостевой системе.&lt;/li>
+&lt;li>Установка дополнения:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vagrant plugin install vagrant-vbguest
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Установка дополнения с явно указанным зеркалом для загрузки:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vagrant plugin install --plugin-clean-sources --plugin-source https://rubygems.org vagrant-vbguest
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul></description></item><item><title>Подключение к Cisco VPN</title><link>https://yamadharma.github.io/ru/post/2023/08/19/cisco-vpn-client-setup/</link><pubDate>Sat, 19 Aug 2023 13:34:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/08/19/cisco-vpn-client-setup/</guid><description>&lt;p>Подключение к Cisco AnyConnect VPN.
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
 &lt;nav id="TableOfContents">
@@ -470,15 +938,15 @@
 &lt;nav>
 &lt;div class="nav nav-tabs" id="nav-tab" role="tablist">
 &lt;a class="nav-item nav-link active "
-id="nav-ecdfba" data-toggle="tab" href="#ecdfba"
+id="nav-fdacbe" data-toggle="tab" href="#fdacbe"
 role="tab" aria-controls="nav-home" aria-selected="true">RuTube&lt;/a>
 &lt;a class="nav-item nav-link "
-id="nav-bcedaf" data-toggle="tab" href="#bcedaf"
+id="nav-dfbcea" data-toggle="tab" href="#dfbcea"
 role="tab" aria-controls="nav-home" aria-selected="true">Youtube&lt;/a>
 &lt;/div>
 &lt;/nav>
 &lt;div class="tab-content" id="nav-tab-content">
-&lt;div class="tab-pane fade show active " id="ecdfba" role="tabpanel" aria-labelledby="nav-1">
+&lt;div class="tab-pane fade show active " id="fdacbe" role="tabpanel" aria-labelledby="nav-1">
 &lt;div class="embed video-player">
 &lt;iframe class="rutube-player" type="text/html"
 width="720" height="405"
@@ -488,7 +956,7 @@ allow="clipboard-write" frameborder="0">
 &lt;/iframe>
 &lt;/div>
 &lt;/div>
-&lt;div class="tab-pane fade show " id="bcedaf" role="tabpanel" aria-labelledby="nav-1">
+&lt;div class="tab-pane fade show " id="dfbcea" role="tabpanel" aria-labelledby="nav-1">
 &lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
 &lt;iframe src="https://www.youtube.com/embed/6bBXVc6bmrs" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video">&lt;/iframe>
 &lt;/div>
@@ -5457,15 +5925,15 @@ Configuration mode
 &lt;nav>
 &lt;div class="nav nav-tabs" id="nav-tab" role="tablist">
 &lt;a class="nav-item nav-link active "
-id="nav-dcbfea" data-toggle="tab" href="#dcbfea"
+id="nav-cfedab" data-toggle="tab" href="#cfedab"
 role="tab" aria-controls="nav-home" aria-selected="true">RuTube&lt;/a>
 &lt;a class="nav-item nav-link "
-id="nav-cabfde" data-toggle="tab" href="#cabfde"
+id="nav-eabfdc" data-toggle="tab" href="#eabfdc"
 role="tab" aria-controls="nav-home" aria-selected="true">Youtube&lt;/a>
 &lt;/div>
 &lt;/nav>
 &lt;div class="tab-content" id="nav-tab-content">
-&lt;div class="tab-pane fade show active " id="dcbfea" role="tabpanel" aria-labelledby="nav-1">
+&lt;div class="tab-pane fade show active " id="cfedab" role="tabpanel" aria-labelledby="nav-1">
 &lt;div class="embed video-player">
 &lt;iframe class="rutube-player" type="text/html"
 width="720" height="405"
@@ -5475,7 +5943,7 @@ allow="clipboard-write" frameborder="0">
 &lt;/iframe>
 &lt;/div>
 &lt;/div>
-&lt;div class="tab-pane fade show " id="cabfde" role="tabpanel" aria-labelledby="nav-1">
+&lt;div class="tab-pane fade show " id="eabfdc" role="tabpanel" aria-labelledby="nav-1">
 &lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
 &lt;iframe src="https://www.youtube.com/embed/BgIzJo18yp8" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video">&lt;/iframe>
 &lt;/div>
@@ -7782,6 +8250,9 @@ allow="clipboard-write" frameborder="0">
 &lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>
 &lt;ul>
 &lt;li>&lt;a href="#лицензия">&lt;span class="section-num">1.1&lt;/span> Лицензия&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#основные-понятия-vagrant">&lt;span class="section-num">1.2&lt;/span> Основные понятия Vagrant&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#основные-команды-vagrant">&lt;span class="section-num">1.3&lt;/span> Основные команды Vagrant&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#пример-конфигурации-vagrantfile">&lt;span class="section-num">1.4&lt;/span> Пример конфигурации Vagrantfile&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>&lt;a href="#подготовка-образа">&lt;span class="section-num">2&lt;/span> Подготовка образа&lt;/a>
@@ -7790,13 +8261,9 @@ allow="clipboard-write" frameborder="0">
 &lt;li>&lt;a href="#описание-установки">&lt;span class="section-num">2.2&lt;/span> Описание установки&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;li>&lt;a href="#запуск-vagrant-в-текущем-каталоге-для-virtualbox">&lt;span class="section-num">3&lt;/span> Запуск Vagrant в текущем каталоге для VirtualBox&lt;/a>
-&lt;ul>
-&lt;li>&lt;a href="#запуск-vagrant-под-windows-в-текущем-каталоге-для-virtualbox">&lt;span class="section-num">3.1&lt;/span> Запуск Vagrant под Windows в текущем каталоге для VirtualBox&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#запуск-vagrant-под-linux-в-текущем-каталоге-для-virtualbox">&lt;span class="section-num">3.2&lt;/span> Запуск Vagrant под Linux в текущем каталоге для VirtualBox&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>&lt;a href="#установка-дополнений">&lt;span class="section-num">4&lt;/span> Установка дополнений&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#установка-дополнений">&lt;span class="section-num">3&lt;/span> Установка дополнений&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#разные-системы-виртуализации">&lt;span class="section-num">4&lt;/span> Разные системы виртуализации&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#конкретные-примеры">&lt;span class="section-num">5&lt;/span> Конкретные примеры&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/nav>
 &lt;/details>
@@ -7815,8 +8282,64 @@ allow="clipboard-write" frameborder="0">
 &lt;li>&lt;a href="https://sourceforge.net/projects/vagrant.mirror/files/" target="_blank" rel="noopener">https://sourceforge.net/projects/vagrant.mirror/files/&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
+&lt;li>Репозиторий образов для Vagrant: &lt;a href="https://app.vagrantup.com/" target="_blank" rel="noopener">https://app.vagrantup.com/&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;h3 id="лицензия">&lt;span class="section-num">1.1&lt;/span> Лицензия&lt;/h3>
+&lt;h3 id="основные-понятия-vagrant">&lt;span class="section-num">1.2&lt;/span> Основные понятия Vagrant&lt;/h3>
+&lt;ul>
+&lt;li>провайдер (provider) &amp;mdash; система виртуализации, с которой работает Vagrant (например, VirtualBox, VMWare и т.п.);&lt;/li>
+&lt;li>box-файл (или Vagrant Box) &amp;mdash; сохранённый образ виртуальной машины с развёрнутой в ней операционной системой; по сути, box-файл используется как основа для клонирования виртуальных машин с теми или иными настройками;&lt;/li>
+&lt;li>Vagrantfile &amp;mdash; конфигурационный файл, написанный на языке Ruby, в котором указаны настройки запуска виртуальной машины.&lt;/li>
+&lt;/ul>
+&lt;h3 id="основные-команды-vagrant">&lt;span class="section-num">1.3&lt;/span> Основные команды Vagrant&lt;/h3>
+&lt;ul>
+&lt;li>С Vagrant можно работать, используя следующие основные команды:
+&lt;ul>
+&lt;li>&lt;code>vagrant help&lt;/code> &amp;mdash; вызов справки по командам Vagrant;&lt;/li>
+&lt;li>&lt;code>vagrant box list&lt;/code> &amp;mdash; список подключённых к Vagrant box-файлов;&lt;/li>
+&lt;li>&lt;code>vagrant box add&lt;/code> &amp;mdash; подключение box-файла к Vagrant;&lt;/li>
+&lt;li>&lt;code>vagrant destroy&lt;/code> &amp;mdash; отключение box-файла от Vagrant и удаление его из виртуального окружения;&lt;/li>
+&lt;li>&lt;code>vagrant init&lt;/code> &amp;mdash; создание &lt;span class="org-target" id="org-target-----------">&lt;/span> конфигурационного файла &lt;code>Vagrantfile&lt;/code> для его последующего изменения;&lt;/li>
+&lt;li>&lt;code>vagrant up&lt;/code> &amp;mdash; запуск виртуальной машины с использованием инструкций по запуску из конфигурационного файла &lt;code>Vagrantfile&lt;/code>;&lt;/li>
+&lt;li>&lt;code>vagrant reload&lt;/code> &amp;mdash; перезагрузка виртуальной машины;&lt;/li>
+&lt;li>&lt;code>vagrant halt&lt;/code> &amp;mdash; остановка и выключение виртуальной машины;&lt;/li>
+&lt;li>&lt;code>vagrant provision&lt;/code> &amp;mdash; настройка внутреннего окружения имеющейся виртуальной машины (например, добавление новых инструкций (скриптов) в ранее созданную виртуальную машину);&lt;/li>
+&lt;li>&lt;code>vagrant ssh&lt;/code> &amp;mdash; подключение к виртуальной машине через ssh.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="пример-конфигурации-vagrantfile">&lt;span class="section-num">1.4&lt;/span> Пример конфигурации Vagrantfile&lt;/h3>
+&lt;ul>
+&lt;li>Пример содержимого файла &lt;code>Vagrantfile&lt;/code> для понимания принципов его синтаксиса.&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># -*- mode: ruby -*-&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># vi: set ft=ruby :&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="no">Vagrant&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">configure&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="k">do&lt;/span> &lt;span class="o">|&lt;/span>&lt;span class="n">config&lt;/span>&lt;span class="o">|&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">config&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">vm&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">box&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;BOX_NAME&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">config&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">vm&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">hostname&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;HOST_NAME&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">config&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">vm&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">network&lt;/span> &lt;span class="s2">&amp;#34;private_network&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="ss">ip&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;192.168.1.1&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">config&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">vm&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">define&lt;/span> &lt;span class="s2">&amp;#34;VM_NAME&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">config&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">vm&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">provider&lt;/span> &lt;span class="s2">&amp;#34;virtualbox&amp;#34;&lt;/span> &lt;span class="k">do&lt;/span> &lt;span class="o">|&lt;/span>&lt;span class="n">vb&lt;/span>&lt;span class="o">|&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">vb&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">gui&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kp">false&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">vb&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">memory&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;1024&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">end&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">end&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Первые две строки указывают на режим работы с &lt;code>Vagrantfile&lt;/code> и использование языка Ruby.&lt;/li>
+&lt;li>Затем идёт цикл &lt;code>do&lt;/code>, заменяющий конструкцию &lt;code>Vagrant.configure&lt;/code> далее по тексту на &lt;code>config&lt;/code>.&lt;/li>
+&lt;li>Строка &lt;code>config.vm.box = &amp;quot;BOX_NAME&amp;quot;&lt;/code> задаёт название образа (box-файла) виртуальной машины (обычно выбирается из официального репозитория).&lt;/li>
+&lt;li>Строка &lt;code>config.vm.hostname = &amp;quot;HOST_NAME&amp;quot;&lt;/code> задаёт имя виртуальной машины.&lt;/li>
+&lt;li>Конструкция &lt;code>config.vm.network&lt;/code> задаёт тип сетевого соединения и может иметь следующие назначения:
+&lt;ul>
+&lt;li>&lt;code>config.vm.network &amp;quot;private_network&amp;quot;, ip: &amp;quot;xxx.xxx.xxx.xxx&amp;quot;&lt;/code> &amp;mdash; адрес из внутренней сети;&lt;/li>
+&lt;li>&lt;code>config.vm.network &amp;quot;public_network&amp;quot;, ip: &amp;quot;xxx.xxx.xxx.xxx&amp;quot;&lt;/code> &amp;mdash; публичный адрес, по которому виртуальная машина будет доступна;&lt;/li>
+&lt;li>&lt;code>config.vm.network &amp;quot;private_network&amp;quot;, type: &amp;quot;dhcp&amp;quot;&lt;/code> &amp;mdash; адрес, назначаемый по протоколу DHCP.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Строка &lt;code>config.vm.define &amp;quot;VM_NAME&amp;quot;&lt;/code> задаёт название виртуальной машины, по которому можно обращаться к ней из Vagrant и VirtualBox.&lt;/li>
+&lt;li>В конце идёт конструкция, определяющая параметры провайдера, а именно запуск виртуальной машины без графического интерфейса и с выделением 1 ГБ памяти.&lt;/li>
+&lt;/ul>
 &lt;h2 id="подготовка-образа">&lt;span class="section-num">2&lt;/span> Подготовка образа&lt;/h2>
 &lt;h3 id="общая-информация">&lt;span class="section-num">2.1&lt;/span> Общая информация&lt;/h3>
 &lt;ul>
@@ -7828,28 +8351,7 @@ allow="clipboard-write" frameborder="0">
 &lt;li>Ранее использовался язык описания JSON.&lt;/li>
 &lt;li>После &lt;em>Packer-1.5&lt;/em> используется формат HCL2.&lt;/li>
 &lt;/ul>
-&lt;h2 id="запуск-vagrant-в-текущем-каталоге-для-virtualbox">&lt;span class="section-num">3&lt;/span> Запуск Vagrant в текущем каталоге для VirtualBox&lt;/h2>
-&lt;ul>
-&lt;li>Если необходимо, чтобы все файлы находились в рабочем каталоге, то следует установить дополнительные переменные среды.&lt;/li>
-&lt;/ul>
-&lt;h3 id="запуск-vagrant-под-windows-в-текущем-каталоге-для-virtualbox">&lt;span class="section-num">3.1&lt;/span> Запуск Vagrant под Windows в текущем каталоге для VirtualBox&lt;/h3>
-&lt;ul>
-&lt;li>
-&lt;p>Следует задать переменные окружения&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">setx VAGRANT_HOME &lt;span class="s2">&amp;#34;X:/your/path/.vagrant.d&amp;#34;&lt;/span> /M
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">setx VAGRANT_DOTFILE_PATH &lt;span class="s2">&amp;#34;X:/your/path/.vagrant&amp;#34;&lt;/span> /M
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">setx VBOX_USER_HOME &lt;span class="s2">&amp;#34;X:/your/path/.vbox&amp;#34;&lt;/span> /M
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">setx VBOX_INSTALL_PATH &lt;span class="s2">&amp;#34;X:/your/path/vm&amp;#34;&lt;/span> /M
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
-&lt;li>Вместо &lt;code>X:&lt;/code> необходимо записать букву необходимого диска.&lt;/li>
-&lt;li>Команда &lt;code>setx&lt;/code> добавляет переменные в постоянный список переменных окружения.&lt;/li>
-&lt;li>Модификатор &lt;code>/M&lt;/code> добавляет переменные в системное окружение.&lt;/li>
-&lt;li>Без этого модификатора переменные будут добавляться в окружение пользователя.&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ul>
-&lt;h3 id="запуск-vagrant-под-linux-в-текущем-каталоге-для-virtualbox">&lt;span class="section-num">3.2&lt;/span> Запуск Vagrant под Linux в текущем каталоге для VirtualBox&lt;/h3>
-&lt;h2 id="установка-дополнений">&lt;span class="section-num">4&lt;/span> Установка дополнений&lt;/h2>
+&lt;h2 id="установка-дополнений">&lt;span class="section-num">3&lt;/span> Установка дополнений&lt;/h2>
 &lt;ul>
 &lt;li>Список дополнений: &lt;a href="https://github.com/hashicorp/vagrant/wiki/Available-Vagrant-Plugins" target="_blank" rel="noopener">https://github.com/hashicorp/vagrant/wiki/Available-Vagrant-Plugins&lt;/a>&lt;/li>
 &lt;li>Установка дополнения:
@@ -7859,6 +8361,14 @@ allow="clipboard-write" frameborder="0">
 &lt;li>Поскольку доступ из России блокируется, следует явно указать зеркало для загрузки дополнений:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vagrant plugin install --plugin-clean-sources --plugin-source https://rubygems.org &amp;lt;plugin-name&amp;gt;
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="разные-системы-виртуализации">&lt;span class="section-num">4&lt;/span> Разные системы виртуализации&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/08/20/using-vagrant-virtualbox/">Использование vagrant. Virtualbox&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="конкретные-примеры">&lt;span class="section-num">5&lt;/span> Конкретные примеры&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/08/20/using-vagrant-install-rocky-linux/">Использование vagrant. Установка Rocky Linux&lt;/a>&lt;/li>
 &lt;/ul></description></item><item><title>Шрифты в Linux</title><link>https://yamadharma.github.io/ru/post/2021/10/27/linux-fonts/</link><pubDate>Wed, 27 Oct 2021 11:36:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2021/10/27/linux-fonts/</guid><description>&lt;p>Работа со шрифтами в Linux.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
@@ -12652,7 +13162,10 @@ allow="clipboard-write" frameborder="0">
 &lt;h2 id="pass">&lt;span class="section-num">3&lt;/span> pass&lt;/h2>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/04/28/password-manager-pass/">Менеджер паролей pass&lt;/a>&lt;/li>
-&lt;/ul></description></item><item><title>Менеджер паролей pass</title><link>https://yamadharma.github.io/ru/post/2021/04/28/password-manager-pass/</link><pubDate>Wed, 28 Apr 2021 18:50:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2021/04/28/password-manager-pass/</guid><description>&lt;p>Менеджер паролей &lt;code>pass&lt;/code> &amp;mdash; программа, сделанная в рамках идеологии Unix. Также носит название стандартного менеджера паролей для Unix (&lt;em>The standard Unix password manager&lt;/em>).&lt;/p>
+&lt;/ul></description></item><item><title>Менеджер паролей pass</title><link>https://yamadharma.github.io/ru/post/2021/04/28/password-manager-pass/</link><pubDate>Wed, 28 Apr 2021 18:50:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2021/04/28/password-manager-pass/</guid><description>&lt;ul>
+&lt;li>Менеджер паролей &lt;code>pass&lt;/code> &amp;mdash; программа, сделанная в рамках идеологии Unix.&lt;/li>
+&lt;li>Также носит название стандартного менеджера паролей для Unix (&lt;em>The standard Unix password manager&lt;/em>).&lt;/li>
+&lt;/ul>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
 &lt;nav id="TableOfContents">
@@ -12735,6 +13248,7 @@ allow="clipboard-write" frameborder="0">
 &lt;li>&lt;a href="#gopass">&lt;span class="section-num">8.1.2&lt;/span> gopass&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
+&lt;li>&lt;a href="#одноразовые-пароли">&lt;span class="section-num">8.2&lt;/span> Одноразовые пароли&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>&lt;a href="#интеграция-с-другими-программами">&lt;span class="section-num">9&lt;/span> Интеграция с другими программами&lt;/a>&lt;/li>
@@ -13130,6 +13644,10 @@ allow="clipboard-write" frameborder="0">
 &lt;/ul>
 &lt;/li>
 &lt;/ol>
+&lt;h3 id="одноразовые-пароли">&lt;span class="section-num">8.2&lt;/span> Одноразовые пароли&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/08/24/password-manager-pass-one-time-passwords/">Менеджер паролей pass. Одноразовые пароли&lt;/a>&lt;/li>
+&lt;/ul>
 &lt;h2 id="интеграция-с-другими-программами">&lt;span class="section-num">9&lt;/span> Интеграция с другими программами&lt;/h2>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/11/20/password-manager-pass-integration/">Менеджер паролей pass. Интеграция с другими программами&lt;/a>&lt;/li>
@@ -13446,7 +13964,12 @@ allow="clipboard-write" frameborder="0">
 &lt;li>&lt;a href="#утилиты-настройки-среды">&lt;span class="section-num">3.7&lt;/span> Утилиты настройки среды&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;li>&lt;a href="#файловые-системы">&lt;span class="section-num">4&lt;/span> Файловые системы&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#файловые-системы">&lt;span class="section-num">4&lt;/span> Файловые системы&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#локальные-файловые-системы">&lt;span class="section-num">4.1&lt;/span> Локальные файловые системы&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#сетевые-и-распределённые-файловые-системы">&lt;span class="section-num">4.2&lt;/span> Сетевые и распределённые файловые системы&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
 &lt;li>&lt;a href="#форматы-файлов">&lt;span class="section-num">5&lt;/span> Форматы файлов&lt;/a>
 &lt;ul>
 &lt;li>&lt;a href="#csv">&lt;span class="section-num">5.1&lt;/span> csv&lt;/a>&lt;/li>
@@ -13464,22 +13987,28 @@ allow="clipboard-write" frameborder="0">
 &lt;li>&lt;a href="#шрифты">&lt;span class="section-num">10&lt;/span> Шрифты&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#пользовательские-программы">&lt;span class="section-num">11&lt;/span> Пользовательские программы&lt;/a>
 &lt;ul>
-&lt;li>&lt;a href="#утилиты">&lt;span class="section-num">11.1&lt;/span> Утилиты&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#обработка-видео">&lt;span class="section-num">11.2&lt;/span> Обработка видео&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#виртуализация">&lt;span class="section-num">11.3&lt;/span> Виртуализация&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#редакторы">&lt;span class="section-num">11.4&lt;/span> Редакторы&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#офисные-программы">&lt;span class="section-num">11.5&lt;/span> Офисные программы&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#работа-с-дисками">&lt;span class="section-num">11.6&lt;/span> Работа с дисками&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#вычисления">&lt;span class="section-num">11.7&lt;/span> Вычисления&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#квантовая-химия">&lt;span class="section-num">11.8&lt;/span> Квантовая химия&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#синхронизация-файлов">&lt;span class="section-num">11.9&lt;/span> Синхронизация файлов&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#файлы-конфигурации">&lt;span class="section-num">11.10&lt;/span> Файлы конфигурации&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#сетевые-клиенты">&lt;span class="section-num">11.11&lt;/span> Сетевые клиенты&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#телеконференции">&lt;span class="section-num">11.12&lt;/span> Телеконференции&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#наборы-программ">&lt;span class="section-num">11.13&lt;/span> Наборы программ&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#работа-с-файлами">&lt;span class="section-num">11.1&lt;/span> Работа с файлами&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#утилиты">&lt;span class="section-num">11.2&lt;/span> Утилиты&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#обработка-видео">&lt;span class="section-num">11.3&lt;/span> Обработка видео&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#виртуализация">&lt;span class="section-num">11.4&lt;/span> Виртуализация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#редакторы">&lt;span class="section-num">11.5&lt;/span> Редакторы&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#офисные-программы">&lt;span class="section-num">11.6&lt;/span> Офисные программы&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#работа-с-дисками">&lt;span class="section-num">11.7&lt;/span> Работа с дисками&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#вычисления">&lt;span class="section-num">11.8&lt;/span> Вычисления&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#квантовая-химия">&lt;span class="section-num">11.9&lt;/span> Квантовая химия&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#синхронизация-файлов">&lt;span class="section-num">11.10&lt;/span> Синхронизация файлов&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#файлы-конфигурации">&lt;span class="section-num">11.11&lt;/span> Файлы конфигурации&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#сетевые-клиенты">&lt;span class="section-num">11.12&lt;/span> Сетевые клиенты&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#телеконференции">&lt;span class="section-num">11.13&lt;/span> Телеконференции&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#наборы-программ">&lt;span class="section-num">11.14&lt;/span> Наборы программ&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;li>&lt;a href="#безопасность">&lt;span class="section-num">12&lt;/span> Безопасность&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#безопасность">&lt;span class="section-num">12&lt;/span> Безопасность&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#пароли">&lt;span class="section-num">12.1&lt;/span> Пароли&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#разное">&lt;span class="section-num">12.2&lt;/span> Разное&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
 &lt;li>&lt;a href="#сети">&lt;span class="section-num">13&lt;/span> Сети&lt;/a>
 &lt;ul>
 &lt;li>&lt;a href="#cisco">&lt;span class="section-num">13.1&lt;/span> Cisco&lt;/a>&lt;/li>
@@ -13558,9 +14087,15 @@ allow="clipboard-write" frameborder="0">
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/07/24/module-utility/">Утилита module&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;h2 id="файловые-системы">&lt;span class="section-num">4&lt;/span> Файловые системы&lt;/h2>
+&lt;h3 id="локальные-файловые-системы">&lt;span class="section-num">4.1&lt;/span> Локальные файловые системы&lt;/h3>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/08/27/btrfs-file-system/">Файловая система btrfs&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/05/26/data-deduplication/">Дедупликация данных&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/08/26/xfs-file-system/">Файловая система xfs&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="сетевые-и-распределённые-файловые-системы">&lt;span class="section-num">4.2&lt;/span> Сетевые и распределённые файловые системы&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/08/28/file-system-afs/">Файловая система afs&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;h2 id="форматы-файлов">&lt;span class="section-num">5&lt;/span> Форматы файлов&lt;/h2>
 &lt;h3 id="csv">&lt;span class="section-num">5.1&lt;/span> csv&lt;/h3>
@@ -13593,70 +14128,79 @@ allow="clipboard-write" frameborder="0">
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/10/27/linux-fonts/">Шрифты в Linux&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;h2 id="пользовательские-программы">&lt;span class="section-num">11&lt;/span> Пользовательские программы&lt;/h2>
-&lt;h3 id="утилиты">&lt;span class="section-num">11.1&lt;/span> Утилиты&lt;/h3>
+&lt;h3 id="работа-с-файлами">&lt;span class="section-num">11.1&lt;/span> Работа с файлами&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/08/26/midnight-commander-file-manager/">Файловый менеджер Midnight Commander&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="утилиты">&lt;span class="section-num">11.2&lt;/span> Утилиты&lt;/h3>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/06/27/pdf-grep/">Pdf. Поиск подстроки&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/06/27/desktop-search/">Локальные поисковики&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;h3 id="обработка-видео">&lt;span class="section-num">11.2&lt;/span> Обработка видео&lt;/h3>
+&lt;h3 id="обработка-видео">&lt;span class="section-num">11.3&lt;/span> Обработка видео&lt;/h3>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/07/23/video-kdenlive/">Видео. KDEnlive&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/10/21/video-processing-command-line/">Обработка видео. Командная строка&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/03/09/download-youtube/">Закачка с youtube&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;h3 id="виртуализация">&lt;span class="section-num">11.3&lt;/span> Виртуализация&lt;/h3>
+&lt;h3 id="виртуализация">&lt;span class="section-num">11.4&lt;/span> Виртуализация&lt;/h3>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/09/17/virtualbox-virtualization-system/">Система виртуализации VirtualBox&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;h3 id="редакторы">&lt;span class="section-num">11.4&lt;/span> Редакторы&lt;/h3>
+&lt;h3 id="редакторы">&lt;span class="section-num">11.5&lt;/span> Редакторы&lt;/h3>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2020/12/24/emacs/">Emacs&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/07/04/vim-editor/">Редактор vim&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;h3 id="офисные-программы">&lt;span class="section-num">11.5&lt;/span> Офисные программы&lt;/h3>
+&lt;h3 id="офисные-программы">&lt;span class="section-num">11.6&lt;/span> Офисные программы&lt;/h3>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/01/27/libreoffice-tuning/">Настройка LibreOffice&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/03/19/microsoft-office-alternatives/">Альтернативы Microsoft Office&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;h3 id="работа-с-дисками">&lt;span class="section-num">11.6&lt;/span> Работа с дисками&lt;/h3>
+&lt;h3 id="работа-с-дисками">&lt;span class="section-num">11.7&lt;/span> Работа с дисками&lt;/h3>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/03/08/using-sfdisk/">Использование sfdisk&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;h3 id="вычисления">&lt;span class="section-num">11.7&lt;/span> Вычисления&lt;/h3>
+&lt;h3 id="вычисления">&lt;span class="section-num">11.8&lt;/span> Вычисления&lt;/h3>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/07/22/principles-using-supercomputer/">Принципы работы на суперкомпьютере&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/09/07/regulations-access-supercomputer-rudn/">Регламент доступа к суперкомпьютеру РУДН&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;h3 id="квантовая-химия">&lt;span class="section-num">11.8&lt;/span> Квантовая химия&lt;/h3>
+&lt;h3 id="квантовая-химия">&lt;span class="section-num">11.9&lt;/span> Квантовая химия&lt;/h3>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/10/17/quantum-chemistry-gamess/">Квантовая химия. Gamess&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;h3 id="синхронизация-файлов">&lt;span class="section-num">11.9&lt;/span> Синхронизация файлов&lt;/h3>
+&lt;h3 id="синхронизация-файлов">&lt;span class="section-num">11.10&lt;/span> Синхронизация файлов&lt;/h3>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/10/27/rclone/">rclone&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/08/01/synchronizing-files-syncthing/">Синхронизация файлов с помощью syncthing&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;h3 id="файлы-конфигурации">&lt;span class="section-num">11.10&lt;/span> Файлы конфигурации&lt;/h3>
+&lt;h3 id="файлы-конфигурации">&lt;span class="section-num">11.11&lt;/span> Файлы конфигурации&lt;/h3>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/10/28/configuration-file-management-chezmoi/">Управление файлами конфигурации. Домашний каталог. Chezmoi&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/07/30/configuration-file-management-repo/">Управление файлами конфигурации. Домашний каталог. Репозиторий&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;h3 id="сетевые-клиенты">&lt;span class="section-num">11.11&lt;/span> Сетевые клиенты&lt;/h3>
+&lt;h3 id="сетевые-клиенты">&lt;span class="section-num">11.12&lt;/span> Сетевые клиенты&lt;/h3>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/02/28/google-chrome-flags/">Флаги запуска google chrome&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;h3 id="телеконференции">&lt;span class="section-num">11.12&lt;/span> Телеконференции&lt;/h3>
+&lt;h3 id="телеконференции">&lt;span class="section-num">11.13&lt;/span> Телеконференции&lt;/h3>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/03/23/video-conferencing-software-analogues/">Аналоги программ для видеоконференций&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;h3 id="наборы-программ">&lt;span class="section-num">11.13&lt;/span> Наборы программ&lt;/h3>
+&lt;h3 id="наборы-программ">&lt;span class="section-num">11.14&lt;/span> Наборы программ&lt;/h3>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/06/26/android-apps/">Программы на Android&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;h2 id="безопасность">&lt;span class="section-num">12&lt;/span> Безопасность&lt;/h2>
+&lt;h3 id="пароли">&lt;span class="section-num">12.1&lt;/span> Пароли&lt;/h3>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/04/29/password-managers/">Менеджеры паролей&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/05/03/have-i-been-pwned-hibp/">Have I Been Pwned (HIBP)&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/08/24/one-time-passwords/">Одноразовые пароли&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="разное">&lt;span class="section-num">12.2&lt;/span> Разное&lt;/h3>
+&lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/02/03/ssh-key-type/">Тип ключа ssh&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/04/30/acme-certificates/">Сертификаты ACME&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/05/03/hsts-mechanism/">Механизм HSTS&lt;/a>&lt;/li>
@@ -13709,6 +14253,156 @@ allow="clipboard-write" frameborder="0">
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/06/11/computer-specifications/">Спецификации компьютеров&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/09/15/servers-donskaya/">Сервера на Донской&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/08/13/network-donskaya/">Сеть на Донской&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>Использование смартфона в качестве камеры</title><link>https://yamadharma.github.io/ru/post/2021/02/12/smartphone-as-camera/</link><pubDate>Fri, 12 Feb 2021 18:38:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2021/02/12/smartphone-as-camera/</guid><description>&lt;p>При отсутствии компьютерной камеры можно в качестве камеры использовать смартфон.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#droidcam">&lt;span class="section-num">1&lt;/span> Droidcam&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#установка-программного-обеспечения">&lt;span class="section-num">1.1&lt;/span> Установка программного обеспечения&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#смартфон">&lt;span class="section-num">1.1.1&lt;/span> Смартфон&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#windows">&lt;span class="section-num">1.1.2&lt;/span> Windows&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#linux">&lt;span class="section-num">1.1.3&lt;/span> Linux&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#использование-программы">&lt;span class="section-num">1.2&lt;/span> Использование программы&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#подключение-по-wi-fi">&lt;span class="section-num">1.2.1&lt;/span> Подключение по Wi-Fi&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#подключение-по-wi-fi--через-броузер">&lt;span class="section-num">1.2.2&lt;/span> Подключение по Wi-Fi (через броузер)&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#подключение-по-wi-fi--создав-wi-fi-сервер">&lt;span class="section-num">1.2.3&lt;/span> Подключение по Wi-Fi (создав Wi-Fi сервер)&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#подключение-по-usb">&lt;span class="section-num">1.2.4&lt;/span> Подключение по USB&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="droidcam">&lt;span class="section-num">1&lt;/span> Droidcam&lt;/h2>
+&lt;p>Программный пакет &lt;a href="https://www.dev47apps.com/" target="_blank" rel="noopener">Droidcam&lt;/a> предполагает установку приложений как на смартфон, так и на компьютер.&lt;/p>
+&lt;h3 id="установка-программного-обеспечения">&lt;span class="section-num">1.1&lt;/span> Установка программного обеспечения&lt;/h3>
+&lt;p>Для работы следует установить клиента на смартфон и на операционную систему компьютера.&lt;/p>
+&lt;h4 id="смартфон">&lt;span class="section-num">1.1.1&lt;/span> Смартфон&lt;/h4>
+&lt;p>На смартфон следует установить приложение &lt;a href="https://play.google.com/store/apps/details?id=com.dev47apps.droidcam" target="_blank" rel="noopener">DroidCam&lt;/a>.&lt;/p>
+&lt;ul>
+&lt;li>Домашняя страница: &lt;a href="https://www.dev47apps.com/" target="_blank" rel="noopener">https://www.dev47apps.com/&lt;/a>.&lt;/li>
+&lt;li>Google Play (версия Free): &lt;a href="https://play.google.com/store/apps/details?id=com.dev47apps.droidcam" target="_blank" rel="noopener">https://play.google.com/store/apps/details?id=com.dev47apps.droidcam&lt;/a>.
+&lt;ul>
+&lt;li>Поддержка разрешения видео 640x480, 320x240.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Google Play (версия Pro): &lt;a href="https://play.google.com/store/apps/details?id=com.dev47apps.droidcamx" target="_blank" rel="noopener">https://play.google.com/store/apps/details?id=com.dev47apps.droidcamx&lt;/a>.
+&lt;ul>
+&lt;li>Нет рекламы.&lt;/li>
+&lt;li>Поддержка высокого разрешения видео (720p/1080p в HD Mode).&lt;/li>
+&lt;li>Настройки камеры: вспышка, авто-фокусировка, увеличение изображения и другое.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Есть вариант для iPhone.&lt;/li>
+&lt;li>Инструкция от разработчика: &lt;a href="https://www.dev47apps.com/droidcam/connect/" target="_blank" rel="noopener">https://www.dev47apps.com/droidcam/connect/&lt;/a>.&lt;/li>
+&lt;li>Help по программе: &lt;a href="https://www.dev47apps.com/droidcam/help/" target="_blank" rel="noopener">https://www.dev47apps.com/droidcam/help/&lt;/a>.&lt;/li>
+&lt;/ul>
+&lt;h4 id="windows">&lt;span class="section-num">1.1.2&lt;/span> Windows&lt;/h4>
+&lt;ul>
+&lt;li>Установка с помощью менеджера пакетов Chocolatey (см. &lt;a href="https://yamadharma.github.io/ru/post/2021/01/18/package-manager-windows-chocolatey/">Пакетный менеджер для Windows. Chocolatey&lt;/a>).
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install droidcamclient
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Можно скачать и установить вручную, скачав приложение по адресу: &lt;a href="https://www.dev47apps.com/droidcam/windows/" target="_blank" rel="noopener">https://www.dev47apps.com/droidcam/windows/&lt;/a>.&lt;/li>
+&lt;/ul>
+&lt;h4 id="linux">&lt;span class="section-num">1.1.3&lt;/span> Linux&lt;/h4>
+&lt;ul>
+&lt;li>Необходима поддержка &lt;code>Video4Linux loopback&lt;/code> в ядре:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">Device Drivers ---&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;lt;M&amp;gt; Multimedia support ---&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> [*] Cameras/video grabbers support
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> [*] Media Controller API
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> [*] V4L2 sub-device userspace API
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Пакет устанавливает утилиты и модуль ядра.&lt;/li>
+&lt;li>Репозиторий клиента: &lt;a href="https://github.com/dev47apps/droidcam" target="_blank" rel="noopener">https://github.com/dev47apps/droidcam&lt;/a>.&lt;/li>
+&lt;/ul>
+&lt;!--list-separator-->
+&lt;ol>
+&lt;li>
+&lt;p>Дистрибутивы&lt;/p>
+&lt;ul>
+&lt;li>Gentoo
+&lt;ul>
+&lt;li>Пакет отсутствует в основном дереве portage. Следует использовать overlay:
+&lt;ul>
+&lt;li>nex-overlay &lt;a href="https://gitlab.com/NexAdn/nex-overlay" target="_blank" rel="noopener">https://gitlab.com/NexAdn/nex-overlay&lt;/a>;&lt;/li>
+&lt;li>thegreatmcpain
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">layman -a thegreatmcpain
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>guru
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">layman -a guru
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Установка:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge droidcam
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;!--list-separator-->
+&lt;ol start="2">
+&lt;li>
+&lt;p>Настройка&lt;/p>
+&lt;ul>
+&lt;li>В результате будет установлен модуль ядра &lt;code>v4l2loopback_dc&lt;/code>.&lt;/li>
+&lt;li>По умолчанию разрешение установлено в 640x480.&lt;/li>
+&lt;li>Для настройки разрешения необходимо задать опции для модуля.&lt;/li>
+&lt;li>Опции задаются в соответствующих файлах. В зависимости от дистрибутива они называются:
+&lt;ul>
+&lt;li>&lt;code>/etc/modprobe.d/v4l2loopback-dc.conf&lt;/code>;&lt;/li>
+&lt;li>&lt;code>/etc/modprobe.d/droidcam.conf&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Формат записи:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">options v4l2loopback-dc width=640 height=480
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Поддерживаемые разрешения: 320×240, 480×360, 640×480, 960×720, 1280×720, 1920x1080.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;h3 id="использование-программы">&lt;span class="section-num">1.2&lt;/span> Использование программы&lt;/h3>
+&lt;p>После запуска программы на смартфоне возможно переключения камер телефона.&lt;/p>
+&lt;h4 id="подключение-по-wi-fi">&lt;span class="section-num">1.2.1&lt;/span> Подключение по Wi-Fi&lt;/h4>
+&lt;ul>
+&lt;li>Запускаем &lt;code>droidcam&lt;/code> на компьютере и на телефоне.&lt;/li>
+&lt;li>Выбираем подключение по Wi-Fi (нужно подключаться обязательно к одной и той же сети с телефона и с компьютера).&lt;/li>
+&lt;li>После подключения к Wi-Fi в программе на смартфоне отобразиться IP.&lt;/li>
+&lt;li>На компьютере в программе выберите тип подключения &amp;ldquo;Connect over WiFi (LAN)&amp;rdquo;, введите IP и порт из приложения на смартфоне, нажмите Start.&lt;/li>
+&lt;/ul>
+&lt;h4 id="подключение-по-wi-fi--через-броузер">&lt;span class="section-num">1.2.2&lt;/span> Подключение по Wi-Fi (через броузер)&lt;/h4>
+&lt;ul>
+&lt;li>Запускаем &lt;code>droidcam&lt;/code> на телефоне.&lt;/li>
+&lt;li>Открываем броузер на любом устройстве и вводим в адресную строку &lt;code>http://ip:port&lt;/code>, где &lt;code>ip&lt;/code> и &lt;code>port&lt;/code> &amp;mdash; это IP-адрес и порт из приложения на андроиде.&lt;/li>
+&lt;/ul>
+&lt;h4 id="подключение-по-wi-fi--создав-wi-fi-сервер">&lt;span class="section-num">1.2.3&lt;/span> Подключение по Wi-Fi (создав Wi-Fi сервер)&lt;/h4>
+&lt;ul>
+&lt;li>На компьютере в программе выбирается режим &lt;code>Create WiFi Server&lt;/code>, нажмите Start.&lt;/li>
+&lt;li>На смартфоне в приложении:
+&lt;ul>
+&lt;li>откройте опции, выберите &lt;code>Connect to Server&lt;/code>, &lt;code>Add new&lt;/code>;&lt;/li>
+&lt;li>в поле &lt;code>Name&lt;/code> введите любое название;&lt;/li>
+&lt;li>в поле &lt;code>IP Address&lt;/code> введите адрес компьютера;&lt;/li>
+&lt;li>нажимает &lt;code>Save&lt;/code>;&lt;/li>
+&lt;li>выбираем созданный сервер.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="подключение-по-usb">&lt;span class="section-num">1.2.4&lt;/span> Подключение по USB&lt;/h4>
+&lt;ul>
+&lt;li>На смартфоне включить &lt;code>Отладка по USB&lt;/code>.&lt;/li>
+&lt;li>На компьютере в программе выбрать режим &lt;code>Connect over USB&lt;/code> (на компьютере должны быть установлены драйвера ADB).&lt;/li>
+&lt;li>Подключить смартфон по USB кабелю.&lt;/li>
+&lt;li>На компьютере нажать &lt;code>Start&lt;/code>.&lt;/li>
 &lt;/ul></description></item><item><title>Верификация коммитов git с помощью GPG</title><link>https://yamadharma.github.io/ru/post/2021/01/28/verifying-git-commits-gpg/</link><pubDate>Thu, 28 Jan 2021 18:47:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2021/01/28/verifying-git-commits-gpg/</guid><description>&lt;p>Настроим верификацию коммитов git с помощью GPG.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
@@ -15088,7 +15782,7 @@ allow="clipboard-write" frameborder="0">
 &lt;ul>
 &lt;li>Часть сервисов 1С доступны непосредственно из сети.&lt;/li>
 &lt;li>Часть сервисов доступна через VPN из внешний сети и напрямую из локальной сети Университета.&lt;/li>
-&lt;li>При подключении модно выбрать одну из опций:
+&lt;li>При подключении можно выбрать одну из опций:
 &lt;ul>
 &lt;li>&lt;em>На веб-сервере&lt;/em>
 &lt;ul>
@@ -15115,7 +15809,7 @@ allow="clipboard-write" frameborder="0">
 &lt;li>
 &lt;p>На веб-сервере&lt;/p>
 &lt;ul>
-&lt;li>Расположение информационной базы на веб-сервере: &lt;code>https://vuz.rudn.ru/VUZ_RUDN/&lt;/code>.&lt;/li>
+&lt;li>Расположение информационной базы на веб-сервере: &lt;a href="https://vuz.rudn.ru/VUZ_RUDN/" target="_blank" rel="noopener">https://vuz.rudn.ru/VUZ_RUDN/&lt;/a>.&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ol>

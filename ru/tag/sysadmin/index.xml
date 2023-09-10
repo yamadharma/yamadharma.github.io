@@ -1,4 +1,413 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>sysadmin | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/sysadmin/</link><atom:link href="https://yamadharma.github.io/ru/tag/sysadmin/index.xml" rel="self" type="application/rss+xml"/><description>sysadmin</description><generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2023 Dmitry S. Kulyabov</copyright><lastBuildDate>Mon, 28 Aug 2023 10:22:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url><title>sysadmin</title><link>https://yamadharma.github.io/ru/tag/sysadmin/</link></image><item><title>Установка сервера afs</title><link>https://yamadharma.github.io/ru/post/2023/08/28/afs-server-installation/</link><pubDate>Mon, 28 Aug 2023 10:22:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/08/28/afs-server-installation/</guid><description>&lt;p>Установка сервера afs.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>sysadmin | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/sysadmin/</link><atom:link href="https://yamadharma.github.io/ru/tag/sysadmin/index.xml" rel="self" type="application/rss+xml"/><description>sysadmin</description><generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2023 Dmitry S. Kulyabov</copyright><lastBuildDate>Tue, 05 Sep 2023 09:49:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url><title>sysadmin</title><link>https://yamadharma.github.io/ru/tag/sysadmin/</link></image><item><title>DHCP snooping</title><link>https://yamadharma.github.io/ru/post/2023/09/05/dhcp-snooping/</link><pubDate>Tue, 05 Sep 2023 09:49:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/09/05/dhcp-snooping/</guid><description>&lt;p>&lt;em>DHCP snooping&lt;/em>.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#принципы-работы-dhcp-snooping">&lt;span class="section-num">2&lt;/span> Принципы работы &lt;em>DHCP snooping&lt;/em>&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#опция-82">&lt;span class="section-num">3&lt;/span> Опция 82&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#dhcp-ретранслятор">&lt;span class="section-num">4&lt;/span> DHCP-ретранслятор&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#настройка">&lt;span class="section-num">5&lt;/span> Настройка&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#порядок-настройки">&lt;span class="section-num">5.1&lt;/span> Порядок настройки&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#коммутаторы-cisco">&lt;span class="section-num">5.2&lt;/span> Коммутаторы Cisco&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#основные-настройки">&lt;span class="section-num">5.2.1&lt;/span> Основные настройки&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#дополнительные-настройки">&lt;span class="section-num">5.2.2&lt;/span> Дополнительные настройки&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#команды-просмотра">&lt;span class="section-num">5.2.3&lt;/span> Команды просмотра&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>&lt;em>DHCP snooping&lt;/em> &amp;mdash; функция коммутатора, предназначенная для защиты от атак с использованием протокола DHCP.&lt;/li>
+&lt;li>Например, атаки с подменой DHCP-сервера в сети или атаки DHCP starvation, которая заставляет DHCP-сервер выдать все существующие на сервере адреса злоумышленнику.&lt;/li>
+&lt;li>&lt;em>DHCP snooping&lt;/em> позволяет:
+&lt;ul>
+&lt;li>защитить клиентов в сети от получения адреса от неавторизованного DHCP-сервера;&lt;/li>
+&lt;li>регулировать какие сообщения протокола DHCP отбрасывать, какие перенаправлять и на какие порты.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Для правильной работы &lt;em>DHCP snooping&lt;/em>, необходимо указать какие порты коммутатора будут доверенными (trusted), а какие &amp;mdash; ненадёжными (untrusted).&lt;/li>
+&lt;li>Ненадёжные (Untrusted) порты: порты, к которым подключены клиенты.
+&lt;ul>
+&lt;li>DHCP-ответы, приходящие с этих портов отбрасываются коммутатором.&lt;/li>
+&lt;li>Для ненадёжных портов выполняется ряд проверок сообщений DHCP и создаётся база данных привязки DHCP (&lt;em>DHCP snooping&lt;/em> binding database).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Доверенные (Trusted) порты: порты коммутатора, к которым подключён другой коммутатор или DHCP-сервер.
+&lt;ul>
+&lt;li>DHCP-пакеты полученные с доверенных портов не отбрасываются.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="принципы-работы-dhcp-snooping">&lt;span class="section-num">2&lt;/span> Принципы работы &lt;em>DHCP snooping&lt;/em>&lt;/h2>
+&lt;ul>
+&lt;li>По умолчанию коммутатор отбрасывает DHCP-пакет, который пришел на ненадёжный порт, если:
+&lt;ul>
+&lt;li>приходит одно из сообщений, которые отправляет DHCP-сервер (DHCPOFFER, DHCPACK, DHCPNAK или DHCPLEASEQUERY);&lt;/li>
+&lt;li>приходит сообщение DHCPRELEASE или DHCPDECLINE, в котором содержится MAC-адрес из базы данных привязки DHCP, но информация об интерфейсе в таблице не совпадает с интерфейсом, на котором был получен пакет;&lt;/li>
+&lt;li>в пришедшем DHCP-пакете не совпадают MAC-адрес указанный в DHCP-запросе и MAC-адрес отправителя;&lt;/li>
+&lt;li>приходит DHCP-пакет, в котором есть опция 82.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="опция-82">&lt;span class="section-num">3&lt;/span> Опция 82&lt;/h2>
+&lt;ul>
+&lt;li>По умолчанию коммутатор на котором включен &lt;em>DHCP snooping&lt;/em>, вставляет опцию 82 в DHCP-запросы.&lt;/li>
+&lt;li>Коммутатор может изменять или вставлять опцию 82, даже если клиент и сервер находятся в одной подсети.&lt;/li>
+&lt;li>При вставке опции 82, коммутатор вставляет два значения:
+&lt;ul>
+&lt;li>Remote ID (MAC-адрес или IP-адрес коммутатора) (это значение можно настраивать);&lt;/li>
+&lt;li>Circuit ID (порт с которого пришел запрос) (это значение не настраивается).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>По умолчанию коммутатор, использующий &lt;em>DHCP snooping&lt;/em>, обнаруживает и отбрасывает любой DHCP-запрос содержащий опцию 82, который он получил через ненадёжный порт.&lt;/li>
+&lt;li>Этот режим стоит оставить, если коммутатор соединен с конечными клиентами. Получение запроса с опцией 82 от клиента будет говорит об атаке, которую коммутатор должен предотвратить.&lt;/li>
+&lt;li>Но если функция &lt;em>DHCP snooping&lt;/em> включена на нескольких коммутаторах, которые соединены последовательно, то такое поведение по умолчанию, приведет к тому, что клиенты не смогут получить адрес по DHCP (если сервер находится через несколько коммутаторов).&lt;/li>
+&lt;li>Решения этой проблемы:
+&lt;ul>
+&lt;li>Сделать порт, к которому подсоединён нижележащий коммутатор, доверенным.&lt;/li>
+&lt;li>Настроить варианты обработки опции 82 на вышележащем коммутаторе:
+&lt;ul>
+&lt;li>сохранить опцию 82 в пришедшем пакете;&lt;/li>
+&lt;li>заменить опцию 82 в пришедшем пакете.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Отключить вставку опции 82 на коммутаторе.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="dhcp-ретранслятор">&lt;span class="section-num">4&lt;/span> DHCP-ретранслятор&lt;/h2>
+&lt;ul>
+&lt;li>Настройки опции 82 с &lt;em>DHCP snooping&lt;/em> перекрывают любые глобальные настройки указанные при настройке коммутатора для работы DHCP-ретранслятором.&lt;/li>
+&lt;li>Если &lt;em>DHCP snooping&lt;/em> не настроен в VLAN, то для него применяются глобальные настройки.&lt;/li>
+&lt;/ul>
+&lt;h2 id="настройка">&lt;span class="section-num">5&lt;/span> Настройка&lt;/h2>
+&lt;h3 id="порядок-настройки">&lt;span class="section-num">5.1&lt;/span> Порядок настройки&lt;/h3>
+&lt;ul>
+&lt;li>Настройка и проверка работы DHCP-сервера и DHCP-ретранслятора без включенного &lt;em>DHCP snooping&lt;/em>.&lt;/li>
+&lt;li>Включение &lt;em>DHCP snooping&lt;/em>. После включения &lt;em>DHCP snooping&lt;/em> на коммутаторе и в соответствующих VLAN, все порты коммутатора по умолчанию считаются ненадёжными.&lt;/li>
+&lt;li>Указание доверенных портов. Те порты к которым подключены коммутаторы и которые ведут к DHCP-серверу (или порты к которым сервер подключен) должны быть настроены как доверенные.&lt;/li>
+&lt;li>Настройка политики обработки опции 82.&lt;/li>
+&lt;li>(Опционально) Включение или выключение дополнительных проверок DHCP-сообщений.&lt;/li>
+&lt;li>После того, как &lt;em>DHCP snooping&lt;/em> включен на коммутаторе, по мере выдачи адресов клиентам, начинает заполняться база данных привязки DHCP.&lt;/li>
+&lt;li>В базе данных привязки DHCP хранятся (информация хранится только о ненадёжных портах):
+&lt;ul>
+&lt;li>MAC-адрес клиента&lt;/li>
+&lt;li>Арендованный IP-адрес клиента&lt;/li>
+&lt;li>Время аренды в секундах&lt;/li>
+&lt;li>Идентификатор VLAN&lt;/li>
+&lt;li>Идентификатор порта к которому присоединен клиент&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="коммутаторы-cisco">&lt;span class="section-num">5.2&lt;/span> Коммутаторы Cisco&lt;/h3>
+&lt;h4 id="основные-настройки">&lt;span class="section-num">5.2.1&lt;/span> Основные настройки&lt;/h4>
+&lt;ul>
+&lt;li>
+&lt;p>Включаем глобально DHCP snoopig на коммутаторе:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">switch&lt;span class="o">(&lt;/span>config&lt;span class="o">)&lt;/span>&lt;span class="c1">#ip dhcp snooping&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Включаем &lt;em>DHCP snooping&lt;/em> в нужном VLAN:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">switch&lt;span class="o">(&lt;/span>config&lt;span class="o">)&lt;/span>&lt;span class="c1">#ip dhcp snooping vlan 100&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Указываем доверенные порты:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">switch&lt;span class="o">(&lt;/span>config&lt;span class="o">)&lt;/span>&lt;span class="c1">#interface GigabitEthernet 1/0/1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">switch&lt;span class="o">(&lt;/span>config-if&lt;span class="o">)&lt;/span>&lt;span class="c1">#ip dhcp snooping trust&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h4 id="дополнительные-настройки">&lt;span class="section-num">5.2.2&lt;/span> Дополнительные настройки&lt;/h4>
+&lt;ul>
+&lt;li>Можно отключить передачу опции 82:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">switch&lt;span class="o">(&lt;/span>config&lt;span class="o">)&lt;/span>&lt;span class="c1">#no ip dhcp snooping information option&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Можно настроить ограничение количества DHCP обращений на не доверенном интерфейсе:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">switch&lt;span class="o">(&lt;/span>config&lt;span class="o">)&lt;/span>&lt;span class="c1">#interface gigabitEthernet 1/0/1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">switch&lt;span class="o">(&lt;/span>config-if&lt;span class="o">)&lt;/span>&lt;span class="c1">#ip dhcp snooping limit rate 50&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>(Опционально) Указать адрес авторизованного DHCP-сервера, доступного через доверенный порт:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">switch&lt;span class="o">(&lt;/span>config&lt;span class="o">)&lt;/span>&lt;span class="c1">#ip dhcp-server 10.84.168.253&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h4 id="команды-просмотра">&lt;span class="section-num">5.2.3&lt;/span> Команды просмотра&lt;/h4>
+&lt;ul>
+&lt;li>Посмотреть состояние &lt;em>DHCP snooping&lt;/em>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">switch#show ip dhcp snooping
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Просмотр базы данных привязки DHCP:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">switch#show ip dhcp snooping binding
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul></description></item><item><title>Перенос kerberos на другую машину</title><link>https://yamadharma.github.io/ru/post/2023/09/03/kerberos-migration/</link><pubDate>Sun, 03 Sep 2023 18:13:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/09/03/kerberos-migration/</guid><description>&lt;p>Перенос службы Kerberos на другую машину.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#исходная-машина">&lt;span class="section-num">1&lt;/span> Исходная машина&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#целевая-машина">&lt;span class="section-num">2&lt;/span> Целевая машина&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#установка-программного-обеспечения">&lt;span class="section-num">2.1&lt;/span> Установка программного обеспечения&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#брандмауэр">&lt;span class="section-num">2.2&lt;/span> Брандмауэр&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#сервер-kerberos">&lt;span class="section-num">2.2.1&lt;/span> Сервер Kerberos&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#разрешение-имён">&lt;span class="section-num">2.3&lt;/span> Разрешение имён&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#файл-конфигурации-kerberos">&lt;span class="section-num">2.4&lt;/span> Файл конфигурации kerberos&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#база-данных">&lt;span class="section-num">2.5&lt;/span> База данных&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#файл-конфигурации-сервера-kerberos">&lt;span class="section-num">2.6&lt;/span> Файл конфигурации сервера kerberos&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#файл-прав-доступа-к-серверу-администрирования-kerberos">&lt;span class="section-num">2.7&lt;/span> Файл прав доступа к серверу администрирования kerberos&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#файл-тайника">&lt;span class="section-num">2.8&lt;/span> Файл тайника&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#запуск-сервера">&lt;span class="section-num">2.9&lt;/span> Запуск сервера&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="исходная-машина">&lt;span class="section-num">1&lt;/span> Исходная машина&lt;/h2>
+&lt;h2 id="целевая-машина">&lt;span class="section-num">2&lt;/span> Целевая машина&lt;/h2>
+&lt;h3 id="установка-программного-обеспечения">&lt;span class="section-num">2.1&lt;/span> Установка программного обеспечения&lt;/h3>
+&lt;ul>
+&lt;li>Установите Kerberos:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf -y install krb5-server krb5-workstation
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="брандмауэр">&lt;span class="section-num">2.2&lt;/span> Брандмауэр&lt;/h3>
+&lt;ul>
+&lt;li>Настройки брандмауэра по умолчанию в RHEL будут блокировать сетевые порты, используемые Kerberos.&lt;/li>
+&lt;li>Необходимо настроить правила брандмауэра на серверах, чтобы разрешить трафик через эти порты.&lt;/li>
+&lt;/ul>
+&lt;h4 id="сервер-kerberos">&lt;span class="section-num">2.2.1&lt;/span> Сервер Kerberos&lt;/h4>
+&lt;ul>
+&lt;li>На сервере Kerberos откройте порты udp 88 и 646:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">firewall-cmd --zone&lt;span class="o">=&lt;/span>public --add-service&lt;span class="o">=&lt;/span>kerberos
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">firewall-cmd --zone&lt;span class="o">=&lt;/span>public --add-service&lt;span class="o">=&lt;/span>kadmin
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">firewall-cmd --runtime-to-permanent
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="разрешение-имён">&lt;span class="section-num">2.3&lt;/span> Разрешение имён&lt;/h3>
+&lt;ul>
+&lt;li>Возможно, следует записать адрес сервера в &lt;code>/etc/hosts&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h3 id="файл-конфигурации-kerberos">&lt;span class="section-num">2.4&lt;/span> Файл конфигурации kerberos&lt;/h3>
+&lt;ul>
+&lt;li>Перенесите конфигурационный файл &lt;code>/etc/krb5.conf&lt;/code>.&lt;/li>
+&lt;li>Лучше отредактировать новый, установив необходимые &lt;em>realms&lt;/em>.&lt;/li>
+&lt;/ul>
+&lt;h3 id="база-данных">&lt;span class="section-num">2.5&lt;/span> База данных&lt;/h3>
+&lt;ul>
+&lt;li>Восстановите базу данных Kerberos:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">kdb5_util load kdb5_dump
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="файл-конфигурации-сервера-kerberos">&lt;span class="section-num">2.6&lt;/span> Файл конфигурации сервера kerberos&lt;/h3>
+&lt;ul>
+&lt;li>Восстановите &lt;code>/var/kerberos/krb5kdc/kdc.conf&lt;/code> из резервной копии.&lt;/li>
+&lt;/ul>
+&lt;h3 id="файл-прав-доступа-к-серверу-администрирования-kerberos">&lt;span class="section-num">2.7&lt;/span> Файл прав доступа к серверу администрирования kerberos&lt;/h3>
+&lt;ul>
+&lt;li>Восстановите &lt;code>/var/kerberos/krb5kdc/kadm5.acl&lt;/code> из резервной копии.&lt;/li>
+&lt;/ul>
+&lt;h3 id="файл-тайника">&lt;span class="section-num">2.8&lt;/span> Файл тайника&lt;/h3>
+&lt;ul>
+&lt;li>stash-файл позволяет KDC аутентифицировать себя для утилит базы данных, таких как kadmin, kadmind, krb5kdcи kdb5_util.&lt;/li>
+&lt;li>Запустите команду ниже, чтобы сохранить принципал в файле (требуется пароль администратора kdc):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">kdb5_util stash
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="запуск-сервера">&lt;span class="section-num">2.9&lt;/span> Запуск сервера&lt;/h3>
+&lt;ul>
+&lt;li>Запустите сервер:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">systemctl &lt;span class="nb">enable&lt;/span> --now krb5kdc.service
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul></description></item><item><title>Почта. vk.com. Настройка почтового клиента</title><link>https://yamadharma.github.io/ru/post/2023/09/03/mail-vk-com-configuring-mail-client/</link><pubDate>Sun, 03 Sep 2023 17:14:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/09/03/mail-vk-com-configuring-mail-client/</guid><description>&lt;p>Настройка почтового клиента для почты &lt;em>vk.com&lt;/em>.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#настройка-клиента">&lt;span class="section-num">2&lt;/span> Настройка клиента&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#общие-параметры">&lt;span class="section-num">2.1&lt;/span> Общие параметры&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#smtp">&lt;span class="section-num">2.2&lt;/span> SMTP&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#imap">&lt;span class="section-num">2.3&lt;/span> IMAP&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#pop3">&lt;span class="section-num">2.4&lt;/span> POP3&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>Сайт: &lt;a href="https://vk.mail.ru/" target="_blank" rel="noopener">https://vk.mail.ru/&lt;/a>&lt;/li>
+&lt;li>Сделан на основе сервиса почты &lt;em>mail.ru&lt;/em> (см. &lt;a href="https://yamadharma.github.io/ru/post/2021/07/04/mail-mail-ru-configuring-mail-client/">Почта. Mail.ru. Настройка почтового клиента&lt;/a>).&lt;/li>
+&lt;li>Используются локализованные названия для папок IMAP.&lt;/li>
+&lt;li>Папки почты по умолчанию:
+&lt;ul>
+&lt;li>&lt;code>INBOX&lt;/code>;&lt;/li>
+&lt;li>&lt;code>Архив&lt;/code>;&lt;/li>
+&lt;li>&lt;code>Корзина&lt;/code>;&lt;/li>
+&lt;li>&lt;code>Спам&lt;/code>;&lt;/li>
+&lt;li>&lt;code>Черновики&lt;/code>;&lt;/li>
+&lt;li>&lt;code>Отправленные&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Имена папок можно передавать в Unicode.&lt;/li>
+&lt;/ul>
+&lt;h2 id="настройка-клиента">&lt;span class="section-num">2&lt;/span> Настройка клиента&lt;/h2>
+&lt;h3 id="общие-параметры">&lt;span class="section-num">2.1&lt;/span> Общие параметры&lt;/h3>
+&lt;ul>
+&lt;li>login: адрес электронной почты в формате &lt;code>имя_пользователя@vk.com&lt;/code>, где &lt;code>имя_пользователя&lt;/code> &amp;mdash; учётная запись ВКонтакте.&lt;/li>
+&lt;li>password: пароль от учётной записи ВКонтакте.&lt;/li>
+&lt;/ul>
+&lt;h3 id="smtp">&lt;span class="section-num">2.2&lt;/span> SMTP&lt;/h3>
+&lt;ul>
+&lt;li>адрес почтового сервера: &lt;code>smtp.vk.com&lt;/code>;&lt;/li>
+&lt;li>защита соединения: SSL;&lt;/li>
+&lt;li>порт: 465.&lt;/li>
+&lt;/ul>
+&lt;h3 id="imap">&lt;span class="section-num">2.3&lt;/span> IMAP&lt;/h3>
+&lt;ul>
+&lt;li>адрес почтового сервера: &lt;code>imap.vk.com&lt;/code>;&lt;/li>
+&lt;li>защита соединения: SSL;&lt;/li>
+&lt;li>порт: 993.&lt;/li>
+&lt;/ul>
+&lt;h3 id="pop3">&lt;span class="section-num">2.4&lt;/span> POP3&lt;/h3>
+&lt;ul>
+&lt;li>адрес почтового сервера &amp;mdash; &lt;code>imap.vk.com&lt;/code>;&lt;/li>
+&lt;li>защита соединения: SSL;&lt;/li>
+&lt;li>порт: 995.&lt;/li>
+&lt;/ul></description></item><item><title>Настройка Openldap</title><link>https://yamadharma.github.io/ru/post/2023/09/02/configure-openldap-rocky-linux/</link><pubDate>Sat, 02 Sep 2023 19:53:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/09/02/configure-openldap-rocky-linux/</guid><description>&lt;p>Настройка Openldap.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#установка-openldap">&lt;span class="section-num">1&lt;/span> Установка Openldap&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#пароль-администратора">&lt;span class="section-num">2&lt;/span> Пароль администратора&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="установка-openldap">&lt;span class="section-num">1&lt;/span> Установка Openldap&lt;/h2>
+&lt;ul>
+&lt;li>Установка сервера openldap:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf -y install openldap-servers openldap-clients
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Запуск сервера openldap:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">systemctl &lt;span class="nb">enable&lt;/span> --now slapd
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="пароль-администратора">&lt;span class="section-num">2&lt;/span> Пароль администратора&lt;/h2>
+&lt;ul>
+&lt;li>Для генерации значения пароля пользователя, подходящего для использования с &lt;code>ldapadd&lt;/code> или &lt;code>ldapmodify&lt;/code> используется утилита &lt;code>slappasswd&lt;/code>.&lt;/li>
+&lt;li>Вначале хэша пароля начинающийся алгоритм хэша (например &lt;code>{SSHA}&lt;/code>).&lt;/li>
+&lt;li>Создайте хеш пароля:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">slappasswd &amp;gt; /etc/openldap/certs/password
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul></description></item><item><title>Перенос Openldap на другую машину</title><link>https://yamadharma.github.io/ru/post/2023/09/01/openldap-migration/</link><pubDate>Fri, 01 Sep 2023 20:12:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/09/01/openldap-migration/</guid><description>&lt;p>Перенос Openldap на другую машину.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#подготовка">&lt;span class="section-num">1&lt;/span> Подготовка&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#установка-сервера">&lt;span class="section-num">1.1&lt;/span> Установка сервера&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#установка-openldap">&lt;span class="section-num">1.2&lt;/span> Установка Openldap&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#дополнительная-информация">&lt;span class="section-num">2&lt;/span> Дополнительная информация&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#номер-базы-данных">&lt;span class="section-num">2.1&lt;/span> Номер базы данных&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#исходная-машина">&lt;span class="section-num">3&lt;/span> Исходная машина&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#целевая-машина">&lt;span class="section-num">4&lt;/span> Целевая машина&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#брандмауэр">&lt;span class="section-num">4.1&lt;/span> Брандмауэр&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#сервер-ldap">&lt;span class="section-num">4.1.1&lt;/span> Сервер ldap&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#перенос">&lt;span class="section-num">4.2&lt;/span> Перенос&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="подготовка">&lt;span class="section-num">1&lt;/span> Подготовка&lt;/h2>
+&lt;h3 id="установка-сервера">&lt;span class="section-num">1.1&lt;/span> Установка сервера&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/08/12/rockylinux-server-installation/">Rocky Linux. Установка сервера&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="установка-openldap">&lt;span class="section-num">1.2&lt;/span> Установка Openldap&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/09/02/configure-openldap-rocky-linux/">Настройка Openldap&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="дополнительная-информация">&lt;span class="section-num">2&lt;/span> Дополнительная информация&lt;/h2>
+&lt;h3 id="номер-базы-данных">&lt;span class="section-num">2.1&lt;/span> Номер базы данных&lt;/h3>
+&lt;ul>
+&lt;li>При экспорте ключ &lt;code>-n&lt;/code> указывает на номер базы openldap. Номер базы виден в конфигурации.&lt;/li>
+&lt;li>База конфигураций всегда является первой, поэтому используется параметр &lt;code>-n 0&lt;/code>.&lt;/li>
+&lt;li>Обычно пользовательские данные находятся в базе под номером 2 (&lt;code>-n 2&lt;/code>).&lt;/li>
+&lt;li>Обратите внимание на атрибуты &lt;code>dn: olcDatabase&lt;/code> в дампе схемы конфигурации.&lt;/li>
+&lt;/ul>
+&lt;h2 id="исходная-машина">&lt;span class="section-num">3&lt;/span> Исходная машина&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;ol>
+&lt;li>Остановите службу:&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">systemctl stop slapd
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Экспортируйте всю схему и &lt;code>cn=config&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">slapcat -n &lt;span class="m">0&lt;/span> -l slapdbackup.conf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Экспортируйте все пользовательские данные, хранящиеся на сервере openldap:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">slapcat -n &lt;span class="m">2&lt;/span> -l configbackup.ldif
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Скопируйте файлы &lt;code>slapdbackup.conf&lt;/code> и &lt;code>configbackup.ldif&lt;/code> на новый сервер.&lt;/li>
+&lt;/ul>
+&lt;h2 id="целевая-машина">&lt;span class="section-num">4&lt;/span> Целевая машина&lt;/h2>
+&lt;h3 id="брандмауэр">&lt;span class="section-num">4.1&lt;/span> Брандмауэр&lt;/h3>
+&lt;ul>
+&lt;li>Настройки брандмауэра по умолчанию в RHEL будут блокировать сетевые порты, используемые Kerberos.&lt;/li>
+&lt;li>Необходимо настроить правила брандмауэра на серверах, чтобы разрешить трафик через эти порты.&lt;/li>
+&lt;/ul>
+&lt;h4 id="сервер-ldap">&lt;span class="section-num">4.1.1&lt;/span> Сервер ldap&lt;/h4>
+&lt;ul>
+&lt;li>На сервере откройте порты для ldap и ldaps:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">firewall-cmd --zone&lt;span class="o">=&lt;/span>public --add-service&lt;span class="o">=&lt;/span>ldap
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">firewall-cmd --zone&lt;span class="o">=&lt;/span>public --add-service&lt;span class="o">=&lt;/span>ldap
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">firewall-cmd --runtime-to-permanent
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="перенос">&lt;span class="section-num">4.2&lt;/span> Перенос&lt;/h3>
+&lt;ul>
+&lt;li>Сохраните предыдущую конфигурацию:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">cp -R /etc/openldap /etc/openldap.orig
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Удалите конфигурацию по умолчанию:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">rm -rf /etc/openldap/slapd.d/*
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Восстановите файлы резервной копии:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">slapadd -n &lt;span class="m">0&lt;/span> -F /etc/openldap/slapd.d -l slapdbackup.conf
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">slapadd -n &lt;span class="m">2&lt;/span> -F /etc/openldap/slapd.d -l configbackup.ldif
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Исправьте права доступа к файлам:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">chown -R ldap:ldap /etc/openldap/slapd.d
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Восстановите метки SELinux:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">restorecon -vR /etc/openldap
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Запустите службу:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">systemctl &lt;span class="nb">enable&lt;/span> --now slapd
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul></description></item><item><title>Установка сервера afs</title><link>https://yamadharma.github.io/ru/post/2023/08/28/afs-server-installation/</link><pubDate>Mon, 28 Aug 2023 10:22:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/08/28/afs-server-installation/</guid><description>&lt;p>Установка сервера afs.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
 &lt;nav id="TableOfContents">
@@ -215,6 +624,7 @@
 &lt;ul>
 &lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#развёртывание">&lt;span class="section-num">2&lt;/span> Развёртывание&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#миграция">&lt;span class="section-num">3&lt;/span> Миграция&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/nav>
 &lt;/details>
@@ -226,11 +636,99 @@
 &lt;h2 id="развёртывание">&lt;span class="section-num">2&lt;/span> Развёртывание&lt;/h2>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/08/28/afs-server-installation/">Установка сервера afs&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/09/02/configure-openldap-rocky-linux/">Настройка Openldap&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="миграция">&lt;span class="section-num">3&lt;/span> Миграция&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/09/01/openldap-migration/">Перенос Openldap на другую машину&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/09/03/kerberos-migration/">Перенос kerberos на другую машину&lt;/a>&lt;/li>
 &lt;/ul></description></item><item><title>Файловая система xfs</title><link>https://yamadharma.github.io/ru/post/2023/08/26/xfs-file-system/</link><pubDate>Sat, 26 Aug 2023 19:50:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/08/26/xfs-file-system/</guid><description>&lt;p>Файловая система xfs.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
 &lt;nav id="TableOfContents">&lt;/nav>
-&lt;/details></description></item><item><title>Использование vagrant. Установка Rocky Linux</title><link>https://yamadharma.github.io/ru/post/2023/08/20/using-vagrant-install-rocky-linux/</link><pubDate>Sun, 20 Aug 2023 19:00:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/08/20/using-vagrant-install-rocky-linux/</guid><description>&lt;p>Установка Rocky Linux из репозитория образов Vagrant.&lt;/p>
+&lt;/details></description></item><item><title>Файловый менеджер Midnight Commander</title><link>https://yamadharma.github.io/ru/post/2023/08/26/midnight-commander-file-manager/</link><pubDate>Sat, 26 Aug 2023 17:40:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/08/26/midnight-commander-file-manager/</guid><description>&lt;p>Файловый менеджер Midnight Commander.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#windows">&lt;span class="section-num">1.1&lt;/span> Windows&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#установка">&lt;span class="section-num">2&lt;/span> Установка&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#windows">&lt;span class="section-num">2.1&lt;/span> Windows&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#горячие-клавиши-для-файловых-панелей">&lt;span class="section-num">3&lt;/span> Горячие клавиши для файловых панелей&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;h3 id="windows">&lt;span class="section-num">1.1&lt;/span> Windows&lt;/h3>
+&lt;ul>
+&lt;li>Репозиторий:
+&lt;ul>
+&lt;li>&lt;a href="https://github.com/adamyg/mcwin32" target="_blank" rel="noopener">https://github.com/adamyg/mcwin32&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://sourceforge.net/projects/mcwin32" target="_blank" rel="noopener">https://sourceforge.net/projects/mcwin32&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="установка">&lt;span class="section-num">2&lt;/span> Установка&lt;/h2>
+&lt;h3 id="windows">&lt;span class="section-num">2.1&lt;/span> Windows&lt;/h3>
+&lt;ul>
+&lt;li>Chocolatey (см. &lt;a href="https://yamadharma.github.io/ru/post/2021/01/18/package-manager-windows-chocolatey/">Пакетный менеджер для Windows. Chocolatey&lt;/a>):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install openssh -y
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">choco install mc --package-parameters&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;/modifypath&amp;#39;&lt;/span> -y
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Открывается как отдельное приложение.&lt;/li>
+&lt;li>Опция &lt;code>--package-parameters='/modifypath'&lt;/code> позволяет открывать из командной строки вызовом &lt;code>mc&lt;/code>.&lt;/li>
+&lt;li>Ssh нужно для подключения к удалённым компьютерам через меню в панели.&lt;/li>
+&lt;/ul>
+&lt;h2 id="горячие-клавиши-для-файловых-панелей">&lt;span class="section-num">3&lt;/span> Горячие клавиши для файловых панелей&lt;/h2>
+&lt;ul>
+&lt;li>&lt;code>F3&lt;/code>: Просмотр файла&lt;/li>
+&lt;li>&lt;code>F4&lt;/code>: Редактирование файла&lt;/li>
+&lt;li>&lt;code>Insert&lt;/code>: Выделение текущего объекта вызывает окно для выделения группы файлов (можно использовать регулярные выражения) снимает отметку с группы файлов (действие, обратное тому, которое вызывается по клавише +)&lt;/li>
+&lt;li>&lt;code>Meta+Enter&lt;/code>: Вставить текущий объект в командную строку&lt;/li>
+&lt;li>&lt;code>Meta+.&lt;/code>: не показывать или показать скрытые файлы или каталоги (начинаются на точку ‘.’)&lt;/li>
+&lt;li>&lt;code>Meta+,&lt;/code>: Переключить режим отображения панелей (вертикально/горизонтально)2&lt;/li>
+&lt;li>&lt;code>Meta+a&lt;/code>, &lt;code>Ctrl+x p&lt;/code>: Посылает в командную строку полный путь в текущей активной панели&lt;/li>
+&lt;li>&lt;code>Meta+c&lt;/code>: Вызывается меню быстрой смены текущего каталога на активной панели&lt;/li>
+&lt;li>&lt;code>Meta+g&lt;/code>: отмечает первый файл или каталог в отображаемом списке на панели&lt;/li>
+&lt;li>&lt;code>Meta+h&lt;/code>: Вызов меню последних выполненных команд&lt;/li>
+&lt;li>&lt;code>Meta+i&lt;/code>: Смена текущего каталога на неактивной панели, на каталог в котором вы находитесь в активной панели&lt;/li>
+&lt;li>&lt;code>Meta+j&lt;/code>: отмечает последний файл или каталог в отображаемом списке на панели&lt;/li>
+&lt;li>&lt;code>Meta+n&lt;/code>: Вернуть последующую выполненную командную строку&lt;/li>
+&lt;li>&lt;code>Meta+o&lt;/code>: неактивная панель переходит в каталог на который указывает активная панель&lt;/li>
+&lt;li>&lt;code>Meta+p&lt;/code>: Вернуть предыдущую выполненную командную строку&lt;/li>
+&lt;li>&lt;code>Meta+r&lt;/code>: отмечает средний файл или каталог в отображаемом списке на панели&lt;/li>
+&lt;li>&lt;code>Meta+t&lt;/code>: Смена режима работы панели (‘Стандартный’,’Укороченный’,’Расширенный’)&lt;/li>
+&lt;li>&lt;code>Meta+Shift+?&lt;/code>: Вызывается меню расширенного поиска файлов&lt;/li>
+&lt;li>&lt;code>Meta+Shift+A&lt;/code>, &lt;code>Ctrl+x Ctrl+p&lt;/code>: Посылает в командную строку полный путь в нективной панели&lt;/li>
+&lt;li>&lt;code>Meta+Shift+H&lt;/code>: Отобразить историю каталогов&lt;/li>
+&lt;li>&lt;code>Ctrl+&lt;/code>: Вызывается меню часто используемых каталогов&lt;/li>
+&lt;li>&lt;code>Ctrl+l&lt;/code>: Перерисовать экран&lt;/li>
+&lt;li>&lt;code>Ctrl+o&lt;/code>: Скрытие/показ панелей&lt;/li>
+&lt;li>&lt;code>Ctrl+r&lt;/code>: перечитать содержимое каталога&lt;/li>
+&lt;li>&lt;code>Ctrl+s&lt;/code>: Быстрый поиск файла или каталога&lt;/li>
+&lt;li>&lt;code>Ctrl+Space&lt;/code>: Показать размер текущего каталога&lt;/li>
+&lt;li>&lt;code>Ctrl+x a&lt;/code>: Отображается список активных соединений виртуальных файловых систем&lt;/li>
+&lt;li>&lt;code>Ctrl+x c&lt;/code>: Просмотр/правка прав доступа текущего объекта&lt;/li>
+&lt;li>&lt;code>Ctrl+x i&lt;/code>: Быстрый просмотр информации о текущем объекте на второй панели&lt;/li>
+&lt;li>&lt;code>Ctrl+x j&lt;/code>: Показ фоновых задач&lt;/li>
+&lt;li>&lt;code>Ctrl+x l&lt;/code>: Создать жесткую ссылку с текущего объекта&lt;/li>
+&lt;li>&lt;code>Ctrl+x o&lt;/code>: Просмотр/правка владельца/группы для текущего объекта&lt;/li>
+&lt;li>&lt;code>Ctrl+x q&lt;/code>: Быстрый просмотр содержимого файла на второй панели&lt;/li>
+&lt;li>&lt;code>Ctrl+x s&lt;/code>: Создает символьную ссылку symlink для текущего объекта&lt;/li>
+&lt;li>&lt;code>Ctrl+x t&lt;/code>: Вставка всех выделенных объектов в командную строку&lt;/li>
+&lt;li>&lt;code>Ctrl+x Ctrl+s&lt;/code>: Редактировать символическую ссылку&lt;/li>
+&lt;li>&lt;code>Shift+F1&lt;/code>: Вызывается меню быстрого перехода между точками монтирования на левой панели&lt;/li>
+&lt;li>&lt;code>Shift+F2&lt;/code>: Вызывается меню быстрого перехода между точками монтирования на правой панели&lt;/li>
+&lt;li>&lt;code>Shift+F3&lt;/code>: Просмотр файла raw без учета расширения&lt;/li>
+&lt;li>&lt;code>Shift+F4&lt;/code>: Создает новый файл и открывает в редакторе&lt;/li>
+&lt;/ul></description></item><item><title>Использование vagrant. Установка Rocky Linux</title><link>https://yamadharma.github.io/ru/post/2023/08/20/using-vagrant-install-rocky-linux/</link><pubDate>Sun, 20 Aug 2023 19:00:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/08/20/using-vagrant-install-rocky-linux/</guid><description>&lt;p>Установка Rocky Linux из репозитория образов Vagrant.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
 &lt;nav id="TableOfContents">
@@ -331,18 +829,18 @@
 &lt;nav>
 &lt;div class="nav nav-tabs" id="nav-tab" role="tablist">
 &lt;a class="nav-item nav-link active "
-id="nav-feabdc" data-toggle="tab" href="#feabdc"
+id="nav-dcaebf" data-toggle="tab" href="#dcaebf"
 role="tab" aria-controls="nav-home" aria-selected="true">RuTube&lt;/a>
 &lt;a class="nav-item nav-link "
-id="nav-bdfeac" data-toggle="tab" href="#bdfeac"
+id="nav-fbdeca" data-toggle="tab" href="#fbdeca"
 role="tab" aria-controls="nav-home" aria-selected="true">VKVideo&lt;/a>
 &lt;a class="nav-item nav-link "
-id="nav-fdabce" data-toggle="tab" href="#fdabce"
+id="nav-cafdbe" data-toggle="tab" href="#cafdbe"
 role="tab" aria-controls="nav-home" aria-selected="true">Youtube&lt;/a>
 &lt;/div>
 &lt;/nav>
 &lt;div class="tab-content" id="nav-tab-content">
-&lt;div class="tab-pane fade show active " id="feabdc" role="tabpanel" aria-labelledby="nav-1">
+&lt;div class="tab-pane fade show active " id="dcaebf" role="tabpanel" aria-labelledby="nav-1">
 &lt;div class="embed video-player">
 &lt;iframe class="rutube-player" type="text/html"
 width="720" height="405"
@@ -352,14 +850,14 @@ allow="clipboard-write" frameborder="0">
 &lt;/iframe>
 &lt;/div>
 &lt;/div>
-&lt;div class="tab-pane fade show " id="bdfeac" role="tabpanel" aria-labelledby="nav-1">
+&lt;div class="tab-pane fade show " id="fbdeca" role="tabpanel" aria-labelledby="nav-1">
 &lt;div class="embed video-player">
 &lt;iframe
 src="https://vk.com/video_ext.php?oid=606414976&amp;id=456239563&amp;hd=2"
 width="720" height="405" allow="autoplay; encrypted-media; fullscreen; picture-in-picture;" frameborder="0" allowfullscreen>&lt;/iframe>
 &lt;/div>
 &lt;/div>
-&lt;div class="tab-pane fade show " id="fdabce" role="tabpanel" aria-labelledby="nav-1">
+&lt;div class="tab-pane fade show " id="cafdbe" role="tabpanel" aria-labelledby="nav-1">
 &lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
 &lt;iframe src="https://www.youtube.com/embed/vTkYacxvhoc" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video">&lt;/iframe>
 &lt;/div>
@@ -938,15 +1436,15 @@ width="720" height="405" allow="autoplay; encrypted-media; fullscreen; picture-i
 &lt;nav>
 &lt;div class="nav nav-tabs" id="nav-tab" role="tablist">
 &lt;a class="nav-item nav-link active "
-id="nav-fdacbe" data-toggle="tab" href="#fdacbe"
+id="nav-cfbead" data-toggle="tab" href="#cfbead"
 role="tab" aria-controls="nav-home" aria-selected="true">RuTube&lt;/a>
 &lt;a class="nav-item nav-link "
-id="nav-dfbcea" data-toggle="tab" href="#dfbcea"
+id="nav-fdceba" data-toggle="tab" href="#fdceba"
 role="tab" aria-controls="nav-home" aria-selected="true">Youtube&lt;/a>
 &lt;/div>
 &lt;/nav>
 &lt;div class="tab-content" id="nav-tab-content">
-&lt;div class="tab-pane fade show active " id="fdacbe" role="tabpanel" aria-labelledby="nav-1">
+&lt;div class="tab-pane fade show active " id="cfbead" role="tabpanel" aria-labelledby="nav-1">
 &lt;div class="embed video-player">
 &lt;iframe class="rutube-player" type="text/html"
 width="720" height="405"
@@ -956,7 +1454,7 @@ allow="clipboard-write" frameborder="0">
 &lt;/iframe>
 &lt;/div>
 &lt;/div>
-&lt;div class="tab-pane fade show " id="dfbcea" role="tabpanel" aria-labelledby="nav-1">
+&lt;div class="tab-pane fade show " id="fdceba" role="tabpanel" aria-labelledby="nav-1">
 &lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
 &lt;iframe src="https://www.youtube.com/embed/6bBXVc6bmrs" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video">&lt;/iframe>
 &lt;/div>
@@ -5925,15 +6423,15 @@ Configuration mode
 &lt;nav>
 &lt;div class="nav nav-tabs" id="nav-tab" role="tablist">
 &lt;a class="nav-item nav-link active "
-id="nav-cfedab" data-toggle="tab" href="#cfedab"
+id="nav-afdbce" data-toggle="tab" href="#afdbce"
 role="tab" aria-controls="nav-home" aria-selected="true">RuTube&lt;/a>
 &lt;a class="nav-item nav-link "
-id="nav-eabfdc" data-toggle="tab" href="#eabfdc"
+id="nav-cfdeab" data-toggle="tab" href="#cfdeab"
 role="tab" aria-controls="nav-home" aria-selected="true">Youtube&lt;/a>
 &lt;/div>
 &lt;/nav>
 &lt;div class="tab-content" id="nav-tab-content">
-&lt;div class="tab-pane fade show active " id="cfedab" role="tabpanel" aria-labelledby="nav-1">
+&lt;div class="tab-pane fade show active " id="afdbce" role="tabpanel" aria-labelledby="nav-1">
 &lt;div class="embed video-player">
 &lt;iframe class="rutube-player" type="text/html"
 width="720" height="405"
@@ -5943,7 +6441,7 @@ allow="clipboard-write" frameborder="0">
 &lt;/iframe>
 &lt;/div>
 &lt;/div>
-&lt;div class="tab-pane fade show " id="eabfdc" role="tabpanel" aria-labelledby="nav-1">
+&lt;div class="tab-pane fade show " id="cfdeab" role="tabpanel" aria-labelledby="nav-1">
 &lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
 &lt;iframe src="https://www.youtube.com/embed/BgIzJo18yp8" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video">&lt;/iframe>
 &lt;/div>
@@ -6706,7 +7204,7 @@ allow="clipboard-write" frameborder="0">
 &lt;li>&lt;a href="#pop3">&lt;span class="section-num">2.3&lt;/span> POP3&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;li>&lt;a href="#парольные-файлы-для-pass--см-dot-менеджер-паролей-pass--dot-dot-notes-20210428185000-менеджер-паролеи-pass-dot-md">&lt;span class="section-num">3&lt;/span> Парольные файлы для &lt;em>pass&lt;/em> (см. &lt;a href="https://yamadharma.github.io/ru/post/2021/04/28/password-manager-pass/">Менеджер паролей pass&lt;/a>)&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#парольные-файлы-для-pass--см-dot-менеджер-паролей-pass-20210428185000-менеджер-паролеи-pass-dot-md">&lt;span class="section-num">3&lt;/span> Парольные файлы для &lt;em>pass&lt;/em> (см. &lt;a href="https://yamadharma.github.io/ru/post/2021/04/28/password-manager-pass/">Менеджер паролей pass&lt;/a>)&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/nav>
 &lt;/details>
@@ -6786,7 +7284,7 @@ allow="clipboard-write" frameborder="0">
 &lt;li>защита соединения &amp;mdash; SSL;&lt;/li>
 &lt;li>порт &amp;mdash; 995.&lt;/li>
 &lt;/ul>
-&lt;h2 id="парольные-файлы-для-pass--см-dot-менеджер-паролей-pass--dot-dot-notes-20210428185000-менеджер-паролеи-pass-dot-md">&lt;span class="section-num">3&lt;/span> Парольные файлы для &lt;em>pass&lt;/em> (см. &lt;a href="https://yamadharma.github.io/ru/post/2021/04/28/password-manager-pass/">Менеджер паролей pass&lt;/a>)&lt;/h2>
+&lt;h2 id="парольные-файлы-для-pass--см-dot-менеджер-паролей-pass-20210428185000-менеджер-паролеи-pass-dot-md">&lt;span class="section-num">3&lt;/span> Парольные файлы для &lt;em>pass&lt;/em> (см. &lt;a href="https://yamadharma.github.io/ru/post/2021/04/28/password-manager-pass/">Менеджер паролей pass&lt;/a>)&lt;/h2>
 &lt;ul>
 &lt;li>Для входа через web-интерфейс: &lt;code>yahoo.com/account@yahoo.com.gpg&lt;/code>.&lt;/li>
 &lt;li>Пароль приложения: &lt;code>yahoo.com/account@yahoo.com@apppassword.gpg&lt;/code>.&lt;/li>
@@ -8369,6 +8867,71 @@ allow="clipboard-write" frameborder="0">
 &lt;h2 id="конкретные-примеры">&lt;span class="section-num">5&lt;/span> Конкретные примеры&lt;/h2>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/08/20/using-vagrant-install-rocky-linux/">Использование vagrant. Установка Rocky Linux&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>Почта. Yandex. Пароли приложений</title><link>https://yamadharma.github.io/ru/post/2021/11/01/mail-yandex-application-passwords/</link><pubDate>Mon, 01 Nov 2021 21:09:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2021/11/01/mail-yandex-application-passwords/</guid><description>&lt;p>Пароли приложений Yandex.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#типы-приложений">&lt;span class="section-num">2&lt;/span> Типы приложений&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#создание-пароля-приложения">&lt;span class="section-num">3&lt;/span> Создание пароля приложения&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#сброс-паролей-приложений">&lt;span class="section-num">4&lt;/span> Сброс паролей приложений&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#мои-имена-паролей">&lt;span class="section-num">5&lt;/span> Мои имена паролей&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>Создавать пароли приложений можно на странице &lt;a href="https://passport.yandex.ru/profile/" target="_blank" rel="noopener">Управление аккаунтом&lt;/a>.&lt;/li>
+&lt;li>При включенной двухфакторной аутентификации пароли приложений обязательны, и отключить их нельзя.&lt;/li>
+&lt;/ul>
+&lt;h2 id="типы-приложений">&lt;span class="section-num">2&lt;/span> Типы приложений&lt;/h2>
+&lt;ul>
+&lt;li>почтовый клиент;&lt;/li>
+&lt;li>WebDAV-клиент для Яндекс.Диска;&lt;/li>
+&lt;li>CardDAV-клиент для синхронизации контактов Яндекс.Почты с мобильным устройством;&lt;/li>
+&lt;li>CalDAV-клиент для Яндекс.Календаря;&lt;/li>
+&lt;li>Jabber-клиент;&lt;/li>
+&lt;li>сборщики почты других почтовых сервисов (Mail.ru, Gmail, Outlook.com и прочие).&lt;/li>
+&lt;/ul>
+&lt;h2 id="создание-пароля-приложения">&lt;span class="section-num">3&lt;/span> Создание пароля приложения&lt;/h2>
+&lt;ul>
+&lt;li>Откройте страницу &lt;em>Управление аккаунтом&lt;/em> &lt;a href="https://passport.yandex.ru/profile/" target="_blank" rel="noopener">https://passport.yandex.ru/profile/&lt;/a>.&lt;/li>
+&lt;li>В разделе &lt;em>Пароли и авторизация&lt;/em> выберите &lt;em>Включить пароли приложений&lt;/em>.&lt;/li>
+&lt;li>Подтвердите действие и нажмите &lt;em>Создать новый пароль&lt;/em>.&lt;/li>
+&lt;li>Если вы включили двухфакторную аутентификацию, просто нажмите &lt;em>Создать пароль приложения&lt;/em>.&lt;/li>
+&lt;li>Выберите тип приложения.&lt;/li>
+&lt;li>Придумайте название пароля, например укажите название приложения, для которого вы создаете пароль. С этим названием пароль будет отображаться в списке.&lt;/li>
+&lt;li>Нажмите кнопку &lt;em>Создать&lt;/em>. Пароль приложения отобразится во всплывающем окне.&lt;/li>
+&lt;li>Созданный пароль можно увидеть только один раз. Если вы ввели его неправильно и закрыли окно, удалите текущий пароль и создайте новый.&lt;/li>
+&lt;/ul>
+&lt;h2 id="сброс-паролей-приложений">&lt;span class="section-num">4&lt;/span> Сброс паролей приложений&lt;/h2>
+&lt;ul>
+&lt;li>Все созданные пароли приложений сбрасываются в следующих случаях:
+&lt;ul>
+&lt;li>вы сменили пароль (при отключенной двухфакторной аутентификации);&lt;/li>
+&lt;li>вы включили или выключили двухфакторную аутентификацию;&lt;/li>
+&lt;li>вы восстановили доступ к своему аккаунту, самостоятельно или через службу поддержки;&lt;/li>
+&lt;li>вы перешли по ссылке Выйти на всех устройствах на странице Управление аккаунтом.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>После этого каждый нужный вам пароль нужно создать заново.&lt;/li>
+&lt;/ul>
+&lt;h2 id="мои-имена-паролей">&lt;span class="section-num">5&lt;/span> Мои имена паролей&lt;/h2>
+&lt;ul>
+&lt;li>Пароли храню в хранилище &lt;em>pass&lt;/em> (см. &lt;a href="https://yamadharma.github.io/ru/post/2021/04/28/password-manager-pass/">Менеджер паролей pass&lt;/a>).&lt;/li>
+&lt;li>Шаблон имени записи пароля:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">account@yandex.ru@apppassword@тип_учётной_записи
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>&lt;code>тип_учётной_записи&lt;/code>:
+&lt;ul>
+&lt;li>&lt;code>mail&lt;/code>: почта;&lt;/li>
+&lt;li>&lt;code>webdav&lt;/code>: WebDAV;&lt;/li>
+&lt;li>&lt;code>carddav&lt;/code>: CardDAV;&lt;/li>
+&lt;li>&lt;code>caldav&lt;/code>: CalDAV;&lt;/li>
+&lt;li>&lt;code>jabber&lt;/code>: Jabber-клиент.&lt;/li>
+&lt;/ul>
+&lt;/li>
 &lt;/ul></description></item><item><title>Шрифты в Linux</title><link>https://yamadharma.github.io/ru/post/2021/10/27/linux-fonts/</link><pubDate>Wed, 27 Oct 2021 11:36:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2021/10/27/linux-fonts/</guid><description>&lt;p>Работа со шрифтами в Linux.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
@@ -9784,6 +10347,212 @@ allow="clipboard-write" frameborder="0">
 &lt;h2 id="системы-управления-контактами">&lt;span class="section-num">1&lt;/span> Системы управления контактами&lt;/h2>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/09/11/emacs-contacts-google-contacts/">Emacs. Контакты. Google-contacts&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>Почта. Удаление дубликатов сообщений из локальных почтовых ящиков</title><link>https://yamadharma.github.io/ru/post/2021/09/09/removing-duplicate-messages/</link><pubDate>Thu, 09 Sep 2021 19:47:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2021/09/09/removing-duplicate-messages/</guid><description>&lt;p>Удаление дубликатов сообщений из почтового хранилища типа &lt;em>Maildir&lt;/em>. Для &lt;em>mbox&lt;/em> тоже можно.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#программные-средства">&lt;span class="section-num">1&lt;/span> Программные средства&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#mail-deduplicate">&lt;span class="section-num">1.1&lt;/span> mail-deduplicate&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#реализация-средствами-командной-строки">&lt;span class="section-num">2&lt;/span> Реализация средствами командной строки&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#используемое-программное-обеспечение">&lt;span class="section-num">2.1&lt;/span> Используемое программное обеспечение&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#предварительные-сведения">&lt;span class="section-num">2.2&lt;/span> Предварительные сведения&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#реализация-для-maildir">&lt;span class="section-num">2.3&lt;/span> Реализация для Maildir&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#удаление-дубликатов">&lt;span class="section-num">2.3.1&lt;/span> Удаление дубликатов&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#необязательные-проверки">&lt;span class="section-num">2.3.2&lt;/span> Необязательные проверки&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#реализация-для-mbox">&lt;span class="section-num">2.4&lt;/span> Реализация для mbox&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#удаление-дубликатов">&lt;span class="section-num">2.4.1&lt;/span> Удаление дубликатов&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="программные-средства">&lt;span class="section-num">1&lt;/span> Программные средства&lt;/h2>
+&lt;h3 id="mail-deduplicate">&lt;span class="section-num">1.1&lt;/span> mail-deduplicate&lt;/h3>
+&lt;ul>
+&lt;li>Репозиторий: &lt;a href="https://github.com/kdeldycke/mail-deduplicate" target="_blank" rel="noopener">https://github.com/kdeldycke/mail-deduplicate&lt;/a>&lt;/li>
+&lt;li>Сайт: &lt;a href="https://mail-deduplicate.readthedocs.io/en/latest/" target="_blank" rel="noopener">https://mail-deduplicate.readthedocs.io/en/latest/&lt;/a>&lt;/li>
+&lt;li>При первом поиске нашёл данную утилиту.&lt;/li>
+&lt;li>К сожалению, собственно функционал по удалению дубликатов писем продекларирован, но пока не реализован.&lt;/li>
+&lt;/ul>
+&lt;h2 id="реализация-средствами-командной-строки">&lt;span class="section-num">2&lt;/span> Реализация средствами командной строки&lt;/h2>
+&lt;ul>
+&lt;li>Принято решение реализовать на коленке.&lt;/li>
+&lt;/ul>
+&lt;h3 id="используемое-программное-обеспечение">&lt;span class="section-num">2.1&lt;/span> Используемое программное обеспечение&lt;/h3>
+&lt;ul>
+&lt;li>Функционалом удаления почтовых дубликатов обладает утилита &lt;code>reformail&lt;/code>.&lt;/li>
+&lt;li>Утилита является частью пакета &lt;em>maildrop&lt;/em>, которая в свою очередь является частью почтового сервера &lt;a href="http://www.courier-mta.org/" target="_blank" rel="noopener">Courier&lt;/a>.&lt;/li>
+&lt;li>Сайт: &lt;a href="https://www.courier-mta.org/maildrop/" target="_blank" rel="noopener">https://www.courier-mta.org/maildrop/&lt;/a>&lt;/li>
+&lt;li>Установка:
+&lt;ul>
+&lt;li>Linux
+&lt;ul>
+&lt;li>Gentoo
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge maildrop
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="предварительные-сведения">&lt;span class="section-num">2.2&lt;/span> Предварительные сведения&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>Почтовый ящик &lt;code>maildir&lt;/code> представляет собой дерево каталогов:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">Maildir/cur
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Maildir/new
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Maildir/tmp
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Программа &lt;code>reformail&lt;/code> считывает сообщение со стандартного входа, обрабатывает его и записывает результат на стандартный вывод.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Извлечение и печать содержимого заголовка:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">reformail -x
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Обнаружение повторяющихся сообщений&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">reformail -D len filename
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>
+&lt;p>Параметр &lt;code>-D&lt;/code> реализует удаления повторяющихся сообщений во входящей почте.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;code>filename&lt;/code> &amp;mdash; файл кэша длиной примерно &lt;code>len&lt;/code> байт.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Если сообщение имеет заголовок &lt;code>Message-ID:&lt;/code>, который уже находится в файле кэша, повторное сообщение завершается с кодом выхода, равным 0.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>В противном случае повторное сообщение завершается с кодом выхода, установленным на 1.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Например:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">formail -D &lt;span class="k">$((&lt;/span>&lt;span class="m">1024&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="m">1024&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="m">10&lt;/span>&lt;span class="k">))&lt;/span> /tmp/idcache
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Кэш установлен в 10 мегабайт.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Для работы с форматом &lt;code>mbox&lt;/code> используют параметр &lt;code>-s&lt;/code>.&lt;/p>
+&lt;ul>
+&lt;li>Файл почтового ящика в формате &lt;code>mbox&lt;/code> разбивается на отдельные сообщения.&lt;/li>
+&lt;li>Для каждого сообщения выполняется внешняя программа.&lt;/li>
+&lt;li>Содержание каждого отдельного сообщения будет предоставлено внешней программе на стандартном вводе.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="реализация-для-maildir">&lt;span class="section-num">2.3&lt;/span> Реализация для Maildir&lt;/h3>
+&lt;h4 id="удаление-дубликатов">&lt;span class="section-num">2.3.1&lt;/span> Удаление дубликатов&lt;/h4>
+&lt;ul>
+&lt;li>Простейший однострочник:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">rm -f /tmp/idcache&lt;span class="p">;&lt;/span> &lt;span class="k">for&lt;/span> i in cur/*&lt;span class="p">;&lt;/span> &lt;span class="k">do&lt;/span> reformail -D &lt;span class="k">$((&lt;/span>&lt;span class="m">1024&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="m">1024&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="m">10&lt;/span>&lt;span class="k">))&lt;/span> /tmp/idcache &amp;lt;&lt;span class="nv">$i&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> rm &lt;span class="nv">$i&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="k">done&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Скрипт, удаляющий дубликаты во всех ящиках, синхронизируемых с помощью &lt;em>mbsync&lt;/em> (см. &lt;a href="https://yamadharma.github.io/ru/post/2021/01/22/mail-synchronization-mbsync/">Почта. Синхронизация. mbsync&lt;/a>)
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#!/bin/bash
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>&lt;span class="c1"># NAME: dedup-mailbox&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">MAILDIR&lt;/span>&lt;span class="o">=&lt;/span>~/Maildir
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">list_imap&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>grep -e &lt;span class="s2">&amp;#34;^IMAPAccount&amp;#34;&lt;/span> ~/.mbsyncrc &lt;span class="p">|&lt;/span> cut -d&lt;span class="s2">&amp;#34; &amp;#34;&lt;/span> -f2 &lt;span class="p">|&lt;/span> xargs -I &lt;span class="o">{}&lt;/span> -n &lt;span class="m">1&lt;/span> &lt;span class="nb">echo&lt;/span> &lt;span class="o">{}&lt;/span>&lt;span class="s2">&amp;#34; &amp;#34;&lt;/span>&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span> i in &lt;span class="si">${&lt;/span>&lt;span class="nv">list_imap&lt;/span>&lt;span class="si">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">do&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nv">list_imapdir&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>ls &lt;span class="si">${&lt;/span>&lt;span class="nv">MAILDIR&lt;/span>&lt;span class="si">}&lt;/span>/&lt;span class="si">${&lt;/span>&lt;span class="nv">i&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb">`&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> j in &lt;span class="nv">$list_imapdir&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">do&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">cd&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">MAILDIR&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">/&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">i&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">/&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">j&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nv">messages_before&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="k">for&lt;/span> k in cur/*&lt;span class="p">;&lt;/span> &lt;span class="k">do&lt;/span> &lt;span class="o">[[&lt;/span> -f &lt;span class="nv">$k&lt;/span> &lt;span class="o">]]&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> reformail -x Message-ID: &amp;lt;&lt;span class="nv">$k&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="k">done&lt;/span> &lt;span class="p">|&lt;/span> wc -l&lt;span class="sb">`&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nv">messages_unique_before&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="k">for&lt;/span> k in cur/*&lt;span class="p">;&lt;/span> &lt;span class="k">do&lt;/span> &lt;span class="o">[[&lt;/span> -f &lt;span class="nv">$k&lt;/span> &lt;span class="o">]]&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> reformail -x Message-ID: &amp;lt;&lt;span class="nv">$k&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="k">done&lt;/span> &lt;span class="p">|&lt;/span> sort -u &lt;span class="p">|&lt;/span> wc -l&lt;span class="sb">`&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> rm -f /tmp/idcache
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> k in cur/*
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">do&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">[[&lt;/span> -f &lt;span class="nv">$k&lt;/span> &lt;span class="o">]]&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> reformail -D &lt;span class="k">$((&lt;/span>&lt;span class="m">1024&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="m">1024&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="m">10&lt;/span>&lt;span class="k">))&lt;/span> /tmp/idcache &amp;lt;&lt;span class="nv">$k&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> rm &lt;span class="nv">$k&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">done&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nv">messages_after&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="k">for&lt;/span> k in cur/*&lt;span class="p">;&lt;/span> &lt;span class="k">do&lt;/span> &lt;span class="o">[[&lt;/span> -f &lt;span class="nv">$k&lt;/span> &lt;span class="o">]]&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> reformail -x Message-ID: &amp;lt;&lt;span class="nv">$k&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="k">done&lt;/span> &lt;span class="p">|&lt;/span> wc -l&lt;span class="sb">`&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nv">messages_unique_after&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="k">for&lt;/span> k in cur/*&lt;span class="p">;&lt;/span> &lt;span class="k">do&lt;/span> &lt;span class="o">[[&lt;/span> -f &lt;span class="nv">$k&lt;/span> &lt;span class="o">]]&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> reformail -x Message-ID: &amp;lt;&lt;span class="nv">$k&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="k">done&lt;/span> &lt;span class="p">|&lt;/span> sort -u &lt;span class="p">|&lt;/span> wc -l&lt;span class="sb">`&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;Number of messages in &lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">MAILDIR&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">/&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">i&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">/&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">j&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">echo&lt;/span> -e &lt;span class="s2">&amp;#34;\t&amp;#34;&lt;/span> &lt;span class="s2">&amp;#34;Total&amp;#34;&lt;/span> &lt;span class="s2">&amp;#34;\t&amp;#34;&lt;/span> &lt;span class="s2">&amp;#34;Unique&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">echo&lt;/span> -e &lt;span class="s2">&amp;#34;Before:\t&amp;#34;&lt;/span> &lt;span class="nv">$messages_before&lt;/span> &lt;span class="s2">&amp;#34;\t&amp;#34;&lt;/span> &lt;span class="nv">$messages_unique_before&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">echo&lt;/span> -e &lt;span class="s2">&amp;#34;After:\t&amp;#34;&lt;/span> &lt;span class="nv">$messages_after&lt;/span> &lt;span class="s2">&amp;#34;\t&amp;#34;&lt;/span> &lt;span class="nv">$messages_unique_after&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">done&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">done&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h4 id="необязательные-проверки">&lt;span class="section-num">2.3.2&lt;/span> Необязательные проверки&lt;/h4>
+&lt;ul>
+&lt;li>Перед и после удаления проверьте полное количество сообщений:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span> i in cur/*&lt;span class="p">;&lt;/span> &lt;span class="k">do&lt;/span> reformail -x Message-ID: &amp;lt;&lt;span class="nv">$i&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="k">done&lt;/span> &lt;span class="p">|&lt;/span> wc -l
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Также проверьте количество уникальных сообщений:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span> i in cur/*&lt;span class="p">;&lt;/span> &lt;span class="k">do&lt;/span> reformail -x Message-ID: &amp;lt;&lt;span class="nv">$i&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="k">done&lt;/span> &lt;span class="p">|&lt;/span> sort -u &lt;span class="p">|&lt;/span> wc -l
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="реализация-для-mbox">&lt;span class="section-num">2.4&lt;/span> Реализация для mbox&lt;/h3>
+&lt;h4 id="удаление-дубликатов">&lt;span class="section-num">2.4.1&lt;/span> Удаление дубликатов&lt;/h4>
+&lt;ul>
+&lt;li>Скрипт, вызывающий программу обработки для каждого сообщения из &lt;em>mbox&lt;/em>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#!/bin/sh
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>&lt;span class="c1"># NAME: dedup-mbox&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># INPUT: $1 = mbox&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># OUTPUT: nmbox (файл с удалёнными дубликатами сообщений)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Delete temporary files&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">rm -f /tmp/tmpmail /tmp/idcache nmbox
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># reformail-mbox.sh is called for each mail&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">cat &lt;span class="nv">$1&lt;/span> &lt;span class="p">|&lt;/span> reformail -s ./reformail-mbox.sh
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Основной скрипт для дедупликации:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#!/bin/bash
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>&lt;span class="c1"># NAME: reformail-mbox.sh&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># INPUT: stdin: a email&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># called by dedup-mbox&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">TM&lt;/span>&lt;span class="o">=&lt;/span>/tmp/tmpmail
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">if&lt;/span> &lt;span class="o">[&lt;/span> -f &lt;span class="nv">$TM&lt;/span> &lt;span class="o">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">then&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">echo&lt;/span> error!
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">exit&lt;/span> &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">fi&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">cat &amp;gt; &lt;span class="nv">$TM&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># mbox format, each mail end with a blank line&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;&amp;#34;&lt;/span> &amp;gt;&amp;gt; &lt;span class="nv">$TM&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">cat &lt;span class="nv">$TM&lt;/span> &lt;span class="p">|&lt;/span> reformail -D &lt;span class="k">$((&lt;/span>&lt;span class="m">1024&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="m">1024&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="m">10&lt;/span>&lt;span class="k">))&lt;/span> /tmp/idcache
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># if this mail isn&amp;#39;t a dup (reformail return 1 if message-id is not found)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">if&lt;/span> &lt;span class="o">[&lt;/span> &lt;span class="nv">$?&lt;/span> !&lt;span class="o">=&lt;/span> &lt;span class="m">0&lt;/span> &lt;span class="o">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">then&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># each mail shall have a message-id&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> grep -q -i &lt;span class="s1">&amp;#39;^message-id:&amp;#39;&lt;/span> &lt;span class="nv">$TM&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">then&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> cat &lt;span class="nv">$TM&lt;/span> &amp;gt;&amp;gt; nmbox
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">fi&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">fi&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">rm &lt;span class="nv">$TM&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul></description></item><item><title>Подтома btrfs</title><link>https://yamadharma.github.io/ru/post/2021/08/27/btrfs-subvolumes/</link><pubDate>Fri, 27 Aug 2021 11:41:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2021/08/27/btrfs-subvolumes/</guid><description>&lt;p>Подтома (subvolumes) btrfs.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
@@ -10264,30 +11033,24 @@ allow="clipboard-write" frameborder="0">
 &lt;h2 id="поисковые-запросы-в-web-интерфейсе-gmail">&lt;span class="section-num">3&lt;/span> Поисковые запросы в Web-интерфейсе Gmail&lt;/h2>
 &lt;h3 id="размер-почтового-сообщения">&lt;span class="section-num">3.1&lt;/span> Размер почтового сообщения&lt;/h3>
 &lt;ul>
-&lt;li>
-&lt;p>Размер сообщения:&lt;/p>
+&lt;li>Размер сообщения:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">size:&lt;span class="o">[&lt;/span>size in bytes&lt;span class="o">]&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
-&lt;li>
-&lt;p>В дополнение к размеру вы можете использовать операторы поиска, такие как больше, больше, чем меньше, меньше и меньше, чем меньше, чтобы найти файлы любого определенного размера:&lt;/p>
+&lt;li>В дополнение к размеру вы можете использовать операторы поиска, такие как больше, больше, чем меньше, меньше и меньше, чем меньше, чтобы найти файлы любого определенного размера:
 &lt;ul>
 &lt;li>&lt;code>larger_than&lt;/code>;&lt;/li>
 &lt;li>&lt;code>smaller_than&lt;/code>.&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;li>
-&lt;p>Примеры:&lt;/p>
+&lt;li>Примеры:
 &lt;ul>
-&lt;li>
-&lt;p>Все электронные письма размером более 5 МБ, содержащие файловые вложения:&lt;/p>
+&lt;li>Все электронные письма размером более 5 МБ, содержащие файловые вложения:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">size:5mb has:attachment
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
-&lt;li>
-&lt;p>Электронные письма размером более 10 МБ, вложения в формате &lt;code>pdf&lt;/code>:&lt;/p>
+&lt;li>Электронные письма размером более 10 МБ, вложения в формате &lt;code>pdf&lt;/code>:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">size:10mb has:attachment filename:pdf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
-&lt;li>
-&lt;p>Все электронные письма с размером вложений от 5 МБ до 8 МБ:&lt;/p>
+&lt;li>Все электронные письма с размером вложений от 5 МБ до 8 МБ:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">larger_than:5m smaller_than:8M
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
@@ -10314,8 +11077,7 @@ allow="clipboard-write" frameborder="0">
 &lt;h2 id="преобразование">&lt;span class="section-num">2&lt;/span> Преобразование&lt;/h2>
 &lt;h3 id="декодирование">&lt;span class="section-num">2.1&lt;/span> Декодирование&lt;/h3>
 &lt;ul>
-&lt;li>
-&lt;p>Алгоритм декодирования имён папок:&lt;/p>
+&lt;li>Алгоритм декодирования имён папок:
 &lt;ul>
 &lt;li>&lt;code>&amp;amp;&lt;/code> -&amp;gt; &lt;code>+&lt;/code>;&lt;/li>
 &lt;li>&lt;code>&amp;amp;-&lt;/code> -&amp;gt; &lt;code>&amp;amp;&lt;/code>;&lt;/li>
@@ -10323,12 +11085,10 @@ allow="clipboard-write" frameborder="0">
 &lt;li>UTF7 -&amp;gt; Текст.&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;li>
-&lt;p>Код (shell):&lt;/p>
+&lt;li>Код (shell):
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="s1">&amp;#39;&amp;amp;BB4EQgQ,BEAEMAQyBDsENQQ9BD0ESwQ1-&amp;#39;&lt;/span> &lt;span class="p">|&lt;/span> sed &lt;span class="s1">&amp;#39;s/&amp;amp;\([^-]\)/+\1/g;s/&amp;amp;-/&amp;amp;/g;s/,/\//g&amp;#39;&lt;/span> &lt;span class="p">|&lt;/span> iconv -f UTF7 -t UTF8
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
-&lt;li>
-&lt;p>В результате получаем:&lt;/p>
+&lt;li>В результате получаем:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">Отправленные
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul></description></item><item><title>Почта. Office365. Настройка почтового клиента</title><link>https://yamadharma.github.io/ru/post/2021/07/04/mail-office365-configuring-mail-client/</link><pubDate>Sun, 04 Jul 2021 17:47:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2021/07/04/mail-office365-configuring-mail-client/</guid><description>&lt;p>Настройка клиента для работы с почтой &lt;em>Office365&lt;/em>.&lt;/p>
@@ -13981,6 +14741,8 @@ allow="clipboard-write" frameborder="0">
 &lt;ul>
 &lt;li>&lt;a href="#drupal">&lt;span class="section-num">8.1&lt;/span> Drupal&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#ojs">&lt;span class="section-num">8.2&lt;/span> OJS&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#ldap">&lt;span class="section-num">8.3&lt;/span> Ldap&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#kerberos">&lt;span class="section-num">8.4&lt;/span> Kerberos&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>&lt;a href="#управление-и-мониторинг">&lt;span class="section-num">9&lt;/span> Управление и мониторинг&lt;/a>&lt;/li>
@@ -14012,13 +14774,14 @@ allow="clipboard-write" frameborder="0">
 &lt;li>&lt;a href="#сети">&lt;span class="section-num">13&lt;/span> Сети&lt;/a>
 &lt;ul>
 &lt;li>&lt;a href="#cisco">&lt;span class="section-num">13.1&lt;/span> Cisco&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#протоколы">&lt;span class="section-num">13.2&lt;/span> Протоколы&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#vpn">&lt;span class="section-num">13.3&lt;/span> VPN&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#мониторинг">&lt;span class="section-num">13.4&lt;/span> Мониторинг&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#железо">&lt;span class="section-num">13.5&lt;/span> Железо&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#сервисы">&lt;span class="section-num">13.6&lt;/span> Сервисы&lt;/a>
+&lt;li>&lt;a href="#коммутаторы">&lt;span class="section-num">13.2&lt;/span> Коммутаторы&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#протоколы">&lt;span class="section-num">13.3&lt;/span> Протоколы&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#vpn">&lt;span class="section-num">13.4&lt;/span> VPN&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#мониторинг">&lt;span class="section-num">13.5&lt;/span> Мониторинг&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#железо">&lt;span class="section-num">13.6&lt;/span> Железо&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#сервисы">&lt;span class="section-num">13.7&lt;/span> Сервисы&lt;/a>
 &lt;ul>
-&lt;li>&lt;a href="#dns">&lt;span class="section-num">13.6.1&lt;/span> DNS&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#dns">&lt;span class="section-num">13.7.1&lt;/span> DNS&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
@@ -14119,6 +14882,15 @@ allow="clipboard-write" frameborder="0">
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/10/22/open-journal-systems/">Open Journal Systems&lt;/a>&lt;/li>
 &lt;/ul>
+&lt;h3 id="ldap">&lt;span class="section-num">8.3&lt;/span> Ldap&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/09/01/openldap-migration/">Перенос Openldap на другую машину&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/09/02/configure-openldap-rocky-linux/">Настройка Openldap&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="kerberos">&lt;span class="section-num">8.4&lt;/span> Kerberos&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/09/03/kerberos-migration/">Перенос kerberos на другую машину&lt;/a>&lt;/li>
+&lt;/ul>
 &lt;h2 id="управление-и-мониторинг">&lt;span class="section-num">9&lt;/span> Управление и мониторинг&lt;/h2>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/01/18/cockpit-web-console/">Web консоль Cockpit&lt;/a>&lt;/li>
@@ -14210,27 +14982,31 @@ allow="clipboard-write" frameborder="0">
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/06/16/cisco-administration/">Администрирование Cisco&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;h3 id="протоколы">&lt;span class="section-num">13.2&lt;/span> Протоколы&lt;/h3>
+&lt;h3 id="коммутаторы">&lt;span class="section-num">13.2&lt;/span> Коммутаторы&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/09/05/dhcp-snooping/">DHCP snooping&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="протоколы">&lt;span class="section-num">13.3&lt;/span> Протоколы&lt;/h3>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/06/26/ipv6-protocol/">Протокол IPv6&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;h3 id="vpn">&lt;span class="section-num">13.3&lt;/span> VPN&lt;/h3>
+&lt;h3 id="vpn">&lt;span class="section-num">13.4&lt;/span> VPN&lt;/h3>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/02/05/l2tp-ipsec-vpn-client-setup/">VPN. L2TP+IPsec. Подключение клиента&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/08/19/cisco-vpn-client-setup/">Подключение к Cisco VPN&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;h3 id="мониторинг">&lt;span class="section-num">13.4&lt;/span> Мониторинг&lt;/h3>
+&lt;h3 id="мониторинг">&lt;span class="section-num">13.5&lt;/span> Мониторинг&lt;/h3>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/03/02/observium-monitoring-system/">Система мониторинга Observium&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/03/20/librenms-monitoring-system/">Система мониторинга LibreNMS&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/06/16/bandwidth-network-speed-monitoring/">Мониторинг пропускной способности и скорости сети&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;h3 id="железо">&lt;span class="section-num">13.5&lt;/span> Железо&lt;/h3>
+&lt;h3 id="железо">&lt;span class="section-num">13.6&lt;/span> Железо&lt;/h3>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/03/19/small-form-factor-pluggable/">Формат Small Form-factor Pluggable (SFP)&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;h3 id="сервисы">&lt;span class="section-num">13.6&lt;/span> Сервисы&lt;/h3>
-&lt;h4 id="dns">&lt;span class="section-num">13.6.1&lt;/span> DNS&lt;/h4>
+&lt;h3 id="сервисы">&lt;span class="section-num">13.7&lt;/span> Сервисы&lt;/h3>
+&lt;h4 id="dns">&lt;span class="section-num">13.7.1&lt;/span> DNS&lt;/h4>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/05/23/dns-powerdns-recursor/">DNS. PowerDNS Recursor&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/05/26/public-dns-resolvers/">Общедоступные резольверы DNS&lt;/a>&lt;/li>
@@ -14550,7 +15326,111 @@ allow="clipboard-write" frameborder="0">
 &lt;li>На GitHub есть настройка &lt;a href="https://docs.github.com/en/github/authenticating-to-github/managing-commit-signature-verification/displaying-verification-statuses-for-all-of-your-commits" target="_blank" rel="noopener">vigilant mode&lt;/a>.&lt;/li>
 &lt;li>Все неподписанные коммиты будут явно помечены как &lt;em>Unverified&lt;/em>.&lt;/li>
 &lt;li>Включается это в настройках в разделе &lt;em>SSH and GPG keys&lt;/em>. Установите метку на &lt;em>Flag unsigned commits as unverified&lt;/em>.&lt;/li>
-&lt;/ul></description></item><item><title>Почта. Синхронизация. mbsync</title><link>https://yamadharma.github.io/ru/post/2021/01/22/mail-synchronization-mbsync/</link><pubDate>Fri, 22 Jan 2021 15:10:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2021/01/22/mail-synchronization-mbsync/</guid><description>&lt;p>Настройка синхронизации IMAP с помощью &lt;em>mbsync&lt;/em>.&lt;/p>
+&lt;/ul></description></item><item><title>Emacs. Почта. Парольная аутентификация</title><link>https://yamadharma.github.io/ru/post/2021/01/22/mail-password-authentication/</link><pubDate>Fri, 22 Jan 2021 15:20:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2021/01/22/mail-password-authentication/</guid><description>&lt;p>Конфигурационные файлы для настройки парольной аутентификации для почтовых программ (в частности для Emacs).&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#описание">&lt;span class="section-num">1&lt;/span> Описание&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#настройка-emacs">&lt;span class="section-num">2&lt;/span> Настройка Emacs&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#парольная-аутентификация-netrc">&lt;span class="section-num">3&lt;/span> Парольная аутентификация &lt;em>netrc&lt;/em>&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#конфигурационные-файлы">&lt;span class="section-num">3.1&lt;/span> Конфигурационные файлы&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#разрешения">&lt;span class="section-num">3.2&lt;/span> Разрешения&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#формат-файла-паролей">&lt;span class="section-num">3.3&lt;/span> Формат файла паролей&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#шифрование-файла-паролей">&lt;span class="section-num">3.4&lt;/span> Шифрование файла паролей&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#настройка-подключения-к-google">&lt;span class="section-num">3.5&lt;/span> Настройка подключения к Google&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="описание">&lt;span class="section-num">1&lt;/span> Описание&lt;/h2>
+&lt;ul>
+&lt;li>Библиотека &lt;code>auth-source&lt;/code> для emacs создавалась для хранения паролей для gnus.&lt;/li>
+&lt;li>Документация: &lt;a href="https://www.gnu.org/software/emacs/manual/html_mono/auth.html" target="_blank" rel="noopener">https://www.gnu.org/software/emacs/manual/html_mono/auth.html&lt;/a>&lt;/li>
+&lt;li>Библиотека &lt;code>auth-source&lt;/code> поддерживает несколько бэкэнд-хранилищ:
+&lt;ul>
+&lt;li>бэкэнд &lt;em>netrc&lt;/em>,&lt;/li>
+&lt;li>файлы &lt;em>json&lt;/em>,
+&lt;ul>
+&lt;li>формат файла:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-js" data-lang="js">&lt;span class="line">&lt;span class="cl">&lt;span class="p">[{&lt;/span> &lt;span class="s2">&amp;#34;machine&amp;#34;&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s2">&amp;#34;SERVER&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;port&amp;#34;&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s2">&amp;#34;PORT&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;login&amp;#34;&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s2">&amp;#34;USER&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;password&amp;#34;&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s2">&amp;#34;PASSWORD&amp;#34;&lt;/span> &lt;span class="p">}]&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;em>Secret Service API&lt;/em> (&lt;a href="https://www.freedesktop.org/wiki/Specifications/secret-storage-spec/" target="_blank" rel="noopener">https://www.freedesktop.org/wiki/Specifications/secret-storage-spec/&lt;/a>),&lt;/li>
+&lt;li>стандартный менеджер паролей Unix &lt;em>pass&lt;/em> (см. &lt;a href="https://yamadharma.github.io/ru/post/2021/04/28/password-manager-pass/">Менеджер паролей pass&lt;/a>).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="настройка-emacs">&lt;span class="section-num">2&lt;/span> Настройка Emacs&lt;/h2>
+&lt;ul>
+&lt;li>Переменная &lt;code>auth-sources&lt;/code> задаёт источники аутентификации:
+&lt;ul>
+&lt;li>устаревшая настройка по умолчанию (для &lt;em>netrc&lt;/em>):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-elisp" data-lang="elisp">&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nb">setq&lt;/span> &lt;span class="nv">auth-sources&lt;/span> &lt;span class="o">&amp;#39;&lt;/span>&lt;span class="p">((&lt;/span>&lt;span class="nb">:source&lt;/span> &lt;span class="s">&amp;#34;~/.authinfo.gpg&amp;#34;&lt;/span> &lt;span class="nb">:host&lt;/span> &lt;span class="no">t&lt;/span> &lt;span class="nb">:port&lt;/span> &lt;span class="no">t&lt;/span>&lt;span class="p">)))&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>то же самое, но короче (для &lt;em>netrc&lt;/em>):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-elisp" data-lang="elisp">&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nb">setq&lt;/span> &lt;span class="nv">auth-sources&lt;/span> &lt;span class="o">&amp;#39;&lt;/span>&lt;span class="p">((&lt;/span>&lt;span class="nb">:source&lt;/span> &lt;span class="s">&amp;#34;~/.authinfo.gpg&amp;#34;&lt;/span>&lt;span class="p">)))&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>несколько источников (все варианты для &lt;em>netrc&lt;/em>) (это является значением по умолчанию):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-elisp" data-lang="elisp">&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nb">setq&lt;/span> &lt;span class="nv">auth-sources&lt;/span> &lt;span class="o">&amp;#39;&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;~/.authinfo.gpg&amp;#34;&lt;/span> &lt;span class="s">&amp;#34;~/.authinfo&amp;#34;&lt;/span> &lt;span class="s">&amp;#34;~/.netrc&amp;#34;&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>использование &lt;em>Secrets API&lt;/em>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-elisp" data-lang="elisp">&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nb">setq&lt;/span> &lt;span class="nv">auth-sources&lt;/span> &lt;span class="o">&amp;#39;&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;secrets:Login&amp;#34;&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>использование &lt;em>pass&lt;/em>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-elisp" data-lang="elisp">&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nb">setq&lt;/span> &lt;span class="nv">auth-sources&lt;/span> &lt;span class="o">&amp;#39;&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nv">password-store&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>использование &lt;em>json&lt;/em>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-elisp" data-lang="elisp">&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nb">setq&lt;/span> &lt;span class="nv">auth-sources&lt;/span> &lt;span class="o">&amp;#39;&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;~/.authinfo.json.gpg&amp;#34;&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="парольная-аутентификация-netrc">&lt;span class="section-num">3&lt;/span> Парольная аутентификация &lt;em>netrc&lt;/em>&lt;/h2>
+&lt;h3 id="конфигурационные-файлы">&lt;span class="section-num">3.1&lt;/span> Конфигурационные файлы&lt;/h3>
+&lt;ul>
+&lt;li>&lt;code>~/.authinfo.gpg&lt;/code> - зашифрованный;&lt;/li>
+&lt;li>&lt;code>~/.authinfo&lt;/code> - не зашифрованный;&lt;/li>
+&lt;li>&lt;code>~/.netrc&lt;/code> - устаревший вариант.&lt;/li>
+&lt;/ul>
+&lt;h3 id="разрешения">&lt;span class="section-num">3.2&lt;/span> Разрешения&lt;/h3>
+&lt;p>Установите права только на чтение и запись для пользователя:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">chmod &lt;span class="m">600&lt;/span> ~/.authinfo.gpg
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="формат-файла-паролей">&lt;span class="section-num">3.3&lt;/span> Формат файла паролей&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>Файл имеет следующий формат:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">machine HOST login NAME password VALUE port NUMBER
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Если имеется несколько учётных записей на одном сервере (например, на gmail), вместо имени хоста можно использовать имя профиля:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">machine PROFILE login NAME password VALUE port NUMBER
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Учитывая, что с одним логином могут быть почтовые адреса на разных доменах, предлагается в качестве &lt;code>PROFILE&lt;/code> использовать полный почтовый адрес (такой, как &lt;code>account@domain&lt;/code>).&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Также можно использовать этот файл для указания клиентских сертификатов, которые будут использоваться при настройке TLS-соединений:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">machine HOST port PORT key KEY cert CERT
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="шифрование-файла-паролей">&lt;span class="section-num">3.4&lt;/span> Шифрование файла паролей&lt;/h3>
+&lt;p>Для безопасности следует зашифровать файл паролей (см. &lt;a href="https://yamadharma.github.io/ru/post/2020/12/18/using-pgp/">Работа с PGP&lt;/a>).&lt;/p>
+&lt;ul>
+&lt;li>Зашифровать файл:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">gpg -c .authinfo
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>или
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">gpg --symmetric .authinfo
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Расшифровать файл:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">gpg --decrypt-files .authinfo.gpg
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="настройка-подключения-к-google">&lt;span class="section-num">3.5&lt;/span> Настройка подключения к Google&lt;/h3>
+&lt;p>&lt;a href="https://yamadharma.github.io/ru/post/2020/12/25/mail-google-connect/">Почта. Подключение к Google&lt;/a>&lt;/p></description></item><item><title>Почта. Синхронизация. mbsync</title><link>https://yamadharma.github.io/ru/post/2021/01/22/mail-synchronization-mbsync/</link><pubDate>Fri, 22 Jan 2021 15:10:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2021/01/22/mail-synchronization-mbsync/</guid><description>&lt;p>Настройка синхронизации IMAP с помощью &lt;em>mbsync&lt;/em>.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
 &lt;nav id="TableOfContents">

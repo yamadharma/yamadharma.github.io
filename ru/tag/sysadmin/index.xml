@@ -1,4 +1,263 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>sysadmin | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/sysadmin/</link><atom:link href="https://yamadharma.github.io/ru/tag/sysadmin/index.xml" rel="self" type="application/rss+xml"/><description>sysadmin</description><generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2023 Dmitry S. Kulyabov</copyright><lastBuildDate>Tue, 05 Sep 2023 09:49:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url><title>sysadmin</title><link>https://yamadharma.github.io/ru/tag/sysadmin/</link></image><item><title>DHCP snooping</title><link>https://yamadharma.github.io/ru/post/2023/09/05/dhcp-snooping/</link><pubDate>Tue, 05 Sep 2023 09:49:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/09/05/dhcp-snooping/</guid><description>&lt;p>&lt;em>DHCP snooping&lt;/em>.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>sysadmin | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/sysadmin/</link><atom:link href="https://yamadharma.github.io/ru/tag/sysadmin/index.xml" rel="self" type="application/rss+xml"/><description>sysadmin</description><generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2023 Dmitry S. Kulyabov</copyright><lastBuildDate>Sat, 16 Sep 2023 19:52:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url><title>sysadmin</title><link>https://yamadharma.github.io/ru/tag/sysadmin/</link></image><item><title>DNS. Bind. DNSSEC</title><link>https://yamadharma.github.io/ru/post/2023/09/16/dns-bind-dnssec/</link><pubDate>Sat, 16 Sep 2023 19:52:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/09/16/dns-bind-dnssec/</guid><description>&lt;p>Настройка DNSSEC в Bind.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#ключи">&lt;span class="section-num">2&lt;/span> Ключи&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#каталоги-ключей">&lt;span class="section-num">2.1&lt;/span> Каталоги ключей&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#создание-ключей">&lt;span class="section-num">2.2&lt;/span> Создание ключей&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#подпись-зоны">&lt;span class="section-num">3&lt;/span> Подпись зоны&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#ручная-подпись-зоны">&lt;span class="section-num">3.1&lt;/span> Ручная подпись зоны&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#настройка-bind">&lt;span class="section-num">3.1.1&lt;/span> Настройка BIND&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#автоматическое-подписывание-зоны">&lt;span class="section-num">3.2&lt;/span> Автоматическое подписывание зоны&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#проверка-работы">&lt;span class="section-num">4&lt;/span> Проверка работы&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>Версия bind выше, чем 9.9:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">named -v
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="ключи">&lt;span class="section-num">2&lt;/span> Ключи&lt;/h2>
+&lt;h3 id="каталоги-ключей">&lt;span class="section-num">2.1&lt;/span> Каталоги ключей&lt;/h3>
+&lt;ul>
+&lt;li>Создаём каталог, в котором будем хранить ключи и переходим в него:
+&lt;ul>
+&lt;li>Red Hat:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mkdir /var/named/keys
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> /var/named/keys
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Debian, Ubuntu:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mkdir /etc/bind/keys
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> /etc/bind/keys
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="создание-ключей">&lt;span class="section-num">2.2&lt;/span> Создание ключей&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>Создаём мастер-ключей (&lt;code>KSK&lt;/code>):&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnssec-keygen -f KSK -a ECDSAP256SHA256 -b &lt;span class="m">4096&lt;/span> -n ZONE -r /dev/urandom example.com
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>&lt;code>-f KSK&lt;/code>: создаётся мастер-ключ;&lt;/li>
+&lt;li>&lt;code>-a ECDSAP256SHA256&lt;/code>: используемый алгоритм шифрования;&lt;/li>
+&lt;li>&lt;code>-b 2048&lt;/code>: размер ключа в битах (для алгоритма &lt;code>ECDSAP256SHA256&lt;/code> игнорируется);&lt;/li>
+&lt;li>&lt;code>-n ZONE&lt;/code>: для DNS-зоны;&lt;/li>
+&lt;li>&lt;code>-r /dev/urandom&lt;/code>: источник случайных данных;&lt;/li>
+&lt;li>&lt;code>example.com&lt;/code>: домен, для которого предназначен ключ.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Создаём ключ для зоны (&lt;code>ZSK&lt;/code>):&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnssec-keygen -a ECDSAP256SHA256 -b &lt;span class="m">2048&lt;/span> -n ZONE -r /dev/urandom example.com
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Задаём владельца для сгенерированных файлов:&lt;/p>
+&lt;ul>
+&lt;li>Red Hat:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">chown -R named:named /var/named/keys
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Debian, Ubuntu:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">chown -R bind:bind /etc/bind/keys
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="подпись-зоны">&lt;span class="section-num">3&lt;/span> Подпись зоны&lt;/h2>
+&lt;ul>
+&lt;li>Зоны можно подписывать вручную или настроить автоматическую подпись зон.&lt;/li>
+&lt;li>При ручной подписи необходимо переподписывать файл зоны после изменения.&lt;/li>
+&lt;/ul>
+&lt;h3 id="ручная-подпись-зоны">&lt;span class="section-num">3.1&lt;/span> Ручная подпись зоны&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>Копируем содержимое ключей в файл зоны:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">cat Kexample.com.*key &amp;gt;&amp;gt; /var/named/master/example.com
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Переходим в каталог, где хранится наша зона:&lt;/p>
+&lt;ul>
+&lt;li>Red Hat:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> /var/named/master
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Debian, Ubuntu:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> /etc/bind/master
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Подписываем зону:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnssec-signzone -e +3mo -N INCREMENT -K /var/named/keys example.com
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>&lt;code>-e +3mo&lt;/code> : время действия RRSIG (3 месяца);&lt;/li>
+&lt;li>&lt;code>-N INCREMENT&lt;/code> : использовать формат серийного номера SOA из файла;&lt;/li>
+&lt;li>&lt;code>-K /var/named/keys&lt;/code> : путь хранения сгенерированных ключей;&lt;/li>
+&lt;li>&lt;code>example.com&lt;/code> : подписываемый домен.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>В каталоге хранения зон мы должны увидеть файл подписанной зоны &lt;code>example.com.signed&lt;/code>.&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="настройка-bind">&lt;span class="section-num">3.1.1&lt;/span> Настройка BIND&lt;/h4>
+&lt;ul>
+&lt;li>
+&lt;p>Редактируем конфигурационный файл:&lt;/p>
+&lt;ul>
+&lt;li>Red Hat:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">/etc/named.conf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Debian, Ubuntu:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">/etc/bind/named.conf.local
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Проверяем, чтобы dnssec был включён:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">options {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">dnssec-enable yes;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">dnssec-validation yes;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">dnssec-lookaside auto;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>&lt;code>dnssec-enable&lt;/code> : включение или отключение &lt;code>dnssec&lt;/code> на уровне сервера;&lt;/li>
+&lt;li>&lt;code>dnssec-validation&lt;/code> : проверка корректность ответов;&lt;/li>
+&lt;li>&lt;code>dnssec-lookaside&lt;/code> : разрешение использовать сторонние корни DNSSEC.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>В настройке зоны меняем путь к файлу:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">zone &amp;#34;example.com&amp;#34; {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">file &amp;#34;master/example.com.signed&amp;#34;;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">};
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Перезапускаем bind:&lt;/p>
+&lt;ul>
+&lt;li>Red Hat:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">systemctl reload named
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Debian, Ubuntu:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">systemctl reload &lt;span class="nb">bind&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Или перегружаем конфигурацию bind:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">rndc reload
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="автоматическое-подписывание-зоны">&lt;span class="section-num">3.2&lt;/span> Автоматическое подписывание зоны&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>Для автоматизации процесса в конфигурационном файле bind задаём:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">options {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">key-directory &amp;#34;/var/named/keys&amp;#34;;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sig-validity-interval 20 10;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">};
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>&lt;code>key-directory&lt;/code> : каталог хранения ключей;&lt;/li>
+&lt;li>&lt;code>sig-validity-interval&lt;/code> : период действия ключей: дней (период обновления).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Для зоны редактируем:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">zone &lt;span class="s2">&amp;#34;example.com&amp;#34;&lt;/span> &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">file &lt;span class="s2">&amp;#34;master/example.com&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">inline-signing yes&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">auto-dnssec maintain&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">}&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>&lt;code>inline-signing&lt;/code> : включение или отключение прозрачного формирования подписей (без необходимости менять файл зоны);&lt;/li>
+&lt;li>&lt;code>auto-dnssec&lt;/code> : уровень автоматической настройки DNSSEC для зоны.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Меняем серийный номер файла зоны.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Перезапускаем bind:&lt;/p>
+&lt;ul>
+&lt;li>Red Hat:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">systemctl reload named
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Debian, Ubuntu:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">systemctl reload &lt;span class="nb">bind&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Или перегружаем конфигурацию bind:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">rndc reload
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>В каталоге зоны должны появиться дополнительные 3 файла: &lt;code>example.com.jbk&lt;/code>, &lt;code>example.com.signed&lt;/code>, &lt;code>example.com.signed.jnl&lt;/code>.&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="проверка-работы">&lt;span class="section-num">4&lt;/span> Проверка работы&lt;/h2>
+&lt;ul>
+&lt;li>Чтобы проверить, отдаёт ли наш сервер ответы с цифровыми подписями, вводим команду:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dig example.com +dnssec
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Посмотрим подпись зоны:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dig DNSKEY example.com. @localhost +multiline
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Или:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dig A example.com. @localhost +noadditional +dnssec +multiline
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Получить DS записи для реестра доменов и прописать их у регистратора:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dig @localhost dnskey example.com &lt;span class="p">|&lt;/span> dnssec-dsfromkey -f - example.com
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>После того, как мы добавили DS записи в реестр, спустя какое-то время можно проверять все ли в порядке.
+&lt;ul>
+&lt;li>Сайт: &lt;a href="https://dnssec-analyzer.verisignlabs.com" target="_blank" rel="noopener">https://dnssec-analyzer.verisignlabs.com&lt;/a>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul></description></item><item><title>Domain Name System (DNS)</title><link>https://yamadharma.github.io/ru/post/2023/09/16/domain-name-system-dns/</link><pubDate>Sat, 16 Sep 2023 19:47:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/09/16/domain-name-system-dns/</guid><description>&lt;p>Domain Name System (DNS).&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#серверы-dns">&lt;span class="section-num">1&lt;/span> Серверы DNS&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#bind">&lt;span class="section-num">1.1&lt;/span> Bind&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#powerdns">&lt;span class="section-num">1.2&lt;/span> PowerDNS&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#инфраструктура-dns">&lt;span class="section-num">2&lt;/span> Инфраструктура DNS&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="серверы-dns">&lt;span class="section-num">1&lt;/span> Серверы DNS&lt;/h2>
+&lt;h3 id="bind">&lt;span class="section-num">1.1&lt;/span> Bind&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/09/16/dns-bind-dnssec/">DNS. Bind. DNSSEC&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="powerdns">&lt;span class="section-num">1.2&lt;/span> PowerDNS&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/05/23/dns-powerdns-recursor/">DNS. PowerDNS Recursor&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="инфраструктура-dns">&lt;span class="section-num">2&lt;/span> Инфраструктура DNS&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/05/26/public-dns-resolvers/">Общедоступные резольверы DNS&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>DHCP snooping</title><link>https://yamadharma.github.io/ru/post/2023/09/05/dhcp-snooping/</link><pubDate>Tue, 05 Sep 2023 09:49:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/09/05/dhcp-snooping/</guid><description>&lt;p>&lt;em>DHCP snooping&lt;/em>.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
 &lt;nav id="TableOfContents">
@@ -728,6 +987,103 @@
 &lt;li>&lt;code>Shift+F2&lt;/code>: Вызывается меню быстрого перехода между точками монтирования на правой панели&lt;/li>
 &lt;li>&lt;code>Shift+F3&lt;/code>: Просмотр файла raw без учета расширения&lt;/li>
 &lt;li>&lt;code>Shift+F4&lt;/code>: Создает новый файл и открывает в редакторе&lt;/li>
+&lt;/ul></description></item><item><title>Менеджер паролей pass. Одноразовые пароли</title><link>https://yamadharma.github.io/ru/post/2023/08/24/password-manager-pass-one-time-passwords/</link><pubDate>Thu, 24 Aug 2023 20:29:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/08/24/password-manager-pass-one-time-passwords/</guid><description>&lt;p>Одноразовые пароли в менеджере паролей pass.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#формат-файла">&lt;span class="section-num">1&lt;/span> Формат файла&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#аппаратный-токен">&lt;span class="section-num">2&lt;/span> Аппаратный токен&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#pass-otp">&lt;span class="section-num">3&lt;/span> pass-otp&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#добавить-токен-в-запись">&lt;span class="section-num">4&lt;/span> Добавить токен в запись&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#использование-токена">&lt;span class="section-num">5&lt;/span> Использование токена&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="формат-файла">&lt;span class="section-num">1&lt;/span> Формат файла&lt;/h2>
+&lt;ul>
+&lt;li>Токен можно хранить как в основном файле с паролем, так и в отдельном файле.&lt;/li>
+&lt;li>Хранение в том же файле: &lt;code>git-passwordstore/website/yourLogin&lt;/code>.
+&lt;ul>
+&lt;li>Формат может быть следующий:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="l">yourPassword&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nn">---&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">login&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">yourLogin&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">url&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">https://website.com&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">totp&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">YourOtpTokenBase32Encoded&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Можно хранить и в виде указателя на URL:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="l">yourPassword&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nn">---&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">login&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">yourLogin&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">url&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">https://website.com&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="l">otpauth://totp/Website:yourLogin?secret=YourOtpTokenBase32Encoded&amp;amp;issuer=Website&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Хранение в отдельном файле &lt;code>local-passwordstore/website/yourOtp&lt;/code>.
+&lt;ul>
+&lt;li>Только в виде указателя на URL:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="l">otpauth://totp/Website:yourLogin?secret=YourOtpTokenBase32Encoded&amp;amp;issuer=Website&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Например, URL для github имеет вид:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="l">tpauth://totp/GitHub:&amp;lt;username&amp;gt;?secret=&amp;lt;secret&amp;gt;&amp;amp;issuer=GitHub&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="аппаратный-токен">&lt;span class="section-num">2&lt;/span> Аппаратный токен&lt;/h2>
+&lt;ul>
+&lt;li>В идеале секретный ключ, способный расшифровать ваши секреты OTP, должен храниться на аппаратном токене, для расшифровки которого требуется какое-то взаимодействие с пользователем.&lt;/li>
+&lt;li>Это достигается путем настройки второго хранилища без использования тех же открытых ключей, что и для основного хранилища паролей.&lt;/li>
+&lt;li>Открытые ключи, используемые для вашего хранилища OTP, в идеале должны храниться только на аппаратных токенах.&lt;/li>
+&lt;/ul>
+&lt;h2 id="pass-otp">&lt;span class="section-num">3&lt;/span> pass-otp&lt;/h2>
+&lt;ul>
+&lt;li>Репозиторий: &lt;a href="https://github.com/tadfisher/pass-otp" target="_blank" rel="noopener">https://github.com/tadfisher/pass-otp&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="добавить-токен-в-запись">&lt;span class="section-num">4&lt;/span> Добавить токен в запись&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>Ввести токен с терминала (скрывая ввод):&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pass otp insert totp-secret
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Ввести токен с терминала (повторяя ввод):&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pass otp insert -e totp-secret
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Направьте otpauth://URI в файл паролей:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pass otp insert totp-secret &amp;lt; totp-secret.txt
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Декодировать QR-изображения (используя &lt;code>zbar&lt;/code>).&lt;/p>
+&lt;ul>
+&lt;li>Файл пароля будет заменён или создан:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">zbarimg -q --raw qrcode.png &lt;span class="p">|&lt;/span> pass otp insert totp-secret
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Добавление к существующему файлу паролей:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">zbarimg -q --raw google-qrcode.png &lt;span class="p">|&lt;/span> pass otp append google/example@gmail.com
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Декодировать QR, получаемый из веб-камеры. Файл пароля будет заменён или создан:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">zbarcam -q --raw &lt;span class="p">|&lt;/span> pass otp insert totp-secret
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Из буфера обмена (для Wayland):&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">wl-paste &lt;span class="p">|&lt;/span> zbarimg -q --raw - &lt;span class="p">|&lt;/span> pass otp append google/example@gmail.com
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="использование-токена">&lt;span class="section-num">5&lt;/span> Использование токена&lt;/h2>
+&lt;ul>
+&lt;li>Сгенерировать код 2FA, используя токен:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pass otp totp-secret
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Отобразить QR-код для токена OTP:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pass otp uri -q totp-secret
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul></description></item><item><title>Использование vagrant. Установка Rocky Linux</title><link>https://yamadharma.github.io/ru/post/2023/08/20/using-vagrant-install-rocky-linux/</link><pubDate>Sun, 20 Aug 2023 19:00:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/08/20/using-vagrant-install-rocky-linux/</guid><description>&lt;p>Установка Rocky Linux из репозитория образов Vagrant.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
@@ -829,18 +1185,18 @@
 &lt;nav>
 &lt;div class="nav nav-tabs" id="nav-tab" role="tablist">
 &lt;a class="nav-item nav-link active "
-id="nav-dcaebf" data-toggle="tab" href="#dcaebf"
+id="nav-fdbaec" data-toggle="tab" href="#fdbaec"
 role="tab" aria-controls="nav-home" aria-selected="true">RuTube&lt;/a>
 &lt;a class="nav-item nav-link "
-id="nav-fbdeca" data-toggle="tab" href="#fbdeca"
+id="nav-fdceab" data-toggle="tab" href="#fdceab"
 role="tab" aria-controls="nav-home" aria-selected="true">VKVideo&lt;/a>
 &lt;a class="nav-item nav-link "
-id="nav-cafdbe" data-toggle="tab" href="#cafdbe"
+id="nav-ceadfb" data-toggle="tab" href="#ceadfb"
 role="tab" aria-controls="nav-home" aria-selected="true">Youtube&lt;/a>
 &lt;/div>
 &lt;/nav>
 &lt;div class="tab-content" id="nav-tab-content">
-&lt;div class="tab-pane fade show active " id="dcaebf" role="tabpanel" aria-labelledby="nav-1">
+&lt;div class="tab-pane fade show active " id="fdbaec" role="tabpanel" aria-labelledby="nav-1">
 &lt;div class="embed video-player">
 &lt;iframe class="rutube-player" type="text/html"
 width="720" height="405"
@@ -850,14 +1206,14 @@ allow="clipboard-write" frameborder="0">
 &lt;/iframe>
 &lt;/div>
 &lt;/div>
-&lt;div class="tab-pane fade show " id="fbdeca" role="tabpanel" aria-labelledby="nav-1">
+&lt;div class="tab-pane fade show " id="fdceab" role="tabpanel" aria-labelledby="nav-1">
 &lt;div class="embed video-player">
 &lt;iframe
 src="https://vk.com/video_ext.php?oid=606414976&amp;id=456239563&amp;hd=2"
 width="720" height="405" allow="autoplay; encrypted-media; fullscreen; picture-in-picture;" frameborder="0" allowfullscreen>&lt;/iframe>
 &lt;/div>
 &lt;/div>
-&lt;div class="tab-pane fade show " id="cafdbe" role="tabpanel" aria-labelledby="nav-1">
+&lt;div class="tab-pane fade show " id="ceadfb" role="tabpanel" aria-labelledby="nav-1">
 &lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
 &lt;iframe src="https://www.youtube.com/embed/vTkYacxvhoc" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video">&lt;/iframe>
 &lt;/div>
@@ -1436,15 +1792,15 @@ width="720" height="405" allow="autoplay; encrypted-media; fullscreen; picture-i
 &lt;nav>
 &lt;div class="nav nav-tabs" id="nav-tab" role="tablist">
 &lt;a class="nav-item nav-link active "
-id="nav-cfbead" data-toggle="tab" href="#cfbead"
+id="nav-befadc" data-toggle="tab" href="#befadc"
 role="tab" aria-controls="nav-home" aria-selected="true">RuTube&lt;/a>
 &lt;a class="nav-item nav-link "
-id="nav-fdceba" data-toggle="tab" href="#fdceba"
+id="nav-cfedab" data-toggle="tab" href="#cfedab"
 role="tab" aria-controls="nav-home" aria-selected="true">Youtube&lt;/a>
 &lt;/div>
 &lt;/nav>
 &lt;div class="tab-content" id="nav-tab-content">
-&lt;div class="tab-pane fade show active " id="cfbead" role="tabpanel" aria-labelledby="nav-1">
+&lt;div class="tab-pane fade show active " id="befadc" role="tabpanel" aria-labelledby="nav-1">
 &lt;div class="embed video-player">
 &lt;iframe class="rutube-player" type="text/html"
 width="720" height="405"
@@ -1454,7 +1810,7 @@ allow="clipboard-write" frameborder="0">
 &lt;/iframe>
 &lt;/div>
 &lt;/div>
-&lt;div class="tab-pane fade show " id="fdceba" role="tabpanel" aria-labelledby="nav-1">
+&lt;div class="tab-pane fade show " id="cfedab" role="tabpanel" aria-labelledby="nav-1">
 &lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
 &lt;iframe src="https://www.youtube.com/embed/6bBXVc6bmrs" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video">&lt;/iframe>
 &lt;/div>
@@ -4100,6 +4456,7 @@ Configuration mode
 &lt;li>Зеркало бинарных сборок:
 &lt;ul>
 &lt;li>&lt;a href="https://hashicorp-releases.yandexcloud.net/packer/" target="_blank" rel="noopener">https://hashicorp-releases.yandexcloud.net/packer/&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://hashicorp-releases.mcs.mail.ru/packer/" target="_blank" rel="noopener">https://hashicorp-releases.mcs.mail.ru/packer/&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://sourceforge.net/projects/packer.mirror/files/" target="_blank" rel="noopener">https://sourceforge.net/projects/packer.mirror/files/&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
@@ -6423,15 +6780,15 @@ Configuration mode
 &lt;nav>
 &lt;div class="nav nav-tabs" id="nav-tab" role="tablist">
 &lt;a class="nav-item nav-link active "
-id="nav-afdbce" data-toggle="tab" href="#afdbce"
+id="nav-efabcd" data-toggle="tab" href="#efabcd"
 role="tab" aria-controls="nav-home" aria-selected="true">RuTube&lt;/a>
 &lt;a class="nav-item nav-link "
-id="nav-cfdeab" data-toggle="tab" href="#cfdeab"
+id="nav-cfabde" data-toggle="tab" href="#cfabde"
 role="tab" aria-controls="nav-home" aria-selected="true">Youtube&lt;/a>
 &lt;/div>
 &lt;/nav>
 &lt;div class="tab-content" id="nav-tab-content">
-&lt;div class="tab-pane fade show active " id="afdbce" role="tabpanel" aria-labelledby="nav-1">
+&lt;div class="tab-pane fade show active " id="efabcd" role="tabpanel" aria-labelledby="nav-1">
 &lt;div class="embed video-player">
 &lt;iframe class="rutube-player" type="text/html"
 width="720" height="405"
@@ -6441,7 +6798,7 @@ allow="clipboard-write" frameborder="0">
 &lt;/iframe>
 &lt;/div>
 &lt;/div>
-&lt;div class="tab-pane fade show " id="cfdeab" role="tabpanel" aria-labelledby="nav-1">
+&lt;div class="tab-pane fade show " id="cfabde" role="tabpanel" aria-labelledby="nav-1">
 &lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
 &lt;iframe src="https://www.youtube.com/embed/BgIzJo18yp8" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video">&lt;/iframe>
 &lt;/div>
@@ -8773,6 +9130,7 @@ allow="clipboard-write" frameborder="0">
 &lt;li>Зеркало бинарных сборок:
 &lt;ul>
 &lt;li>&lt;a href="https://hashicorp-releases.yandexcloud.net/vagrant/" target="_blank" rel="noopener">https://hashicorp-releases.yandexcloud.net/vagrant/&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://hashicorp-releases.mcs.mail.ru/vagrant/" target="_blank" rel="noopener">https://hashicorp-releases.mcs.mail.ru/vagrant/&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>Зеркало сборок из репозитория:
@@ -11063,7 +11421,8 @@ allow="clipboard-write" frameborder="0">
 &lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#преобразование">&lt;span class="section-num">2&lt;/span> Преобразование&lt;/a>
 &lt;ul>
-&lt;li>&lt;a href="#декодирование">&lt;span class="section-num">2.1&lt;/span> Декодирование&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#кодирование">&lt;span class="section-num">2.1&lt;/span> Кодирование&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#декодирование">&lt;span class="section-num">2.2&lt;/span> Декодирование&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
@@ -11075,7 +11434,24 @@ allow="clipboard-write" frameborder="0">
 &lt;li>Отличия от оригинальной UTF-7 связаны с особым значением символа &lt;code>+&lt;/code> в некоторых почтовых системах и символа &lt;code>/&lt;/code> в роли разделителя имён каталогов в Unix.&lt;/li>
 &lt;/ul>
 &lt;h2 id="преобразование">&lt;span class="section-num">2&lt;/span> Преобразование&lt;/h2>
-&lt;h3 id="декодирование">&lt;span class="section-num">2.1&lt;/span> Декодирование&lt;/h3>
+&lt;h3 id="кодирование">&lt;span class="section-num">2.1&lt;/span> Кодирование&lt;/h3>
+&lt;ul>
+&lt;li>Алгоритм кодирования имён папок:
+&lt;ul>
+&lt;li>Текст -&amp;gt; UTF7;&lt;/li>
+&lt;li>&lt;code>&amp;amp;&lt;/code> -&amp;gt; &lt;code>&amp;amp;-&lt;/code>;&lt;/li>
+&lt;li>&lt;code>/&lt;/code> -&amp;gt; &lt;code>,&lt;/code>;&lt;/li>
+&lt;li>&lt;code>+&lt;/code> -&amp;gt; &lt;code>&amp;amp;&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Код (shell):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;Черновики&amp;#34;&lt;/span> &lt;span class="p">|&lt;/span> iconv -f UTF8 -t UTF7 &lt;span class="p">|&lt;/span> sed &lt;span class="s1">&amp;#39;s/&amp;amp;/&amp;amp;-/g;s/\//,/g;s/+/\&amp;amp;/g&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>В результате получаем:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;amp;&lt;/span>BCcENQRABD0EPgQyBDgEOgQ4
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="декодирование">&lt;span class="section-num">2.2&lt;/span> Декодирование&lt;/h3>
 &lt;ul>
 &lt;li>Алгоритм декодирования имён папок:
 &lt;ul>
@@ -15008,8 +15384,7 @@ allow="clipboard-write" frameborder="0">
 &lt;h3 id="сервисы">&lt;span class="section-num">13.7&lt;/span> Сервисы&lt;/h3>
 &lt;h4 id="dns">&lt;span class="section-num">13.7.1&lt;/span> DNS&lt;/h4>
 &lt;ul>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/05/23/dns-powerdns-recursor/">DNS. PowerDNS Recursor&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/05/26/public-dns-resolvers/">Общедоступные резольверы DNS&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/09/16/domain-name-system-dns/">Domain Name System (DNS)&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;h2 id="организация-обучения">&lt;span class="section-num">14&lt;/span> Организация обучения&lt;/h2>
 &lt;ul>
@@ -15430,7 +15805,9 @@ allow="clipboard-write" frameborder="0">
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="настройка-подключения-к-google">&lt;span class="section-num">3.5&lt;/span> Настройка подключения к Google&lt;/h3>
-&lt;p>&lt;a href="https://yamadharma.github.io/ru/post/2020/12/25/mail-google-connect/">Почта. Подключение к Google&lt;/a>&lt;/p></description></item><item><title>Почта. Синхронизация. mbsync</title><link>https://yamadharma.github.io/ru/post/2021/01/22/mail-synchronization-mbsync/</link><pubDate>Fri, 22 Jan 2021 15:10:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2021/01/22/mail-synchronization-mbsync/</guid><description>&lt;p>Настройка синхронизации IMAP с помощью &lt;em>mbsync&lt;/em>.&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2020/12/25/mail-google-connect/">Почта. Подключение к Google&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>Почта. Синхронизация. mbsync</title><link>https://yamadharma.github.io/ru/post/2021/01/22/mail-synchronization-mbsync/</link><pubDate>Fri, 22 Jan 2021 15:10:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2021/01/22/mail-synchronization-mbsync/</guid><description>&lt;p>Настройка синхронизации IMAP с помощью &lt;em>mbsync&lt;/em>.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
 &lt;nav id="TableOfContents">

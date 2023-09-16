@@ -1,4 +1,101 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>security | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/security/</link><atom:link href="https://yamadharma.github.io/ru/tag/security/index.xml" rel="self" type="application/rss+xml"/><description>security</description><generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2023 Dmitry S. Kulyabov</copyright><lastBuildDate>Thu, 24 Aug 2023 20:09:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url><title>security</title><link>https://yamadharma.github.io/ru/tag/security/</link></image><item><title>Одноразовые пароли</title><link>https://yamadharma.github.io/ru/post/2023/08/24/one-time-passwords/</link><pubDate>Thu, 24 Aug 2023 20:09:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/08/24/one-time-passwords/</guid><description>&lt;p>Одноразовые пароли.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>security | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/security/</link><atom:link href="https://yamadharma.github.io/ru/tag/security/index.xml" rel="self" type="application/rss+xml"/><description>security</description><generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2023 Dmitry S. Kulyabov</copyright><lastBuildDate>Thu, 24 Aug 2023 20:29:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url><title>security</title><link>https://yamadharma.github.io/ru/tag/security/</link></image><item><title>Менеджер паролей pass. Одноразовые пароли</title><link>https://yamadharma.github.io/ru/post/2023/08/24/password-manager-pass-one-time-passwords/</link><pubDate>Thu, 24 Aug 2023 20:29:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/08/24/password-manager-pass-one-time-passwords/</guid><description>&lt;p>Одноразовые пароли в менеджере паролей pass.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#формат-файла">&lt;span class="section-num">1&lt;/span> Формат файла&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#аппаратный-токен">&lt;span class="section-num">2&lt;/span> Аппаратный токен&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#pass-otp">&lt;span class="section-num">3&lt;/span> pass-otp&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#добавить-токен-в-запись">&lt;span class="section-num">4&lt;/span> Добавить токен в запись&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#использование-токена">&lt;span class="section-num">5&lt;/span> Использование токена&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="формат-файла">&lt;span class="section-num">1&lt;/span> Формат файла&lt;/h2>
+&lt;ul>
+&lt;li>Токен можно хранить как в основном файле с паролем, так и в отдельном файле.&lt;/li>
+&lt;li>Хранение в том же файле: &lt;code>git-passwordstore/website/yourLogin&lt;/code>.
+&lt;ul>
+&lt;li>Формат может быть следующий:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="l">yourPassword&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nn">---&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">login&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">yourLogin&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">url&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">https://website.com&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">totp&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">YourOtpTokenBase32Encoded&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Можно хранить и в виде указателя на URL:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="l">yourPassword&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nn">---&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">login&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">yourLogin&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">url&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">https://website.com&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="l">otpauth://totp/Website:yourLogin?secret=YourOtpTokenBase32Encoded&amp;amp;issuer=Website&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Хранение в отдельном файле &lt;code>local-passwordstore/website/yourOtp&lt;/code>.
+&lt;ul>
+&lt;li>Только в виде указателя на URL:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="l">otpauth://totp/Website:yourLogin?secret=YourOtpTokenBase32Encoded&amp;amp;issuer=Website&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Например, URL для github имеет вид:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="l">tpauth://totp/GitHub:&amp;lt;username&amp;gt;?secret=&amp;lt;secret&amp;gt;&amp;amp;issuer=GitHub&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="аппаратный-токен">&lt;span class="section-num">2&lt;/span> Аппаратный токен&lt;/h2>
+&lt;ul>
+&lt;li>В идеале секретный ключ, способный расшифровать ваши секреты OTP, должен храниться на аппаратном токене, для расшифровки которого требуется какое-то взаимодействие с пользователем.&lt;/li>
+&lt;li>Это достигается путем настройки второго хранилища без использования тех же открытых ключей, что и для основного хранилища паролей.&lt;/li>
+&lt;li>Открытые ключи, используемые для вашего хранилища OTP, в идеале должны храниться только на аппаратных токенах.&lt;/li>
+&lt;/ul>
+&lt;h2 id="pass-otp">&lt;span class="section-num">3&lt;/span> pass-otp&lt;/h2>
+&lt;ul>
+&lt;li>Репозиторий: &lt;a href="https://github.com/tadfisher/pass-otp" target="_blank" rel="noopener">https://github.com/tadfisher/pass-otp&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="добавить-токен-в-запись">&lt;span class="section-num">4&lt;/span> Добавить токен в запись&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>Ввести токен с терминала (скрывая ввод):&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pass otp insert totp-secret
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Ввести токен с терминала (повторяя ввод):&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pass otp insert -e totp-secret
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Направьте otpauth://URI в файл паролей:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pass otp insert totp-secret &amp;lt; totp-secret.txt
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Декодировать QR-изображения (используя &lt;code>zbar&lt;/code>).&lt;/p>
+&lt;ul>
+&lt;li>Файл пароля будет заменён или создан:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">zbarimg -q --raw qrcode.png &lt;span class="p">|&lt;/span> pass otp insert totp-secret
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Добавление к существующему файлу паролей:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">zbarimg -q --raw google-qrcode.png &lt;span class="p">|&lt;/span> pass otp append google/example@gmail.com
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Декодировать QR, получаемый из веб-камеры. Файл пароля будет заменён или создан:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">zbarcam -q --raw &lt;span class="p">|&lt;/span> pass otp insert totp-secret
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Из буфера обмена (для Wayland):&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">wl-paste &lt;span class="p">|&lt;/span> zbarimg -q --raw - &lt;span class="p">|&lt;/span> pass otp append google/example@gmail.com
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="использование-токена">&lt;span class="section-num">5&lt;/span> Использование токена&lt;/h2>
+&lt;ul>
+&lt;li>Сгенерировать код 2FA, используя токен:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pass otp totp-secret
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Отобразить QR-код для токена OTP:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pass otp uri -q totp-secret
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul></description></item><item><title>Одноразовые пароли</title><link>https://yamadharma.github.io/ru/post/2023/08/24/one-time-passwords/</link><pubDate>Thu, 24 Aug 2023 20:09:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/08/24/one-time-passwords/</guid><description>&lt;p>Одноразовые пароли.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
 &lt;nav id="TableOfContents">

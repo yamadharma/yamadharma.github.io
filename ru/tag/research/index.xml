@@ -1,4 +1,92 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>research | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/research/</link><atom:link href="https://yamadharma.github.io/ru/tag/research/index.xml" rel="self" type="application/rss+xml"/><description>research</description><generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2023 Dmitry S. Kulyabov</copyright><lastBuildDate>Fri, 25 Aug 2023 13:38:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url><title>research</title><link>https://yamadharma.github.io/ru/tag/research/</link></image><item><title>Конференция Saratov Fall Meeting 2023</title><link>https://yamadharma.github.io/ru/post/2023/08/25/conference-saratov-fall-meeting-2023/</link><pubDate>Fri, 25 Aug 2023 13:38:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/08/25/conference-saratov-fall-meeting-2023/</guid><description>&lt;p>Конференция Saratov Fall Meeting 2023.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>research | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/research/</link><atom:link href="https://yamadharma.github.io/ru/tag/research/index.xml" rel="self" type="application/rss+xml"/><description>research</description><generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2023 Dmitry S. Kulyabov</copyright><lastBuildDate>Tue, 12 Sep 2023 16:33:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url><title>research</title><link>https://yamadharma.github.io/ru/tag/research/</link></image><item><title>Алгоритм Random early detection</title><link>https://yamadharma.github.io/ru/post/2023/09/12/random-early-detection/</link><pubDate>Tue, 12 Sep 2023 16:33:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/09/12/random-early-detection/</guid><description>&lt;p>Семейство алгоритмов типа Random early detection (RED).&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#характерные-черты-алгоритма-red">&lt;span class="section-num">2&lt;/span> Характерные черты алгоритма RED&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#зачем-исследовать-алгоритмы-типа-red">&lt;span class="section-num">3&lt;/span> Зачем исследовать алгоритмы типа RED&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#параметры">&lt;span class="section-num">3.1&lt;/span> Параметры&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#функция-сброса">&lt;span class="section-num">3.2&lt;/span> Функция сброса&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#пути-исследования">&lt;span class="section-num">3.3&lt;/span> Пути исследования&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#принципы-работы">&lt;span class="section-num">4&lt;/span> Принципы работы&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#литература">Литература&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>Random early detection (RED) (Произвольное Раннее Обнаружение)&lt;/li>
+&lt;li>Один из типов алгоритмов AQM для управления переполнением очередей маршрутизаторов.&lt;/li>
+&lt;li>Предложен Салли Флойд [&lt;a href="#citeproc_bib_item_1">1&lt;/a>].&lt;/li>
+&lt;li>Страница Салли Флойд, посвящённая RED: &lt;a href="http://www.icir.org/floyd/red.html" target="_blank" rel="noopener">http://www.icir.org/floyd/red.html&lt;/a>.&lt;/li>
+&lt;/ul>
+&lt;h2 id="характерные-черты-алгоритма-red">&lt;span class="section-num">2&lt;/span> Характерные черты алгоритма RED&lt;/h2>
+&lt;ul>
+&lt;li>Алгоритм крайне простой.&lt;/li>
+&lt;li>Алгоритм построен так, чтобы использовать как можно меньше вычислительных ресурсов.&lt;/li>
+&lt;li>Основная вычислительная сложность приходится на вычисление функции сброса.&lt;/li>
+&lt;li>Не случайно эта функция функция строится из ломаных, как полиномиальное приближение к нелинейной функции сброса.&lt;/li>
+&lt;li>Из-за использования в алгоритме скользящего среднего RED хорошо обрабатывает взрывной (burst) трафик.&lt;/li>
+&lt;li>В сетях TCP/IP алгоритм RED помогает избавиться от проблемы &lt;em>глобальной синхронизации&lt;/em>.
+&lt;ul>
+&lt;li>Она возникает, когда несколько источников, работающих через один и тот же перегруженный сегмент сети, обнаруживают потери пакетов.&lt;/li>
+&lt;li>Как следствие, эти источники одновременно снижают скорость, а затем (также одновременно) постепенно ее увеличивают, что приводит к новой перегрузке, потере пакетов и повторению всей процедуры.&lt;/li>
+&lt;li>Состояние сети периодически меняется от простоя до перегрузки.&lt;/li>
+&lt;li>RED позволяет избежать &lt;em>глобальной синхронизации&lt;/em>, выборочно уничтожая пакеты от определённых источников.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="зачем-исследовать-алгоритмы-типа-red">&lt;span class="section-num">3&lt;/span> Зачем исследовать алгоритмы типа RED&lt;/h2>
+&lt;ul>
+&lt;li>Математическая модель алгоритмов типа RED достаточно сложная, поэтому обосновать влияние разных элементов алгоритма на качество его работы крайне проблематично.&lt;/li>
+&lt;/ul>
+&lt;h3 id="параметры">&lt;span class="section-num">3.1&lt;/span> Параметры&lt;/h3>
+&lt;ul>
+&lt;li>Недостатком RED, о котором сообщают многие специалисты, это отсутствие жёсткого алгоритма задания параметров RED [&lt;a href="#citeproc_bib_item_2">2&lt;/a>].&lt;/li>
+&lt;li>Параметры задают:
+&lt;ul>
+&lt;li>пороги;&lt;/li>
+&lt;li>форму функции сброса;&lt;/li>
+&lt;li>размер буфера.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Изменение одних параметров тут же сказывается на других.&lt;/li>
+&lt;/ul>
+&lt;h3 id="функция-сброса">&lt;span class="section-num">3.2&lt;/span> Функция сброса&lt;/h3>
+&lt;ul>
+&lt;li>Изначальная функция сброса RED является простейшим приближением некоторой нелинейной функции.&lt;/li>
+&lt;li>Структура функции сброса простая.
+&lt;ul>
+&lt;li>Вначале она должна быть достаточно пологой, чтобы при превышении нижнего порога сброс пакетов был незначительным.&lt;/li>
+&lt;li>При приближении ко второму порогу функция сброса должна идти круто.&lt;/li>
+&lt;li>Вообще, задача о задании функции сброса идеологически похожа на задачу о брахистохроне.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="пути-исследования">&lt;span class="section-num">3.3&lt;/span> Пути исследования&lt;/h3>
+&lt;ul>
+&lt;li>Необходимо придумать такую функцию сброса, чтобы она вела себя нужным образом при конфигурации по умолчанию.&lt;/li>
+&lt;li>Можно с помощью задания нескольких порогов задать разные функции на разных сегментах.&lt;/li>
+&lt;li>Поскольку подобных функций можно задать достаточно много (с минимальным приложением усилий), а адекватной математической модели пока нет, исследования по улучшению RED будут продолжаться бесконечно.&lt;/li>
+&lt;/ul>
+&lt;h2 id="принципы-работы">&lt;span class="section-num">4&lt;/span> Принципы работы&lt;/h2>
+&lt;ul>
+&lt;li>RED отслеживает средний размер очереди и отбрасываемых пакетов, основываясь на статистической вероятности.&lt;/li>
+&lt;li>Также RED может использовать отслеживание пометок ECN.&lt;/li>
+&lt;li>Если буфер практически пуст, то все пакеты пропускаются в обычном режиме.&lt;/li>
+&lt;li>Когда очередь начинает расти, то вероятность отбрасывания пакетов также начинает расти.&lt;/li>
+&lt;li>Когда буфер полностью заполняется, вероятность становится равной единице и все входящие пакеты отбрасываются.&lt;/li>
+&lt;li>Можно сказать, что когда заполненность буфера маршрутизатора превышает какое-либо пороговое значение, вероятность отбрасывания входящего пакета зависит от степени превышения этого порогового значения.&lt;/li>
+&lt;/ul>
+&lt;h2 id="литература">Литература&lt;/h2>
+&lt;div class="csl-bib-body">
+&lt;div class="csl-entry">&lt;a id="citeproc_bib_item_1">&lt;/a>1. Floyd S. &lt;a href="https://doi.org/10.1109/90.251892">Random early detection gateways for congestion avoidance&lt;/a> / S. Floyd, V. Jacobson // Ieee/acm transactions on networking. – 1993. – Т. 1. – № 4. – Сс. 397–413.&lt;/div>
+&lt;div class="csl-entry">&lt;a id="citeproc_bib_item_2">&lt;/a>2. May M. &lt;a href="https://doi.org/10.1109/iwqos.1999.766502">Reasons not to deploy red&lt;/a> / M. May, J. Bolot, C. Diot, B. Lyles // 1999 seventh international workshop on quality of service. iwqos’99. (cat. no.98ex354). – IEEE, 1999. – Сс. 260–262.&lt;/div>
+&lt;/div></description></item><item><title>Конференция Saratov Fall Meeting 2023</title><link>https://yamadharma.github.io/ru/post/2023/08/25/conference-saratov-fall-meeting-2023/</link><pubDate>Fri, 25 Aug 2023 13:38:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/08/25/conference-saratov-fall-meeting-2023/</guid><description>&lt;p>Конференция Saratov Fall Meeting 2023.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
 &lt;nav id="TableOfContents">
@@ -1168,7 +1256,7 @@ Physics based neural networks (PINNs) are one important approach to electrodynam
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/02/18/workshop-mathematical-modeling-2022-1/">Семинар Математическое моделирование, 2022-1&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/09/07/workshop-mathematical-modeling-2022-2/">Семинар Математическое моделирование, 2022-2023&lt;/a>&lt;/li>
-&lt;/ul></description></item><item><title>Семинар Математическое моделирование, 2022-1</title><link>https://yamadharma.github.io/ru/post/2022/02/18/workshop-mathematical-modeling-2022-1/</link><pubDate>Fri, 18 Feb 2022 15:23:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/02/18/workshop-mathematical-modeling-2022-1/</guid><description>&lt;p>Заседания семинара Математическое моделирование, весенний семестр 2021-2022 учебного года.&lt;/p>
+&lt;/ul></description></item><item><title>Семинар Математическое моделирование, 2021-2022</title><link>https://yamadharma.github.io/ru/post/2022/02/18/workshop-mathematical-modeling-2022-1/</link><pubDate>Fri, 18 Feb 2022 15:23:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/02/18/workshop-mathematical-modeling-2022-1/</guid><description>&lt;p>Заседания семинара Математическое моделирование, весенний семестр 2021&amp;ndash;2022 учебного года.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
 &lt;nav id="TableOfContents">
@@ -3159,6 +3247,7 @@ possible to form a long-lived bound state with a lifetime of more than
 &lt;li>&lt;a href="#направления-исследования">&lt;span class="section-num">1&lt;/span> Направления исследования&lt;/a>
 &lt;ul>
 &lt;li>&lt;a href="#геометризация-полевых-теорий">&lt;span class="section-num">1.1&lt;/span> Геометризация полевых теорий&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#алгоритмы-активного-управления-очередью">&lt;span class="section-num">1.2&lt;/span> Алгоритмы активного управления очередью&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>&lt;a href="#публикации">&lt;span class="section-num">2&lt;/span> Публикации&lt;/a>
@@ -3168,11 +3257,7 @@ possible to form a long-lived bound state with a lifetime of more than
 &lt;/ul>
 &lt;/li>
 &lt;li>&lt;a href="#опыт-участия-в-работе-советов">&lt;span class="section-num">3&lt;/span> Опыт участия в работе советов&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#научное-руководство">&lt;span class="section-num">4&lt;/span> Научное руководство&lt;/a>
-&lt;ul>
-&lt;li>&lt;a href="#кандидаты-наук">&lt;span class="section-num">4.1&lt;/span> Кандидаты наук&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;/li>
+&lt;li>&lt;a href="#научное-руководство">&lt;span class="section-num">4&lt;/span> Научное руководство&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#научные-проекты">&lt;span class="section-num">5&lt;/span> Научные проекты&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#исследования-в-оияи">&lt;span class="section-num">6&lt;/span> Исследования в ОИЯИ&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#научная-группа">&lt;span class="section-num">7&lt;/span> Научная группа&lt;/a>&lt;/li>
@@ -3184,8 +3269,8 @@ possible to form a long-lived bound state with a lifetime of more than
 &lt;li>&lt;a href="#сводный-список">&lt;span class="section-num">8.2.1&lt;/span> Сводный список&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;li>&lt;a href="#выполнение-грантов">&lt;span class="section-num">8.3&lt;/span> Выполнение грантов&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#подготовка-грантов">&lt;span class="section-num">8.4&lt;/span> Подготовка грантов&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#подготовка-грантов">&lt;span class="section-num">8.3&lt;/span> Подготовка грантов&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#выполнение-грантов">&lt;span class="section-num">8.4&lt;/span> Выполнение грантов&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>&lt;a href="#научные-журналы">&lt;span class="section-num">9&lt;/span> Научные журналы&lt;/a>
@@ -3224,6 +3309,10 @@ possible to form a long-lived bound state with a lifetime of more than
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/04/06/geometrization-electrodynamics/">Геометризация электродинамики&lt;/a>&lt;/li>
 &lt;/ul>
+&lt;h3 id="алгоритмы-активного-управления-очередью">&lt;span class="section-num">1.2&lt;/span> Алгоритмы активного управления очередью&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/09/12/random-early-detection/">Алгоритм Random early detection&lt;/a>&lt;/li>
+&lt;/ul>
 &lt;h2 id="публикации">&lt;span class="section-num">2&lt;/span> Публикации&lt;/h2>
 &lt;h3 id="подготовка-публикаций">&lt;span class="section-num">2.1&lt;/span> Подготовка публикаций&lt;/h3>
 &lt;ul>
@@ -3239,44 +3328,6 @@ possible to form a long-lived bound state with a lifetime of more than
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/02/03/doctoral-committee/">Диссертационный совет&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;h2 id="научное-руководство">&lt;span class="section-num">4&lt;/span> Научное руководство&lt;/h2>
-&lt;h3 id="кандидаты-наук">&lt;span class="section-num">4.1&lt;/span> Кандидаты наук&lt;/h3>
-&lt;ul>
-&lt;li>Сортировка по датам защиты&lt;/li>
-&lt;li>&lt;span class="timestamp-wrapper">&lt;span class="timestamp">[2010-10-15 Пт] &lt;/span>&lt;/span> Королькова Анна Владиславовна
-&lt;ul>
-&lt;li>Математическая модель процесса передачи трафика с регулируемой алгоритмом типа RED динамической интенсивностью потока&lt;/li>
-&lt;li>05.13.18 - математическое моделирование, численные методы и комплексы программ&lt;/li>
-&lt;li>Кандидат физико-математических наук&lt;/li>
-&lt;li>Приказ о выдаче диплома: Решение Высшей аттестационной комиссии Министерства образования и науки Российской Федерации от 10 декабря 2010 года № 44к/50&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>&lt;span class="timestamp-wrapper">&lt;span class="timestamp">[2013-04-26 Пт] &lt;/span>&lt;/span> Геворкян Мигран Нельсонович
-&lt;ul>
-&lt;li>Анализ составных симплектических методов и симплектических методов Рунге–Кутта на длительных интервалах времени&lt;/li>
-&lt;li>05.13.18 - математическое моделирование, численные методы и комплексы программ&lt;/li>
-&lt;li>Кандидат физико-математических наук&lt;/li>
-&lt;li>Приказ о выдаче диплома: Приказ Министерства образования и науки Российской Федерации от 20 сентября 2013 года № 523/нк-7&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>&lt;span class="timestamp-wrapper">&lt;span class="timestamp">[2020-12-29 Вт] &lt;/span>&lt;/span> Ле Ань Ньат
-&lt;ul>
-&lt;li>Страна: Вьетнам&lt;/li>
-&lt;li>Численное моделирование нелинейных спиновых волн в графеновых структурах&lt;/li>
-&lt;li>05.13.18 - математическое моделирование, численные методы и комплексы программ&lt;/li>
-&lt;li>Совет: ПДС 0200.001 (РУДН)&lt;/li>
-&lt;li>Кандидат физико-математических наук&lt;/li>
-&lt;li>Приказ о выдаче диплома: Приказ Ректора РУДН от 09 февраля 2021 года № 31-дс&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>&lt;span class="timestamp-wrapper">&lt;span class="timestamp">[2022-06-24 Пт] &lt;/span>&lt;/span> Кравченко Николай Юрьевич
-&lt;ul>
-&lt;li>Компьютерное моделирование акустической кавитации в жидкостях&lt;/li>
-&lt;li>05.13.18 - Математическое моделирование, численные методы и комплексы программ&lt;/li>
-&lt;li>Совет: ПДС 0200.001 (РУДН)&lt;/li>
-&lt;li>Кандидат физико-математических наук&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ul>
 &lt;h2 id="научные-проекты">&lt;span class="section-num">5&lt;/span> Научные проекты&lt;/h2>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/08/08/research-mininet/">Исследования. Mininet&lt;/a>&lt;/li>
@@ -3311,13 +3362,13 @@ possible to form a long-lived bound state with a lifetime of more than
 &lt;li>Ф14Д-002 Разработка методов аппроксимации нелинейных функционалов и операторов с детерминированными и стохастическими параметрами (БФФИ, 2014&amp;ndash;2016, руководитель Малютин В. Б., Институт математики Национальной академии наук Беларуси).&lt;/li>
 &lt;li>14-01-00628 Математические методы, алгоритмы и программы для моделирования сложных физических систем и процессов с применением высокопроизводительных вычислительных систем (РФФИ, 2014&amp;ndash;2016, руководитель Айрян Э. А., ОИЯИ).&lt;/li>
 &lt;/ul>
-&lt;h3 id="выполнение-грантов">&lt;span class="section-num">8.3&lt;/span> Выполнение грантов&lt;/h3>
-&lt;ul>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/07/15/grants-implementation/">Выполнение грантов&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;h3 id="подготовка-грантов">&lt;span class="section-num">8.4&lt;/span> Подготовка грантов&lt;/h3>
+&lt;h3 id="подготовка-грантов">&lt;span class="section-num">8.3&lt;/span> Подготовка грантов&lt;/h3>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/10/09/grants-preparation/">Подготовка грантов&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="выполнение-грантов">&lt;span class="section-num">8.4&lt;/span> Выполнение грантов&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/07/15/grants-implementation/">Выполнение грантов&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;h2 id="научные-журналы">&lt;span class="section-num">9&lt;/span> Научные журналы&lt;/h2>
 &lt;h3 id="научные-издательства">&lt;span class="section-num">9.1&lt;/span> Научные издательства&lt;/h3>

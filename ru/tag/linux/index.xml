@@ -283,18 +283,24 @@
 &lt;li>&lt;a href="#после-установки">&lt;span class="section-num">3&lt;/span> После установки&lt;/a>
 &lt;ul>
 &lt;li>&lt;a href="#обновления">&lt;span class="section-num">3.1&lt;/span> Обновления&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#дополнительные-репозитории">&lt;span class="section-num">3.2&lt;/span> Дополнительные репозитории&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#установка-часового-пояса">&lt;span class="section-num">3.3&lt;/span> Установка часового пояса&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#синхронизация-времени">&lt;span class="section-num">3.4&lt;/span> Синхронизация времени&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#повышение-комфорта-работы">&lt;span class="section-num">3.5&lt;/span> Повышение комфорта работы&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#безопасность">&lt;span class="section-num">3.6&lt;/span> Безопасность&lt;/a>
+&lt;li>&lt;a href="#установка-локализации">&lt;span class="section-num">3.2&lt;/span> Установка локализации&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#дополнительные-репозитории">&lt;span class="section-num">3.3&lt;/span> Дополнительные репозитории&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#установка-часового-пояса">&lt;span class="section-num">3.4&lt;/span> Установка часового пояса&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#синхронизация-времени">&lt;span class="section-num">3.5&lt;/span> Синхронизация времени&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#разрешение-имён">&lt;span class="section-num">3.6&lt;/span> Разрешение имён&lt;/a>
 &lt;ul>
-&lt;li>&lt;a href="#fail2ban">&lt;span class="section-num">3.6.1&lt;/span> Fail2ban&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#systemd-resolved">&lt;span class="section-num">3.6.1&lt;/span> systemd-resolved&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;li>&lt;a href="#администрирование">&lt;span class="section-num">3.7&lt;/span> Администрирование&lt;/a>
+&lt;li>&lt;a href="#повышение-комфорта-работы">&lt;span class="section-num">3.7&lt;/span> Повышение комфорта работы&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#безопасность">&lt;span class="section-num">3.8&lt;/span> Безопасность&lt;/a>
 &lt;ul>
-&lt;li>&lt;a href="#автоматическое-обновление">&lt;span class="section-num">3.7.1&lt;/span> Автоматическое обновление&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#fail2ban">&lt;span class="section-num">3.8.1&lt;/span> Fail2ban&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#администрирование">&lt;span class="section-num">3.9&lt;/span> Администрирование&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#автоматическое-обновление">&lt;span class="section-num">3.9.1&lt;/span> Автоматическое обновление&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
@@ -471,14 +477,32 @@
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf -y update
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
-&lt;h3 id="дополнительные-репозитории">&lt;span class="section-num">3.2&lt;/span> Дополнительные репозитории&lt;/h3>
+&lt;h3 id="установка-локализации">&lt;span class="section-num">3.2&lt;/span> Установка локализации&lt;/h3>
+&lt;ul>
+&lt;li>Проверьте текущую локализацию:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">localectl status
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Посмотрите доступные локализации:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">localectl list-locales
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Если нет необходимой, установите её:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf -y install glibc-langpack-ru
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Установите нужную локализацию:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">localectl set-locale ru_RU.UTF-8
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Проверьте текущую локализацию:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">localectl status
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="дополнительные-репозитории">&lt;span class="section-num">3.3&lt;/span> Дополнительные репозитории&lt;/h3>
 &lt;ul>
 &lt;li>Установим &lt;em>EPEL&lt;/em>:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf config-manager --set-enabled crb
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">dnf -y install epel-release
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
-&lt;h3 id="установка-часового-пояса">&lt;span class="section-num">3.3&lt;/span> Установка часового пояса&lt;/h3>
+&lt;h3 id="установка-часового-пояса">&lt;span class="section-num">3.4&lt;/span> Установка часового пояса&lt;/h3>
 &lt;ul>
 &lt;li>Просмотрите список всех часовых поясов:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">timedatectl list-timezones
@@ -487,7 +511,7 @@
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">timedatectl set-timezone Etc/UTC
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
-&lt;h3 id="синхронизация-времени">&lt;span class="section-num">3.4&lt;/span> Синхронизация времени&lt;/h3>
+&lt;h3 id="синхронизация-времени">&lt;span class="section-num">3.5&lt;/span> Синхронизация времени&lt;/h3>
 &lt;ul>
 &lt;li>Запустите демон:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">systemctl &lt;span class="nb">enable&lt;/span> --now chronyd
@@ -502,23 +526,41 @@
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">timedatectl status
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
-&lt;h3 id="повышение-комфорта-работы">&lt;span class="section-num">3.5&lt;/span> Повышение комфорта работы&lt;/h3>
+&lt;h3 id="разрешение-имён">&lt;span class="section-num">3.6&lt;/span> Разрешение имён&lt;/h3>
+&lt;h4 id="systemd-resolved">&lt;span class="section-num">3.6.1&lt;/span> systemd-resolved&lt;/h4>
+&lt;ul>
+&lt;li>Можно установить кеширующий локальный name-server &lt;code>systemd-resolved&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf -y install systemd-resolved
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Файл настройки: &lt;code>/etc/systemd/resolved.conf&lt;/code>.&lt;/li>
+&lt;li>Можно в нём ничего не менять.&lt;/li>
+&lt;li>Запустим службу:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">systemctl &lt;span class="nb">enable&lt;/span> --now systemd-resolved.service
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Установите резольвер:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">ln -snf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Проверить работу можно командой:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">resolvectl
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="повышение-комфорта-работы">&lt;span class="section-num">3.7&lt;/span> Повышение комфорта работы&lt;/h3>
 &lt;ul>
 &lt;li>
 &lt;p>Программы для удобства работы в консоли:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf install tmux mc
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf -y install tmux mc
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Программы мониторинга:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf install htop
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf -y install htop
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Утилита для ssh:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf install mosh
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf -y install mosh
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
-&lt;h3 id="безопасность">&lt;span class="section-num">3.6&lt;/span> Безопасность&lt;/h3>
-&lt;h4 id="fail2ban">&lt;span class="section-num">3.6.1&lt;/span> Fail2ban&lt;/h4>
+&lt;h3 id="безопасность">&lt;span class="section-num">3.8&lt;/span> Безопасность&lt;/h3>
+&lt;h4 id="fail2ban">&lt;span class="section-num">3.8.1&lt;/span> Fail2ban&lt;/h4>
 &lt;ul>
 &lt;li>
 &lt;p>Защита от атак:&lt;/p>
@@ -533,8 +575,8 @@
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">tail -f /var/log/fail2ban.log
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
-&lt;h3 id="администрирование">&lt;span class="section-num">3.7&lt;/span> Администрирование&lt;/h3>
-&lt;h4 id="автоматическое-обновление">&lt;span class="section-num">3.7.1&lt;/span> Автоматическое обновление&lt;/h4>
+&lt;h3 id="администрирование">&lt;span class="section-num">3.9&lt;/span> Администрирование&lt;/h3>
+&lt;h4 id="автоматическое-обновление">&lt;span class="section-num">3.9.1&lt;/span> Автоматическое обновление&lt;/h4>
 &lt;ul>
 &lt;li>При необходимости можно использовать автоматическое обновление (см. &lt;a href="https://yamadharma.github.io/ru/post/2022/09/25/redhat-based-systems-auto-update/">Автообновление систем на базе деривативов RedHat&lt;/a>).&lt;/li>
 &lt;li>Установка программного обеспечения:
@@ -667,6 +709,7 @@
 &lt;h3 id="dns-сервера">&lt;span class="section-num">4.7&lt;/span> DNS сервера&lt;/h3>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/05/23/dns-powerdns-recursor/">DNS. PowerDNS Recursor&lt;/a>&lt;/li>
+&lt;li>&lt;/li>
 &lt;/ul></description></item><item><title>CentOS 8. Изменение адресов репозиториев</title><link>https://yamadharma.github.io/ru/post/2022/02/10/centos8-changing-repository-addresses/</link><pubDate>Thu, 10 Feb 2022 14:39:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/02/10/centos8-changing-repository-addresses/</guid><description>&lt;p>С 31 января 2022 года установка пакетов или обновление репозиториев в CentOS8 выдаёт ошибку.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
@@ -732,6 +775,76 @@
 &lt;h2 id="шрифты-для-программирования">&lt;span class="section-num">2&lt;/span> Шрифты для программирования&lt;/h2>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/05/21/monospace-fonts/">Моноширинные шрифты&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>Выбор дистрибутива Linux</title><link>https://yamadharma.github.io/ru/post/2021/08/08/choosing-linux-distribution/</link><pubDate>Sun, 08 Aug 2021 11:20:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2021/08/08/choosing-linux-distribution/</guid><description>&lt;p>Какой дистрибутив Linux выбрать.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#серверный-компьютерный-парк">&lt;span class="section-num">1&lt;/span> Серверный компьютерный парк&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#требования">&lt;span class="section-num">1.1&lt;/span> Требования&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#реализация">&lt;span class="section-num">1.2&lt;/span> Реализация&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#обучение">&lt;span class="section-num">2&lt;/span> Обучение&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#дисплейные-классы">&lt;span class="section-num">2.1&lt;/span> Дисплейные классы&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#требования">&lt;span class="section-num">2.1.1&lt;/span> Требования&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#реализация">&lt;span class="section-num">2.1.2&lt;/span> Реализация&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#домашние-компьютеры-студентов">&lt;span class="section-num">2.2&lt;/span> Домашние компьютеры студентов&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#специализированные-дистрибутивы-для-разных-предметов">&lt;span class="section-num">2.3&lt;/span> Специализированные дистрибутивы для разных предметов&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#личное-использование">&lt;span class="section-num">3&lt;/span> Личное использование&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#требования">&lt;span class="section-num">3.1&lt;/span> Требования&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#реализация">&lt;span class="section-num">3.2&lt;/span> Реализация&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="серверный-компьютерный-парк">&lt;span class="section-num">1&lt;/span> Серверный компьютерный парк&lt;/h2>
+&lt;h3 id="требования">&lt;span class="section-num">1.1&lt;/span> Требования&lt;/h3>
+&lt;ul>
+&lt;li>Стабильность дистрибутива.&lt;/li>
+&lt;li>Всё должно делаться само.&lt;/li>
+&lt;li>Как можно больше автоматизации.&lt;/li>
+&lt;/ul>
+&lt;h3 id="реализация">&lt;span class="section-num">1.2&lt;/span> Реализация&lt;/h3>
+&lt;ul>
+&lt;li>Под описание подходят:
+&lt;ul>
+&lt;li>Debian;&lt;/li>
+&lt;li>Ubuntu;&lt;/li>
+&lt;li>Red Hat.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>В качестве основного дистрибутива была принята CentOS.&lt;/li>
+&lt;li>В связи с пертурбациями вокруг CentOS (см. &lt;a href="https://yamadharma.github.io/ru/post/2021/05/25/replacing-centos/">Замена Centos&lt;/a>), предполагается замена на Rocky Linux.&lt;/li>
+&lt;/ul>
+&lt;h2 id="обучение">&lt;span class="section-num">2&lt;/span> Обучение&lt;/h2>
+&lt;h3 id="дисплейные-классы">&lt;span class="section-num">2.1&lt;/span> Дисплейные классы&lt;/h3>
+&lt;h4 id="требования">&lt;span class="section-num">2.1.1&lt;/span> Требования&lt;/h4>
+&lt;h4 id="реализация">&lt;span class="section-num">2.1.2&lt;/span> Реализация&lt;/h4>
+&lt;ul>
+&lt;li>В дисплейных классах развёрнут дистрибутив Gentoo.&lt;/li>
+&lt;li>Это позволяет настраивать систему так, как будет нужным.&lt;/li>
+&lt;/ul>
+&lt;h3 id="домашние-компьютеры-студентов">&lt;span class="section-num">2.2&lt;/span> Домашние компьютеры студентов&lt;/h3>
+&lt;h3 id="специализированные-дистрибутивы-для-разных-предметов">&lt;span class="section-num">2.3&lt;/span> Специализированные дистрибутивы для разных предметов&lt;/h3>
+&lt;h2 id="личное-использование">&lt;span class="section-num">3&lt;/span> Личное использование&lt;/h2>
+&lt;h3 id="требования">&lt;span class="section-num">3.1&lt;/span> Требования&lt;/h3>
+&lt;ul>
+&lt;li>Гибкость.&lt;/li>
+&lt;li>Возможность поставить любую программу, любой версии.&lt;/li>
+&lt;/ul>
+&lt;h3 id="реализация">&lt;span class="section-num">3.2&lt;/span> Реализация&lt;/h3>
+&lt;ul>
+&lt;li>Для личного использования применяю Gentoo.&lt;/li>
 &lt;/ul></description></item><item><title>Мне отмщение и аз воздам</title><link>https://yamadharma.github.io/ru/post/2007/09/15/mne-otmschenie-i-az-vozdam/</link><pubDate>Sat, 15 Sep 2007 19:57:00 +0000</pubDate><guid>https://yamadharma.github.io/ru/post/2007/09/15/mne-otmschenie-i-az-vozdam/</guid><description>&lt;p>SCO объявили себя банкротами.&lt;/p></description></item><item><title>К вопросу о настройке маршрутизатора ASUS WL-500gP</title><link>https://yamadharma.github.io/ru/post/2007/01/14/k-voprosu-o-nastrojke-marshrutizatora-asus-wl-500gp/</link><pubDate>Sun, 14 Jan 2007 18:18:00 +0000</pubDate><guid>https://yamadharma.github.io/ru/post/2007/01/14/k-voprosu-o-nastrojke-marshrutizatora-asus-wl-500gp/</guid><description>&lt;p>При настройке возникли следующие проблемы.&lt;/p>
 &lt;ol>
 &lt;li>Нужно было догадаться, что сервер доступа в настройках называется Heart-Beat Server.&lt;/li>

@@ -143,6 +143,79 @@
 &lt;ul>
 &lt;li>Некоторые утилиты для дедупликации на уровне файлов поддерживают файловую систему &lt;em>btrfs&lt;/em>.&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/05/26/file-deduplication-linux/">Дедупликация файлов в Linux&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>Файл подкачки на btrfs</title><link>https://yamadharma.github.io/ru/post/2022/05/20/btrfs-swap-file/</link><pubDate>Fri, 20 May 2022 10:29:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/05/20/btrfs-swap-file/</guid><description>&lt;p>Размещение файла подкачки на разделе &lt;em>btrfs&lt;/em>.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#создание-файла-подкачки">&lt;span class="section-num">2&lt;/span> Создание файла подкачки&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>btrfs поддерживает файл подкачки (начиная с ядра версии 5.0).&lt;/li>
+&lt;li>Файл подкачки &lt;strong>не может&lt;/strong> находиться на любом рейде btrfs.&lt;/li>
+&lt;li>btrfs не позволяет создавать снапшоты, если на подтоме есть рабочий файл подкачки.&lt;/li>
+&lt;li>Рекомендуется размещать файл подкачки на отдельном подтоме.&lt;/li>
+&lt;li>Файл подкачки должен иметь свойство NODATACOW.&lt;/li>
+&lt;li>Файл подкачки должен быть без сжатия.&lt;/li>
+&lt;/ul>
+&lt;h2 id="создание-файла-подкачки">&lt;span class="section-num">2&lt;/span> Создание файла подкачки&lt;/h2>
+&lt;ul>
+&lt;li>Подмонтируем раздел с btrfs:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mkdir /mnt/gentoo
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mount -tbtrfs -orelatime,space_cache,discard,autodefrag,compress&lt;span class="o">=&lt;/span>zstd:9 /dev/sda4 /mnt/gentoo/
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Создадим подтом для файла подкачки на btrfs:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> /mnt/gentoo/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">btrfs subvol create @swap
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Отмонтируем том btrfs:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">umount /mnt/gentoo
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Создадим точку монтирования:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mkdir /swap
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Подмонтируем подтом &lt;code>@swap&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mount -o &lt;span class="nv">subvol&lt;/span>&lt;span class="o">=&lt;/span>@swap /dev/sda4 /swap
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Отключим для этого подтома CoW:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">chattr +C /swap
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Создадим файл подкачки:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">truncate -s &lt;span class="m">0&lt;/span> /swap/swapfile
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Отключим сжатие:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">btrfs property &lt;span class="nb">set&lt;/span> /swap/swapfile compression none
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Установим права доступа &lt;code>600&lt;/code> к файлу подкачки:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">chmod &lt;span class="m">600&lt;/span> /swap/swapfile
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Установим размер файла подкачки.
+&lt;ul>
+&lt;li>Можно задать размер вручную (например, 4GiB):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">fallocate -l 4G /swap/swapfile
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Можно установить размер файла подкачки исходя из размера оперативной памяти:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">fallocate -l &lt;span class="k">$(&lt;/span>free -h --si &lt;span class="p">|&lt;/span> awk &lt;span class="s1">&amp;#39;NR == 2 {print $2}&amp;#39;&lt;/span>&lt;span class="k">)&lt;/span> /swap/swapfile
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Отформатируем файл подкачки:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mkswap /swap/swapfile
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Активируем файл подкачки:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">swapon /swap/swapfile
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Добавим запись в &lt;code>/etc/fstab&lt;/code>, чтобы подключать файл подкачки при загрузке (для устройства с &lt;code>UUID=&amp;quot;f8963df3-1320-4bc0-a125-62be185b029e&amp;quot;&lt;/code>):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">UUID=&amp;#34;f8963df3-1320-4bc0-a125-62be185b029e&amp;#34; /swap btrfs relatime,discard,autodefrag,compress=zstd:9,subvol=@swap 0 0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">/swap/swapfile none swap sw 0 0
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Проверьте, что файл &lt;code>/etc/fstab&lt;/code> не содержит ошибок:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">findmnt --verify --verbose
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul></description></item><item><title>Обслуживание btrfs</title><link>https://yamadharma.github.io/ru/post/2021/09/23/btrfs-maintenence/</link><pubDate>Thu, 23 Sep 2021 10:22:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2021/09/23/btrfs-maintenence/</guid><description>&lt;p>Действия по обслуживанию Btrfs.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>

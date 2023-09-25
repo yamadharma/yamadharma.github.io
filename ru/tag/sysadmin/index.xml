@@ -1,4 +1,327 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>sysadmin | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/sysadmin/</link><atom:link href="https://yamadharma.github.io/ru/tag/sysadmin/index.xml" rel="self" type="application/rss+xml"/><description>sysadmin</description><generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2023 Dmitry S. Kulyabov</copyright><lastBuildDate>Sat, 16 Sep 2023 19:52:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url><title>sysadmin</title><link>https://yamadharma.github.io/ru/tag/sysadmin/</link></image><item><title>DNS. Bind. DNSSEC</title><link>https://yamadharma.github.io/ru/post/2023/09/16/dns-bind-dnssec/</link><pubDate>Sat, 16 Sep 2023 19:52:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/09/16/dns-bind-dnssec/</guid><description>&lt;p>Настройка DNSSEC в Bind.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>sysadmin | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/sysadmin/</link><atom:link href="https://yamadharma.github.io/ru/tag/sysadmin/index.xml" rel="self" type="application/rss+xml"/><description>sysadmin</description><generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2023 Dmitry S. Kulyabov</copyright><lastBuildDate>Sat, 23 Sep 2023 15:55:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url><title>sysadmin</title><link>https://yamadharma.github.io/ru/tag/sysadmin/</link></image><item><title>MSYS2. Приложения Unix под Windows</title><link>https://yamadharma.github.io/ru/post/2023/09/23/msys2-unix-applications-windows/</link><pubDate>Sat, 23 Sep 2023 15:55:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/09/23/msys2-unix-applications-windows/</guid><description>&lt;p>MSYS2. Приложения Unix под Windows&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#установка">&lt;span class="section-num">2&lt;/span> Установка&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#настройка">&lt;span class="section-num">3&lt;/span> Настройка&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#команды-запуска">&lt;span class="section-num">3.1&lt;/span> Команды запуска&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#автозапуск-команд-при-старте-msys">&lt;span class="section-num">3.2&lt;/span> Автозапуск команд при старте MSYS&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#переменная-окружения-path">&lt;span class="section-num">3.3&lt;/span> Переменная окружения PATH&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#изменение-переменной-path">&lt;span class="section-num">3.3.1&lt;/span> Изменение переменной PATH&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#импорт-path-из-переменной-path-windows">&lt;span class="section-num">3.3.2&lt;/span> Импорт $PATH из переменной %Path% Windows&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#дополнительные-пакеты">&lt;span class="section-num">4&lt;/span> Дополнительные пакеты&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#средства-разработки">&lt;span class="section-num">4.1&lt;/span> Средства разработки&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#базовые-средства-разработки">&lt;span class="section-num">4.1.1&lt;/span> Базовые средства разработки&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#git">&lt;span class="section-num">4.1.2&lt;/span> git&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#терминалы">&lt;span class="section-num">4.2&lt;/span> Терминалы&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#mintty">&lt;span class="section-num">4.2.1&lt;/span> Mintty&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#konsole">&lt;span class="section-num">4.2.2&lt;/span> Konsole&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#файловые-менеджеры">&lt;span class="section-num">4.3&lt;/span> Файловые менеджеры&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#midnight-commander">&lt;span class="section-num">4.3.1&lt;/span> Midnight commander&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#просмотр-pdf">&lt;span class="section-num">4.4&lt;/span> Просмотр Pdf&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#evince">&lt;span class="section-num">4.4.1&lt;/span> Evince&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#okular">&lt;span class="section-num">4.4.2&lt;/span> Okular&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#шрифты">&lt;span class="section-num">4.5&lt;/span> Шрифты&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#iosevka">&lt;span class="section-num">4.5.1&lt;/span> Iosevka&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#редакторы">&lt;span class="section-num">4.6&lt;/span> Редакторы&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#neovim">&lt;span class="section-num">4.6.1&lt;/span> Neovim&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#утилиты-для-удобства">&lt;span class="section-num">4.7&lt;/span> Утилиты для удобства&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#tmux">&lt;span class="section-num">4.7.1&lt;/span> tmux&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>Сайт: &lt;a href="https://www.msys2.org/" target="_blank" rel="noopener">https://www.msys2.org/&lt;/a>&lt;/li>
+&lt;li>Набор инструментов и библиотек, предоставляющий unix-среду для создания, установки и запуска собственного программного обеспечения на Windows.&lt;/li>
+&lt;li>Частично использует Cygwin.
+&lt;ul>
+&lt;li>Подобно Cygwin делается замена путей в стиле UNIX, маскируется расширение &lt;code>.exe&lt;/code>, поддерживаются псевдотерминалы, UNIX-сигналы.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Содержит:
+&lt;ul>
+&lt;li>терминал командной строки mintty;&lt;/li>
+&lt;li>bash;&lt;/li>
+&lt;li>системы контроля версий (git, subversion);&lt;/li>
+&lt;li>базовые инструменты (tar, awk);&lt;/li>
+&lt;li>пакетный менеджер &lt;code>packman&lt;/code> (из Arch Linux).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Дополнительное программное обеспечение используется из проекта Mingw-w64 (см. &lt;a href="https://yamadharma.github.io/ru/post/2023/09/22/mingw-w64-unix-applications-windows/">MinGW-w64. Приложения Unix под Windows&lt;/a>).&lt;/li>
+&lt;/ul>
+&lt;h2 id="установка">&lt;span class="section-num">2&lt;/span> Установка&lt;/h2>
+&lt;ul>
+&lt;li>Установка с помощью Chocolatey (см. &lt;a href="https://yamadharma.github.io/ru/post/2021/01/18/package-manager-windows-chocolatey/">Пакетный менеджер для Windows. Chocolatey&lt;/a>):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install msys2
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Далее, возможно, придётся перелогиниться или перегрузиться.&lt;/li>
+&lt;li>Запустите &lt;code>msys2&lt;/code> (через ярлык или через поиск).&lt;/li>
+&lt;li>Возможно будет необходимо обновить основные системные пакеты MSYS2 и базу данных с информацией об доступных пакетах:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pacman -Syu
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Также может потребоваться обновить другие установленные пакеты:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pacman -Su
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="настройка">&lt;span class="section-num">3&lt;/span> Настройка&lt;/h2>
+&lt;h3 id="команды-запуска">&lt;span class="section-num">3.1&lt;/span> Команды запуска&lt;/h3>
+&lt;ul>
+&lt;li>По умолчанию создаются несколько команд запуска.&lt;/li>
+&lt;li>Все они запускают команду &lt;code>msys2_shell.cmd&lt;/code> с разными параметрами.&lt;/li>
+&lt;li>Этот пакетный фал запускает необходимое окружение в параметрами, заданными в соответствующем &lt;code>.ini&lt;/code>-файле.&lt;/li>
+&lt;li>Например, ярлык &lt;code>MSYS2 MinGW x64&lt;/code> содержит в себе следующую командную строку запуска:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">C:&lt;span class="se">\t&lt;/span>ools&lt;span class="se">\m&lt;/span>sys64&lt;span class="se">\m&lt;/span>sys2_shell.cmd -mingw64
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Будем использовать окружение &lt;code>mingw64&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h3 id="автозапуск-команд-при-старте-msys">&lt;span class="section-num">3.2&lt;/span> Автозапуск команд при старте MSYS&lt;/h3>
+&lt;ul>
+&lt;li>Автоматически запускемые команды можно прописать двумя способами:
+&lt;ul>
+&lt;li>если их добавить в конец файла &lt;code>.bash_profile&lt;/code>, который находится в домашнем каталоге пользователя (домашние каталоги пользователей хранятся в каталогах папки &lt;code>c:\tools\msys64\home\&lt;/code>);&lt;/li>
+&lt;li>если их добавить в конец файла &lt;code>c:\tools\msys64\etc\profile&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="переменная-окружения-path">&lt;span class="section-num">3.3&lt;/span> Переменная окружения PATH&lt;/h3>
+&lt;h4 id="изменение-переменной-path">&lt;span class="section-num">3.3.1&lt;/span> Изменение переменной PATH&lt;/h4>
+&lt;ul>
+&lt;li>&lt;code>PATH&lt;/code> можно поменять командой &lt;code>export&lt;/code>.&lt;/li>
+&lt;li>Самый простой способ добавить что-либо в конец &lt;code>PATH&lt;/code> (на примере добавления каталога &lt;code>c:\opt\Нужные программы&lt;/code>):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">PATH&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="nv">$PATH&lt;/span>:&lt;span class="s1">&amp;#39;/c/opt/Нужные программы&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Следует обратить внимание на нотацию Cygwin:
+&lt;ul>
+&lt;li>в команде перед именем диска &lt;code>C:&lt;/code> стоит прямой слеш;&lt;/li>
+&lt;li>после имени диска нет двоеточия;&lt;/li>
+&lt;li>в качестве разделителя для элементов пути (директорий) используются прямые слеши;&lt;/li>
+&lt;li>если имена файлов и папок содержат пробелы, то весь путь обрамляется кавычками &lt;code>'&lt;/code>;&lt;/li>
+&lt;li>завершающий прямой слеш в пути отсутствует.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="импорт-path-из-переменной-path-windows">&lt;span class="section-num">3.3.2&lt;/span> Импорт $PATH из переменной %Path% Windows&lt;/h4>
+&lt;ul>
+&lt;li>Можно в скрипте msys2_shell.cmd раскомментировать строчку с переменной &lt;code>MSYS2_PATH_TYPE&lt;/code>, в результате чего в $PATH будут наследоваться значения из системной переменной окружения %Path% Windows:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">set&lt;/span> &lt;span class="nv">MSYS2_PATH_TYPE&lt;/span>&lt;span class="o">=&lt;/span>inherit
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="дополнительные-пакеты">&lt;span class="section-num">4&lt;/span> Дополнительные пакеты&lt;/h2>
+&lt;h3 id="средства-разработки">&lt;span class="section-num">4.1&lt;/span> Средства разработки&lt;/h3>
+&lt;h4 id="базовые-средства-разработки">&lt;span class="section-num">4.1.1&lt;/span> Базовые средства разработки&lt;/h4>
+&lt;ul>
+&lt;li>
+&lt;p>Средства разработки содержит группа &lt;code>mingw-w64-x86_64-toolchain&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pacman -S mingw-w64-x86_64-toolchain
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Будут предложены для установки несколько пакетов.&lt;/li>
+&lt;li>Можно установить все сразу, или избранные.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="git">&lt;span class="section-num">4.1.2&lt;/span> git&lt;/h4>
+&lt;ul>
+&lt;li>Установка git:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pacman -S git
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="терминалы">&lt;span class="section-num">4.2&lt;/span> Терминалы&lt;/h3>
+&lt;h4 id="mintty">&lt;span class="section-num">4.2.1&lt;/span> Mintty&lt;/h4>
+&lt;ul>
+&lt;li>Сайт: &lt;a href="https://mintty.github.io/" target="_blank" rel="noopener">https://mintty.github.io/&lt;/a>&lt;/li>
+&lt;li>&lt;code>Mintty&lt;/code> является терминальным приложением по умолчанию в MSYS2 и включено в установщик.&lt;/li>
+&lt;/ul>
+&lt;h4 id="konsole">&lt;span class="section-num">4.2.2&lt;/span> Konsole&lt;/h4>
+&lt;ul>
+&lt;li>Сайт: &lt;a href="https://konsole.kde.org/" target="_blank" rel="noopener">https://konsole.kde.org/&lt;/a>.&lt;/li>
+&lt;li>Установите терминал &lt;em>Konsole&lt;/em>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pacman -S mingw-w64-x86_64-konsole
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>По умолчанию &lt;code>konsole&lt;/code> запускает powershell.&lt;/li>
+&lt;li>Заменим оболочку на mingw64.&lt;/li>
+&lt;li>В строке меню окна Konsole выберите &lt;em>Настройки&lt;/em> &amp;gt; &lt;em>Создать новый профиль&lt;/em>.&lt;/li>
+&lt;li>Выберите его в качестве профиля по умолчанию, чтобы всегда открывать среду &lt;em>msys2&lt;/em> при запуске.&lt;/li>
+&lt;li>Добавьте имя профиля и следующую команду:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">C:&lt;span class="se">\t&lt;/span>ools&lt;span class="se">\m&lt;/span>sys64&lt;span class="se">\m&lt;/span>sys2_shell.cmd -defterm -here -no-start -mingw64
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Закройте и перезапустите Konsole.&lt;/li>
+&lt;/ul>
+&lt;h3 id="файловые-менеджеры">&lt;span class="section-num">4.3&lt;/span> Файловые менеджеры&lt;/h3>
+&lt;h4 id="midnight-commander">&lt;span class="section-num">4.3.1&lt;/span> Midnight commander&lt;/h4>
+&lt;ul>
+&lt;li>Установите Midnight commander:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pacman -S mc
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="просмотр-pdf">&lt;span class="section-num">4.4&lt;/span> Просмотр Pdf&lt;/h3>
+&lt;h4 id="evince">&lt;span class="section-num">4.4.1&lt;/span> Evince&lt;/h4>
+&lt;ul>
+&lt;li>Установите &lt;em>Evince&lt;/em>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pacman -S mingw-w64-x86_64-evince
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h4 id="okular">&lt;span class="section-num">4.4.2&lt;/span> Okular&lt;/h4>
+&lt;ul>
+&lt;li>Установим okular:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pacman -S mingw-w64-x86_64-okular
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="шрифты">&lt;span class="section-num">4.5&lt;/span> Шрифты&lt;/h3>
+&lt;h4 id="iosevka">&lt;span class="section-num">4.5.1&lt;/span> Iosevka&lt;/h4>
+&lt;ul>
+&lt;li>Шрифты Iosevka с патчами от nerd-fonts:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pacman -S mingw-w64-x86_64-ttf-iosevka-nerd mingw-w64-x86_64-ttf-iosevkaterm-nerd
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Подключить эти шрифты к оформлению Konsole у меня не получилось, поэтому я установил шрифты через Chocolatey:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install nerd-fonts-iosevka nerd-fonts-iosevkaterm -y
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="редакторы">&lt;span class="section-num">4.6&lt;/span> Редакторы&lt;/h3>
+&lt;h4 id="neovim">&lt;span class="section-num">4.6.1&lt;/span> Neovim&lt;/h4>
+&lt;ul>
+&lt;li>Установим &lt;em>neovim&lt;/em>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pacman -S mingw-w64-x86_64-neovim
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Также можно установить его графический вариант:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pacman -S mingw-w64-x86_64-neovim-qt
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="утилиты-для-удобства">&lt;span class="section-num">4.7&lt;/span> Утилиты для удобства&lt;/h3>
+&lt;h4 id="tmux">&lt;span class="section-num">4.7.1&lt;/span> tmux&lt;/h4>
+&lt;ul>
+&lt;li>Установим tmux:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pacman -S tmux
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul></description></item><item><title>MinGW-w64. Приложения Unix под Windows</title><link>https://yamadharma.github.io/ru/post/2023/09/22/mingw-w64-unix-applications-windows/</link><pubDate>Fri, 22 Sep 2023 13:46:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/09/22/mingw-w64-unix-applications-windows/</guid><description>&lt;p>MinGW-w64. Приложения Unix под Windows.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>Сайт: &lt;a href="https://www.mingw-w64.org/" target="_blank" rel="noopener">https://www.mingw-w64.org/&lt;/a>&lt;/li>
+&lt;li>Развитие проекта MinGW (см. &lt;a href="https://yamadharma.github.io/ru/post/2023/09/22/mingw-unix-applications-windows/">MinGW. Приложения Unix под Windows&lt;/a>).&lt;/li>
+&lt;li>В связи с тем, что в рамках изначального проекта MinGW не обещалось, что в его кодовую базу будут вноситься обновления, связанные с добавлением некоторых новых ключевых элементов Win32 API, а также наиболее необходимой поддержки 64-битной архитектуры, был создан проект MinGW-w64.&lt;/li>
+&lt;li>Является новой чистой реализацией портирования GNU Compiler Collection (GCC) под Microsoft Windows, осуществленной изначально компанией OneVision и переданной в 2008 году в общественное пользование (Public Domain).&lt;/li>
+&lt;li>Сначала он был предложен на рассмотрение для интеграции с оригинальным проектом MinGW, но был отклонен в связи с подозрением на использование несвободного или проприетарного кода.&lt;/li>
+&lt;li>Ведущие разработчики кода MinGW-w64 решили больше не пытаться кооперироваться с проектом MinGW.&lt;/li>
+&lt;/ul></description></item><item><title>MinGW. Приложения Unix под Windows</title><link>https://yamadharma.github.io/ru/post/2023/09/22/mingw-unix-applications-windows/</link><pubDate>Fri, 22 Sep 2023 13:22:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/09/22/mingw-unix-applications-windows/</guid><description>&lt;p>MinGW. Приложения Unix под Windows.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#отличия-от-cygwin">&lt;span class="section-num">2&lt;/span> Отличия от Cygwin&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#компоненты-mingw">&lt;span class="section-num">3&lt;/span> Компоненты MinGW&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>Сайт: &lt;a href="https://osdn.net/projects/mingw/" target="_blank" rel="noopener">https://osdn.net/projects/mingw/&lt;/a>.&lt;/li>
+&lt;li>MinGW (англ. Minimalist GNU for Windows), ранее mingw32.&lt;/li>
+&lt;li>Набор инструментов разработки программного обеспечения для создания приложений под Windows.&lt;/li>
+&lt;li>Включает в себя компилятор, родной программный порт GNU Compiler Collection (GCC) под Windows вместе с набором свободно распространяемых библиотек импорта и заголовочных файлов для Windows API.&lt;/li>
+&lt;li>В MinGW включены расширения для библиотеки времени выполнения Microsoft Visual C++ для поддержки функциональности C99.&lt;/li>
+&lt;li>Поддерживает стандарт C++11.&lt;/li>
+&lt;/ul>
+&lt;h2 id="отличия-от-cygwin">&lt;span class="section-num">2&lt;/span> Отличия от Cygwin&lt;/h2>
+&lt;ul>
+&lt;li>Цель Cygwin &amp;mdash; предоставить полный слой POSIX (подобный тому, который находится в Linux и других Unix-системах) над Windows, жертвуя производительностью там, где это необходимо для совместимости.&lt;/li>
+&lt;li>Цель MinGW &amp;mdash; предоставление нативной функциональности и производительности посредством прямых вызовов Windows API.&lt;/li>
+&lt;li>В отличие от Cygwin, MinGW не нуждается в DLL-слое совместимости и, таким образом, программы не обязаны распространяться с исходным кодом.&lt;/li>
+&lt;li>Вследствие того, что MinGW использует вызовы Win32 API, он не может предоставить полного POSIX API.&lt;/li>
+&lt;li>Нельзя скомпилировать некоторые приложения Unix, которые могут быть скомпилированы с Cygwin (приложения, требующие &lt;code>fork()&lt;/code>, &lt;code>mmap()&lt;/code> или &lt;code>ioctl()&lt;/code>).&lt;/li>
+&lt;/ul>
+&lt;h2 id="компоненты-mingw">&lt;span class="section-num">3&lt;/span> Компоненты MinGW&lt;/h2>
+&lt;ul>
+&lt;li>GNU toolchain (gcc, binutils).&lt;/li>
+&lt;li>Компонент MSYS (Minimal SYStem) предоставляет win32-порты окружения легковесной Unix-подобной оболочки, включающей rxvt и набор инструментов POSIX.&lt;/li>
+&lt;/ul></description></item><item><title>DNS. Bind. Установка сервера</title><link>https://yamadharma.github.io/ru/post/2023/09/19/dns-bind-server-install/</link><pubDate>Tue, 19 Sep 2023 14:35:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/09/19/dns-bind-server-install/</guid><description>&lt;p>Установка сервера DNS &lt;em>Bind&lt;/em>.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#установка-bind">&lt;span class="section-num">1&lt;/span> Установка Bind&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#настройка-брандмауэра">&lt;span class="section-num">2&lt;/span> Настройка брандмауэра&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#запуск-bind">&lt;span class="section-num">3&lt;/span> Запуск Bind&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="установка-bind">&lt;span class="section-num">1&lt;/span> Установка Bind&lt;/h2>
+&lt;ul>
+&lt;li>Устанавливаем DNS-сервер следующей командой:&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf -y install &lt;span class="nb">bind&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="настройка-брандмауэра">&lt;span class="section-num">2&lt;/span> Настройка брандмауэра&lt;/h2>
+&lt;ul>
+&lt;li>Настроим правила брандмауэра:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">firewall-cmd --zone&lt;span class="o">=&lt;/span>public --add-service&lt;span class="o">=&lt;/span>dns
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">firewall-cmd --runtime-to-permanent
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">firewall-cmd --reload
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="запуск-bind">&lt;span class="section-num">3&lt;/span> Запуск Bind&lt;/h2>
+&lt;ul>
+&lt;li>Запускаем &lt;em>bind&lt;/em> и включаем автозапуск:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">systemctl &lt;span class="nb">enable&lt;/span> --now named
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul></description></item><item><title>DNS. Bind</title><link>https://yamadharma.github.io/ru/post/2023/09/19/dns-bind/</link><pubDate>Tue, 19 Sep 2023 14:32:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/09/19/dns-bind/</guid><description>&lt;p>Сервер DNS &lt;em>Bind&lt;/em>.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#установка">&lt;span class="section-num">1&lt;/span> Установка&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#безопасность">&lt;span class="section-num">2&lt;/span> Безопасность&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="установка">&lt;span class="section-num">1&lt;/span> Установка&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/09/19/dns-bind-server-install/">DNS. Bind. Установка сервера&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="безопасность">&lt;span class="section-num">2&lt;/span> Безопасность&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/09/16/dns-bind-dnssec/">DNS. Bind. DNSSEC&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>DNS. Bind. DNSSEC</title><link>https://yamadharma.github.io/ru/post/2023/09/16/dns-bind-dnssec/</link><pubDate>Sat, 16 Sep 2023 19:52:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/09/16/dns-bind-dnssec/</guid><description>&lt;p>Настройка DNSSEC в Bind.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
 &lt;nav id="TableOfContents">
@@ -248,7 +571,7 @@
 &lt;h2 id="серверы-dns">&lt;span class="section-num">1&lt;/span> Серверы DNS&lt;/h2>
 &lt;h3 id="bind">&lt;span class="section-num">1.1&lt;/span> Bind&lt;/h3>
 &lt;ul>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/09/16/dns-bind-dnssec/">DNS. Bind. DNSSEC&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/09/19/dns-bind/">DNS. Bind&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;h3 id="powerdns">&lt;span class="section-num">1.2&lt;/span> PowerDNS&lt;/h3>
 &lt;ul>
@@ -1116,10 +1439,11 @@
 &lt;h2 id="установка-для-virtualbox">&lt;span class="section-num">2&lt;/span> Установка для Virtualbox&lt;/h2>
 &lt;h3 id="скачивание-файла">&lt;span class="section-num">2.1&lt;/span> Скачивание файла&lt;/h3>
 &lt;ul>
-&lt;li>Поскольку в России блокируется автоматическая скачка файла, то необходимо скачать его вручную:
+&lt;li>Поскольку в России блокируется автоматическая скачка файла, то необходимо скачать его вручную (скачивается, поскольку этот ссылка на сайт Rocky Linux):
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">wget https://app.vagrantup.com/rockylinux/boxes/9/versions/2.0.0/providers/virtualbox.box
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
-&lt;li>Можно скачать и со страницы непосредственно.&lt;/li>
+&lt;li>Можно скачать и со страницы &lt;a href="https://app.vagrantup.com/rockylinux/boxes/9" target="_blank" rel="noopener">https://app.vagrantup.com/rockylinux/boxes/9&lt;/a> непосредственно.&lt;/li>
+&lt;li>Можно скачать с сайта Rocky Linux: &lt;a href="https://dl.rockylinux.org/pub/rocky/9.2/images/x86_64/" target="_blank" rel="noopener">https://dl.rockylinux.org/pub/rocky/9.2/images/x86_64/&lt;/a>.&lt;/li>
 &lt;/ul>
 &lt;h3 id="установка-дополнения-для-vagrant">&lt;span class="section-num">2.2&lt;/span> Установка дополнения для Vagrant&lt;/h3>
 &lt;ul>
@@ -1185,18 +1509,18 @@
 &lt;nav>
 &lt;div class="nav nav-tabs" id="nav-tab" role="tablist">
 &lt;a class="nav-item nav-link active "
-id="nav-dfaceb" data-toggle="tab" href="#dfaceb"
+id="nav-fedcab" data-toggle="tab" href="#fedcab"
 role="tab" aria-controls="nav-home" aria-selected="true">RuTube&lt;/a>
 &lt;a class="nav-item nav-link "
-id="nav-edfcba" data-toggle="tab" href="#edfcba"
+id="nav-bfcade" data-toggle="tab" href="#bfcade"
 role="tab" aria-controls="nav-home" aria-selected="true">VKVideo&lt;/a>
 &lt;a class="nav-item nav-link "
-id="nav-dcfabe" data-toggle="tab" href="#dcfabe"
+id="nav-efdabc" data-toggle="tab" href="#efdabc"
 role="tab" aria-controls="nav-home" aria-selected="true">Youtube&lt;/a>
 &lt;/div>
 &lt;/nav>
 &lt;div class="tab-content" id="nav-tab-content">
-&lt;div class="tab-pane fade show active " id="dfaceb" role="tabpanel" aria-labelledby="nav-1">
+&lt;div class="tab-pane fade show active " id="fedcab" role="tabpanel" aria-labelledby="nav-1">
 &lt;div class="embed video-player">
 &lt;iframe class="rutube-player" type="text/html"
 width="720" height="405"
@@ -1206,14 +1530,14 @@ allow="clipboard-write" frameborder="0">
 &lt;/iframe>
 &lt;/div>
 &lt;/div>
-&lt;div class="tab-pane fade show " id="edfcba" role="tabpanel" aria-labelledby="nav-1">
+&lt;div class="tab-pane fade show " id="bfcade" role="tabpanel" aria-labelledby="nav-1">
 &lt;div class="embed video-player">
 &lt;iframe
 src="https://vk.com/video_ext.php?oid=606414976&amp;id=456239563&amp;hd=2"
 width="720" height="405" allow="autoplay; encrypted-media; fullscreen; picture-in-picture;" frameborder="0" allowfullscreen>&lt;/iframe>
 &lt;/div>
 &lt;/div>
-&lt;div class="tab-pane fade show " id="dcfabe" role="tabpanel" aria-labelledby="nav-1">
+&lt;div class="tab-pane fade show " id="efdabc" role="tabpanel" aria-labelledby="nav-1">
 &lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
 &lt;iframe src="https://www.youtube.com/embed/vTkYacxvhoc" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video">&lt;/iframe>
 &lt;/div>
@@ -1792,15 +2116,15 @@ width="720" height="405" allow="autoplay; encrypted-media; fullscreen; picture-i
 &lt;nav>
 &lt;div class="nav nav-tabs" id="nav-tab" role="tablist">
 &lt;a class="nav-item nav-link active "
-id="nav-decbfa" data-toggle="tab" href="#decbfa"
+id="nav-fbcade" data-toggle="tab" href="#fbcade"
 role="tab" aria-controls="nav-home" aria-selected="true">RuTube&lt;/a>
 &lt;a class="nav-item nav-link "
-id="nav-febdac" data-toggle="tab" href="#febdac"
+id="nav-bdcfae" data-toggle="tab" href="#bdcfae"
 role="tab" aria-controls="nav-home" aria-selected="true">Youtube&lt;/a>
 &lt;/div>
 &lt;/nav>
 &lt;div class="tab-content" id="nav-tab-content">
-&lt;div class="tab-pane fade show active " id="decbfa" role="tabpanel" aria-labelledby="nav-1">
+&lt;div class="tab-pane fade show active " id="fbcade" role="tabpanel" aria-labelledby="nav-1">
 &lt;div class="embed video-player">
 &lt;iframe class="rutube-player" type="text/html"
 width="720" height="405"
@@ -1810,7 +2134,7 @@ allow="clipboard-write" frameborder="0">
 &lt;/iframe>
 &lt;/div>
 &lt;/div>
-&lt;div class="tab-pane fade show " id="febdac" role="tabpanel" aria-labelledby="nav-1">
+&lt;div class="tab-pane fade show " id="bdcfae" role="tabpanel" aria-labelledby="nav-1">
 &lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
 &lt;iframe src="https://www.youtube.com/embed/6bBXVc6bmrs" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video">&lt;/iframe>
 &lt;/div>
@@ -3211,10 +3535,7 @@ Configuration mode
 &lt;h3 id="необходимые-пакеты">&lt;span class="section-num">2.1&lt;/span> Необходимые пакеты&lt;/h3>
 &lt;ul>
 &lt;li>Установка осуществляется на Rockylinux&lt;/li>
-&lt;li>Установите сервер (см. [[&lt;a href="https://yamadharma.github.io/ru/post/2022/08/12/rockylinux-server-installation/">../notes/public/20220812135700-rocky_linux_9_установка_сервера.md&lt;/a>][Rocky Linux. Установка&lt;/li>
-&lt;/ul>
-&lt;p>сервера]]).&lt;/p>
-&lt;ul>
+&lt;li>Установите сервер (см. &lt;a href="https://yamadharma.github.io/ru/post/2022/08/12/rockylinux-server-installation/">Rocky Linux. Установка сервера&lt;/a>).&lt;/li>
 &lt;li>Установите необходимое программное обеспечение:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf -y install epel-release
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">dnf module reset php
@@ -4431,7 +4752,11 @@ Configuration mode
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
 &lt;nav id="TableOfContents">
 &lt;ul>
-&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#лицензия">&lt;span class="section-num">1.1&lt;/span> Лицензия&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
 &lt;li>&lt;a href="#необходимое-программное-обеспечение">&lt;span class="section-num">2&lt;/span> Необходимое программное обеспечение&lt;/a>
 &lt;ul>
 &lt;li>&lt;a href="#virtualbox">&lt;span class="section-num">2.1&lt;/span> Virtualbox&lt;/a>&lt;/li>
@@ -4460,6 +4785,10 @@ Configuration mode
 &lt;li>&lt;a href="https://sourceforge.net/projects/packer.mirror/files/" target="_blank" rel="noopener">https://sourceforge.net/projects/packer.mirror/files/&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
+&lt;/ul>
+&lt;h3 id="лицензия">&lt;span class="section-num">1.1&lt;/span> Лицензия&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/09/21/hashicorp-changes-license/">Смена лицензии HashiCorp&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;h2 id="необходимое-программное-обеспечение">&lt;span class="section-num">2&lt;/span> Необходимое программное обеспечение&lt;/h2>
 &lt;h3 id="virtualbox">&lt;span class="section-num">2.1&lt;/span> Virtualbox&lt;/h3>
@@ -5646,7 +5975,221 @@ Configuration mode
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;/ol></description></item><item><title>Набор вещей для системного администратора</title><link>https://yamadharma.github.io/ru/post/2022/09/11/system-administrator-tools/</link><pubDate>Sun, 11 Sep 2022 16:51:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/09/11/system-administrator-tools/</guid><description>&lt;p>Набор системного администратора.&lt;/p>
+&lt;/ol></description></item><item><title>Регламент работы дисплейных классов</title><link>https://yamadharma.github.io/ru/post/2022/09/12/regulations-display-classes/</link><pubDate>Mon, 12 Sep 2022 10:03:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/09/12/regulations-display-classes/</guid><description>&lt;p>Регламент работы дисплейных классов.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#функциональное-назначение-дисплейных-классов">&lt;span class="section-num">1&lt;/span> Функциональное назначение дисплейных классов&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#порядок-свободного-доступа-профессорско-преподавательского-состава-аспирантов-и-студентов-в-дисплейные-классы-общего-пользования">&lt;span class="section-num">2&lt;/span> Порядок свободного доступа профессорско-преподавательского состава, аспирантов и студентов в дисплейные классы общего пользования&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#инструкция-пользователю-дисплейных-классов">&lt;span class="section-num">3&lt;/span> Инструкция пользователю дисплейных классов&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#общие-положения">&lt;span class="section-num">3.1&lt;/span> Общие положения&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#требования-к-пользователям-dot">&lt;span class="section-num">3.2&lt;/span> Требования к пользователям.&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#инструкция-преподавателю-ведущему-занятия-в-дисплейных-классах">&lt;span class="section-num">4&lt;/span> Инструкция преподавателю, ведущему занятия в дисплейных классах&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#заявка-на-установку-программного-обеспечения-в-дисплейных-классах">&lt;span class="section-num">5&lt;/span> Заявка на установку программного обеспечения в дисплейных классах&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#учётная-форма-пользователя-сети-дисплейных-классов">&lt;span class="section-num">6&lt;/span> Учётная форма пользователя сети дисплейных классов&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="функциональное-назначение-дисплейных-классов">&lt;span class="section-num">1&lt;/span> Функциональное назначение дисплейных классов&lt;/h2>
+&lt;div class="table-caption">
+&lt;span class="table-number">&amp;#1058;&amp;#1072;&amp;#1073;&amp;#1083;&amp;#1080;&amp;#1094;&amp;#1072; 1:&lt;/span>
+Функциональное назначение дисплейных классов
+&lt;/div>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Номер&lt;/th>
+&lt;th>Аудитория&lt;/th>
+&lt;th>Назначение&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>ДК № 1&lt;/td>
+&lt;td>399а&lt;/td>
+&lt;td>Дисплейный класс общего назначения для учебных занятий и свободного доступа&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>ДК № 2&lt;/td>
+&lt;td>399б&lt;/td>
+&lt;td>Дисплейный класс общего назначения для учебных занятий и свободного доступа&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>ДК № 3&lt;/td>
+&lt;td>299&lt;/td>
+&lt;td>Дисплейный класс общего назначения для учебных занятий и свободного доступа&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>ДК № 4&lt;/td>
+&lt;td>298&lt;/td>
+&lt;td>Дисплейный класс общего назначения для учебных занятий и свободного доступа&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>ДК № 5&lt;/td>
+&lt;td>297&lt;/td>
+&lt;td>Дисплейный класс общего назначения для учебных занятий и свободного доступа&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>ДК № 6&lt;/td>
+&lt;td>295&lt;/td>
+&lt;td>Дисплейный класс для учебных занятий и свободного доступа профессорско-преподавательского состава и аспирантов&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>ДК № 7&lt;/td>
+&lt;td>296&lt;/td>
+&lt;td>Дисплейный класс общего назначения для учебных занятий и доступа к ЦКП&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h2 id="порядок-свободного-доступа-профессорско-преподавательского-состава-аспирантов-и-студентов-в-дисплейные-классы-общего-пользования">&lt;span class="section-num">2&lt;/span> Порядок свободного доступа профессорско-преподавательского состава, аспирантов и студентов в дисплейные классы общего пользования&lt;/h2>
+&lt;ul>
+&lt;li>Свободный доступ студентов осуществляется по расписанию работы дисплейных классов общего пользования в свободное от учебных занятий время, с понедельника по пятницу с 17.00 до 21.00 и в субботу с 9.00 до 15.00.&lt;/li>
+&lt;li>В соответствии с приказом Ректора РУДН № 381р от 04 июля 2005 года свободный доступ студентов осуществляется в присутствии ответственных лиц из числа преподавателей или учебно-вспомогательного персонала, назначенных деканами инженерной академии и факультета физико-математических и естественных наук.&lt;/li>
+&lt;li>Для свободного доступа в дисплейные классы студент должен зарегистрироваться в качестве пользователя в установленном порядке.&lt;/li>
+&lt;li>Студент должен ознакомиться с инструкцией пользователя дисплейных классов.&lt;/li>
+&lt;/ul>
+&lt;h2 id="инструкция-пользователю-дисплейных-классов">&lt;span class="section-num">3&lt;/span> Инструкция пользователю дисплейных классов&lt;/h2>
+&lt;h3 id="общие-положения">&lt;span class="section-num">3.1&lt;/span> Общие положения&lt;/h3>
+&lt;ul>
+&lt;li>Категории пользователей дисплейных классов (ДК)
+&lt;ul>
+&lt;li>профессорско-преподавательский состав;&lt;/li>
+&lt;li>аспиранты;&lt;/li>
+&lt;li>студенты в составе учебных групп;&lt;/li>
+&lt;li>преподаватели учебных групп;&lt;/li>
+&lt;li>пользователи, имеющие право свободного доступа для работы в ДК.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Доступ пользователей осуществляется в соответствии с расписанием работы ДК.&lt;/li>
+&lt;/ul>
+&lt;h3 id="требования-к-пользователям-dot">&lt;span class="section-num">3.2&lt;/span> Требования к пользователям.&lt;/h3>
+&lt;ul>
+&lt;li>Пользователь ДК обязан выполнять требования настоящей инструкции.&lt;/li>
+&lt;li>Пользователи ДК, решают все вопросы, не оговоренные в данной инструкции, с персоналом дисплейных классов через преподавателя.&lt;/li>
+&lt;li>Пользователи должны быть зарегистрированы (получить учетную запись и пароль) и могут создавать свои каталоги и файлы только в выделенной им области на сетевом диске.&lt;/li>
+&lt;li>Пользователи обязаны соблюдать требования дежурного по ДК.&lt;/li>
+&lt;li>Пользователям запрещается открывать системные блоки компьютеров, самостоятельно выключать/включать компьютер, отключать компьютеры от сети энергопитания, производить отключение и переключение любых устройств, а также любые другие действия, связанные с изменением регламентированного состояния аппаратного и энергетического обеспечения ДК.&lt;/li>
+&lt;li>Пользователям запрещается вносить какие либо изменения в регламентированную администрацией файловую систему компьютеров: самостоятельная инсталляция/деинсталляция программ, изменение системных настроек (настройки сети и другие системные настройки, установки CMOS и др.) категорически запрещены.&lt;/li>
+&lt;li>Категорически запрещается использование игровых программ, а также инсталляция игр на предоставляемые пользователям носители информации.&lt;/li>
+&lt;li>Пользователи, нарушившие пункты данной Инструкции, лишаются права доступа в ДК.&lt;/li>
+&lt;li>Пользователи, нарушившие правила общественного порядка, требований пожарной безопасности и допустившие акты вандализма в ДК, лишаются права доступа в ДК.&lt;/li>
+&lt;/ul>
+&lt;h2 id="инструкция-преподавателю-ведущему-занятия-в-дисплейных-классах">&lt;span class="section-num">4&lt;/span> Инструкция преподавателю, ведущему занятия в дисплейных классах&lt;/h2>
+&lt;ul>
+&lt;li>Занятия в учебных группах в дисплейных классах (ДК) проводятся строго в соответствии с расписанием занятий в присутствии преподавателя.&lt;/li>
+&lt;li>По окончании занятий ранее указанного в расписании времени преподаватель должен сообщить об этом дежурному по ДК.&lt;/li>
+&lt;li>Предложения и замечания по работе ДК заносятся в журнал, находящийся в комнате дежурных по ДК.&lt;/li>
+&lt;li>Заявки на установку программного обеспечения, дополнительно к предустановленному программному обеспечению, подаются в конце каждого модуля, с приложением дистрибутива и рекомендаций по установке. Ответственность за лицензионную чистоту программного обеспечения возлагается на заявителя.&lt;/li>
+&lt;li>Преподаватель во время занятий несет ответственность за соблюдением студентами Инструкции пользователю ДК.&lt;/li>
+&lt;/ul>
+&lt;h2 id="заявка-на-установку-программного-обеспечения-в-дисплейных-классах">&lt;span class="section-num">5&lt;/span> Заявка на установку программного обеспечения в дисплейных классах&lt;/h2>
+&lt;div class="table-caption">
+&lt;span class="table-number">&amp;#1058;&amp;#1072;&amp;#1073;&amp;#1083;&amp;#1080;&amp;#1094;&amp;#1072; 2:&lt;/span>
+Заявка на установку программного обеспечения в дисплейных классах
+&lt;/div>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>№&lt;/th>
+&lt;th>Пункт заявки&lt;/th>
+&lt;th>Содержание пункта&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>1&lt;/td>
+&lt;td>ФИО и должность ответственного за использованием программного обеспечения&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>2&lt;/td>
+&lt;td>Кафедра/подразделение&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>3&lt;/td>
+&lt;td>Контактная информация (телефон, e-mail, № комнаты)&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>4&lt;/td>
+&lt;td>Наименование ПО&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>5&lt;/td>
+&lt;td>Тип лицензии (freeware, shareware, коммерческая)&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>6&lt;/td>
+&lt;td>Операционные системы, под которыми функционирует ПО.&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>7&lt;/td>
+&lt;td>Требование к вычислительным ресурсам (требуемые объём дискового пространства, оперативной памяти, производительность процессора)&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>8&lt;/td>
+&lt;td>Прогнозируемая периодичность обновления ПО&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;ul>
+&lt;li>Форма заполняется разборчиво, печатными буквами русского и латинского алфавитов.&lt;/li>
+&lt;li>Необходимо указывать сведения действительные на дату заполнения.&lt;/li>
+&lt;li>Обязательно заполнение всех полей.&lt;/li>
+&lt;li>Если по какой-то причине вы не можете указать правильную информацию поставьте прочерк «&amp;mdash;».&lt;/li>
+&lt;li>Программное обеспечение (ПО) прилагается к заявке на инсталляционном носителе. Так же, при необходимости, поставляются дополнительные файлы (например, заранее подготовленные конфигурационные файлы).&lt;/li>
+&lt;li>Кроме того, обязательно прилагается полное описание процедуры автоматической (unattended) установки ПО.&lt;/li>
+&lt;/ul>
+&lt;h2 id="учётная-форма-пользователя-сети-дисплейных-классов">&lt;span class="section-num">6&lt;/span> Учётная форма пользователя сети дисплейных классов&lt;/h2>
+&lt;ul>
+&lt;li>Форма заполняется в виде электронной таблицы.&lt;/li>
+&lt;li>Файл электронной таблицы передаётся ответственному за обеспечение учебного процесса.&lt;/li>
+&lt;li>Для оформления учётных записей студентов форму на всю группу заполняет староста группы.&lt;/li>
+&lt;li>На каждого человека должны быть заполнены следующие поля:
+&lt;ul>
+&lt;li>Фамилия&lt;/li>
+&lt;li>Имя&lt;/li>
+&lt;li>Отчество&lt;/li>
+&lt;li>Номер студбилета&lt;/li>
+&lt;li>Код группы&lt;/li>
+&lt;li>Номер группы&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>При отсутствии какой-либо информации ячейка остаётся пустой.&lt;/li>
+&lt;li>Пример оформления:&lt;/li>
+&lt;/ul>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>&lt;/th>
+&lt;th>&lt;/th>
+&lt;th>&lt;/th>
+&lt;th>&lt;/th>
+&lt;th>&lt;/th>
+&lt;th>&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Бендер&lt;/td>
+&lt;td>Остап&lt;/td>
+&lt;td>Сулейманович&lt;/td>
+&lt;td>1111111111&lt;/td>
+&lt;td>НБИбд&lt;/td>
+&lt;td>05-22&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table></description></item><item><title>Набор вещей для системного администратора</title><link>https://yamadharma.github.io/ru/post/2022/09/11/system-administrator-tools/</link><pubDate>Sun, 11 Sep 2022 16:51:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/09/11/system-administrator-tools/</guid><description>&lt;p>Набор системного администратора.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
 &lt;nav id="TableOfContents">
@@ -5811,18 +6354,24 @@ Configuration mode
 &lt;li>&lt;a href="#после-установки">&lt;span class="section-num">3&lt;/span> После установки&lt;/a>
 &lt;ul>
 &lt;li>&lt;a href="#обновления">&lt;span class="section-num">3.1&lt;/span> Обновления&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#дополнительные-репозитории">&lt;span class="section-num">3.2&lt;/span> Дополнительные репозитории&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#установка-часового-пояса">&lt;span class="section-num">3.3&lt;/span> Установка часового пояса&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#синхронизация-времени">&lt;span class="section-num">3.4&lt;/span> Синхронизация времени&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#повышение-комфорта-работы">&lt;span class="section-num">3.5&lt;/span> Повышение комфорта работы&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#безопасность">&lt;span class="section-num">3.6&lt;/span> Безопасность&lt;/a>
+&lt;li>&lt;a href="#установка-локализации">&lt;span class="section-num">3.2&lt;/span> Установка локализации&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#дополнительные-репозитории">&lt;span class="section-num">3.3&lt;/span> Дополнительные репозитории&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#установка-часового-пояса">&lt;span class="section-num">3.4&lt;/span> Установка часового пояса&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#синхронизация-времени">&lt;span class="section-num">3.5&lt;/span> Синхронизация времени&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#разрешение-имён">&lt;span class="section-num">3.6&lt;/span> Разрешение имён&lt;/a>
 &lt;ul>
-&lt;li>&lt;a href="#fail2ban">&lt;span class="section-num">3.6.1&lt;/span> Fail2ban&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#systemd-resolved">&lt;span class="section-num">3.6.1&lt;/span> systemd-resolved&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;li>&lt;a href="#администрирование">&lt;span class="section-num">3.7&lt;/span> Администрирование&lt;/a>
+&lt;li>&lt;a href="#повышение-комфорта-работы">&lt;span class="section-num">3.7&lt;/span> Повышение комфорта работы&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#безопасность">&lt;span class="section-num">3.8&lt;/span> Безопасность&lt;/a>
 &lt;ul>
-&lt;li>&lt;a href="#автоматическое-обновление">&lt;span class="section-num">3.7.1&lt;/span> Автоматическое обновление&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#fail2ban">&lt;span class="section-num">3.8.1&lt;/span> Fail2ban&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#администрирование">&lt;span class="section-num">3.9&lt;/span> Администрирование&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#автоматическое-обновление">&lt;span class="section-num">3.9.1&lt;/span> Автоматическое обновление&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
@@ -5999,14 +6548,32 @@ Configuration mode
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf -y update
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
-&lt;h3 id="дополнительные-репозитории">&lt;span class="section-num">3.2&lt;/span> Дополнительные репозитории&lt;/h3>
+&lt;h3 id="установка-локализации">&lt;span class="section-num">3.2&lt;/span> Установка локализации&lt;/h3>
+&lt;ul>
+&lt;li>Проверьте текущую локализацию:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">localectl status
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Посмотрите доступные локализации:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">localectl list-locales
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Если нет необходимой, установите её:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf -y install glibc-langpack-ru
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Установите нужную локализацию:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">localectl set-locale ru_RU.UTF-8
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Проверьте текущую локализацию:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">localectl status
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="дополнительные-репозитории">&lt;span class="section-num">3.3&lt;/span> Дополнительные репозитории&lt;/h3>
 &lt;ul>
 &lt;li>Установим &lt;em>EPEL&lt;/em>:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf config-manager --set-enabled crb
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">dnf -y install epel-release
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
-&lt;h3 id="установка-часового-пояса">&lt;span class="section-num">3.3&lt;/span> Установка часового пояса&lt;/h3>
+&lt;h3 id="установка-часового-пояса">&lt;span class="section-num">3.4&lt;/span> Установка часового пояса&lt;/h3>
 &lt;ul>
 &lt;li>Просмотрите список всех часовых поясов:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">timedatectl list-timezones
@@ -6015,7 +6582,7 @@ Configuration mode
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">timedatectl set-timezone Etc/UTC
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
-&lt;h3 id="синхронизация-времени">&lt;span class="section-num">3.4&lt;/span> Синхронизация времени&lt;/h3>
+&lt;h3 id="синхронизация-времени">&lt;span class="section-num">3.5&lt;/span> Синхронизация времени&lt;/h3>
 &lt;ul>
 &lt;li>Запустите демон:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">systemctl &lt;span class="nb">enable&lt;/span> --now chronyd
@@ -6030,23 +6597,41 @@ Configuration mode
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">timedatectl status
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
-&lt;h3 id="повышение-комфорта-работы">&lt;span class="section-num">3.5&lt;/span> Повышение комфорта работы&lt;/h3>
+&lt;h3 id="разрешение-имён">&lt;span class="section-num">3.6&lt;/span> Разрешение имён&lt;/h3>
+&lt;h4 id="systemd-resolved">&lt;span class="section-num">3.6.1&lt;/span> systemd-resolved&lt;/h4>
+&lt;ul>
+&lt;li>Можно установить кеширующий локальный name-server &lt;code>systemd-resolved&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf -y install systemd-resolved
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Файл настройки: &lt;code>/etc/systemd/resolved.conf&lt;/code>.&lt;/li>
+&lt;li>Можно в нём ничего не менять.&lt;/li>
+&lt;li>Запустим службу:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">systemctl &lt;span class="nb">enable&lt;/span> --now systemd-resolved.service
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Установите резольвер:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">ln -snf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Проверить работу можно командой:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">resolvectl
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="повышение-комфорта-работы">&lt;span class="section-num">3.7&lt;/span> Повышение комфорта работы&lt;/h3>
 &lt;ul>
 &lt;li>
 &lt;p>Программы для удобства работы в консоли:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf install tmux mc
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf -y install tmux mc
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Программы мониторинга:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf install htop
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf -y install htop
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Утилита для ssh:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf install mosh
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf -y install mosh
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
-&lt;h3 id="безопасность">&lt;span class="section-num">3.6&lt;/span> Безопасность&lt;/h3>
-&lt;h4 id="fail2ban">&lt;span class="section-num">3.6.1&lt;/span> Fail2ban&lt;/h4>
+&lt;h3 id="безопасность">&lt;span class="section-num">3.8&lt;/span> Безопасность&lt;/h3>
+&lt;h4 id="fail2ban">&lt;span class="section-num">3.8.1&lt;/span> Fail2ban&lt;/h4>
 &lt;ul>
 &lt;li>
 &lt;p>Защита от атак:&lt;/p>
@@ -6061,8 +6646,8 @@ Configuration mode
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">tail -f /var/log/fail2ban.log
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
-&lt;h3 id="администрирование">&lt;span class="section-num">3.7&lt;/span> Администрирование&lt;/h3>
-&lt;h4 id="автоматическое-обновление">&lt;span class="section-num">3.7.1&lt;/span> Автоматическое обновление&lt;/h4>
+&lt;h3 id="администрирование">&lt;span class="section-num">3.9&lt;/span> Администрирование&lt;/h3>
+&lt;h4 id="автоматическое-обновление">&lt;span class="section-num">3.9.1&lt;/span> Автоматическое обновление&lt;/h4>
 &lt;ul>
 &lt;li>При необходимости можно использовать автоматическое обновление (см. &lt;a href="https://yamadharma.github.io/ru/post/2022/09/25/redhat-based-systems-auto-update/">Автообновление систем на базе деривативов RedHat&lt;/a>).&lt;/li>
 &lt;li>Установка программного обеспечения:
@@ -6195,6 +6780,7 @@ Configuration mode
 &lt;h3 id="dns-сервера">&lt;span class="section-num">4.7&lt;/span> DNS сервера&lt;/h3>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/05/23/dns-powerdns-recursor/">DNS. PowerDNS Recursor&lt;/a>&lt;/li>
+&lt;li>&lt;/li>
 &lt;/ul></description></item><item><title>Утилита module</title><link>https://yamadharma.github.io/ru/post/2022/07/24/module-utility/</link><pubDate>Sun, 24 Jul 2022 16:14:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/07/24/module-utility/</guid><description>&lt;p>Утилита управления переменными окружения.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
@@ -6397,7 +6983,8 @@ Configuration mode
 &lt;li>Максимальный объем данных для пользователя обусловлен дисковой квотой, определяемой при регистрации.&lt;/li>
 &lt;li>Для просмотра текущей квоты используйте команду checkquota.&lt;/li>
 &lt;li>Кроме того, на каждом вычислительном узле доступен локальный каталог для временных файлов (&lt;code>/tmp&lt;/code>). После окончания работы программы временные файлы пользователя в &lt;code>/tmp&lt;/code> узла удаляются автоматически.&lt;/li>
-&lt;/ul></description></item><item><title>Критерии выбора персонального компьютера</title><link>https://yamadharma.github.io/ru/post/2022/07/21/criteria-choosing-personal-computer/</link><pubDate>Thu, 21 Jul 2022 20:17:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/07/21/criteria-choosing-personal-computer/</guid><description>&lt;details class="toc-inpage d-print-none " open>
+&lt;/ul></description></item><item><title>Критерии выбора персонального компьютера</title><link>https://yamadharma.github.io/ru/post/2022/07/21/criteria-choosing-personal-computer/</link><pubDate>Thu, 21 Jul 2022 20:17:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/07/21/criteria-choosing-personal-computer/</guid><description>&lt;p>Критерии выбора персонального компьютера.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
 &lt;nav id="TableOfContents">
 &lt;ul>
@@ -6780,15 +7367,15 @@ Configuration mode
 &lt;nav>
 &lt;div class="nav nav-tabs" id="nav-tab" role="tablist">
 &lt;a class="nav-item nav-link active "
-id="nav-dafbce" data-toggle="tab" href="#dafbce"
+id="nav-fbcaed" data-toggle="tab" href="#fbcaed"
 role="tab" aria-controls="nav-home" aria-selected="true">RuTube&lt;/a>
 &lt;a class="nav-item nav-link "
-id="nav-dbeafc" data-toggle="tab" href="#dbeafc"
+id="nav-deacbf" data-toggle="tab" href="#deacbf"
 role="tab" aria-controls="nav-home" aria-selected="true">Youtube&lt;/a>
 &lt;/div>
 &lt;/nav>
 &lt;div class="tab-content" id="nav-tab-content">
-&lt;div class="tab-pane fade show active " id="dafbce" role="tabpanel" aria-labelledby="nav-1">
+&lt;div class="tab-pane fade show active " id="fbcaed" role="tabpanel" aria-labelledby="nav-1">
 &lt;div class="embed video-player">
 &lt;iframe class="rutube-player" type="text/html"
 width="720" height="405"
@@ -6798,7 +7385,7 @@ allow="clipboard-write" frameborder="0">
 &lt;/iframe>
 &lt;/div>
 &lt;/div>
-&lt;div class="tab-pane fade show " id="dbeafc" role="tabpanel" aria-labelledby="nav-1">
+&lt;div class="tab-pane fade show " id="deacbf" role="tabpanel" aria-labelledby="nav-1">
 &lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
 &lt;iframe src="https://www.youtube.com/embed/BgIzJo18yp8" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video">&lt;/iframe>
 &lt;/div>
@@ -7057,6 +7644,79 @@ allow="clipboard-write" frameborder="0">
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/05/26/file-deduplication-linux/">Дедупликация файлов в Linux&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/05/26/deduplication-btrfs-filesystem/">Дедупликация файловой системы btrfs&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>Файл подкачки на btrfs</title><link>https://yamadharma.github.io/ru/post/2022/05/20/btrfs-swap-file/</link><pubDate>Fri, 20 May 2022 10:29:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/05/20/btrfs-swap-file/</guid><description>&lt;p>Размещение файла подкачки на разделе &lt;em>btrfs&lt;/em>.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#создание-файла-подкачки">&lt;span class="section-num">2&lt;/span> Создание файла подкачки&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>btrfs поддерживает файл подкачки (начиная с ядра версии 5.0).&lt;/li>
+&lt;li>Файл подкачки &lt;strong>не может&lt;/strong> находиться на любом рейде btrfs.&lt;/li>
+&lt;li>btrfs не позволяет создавать снапшоты, если на подтоме есть рабочий файл подкачки.&lt;/li>
+&lt;li>Рекомендуется размещать файл подкачки на отдельном подтоме.&lt;/li>
+&lt;li>Файл подкачки должен иметь свойство NODATACOW.&lt;/li>
+&lt;li>Файл подкачки должен быть без сжатия.&lt;/li>
+&lt;/ul>
+&lt;h2 id="создание-файла-подкачки">&lt;span class="section-num">2&lt;/span> Создание файла подкачки&lt;/h2>
+&lt;ul>
+&lt;li>Подмонтируем раздел с btrfs:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mkdir /mnt/gentoo
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mount -tbtrfs -orelatime,space_cache,discard,autodefrag,compress&lt;span class="o">=&lt;/span>zstd:9 /dev/sda4 /mnt/gentoo/
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Создадим подтом для файла подкачки на btrfs:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> /mnt/gentoo/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">btrfs subvol create @swap
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Отмонтируем том btrfs:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">umount /mnt/gentoo
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Создадим точку монтирования:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mkdir /swap
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Подмонтируем подтом &lt;code>@swap&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mount -o &lt;span class="nv">subvol&lt;/span>&lt;span class="o">=&lt;/span>@swap /dev/sda4 /swap
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Отключим для этого подтома CoW:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">chattr +C /swap
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Создадим файл подкачки:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">truncate -s &lt;span class="m">0&lt;/span> /swap/swapfile
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Отключим сжатие:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">btrfs property &lt;span class="nb">set&lt;/span> /swap/swapfile compression none
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Установим права доступа &lt;code>600&lt;/code> к файлу подкачки:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">chmod &lt;span class="m">600&lt;/span> /swap/swapfile
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Установим размер файла подкачки.
+&lt;ul>
+&lt;li>Можно задать размер вручную (например, 4GiB):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">fallocate -l 4G /swap/swapfile
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Можно установить размер файла подкачки исходя из размера оперативной памяти:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">fallocate -l &lt;span class="k">$(&lt;/span>free -h --si &lt;span class="p">|&lt;/span> awk &lt;span class="s1">&amp;#39;NR == 2 {print $2}&amp;#39;&lt;/span>&lt;span class="k">)&lt;/span> /swap/swapfile
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Отформатируем файл подкачки:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mkswap /swap/swapfile
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Активируем файл подкачки:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">swapon /swap/swapfile
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Добавим запись в &lt;code>/etc/fstab&lt;/code>, чтобы подключать файл подкачки при загрузке (для устройства с &lt;code>UUID=&amp;quot;f8963df3-1320-4bc0-a125-62be185b029e&amp;quot;&lt;/code>):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">UUID=&amp;#34;f8963df3-1320-4bc0-a125-62be185b029e&amp;#34; /swap btrfs relatime,discard,autodefrag,compress=zstd:9,subvol=@swap 0 0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">/swap/swapfile none swap sw 0 0
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Проверьте, что файл &lt;code>/etc/fstab&lt;/code> не содержит ошибок:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">findmnt --verify --verbose
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul></description></item><item><title>Клиенты ACME. acme.sh</title><link>https://yamadharma.github.io/ru/post/2022/05/02/acme-clients-acme-sh/</link><pubDate>Mon, 02 May 2022 17:11:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/05/02/acme-clients-acme-sh/</guid><description>&lt;p>Клиент протокола ACME, написанный на Unix shell.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
@@ -8365,7 +9025,8 @@ allow="clipboard-write" frameborder="0">
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">## Prefer 1080p or lower resolutions, FPS &amp;lt; 60 Hz
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">-f bestvideo[ext=mp4][height&amp;lt;1200][fps&amp;lt;60]+bestaudio[ext=m4a]/bestvideo[height&amp;lt;1200][fps&amp;lt;60]+bestaudio/best[height&amp;lt;1200][fps&amp;lt;60]/best
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
-&lt;/ul></description></item><item><title>Использование sfdisk</title><link>https://yamadharma.github.io/ru/post/2022/03/08/using-sfdisk/</link><pubDate>Tue, 08 Mar 2022 19:45:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/03/08/using-sfdisk/</guid><description>&lt;details class="toc-inpage d-print-none " open>
+&lt;/ul></description></item><item><title>Использование sfdisk</title><link>https://yamadharma.github.io/ru/post/2022/03/08/using-sfdisk/</link><pubDate>Tue, 08 Mar 2022 19:45:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/03/08/using-sfdisk/</guid><description>&lt;p>Использование &lt;em>sfdisk&lt;/em>.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
 &lt;nav id="TableOfContents">
 &lt;ul>
@@ -8906,8 +9567,10 @@ allow="clipboard-write" frameborder="0">
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">SAL_DISABLE_OPENCL&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">SAL_DISABLEGL&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
-&lt;/ul></description></item><item><title>Обновление пакетов python</title><link>https://yamadharma.github.io/ru/post/2022/01/21/update-all-python-packages/</link><pubDate>Fri, 21 Jan 2022 16:33:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/01/21/update-all-python-packages/</guid><description>&lt;p>Пакеты можно устанавливать с помощью системного менеджера пакетов, и с помощью пакетного менеджера самого &lt;em>python&lt;/em>, например &lt;em>pip&lt;/em>.
-В последнем случае пакеты лучше устанавливать в каталоге пользователя (user-wide).&lt;/p>
+&lt;/ul></description></item><item><title>Обновление пакетов python</title><link>https://yamadharma.github.io/ru/post/2022/01/21/update-all-python-packages/</link><pubDate>Fri, 21 Jan 2022 16:33:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/01/21/update-all-python-packages/</guid><description>&lt;ul>
+&lt;li>Пакеты можно устанавливать с помощью системного менеджера пакетов, и с помощью пакетного менеджера самого &lt;em>python&lt;/em>, например &lt;em>pip&lt;/em>.&lt;/li>
+&lt;li>В последнем случае пакеты лучше устанавливать в каталоге пользователя (user-wide).&lt;/li>
+&lt;/ul>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
 &lt;nav id="TableOfContents">
@@ -9041,8 +9704,11 @@ allow="clipboard-write" frameborder="0">
 &lt;li>Используется порт &lt;code>9090&lt;/code>.&lt;/li>
 &lt;li>По умолчанию используется самоподписанный сертификат SSL.&lt;/li>
 &lt;li>Язык лучше выбрать английский. Русский перевод крайне прискорбен.&lt;/li>
-&lt;/ul></description></item><item><title>Подключение ресурсов через RSS</title><link>https://yamadharma.github.io/ru/post/2022/01/17/resources-to-rss/</link><pubDate>Mon, 17 Jan 2022 17:14:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/01/17/resources-to-rss/</guid><description>&lt;p>Мне удобно читать обновления web-ресурсов через RSS. К сожалению сейчас стало много ресурсов, не поддерживающих подключение через этот формат.
-Но можно осуществить просмотр ресурсов через RSS, используя разные шлюзы.&lt;/p>
+&lt;/ul></description></item><item><title>Подключение ресурсов через RSS</title><link>https://yamadharma.github.io/ru/post/2022/01/17/resources-to-rss/</link><pubDate>Mon, 17 Jan 2022 17:14:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/01/17/resources-to-rss/</guid><description>&lt;ul>
+&lt;li>Мне удобно читать обновления web-ресурсов через RSS.&lt;/li>
+&lt;li>К сожалению сейчас стало много ресурсов, не поддерживающих подключение через этот формат.&lt;/li>
+&lt;li>Но можно осуществить просмотр ресурсов через RSS, используя разные шлюзы.&lt;/li>
+&lt;/ul>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
 &lt;nav id="TableOfContents">
@@ -9074,7 +9740,7 @@ allow="clipboard-write" frameborder="0">
 &lt;ul>
 &lt;li>Адрес: &lt;a href="https://rsshub.app/" target="_blank" rel="noopener">https://rsshub.app/&lt;/a>&lt;/li>
 &lt;li>Репозиторий: &lt;a href="https://github.com/DIYgod/RSSHub" target="_blank" rel="noopener">https://github.com/DIYgod/RSSHub&lt;/a>&lt;/li>
-&lt;li>Документация: &lt;a href="https://docs.rsshub.app/en/" target="_blank" rel="noopener">https://docs.rsshub.app/en/&lt;/a>&lt;/li>
+&lt;li>Документация: &lt;a href="https://docs.rsshub.app/" target="_blank" rel="noopener">https://docs.rsshub.app/&lt;/a>&lt;/li>
 &lt;li>Имеет большое количество шлюзов для обработки разных ресурсов.&lt;/li>
 &lt;/ul>
 &lt;h2 id="ресурсы">&lt;span class="section-num">3&lt;/span> Ресурсы&lt;/h2>
@@ -9105,9 +9771,10 @@ allow="clipboard-write" frameborder="0">
 &lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>
 &lt;ul>
 &lt;li>&lt;a href="#лицензия">&lt;span class="section-num">1.1&lt;/span> Лицензия&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#основные-понятия-vagrant">&lt;span class="section-num">1.2&lt;/span> Основные понятия Vagrant&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#основные-команды-vagrant">&lt;span class="section-num">1.3&lt;/span> Основные команды Vagrant&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#пример-конфигурации-vagrantfile">&lt;span class="section-num">1.4&lt;/span> Пример конфигурации Vagrantfile&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#ответвления">&lt;span class="section-num">1.2&lt;/span> Ответвления&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#основные-понятия-vagrant">&lt;span class="section-num">1.3&lt;/span> Основные понятия Vagrant&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#основные-команды-vagrant">&lt;span class="section-num">1.4&lt;/span> Основные команды Vagrant&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#пример-конфигурации-vagrantfile">&lt;span class="section-num">1.5&lt;/span> Пример конфигурации Vagrantfile&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>&lt;a href="#подготовка-образа">&lt;span class="section-num">2&lt;/span> Подготовка образа&lt;/a>
@@ -9141,13 +9808,21 @@ allow="clipboard-write" frameborder="0">
 &lt;li>Репозиторий образов для Vagrant: &lt;a href="https://app.vagrantup.com/" target="_blank" rel="noopener">https://app.vagrantup.com/&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;h3 id="лицензия">&lt;span class="section-num">1.1&lt;/span> Лицензия&lt;/h3>
-&lt;h3 id="основные-понятия-vagrant">&lt;span class="section-num">1.2&lt;/span> Основные понятия Vagrant&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/09/21/hashicorp-changes-license/">Смена лицензии HashiCorp&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="ответвления">&lt;span class="section-num">1.2&lt;/span> Ответвления&lt;/h3>
+&lt;ul>
+&lt;li>Смена лицензии привела к возникновению форка под лицензией MPL.&lt;/li>
+&lt;li>Репозиторий: &lt;a href="https://github.com/viagrunts/viagrunts" target="_blank" rel="noopener">https://github.com/viagrunts/viagrunts&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="основные-понятия-vagrant">&lt;span class="section-num">1.3&lt;/span> Основные понятия Vagrant&lt;/h3>
 &lt;ul>
 &lt;li>провайдер (provider) &amp;mdash; система виртуализации, с которой работает Vagrant (например, VirtualBox, VMWare и т.п.);&lt;/li>
 &lt;li>box-файл (или Vagrant Box) &amp;mdash; сохранённый образ виртуальной машины с развёрнутой в ней операционной системой; по сути, box-файл используется как основа для клонирования виртуальных машин с теми или иными настройками;&lt;/li>
 &lt;li>Vagrantfile &amp;mdash; конфигурационный файл, написанный на языке Ruby, в котором указаны настройки запуска виртуальной машины.&lt;/li>
 &lt;/ul>
-&lt;h3 id="основные-команды-vagrant">&lt;span class="section-num">1.3&lt;/span> Основные команды Vagrant&lt;/h3>
+&lt;h3 id="основные-команды-vagrant">&lt;span class="section-num">1.4&lt;/span> Основные команды Vagrant&lt;/h3>
 &lt;ul>
 &lt;li>С Vagrant можно работать, используя следующие основные команды:
 &lt;ul>
@@ -9164,7 +9839,7 @@ allow="clipboard-write" frameborder="0">
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
-&lt;h3 id="пример-конфигурации-vagrantfile">&lt;span class="section-num">1.4&lt;/span> Пример конфигурации Vagrantfile&lt;/h3>
+&lt;h3 id="пример-конфигурации-vagrantfile">&lt;span class="section-num">1.5&lt;/span> Пример конфигурации Vagrantfile&lt;/h3>
 &lt;ul>
 &lt;li>Пример содержимого файла &lt;code>Vagrantfile&lt;/code> для понимания принципов его синтаксиса.&lt;/li>
 &lt;/ul>
@@ -9814,7 +10489,7 @@ allow="clipboard-write" frameborder="0">
 &lt;/tr>
 &lt;tr>
 &lt;td>Google Chrome Terms of Service&lt;/td>
-&lt;td>&lt;a href="https://www.google.com/intl/en/chrome/privacy/eula%5Ftext.html" target="_blank" rel="noopener">https://www.google.com/intl/en/chrome/privacy/eula%5Ftext.html&lt;/a>&lt;/td>
+&lt;td>&lt;a href="https://www.google.com/intl/en/chrome/privacy/eula_text.html" target="_blank" rel="noopener">https://www.google.com/intl/en/chrome/privacy/eula_text.html&lt;/a>&lt;/td>
 &lt;td>Разрешает свободное использование&lt;/td>
 &lt;/tr>
 &lt;tr>
@@ -9844,7 +10519,7 @@ allow="clipboard-write" frameborder="0">
 &lt;/tr>
 &lt;tr>
 &lt;td>Adobe Software License Agreement&lt;/td>
-&lt;td>&lt;a href="https://www.adobe.com/content/dam/acom/ru/legal/licenses-terms/pdf/Reader-EULA-ru%5FRU-20181207.pdf" target="_blank" rel="noopener">https://www.adobe.com/content/dam/acom/ru/legal/licenses-terms/pdf/Reader-EULA-ru%5FRU-20181207.pdf&lt;/a>&lt;/td>
+&lt;td>&lt;a href="https://www.adobe.com/content/dam/acom/ru/legal/licenses-terms/pdf/Reader-EULA-ru_RU-20181207.pdf" target="_blank" rel="noopener">https://www.adobe.com/content/dam/acom/ru/legal/licenses-terms/pdf/Reader-EULA-ru_RU-20181207.pdf&lt;/a>&lt;/td>
 &lt;td>Разрешает условное использование&lt;/td>
 &lt;/tr>
 &lt;tr>
@@ -9884,7 +10559,7 @@ allow="clipboard-write" frameborder="0">
 &lt;/tr>
 &lt;tr>
 &lt;td>Google Chrome Terms of Service&lt;/td>
-&lt;td>&lt;a href="https://www.google.com/intl/en/chrome/privacy/eula%5Ftext.html" target="_blank" rel="noopener">https://www.google.com/intl/en/chrome/privacy/eula%5Ftext.html&lt;/a>&lt;/td>
+&lt;td>&lt;a href="https://www.google.com/intl/en/chrome/privacy/eula_text.html" target="_blank" rel="noopener">https://www.google.com/intl/en/chrome/privacy/eula_text.html&lt;/a>&lt;/td>
 &lt;td>Разрешает свободное использование&lt;/td>
 &lt;/tr>
 &lt;tr>
@@ -11199,6 +11874,80 @@ allow="clipboard-write" frameborder="0">
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;/li>
+&lt;/ul></description></item><item><title>Научное программное обеспечение</title><link>https://yamadharma.github.io/ru/post/2021/08/25/scientific-software/</link><pubDate>Wed, 25 Aug 2021 12:10:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2021/08/25/scientific-software/</guid><description>&lt;p>Научное программное обеспечение. Специфика. Назначение.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#специфика-научного-программного-обеспечения">&lt;span class="section-num">1&lt;/span> Специфика научного программного обеспечения&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#используемые-алгоритмы-крайне-сложны">&lt;span class="section-num">1.1&lt;/span> Используемые алгоритмы крайне сложны&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#низкая-универсальность">&lt;span class="section-num">1.2&lt;/span> Низкая универсальность&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#уникальная-модель-распространения">&lt;span class="section-num">1.3&lt;/span> Уникальная модель распространения&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#остаточное-финансирование">&lt;span class="section-num">1.4&lt;/span> Остаточное финансирование&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#учёный-не-программист">&lt;span class="section-num">1.5&lt;/span> Учёный &amp;mdash; не программист&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#унаследованный-код--legacy">&lt;span class="section-num">1.6&lt;/span> Унаследованный код (legacy)&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#фрагментация-разработки">&lt;span class="section-num">1.7&lt;/span> Фрагментация разработки&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#сложность-отладки-и-тестирования">&lt;span class="section-num">1.8&lt;/span> Сложность отладки и тестирования&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#требования-к-пользователям">&lt;span class="section-num">1.9&lt;/span> Требования к пользователям&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="специфика-научного-программного-обеспечения">&lt;span class="section-num">1&lt;/span> Специфика научного программного обеспечения&lt;/h2>
+&lt;ul>
+&lt;li>Научное ПО имеет ряд особенностей, которые не встречаются в современном коммерческом ПО.&lt;/li>
+&lt;/ul>
+&lt;h3 id="используемые-алгоритмы-крайне-сложны">&lt;span class="section-num">1.1&lt;/span> Используемые алгоритмы крайне сложны&lt;/h3>
+&lt;ul>
+&lt;li>Зачастую в них разбирается очень узкая группа людей (в мире).&lt;/li>
+&lt;/ul>
+&lt;h3 id="низкая-универсальность">&lt;span class="section-num">1.2&lt;/span> Низкая универсальность&lt;/h3>
+&lt;ul>
+&lt;li>Всё, что можно сделать стандартными методами, уже давно сделано.&lt;/li>
+&lt;/ul>
+&lt;h3 id="уникальная-модель-распространения">&lt;span class="section-num">1.3&lt;/span> Уникальная модель распространения&lt;/h3>
+&lt;ul>
+&lt;li>Основной источник информации о научном ПО &amp;mdash; реферируемые научные журналы.&lt;/li>
+&lt;li>Информация о самих программах становится доступным уже после того, как с помощью этих программ были получены и опубликованы научные результаты.&lt;/li>
+&lt;li>Наличие результата оправдывает существование описываемого программного обеспечения.&lt;/li>
+&lt;/ul>
+&lt;h3 id="остаточное-финансирование">&lt;span class="section-num">1.4&lt;/span> Остаточное финансирование&lt;/h3>
+&lt;ul>
+&lt;li>Кроме редких специфических случаев на научное ПО не выдаётся целенаправленное финансирование.&lt;/li>
+&lt;li>Написание ПО рассматривается как производная от конкретной научной задачи.&lt;/li>
+&lt;li>Иногда крупные популярные программы удостаиваются отдельных грантов.&lt;/li>
+&lt;/ul>
+&lt;h3 id="учёный-не-программист">&lt;span class="section-num">1.5&lt;/span> Учёный &amp;mdash; не программист&lt;/h3>
+&lt;ul>
+&lt;li>Программы пишутся самими учёными, не являющимися специалистами в индустриальной разработке программного обеспечения.&lt;/li>
+&lt;li>Важен научный результат.&lt;/li>
+&lt;li>Культуре разработки уделяется мало внимания.&lt;/li>
+&lt;/ul>
+&lt;h3 id="унаследованный-код--legacy">&lt;span class="section-num">1.6&lt;/span> Унаследованный код (legacy)&lt;/h3>
+&lt;ul>
+&lt;li>Наследуется код и средства разработки.&lt;/li>
+&lt;li>Большой процент технического долга.&lt;/li>
+&lt;li>Возникают требования к средствам разработки: большое время жизни и поддержка давно разработанного ПО.&lt;/li>
+&lt;li>Поэтому стараются избегать средств программирования, нарушающих совместимость (как пример, python).&lt;/li>
+&lt;/ul>
+&lt;h3 id="фрагментация-разработки">&lt;span class="section-num">1.7&lt;/span> Фрагментация разработки&lt;/h3>
+&lt;ul>
+&lt;li>Разные модули программ пишутся разными людьми (студентами, аспирантами, сотрудниками).&lt;/li>
+&lt;li>Они работают над кодом в течение 2&amp;ndash;3 лет, пока это нужно для подготовки диплома или диссертации, или пока есть финансирование.&lt;/li>
+&lt;li>Код бросается в полусыром виде.&lt;/li>
+&lt;li>Из-за отсутствия культуры программирования через несколько лет возникает спагетти-код.&lt;/li>
+&lt;/ul>
+&lt;h3 id="сложность-отладки-и-тестирования">&lt;span class="section-num">1.8&lt;/span> Сложность отладки и тестирования&lt;/h3>
+&lt;ul>
+&lt;li>Сравнить результаты работы программ зачастую просто не с чем (т.к. это и есть передний край науки).&lt;/li>
+&lt;li>Для отладки программы, её приходится сравнивать с верификацией модели.&lt;/li>
+&lt;/ul>
+&lt;h3 id="требования-к-пользователям">&lt;span class="section-num">1.9&lt;/span> Требования к пользователям&lt;/h3>
+&lt;ul>
+&lt;li>Трудно отделить ошибки программы от специфики исследуемого объекта.&lt;/li>
+&lt;li>Для интерпретации полученного результата нужна высокая научная квалификация пользователя.&lt;/li>
 &lt;/ul></description></item><item><title>Выбор дистрибутива Linux</title><link>https://yamadharma.github.io/ru/post/2021/08/08/choosing-linux-distribution/</link><pubDate>Sun, 08 Aug 2021 11:20:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2021/08/08/choosing-linux-distribution/</guid><description>&lt;p>Какой дистрибутив Linux выбрать.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
@@ -15139,6 +15888,7 @@ allow="clipboard-write" frameborder="0">
 &lt;li>&lt;a href="#сетевые-клиенты">&lt;span class="section-num">11.12&lt;/span> Сетевые клиенты&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#телеконференции">&lt;span class="section-num">11.13&lt;/span> Телеконференции&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#наборы-программ">&lt;span class="section-num">11.14&lt;/span> Наборы программ&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#просмотрщики">&lt;span class="section-num">11.15&lt;/span> Просмотрщики&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>&lt;a href="#безопасность">&lt;span class="section-num">12&lt;/span> Безопасность&lt;/a>
@@ -15194,6 +15944,7 @@ allow="clipboard-write" frameborder="0">
 &lt;h3 id="windows">&lt;span class="section-num">3.1&lt;/span> Windows&lt;/h3>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/05/01/windows-administration/">Администрирование Windows&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/09/23/msys2-unix-applications-windows/">MSYS2. Приложения Unix под Windows&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;h3 id="linux">&lt;span class="section-num">3.2&lt;/span> Linux&lt;/h3>
 &lt;ul>
@@ -15339,6 +16090,10 @@ allow="clipboard-write" frameborder="0">
 &lt;h3 id="наборы-программ">&lt;span class="section-num">11.14&lt;/span> Наборы программ&lt;/h3>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/06/26/android-apps/">Программы на Android&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="просмотрщики">&lt;span class="section-num">11.15&lt;/span> Просмотрщики&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/09/20/pdf-viewer-zathura/">Pdf. Просмотр. Zathura&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;h2 id="безопасность">&lt;span class="section-num">12&lt;/span> Безопасность&lt;/h2>
 &lt;h3 id="пароли">&lt;span class="section-num">12.1&lt;/span> Пароли&lt;/h3>

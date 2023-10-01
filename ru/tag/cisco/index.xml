@@ -1,4 +1,301 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>cisco | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/cisco/</link><atom:link href="https://yamadharma.github.io/ru/tag/cisco/index.xml" rel="self" type="application/rss+xml"/><description>cisco</description><generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2023 Dmitry S. Kulyabov</copyright><lastBuildDate>Tue, 15 Nov 2022 14:51:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url><title>cisco</title><link>https://yamadharma.github.io/ru/tag/cisco/</link></image><item><title>Начальная конфигурация коммутатора Cisco</title><link>https://yamadharma.github.io/ru/post/2022/11/15/initial-cisco-switch-configuration/</link><pubDate>Tue, 15 Nov 2022 14:51:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/11/15/initial-cisco-switch-configuration/</guid><description>&lt;p>Начальная конфигурация коммутатора Cisco Catalist.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>cisco | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/cisco/</link><atom:link href="https://yamadharma.github.io/ru/tag/cisco/index.xml" rel="self" type="application/rss+xml"/><description>cisco</description><generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2023 Dmitry S. Kulyabov</copyright><lastBuildDate>Sun, 01 Oct 2023 19:37:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url><title>cisco</title><link>https://yamadharma.github.io/ru/tag/cisco/</link></image><item><title>Контроллер Cisco WLC. Обновление программного обеспечения</title><link>https://yamadharma.github.io/ru/post/2023/10/01/cisco-wlc-firmware-upgrade/</link><pubDate>Sun, 01 Oct 2023 19:37:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/10/01/cisco-wlc-firmware-upgrade/</guid><description>&lt;p>Контроллер Cisco WLC. Обновление программного обеспечения.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#процедура-обновления-из-интерфейса-командной-строки">&lt;span class="section-num">2&lt;/span> Процедура обновления из интерфейса командной строки&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#подготовка">&lt;span class="section-num">2.1&lt;/span> Подготовка&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#задание-параметров-загрузки-образа">&lt;span class="section-num">2.2&lt;/span> Задание параметров загрузки образа&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#скачивание-образа">&lt;span class="section-num">2.3&lt;/span> Скачивание образа&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#предварительная-загрузка-образа-обновления-cisco-wlc-на-точки-доступа">&lt;span class="section-num">2.4&lt;/span> Предварительная загрузка образа обновления Cisco WLC на точки доступа&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#перезагрузка">&lt;span class="section-num">2.5&lt;/span> Перезагрузка&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#удаление-основного-или-вторичного-образа-из-wlc">&lt;span class="section-num">2.6&lt;/span> Удаление основного или вторичного образа из WLC&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>Не отключайте контроллер или любую точку доступа в процессе обновления.&lt;/li>
+&lt;li>В противном случае можно повредить образ программного обеспечения.&lt;/li>
+&lt;li>Обновление контроллера с большим числом точек доступа может занять около 30 минут в зависимости от размера сети.&lt;/li>
+&lt;li>В это время точки доступа должны оставаться подключёнными к сети питания и не должен выполняться сброс контроллера.&lt;/li>
+&lt;li>Программное обеспечение контроллера представляет собой файл размером порядка 100 мегабайт с именем формата &lt;code>AIR-CTYYYY-K9-X-X-XX.aes&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h2 id="процедура-обновления-из-интерфейса-командной-строки">&lt;span class="section-num">2&lt;/span> Процедура обновления из интерфейса командной строки&lt;/h2>
+&lt;h3 id="подготовка">&lt;span class="section-num">2.1&lt;/span> Подготовка&lt;/h3>
+&lt;ul>
+&lt;li>Убедитесь в доступности TFTP-сервера из контроллера и в нахождении файла обновления в корневом каталоге TFTP-сервера.&lt;/li>
+&lt;li>Лучше всего выполнять данную процедуру через порт консоли, но можно также использовать протокол SSH или Telnet для подключения к IP-адресу управления контроллера.&lt;/li>
+&lt;li>Использование протокола SSH или Telnet приводит к потере соединения с контроллером во время процесса перезагрузки, выполняемого после загрузки образа.&lt;/li>
+&lt;li>Проверьте текущую версию программного обеспечения, используемого в контроллере:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">show sysinfo
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="задание-параметров-загрузки-образа">&lt;span class="section-num">2.2&lt;/span> Задание параметров загрузки образа&lt;/h3>
+&lt;ul>
+&lt;li>Задайте режим передачи файлов:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">transfer download mode tftp
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Задайте IP-адрес TFTP-сервера:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">transfer download serverip &amp;lt;IP-адрес TFTP-сервера&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Задайте путь к каталогу на TFTP-сервере, в котором находится программное обеспечение операционной системы контроллера:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">transfer download path &lt;span class="s1">&amp;#39;&amp;lt;путь TFTP-сервера&amp;gt;&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Задать имя файла образа:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">transfer download filename &amp;lt;имя файла&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="скачивание-образа">&lt;span class="section-num">2.3&lt;/span> Скачивание образа&lt;/h3>
+&lt;ul>
+&lt;li>Инициировать процесс обновления:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">transfer download start
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="предварительная-загрузка-образа-обновления-cisco-wlc-на-точки-доступа">&lt;span class="section-num">2.4&lt;/span> Предварительная загрузка образа обновления Cisco WLC на точки доступа&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>Необязательно.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Предварительная загрузка нового образ на точки доступа для сокращения времени простоя:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">config ap image predownload primary all
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Эта команда сообщает контроллеру загрузить образ на все ваши точки доступа.&lt;/li>
+&lt;li>Этот процесс занимает несколько минут на каждой точке доступа.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Отслеживание прогресса:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">show ap image all
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Указать точкам доступа, чтобы они установили этот образ в качестве основного образа для использования при следующей перезагрузке:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">config ap image swap all
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Убедитесь, что новое изображение теперь установлено в качестве основного:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">show ap image all
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="перезагрузка">&lt;span class="section-num">2.5&lt;/span> Перезагрузка&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>После завершения обновления перезагрузите контроллер, чтобы новое программное обеспечение вступило в силу:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">reset system in HH:MM:SS image no-swap reset-aps save-config
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>&lt;code>image no-swap&lt;/code> сообщает контроллерам и точкам доступа о необходимости перезагрузки с использованием текущего образа, установленного в качестве основного, который является новым образом.&lt;/li>
+&lt;li>&lt;code>reset-aps&lt;/code> указывает точкам доступа перезагрузиться одновременно с контроллерами, а не ждать, пока контроллеры вернутся и поймут, что им необходимо перезагрузить. Это сократит время простоя.&lt;/li>
+&lt;li>&lt;code>save-config&lt;/code> указывает контроллерам сохранить текущую конфигурацию в загрузочную конфигурацию перед перезагрузкой, гарантируя, что все ожидающие изменения будут записаны до перезагрузки.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="удаление-основного-или-вторичного-образа-из-wlc">&lt;span class="section-num">2.6&lt;/span> Удаление основного или вторичного образа из WLC&lt;/h3>
+&lt;ul>
+&lt;li>По умолчанию на контроллере WLC поддерживаются два образа: основной и резервный образы.&lt;/li>
+&lt;li>Основной образ &amp;mdash; это активный образ, используемый контроллером WLC.&lt;/li>
+&lt;li>Резервный образ используется в качестве резервной копии активного образа.&lt;/li>
+&lt;li>При обновлении контроллера WLC с помощью нового образа контроллер WLC автоматически копирует новый образ поверх резервного образа.&lt;/li>
+&lt;li>Просмотреть сведения об активном образе, используемом контроллером в данный момент (основной образ):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">show boot
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Активный образ, используемый контроллером WLC при загрузке, можно изменить вручную:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">config boot &amp;lt;primary/backup&amp;gt; &amp;lt;имя образа&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Чтобы контроллер WLC использовал новый активный образ, необходимо сохранить и перезагрузить его конфигурацию.&lt;/li>
+&lt;/ul></description></item><item><title>Контроллер Cisco WLC</title><link>https://yamadharma.github.io/ru/post/2023/03/03/cisco-wlc/</link><pubDate>Fri, 03 Mar 2023 15:14:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/03/03/cisco-wlc/</guid><description>&lt;p>Контроллер Cisco WLC.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#полезные-команды">&lt;span class="section-num">2&lt;/span> Полезные команды&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#настройка-wlan">&lt;span class="section-num">3&lt;/span> Настройка WLAN&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#обновление">&lt;span class="section-num">4&lt;/span> Обновление&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>WLC (wireless lan controller) контроллер точек WiFi от Cisco.&lt;/li>
+&lt;li>Контроллер нужен для централизованного управления большими беспроводными сетями, построенными на базе не настраиваемых индивидуально точек доступа.&lt;/li>
+&lt;li>Точки доступа регистрируются на контроллере, получают с него настройки, управляются им, и предоставляют беспроводной доступ Wi-Fi абонентам.&lt;/li>
+&lt;li>Практически все модели точек доступа Cisco выпускаются как в автономном варианте (независимое управление через CLI или GUI), так и в унифицированном (лимитированный CLI и управление с контроллера по протоколу CAPWAP).&lt;/li>
+&lt;li>Контроллер представляет собой программно-аппаратную платформу взаимодействия с точками доступа, и проводной сетью.&lt;/li>
+&lt;li>Есть виртуальный контроллер в виде образа виртуальной машины под VMware ESXi (ovf-файл).&lt;/li>
+&lt;/ul>
+&lt;h2 id="полезные-команды">&lt;span class="section-num">2&lt;/span> Полезные команды&lt;/h2>
+&lt;ul>
+&lt;li>Настроить IP-адрес точке доступа:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">config ap static-ip &lt;span class="nb">enable&lt;/span> AP-NAME IP-ADDRESS MASK GATEWAY
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Настроить учётные данные точки доступа для Telnet/SSH:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">config ap telnet &lt;span class="nb">enable&lt;/span> AP-NAME
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">config ap ssh &lt;span class="nb">enable&lt;/span> AP-NAME
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">config ap mgmtuser add username USERNAME password PASSWORD enablesecret ENABLE-PASSWORD AP-NAME
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Изменить режим точки доступа:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">config ap mode MODE AP-NAME
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Настроить имя группы на точке доступа&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">config ap group-name GROUP-NAME AP-NAME
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>
+&lt;p>Настроить flexconnect native vlan на точке доступа:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">config ap flexconnect vlan native VLAN-ID AP-NAME
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Проверить идентификатор vlan интерфейса:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">show interface summary
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Проверить идентификатор wlan интерфейса:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">show wlan summary
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Сопоставить идентификатор vlan с wlan на точке доступа:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">config ap flexconnect vlan wlan WLAN-ID VLAN-ID AP-NAME
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Настроить wlan и сопоставление wlan-интерфейса в группе точек доступа:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">config wlan apgroup interface-mapping add GROUP-NAME WLAN-ID INTERFACE-NAME
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Понизить точку доступа до автономной с WLC:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">config ap tftp-downgrade TFTP-IP-ADDRESS FILENAME AP-NAME
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Посмотреть cdp на точке доступа:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">show ap cdp neighbors detail AP-NAME
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Отключить подключение беспроводных клиентов к сети (добавление клиентов в список исключений):&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">config exclusionlist add MAC-ADDRESS DESCRIPTION
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Включить светодиод точки доступа:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">config ap led-state &lt;span class="nb">enable&lt;/span> AP_NAME
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Отключить светодиод точки доступа:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">config ap led-state disable AP_NAME
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Перезагрузить точку доступа:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">config ap reset AP_NAME
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Применить фильтр для фильтрации результатов:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">grep include &lt;span class="s2">&amp;#34;pattern&amp;#34;&lt;/span> &lt;span class="s2">&amp;#34;commands&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Примеры:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">grep include &lt;span class="s2">&amp;#34;AP Serial Number&amp;#34;&lt;/span> &lt;span class="s2">&amp;#34;show ap config general AP-NAME&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">grep include &lt;span class="s2">&amp;#34;MAC Address&amp;#34;&lt;/span> &lt;span class="s2">&amp;#34;show ap config general AP-NAME”
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s2">grep include &amp;#34;&lt;/span>IP Address&lt;span class="s2">&amp;#34; &amp;#34;&lt;/span>show ap config general AP-NAME&lt;span class="s2">&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="настройка-wlan">&lt;span class="section-num">3&lt;/span> Настройка WLAN&lt;/h2>
+&lt;ul>
+&lt;li>Каждая беспроводная сеть идентифицируется уникальным именем (SSID).&lt;/li>
+&lt;li>Каждая сеть может иметь свой, независимый набор параметров авторизации, шифрования, QoS, дополнительных свойств.&lt;/li>
+&lt;li>Каждая точка доступа может обслуживать (анонсировать) до 16 беспроводных сетей.&lt;/li>
+&lt;li>Контроллер (в зависимости от модели) может обслуживать до 512 сетей и до сотен точек доступа.&lt;/li>
+&lt;li>Просмотр настроенных WLAN:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">show wlan summary
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Для создания новой сети необходимо задать базовые параметры:
+&lt;ul>
+&lt;li>&lt;em>Тип сети&lt;/em>: WLAN (беспроводная). Контроллер может также работать как Captive Portal для проводной сети (Guest LAN).&lt;/li>
+&lt;li>&lt;em>Имя профиля (profile-name)&lt;/em>: произвольное слово, обычно соответствует имени сети, применяется при использовании систем управления WCS/NCS.&lt;/li>
+&lt;li>&lt;em>Имя сети (SSID)&lt;/em>: то, как ваша сеть будет видна клиентским компьютерам.&lt;/li>
+&lt;li>&lt;em>Идентификатор (порядковый номер)&lt;/em>: по умолчанию ваши точки доступа будут анонсировать сети с номерами &amp;lt;=16.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Создадим новую сеть:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">config wlan create wlan-id profile-name ssid
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Следует задать параметры сети.
+&lt;ul>
+&lt;li>&lt;em>enable&lt;/em> включает, &lt;em>disable&lt;/em> выключает обслуживание сети точками доступа.&lt;/li>
+&lt;li>&lt;em>Security policy&lt;/em> оповещает вас о текущем наборе политик безопасности сети, которые настраиваются далее&lt;/li>
+&lt;li>Radio policy позволяет выбрать, в каком диапазоне частот (2.4, 5 ГГц) и скоростей (до 11, до 54 мбит/с) будет работать сеть. Возможны комбинации вариантов. Высокие скорости (802.11n) — тема отдельной статьи. Естественно, ваши точки должны поддерживать выбранные диапазоны.&lt;/li>
+&lt;li>&lt;em>interface&lt;/em> определяет, на какой проводной сетевой интерфейс (VLAN) контроллера по умолчанию будут терминироваться подключения беспроводных клиентов.
+&lt;ul>
+&lt;li>Можно создать несколько динамических интерфейсов, каждый со своим VLAN ID, и распределять ваших пользователей по ним в зависимости от того, к какой сети они подключились.&lt;/li>
+&lt;li>&lt;em>Multicast VLAN&lt;/em> определяет, куда в случае нескольких групп интерфейсов будет идти мультикаст трафик.&lt;/li>
+&lt;li>&lt;em>Broadcast SSID&lt;/em> определяет, будет ли имя сети отражаться в beacon (анонсах) пакетов, периодически рассылаемых точкой доступа. Иначе это называется «открытая/закрытая сеть».&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Подключение сети к интерфейсу:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">config wlan interface &amp;lt;wlan-id&amp;gt; &amp;lt;interface-name&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">config wlan broadcast-ssid &lt;span class="nb">enable&lt;/span> &amp;lt;wlan_id&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Безопасность беспроводной сети строится из трех компонентов:
+&lt;ul>
+&lt;li>авторизация;&lt;/li>
+&lt;li>шифрования;&lt;/li>
+&lt;li>веб-политика (опционально), позволяет заворачивать клиентскую HTTP-сессию на встроенный или внешний веб-сервер и запрашивать подтверждение/логин-пароль через форму.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Доступные параметры безопасности 2го уровня:
+&lt;ul>
+&lt;li>&lt;em>None&lt;/em>: авторизация и шифрование трафика не применяются;&lt;/li>
+&lt;li>&lt;em>WPA+WPA2&lt;/em>: позволяет выбрать политику WPA, WPA2 (либо обе), тип шифрования TKIP, AES (либо оба). Данные параметры просто анонсируются клиентам в beacon пакетах.
+&lt;ul>
+&lt;li>Оптимальным будет использование WPA2/AES.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Нужно, как будет образовываться ключ для шифрования:
+&lt;ul>
+&lt;li>&lt;em>802.1X&lt;/em>: индивидуальный ключ для каждого клиента будет генерироваться RADIUS-сервером в момент авторизации; также называется WPA(2) Enterprise;&lt;/li>
+&lt;li>&lt;em>CCKM&lt;/em>: используется собственный механизм Cisco генерации ключей, подходит только для Cisco Wi-Fi телефонов;&lt;/li>
+&lt;li>&lt;em>PSK&lt;/em>: общий (pre-shared) ключ, пароль на сеть, именуемую в таком случае WPA(2) Personal;&lt;/li>
+&lt;li>&lt;em>802.1x+CCKM&lt;/em>: гибрид CCKM и RADIUS-ключа (для Cisco-телефонов);&lt;/li>
+&lt;li>&lt;em>802.1X&lt;/em>: индивидуальный ключ для каждого клиента будет генерироваться RADIUS-сервером в момент авторизации (это WEP-ключ, протокол шифрования радиоканала &amp;mdash; WEP, пользоваться не рекомендуется);&lt;/li>
+&lt;li>&lt;em>Static WEP&lt;/em>: статический WEP-ключ;&lt;/li>
+&lt;li>&lt;em>Static WEP+802.1X&lt;/em>: гибрид двух предыдущих;&lt;/li>
+&lt;li>&lt;em>CKIP&lt;/em>: проприетарный аналог WEP для Cisco телефонов.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>В реальности необходимо делать выбор между:
+&lt;ul>
+&lt;li>отсутствием шифрования/авторизации (гостевой доступ);&lt;/li>
+&lt;li>WPA2 (AES) PSK (WPA2 Personal) для доступа в сеть по общему паролю;&lt;/li>
+&lt;li>WPA2 (AES) + 802.1X (WPA2 Enterprise) для доступа в сеть через авторизацию на RADIUS-сервере.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Настроим параметры безопасности на интерфейсе:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">config wlan security wpa akm 802.1x disable &amp;lt;wlan_id&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">config wlan security wpa akm psk &lt;span class="nb">enable&lt;/span> &amp;lt;wlan_id&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">config wlan security wpa akm psk set-key ascii &amp;lt;password&amp;gt; &amp;lt;wlan_id&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Подключим радио-интерфейсы:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">config wlan radio &amp;lt;wlan_id&amp;gt; all
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Активируем интерфейс:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">config wlan &lt;span class="nb">enable&lt;/span> &amp;lt;wlan_id&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Сети добавляются автоматически в группу точек доступа &lt;code>default-group&lt;/code>.&lt;/li>
+&lt;li>Если существуют другие группы точек доступа, то следует сеть добавить к ней:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">config wlan apgroup interface-mapping add &amp;lt;apgroup-name&amp;gt; &amp;lt;wlan-id&amp;gt; &amp;lt;interface-name&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="обновление">&lt;span class="section-num">4&lt;/span> Обновление&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/10/01/cisco-wlc-firmware-upgrade/">Контроллер Cisco WLC. Обновление программного обеспечения&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>Начальная конфигурация коммутатора Cisco</title><link>https://yamadharma.github.io/ru/post/2022/11/15/initial-cisco-switch-configuration/</link><pubDate>Tue, 15 Nov 2022 14:51:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/11/15/initial-cisco-switch-configuration/</guid><description>&lt;p>Начальная конфигурация коммутатора Cisco Catalist.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
 &lt;nav id="TableOfContents">

@@ -66,4 +66,489 @@
 &lt;li>Команда &lt;code>xlsclients&lt;/code> отображает все программы, которые используют Xwayland в данный момент:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">xlsclients
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
-&lt;/ul></description></item></channel></rss>
+&lt;/ul></description></item><item><title>Переход на Sway</title><link>https://yamadharma.github.io/ru/post/2020/09/10/migration-sway/</link><pubDate>Thu, 10 Sep 2020 10:33:15 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2020/09/10/migration-sway/</guid><description>&lt;p>Решил попробовать &lt;a href="https://wayland.freedesktop.org/" target="_blank" rel="noopener">Wayland&lt;/a>. По этой причине пришлось &lt;a href="http://way-cooler.org/blog/2020/01/09/way-cooler-post-mortem.html" target="_blank" rel="noopener">перейти&lt;/a> с &lt;a href="https://awesomewm.org/" target="_blank" rel="noopener">awesome&lt;/a> на &lt;a href="https://swaywm.org/" target="_blank" rel="noopener">swlay&lt;/a>.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#установка-sway">&lt;span class="section-num">2&lt;/span> Установка &lt;code>sway&lt;/code>&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#репозитории-gentoo">&lt;span class="section-num">2.1&lt;/span> Репозитории &lt;code>gentoo&lt;/code>&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#первоначальная-конфигурация">&lt;span class="section-num">3&lt;/span> Первоначальная конфигурация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#комбинации-клавиш">&lt;span class="section-num">4&lt;/span> Комбинации клавиш&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#замена-приложений">&lt;span class="section-num">5&lt;/span> Замена приложений&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#ресурсы-по-миграции-с-x-window">&lt;span class="section-num">5.1&lt;/span> Ресурсы по миграции с X Window&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#снимки-экрана">&lt;span class="section-num">5.2&lt;/span> Снимки экрана&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#видеозапись-экрана--скринкаст">&lt;span class="section-num">5.3&lt;/span> Видеозапись экрана (скринкаст)&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#видеозапись-экрана-командная-строка">&lt;span class="section-num">5.3.1&lt;/span> Видеозапись экрана &amp;ndash; командная строка&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#видеозапись-экрана-графическое-приложение">&lt;span class="section-num">5.3.2&lt;/span> Видеозапись экрана &amp;ndash; графическое приложение&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#строка-состояний">&lt;span class="section-num">5.4&lt;/span> Строка состояний&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#уведомления">&lt;span class="section-num">5.5&lt;/span> Уведомления&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#настройка-вывода">&lt;span class="section-num">5.6&lt;/span> Настройка вывода&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#меню-программ--launcher">&lt;span class="section-num">5.7&lt;/span> Меню программ (launcher)&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#буфер-обмена">&lt;span class="section-num">5.8&lt;/span> Буфер обмена&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#блокировка-экрана">&lt;span class="section-num">5.9&lt;/span> Блокировка экрана&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#swaylock">&lt;span class="section-num">5.9.1&lt;/span> swaylock&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#swaylock-effects">&lt;span class="section-num">5.9.2&lt;/span> swaylock-effects&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#совместимость-приложений">&lt;span class="section-num">6&lt;/span> Совместимость приложений&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#java">&lt;span class="section-num">6.1&lt;/span> Java&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#серое-окно-приложения-не-меняют-размер-с-помощью-wm-меню-сразу-закрываются">&lt;span class="section-num">6.1.1&lt;/span> Серое окно, приложения не меняют размер с помощью WM, меню сразу закрываются&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#меню-в-приложениях-плавает-отдельно-им-невозможно-пользоваться">&lt;span class="section-num">6.1.2&lt;/span> Меню в приложениях плавает отдельно, им невозможно пользоваться&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#приложения-gtk-plus-запускаются-с-задержкой">&lt;span class="section-num">6.2&lt;/span> Приложения GTK+ запускаются с задержкой&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#qt-приложения">&lt;span class="section-num">6.3&lt;/span> Qt приложения&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#сводная-таблица-клавиатурных-сочетаний">&lt;span class="section-num">7&lt;/span> Сводная таблица клавиатурных сочетаний&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#режимы-и-управление-окнами">&lt;span class="section-num">7.1&lt;/span> Режимы и управление окнами&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://swaywm.org/" target="_blank" rel="noopener">https://swaywm.org/&lt;/a>&lt;/li>
+&lt;li>Создавался для замены i3 (см. &lt;a href="https://yamadharma.github.io/ru/post/2021/05/14/window-manager-i3/">Window manager i3&lt;/a>) под Wayland.&lt;/li>
+&lt;/ul>
+&lt;h2 id="установка-sway">&lt;span class="section-num">2&lt;/span> Установка &lt;code>sway&lt;/code>&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge -v gui-wm/sway
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="репозитории-gentoo">&lt;span class="section-num">2.1&lt;/span> Репозитории &lt;code>gentoo&lt;/code>&lt;/h3>
+&lt;ul>
+&lt;li>Программы для Wayland есть как в основном репозитории, так и дополнительных.&lt;/li>
+&lt;li>Хочу порекомендовать для просмотра следующие репозитории (см. &lt;a href="https://yamadharma.github.io/ru/post/2023/10/01/gentoo-additional-repositories/">Gentoo. Дополнительные репозитории&lt;/a>):
+&lt;ul>
+&lt;li>&lt;a href="https://github.com/epsilon-0/wayland-desktop" target="_blank" rel="noopener">wayland-desktop&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">eselect repository &lt;span class="nb">enable&lt;/span> wayland-desktop
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">emaint sync --repo wayland-desktop
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>&lt;a href="https://wiki.gentoo.org/wiki/Project:GURU" target="_blank" rel="noopener">guru&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">eselect repository &lt;span class="nb">enable&lt;/span> guru
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">emaint sync --repo guru
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="первоначальная-конфигурация">&lt;span class="section-num">3&lt;/span> Первоначальная конфигурация&lt;/h2>
+&lt;ul>
+&lt;li>Файл конфигурации ищется в следующем порядке:
+&lt;ul>
+&lt;li>&lt;code>~/.sway/config&lt;/code>;&lt;/li>
+&lt;li>&lt;code>$XDG_CONFIG_HOME/sway/config&lt;/code>;&lt;/li>
+&lt;li>&lt;code>~/.i3/config&lt;/code>;&lt;/li>
+&lt;li>&lt;code>$XDG_CONFIG_HOME/i3/config&lt;/code>;&lt;/li>
+&lt;li>&lt;code>/etc/sway/config&lt;/code>;&lt;/li>
+&lt;li>&lt;code>/etc/i3/config&lt;/code>.&lt;/li>
+&lt;li>Переменная окружения &lt;code>$XDG_CONFIG_HOME&lt;/code> по умолчанию установлена в &lt;code>~/.config/&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Пакет устанавливает глобальную конфигурацию в &lt;code>/etc/sway/config&lt;/code>.&lt;/li>
+&lt;li>При желании внести изменение в конфигурацию можно скопировать файл глобальной конфигурации в локальную:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mkdir -p ~/.config/sway
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">cp /etc/sway/config ~/.config/sway/
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="комбинации-клавиш">&lt;span class="section-num">4&lt;/span> Комбинации клавиш&lt;/h2>
+&lt;p>Основные сочетания клавиш:&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>Mod&lt;/code> + &lt;code>Enter&lt;/code> &amp;ndash; открыть новый терминал;&lt;/li>
+&lt;li>&lt;code>Mod&lt;/code> + &lt;code>d&lt;/code> &amp;ndash; запустить программу;&lt;/li>
+&lt;li>&lt;code>Mod&lt;/code> + &lt;code>0&lt;/code>.. &lt;code>9&lt;/code> &amp;ndash; переключение между workspace&amp;rsquo;ами;&lt;/li>
+&lt;li>&lt;code>Mod&lt;/code> + &lt;code>Shift&lt;/code> + &lt;code>0&lt;/code> .. &lt;code>9&lt;/code> &amp;ndash; перемещение окон в заданный workspace;&lt;/li>
+&lt;li>&lt;code>Mod&lt;/code> + &lt;code>Shift&lt;/code> + &lt;code>q&lt;/code> &amp;ndash; закрыть текущее окно;&lt;/li>
+&lt;li>&lt;code>Mod&lt;/code> + стрелки &amp;ndash; перемещение между окнами, вместо стрелочек также могут быть использованы клавиши «J» (влево), «K» (вниз), «L» (вверх) и «;» (вправо);&lt;/li>
+&lt;li>&lt;code>Mod&lt;/code> + &lt;code>Shift&lt;/code> + стрелки &amp;ndash; перемещение окон в пределах workspace&amp;rsquo;а, вместо стрелок также могут быть использованы буквы и точка с запятой;&lt;/li>
+&lt;li>&lt;code>Mod&lt;/code> + &lt;code>v&lt;/code> &amp;ndash; использовать вертикальное разбиение;&lt;/li>
+&lt;li>&lt;code>Mod&lt;/code> + &lt;code>h&lt;/code> &amp;ndash; использовать горизонтальное разбиение;&lt;/li>
+&lt;li>&lt;code>Mod&lt;/code> + &lt;code>e&lt;/code> &amp;ndash; размещение окон по-умолчанию (default layout);&lt;/li>
+&lt;li>&lt;code>Mod&lt;/code> + &lt;code>s&lt;/code> &amp;ndash; стековое размещение (stacking layout);&lt;/li>
+&lt;li>&lt;code>Mod&lt;/code> + &lt;code>w&lt;/code> &amp;ndash; размещение с табами (tabbed layout);&lt;/li>
+&lt;li>&lt;code>Mod&lt;/code> + &lt;code>f&lt;/code> &amp;ndash; раскрыть окно во весь экран или свернуть его обратно;&lt;/li>
+&lt;li>&lt;code>Mod&lt;/code> + &lt;code>Shift&lt;/code> + &lt;code>Space&lt;/code> &amp;ndash; разрешить свободное перемещение окна (floating mode) или вернуть его в мозаику;&lt;/li>
+&lt;li>&lt;code>Mod&lt;/code> + &lt;code>Shift&lt;/code> + &lt;code>c&lt;/code> &amp;ndash; перечитать конфигурацию &lt;code>sway&lt;/code> (перестартовать);&lt;/li>
+&lt;li>&lt;code>Mod&lt;/code> + &lt;code>Shift&lt;/code> + &lt;code>e&lt;/code> &amp;ndash; выйти из &lt;code>sway&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;p>Кроме того, часть сочетаний клавиш определяется в файлах, определяющих конкретный функционал.&lt;/p>
+&lt;h2 id="замена-приложений">&lt;span class="section-num">5&lt;/span> Замена приложений&lt;/h2>
+&lt;h3 id="ресурсы-по-миграции-с-x-window">&lt;span class="section-num">5.1&lt;/span> Ресурсы по миграции с X Window&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://github.com/swaywm/sway/wiki/i3-Migration-Guide" target="_blank" rel="noopener">https://github.com/swaywm/sway/wiki/i3-Migration-Guide&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/swaywm/sway/wiki/Useful-add-ons-for-sway" target="_blank" rel="noopener">https://github.com/swaywm/sway/wiki/Useful-add-ons-for-sway&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://wiki.gentoo.org/wiki/List_of_software_for_Wayland" target="_blank" rel="noopener">https://wiki.gentoo.org/wiki/List_of_software_for_Wayland&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/natpen/awesome-wayland" target="_blank" rel="noopener">https://github.com/natpen/awesome-wayland&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://arewewaylandyet.com/" target="_blank" rel="noopener">https://arewewaylandyet.com/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="снимки-экрана">&lt;span class="section-num">5.2&lt;/span> Снимки экрана&lt;/h3>
+&lt;p>Исходно использовался &lt;code>scrot&lt;/code>.&lt;/p>
+&lt;p>Для Wayland перешёл на связку &lt;a href="https://github.com/emersion/grim" target="_blank" rel="noopener">grim&lt;/a> (получение снимка экрана) + &lt;a href="https://github.com/emersion/slurp" target="_blank" rel="noopener">slurp&lt;/a> (выделение области экрана):&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge -uv gui-apps/slurp gui-apps/grim
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Настроим получение снимков экрана:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl"># ~/.config/sway/config.d/80-screenshots.conf
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># Screenshot active display
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym Print exec grim -t png &amp;#34;$(xdg-user-dir PICTURES)&amp;#34;/$(date +%Y-%m-%d_%H-%M-%S).png
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># Screenshot current window
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+Print exec grim -g &amp;#34;$(swaymsg -t get_tree | jq -r &amp;#39;.. | select(.pid? and .visible?) | .rect | &amp;#34;\(.x),\(.y) \(.width)x\(.height)&amp;#34;&amp;#39;)&amp;#34; &amp;#34;$(xdg-user-dir PICTURES)&amp;#34;/$(date +%Y-%m-%d_%H-%M-%S).png
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># Screenshot selected region
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+Shift+Print exec grim -t png -g &amp;#34;$(slurp)&amp;#34; &amp;#34;$(xdg-user-dir PICTURES)&amp;#34;/$(date +%Y-%m-%d_%H-%M-%S).png
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>При нажатии клавиши &lt;code>PrtScr&lt;/code> делается снимок всего экрана.&lt;/li>
+&lt;li>При нажатии &lt;code>Mod4&lt;/code> + &lt;code>PrtScr&lt;/code> делается снимок активного окна.&lt;/li>
+&lt;li>При нажатии &lt;code>Mod4&lt;/code> + &lt;code>Shift&lt;/code> + &lt;code>PrtScr&lt;/code> предлагается выбрать область экрана, снимок которой следует сделать.&lt;/li>
+&lt;/ul>
+&lt;h3 id="видеозапись-экрана--скринкаст">&lt;span class="section-num">5.3&lt;/span> Видеозапись экрана (скринкаст)&lt;/h3>
+&lt;p>Ранее использовался &lt;a href="https://www.maartenbaert.be/simplescreenrecorder/" target="_blank" rel="noopener">SimpleScreenRecorder&lt;/a>.&lt;/p>
+&lt;h4 id="видеозапись-экрана-командная-строка">&lt;span class="section-num">5.3.1&lt;/span> Видеозапись экрана &amp;ndash; командная строка&lt;/h4>
+&lt;p>Для записи из командной строки используем &lt;a href="https://github.com/ammen99/wf-recorder" target="_blank" rel="noopener">wf-recorder&lt;/a>:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge -v gui-apps/wf-recorder
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Варианты использования:&lt;/p>
+&lt;ul>
+&lt;li>Запись всего экрана в файл &lt;code>recording.mkv&lt;/code> (только видео):&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">wf-recorder -f recording&lt;span class="k">$(&lt;/span>date +%Y-%m-%d_%H-%M-%S&lt;span class="k">)&lt;/span>.mkv
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Если файл не указывать, запись будет в текущий каталог.&lt;/p>
+&lt;ul>
+&lt;li>Запись фрагмента экрана (тут имя файла задаётся по времени начала
+записи):&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">wf-recorder -g &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>slurp&lt;span class="k">)&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> -f &lt;span class="k">$(&lt;/span>date +%Y-%m-%d_%H-%M-%S&lt;span class="k">)&lt;/span>.mkv
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Запись со звуком:&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">wf-recorder --audio -f &lt;span class="k">$(&lt;/span>date +%Y-%m-%d_%H-%M-%S&lt;span class="k">)&lt;/span>.mkv
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Запись с использование GPU (VAAPI интерфейс):&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">wf-recorder --audio -f &lt;span class="k">$(&lt;/span>date +%Y-%m-%d_%H-%M-%S&lt;span class="k">)&lt;/span>.mkv -c h264_vaapi -d /dev/dri/renderD128
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="видеозапись-экрана-графическое-приложение">&lt;span class="section-num">5.3.2&lt;/span> Видеозапись экрана &amp;ndash; графическое приложение&lt;/h4>
+&lt;p>Для захвата десктопа в Wayland используется плагин &lt;a href="https://hg.sr.ht/~scoopta/wlrobs" target="_blank" rel="noopener">wlrobs&lt;/a>.&lt;/p>
+&lt;h3 id="строка-состояний">&lt;span class="section-num">5.4&lt;/span> Строка состояний&lt;/h3>
+&lt;p>Sway поддерживает свою строку состояний &lt;code>sway-bar&lt;/code>. Удобное и минималистическое приложение. Однако, удручает, что иконки в трее не активны.&lt;/p>
+&lt;p>Попробуем использовать более продвинутый вариант &amp;ndash; &lt;a href="https://github.com/Alexays/Waybar" target="_blank" rel="noopener">waybar&lt;/a>&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge -v gui-apps/waybar
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Конфигурация:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">## sway-bar
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># Read `man 5 sway-bar` for more information about this section.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># bar {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># position top
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># # When the status_command prints a new line to stdout, swaybar updates.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># # The default just shows the current date and time.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># status_command while date +&amp;#39;%Y-%m-%d %H:%M:%S&amp;#39;; do sleep 1; done
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># colors {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># statusline #ffffff
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># background #323232
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># inactive_workspace #32323200 #32323200 #5c5c5c
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">## Waybar
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># &amp;lt;https://github.com/Alexays/Waybar&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exec_always ~/.config/sway/scripts/waybar.sh
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># Waybar Tooltips don&amp;#39;t steel focus
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">no_focus [app_id=&amp;#34;waybar&amp;#34;]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">for_window [app_id=&amp;#34;waybar&amp;#34; floating] {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> move position cursor
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> move down 60px # adjust if some menus still don&amp;#39;t fit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Конфигурацию &lt;code>waybar&lt;/code> поместил в &lt;code>~/.config/sway/other/waybar&lt;/code>.&lt;/p>
+&lt;h3 id="уведомления">&lt;span class="section-num">5.5&lt;/span> Уведомления&lt;/h3>
+&lt;p>Используется &lt;a href="https://github.com/emersion/mako" target="_blank" rel="noopener">mako&lt;/a>.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge -v gui-apps/mako
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Сконфигурировал следующим образом:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl"># ~/.config/sway/config.d/80-mako.conf
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># Light
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exec_always mako --font &amp;#39;Source Code Pro 10&amp;#39; --background-color &amp;#39;#fdf6e3&amp;#39; --text-color &amp;#39;#657b83&amp;#39; --default-timeout 5000 --width 400 --markup 1 --border-radius 5
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># Dark
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># exec_always mako --font &amp;#39;Source Code Pro 10&amp;#39; --background-color &amp;#39;#002b36&amp;#39; --text-color &amp;#39;#839496&amp;#39; --default-timeout 5000 --width 400 --markup 1 --border-radius 5
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="настройка-вывода">&lt;span class="section-num">5.6&lt;/span> Настройка вывода&lt;/h3>
+&lt;p>В XWindow используется программа &lt;code>xrandr&lt;/code> (с её помощью можно изменять параметры вывода изображения RandR). В &lt;code>sway&lt;/code> можно управлять с помощью &lt;code>swaymsg output&lt;/code> или с помощью утилиты &lt;a href="https://github.com/emersion/wlr-randr" target="_blank" rel="noopener">wlr-randr&lt;/a>.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge -v gui-apps/wlr-randr
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="меню-программ--launcher">&lt;span class="section-num">5.7&lt;/span> Меню программ (launcher)&lt;/h3>
+&lt;p>Для запуска программы используется &lt;code>dmenu&lt;/code>. Если не нравится, можно заменить.&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://hg.sr.ht/~scoopta/wofi" target="_blank" rel="noopener">wofi&lt;/a> &amp;mdash; аналог &lt;code>rofi&lt;/code> для Wayland. Попроще, конечно.&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge -v gui-apps/wofi
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>В отличии от &lt;code>dmenu&lt;/code> запоминает последние выбранные команды.&lt;/p>
+&lt;p>Общая конфигурация:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-mysql" data-lang="mysql">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># ~/.config/sway/config.d/80-launcher.conf
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="c1"># dmenu
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kt">set&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">$&lt;/span>&lt;span class="n">menu&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">dmenu_path&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">|&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">dmenu&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">|&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">xargs&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">swaymsg&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">exec&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c1">--
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># wofi
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># --show &amp;lt;mode&amp;gt;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># &amp;lt;mode&amp;gt;:
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># - `run` - searches $PATH for executables and allows them to be run by selecting them.
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># - `drun` - searches $XDG_DATA_HOME/applications and $XDG_DATA_DIRS/applications for desktop files and allows them to be run by selecting them.
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># - `dmenu` - reads from stdin and displays options which when selected will be output to stdout.
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="c1"># set $menu dmenu_path | wofi -c ~/.config/sway/other/wofi/config -s ~/.config/sway/other/wofi/style.css --show dmenu | xargs swaymsg exec --
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="c1"># rofi
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="c1"># set $menu rofi -combi-modi window#drun -show combi -modi combi -show-icons
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># set $menu rofi -m $(swaymsg -t get_outputs | jq &amp;#39;map(select(.active) | .focused) | index(true)&amp;#39;) -show combi -modi combi -combi-modi window#drun -show-icons -run-command &amp;#39;swaymsg exec -- {cmd}&amp;#39;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="c1"># gmenu
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="c1"># set $menu gtkmenu --width 500 --height 260 -no-generic
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># set $menu nwggrid
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="c1"># bemenu
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="c1"># set $menu j4-dmenu-desktop --dmenu=&amp;#34;bemenu-run.sh -l 30&amp;#34; --term=&amp;#34;alacritty&amp;#34; --no-generic
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="c1"># Start your launcher
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="n">bindsym&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">$&lt;/span>&lt;span class="k">mod&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="n">d&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">exec&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">$&lt;/span>&lt;span class="n">menu&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="буфер-обмена">&lt;span class="section-num">5.8&lt;/span> Буфер обмена&lt;/h3>
+&lt;p>Предлагается использовать &lt;a href="https://github.com/bugaevc/wl-clipboard" target="_blank" rel="noopener">wl-clipboard&lt;/a>.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge -v gui-apps/wl-clipboard
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Пакет содержит две утилиты: &lt;code>wl-copy&lt;/code> и &lt;code>wl-paste&lt;/code>.&lt;/p>
+&lt;p>Пример использования:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># copy a simple text message&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$ wl-copy Hello world!
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># copy the list of files in Downloads&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$ ls ~/Downloads &lt;span class="p">|&lt;/span> wl-copy
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># copy an image file&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$ wl-copy &amp;lt; ~/Pictures/photo.png
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># paste to a file&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$ wl-paste &amp;gt; clipboard.txt
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># grep each pasted word in file source.c&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$ &lt;span class="k">for&lt;/span> word in &lt;span class="k">$(&lt;/span>wl-paste&lt;span class="k">)&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="k">do&lt;/span> grep &lt;span class="nv">$word&lt;/span> source.c&lt;span class="p">;&lt;/span> &lt;span class="k">done&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># copy the previous command&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$ wl-copy &lt;span class="s2">&amp;#34;!!&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># replace the current selection with the list of types it&amp;#39;s offered in&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$ wl-paste --list-types &lt;span class="p">|&lt;/span> wl-copy
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="блокировка-экрана">&lt;span class="section-num">5.9&lt;/span> Блокировка экрана&lt;/h3>
+&lt;h4 id="swaylock">&lt;span class="section-num">5.9.1&lt;/span> swaylock&lt;/h4>
+&lt;!--list-separator-->
+&lt;ol>
+&lt;li>
+&lt;p>Общая информация&lt;/p>
+&lt;ul>
+&lt;li>Официальное приложение для блокировки экрана для &lt;em>Sway&lt;/em> &amp;mdash; &lt;em>swaylock&lt;/em>.&lt;/li>
+&lt;li>Репозиторий: &lt;a href="https://github.com/swaywm/swaylock" target="_blank" rel="noopener">https://github.com/swaywm/swaylock&lt;/a>&lt;/li>
+&lt;li>Установка:
+&lt;ul>
+&lt;li>Gentoo:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge gui-apps/swaylock
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>В информационной панеле &lt;em>waybar&lt;/em> есть опция для отключения блокировки при простое (например, для демонстрации слайдов).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;!--list-separator-->
+&lt;ol start="2">
+&lt;li>
+&lt;p>Блокировка при простое&lt;/p>
+&lt;ul>
+&lt;li>Заблокировать экран после 300 секунд бездействия.&lt;/li>
+&lt;li>Затем выключить дисплей ещё через 300 секунд.&lt;/li>
+&lt;li>Включить экран при возобновлении работы.&lt;/li>
+&lt;li>Также заблокировать экран перед тем, как компьютер перейдет в спящий режим.&lt;/li>
+&lt;li>Конфигурационный файл:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">### ~/.config/sway/config.d/80-lock.conf
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">### Idle lock
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">## - Lock your screen after 300 seconds of inactivity
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">## - Then turn off your displays after another 300 seconds
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">## - Turn your screens back on when resumed
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">## - Also lock your screen before your computer goes to sleep
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exec swayidle -w \
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> timeout 300 &amp;#39;swaylock -f -c 000000 -k&amp;#39; \
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> timeout 600 &amp;#39;swaymsg &amp;#34;output * dpms off&amp;#34;&amp;#39; \
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> resume &amp;#39;swaymsg &amp;#34;output * dpms on&amp;#34;&amp;#39; \
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> before-sleep &amp;#39;swaylock -f -c 000000 -k&amp;#39;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;!--list-separator-->
+&lt;ol start="3">
+&lt;li>
+&lt;p>Ручная блокировка&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>Mod&lt;/code> + &lt;code>Ctrl&lt;/code> + &lt;code>l&lt;/code> для немедленной блокировки экрана.&lt;/li>
+&lt;li>Через 10 секунд выключить экран.&lt;/li>
+&lt;li>Конфигурационный файл:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">### ~/.config/sway/config.d/80-lock.conf
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">### Manual lock
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">## - Mod + Ctrl + l to lock the screen immediately
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">## - In 10 sec also switch the screen off
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">set $lockman exec bash ~/.config/sway/scripts/lockman.sh
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+Ctrl+l exec $lockman
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Скрипт блокировки:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#!/bin/bash
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>&lt;span class="c1"># ~/.config/sway/scripts/lockman.sh&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Times the screen off and puts it to background&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">swayidle &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> timeout &lt;span class="m">10&lt;/span> &lt;span class="s1">&amp;#39;swaymsg &amp;#34;output * dpms off&amp;#34;&amp;#39;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> resume &lt;span class="s1">&amp;#39;swaymsg &amp;#34;output * dpms on&amp;#34;&amp;#39;&lt;/span> &lt;span class="p">&amp;amp;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Locks the screen immediately&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">swaylock -c &lt;span class="m">550000&lt;/span> -k
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Kills last background task so idle timer doesn&amp;#39;t keep running&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">kill&lt;/span> %%
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;h4 id="swaylock-effects">&lt;span class="section-num">5.9.2&lt;/span> swaylock-effects&lt;/h4>
+&lt;ul>
+&lt;li>&lt;em>swaylock-effects&lt;/em> является форком &lt;em>swaylock&lt;/em>:
+&lt;ul>
+&lt;li>Репозиторий: &lt;a href="https://github.com/mortie/swaylock-effects" target="_blank" rel="noopener">https://github.com/mortie/swaylock-effects&lt;/a>&lt;/li>
+&lt;li>Добавляет встроенные скриншоты и эффекты манипулирования изображениями, такие как размытие.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="совместимость-приложений">&lt;span class="section-num">6&lt;/span> Совместимость приложений&lt;/h2>
+&lt;h3 id="java">&lt;span class="section-num">6.1&lt;/span> Java&lt;/h3>
+&lt;h4 id="серое-окно-приложения-не-меняют-размер-с-помощью-wm-меню-сразу-закрываются">&lt;span class="section-num">6.1.1&lt;/span> Серое окно, приложения не меняют размер с помощью WM, меню сразу закрываются&lt;/h4>
+&lt;ul>
+&lt;li>В стандартных тулкитах для Java жестко зашит список оконных менеджеров.&lt;/li>
+&lt;li>Следует установить переменную окружения:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">_JAVA_AWT_WM_NONREPARENTING&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h4 id="меню-в-приложениях-плавает-отдельно-им-невозможно-пользоваться">&lt;span class="section-num">6.1.2&lt;/span> Меню в приложениях плавает отдельно, им невозможно пользоваться&lt;/h4>
+&lt;ul>
+&lt;li>В выпусках Java до версии 9 GTK интерфейс ориентирован на GTK2, в последующих версиях на GTK3.&lt;/li>
+&lt;li>GTK LookAndFeel может работать с GTK версий 2, 2.2 и 3.&lt;/li>
+&lt;li>По умолчанию используется GTK3.&lt;/li>
+&lt;li>Следует явно задать более старую версию:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">JAVA_TOOL_OPTIONS&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;-Djdk.gtk.version=2.2&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Например, в файле &lt;code>~/.profile&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="k">if&lt;/span> &lt;span class="o">[&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$XDG_SESSION_DESKTOP&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;sway&amp;#34;&lt;/span> &lt;span class="o">]&lt;/span> &lt;span class="o">||&lt;/span> &lt;span class="o">[&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$XDG_SESSION_DESKTOP&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;i3&amp;#34;&lt;/span> &lt;span class="o">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">then&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># https://github.com/swaywm/sway/issues/595&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">export&lt;/span> &lt;span class="nv">_JAVA_AWT_WM_NONREPARENTING&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">export&lt;/span> &lt;span class="nv">JAVA_TOOL_OPTIONS&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;-Djdk.gtk.version=2.2&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">fi&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="приложения-gtk-plus-запускаются-с-задержкой">&lt;span class="section-num">6.2&lt;/span> Приложения GTK+ запускаются с задержкой&lt;/h3>
+&lt;ul>
+&lt;li>Приложения GTK+ ожидают запуск &lt;code>xdg-desktop-portal&lt;/code> через D-Bus.&lt;/li>
+&lt;li>Ожидание прекращается по таймауту потому, что активированная служба D-Bus не знает, к какому &lt;code>WAYLAND_DISPLAY&lt;/code> подключиться.&lt;/li>
+&lt;li>Это можно исправить, добавив в файл конфигурации следующее:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">exec&lt;/span> systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">exec&lt;/span> &lt;span class="nb">hash&lt;/span> dbus-update-activation-environment 2&amp;gt;/dev/null &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="qt-приложения">&lt;span class="section-num">6.3&lt;/span> Qt приложения&lt;/h3>
+&lt;ul>
+&lt;li>Qt по умолчанию использует бэкэнд X11 вместо собственного бэкэнда Wayland. Чтобы использовать бэкэнд Wayland, установите &lt;code>QT_QPA_PLATFORM=wayland&lt;/code>.&lt;/li>
+&lt;li>Qt прорисовает оформление окон на стороне клиента. Чтобы отключить это, установите &lt;code>QT_WAYLAND_DISABLE_WINDOWDECORATION=&amp;quot;1&amp;quot;&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h2 id="сводная-таблица-клавиатурных-сочетаний">&lt;span class="section-num">7&lt;/span> Сводная таблица клавиатурных сочетаний&lt;/h2>
+&lt;h3 id="режимы-и-управление-окнами">&lt;span class="section-num">7.1&lt;/span> Режимы и управление окнами&lt;/h3>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Клавиатурная комбинация&lt;/th>
+&lt;th>Описание&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>Mod+shift+space&lt;/code>&lt;/td>
+&lt;td>Переключение окна в плавающий режим и обратно&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>Mod+shift+minus&lt;/code>&lt;/td>
+&lt;td>Отправка окна в блокнот (scratchpad)&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>Mod+minus&lt;/code>&lt;/td>
+&lt;td>Сворачивание, вызов окна в блокноте (scratchpad)&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>Mod+b&lt;/code>&lt;/td>
+&lt;td>Горизонтальный сплит&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>Mod+v&lt;/code>&lt;/td>
+&lt;td>Вертикальный сплит&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>Mod+e&lt;/code>&lt;/td>
+&lt;td>Переключение сплита&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>Mod+s&lt;/code>&lt;/td>
+&lt;td>Режим стека&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>Mod+w&lt;/code>&lt;/td>
+&lt;td>Режим вкладок&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>Mod+r&lt;/code>&lt;/td>
+&lt;td>И изменение размеров, используем &lt;code>h&lt;/code>, &lt;code>j&lt;/code>, &lt;code>k&lt;/code> , &lt;code>l&lt;/code> или ←,→,↑,↓, выход из режима &amp;mdash; &lt;code>Esc&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>Mod+{←,→,↑,↓}&lt;/code> или &lt;code>Mod+{h,j,k,l}&lt;/code>&lt;/td>
+&lt;td>Перемещение по окнам&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>Mod+shift+{←,→,↑,↓}&lt;/code> или &lt;code>Mod+shift+{h,j,k,l}&lt;/code>&lt;/td>
+&lt;td>Меняет позицию окна&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>Mod+{1-9,0}&lt;/code>&lt;/td>
+&lt;td>Переход на тег&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>Mod+shift+{1-9,0}&lt;/code>&lt;/td>
+&lt;td>Отправка окна на тег&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table></description></item></channel></rss>

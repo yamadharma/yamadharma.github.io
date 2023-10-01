@@ -450,6 +450,76 @@
 &lt;h4 id="цель-работы">&lt;span class="section-num">3.8.1&lt;/span> Цель работы&lt;/h4>
 &lt;ul>
 &lt;li>Освоить на практике применение режима однократного гаммирования на примере кодирования различных исходных текстов одним ключом.&lt;/li>
+&lt;/ul></description></item><item><title>VPN. L2TP over IPsec. Подключение клиента</title><link>https://yamadharma.github.io/ru/post/2023/02/05/l2tp-ipsec-vpn-client-setup/</link><pubDate>Sun, 05 Feb 2023 13:35:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/02/05/l2tp-ipsec-vpn-client-setup/</guid><description>&lt;p>Подключение клиента L2TP/IPsec VPN.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#linux">&lt;span class="section-num">1&lt;/span> Linux&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#gentoo">&lt;span class="section-num">1.1&lt;/span> Gentoo&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#networkmanager">&lt;span class="section-num">1.1.1&lt;/span> NetworkManager&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#l2tp-over-ipsec-через-межсетевой-экран-с-nat">&lt;span class="section-num">2&lt;/span> L2TP over IPSec через межсетевой экран с NAT&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="linux">&lt;span class="section-num">1&lt;/span> Linux&lt;/h2>
+&lt;h3 id="gentoo">&lt;span class="section-num">1.1&lt;/span> Gentoo&lt;/h3>
+&lt;h4 id="networkmanager">&lt;span class="section-num">1.1.1&lt;/span> NetworkManager&lt;/h4>
+&lt;ul>
+&lt;li>Откройте пользовательский интерфейс NetworkManager, затем:
+&lt;ul>
+&lt;li>Перейдите в Сеть &amp;gt; VPN. Нажмите &lt;em>+&lt;/em>.&lt;/li>
+&lt;li>Выберите &lt;em>Протокол туннелирования уровня 2 (L2TP)&lt;/em>.&lt;/li>
+&lt;li>Вы можете выбрать имя для VPN.&lt;/li>
+&lt;li>Введите IP-адрес вашего VPN-сервера для шлюза.&lt;/li>
+&lt;li>Введите имя пользователя VPN для имени пользователя.&lt;/li>
+&lt;li>Щелкните правой кнопкой мыши &lt;em>?&lt;/em> в поле &lt;em>Пароль&lt;/em> и выберите &lt;em>Сохранить пароль только для этого пользователя&lt;/em>.
+&lt;ul>
+&lt;li>Можете использовать &lt;em>Сохранить пароль для всех пользователей&lt;/em>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Введите свой пароль VPN для пароля.&lt;/li>
+&lt;li>Оставьте поле Домен NT пустым.&lt;/li>
+&lt;li>Нажмите кнопку &lt;em>Настройки IPsec&amp;hellip;&lt;/em>.&lt;/li>
+&lt;li>Установите флажок Включить туннель IPsec для хоста L2TP.&lt;/li>
+&lt;li>Оставьте поле ID шлюза пустым.&lt;/li>
+&lt;li>Введите свой &lt;em>VPN IPsec PSK&lt;/em> для общего ключа (preshared-key).&lt;/li>
+&lt;li>Затем нажмите &lt;em>Add&lt;/em>, чтобы сохранить информацию о VPN-подключении.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;!--list-separator-->
+&lt;ol>
+&lt;li>
+&lt;p>Взаимодействие с Strongswan&lt;/p>
+&lt;ul>
+&lt;li>По умолчанию strongswan собирается с поддержкой capabilities и возможностью запуска под непривилегированным пользователем.&lt;/li>
+&lt;li>Однако в NetworkManager поддержка capabilities не настроена.&lt;/li>
+&lt;li>В результате соединение не устанавливается.&lt;/li>
+&lt;li>Решить проблему можно следующим образом:
+&lt;ul>
+&lt;li>либо установить strongswan без поддержки capabilities и возможности запуска под непривилегированным пользователем:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nv">USE&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;-caps -non-root&amp;#34;&lt;/span> emerge strongswan
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>либо собрать NetworkManager с поддержкой capabilities (см. &lt;a href="https://gitlab.freedesktop.org/NetworkManager/NetworkManager/-/merge_requests/1053" target="_blank" rel="noopener">https://gitlab.freedesktop.org/NetworkManager/NetworkManager/-/merge_requests/1053&lt;/a>).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;h2 id="l2tp-over-ipsec-через-межсетевой-экран-с-nat">&lt;span class="section-num">2&lt;/span> L2TP over IPSec через межсетевой экран с NAT&lt;/h2>
+&lt;ul>
+&lt;li>Необходимо задать правила на межсетевом экране для трафика L2TP over IPSec VPN.&lt;/li>
+&lt;li>IKE (UDP 500) &amp;mdash; протокол обмена ключами. Без него IPSec не работает. Посредством этого протокола происходит согласование и обмен ключами. Пробрасывать нужно.&lt;/li>
+&lt;li>NAT-T (UDP 4500) &amp;mdash; протокол инкапсулирует IPSec в UDP пакеты, что позволяет проходить трафику через NAT. Без этого протокола пакет не дойдет до получателя, а будут потерян на первом же NAT устройстве. Пробрасывать нужно.&lt;/li>
+&lt;li>ESP (protocol 50) &amp;mdash; протокол обеспечивает шифрование, аутентификацию и целостность. Инкапсулируется в UDP. Пробрасывать не нужно.&lt;/li>
+&lt;li>L2TP (UDP 1701) &amp;mdash; протокол туннелирования. О нём знают только оконечные узлы туннеля IPSec. Инкапсулируется в IPSec.. Пробрасывать не нужно&lt;/li>
 &lt;/ul></description></item><item><title>Механизм HSTS</title><link>https://yamadharma.github.io/ru/post/2022/05/03/hsts-mechanism/</link><pubDate>Tue, 03 May 2022 20:05:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/05/03/hsts-mechanism/</guid><description>&lt;p>&lt;em>HSTS&lt;/em> (&lt;em>HTTP Strict Transport Security&lt;/em>) &amp;mdash; механизм, принудительно активирующий защищённое соединение через протокол HTTPS.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
@@ -986,8 +1056,17 @@
 &lt;ul>
 &lt;li>&lt;a href="#launchers">&lt;span class="section-num">1&lt;/span> Launchers&lt;/a>
 &lt;ul>
-&lt;li>&lt;a href="#rofi-pass">&lt;span class="section-num">1.1&lt;/span> rofi-pass&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#tessen">&lt;span class="section-num">1.2&lt;/span> tessen&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#linux">&lt;span class="section-num">1.1&lt;/span> Linux&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#rofi-pass">&lt;span class="section-num">1.1.1&lt;/span> rofi-pass&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#tessen">&lt;span class="section-num">1.1.2&lt;/span> tessen&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#windows">&lt;span class="section-num">1.2&lt;/span> Windows&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#pass-winmenu">&lt;span class="section-num">1.2.1&lt;/span> pass-winmenu&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>&lt;a href="#настройка-интерфейса-с-броузером">&lt;span class="section-num">2&lt;/span> Настройка интерфейса с броузером&lt;/a>
@@ -1006,16 +1085,37 @@
 &lt;/nav>
 &lt;/details>
 &lt;h2 id="launchers">&lt;span class="section-num">1&lt;/span> Launchers&lt;/h2>
-&lt;h3 id="rofi-pass">&lt;span class="section-num">1.1&lt;/span> rofi-pass&lt;/h3>
+&lt;h3 id="linux">&lt;span class="section-num">1.1&lt;/span> Linux&lt;/h3>
+&lt;h4 id="rofi-pass">&lt;span class="section-num">1.1.1&lt;/span> rofi-pass&lt;/h4>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/04/03/rofi-pass/">rofi-pass&lt;/a>&lt;/li>
 &lt;li>Интеграция &lt;em>pass&lt;/em> с &lt;em>rofi&lt;/em> (см. &lt;a href="https://yamadharma.github.io/ru/post/2021/11/19/launcher_rofi/">Запуск приложений. Rofi&lt;/a>).&lt;/li>
 &lt;li>Работает в X11.&lt;/li>
 &lt;/ul>
-&lt;h3 id="tessen">&lt;span class="section-num">1.2&lt;/span> tessen&lt;/h3>
+&lt;h4 id="tessen">&lt;span class="section-num">1.1.2&lt;/span> tessen&lt;/h4>
 &lt;ul>
 &lt;li>Репозиторий: &lt;a href="https://github.com/ayushnix/tessen" target="_blank" rel="noopener">https://github.com/ayushnix/tessen&lt;/a>&lt;/li>
 &lt;li>Работает в Wayland.&lt;/li>
+&lt;/ul>
+&lt;h3 id="windows">&lt;span class="section-num">1.2&lt;/span> Windows&lt;/h3>
+&lt;h4 id="pass-winmenu">&lt;span class="section-num">1.2.1&lt;/span> pass-winmenu&lt;/h4>
+&lt;ul>
+&lt;li>
+&lt;p>Репозиторий: &lt;a href="https://github.com/geluk/pass-winmenu" target="_blank" rel="noopener">https://github.com/geluk/pass-winmenu&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Простой и удобный менеджер паролей для Windows.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Содержит собственную реализацию &lt;em>pass&lt;/em>.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Установка (см. &lt;a href="https://yamadharma.github.io/ru/post/2021/01/18/package-manager-windows-chocolatey/">Пакетный менеджер для Windows. Chocolatey&lt;/a>):&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install pass-winmenu
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Страница: &lt;a href="https://chocolatey.org/packages/pass-winmenu" target="_blank" rel="noopener">https://chocolatey.org/packages/pass-winmenu&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
 &lt;/ul>
 &lt;h2 id="настройка-интерфейса-с-броузером">&lt;span class="section-num">2&lt;/span> Настройка интерфейса с броузером&lt;/h2>
 &lt;ul>
@@ -1153,6 +1253,22 @@
 &lt;h3 id="pwnedpasswords-dot-sh">&lt;span class="section-num">3.2&lt;/span> pwnedpasswords.sh&lt;/h3>
 &lt;ul>
 &lt;li>&lt;a href="https://github.com/jamesridgway/pwnedpasswords.sh" target="_blank" rel="noopener">https://github.com/jamesridgway/pwnedpasswords.sh&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>Менеджеры паролей</title><link>https://yamadharma.github.io/ru/post/2021/04/29/password-managers/</link><pubDate>Thu, 29 Apr 2021 11:56:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2021/04/29/password-managers/</guid><description>&lt;p>Менеджеры паролей, которые я использовал.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#lastpass">&lt;span class="section-num">1&lt;/span> LastPass&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#keepassxc">&lt;span class="section-num">2&lt;/span> KeePassXC&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#pass">&lt;span class="section-num">3&lt;/span> pass&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="lastpass">&lt;span class="section-num">1&lt;/span> LastPass&lt;/h2>
+&lt;h2 id="keepassxc">&lt;span class="section-num">2&lt;/span> KeePassXC&lt;/h2>
+&lt;h2 id="pass">&lt;span class="section-num">3&lt;/span> pass&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/04/28/password-manager-pass/">Менеджер паролей pass&lt;/a>&lt;/li>
 &lt;/ul></description></item><item><title>Менеджер паролей pass</title><link>https://yamadharma.github.io/ru/post/2021/04/28/password-manager-pass/</link><pubDate>Wed, 28 Apr 2021 18:50:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2021/04/28/password-manager-pass/</guid><description>&lt;ul>
 &lt;li>Менеджер паролей &lt;code>pass&lt;/code> &amp;mdash; программа, сделанная в рамках идеологии Unix.&lt;/li>
 &lt;li>Также носит название стандартного менеджера паролей для Unix (&lt;em>The standard Unix password manager&lt;/em>).&lt;/li>
@@ -1169,8 +1285,14 @@
 &lt;/li>
 &lt;li>&lt;a href="#реализации">&lt;span class="section-num">3&lt;/span> Реализации&lt;/a>
 &lt;ul>
-&lt;li>&lt;a href="#утилиты-командной-строки">&lt;span class="section-num">3.1&lt;/span> Утилиты командной строки:&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#графические-интерфейсы">&lt;span class="section-num">3.2&lt;/span> Графические интерфейсы:&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#утилиты-командной-строки">&lt;span class="section-num">3.1&lt;/span> Утилиты командной строки&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#графические-интерфейсы">&lt;span class="section-num">3.2&lt;/span> Графические интерфейсы&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#qtpass">&lt;span class="section-num">3.2.1&lt;/span> qtpass&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#gopass-ui">&lt;span class="section-num">3.2.2&lt;/span> gopass-ui&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#webpass">&lt;span class="section-num">3.2.3&lt;/span> webpass&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
 &lt;li>&lt;a href="#приложения-для-android">&lt;span class="section-num">3.3&lt;/span> Приложения для Android&lt;/a>
 &lt;ul>
 &lt;li>&lt;a href="#password-store">&lt;span class="section-num">3.3.1&lt;/span> Password Store&lt;/a>&lt;/li>
@@ -1229,6 +1351,11 @@
 &lt;li>&lt;a href="#lastpass">&lt;span class="section-num">7.2.1&lt;/span> LastPass&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
+&lt;li>&lt;a href="#экспорт-паролей">&lt;span class="section-num">7.3&lt;/span> Экспорт паролей&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#pass2csv">&lt;span class="section-num">7.3.1&lt;/span> pass2csv&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>&lt;a href="#дополнительные-возможности">&lt;span class="section-num">8&lt;/span> Дополнительные возможности&lt;/a>
@@ -1276,7 +1403,7 @@
 &lt;li>Эти все записи могут быть расположены в произвольных каталогах, задающих Вашу собственную иерархию.&lt;/li>
 &lt;/ul>
 &lt;h2 id="реализации">&lt;span class="section-num">3&lt;/span> Реализации&lt;/h2>
-&lt;h3 id="утилиты-командной-строки">&lt;span class="section-num">3.1&lt;/span> Утилиты командной строки:&lt;/h3>
+&lt;h3 id="утилиты-командной-строки">&lt;span class="section-num">3.1&lt;/span> Утилиты командной строки&lt;/h3>
 &lt;ul>
 &lt;li>На данный момент существует 2 основных реализации:
 &lt;ul>
@@ -1286,10 +1413,20 @@
 &lt;/li>
 &lt;li>Дальше в тексте будет использоваться программа &lt;code>pass&lt;/code>, но всё то же самое можно сделать с помощью программы &lt;code>gopass&lt;/code>.&lt;/li>
 &lt;/ul>
-&lt;h3 id="графические-интерфейсы">&lt;span class="section-num">3.2&lt;/span> Графические интерфейсы:&lt;/h3>
+&lt;h3 id="графические-интерфейсы">&lt;span class="section-num">3.2&lt;/span> Графические интерфейсы&lt;/h3>
+&lt;h4 id="qtpass">&lt;span class="section-num">3.2.1&lt;/span> qtpass&lt;/h4>
 &lt;ul>
 &lt;li>&lt;code>qtpass&lt;/code> &amp;mdash; может работать как графический интерфейс к &lt;code>pass&lt;/code>, так и как самостоятельная программа. В настройках можно переключаться между использованием &lt;code>pass&lt;/code> и &lt;code>gnupg&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h4 id="gopass-ui">&lt;span class="section-num">3.2.2&lt;/span> gopass-ui&lt;/h4>
+&lt;ul>
 &lt;li>&lt;code>gopass-ui&lt;/code> &amp;mdash; интерфейс к &lt;code>gopass&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h4 id="webpass">&lt;span class="section-num">3.2.3&lt;/span> webpass&lt;/h4>
+&lt;ul>
+&lt;li>Репозиторий: &lt;a href="https://github.com/emersion/webpass" target="_blank" rel="noopener">https://github.com/emersion/webpass&lt;/a>&lt;/li>
+&lt;li>Веб-интерфейс к pass.&lt;/li>
+&lt;li>Написано на golang.&lt;/li>
 &lt;/ul>
 &lt;h3 id="приложения-для-android">&lt;span class="section-num">3.3&lt;/span> Приложения для Android&lt;/h3>
 &lt;h4 id="password-store">&lt;span class="section-num">3.3.1&lt;/span> Password Store&lt;/h4>
@@ -1561,6 +1698,14 @@
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;/li>
+&lt;/ul>
+&lt;h3 id="экспорт-паролей">&lt;span class="section-num">7.3&lt;/span> Экспорт паролей&lt;/h3>
+&lt;h4 id="pass2csv">&lt;span class="section-num">7.3.1&lt;/span> pass2csv&lt;/h4>
+&lt;ul>
+&lt;li>Репозиторий: &lt;a href="https://github.com/reinefjord/pass2csv" target="_blank" rel="noopener">https://github.com/reinefjord/pass2csv&lt;/a>&lt;/li>
+&lt;li>Сайт: &lt;a href="https://pypi.org/project/pass2csv/" target="_blank" rel="noopener">https://pypi.org/project/pass2csv/&lt;/a>&lt;/li>
+&lt;li>Экспортирует хранилище паролей pass в &lt;em>csv&lt;/em>.&lt;/li>
+&lt;li>Поддерживает задание шаблонов экспорта.&lt;/li>
 &lt;/ul>
 &lt;h2 id="дополнительные-возможности">&lt;span class="section-num">8&lt;/span> Дополнительные возможности&lt;/h2>
 &lt;h3 id="проверка-утечки-пароля">&lt;span class="section-num">8.1&lt;/span> Проверка утечки пароля&lt;/h3>

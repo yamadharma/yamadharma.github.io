@@ -40,7 +40,78 @@
 &lt;li>&lt;code>manual&lt;/code> : переключение должно быть разрешено вызовом &lt;code>org-appear-manual-start&lt;/code>. &lt;code>org-appear-manual-stop&lt;/code> используется для отключения переключения с этой опцией.&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;/ul></description></item><item><title>Org-mode. Поддержка LaTeX</title><link>https://yamadharma.github.io/ru/post/2022/11/27/org-mode-latex-support/</link><pubDate>Sun, 27 Nov 2022 19:14:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/11/27/org-mode-latex-support/</guid><description>&lt;details class="toc-inpage d-print-none " open>
+&lt;/ul></description></item><item><title>Org-mode. Нумерация уравнений LaTeX</title><link>https://yamadharma.github.io/ru/post/2022/11/27/org-mode-latex-equation-numbering/</link><pubDate>Sun, 27 Nov 2022 19:16:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/11/27/org-mode-latex-equation-numbering/</guid><description>&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#проблема">&lt;span class="section-num">2&lt;/span> Проблема&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#предлагаемое-решение">&lt;span class="section-num">3&lt;/span> Предлагаемое решение&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#реализация">&lt;span class="section-num">4&lt;/span> Реализация&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>Сделано на основе: &lt;a href="https://kitchingroup.cheme.cmu.edu/blog/2016/11/07/Better-equation-numbering-in-LaTeX-fragments-in-org-mode/" target="_blank" rel="noopener">https://kitchingroup.cheme.cmu.edu/blog/2016/11/07/Better-equation-numbering-in-LaTeX-fragments-in-org-mode/&lt;/a>.&lt;/li>
+&lt;/ul>
+&lt;h2 id="проблема">&lt;span class="section-num">2&lt;/span> Проблема&lt;/h2>
+&lt;ul>
+&lt;li>При использовании выключенных уравнений &lt;em>LaTeX&lt;/em> в &lt;em>org-mode&lt;/em> каждый фрагмент создаётся изолированно.&lt;/li>
+&lt;li>Каждое пронумерованное уравнение имеет номер &lt;code>(1)&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h2 id="предлагаемое-решение">&lt;span class="section-num">3&lt;/span> Предлагаемое решение&lt;/h2>
+&lt;ul>
+&lt;li>Для обеспечения правильной нумерации нужно создавать каждый фрагмента не изолированно, a учитывая контекст.&lt;/li>
+&lt;li>Выясняем, какой должна быть нумерация для каждого уравнения, а затем передаём эту информацию для генерации изображения.&lt;/li>
+&lt;/ul>
+&lt;h2 id="реализация">&lt;span class="section-num">4&lt;/span> Реализация&lt;/h2>
+&lt;ul>
+&lt;li>Предлагается добавить следующий фрагмент в конфигурационные файлы:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nb">defun&lt;/span> &lt;span class="nv">ecf/org-renumber-environment&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nv">orig-func&lt;/span> &lt;span class="kp">&amp;amp;rest&lt;/span> &lt;span class="nv">args&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nb">let&lt;/span> &lt;span class="p">((&lt;/span>&lt;span class="nv">results&lt;/span> &lt;span class="o">&amp;#39;&lt;/span>&lt;span class="p">())&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nv">counter&lt;/span> &lt;span class="mi">-1&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nf">numberp&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nb">setq&lt;/span> &lt;span class="nv">results&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nb">loop&lt;/span> &lt;span class="nv">for&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nv">begin&lt;/span> &lt;span class="o">.&lt;/span> &lt;span class="nv">env&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="nv">in&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nv">org-element-map&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nv">org-element-parse-buffer&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="ss">&amp;#39;latex-environment&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nb">lambda&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nv">env&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nf">cons&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nv">org-element-property&lt;/span> &lt;span class="nb">:begin&lt;/span> &lt;span class="nv">env&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nv">org-element-property&lt;/span> &lt;span class="nb">:value&lt;/span> &lt;span class="nv">env&lt;/span>&lt;span class="p">))))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nv">collect&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nb">cond&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">((&lt;/span>&lt;span class="nb">and&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nf">string-match&lt;/span> &lt;span class="s">&amp;#34;\\\\begin{equation}&amp;#34;&lt;/span> &lt;span class="nv">env&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nv">not&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nf">string-match&lt;/span> &lt;span class="s">&amp;#34;\\\\tag{&amp;#34;&lt;/span> &lt;span class="nv">env&lt;/span>&lt;span class="p">)))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nb">incf&lt;/span> &lt;span class="nv">counter&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nf">cons&lt;/span> &lt;span class="nv">begin&lt;/span> &lt;span class="nv">counter&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">((&lt;/span>&lt;span class="nf">string-match&lt;/span> &lt;span class="s">&amp;#34;\\\\begin{align}&amp;#34;&lt;/span> &lt;span class="nv">env&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nb">prog2&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nb">incf&lt;/span> &lt;span class="nv">counter&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nf">cons&lt;/span> &lt;span class="nv">begin&lt;/span> &lt;span class="nv">counter&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nb">with-temp-buffer&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nf">insert&lt;/span> &lt;span class="nv">env&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nf">goto-char&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nf">point-min&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">;; \\ is used for a new line. Each one leads to a number&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nb">incf&lt;/span> &lt;span class="nv">counter&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nv">count-matches&lt;/span> &lt;span class="s">&amp;#34;\\\\$&amp;#34;&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">;; unless there are nonumbers.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nf">goto-char&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nf">point-min&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nb">decf&lt;/span> &lt;span class="nv">counter&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nv">count-matches&lt;/span> &lt;span class="s">&amp;#34;\\nonumber&amp;#34;&lt;/span>&lt;span class="p">)))))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="no">t&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nf">cons&lt;/span> &lt;span class="nv">begin&lt;/span> &lt;span class="no">nil&lt;/span>&lt;span class="p">)))))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nb">when&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nb">setq&lt;/span> &lt;span class="nf">numberp&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nf">cdr&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nf">assoc&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nf">point&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="nv">results&lt;/span>&lt;span class="p">)))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nb">setf&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nf">car&lt;/span> &lt;span class="nv">args&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nf">concat&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nf">format&lt;/span> &lt;span class="s">&amp;#34;\\setcounter{equation}{%s}\n&amp;#34;&lt;/span> &lt;span class="nf">numberp&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nf">car&lt;/span> &lt;span class="nv">args&lt;/span>&lt;span class="p">)))))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nf">apply&lt;/span> &lt;span class="nv">orig-func&lt;/span> &lt;span class="nv">args&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nv">advice-add&lt;/span> &lt;span class="ss">&amp;#39;org-create-formula-image&lt;/span> &lt;span class="nb">:around&lt;/span> &lt;span class="nf">#&amp;#39;&lt;/span>&lt;span class="nv">ecf/org-renumber-environment&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul></description></item><item><title>Org-mode. Поддержка LaTeX</title><link>https://yamadharma.github.io/ru/post/2022/11/27/org-mode-latex-support/</link><pubDate>Sun, 27 Nov 2022 19:14:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/11/27/org-mode-latex-support/</guid><description>&lt;p>Org-mode. Поддержка LaTeX.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
 &lt;nav id="TableOfContents">
 &lt;ul>
@@ -1335,18 +1406,18 @@ Markdown.&lt;/li>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
 &lt;nav id="TableOfContents">
 &lt;ul>
-&lt;li>&lt;a href="#параметры-экспорта">Параметры экспорта&lt;/a>
+&lt;li>&lt;a href="#параметры-экспорта">&lt;span class="section-num">1&lt;/span> Параметры экспорта&lt;/a>
 &lt;ul>
-&lt;li>&lt;a href="#значения-параметров-экспорта">Значения параметров экспорта&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#соответствие-параметров-экспорта-для-файла-и-поддерева">Соответствие параметров экспорта для файла и поддерева&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#значения-параметров-экспорта">&lt;span class="section-num">1.1&lt;/span> Значения параметров экспорта&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#соответствие-параметров-экспорта-для-файла-и-поддерева">&lt;span class="section-num">1.2&lt;/span> Соответствие параметров экспорта для файла и поддерева&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;li>&lt;a href="#специальные-варианты-экспорта">Специальные варианты экспорта&lt;/a>
+&lt;li>&lt;a href="#специальные-варианты-экспорта">&lt;span class="section-num">2&lt;/span> Специальные варианты экспорта&lt;/a>
 &lt;ul>
-&lt;li>&lt;a href="#экспорт-фрагментов-математики">Экспорт фрагментов математики&lt;/a>
+&lt;li>&lt;a href="#экспорт-фрагментов-математики">&lt;span class="section-num">2.1&lt;/span> Экспорт фрагментов математики&lt;/a>
 &lt;ul>
-&lt;li>&lt;a href="#экспорт-в-формате-mathml">Экспорт в формате MathML&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#экспорт-в-виде-рисунка">Экспорт в виде рисунка&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#экспорт-в-формате-mathml">&lt;span class="section-num">2.1.1&lt;/span> Экспорт в формате MathML&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#экспорт-в-виде-рисунка">&lt;span class="section-num">2.1.2&lt;/span> Экспорт в виде рисунка&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
@@ -1355,9 +1426,9 @@ Markdown.&lt;/li>
 &lt;/nav>
 &lt;/details>
 &lt;p>Общие настройки экспорта из org-mode описаны в &lt;a href="https://yamadharma.github.io/ru/post/2020/12/10/org-mode-export/">Org-mode. Экспорт&lt;/a>.&lt;/p>
-&lt;h2 id="параметры-экспорта">Параметры экспорта&lt;/h2>
-&lt;h3 id="значения-параметров-экспорта">Значения параметров экспорта&lt;/h3>
-&lt;h3 id="соответствие-параметров-экспорта-для-файла-и-поддерева">Соответствие параметров экспорта для файла и поддерева&lt;/h3>
+&lt;h2 id="параметры-экспорта">&lt;span class="section-num">1&lt;/span> Параметры экспорта&lt;/h2>
+&lt;h3 id="значения-параметров-экспорта">&lt;span class="section-num">1.1&lt;/span> Значения параметров экспорта&lt;/h3>
+&lt;h3 id="соответствие-параметров-экспорта-для-файла-и-поддерева">&lt;span class="section-num">1.2&lt;/span> Соответствие параметров экспорта для файла и поддерева&lt;/h3>
 &lt;p>&lt;a id="table--Опции экспорта для файла и поддерева">&lt;/a>&lt;/p>
 &lt;table>
 &lt;thead>
@@ -1381,49 +1452,40 @@ Markdown.&lt;/li>
 &lt;/tr>
 &lt;/tbody>
 &lt;/table>
-&lt;h2 id="специальные-варианты-экспорта">Специальные варианты экспорта&lt;/h2>
-&lt;h3 id="экспорт-фрагментов-математики">Экспорт фрагментов математики&lt;/h3>
+&lt;h2 id="специальные-варианты-экспорта">&lt;span class="section-num">2&lt;/span> Специальные варианты экспорта&lt;/h2>
+&lt;h3 id="экспорт-фрагментов-математики">&lt;span class="section-num">2.1&lt;/span> Экспорт фрагментов математики&lt;/h3>
 &lt;ul>
 &lt;li>Применяется для экспорта в формат &lt;code>odt&lt;/code>.&lt;/li>
 &lt;li>Можно экспортировать в формат MathML или в виде рисунка&lt;/li>
 &lt;/ul>
-&lt;h4 id="экспорт-в-формате-mathml">Экспорт в формате MathML&lt;/h4>
+&lt;h4 id="экспорт-в-формате-mathml">&lt;span class="section-num">2.1.1&lt;/span> Экспорт в формате MathML&lt;/h4>
 &lt;ul>
-&lt;li>
-&lt;p>В файле задаётся опция:&lt;/p>
+&lt;li>В файле задаётся опция:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-org" data-lang="org">&lt;span class="line">&lt;span class="cl">&lt;span class="cs">#+OPTIONS&lt;/span>&lt;span class="c">: tex:t&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
-&lt;li>
-&lt;p>Можно установить переменную emacs &lt;code>org-export-with-latex&lt;/code>:&lt;/p>
+&lt;li>Можно установить переменную emacs &lt;code>org-export-with-latex&lt;/code>:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-elisp" data-lang="elisp">&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nb">setq&lt;/span> &lt;span class="nv">org-export-with-latex&lt;/span> &lt;span class="no">t&lt;/span>&lt;span class="p">)&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
-&lt;li>
-&lt;p>Устанавливается программа конвертации. Предлагается установить LaTeXML &lt;a href="https://dlmf.nist.gov/LaTeXML/" target="_blank" rel="noopener">https://dlmf.nist.gov/LaTeXML/&lt;/a>.&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>В Gentoo &lt;em>ebuild&lt;/em> находится в оверлее &lt;em>flammie&lt;/em>.&lt;/p>
+&lt;li>Устанавливается программа конвертации. Предлагается установить LaTeXML &lt;a href="https://dlmf.nist.gov/LaTeXML/" target="_blank" rel="noopener">https://dlmf.nist.gov/LaTeXML/&lt;/a>.&lt;/li>
+&lt;li>В Gentoo &lt;em>ebuild&lt;/em> находится в оверлее &lt;em>flammie&lt;/em>.
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge dev-tex/LaTeXML
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
-&lt;li>
-&lt;p>В конфигурационном файле задаётся переменная &lt;code>org-latex-to-mathml-convert-command&lt;/code>:&lt;/p>
+&lt;li>В конфигурационном файле задаётся переменная &lt;code>org-latex-to-mathml-convert-command&lt;/code>:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-elisp" data-lang="elisp">&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nb">setq&lt;/span> &lt;span class="nv">org-latex-to-mathml-convert-command&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s">&amp;#34;latexmlmath \&amp;#34;%i\&amp;#34; --presentationmathml=%o&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
-&lt;h4 id="экспорт-в-виде-рисунка">Экспорт в виде рисунка&lt;/h4>
+&lt;h4 id="экспорт-в-виде-рисунка">&lt;span class="section-num">2.1.2&lt;/span> Экспорт в виде рисунка&lt;/h4>
 &lt;ul>
 &lt;li>В файле устанавливаются опции:
 &lt;ul>
-&lt;li>
-&lt;p>экспорт в &lt;code>png&lt;/code>:&lt;/p>
+&lt;li>экспорт в &lt;code>png&lt;/code>:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-org" data-lang="org">&lt;span class="line">&lt;span class="cl">&lt;span class="cs">#+OPTIONS&lt;/span>&lt;span class="c">: tex:dvipng&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
-&lt;li>
-&lt;p>экспорт в &lt;code>svg&lt;/code>:&lt;/p>
+&lt;li>экспорт в &lt;code>svg&lt;/code>:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-org" data-lang="org">&lt;span class="line">&lt;span class="cl">&lt;span class="cs">#+OPTIONS&lt;/span>&lt;span class="c">: tex:dvisvgm&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
-&lt;li>
-&lt;p>экспорт в &lt;code>png&lt;/code>:&lt;/p>
+&lt;li>экспорт в &lt;code>png&lt;/code>:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-org" data-lang="org">&lt;span class="line">&lt;span class="cl">&lt;span class="cs">#+OPTIONS&lt;/span>&lt;span class="c">: tex:imagemagick&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>

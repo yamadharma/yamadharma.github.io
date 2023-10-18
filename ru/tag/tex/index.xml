@@ -1,4 +1,90 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>tex | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/tex/</link><atom:link href="https://yamadharma.github.io/ru/tag/tex/index.xml" rel="self" type="application/rss+xml"/><description>tex</description><generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2023 Dmitry S. Kulyabov</copyright><lastBuildDate>Wed, 04 Oct 2023 12:44:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url><title>tex</title><link>https://yamadharma.github.io/ru/tag/tex/</link></image><item><title>Tectonic Typesetting System как реализация TeX</title><link>https://yamadharma.github.io/ru/post/2023/10/04/tectonic-tex-implementation/</link><pubDate>Wed, 04 Oct 2023 12:44:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/10/04/tectonic-tex-implementation/</guid><description>&lt;p>Tectonic Typesetting System как реализация TeX.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>tex | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/tex/</link><atom:link href="https://yamadharma.github.io/ru/tag/tex/index.xml" rel="self" type="application/rss+xml"/><description>tex</description><generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2023 Dmitry S. Kulyabov</copyright><lastBuildDate>Wed, 18 Oct 2023 16:16:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url><title>tex</title><link>https://yamadharma.github.io/ru/tag/tex/</link></image><item><title>BibLaTeX. Отображение кода EDN</title><link>https://yamadharma.github.io/ru/post/2023/10/18/biblatex-edn-implementation/</link><pubDate>Wed, 18 Oct 2023 16:16:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/10/18/biblatex-edn-implementation/</guid><description>&lt;p>BibLaTeX. Отображение кода EDN.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#реализация">&lt;span class="section-num">2&lt;/span> Реализация&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#расширение-модели-данных">&lt;span class="section-num">2.1&lt;/span> Расширение модели данных&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#задание-нового-поля">&lt;span class="section-num">3&lt;/span> Задание нового поля&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#изменение-макросов-для-отображения">&lt;span class="section-num">4&lt;/span> Изменение макросов для отображения&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>Реализуется отображение кода eLibrary EDN (см. &lt;a href="https://yamadharma.github.io/ru/post/2023/10/18/edn-elibrary-ru-identifier/">EDN - идентификатор eLibrary.ru&lt;/a>).&lt;/li>
+&lt;/ul>
+&lt;h2 id="реализация">&lt;span class="section-num">2&lt;/span> Реализация&lt;/h2>
+&lt;h3 id="расширение-модели-данных">&lt;span class="section-num">2.1&lt;/span> Расширение модели данных&lt;/h3>
+&lt;ul>
+&lt;li>Создаётся файл описания модели данных &lt;code>edn.dbx&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-latex" data-lang="latex">&lt;span class="line">&lt;span class="cl">&lt;span class="k">\ProvidesFile&lt;/span>&lt;span class="nb">{&lt;/span>kermit.dbx&lt;span class="nb">}&lt;/span>[2023/10/18 add EDM field to biblatex]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">\DeclareDatamodelFields&lt;/span>&lt;span class="na">[type=field,datatype=verbatim]&lt;/span>&lt;span class="nb">{&lt;/span>edn&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">\DeclareDatamodelEntryfields&lt;/span>&lt;span class="nb">{&lt;/span>edn&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">\endinput&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Модель данных подключается следующим образом:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-latex" data-lang="latex">&lt;span class="line">&lt;span class="cl">&lt;span class="k">\usepackage&lt;/span>&lt;span class="na">[style=gost-numeric,datamodel=edn]&lt;/span>&lt;span class="nb">{&lt;/span>biblatex&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="задание-нового-поля">&lt;span class="section-num">3&lt;/span> Задание нового поля&lt;/h2>
+&lt;ul>
+&lt;li>Задаётся новая запись для поля:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-latex" data-lang="latex">&lt;span class="line">&lt;span class="cl">&lt;span class="k">\newtoggle&lt;/span>&lt;span class="nb">{&lt;/span>bbx:edn&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">\newtoggle&lt;/span>&lt;span class="nb">{&lt;/span>cbx:edn&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">\DeclareBibliographyOption&lt;/span>&lt;span class="nb">{&lt;/span>edn&lt;span class="nb">}&lt;/span>[true]&lt;span class="nb">{&lt;/span>&lt;span class="c">%
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span> &lt;span class="k">\global\settoggle&lt;/span>&lt;span class="nb">{&lt;/span>bbx:edn&lt;span class="nb">}{&lt;/span>#1&lt;span class="nb">}&lt;/span>&lt;span class="c">%
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span> &lt;span class="k">\global\settoggle&lt;/span>&lt;span class="nb">{&lt;/span>cbx:edn&lt;span class="nb">}{&lt;/span>#1&lt;span class="nb">}}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">\ExecuteBibliographyOptions&lt;/span>&lt;span class="nb">{&lt;/span>edn&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">\DeclareFieldFormat&lt;/span>&lt;span class="nb">{&lt;/span>edn&lt;span class="nb">}{&lt;/span>&lt;span class="c">%
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span> &lt;span class="k">\mkbibacro&lt;/span>&lt;span class="nb">{&lt;/span>EDN&lt;span class="nb">}&lt;/span>&lt;span class="k">\addcolon\space&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\ifhyperref&lt;/span>&lt;span class="nb">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\lowercase&lt;/span>&lt;span class="nb">{&lt;/span>&lt;span class="k">\href&lt;/span>&lt;span class="nb">{&lt;/span>https://elibrary.ru/#1&lt;span class="nb">}}{&lt;/span>&lt;span class="k">\nolinkurl&lt;/span>&lt;span class="nb">{&lt;/span>#1&lt;span class="nb">}}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">}{&lt;/span>&lt;span class="k">\nolinkurl&lt;/span>&lt;span class="nb">{&lt;/span>#1&lt;span class="nb">}}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="изменение-макросов-для-отображения">&lt;span class="section-num">4&lt;/span> Изменение макросов для отображения&lt;/h2>
+&lt;ul>
+&lt;li>Подключаем пакет для исправления макросов:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-latex" data-lang="latex">&lt;span class="line">&lt;span class="cl">&lt;span class="k">\usepackage&lt;/span>&lt;span class="nb">{&lt;/span>xpatch&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Исправляем стандартный макрос:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-latex" data-lang="latex">&lt;span class="line">&lt;span class="cl">&lt;span class="k">\xapptobibmacro&lt;/span>&lt;span class="nb">{&lt;/span>doi+eprint+url&lt;span class="nb">}{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\ifcitation&lt;/span>&lt;span class="nb">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\iftoggle&lt;/span>&lt;span class="nb">{&lt;/span>cbx:edn&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">{&lt;/span>&lt;span class="k">\printfield&lt;/span>&lt;span class="nb">{&lt;/span>edn&lt;span class="nb">}}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">{}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">}{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\iftoggle&lt;/span>&lt;span class="nb">{&lt;/span>bbx:edn&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">{&lt;/span>&lt;span class="k">\printfield&lt;/span>&lt;span class="nb">{&lt;/span>edn&lt;span class="nb">}}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">{}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">}&lt;/span>&lt;span class="c">%
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span>&lt;span class="nb">}{}{}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>В стиле &lt;code>biblatex-gost&lt;/code> используется другой макрос. Исправляем и его:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-latex" data-lang="latex">&lt;span class="line">&lt;span class="cl">&lt;span class="k">\xapptobibmacro&lt;/span>&lt;span class="nb">{&lt;/span>doi+eprint+url+note&lt;span class="nb">}{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\newunit\newblock&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\ifcitation&lt;/span>&lt;span class="nb">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\iftoggle&lt;/span>&lt;span class="nb">{&lt;/span>cbx:edn&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">{&lt;/span>&lt;span class="k">\printfield&lt;/span>&lt;span class="nb">{&lt;/span>edn&lt;span class="nb">}}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">{}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">}{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\iftoggle&lt;/span>&lt;span class="nb">{&lt;/span>bbx:edn&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">{&lt;/span>&lt;span class="k">\printfield&lt;/span>&lt;span class="nb">{&lt;/span>edn&lt;span class="nb">}}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">{}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">}&lt;/span>&lt;span class="c">%
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span>&lt;span class="nb">}{}{}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul></description></item><item><title>Tectonic Typesetting System как реализация TeX</title><link>https://yamadharma.github.io/ru/post/2023/10/04/tectonic-tex-implementation/</link><pubDate>Wed, 04 Oct 2023 12:44:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/10/04/tectonic-tex-implementation/</guid><description>&lt;p>Tectonic Typesetting System как реализация TeX.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
 &lt;nav id="TableOfContents">
@@ -1646,7 +1732,8 @@
 &lt;li>&lt;a href="#реализации">&lt;span class="section-num">2&lt;/span> Реализации&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#поля-базы-данных">&lt;span class="section-num">3&lt;/span> Поля базы данных&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#программы">&lt;span class="section-num">4&lt;/span> Программы&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#приёмы-работы">&lt;span class="section-num">5&lt;/span> Приёмы работы&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#расширение-функционала">&lt;span class="section-num">5&lt;/span> Расширение функционала&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#приёмы-работы">&lt;span class="section-num">6&lt;/span> Приёмы работы&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/nav>
 &lt;/details>
@@ -1666,10 +1753,14 @@
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/10/19/emacs-bibliography/">Emacs. Работа с библиографией&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;h2 id="приёмы-работы">&lt;span class="section-num">5&lt;/span> Приёмы работы&lt;/h2>
+&lt;h2 id="расширение-функционала">&lt;span class="section-num">5&lt;/span> Расширение функционала&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/11/24/biblatex-eprints/">Biblatex. Препринты&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/10/18/biblatex-edn-implementation/">BibLaTeX. Отображение кода EDN&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="приёмы-работы">&lt;span class="section-num">6&lt;/span> Приёмы работы&lt;/h2>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/11/20/bib-file-cited/">Создание bib-файла с процитированными ссылками&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/11/24/biblatex-eprints/">Biblatex. Препринты&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/12/13/bibtex-tydy/">Bibtex. Пакет bibtex-tydy&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/07/11/convert-biblatex-bibitem/">Преобразование biblatex в bibitem&lt;/a>&lt;/li>
 &lt;/ul></description></item><item><title>Шаблон конференции для CEUR-WS</title><link>https://yamadharma.github.io/ru/post/2021/09/18/conference-template-ceur-ws/</link><pubDate>Sat, 18 Sep 2021 20:06:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2021/09/18/conference-template-ceur-ws/</guid><description>&lt;p>Подготовка материалов конференции для публикации в репозитории конференций CEUR-WS (см. &lt;a href="https://yamadharma.github.io/ru/post/2021/09/18/ceur-ws-conference-repository/">Репозиторий конференций CEUR-WS&lt;/a>).&lt;/p>

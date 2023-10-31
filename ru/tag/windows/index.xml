@@ -1,4 +1,148 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>windows | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/windows/</link><atom:link href="https://yamadharma.github.io/ru/tag/windows/index.xml" rel="self" type="application/rss+xml"/><description>windows</description><generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2023 Dmitry S. Kulyabov</copyright><lastBuildDate>Sun, 01 Oct 2023 18:53:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url><title>windows</title><link>https://yamadharma.github.io/ru/tag/windows/</link></image><item><title>Пакетный менеджер для Windows. WinGet</title><link>https://yamadharma.github.io/ru/post/2023/10/01/package-manager-windows-winget/</link><pubDate>Sun, 01 Oct 2023 18:53:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/10/01/package-manager-windows-winget/</guid><description>&lt;p>Пакетный менеджер для Windows. WinGet.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>windows | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/windows/</link><atom:link href="https://yamadharma.github.io/ru/tag/windows/index.xml" rel="self" type="application/rss+xml"/><description>windows</description><generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2023 Dmitry S. Kulyabov</copyright><lastBuildDate>Mon, 23 Oct 2023 15:51:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url><title>windows</title><link>https://yamadharma.github.io/ru/tag/windows/</link></image><item><title>Установка Windows с жёсткого диска</title><link>https://yamadharma.github.io/ru/post/2023/10/23/install-windows-hard-drive/</link><pubDate>Mon, 23 Oct 2023 15:51:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/10/23/install-windows-hard-drive/</guid><description>&lt;p>Установка Windows с жёсткого диска.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#варианты-установки">&lt;span class="section-num">1&lt;/span> Варианты установки&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#разделы-диска">&lt;span class="section-num">2&lt;/span> Разделы диска&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#подготовка-файлов">&lt;span class="section-num">3&lt;/span> Подготовка файлов&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#использовании-одного-раздела-fat32-и-одного-раздела-ntfs">&lt;span class="section-num">3.1&lt;/span> Использовании одного раздела FAT32 и одного раздела NTFS&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#использование-windows">&lt;span class="section-num">3.1.1&lt;/span> Использование Windows&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#использование-linux">&lt;span class="section-num">3.1.2&lt;/span> Использование Linux&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="варианты-установки">&lt;span class="section-num">1&lt;/span> Варианты установки&lt;/h2>
+&lt;ul>
+&lt;li>Можно рассмотреть 2 варианта установки:
+&lt;ul>
+&lt;li>UEFI + GPT + файловая система FAT32.&lt;/li>
+&lt;li>BIOS + MBR + NTFS.
+&lt;ul>
+&lt;li>Максимальный размер раздела составляет 2 ТБ.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Рассматриваем вариант с UEFI.&lt;/li>
+&lt;/ul>
+&lt;h2 id="разделы-диска">&lt;span class="section-num">2&lt;/span> Разделы диска&lt;/h2>
+&lt;div class="table-caption">
+&lt;span class="table-number">&amp;#1058;&amp;#1072;&amp;#1073;&amp;#1083;&amp;#1080;&amp;#1094;&amp;#1072; 1:&lt;/span>
+Рекомендуемая структура разделов для Windows
+&lt;/div>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Раздел&lt;/th>
+&lt;th>Размер&lt;/th>
+&lt;th>Файловая система&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Системный раздел EFI (ESP)&lt;/td>
+&lt;td>512 МБ&lt;/td>
+&lt;td>FAT32&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Зарезервированный раздел Microsoft (MSR)&lt;/td>
+&lt;td>128 МБ&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Windows (C:)&lt;/td>
+&lt;td>&amp;gt;60 ГБ&lt;/td>
+&lt;td>NTFS&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Образ восстановления (необязательно)&lt;/td>
+&lt;td>10 ГБ&lt;/td>
+&lt;td>NTFS&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;ul>
+&lt;li>В зависимости от размера файла &lt;code>sources\install.wim&lt;/code> может потребоваться один раздел FAT32 или один раздел FAT32 и раздел NTFS.&lt;/li>
+&lt;li>Если размер &lt;code>sources\install.wim&lt;/code> превышает 4 ГБ, необходимо использовать раздел FAT32 + NTFS, поскольку файловая система FAT32 не поддерживает файлы размером более 4 ГБ.&lt;/li>
+&lt;/ul>
+&lt;div class="table-caption">
+&lt;span class="table-number">&amp;#1058;&amp;#1072;&amp;#1073;&amp;#1083;&amp;#1080;&amp;#1094;&amp;#1072; 2:&lt;/span>
+Структура разделов для размещения файлов установщика Windows
+&lt;/div>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Раздел&lt;/th>
+&lt;th>Размер&lt;/th>
+&lt;th>Файловая система&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Установщик Windows FAT32&lt;/td>
+&lt;td>8 ГБ&lt;/td>
+&lt;td>FAT32&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Установщик Windows NTFS&lt;/td>
+&lt;td>10 ГБ&lt;/td>
+&lt;td>NTFS&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;ul>
+&lt;li>Установочный раздел нужно разместить после раздела Windows и образа восстановления.&lt;/li>
+&lt;li>Установочный раздел также можно создать на другом жестком диске или внешнем USB-накопителе.&lt;/li>
+&lt;/ul>
+&lt;h2 id="подготовка-файлов">&lt;span class="section-num">3&lt;/span> Подготовка файлов&lt;/h2>
+&lt;ul>
+&lt;li>Скопируйте файлы из ISO-образа установщика Windows на жёсткий диск.&lt;/li>
+&lt;li>Если вы используете один раздел FAT32, просто скопируйте все файлы ISO в этот раздел.&lt;/li>
+&lt;/ul>
+&lt;h3 id="использовании-одного-раздела-fat32-и-одного-раздела-ntfs">&lt;span class="section-num">3.1&lt;/span> Использовании одного раздела FAT32 и одного раздела NTFS&lt;/h3>
+&lt;ul>
+&lt;li>Раздел FAT32 используется для загрузки программы установки, затем программа установки попытается найти &lt;code>install.wim&lt;/code> и другие файлы в разделе NTFS.&lt;/li>
+&lt;li>Важно, чтобы в каталоге &lt;code>sources&lt;/code> раздела FAT32 был только файл &lt;code>boot.wim&lt;/code> и не было других файлов.&lt;/li>
+&lt;/ul>
+&lt;h4 id="использование-windows">&lt;span class="section-num">3.1.1&lt;/span> Использование Windows&lt;/h4>
+&lt;ul>
+&lt;li>Предположим, что
+&lt;ul>
+&lt;li>диск ISO установщика Windows смонтирован в &lt;code>X:&lt;/code>;&lt;/li>
+&lt;li>раздел FAT32 монтируется в &lt;code>E:&lt;/code>;&lt;/li>
+&lt;li>раздел NTFS монтируется в &lt;code>F:&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Скопируйте файлы:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">robocopy /s /xd:Sources X: E:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">md E:&lt;span class="se">\S&lt;/span>ources
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">copy X:&lt;span class="se">\S&lt;/span>ources&lt;span class="se">\b&lt;/span>oot.wim E:&lt;span class="se">\S&lt;/span>ources&lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>robocopy /s X: F:
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h4 id="использование-linux">&lt;span class="section-num">3.1.2&lt;/span> Использование Linux&lt;/h4>
+&lt;ul>
+&lt;li>Предположим, что
+&lt;ul>
+&lt;li>диск ISO установщика Win 10 смонтирован в &lt;code>/media/cdrom/&lt;/code>;&lt;/li>
+&lt;li>раздел FAT32 монтируется в &lt;code>/mnt/fat/&lt;/code>;&lt;/li>
+&lt;li>раздел NTFS монтируется в &lt;code>/mnt/ntfs/&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Скопируйте файлы:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">rsync -ai --exclude&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;sources/&amp;#39;&lt;/span> /media/cdrom/ /mnt/fat/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mkdir /mnt/fat/sources
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">cp /media/cdrom/sources/boot.wim /mnt/fat/sources/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">rsync -ai /media/cdrom/ /mnt/ntfs/
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul></description></item><item><title>Пакетный менеджер для Windows. WinGet</title><link>https://yamadharma.github.io/ru/post/2023/10/01/package-manager-windows-winget/</link><pubDate>Sun, 01 Oct 2023 18:53:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/10/01/package-manager-windows-winget/</guid><description>&lt;p>Пакетный менеджер для Windows. WinGet.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
 &lt;nav id="TableOfContents">
@@ -1034,25 +1178,30 @@
 &lt;li>&lt;a href="#libreoffice">&lt;span class="section-num">7.1&lt;/span> LibreOffice&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;li>&lt;a href="#средства-разработки">&lt;span class="section-num">8&lt;/span> Средства разработки&lt;/a>
+&lt;li>&lt;a href="#работа-с-pdf">&lt;span class="section-num">8&lt;/span> Работа с pdf&lt;/a>
 &lt;ul>
-&lt;li>&lt;a href="#средство-управления-версиями-git">&lt;span class="section-num">8.1&lt;/span> Средство управления версиями git&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#xournal-plus-plus">&lt;span class="section-num">8.1&lt;/span> Xournal++&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;li>&lt;a href="#научное-программное-обеспечение">&lt;span class="section-num">9&lt;/span> Научное программное обеспечение&lt;/a>
+&lt;li>&lt;a href="#средства-разработки">&lt;span class="section-num">9&lt;/span> Средства разработки&lt;/a>
 &lt;ul>
-&lt;li>&lt;a href="#общие-средства-для-отчётов-по-лабораторным-работам">&lt;span class="section-num">9.1&lt;/span> Общие средства для отчётов по лабораторным работам&lt;/a>
-&lt;ul>
-&lt;li>&lt;a href="#работа-с-языком-разметки-markdown">&lt;span class="section-num">9.1.1&lt;/span> Работа с языком разметки Markdown&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#работа-с-языком-tex">&lt;span class="section-num">9.1.2&lt;/span> Работа с языком TeX&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#средство-управления-версиями-git">&lt;span class="section-num">9.1&lt;/span> Средство управления версиями git&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;li>&lt;a href="#средства-моделирования">&lt;span class="section-num">9.2&lt;/span> Средства моделирования&lt;/a>
+&lt;li>&lt;a href="#научное-программное-обеспечение">&lt;span class="section-num">10&lt;/span> Научное программное обеспечение&lt;/a>
 &lt;ul>
-&lt;li>&lt;a href="#scilab">&lt;span class="section-num">9.2.1&lt;/span> Scilab&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#octave">&lt;span class="section-num">9.2.2&lt;/span> Octave&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#openmodelica">&lt;span class="section-num">9.2.3&lt;/span> OpenModelica&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#cpn-tools">&lt;span class="section-num">9.2.4&lt;/span> CPN Tools&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#общие-средства-для-отчётов-по-лабораторным-работам">&lt;span class="section-num">10.1&lt;/span> Общие средства для отчётов по лабораторным работам&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#работа-с-языком-разметки-markdown">&lt;span class="section-num">10.1.1&lt;/span> Работа с языком разметки Markdown&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#работа-с-языком-tex">&lt;span class="section-num">10.1.2&lt;/span> Работа с языком TeX&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#средства-моделирования">&lt;span class="section-num">10.2&lt;/span> Средства моделирования&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#scilab">&lt;span class="section-num">10.2.1&lt;/span> Scilab&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#octave">&lt;span class="section-num">10.2.2&lt;/span> Octave&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#openmodelica">&lt;span class="section-num">10.2.3&lt;/span> OpenModelica&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#cpn-tools">&lt;span class="section-num">10.2.4&lt;/span> CPN Tools&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
@@ -1148,16 +1297,25 @@
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install libreoffice-fresh
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
-&lt;h2 id="средства-разработки">&lt;span class="section-num">8&lt;/span> Средства разработки&lt;/h2>
-&lt;h3 id="средство-управления-версиями-git">&lt;span class="section-num">8.1&lt;/span> Средство управления версиями git&lt;/h3>
+&lt;h2 id="работа-с-pdf">&lt;span class="section-num">8&lt;/span> Работа с pdf&lt;/h2>
+&lt;h3 id="xournal-plus-plus">&lt;span class="section-num">8.1&lt;/span> Xournal++&lt;/h3>
+&lt;ul>
+&lt;li>Сайт: &lt;a href="https://xournalpp.github.io/" target="_blank" rel="noopener">https://xournalpp.github.io/&lt;/a>&lt;/li>
+&lt;li>Создание заметок в файлах pdf.&lt;/li>
+&lt;li>Установить с Chocolatey:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install xournalplusplus
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="средства-разработки">&lt;span class="section-num">9&lt;/span> Средства разработки&lt;/h2>
+&lt;h3 id="средство-управления-версиями-git">&lt;span class="section-num">9.1&lt;/span> Средство управления версиями git&lt;/h3>
 &lt;ul>
 &lt;li>Установим средство управления версиями git (см. &lt;a href="https://yamadharma.github.io/ru/post/2020/12/07/git-cvs/">Система контроля версий git&lt;/a>) через пакетный менеджер:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install git
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
-&lt;h2 id="научное-программное-обеспечение">&lt;span class="section-num">9&lt;/span> Научное программное обеспечение&lt;/h2>
-&lt;h3 id="общие-средства-для-отчётов-по-лабораторным-работам">&lt;span class="section-num">9.1&lt;/span> Общие средства для отчётов по лабораторным работам&lt;/h3>
-&lt;h4 id="работа-с-языком-разметки-markdown">&lt;span class="section-num">9.1.1&lt;/span> Работа с языком разметки Markdown&lt;/h4>
+&lt;h2 id="научное-программное-обеспечение">&lt;span class="section-num">10&lt;/span> Научное программное обеспечение&lt;/h2>
+&lt;h3 id="общие-средства-для-отчётов-по-лабораторным-работам">&lt;span class="section-num">10.1&lt;/span> Общие средства для отчётов по лабораторным работам&lt;/h3>
+&lt;h4 id="работа-с-языком-разметки-markdown">&lt;span class="section-num">10.1.1&lt;/span> Работа с языком разметки Markdown&lt;/h4>
 &lt;ul>
 &lt;li>Средство &lt;code>pandoc&lt;/code> для работы с языком разметки Markdown:
 &lt;ul>
@@ -1187,14 +1345,14 @@
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
-&lt;h4 id="работа-с-языком-tex">&lt;span class="section-num">9.1.2&lt;/span> Работа с языком TeX&lt;/h4>
+&lt;h4 id="работа-с-языком-tex">&lt;span class="section-num">10.1.2&lt;/span> Работа с языком TeX&lt;/h4>
 &lt;ul>
 &lt;li>Для генерации формата &lt;code>pdf&lt;/code> необходимо установить TeX. Будем устанавливать TeX Live:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install texlive -y
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
-&lt;h3 id="средства-моделирования">&lt;span class="section-num">9.2&lt;/span> Средства моделирования&lt;/h3>
-&lt;h4 id="scilab">&lt;span class="section-num">9.2.1&lt;/span> Scilab&lt;/h4>
+&lt;h3 id="средства-моделирования">&lt;span class="section-num">10.2&lt;/span> Средства моделирования&lt;/h3>
+&lt;h4 id="scilab">&lt;span class="section-num">10.2.1&lt;/span> Scilab&lt;/h4>
 &lt;ul>
 &lt;li>Scilab &amp;mdash; открытая реализация языка MATLAB.&lt;/li>
 &lt;li>Сайт: &lt;a href="https://www.scilab.org/" target="_blank" rel="noopener">https://www.scilab.org/&lt;/a>&lt;/li>
@@ -1203,7 +1361,7 @@
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install scilab
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
-&lt;h4 id="octave">&lt;span class="section-num">9.2.2&lt;/span> Octave&lt;/h4>
+&lt;h4 id="octave">&lt;span class="section-num">10.2.2&lt;/span> Octave&lt;/h4>
 &lt;ul>
 &lt;li>
 &lt;p>Octave &amp;mdash; открытая реализация языка MATLAB.&lt;/p>
@@ -1225,7 +1383,7 @@
 &lt;/div>
 &lt;/li>
 &lt;/ul>
-&lt;h4 id="openmodelica">&lt;span class="section-num">9.2.3&lt;/span> OpenModelica&lt;/h4>
+&lt;h4 id="openmodelica">&lt;span class="section-num">10.2.3&lt;/span> OpenModelica&lt;/h4>
 &lt;ul>
 &lt;li>Открытая реализация языка &lt;em>Modelica&lt;/em>.&lt;/li>
 &lt;li>&lt;a href="https://www.openmodelica.org/" target="_blank" rel="noopener">https://www.openmodelica.org/&lt;/a>&lt;/li>
@@ -1233,7 +1391,7 @@
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install openmodelica -y
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
-&lt;h4 id="cpn-tools">&lt;span class="section-num">9.2.4&lt;/span> CPN Tools&lt;/h4>
+&lt;h4 id="cpn-tools">&lt;span class="section-num">10.2.4&lt;/span> CPN Tools&lt;/h4>
 &lt;ul>
 &lt;li>Работа с раскрашенными сетями Петри.&lt;/li>
 &lt;li>&lt;a href="https://cpntools.org/" target="_blank" rel="noopener">https://cpntools.org/&lt;/a>&lt;/li>
@@ -1256,6 +1414,7 @@
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/06/08/windows-kms-keys/">Windows. Ключи KMS&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/06/08/windows-unattended-simple-autounattend/">Windows. Автоустановка. Простой файл ответов&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/10/23/install-windows-hard-drive/">Установка Windows с жёсткого диска&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;h2 id="управление-программным-обеспечением">&lt;span class="section-num">2&lt;/span> Управление программным обеспечением&lt;/h2>
 &lt;ul>

@@ -644,7 +644,12 @@
 &lt;li>&lt;a href="#настройка">&lt;span class="section-num">2&lt;/span> Настройка&lt;/a>
 &lt;ul>
 &lt;li>&lt;a href="#общие-настройки">&lt;span class="section-num">2.1&lt;/span> Общие настройки&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#защита-ssh">&lt;span class="section-num">2.2&lt;/span> Защита ssh&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#время-блокирования">&lt;span class="section-num">2.2&lt;/span> Время блокирования&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#игнорирование-избранных-ip-адресов">&lt;span class="section-num">2.2.1&lt;/span> Игнорирование избранных ip-адресов&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#защита-ssh">&lt;span class="section-num">2.3&lt;/span> Защита ssh&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
@@ -658,13 +663,28 @@
 &lt;/ul>
 &lt;h2 id="настройка">&lt;span class="section-num">2&lt;/span> Настройка&lt;/h2>
 &lt;h3 id="общие-настройки">&lt;span class="section-num">2.1&lt;/span> Общие настройки&lt;/h3>
+&lt;h3 id="время-блокирования">&lt;span class="section-num">2.2&lt;/span> Время блокирования&lt;/h3>
 &lt;ul>
 &lt;li>В файле &lt;code>/etc/fail2ban/jail.d/50-default.conf&lt;/code> задайте время блокирования хостов:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[DEFAULT]
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bantime = 360000
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
-&lt;h3 id="защита-ssh">&lt;span class="section-num">2.2&lt;/span> Защита ssh&lt;/h3>
+&lt;h4 id="игнорирование-избранных-ip-адресов">&lt;span class="section-num">2.2.1&lt;/span> Игнорирование избранных ip-адресов&lt;/h4>
+&lt;ul>
+&lt;li>Добавим игнорирование избранных ip-адресов в файле &lt;code>/etc/fail2ban/jail.d/50-default.conf&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl"># &amp;#34;ignoreself&amp;#34; specifies whether the local resp. own IP addresses should be ignored
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># (default is true). Fail2ban will not ban a host which matches such addresses.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ignoreself = true
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># &amp;#34;ignoreip&amp;#34; can be a list of IP addresses, CIDR masks or DNS hosts. Fail2ban
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># will not ban a host which matches an address in this list. Several addresses
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># can be defined using space (and/or comma) separator.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ignoreip = 127.0.0.1/8 ::1 10.128.0.0/9
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Диапазон &lt;code>10.128.0.0/9&lt;/code> добавлен для примера.&lt;/li>
+&lt;/ul>
+&lt;h3 id="защита-ssh">&lt;span class="section-num">2.3&lt;/span> Защита ssh&lt;/h3>
 &lt;ul>
 &lt;li>В файле &lt;code>/etc/fail2ban/jail.d/80-ssh.conf&lt;/code> активируйте защиту ssh:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[sshd]

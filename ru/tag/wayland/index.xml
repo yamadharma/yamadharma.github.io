@@ -1,4 +1,64 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>wayland | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/wayland/</link><atom:link href="https://yamadharma.github.io/ru/tag/wayland/index.xml" rel="self" type="application/rss+xml"/><description>wayland</description><generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2023 Dmitry S. Kulyabov</copyright><lastBuildDate>Wed, 11 Oct 2023 14:23:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url><title>wayland</title><link>https://yamadharma.github.io/ru/tag/wayland/</link></image><item><title>Wayland. Аналоги приложений</title><link>https://yamadharma.github.io/ru/post/2023/10/11/wayland-applications/</link><pubDate>Wed, 11 Oct 2023 14:23:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/10/11/wayland-applications/</guid><description>&lt;p>Аналоги приложений для Wayland.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>wayland | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/wayland/</link><atom:link href="https://yamadharma.github.io/ru/tag/wayland/index.xml" rel="self" type="application/rss+xml"/><description>wayland</description><generator>Wowchemy (https://wowchemy.com)</generator><language>ru-ru</language><copyright>© 2023 Dmitry S. Kulyabov</copyright><lastBuildDate>Sun, 05 Nov 2023 15:33:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url><title>wayland</title><link>https://yamadharma.github.io/ru/tag/wayland/</link></image><item><title>Sway. Скриншоты</title><link>https://yamadharma.github.io/ru/post/2023/11/05/sway-screenshots/</link><pubDate>Sun, 05 Nov 2023 15:33:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/11/05/sway-screenshots/</guid><description>&lt;p>Создание снимков экрана в Sway и Wayland.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#grim">&lt;span class="section-num">1&lt;/span> grim&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#установка">&lt;span class="section-num">1.1&lt;/span> Установка&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#настройка">&lt;span class="section-num">1.2&lt;/span> Настройка&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#swappy">&lt;span class="section-num">2&lt;/span> Swappy&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="grim">&lt;span class="section-num">1&lt;/span> grim&lt;/h2>
+&lt;ul>
+&lt;li>В X11 аналогом является &lt;code>scrot&lt;/code>.&lt;/li>
+&lt;li>Для Wayland используется связка &lt;code>grim&lt;/code> (получение снимка экрана) + &lt;a href="https://github.com/emersion/slurp" target="_blank" rel="noopener">slurp&lt;/a> (выделение области экрана)&lt;/li>
+&lt;li>Grim:
+&lt;ul>
+&lt;li>Репозиторий: &lt;a href="https://git.sr.ht/~emersion/grim/refs" target="_blank" rel="noopener">https://git.sr.ht/~emersion/grim/refs&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Slurp:
+&lt;ul>
+&lt;li>Репозиторий: &lt;a href="https://github.com/emersion/slurp" target="_blank" rel="noopener">https://github.com/emersion/slurp&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="установка">&lt;span class="section-num">1.1&lt;/span> Установка&lt;/h3>
+&lt;ul>
+&lt;li>Gentoo:&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge -uv gui-apps/slurp gui-apps/grim
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="настройка">&lt;span class="section-num">1.2&lt;/span> Настройка&lt;/h3>
+&lt;ul>
+&lt;li>Настроим получение снимков экрана:&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl"># ~/.config/sway/config.d/80-screenshots.conf
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># Screenshot active display
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym Print exec grim -t png &amp;#34;$(xdg-user-dir PICTURES)&amp;#34;/$(date +%Y-%m-%d_%H-%M-%S).png
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># Screenshot current window
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+Print exec grim -g &amp;#34;$(swaymsg -t get_tree | jq -r &amp;#39;.. | select(.pid? and .visible?) | .rect | &amp;#34;\(.x),\(.y) \(.width)x\(.height)&amp;#34;&amp;#39;)&amp;#34; &amp;#34;$(xdg-user-dir PICTURES)&amp;#34;/$(date +%Y-%m-%d_%H-%M-%S).png
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># Screenshot selected region
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+Shift+Print exec grim -t png -g &amp;#34;$(slurp)&amp;#34; &amp;#34;$(xdg-user-dir PICTURES)&amp;#34;/$(date +%Y-%m-%d_%H-%M-%S).png
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>При нажатии клавиши &lt;code>PrtScr&lt;/code> делается снимок всего экрана.&lt;/li>
+&lt;li>При нажатии &lt;code>Mod + PrtScr&lt;/code> делается снимок активного окна.&lt;/li>
+&lt;li>При нажатии &lt;code>Mod + Shift + PrtScr&lt;/code> предлагается выбрать область экрана, снимок которой следует сделать.&lt;/li>
+&lt;/ul>
+&lt;h2 id="swappy">&lt;span class="section-num">2&lt;/span> Swappy&lt;/h2>
+&lt;ul>
+&lt;li>Инструмент для создания и редактирования снимков экрана в Wayland.&lt;/li>
+&lt;li>Вдохновлён Snappy для macOS (&lt;a href="http://snappy-app.com/" target="_blank" rel="noopener">http://snappy-app.com/&lt;/a>).&lt;/li>
+&lt;li>Репозиторий: &lt;a href="https://github.com/jtheoof/swappy" target="_blank" rel="noopener">https://github.com/jtheoof/swappy&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>Wayland. Аналоги приложений</title><link>https://yamadharma.github.io/ru/post/2023/10/11/wayland-applications/</link><pubDate>Wed, 11 Oct 2023 14:23:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/10/11/wayland-applications/</guid><description>&lt;p>Аналоги приложений для Wayland.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
 &lt;nav id="TableOfContents">
@@ -36,23 +96,8 @@
 &lt;/details>
 &lt;h2 id="аналоги-приложений">&lt;span class="section-num">1&lt;/span> Аналоги приложений&lt;/h2>
 &lt;h3 id="снимки-экрана">&lt;span class="section-num">1.1&lt;/span> Снимки экрана&lt;/h3>
-&lt;p>Исходно использовался &lt;code>scrot&lt;/code>.&lt;/p>
-&lt;p>Для Wayland перешёл на связку &lt;a href="https://github.com/emersion/grim" target="_blank" rel="noopener">grim&lt;/a> (получение снимка экрана) + &lt;a href="https://github.com/emersion/slurp" target="_blank" rel="noopener">slurp&lt;/a> (выделение области экрана):&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge -uv gui-apps/slurp gui-apps/grim
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Настроим получение снимков экрана:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl"># ~/.config/sway/config.d/80-screenshots.conf
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># Screenshot active display
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym Print exec grim -t png &amp;#34;$(xdg-user-dir PICTURES)&amp;#34;/$(date +%Y-%m-%d_%H-%M-%S).png
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># Screenshot current window
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+Print exec grim -g &amp;#34;$(swaymsg -t get_tree | jq -r &amp;#39;.. | select(.pid? and .visible?) | .rect | &amp;#34;\(.x),\(.y) \(.width)x\(.height)&amp;#34;&amp;#39;)&amp;#34; &amp;#34;$(xdg-user-dir PICTURES)&amp;#34;/$(date +%Y-%m-%d_%H-%M-%S).png
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># Screenshot selected region
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bindsym $mod+Shift+Print exec grim -t png -g &amp;#34;$(slurp)&amp;#34; &amp;#34;$(xdg-user-dir PICTURES)&amp;#34;/$(date +%Y-%m-%d_%H-%M-%S).png
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
-&lt;li>При нажатии клавиши &lt;code>PrtScr&lt;/code> делается снимок всего экрана.&lt;/li>
-&lt;li>При нажатии &lt;code>Mod4&lt;/code> + &lt;code>PrtScr&lt;/code> делается снимок активного окна.&lt;/li>
-&lt;li>При нажатии &lt;code>Mod4&lt;/code> + &lt;code>Shift&lt;/code> + &lt;code>PrtScr&lt;/code> предлагается выбрать область экрана, снимок которой следует сделать.&lt;/li>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/11/05/sway-screenshots/">Sway. Скриншоты&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;h3 id="видеозапись-экрана--скринкаст">&lt;span class="section-num">1.2&lt;/span> Видеозапись экрана (скринкаст)&lt;/h3>
 &lt;p>Ранее использовался &lt;a href="https://www.maartenbaert.be/simplescreenrecorder/" target="_blank" rel="noopener">SimpleScreenRecorder&lt;/a>.&lt;/p>

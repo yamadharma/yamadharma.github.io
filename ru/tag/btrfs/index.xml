@@ -655,12 +655,9 @@
 &lt;li>&lt;a href="#подготовка-раздела-с-btrfs">&lt;span class="section-num">3&lt;/span> Подготовка раздела с btrfs&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#копирование-существующих-файловых-систем">&lt;span class="section-num">4&lt;/span> Копирование существующих файловых систем&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#установка-загрузчика">&lt;span class="section-num">5&lt;/span> Установка загрузчика&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#создадим-файл-монтирования-fstab">&lt;span class="section-num">6&lt;/span> Создадим файл монтирования fstab&lt;/a>
-&lt;ul>
-&lt;li>&lt;a href="#копирование-специальных-файловых-систем">&lt;span class="section-num">6.1&lt;/span> Копирование специальных файловых систем&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>&lt;a href="#файл-подкачки-на-файловой-системе-btrfs">&lt;span class="section-num">7&lt;/span> Файл подкачки на файловой системе btrfs&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#создадим-файл-монтирования-fstab">&lt;span class="section-num">6&lt;/span> Создадим файл монтирования fstab&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#отключение-cow">&lt;span class="section-num">7&lt;/span> Отключение CoW&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#файл-подкачки-на-файловой-системе-btrfs">&lt;span class="section-num">8&lt;/span> Файл подкачки на файловой системе btrfs&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/nav>
 &lt;/details>
@@ -823,16 +820,42 @@
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">/swap/swapfile none swap sw 0 0
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
-&lt;h3 id="копирование-специальных-файловых-систем">&lt;span class="section-num">6.1&lt;/span> Копирование специальных файловых систем&lt;/h3>
+&lt;h2 id="отключение-cow">&lt;span class="section-num">7&lt;/span> Отключение CoW&lt;/h2>
 &lt;ul>
-&lt;li>Файловые системы с отключённым CoW (copy-on-write) копируются после монтирования каталога.&lt;/li>
-&lt;li>Скопируем файлы:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mount /dev/vgs/vm /mnt/from/
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">rsync -av -HS --delete /mnt/from/ /mnt/gentoo/var/vm
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">umount /mnt/from/
+&lt;li>Для файловых систем с образами виртуальных машин следует отключить CoW (copy-on-write).&lt;/li>
+&lt;li>Так же стоит отключить &lt;em>CoW&lt;/em> для часто изменяемых файлов (например, журналов).&lt;/li>
+&lt;li>Подмонтируем файловую систему &lt;code>btrfs&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mount -tbtrfs -orelatime,discard,autodefrag,compress&lt;span class="o">=&lt;/span>zstd:9,subvol&lt;span class="o">=&lt;/span>@vm /dev/sda4 /mnt/gentoo/var/vm
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mount -tbtrfs -orelatime,discard,autodefrag,compress&lt;span class="o">=&lt;/span>zstd:9,subvol&lt;span class="o">=&lt;/span>@libvirt /dev/sda4 /mnt/gentoo/var/lib/libvirt/images
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mount -tbtrfs -orelatime,discard,autodefrag,compress&lt;span class="o">=&lt;/span>zstd:9,subvol&lt;span class="o">=&lt;/span>@var_log /dev/sda4 /mnt/gentoo/var/log
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mount -tbtrfs -orelatime,discard,autodefrag,compress&lt;span class="o">=&lt;/span>zstd:9,subvol&lt;span class="o">=&lt;/span>@var_tmp /dev/sda4 /mnt/gentoo/var/tmp
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Отключим для этого подтома CoW:
+&lt;ul>
+&lt;li>Для &lt;code>/var/vm&lt;/code>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> /mnt/gentoo/var/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">chattr +C vm
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Для &lt;code>/var/lib/libvirt/images&lt;/code>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> /mnt/gentoo/var/lib/libvirt/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">chattr +C images
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Для &lt;code>/var/log&lt;/code>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> /mnt/gentoo/var/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">chattr +C log
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Для &lt;code>/var/tmp&lt;/code>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> /mnt/gentoo/var/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">chattr +C tmp
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
-&lt;h2 id="файл-подкачки-на-файловой-системе-btrfs">&lt;span class="section-num">7&lt;/span> Файл подкачки на файловой системе btrfs&lt;/h2>
+&lt;/li>
+&lt;li>Посмотреть результат можно командой:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">lsattr -a /mnt/gentoo/var/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">lsattr -a /mnt/gentoo/var/lib/libvirt/
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="файл-подкачки-на-файловой-системе-btrfs">&lt;span class="section-num">8&lt;/span> Файл подкачки на файловой системе btrfs&lt;/h2>
 &lt;ul>
 &lt;li>Для раздела файла подкачки следует отключить CoW (copy-on-write).&lt;/li>
 &lt;li>Подмонтируем файловую систему &lt;code>btrfs&lt;/code>:

@@ -1,0 +1,678 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>git | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/git/</link><atom:link href="https://yamadharma.github.io/ru/tag/git/index.xml" rel="self" type="application/rss+xml"/><description>git</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>ru-ru</language><copyright>© 2023 Dmitry S. Kulyabov</copyright><lastBuildDate>Sat, 11 Nov 2023 20:31:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url><title>git</title><link>https://yamadharma.github.io/ru/tag/git/</link></image><item><title>Взаимодействие с gitea из командной строки</title><link>https://yamadharma.github.io/ru/post/2023/11/11/interacting-gitea-command-line/</link><pubDate>Sat, 11 Nov 2023 20:31:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/11/11/interacting-gitea-command-line/</guid><description>&lt;ul>
+&lt;li>Взаимодействие с gitea из командной строки.&lt;/li>
+&lt;li>На данный момент рекомендуется использовать утилиту &lt;code>tea&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#примеры-использования">&lt;span class="section-num">2&lt;/span> Примеры использования&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#подключение-к-серверу">&lt;span class="section-num">2.1&lt;/span> Подключение к серверу&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#репозитории">&lt;span class="section-num">2.2&lt;/span> Репозитории&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#issues">&lt;span class="section-num">2.3&lt;/span> Issues&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>Репозиторий: &lt;a href="https://gitea.com/gitea/tea" target="_blank" rel="noopener">https://gitea.com/gitea/tea&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="примеры-использования">&lt;span class="section-num">2&lt;/span> Примеры использования&lt;/h2>
+&lt;h3 id="подключение-к-серверу">&lt;span class="section-num">2.1&lt;/span> Подключение к серверу&lt;/h3>
+&lt;ul>
+&lt;li>Вначале необходимо подключиться к серверу Gitea.&lt;/li>
+&lt;li>Войти на сервер Gitea:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">tea login add --name &lt;span class="s2">&amp;#34;Условное имя подключения&amp;#34;&lt;/span> --url &lt;span class="s2">&amp;#34;Server url&amp;#34;&lt;/span> --token &lt;span class="s2">&amp;#34;token&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Можно установить подключение как подключение по умолчанию:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">tea login default &lt;span class="s2">&amp;#34;Условное имя подключения&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="репозитории">&lt;span class="section-num">2.2&lt;/span> Репозитории&lt;/h3>
+&lt;ul>
+&lt;li>Показать все репозитории:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">tea repos ls
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Создать репозитоирий
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">tea repo create --name &lt;span class="s2">&amp;#34;Название репозитория&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Создать частный репозиторий:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">tea repo create --name &lt;span class="s2">&amp;#34;Название репозитория&amp;#34;&lt;/span> --private
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Создать репозиторий для организации:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">tea repo create --name &lt;span class="s2">&amp;#34;Название репозитория&amp;#34;&lt;/span> --private --owner имя_организации
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="issues">&lt;span class="section-num">2.3&lt;/span> Issues&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>Отображение списка issues:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">tea issues ls
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Отобразить список issues для конкретного репозитория:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">tea issues ls --repo &lt;span class="s2">&amp;#34;repository&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Создать новую задачу:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">tea issues create --title &lt;span class="s2">&amp;#34;title&amp;#34;&lt;/span> --body &lt;span class="s2">&amp;#34;body&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Отобразить список открытых pull-запросов:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">tea pulls ls
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Открыть текущий репозиторий в броузере:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">tea open
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul></description></item><item><title>Миграция с bitbucket на gitea</title><link>https://yamadharma.github.io/ru/post/2023/10/31/migration-bitbucket-gitea/</link><pubDate>Tue, 31 Oct 2023 11:23:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/10/31/migration-bitbucket-gitea/</guid><description>&lt;p>Миграция с bitbucket на gitea.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#пролегомены">&lt;span class="section-num">1&lt;/span> Пролегомены&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#необходимая-информация-для-миграции">&lt;span class="section-num">2&lt;/span> Необходимая информация для миграции&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#gitea">&lt;span class="section-num">2.1&lt;/span> Gitea&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#bitbucket">&lt;span class="section-num">2.2&lt;/span> Bitbucket&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#варианты-миграции">&lt;span class="section-num">3&lt;/span> Варианты миграции&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#gickup">&lt;span class="section-num">3.1&lt;/span> gickup&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#проблемы">&lt;span class="section-num">3.1.1&lt;/span> Проблемы&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#bitbuckettogitea">&lt;span class="section-num">3.2&lt;/span> BitbucketToGitea&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#проблема">&lt;span class="section-num">3.2.1&lt;/span> Проблема&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#реализация-миграции">&lt;span class="section-num">4&lt;/span> Реализация миграции&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#репозитории-у-пользователей">&lt;span class="section-num">5&lt;/span> Репозитории у пользователей&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="пролегомены">&lt;span class="section-num">1&lt;/span> Пролегомены&lt;/h2>
+&lt;ul>
+&lt;li>В связи с тем, что Bitbucket начал блокировать учётные записи, было принято решение перейти на другой хостинг.&lt;/li>
+&lt;li>Поскольку однозначный выбор хостинга не удалось сделать, было решено:
+&lt;ul>
+&lt;li>поднять свой хостинг git (см. &lt;a href="https://yamadharma.github.io/ru/post/2023/10/29/install-gitea/">Установка gitea&lt;/a>);&lt;/li>
+&lt;li>перенести все репозитории;&lt;/li>
+&lt;li>перенести или пересоздать команды.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="необходимая-информация-для-миграции">&lt;span class="section-num">2&lt;/span> Необходимая информация для миграции&lt;/h2>
+&lt;h3 id="gitea">&lt;span class="section-num">2.1&lt;/span> Gitea&lt;/h3>
+&lt;ul>
+&lt;li>Адрес экземпляра Gitea
+&lt;ul>
+&lt;li>Например: &lt;a href="http://hub.example.com" target="_blank" rel="noopener">http://hub.example.com&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Токен аутентификации
+&lt;ul>
+&lt;li>&lt;a href="http://hub.example.com/user/settings/applications" target="_blank" rel="noopener">http://hub.example.com/user/settings/applications&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="bitbucket">&lt;span class="section-num">2.2&lt;/span> Bitbucket&lt;/h3>
+&lt;ul>
+&lt;li>Имя пользователя BitBucket:
+&lt;ul>
+&lt;li>это не почтовый адрес, по которому вы подключаетесь к BitBucket, а заданное в настройках имя;&lt;/li>
+&lt;li>&lt;a href="https://bitbucket.org/account/settings/" target="_blank" rel="noopener">https://bitbucket.org/account/settings/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Пароль BitBucket:
+&lt;ul>
+&lt;li>лучше использовать не пароль подключения к BitBucket, а создать для этого токен:&lt;/li>
+&lt;li>&lt;a href="https://bitbucket.org/account/settings/app-passwords/" target="_blank" rel="noopener">https://bitbucket.org/account/settings/app-passwords/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Название группы, если вы переносите команду.&lt;/li>
+&lt;/ul>
+&lt;h2 id="варианты-миграции">&lt;span class="section-num">3&lt;/span> Варианты миграции&lt;/h2>
+&lt;h3 id="gickup">&lt;span class="section-num">3.1&lt;/span> gickup&lt;/h3>
+&lt;ul>
+&lt;li>Универсальный фреймворк по переносу git-репозиториев.&lt;/li>
+&lt;li>Репозиторий: &lt;a href="https://github.com/cooperspencer/gickup" target="_blank" rel="noopener">https://github.com/cooperspencer/gickup&lt;/a>&lt;/li>
+&lt;li>Документация: &lt;a href="https://cooperspencer.github.io/gickup-documentation/" target="_blank" rel="noopener">https://cooperspencer.github.io/gickup-documentation/&lt;/a>&lt;/li>
+&lt;li>Пример файла конфигурации: &lt;a href="https://github.com/cooperspencer/gickup/blob/main/conf.example.yml" target="_blank" rel="noopener">https://github.com/cooperspencer/gickup/blob/main/conf.example.yml&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h4 id="проблемы">&lt;span class="section-num">3.1.1&lt;/span> Проблемы&lt;/h4>
+&lt;ul>
+&lt;li>Репозитории просто не скачивались.&lt;/li>
+&lt;li>Хотя программы писала, что всё сделано.&lt;/li>
+&lt;/ul>
+&lt;h3 id="bitbuckettogitea">&lt;span class="section-num">3.2&lt;/span> BitbucketToGitea&lt;/h3>
+&lt;ul>
+&lt;li>Скрипт по переносу репозиториев BitBucket в Gitea.&lt;/li>
+&lt;li>Репозиторий: &lt;a href="https://github.com/sIspravnikov/BitbucketToGitea" target="_blank" rel="noopener">https://github.com/sIspravnikov/BitbucketToGitea&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h4 id="проблема">&lt;span class="section-num">3.2.1&lt;/span> Проблема&lt;/h4>
+&lt;ul>
+&lt;li>Никак не удалось устранить проблемы при авторизации в BitBucket.&lt;/li>
+&lt;/ul>
+&lt;h2 id="реализация-миграции">&lt;span class="section-num">4&lt;/span> Реализация миграции&lt;/h2>
+&lt;ul>
+&lt;li>Использовал набор скриптов.&lt;/li>
+&lt;li>Репозиторий: &lt;a href="https://github.com/dstapp/bitbucket-to-gitea-migrator" target="_blank" rel="noopener">https://github.com/dstapp/bitbucket-to-gitea-migrator&lt;/a>&lt;/li>
+&lt;li>Скачайте репозиторий на свой компьютер:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git clone https://github.com/dprandzioch/bitbucket-to-gitea-migrator.git
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Создайте конфигурационный файл:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> bitbucket-to-gogs-migrator
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">cp config.json.example config.json
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;ul>
+&lt;li>Отредактируйте файл &lt;code>config.json&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-js" data-lang="js">&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;base&amp;#34;&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;check_exists&amp;#34;&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="kc">false&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">},&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;gogs&amp;#34;&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;url&amp;#34;&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s2">&amp;#34;URL-адрес экземпляра Gitea в формате hub.example.com&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;protocol&amp;#34;&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s2">&amp;#34;http&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;token&amp;#34;&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s2">&amp;#34;токен аутентификации Gitea&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;owner_id&amp;#34;&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">},&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;bitbucket&amp;#34;&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;user&amp;#34;&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s2">&amp;#34;Имя пользователя BitBucket&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;password&amp;#34;&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s2">&amp;#34;Пароль BitBucket&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;team&amp;#34;&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="kc">null&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Установите необходимые пакеты:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">npm install
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Проведите миграцию:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">npm start
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="репозитории-у-пользователей">&lt;span class="section-num">5&lt;/span> Репозитории у пользователей&lt;/h2>
+&lt;ul>
+&lt;li>Для того, чтобы переключить репозитории пользователей (из команды) на новый хостинг, добавил в репозитории скрипт:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#!/bin/bash
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">change_remote&lt;span class="o">()&lt;/span> &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nv">remote_orig&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>git remote get-url --all origin&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$remote_orig&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="p">|&lt;/span> grep bitbucket.org &lt;span class="p">&amp;amp;&lt;/span>&amp;gt; /dev/null
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="o">[[&lt;/span> &lt;span class="nv">$?&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="m">0&lt;/span> &lt;span class="o">]]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">then&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;Replace origin&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> git remote add bitbucket &lt;span class="nv">$remote_orig&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> git remote set-url origin &lt;span class="si">${&lt;/span>&lt;span class="nv">remote_orig&lt;/span>&lt;span class="p">/bitbucket.org/hub.example.com&lt;/span>&lt;span class="si">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">fi&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">change_remote
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git remote get-url --all bitbucket &lt;span class="p">&amp;amp;&lt;/span>&amp;gt; /dev/null
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">if&lt;/span> &lt;span class="o">[[&lt;/span> &lt;span class="nv">$?&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="m">0&lt;/span> &lt;span class="o">]]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">then&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nv">is_bitbucket&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">fi&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">[[&lt;/span> &lt;span class="nv">$is_bitbucket&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="m">1&lt;/span> &lt;span class="o">]]&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> git pull bitbucket master
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git pull
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git add .
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git commit -am &lt;span class="s2">&amp;#34;chore(main): &lt;/span>&lt;span class="k">$(&lt;/span>date&lt;span class="k">)&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git push --all
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">[[&lt;/span> &lt;span class="nv">$is_bitbucket&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="m">1&lt;/span> &lt;span class="o">]]&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> git push bitbucket
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Сжатие git&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">if&lt;/span> &lt;span class="o">[[&lt;/span> &lt;span class="nv">$1&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="s2">&amp;#34;compress&amp;#34;&lt;/span> &lt;span class="o">]]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">then&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="o">[[&lt;/span> -d .git &lt;span class="o">]]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">then&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> find . -type f -name &lt;span class="s2">&amp;#34;*Конфликтующая*&amp;#34;&lt;/span> -delete
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> find . -type f -name &lt;span class="s2">&amp;#34;*conflicted*&amp;#34;&lt;/span> -delete
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> find . -depth -path ./.stversions -prune -o -name &lt;span class="s2">&amp;#34;.syncthing.*.tmp&amp;#34;&lt;/span> -delete
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> git fsck
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> git gc --prune&lt;span class="o">=&lt;/span>now
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> git gc --aggressive --prune&lt;span class="o">=&lt;/span>now
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">fi&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">fi&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul></description></item><item><title>Установка gitea</title><link>https://yamadharma.github.io/ru/post/2023/10/29/install-gitea/</link><pubDate>Sun, 29 Oct 2023 20:10:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/10/29/install-gitea/</guid><description>&lt;p>Установка gitea.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#информация">&lt;span class="section-num">1&lt;/span> Информация&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#поддерживаемые-базы-данных">&lt;span class="section-num">1.1&lt;/span> Поддерживаемые базы данных&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#пререквизиты">&lt;span class="section-num">2&lt;/span> Пререквизиты&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#пользователь">&lt;span class="section-num">2.1&lt;/span> Пользователь&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#база-данных">&lt;span class="section-num">2.2&lt;/span> База данных&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#sqlite">&lt;span class="section-num">2.2.1&lt;/span> SqLite&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#postgresql">&lt;span class="section-num">2.2.2&lt;/span> PostgreSQL&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#брандмауэр">&lt;span class="section-num">2.3&lt;/span> Брандмауэр&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#установка">&lt;span class="section-num">3&lt;/span> Установка&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#установка-бинарного-пакета">&lt;span class="section-num">3.1&lt;/span> Установка бинарного пакета&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#структура-папок">&lt;span class="section-num">3.2&lt;/span> Структура папок&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#сервис-systemd">&lt;span class="section-num">3.3&lt;/span> Сервис systemd&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#запуск-gitea">&lt;span class="section-num">3.4&lt;/span> Запуск gitea&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#проксирование">&lt;span class="section-num">4&lt;/span> Проксирование&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#установка-nginx">&lt;span class="section-num">4.1&lt;/span> Установка nginx&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#брандмауэр">&lt;span class="section-num">4.2&lt;/span> Брандмауэр&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#selinux">&lt;span class="section-num">4.3&lt;/span> SELinux&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#конфигурация-nginx">&lt;span class="section-num">4.4&lt;/span> Конфигурация nginx:&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#конфигурационный-файл-app-dot-ini">&lt;span class="section-num">4.5&lt;/span> Конфигурационный файл app.ini&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#начальная-конфигурация">&lt;span class="section-num">5&lt;/span> Начальная конфигурация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#дополнительные-настройки">&lt;span class="section-num">6&lt;/span> Дополнительные настройки&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#fail2ban">&lt;span class="section-num">6.1&lt;/span> fail2ban&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="информация">&lt;span class="section-num">1&lt;/span> Информация&lt;/h2>
+&lt;h3 id="поддерживаемые-базы-данных">&lt;span class="section-num">1.1&lt;/span> Поддерживаемые базы данных&lt;/h3>
+&lt;ul>
+&lt;li>MySQL (&amp;gt;=5.7)&lt;/li>
+&lt;li>PostgreSQL (&amp;gt;=10)&lt;/li>
+&lt;li>SQLite3&lt;/li>
+&lt;li>MSSQL (&amp;gt;=2008R2 SP3)&lt;/li>
+&lt;li>TiDB (MySQL protocol)&lt;/li>
+&lt;/ul>
+&lt;h2 id="пререквизиты">&lt;span class="section-num">2&lt;/span> Пререквизиты&lt;/h2>
+&lt;ul>
+&lt;li>Установите базовый сервер (см. &lt;a href="https://yamadharma.github.io/ru/post/2022/08/12/rockylinux-server-installation/">Rocky Linux. Установка сервера&lt;/a>).&lt;/li>
+&lt;/ul>
+&lt;h3 id="пользователь">&lt;span class="section-num">2.1&lt;/span> Пользователь&lt;/h3>
+&lt;ul>
+&lt;li>Создадим пользователя для работы с gitea.
+&lt;ul>
+&lt;li>Ubuntu/Debian:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">adduser &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> --system &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> --shell /bin/bash &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> --gecos &lt;span class="s1">&amp;#39;Git Version Control&amp;#39;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> --group &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> --disabled-password &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> --home /home/git &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> git
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Fedora/RHEL/CentOS:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">groupadd --system git
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">adduser &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> --system &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> --shell /bin/bash &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> --comment &lt;span class="s1">&amp;#39;Git Version Control&amp;#39;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> --gid git &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> --home-dir /home/git &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> --create-home &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> git
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="база-данных">&lt;span class="section-num">2.2&lt;/span> База данных&lt;/h3>
+&lt;ul>
+&lt;li>Установите нужную базу данных.&lt;/li>
+&lt;/ul>
+&lt;h4 id="sqlite">&lt;span class="section-num">2.2.1&lt;/span> SqLite&lt;/h4>
+&lt;ul>
+&lt;li>Установите sqlite:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf install sqlite
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Настроек не требуется.&lt;/li>
+&lt;/ul>
+&lt;h4 id="postgresql">&lt;span class="section-num">2.2.2&lt;/span> PostgreSQL&lt;/h4>
+&lt;ul>
+&lt;li>
+&lt;p>Установите postgresql:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf install postgresql-server postgresql
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Создайте начальную базу данных:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">/usr/bin/postgresql-setup --initdb
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Запустите PostgreSQL:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">systemctl &lt;span class="nb">enable&lt;/span> --now postgresql
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Если требуется удалённая настройка PostgreSQL, добавьте адрес для прослушивания вашего IP-адреса, отредактировав &lt;code>listen_addresses&lt;/code> в &lt;code>/var/lib/pgsql/data/postgresql.conf&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">listen_addresses = &amp;#39;localhost, 203.0.113.3&amp;#39;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>PostgreSQL по умолчанию использует схему запрос-ответ &lt;code>md5&lt;/code> для аутентификации.&lt;/p>
+&lt;ul>
+&lt;li>В настоящее время эта схема не считается безопасной.&lt;/li>
+&lt;li>Вместо этого используйте схему &lt;code>SCRAM-SHA-256&lt;/code>, отредактировав &lt;code>postgresql.conf&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">password_encryption = scram-sha-256
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>На сервере базы данных войдите в консоль базы данных как суперпользователь:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">su -c psql - postgres
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Создайте пользователя базы данных с правами входа и паролем:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">CREATE ROLE gitea WITH LOGIN PASSWORD &lt;span class="s1">&amp;#39;gitea&amp;#39;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Замените имя пользователя и пароль соответствующим образом.&lt;/li>
+&lt;li>Сменить пароль потом можно будет следующим образом:
+&lt;ul>
+&lt;li>На сервере базы данных войдите в консоль базы данных как суперпользователь:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">su -c psql - postgres
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Смените пароль пользователю &lt;code>gitea&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="se">\p&lt;/span>assword gitea
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Создайте базу данных с кодировкой UTF-8, принадлежащую пользователю базы данных, созданному ранее:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">CREATE DATABASE gitea WITH OWNER gitea TEMPLATE template0 ENCODING UTF8 LC_COLLATE &lt;span class="s1">&amp;#39;ru_RU.UTF-8&amp;#39;&lt;/span> LC_CTYPE &lt;span class="s1">&amp;#39;ru_RU.UTF-8&amp;#39;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Замените имя базы данных соответствующим образом.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Разрешите пользователю базы данных доступ к базе данных, созданной выше, добавив следующее правило аутентификации в файл &lt;code>/var/lib/pgsql/data/pg_hba.conf&lt;/code>.&lt;/p>
+&lt;ul>
+&lt;li>Для локальной базы данных:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">local gitea gitea scram-sha-256
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">host gitea gitea 127.0.0.1/32 scram-sha-256
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Для удаленной базы данных:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">host gitea gitea 192.0.2.10/32 scram-sha-256
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Замените имя базы данных, пользователя и IP-адрес экземпляра Gitea на свои собственные.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Перезапустите PostgreSQL, чтобы применить новые правила аутентификации:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">systemctl restart postgresql.service
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>На вашем сервере Gitea проверьте соединение с базой данных.&lt;/p>
+&lt;ul>
+&lt;li>Для локальной базы данных:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">psql -U gitea -d giteadb
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Для удаленной базы данных:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">psql &lt;span class="s2">&amp;#34;postgres://gitea@203.0.113.3/giteadb&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>&lt;code>gitea&lt;/code> : пользователь базы данных,&lt;/li>
+&lt;li>&lt;code>giteadb&lt;/code> : имя базы данных;&lt;/li>
+&lt;li>203.0.113.3 : IP-адрес экземпляра вашей базы данных.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Вам будет предложено ввести пароль для пользователя базы данных и подключиться к базе данных.&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="брандмауэр">&lt;span class="section-num">2.3&lt;/span> Брандмауэр&lt;/h3>
+&lt;ul>
+&lt;li>Если не будете включать проксирование через web-сервер, то разрешите работать по порту 3000:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">firewall-cmd --permanent --zone&lt;span class="o">=&lt;/span>public --add-port&lt;span class="o">=&lt;/span>3000/tcp
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">firewall-cmd --reload
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="установка">&lt;span class="section-num">3&lt;/span> Установка&lt;/h2>
+&lt;h3 id="установка-бинарного-пакета">&lt;span class="section-num">3.1&lt;/span> Установка бинарного пакета&lt;/h3>
+&lt;ul>
+&lt;li>Пакета &lt;code>gitea&lt;/code> в Rocky Linux нет.&lt;/li>
+&lt;li>Устанавливать будем в локальную иерархию:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> /usr/local/bin
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Скачаем последнюю версию &lt;code>gitea&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">curl -s https://api.github.com/repos/go-gitea/gitea/releases/latest &lt;span class="p">|&lt;/span>grep browser_download_url &lt;span class="p">|&lt;/span> cut -d &lt;span class="s1">&amp;#39;&amp;#34;&amp;#39;&lt;/span> -f &lt;span class="m">4&lt;/span> &lt;span class="p">|&lt;/span> grep &lt;span class="s1">&amp;#39;\linux-amd64$&amp;#39;&lt;/span> &lt;span class="p">|&lt;/span> wget -i - -O /usr/local/bin/gitea
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Установим права на выполнение файла:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">chmod +x /usr/local/bin/gitea
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Восстановим метки безопасности:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">restorecon -rv /usr/local/bin/gitea
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="структура-папок">&lt;span class="section-num">3.2&lt;/span> Структура папок&lt;/h3>
+&lt;ul>
+&lt;li>Создадим рабочую структур папок:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mkdir -p /etc/gitea /var/lib/gitea/&lt;span class="o">{&lt;/span>custom,data,indexers,public,log&lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">chown git:git /var/lib/gitea/&lt;span class="o">{&lt;/span>data,indexers,log&lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">chmod &lt;span class="m">750&lt;/span> /var/lib/gitea/&lt;span class="o">{&lt;/span>data,indexers,log&lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">chown root:git /etc/gitea
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">chmod &lt;span class="m">770&lt;/span> /etc/gitea
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="сервис-systemd">&lt;span class="section-num">3.3&lt;/span> Сервис systemd&lt;/h3>
+&lt;ul>
+&lt;li>Скачает файл сервиса:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">wget https://raw.githubusercontent.com/go-gitea/gitea/master/contrib/systemd/gitea.service -P /etc/systemd/system/
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Перечитает файлы сервисов:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">systemctl daemon-reload
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="запуск-gitea">&lt;span class="section-num">3.4&lt;/span> Запуск gitea&lt;/h3>
+&lt;ul>
+&lt;li>Запустим gitea:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">systemctl &lt;span class="nb">enable&lt;/span> --now gitea
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="проксирование">&lt;span class="section-num">4&lt;/span> Проксирование&lt;/h2>
+&lt;ul>
+&lt;li>Можно настроить проксирование gitea через nginx.&lt;/li>
+&lt;li>Это не обязательно.&lt;/li>
+&lt;/ul>
+&lt;h3 id="установка-nginx">&lt;span class="section-num">4.1&lt;/span> Установка nginx&lt;/h3>
+&lt;ul>
+&lt;li>Установим nginx:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf install nginx
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="брандмауэр">&lt;span class="section-num">4.2&lt;/span> Брандмауэр&lt;/h3>
+&lt;ul>
+&lt;li>Разрешим работать сервису &lt;code>http&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">firewall-cmd --permanent --zone&lt;span class="o">=&lt;/span>public --add-service&lt;span class="o">=&lt;/span>http
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">firewall-cmd --reload
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="selinux">&lt;span class="section-num">4.3&lt;/span> SELinux&lt;/h3>
+&lt;ul>
+&lt;li>Разрешите nginx перенаправление:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">setsebool -P httpd_can_network_connect &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">setsebool httpd_can_network_connect &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="конфигурация-nginx">&lt;span class="section-num">4.4&lt;/span> Конфигурация nginx:&lt;/h3>
+&lt;ul>
+&lt;li>В файле &lt;code>/etc/nginx/conf.d/gitea.conf&lt;/code> опишем конфигурацию для перенаправления:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">server {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> server_name hub.example.com;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> location / {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> client_max_body_size 512M;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> proxy_pass http://localhost:3000;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> proxy_set_header Host $host;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> proxy_set_header X-Real-IP $remote_addr;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> proxy_set_header X-Forwarded-Proto $scheme;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="конфигурационный-файл-app-dot-ini">&lt;span class="section-num">4.5&lt;/span> Конфигурационный файл app.ini&lt;/h3>
+&lt;ul>
+&lt;li>Добавьте в &lt;code>/etc/gitea/app.ini&lt;/code> в секцию &lt;code>[security]&lt;/code> чтобы задать доверенные прокси-серверы:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[security]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">REVERSE_PROXY_LIMIT = 1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">REVERSE_PROXY_TRUSTED_PROXIES = 127.0.0.1/8
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="начальная-конфигурация">&lt;span class="section-num">5&lt;/span> Начальная конфигурация&lt;/h2>
+&lt;ul>
+&lt;li>Без проксирования: подключитесь к хосту с gitea по порту 3000 (&lt;code>http://yourserver-ip-address:3000&lt;/code>).&lt;/li>
+&lt;li>C проксированием: подключитесь к хосту с gitea (&lt;code>http://yourserver-ip-address&lt;/code>).&lt;/li>
+&lt;li>Заполните настройки gitea:
+&lt;ul>
+&lt;li>Тип базы данных: PostgreSQL.&lt;/li>
+&lt;li>Имя пользователя: gitea&lt;/li>
+&lt;li>Пароль: пароль, который Вы задали.&lt;/li>
+&lt;li>Имя базы данных: gitea&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="дополнительные-настройки">&lt;span class="section-num">6&lt;/span> Дополнительные настройки&lt;/h2>
+&lt;h3 id="fail2ban">&lt;span class="section-num">6.1&lt;/span> fail2ban&lt;/h3>
+&lt;ul>
+&lt;li>Настроим fail2ban (см. &lt;a href="https://yamadharma.github.io/ru/post/2023/10/30/fail2ban-basic-settings/">fail2ban. Основные настройки&lt;/a>)&lt;/li>
+&lt;li>Документация: &lt;a href="https://docs.gitea.com/next/administration/fail2ban-setup" target="_blank" rel="noopener">https://docs.gitea.com/next/administration/fail2ban-setup&lt;/a>&lt;/li>
+&lt;li>Добавьте фильтр &lt;code>/etc/fail2ban/filter.d/gitea.conf&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl"># gitea.conf
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[Definition]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">failregex = .*(Failed authentication attempt|invalid credentials|Attempted access of unknown user).* from &amp;lt;HOST&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ignoreregex =
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Добавьте ограничение &lt;code>/etc/fail2ban/jail.d/80-gitea.conf&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[gitea]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">enabled = true
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">filter = gitea
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">logpath = /var/log/gitea/gitea.log
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">maxretry = 10
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">findtime = 3600
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bantime = 900
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">action = iptables-allports
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Поправьте секцию &lt;code>[log]&lt;/code> в &lt;code>/etc/gitea/app.ini&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[log]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">MODE = file
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">LEVEL = info
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ROOT_PATH = /var/log/gitea
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Создайте нужный каталог:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mkdir -p /var/log/gitea
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">chown git:git /var/log/gitea
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul></description></item><item><title>Хостинг git. gitea</title><link>https://yamadharma.github.io/ru/post/2023/10/29/git-hosting-gitea/</link><pubDate>Sun, 29 Oct 2023 18:54:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/10/29/git-hosting-gitea/</guid><description>&lt;p>Хостинг git. gitea.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#ресурсы">&lt;span class="section-num">2&lt;/span> Ресурсы&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#установка-и-настройка">&lt;span class="section-num">3&lt;/span> Установка и настройка&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#миграция">&lt;span class="section-num">4&lt;/span> Миграция&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#использование">&lt;span class="section-num">5&lt;/span> Использование&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#утилиты">&lt;span class="section-num">6&lt;/span> Утилиты&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>Репозиторий: &lt;a href="https://github.com/go-gitea/gitea" target="_blank" rel="noopener">https://github.com/go-gitea/gitea&lt;/a>&lt;/li>
+&lt;li>Документация: &lt;a href="https://docs.gitea.com/" target="_blank" rel="noopener">https://docs.gitea.com/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="ресурсы">&lt;span class="section-num">2&lt;/span> Ресурсы&lt;/h2>
+&lt;ul>
+&lt;li>Awesome Gitea
+&lt;ul>
+&lt;li>&lt;a href="https://gitea.com/gitea/awesome-gitea" target="_blank" rel="noopener">https://gitea.com/gitea/awesome-gitea&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="установка-и-настройка">&lt;span class="section-num">3&lt;/span> Установка и настройка&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/10/29/install-gitea/">Установка gitea&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="миграция">&lt;span class="section-num">4&lt;/span> Миграция&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/10/31/migration-bitbucket-gitea/">Миграция с bitbucket на gitea&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="использование">&lt;span class="section-num">5&lt;/span> Использование&lt;/h2>
+&lt;h2 id="утилиты">&lt;span class="section-num">6&lt;/span> Утилиты&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/11/11/interacting-gitea-command-line/">Взаимодействие с gitea из командной строки&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>Система контроля версий git</title><link>https://yamadharma.github.io/ru/post/2020/12/07/git-cvs/</link><pubDate>Mon, 07 Dec 2020 15:47:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2020/12/07/git-cvs/</guid><description>&lt;p>Использование системы контроля версий &lt;em>git&lt;/em>.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#использование-git">&lt;span class="section-num">1&lt;/span> Использование git&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#хостинги-git">&lt;span class="section-num">2&lt;/span> Хостинги git&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#преподавание-git">&lt;span class="section-num">3&lt;/span> Преподавание git&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="использование-git">&lt;span class="section-num">1&lt;/span> Использование git&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/01/28/verifying-git-commits-gpg/">Верификация коммитов git с помощью GPG&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/07/19/git-workflow/">Варианты Git Workflow&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2020/12/11/semantic-versioning/">Семантическое версионирование&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2020/12/11/conventional-commits/">Общепринятые коммиты&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/03/27/git-multiple-remote-repositories/">git. Несколько удалённых репозиториев&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/01/17/git-practical-use-case/">Практический сценарий использования git&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/08/04/github-command-line-utilities/">github: утилиты командной строки&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/08/23/git-submodules/">git submodules&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="хостинги-git">&lt;span class="section-num">2&lt;/span> Хостинги git&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/10/29/git-hosting-gitea/">Хостинг git. gitea&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="преподавание-git">&lt;span class="section-num">3&lt;/span> Преподавание git&lt;/h2>
+&lt;p>Предполагается вводить git в лабораторные работы начиная с 1 курса.&lt;/p>
+&lt;ul>
+&lt;li>1 курс
+&lt;ul>
+&lt;li>Операционные системы (Архитектура ЭВМ)
+&lt;ul>
+&lt;li>Основы работы в git.&lt;/li>
+&lt;li>Создание учётной записи на Github.&lt;/li>
+&lt;li>Выкладывание лабораторных работ на Git.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Операционные системы
+&lt;ul>
+&lt;li>Основы работы в git.&lt;/li>
+&lt;li>Создание учётной записи на Github.&lt;/li>
+&lt;li>Формат коммитов и версий. Даётся as is, без особых пояснений.&lt;/li>
+&lt;li>Выкладывание лабораторных работ на Git.&lt;/li>
+&lt;li>Использование git-flow.&lt;/li>
+&lt;li>Семантическое версионирование.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Для всех курсов
+&lt;ul>
+&lt;li>Рабочее пространство курса располагается в git (см. &lt;a href="https://yamadharma.github.io/ru/post/2021/01/16/workspace-laboratory-work/">Рабочее пространство для лабораторной работы&lt;/a>).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul></description></item></channel></rss>

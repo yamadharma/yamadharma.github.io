@@ -1,4 +1,131 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>emacs | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/emacs/</link><atom:link href="https://yamadharma.github.io/ru/tag/emacs/index.xml" rel="self" type="application/rss+xml"/><description>emacs</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>ru-ru</language><copyright>© 2023 Dmitry S. Kulyabov</copyright><lastBuildDate>Wed, 13 Dec 2023 16:22:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url><title>emacs</title><link>https://yamadharma.github.io/ru/tag/emacs/</link></image><item><title>Emacs. Табы</title><link>https://yamadharma.github.io/ru/post/2023/12/13/emacs-tabs/</link><pubDate>Wed, 13 Dec 2023 16:22:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/12/13/emacs-tabs/</guid><description>&lt;p>Реализация интерфейса с табами в Emacs.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>emacs | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/emacs/</link><atom:link href="https://yamadharma.github.io/ru/tag/emacs/index.xml" rel="self" type="application/rss+xml"/><description>emacs</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>ru-ru</language><copyright>© 2024 Dmitry S. Kulyabov</copyright><lastBuildDate>Mon, 18 Dec 2023 16:19:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url><title>emacs</title><link>https://yamadharma.github.io/ru/tag/emacs/</link></image><item><title>Emacs. Управление пакетами</title><link>https://yamadharma.github.io/ru/post/2023/12/18/emacs-package-management/</link><pubDate>Mon, 18 Dec 2023 16:19:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/12/18/emacs-package-management/</guid><description>&lt;p>Управление пакетами в Emacs.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#репозитории-пакетов">&lt;span class="section-num">1&lt;/span> Репозитории пакетов&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#elpa">&lt;span class="section-num">1.1&lt;/span> ELPA&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#nongnu-elpa">&lt;span class="section-num">1.2&lt;/span> NonGNU ELPA&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#nongnu-devel-elpa">&lt;span class="section-num">1.3&lt;/span> NonGNU-devel ELPA&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#melpa">&lt;span class="section-num">1.4&lt;/span> MELPA&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#настройка-источников-пакетов">&lt;span class="section-num">1.5&lt;/span> Настройка источников пакетов&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#средства-управления-пакетами">&lt;span class="section-num">2&lt;/span> Средства управления пакетами&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="репозитории-пакетов">&lt;span class="section-num">1&lt;/span> Репозитории пакетов&lt;/h2>
+&lt;h3 id="elpa">&lt;span class="section-num">1.1&lt;/span> ELPA&lt;/h3>
+&lt;ul>
+&lt;li>Сайт: &lt;a href="https://elpa.gnu.org/packages/" target="_blank" rel="noopener">https://elpa.gnu.org/packages/&lt;/a>&lt;/li>
+&lt;li>Содержит пакеты Emacs, одобренные FSF.&lt;/li>
+&lt;/ul>
+&lt;h3 id="nongnu-elpa">&lt;span class="section-num">1.2&lt;/span> NonGNU ELPA&lt;/h3>
+&lt;ul>
+&lt;li>Сайт: &lt;a href="https://elpa.nongnu.org/nongnu/" target="_blank" rel="noopener">https://elpa.nongnu.org/nongnu/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="nongnu-devel-elpa">&lt;span class="section-num">1.3&lt;/span> NonGNU-devel ELPA&lt;/h3>
+&lt;ul>
+&lt;li>Сайт: &lt;a href="https://elpa.nongnu.org/nongnu-devel/" target="_blank" rel="noopener">https://elpa.nongnu.org/nongnu-devel/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="melpa">&lt;span class="section-num">1.4&lt;/span> MELPA&lt;/h3>
+&lt;ul>
+&lt;li>Сайт: &lt;a href="https://melpa.org/" target="_blank" rel="noopener">https://melpa.org/&lt;/a>&lt;/li>
+&lt;li>Нет передачи авторских прав.&lt;/li>
+&lt;li>Не нужно размещать свой пакет в git-репозитории ELPA.&lt;/li>
+&lt;/ul>
+&lt;h3 id="настройка-источников-пакетов">&lt;span class="section-num">1.5&lt;/span> Настройка источников пакетов&lt;/h3>
+&lt;ul>
+&lt;li>Настройка источников пакетов:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nb">let*&lt;/span> &lt;span class="p">((&lt;/span>&lt;span class="nv">no-ssl&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nb">and&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nf">memq&lt;/span> &lt;span class="nv">system-type&lt;/span> &lt;span class="o">&amp;#39;&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nv">windows-nt&lt;/span> &lt;span class="nv">ms-dos&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nv">not&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nf">gnutls-available-p&lt;/span>&lt;span class="p">))))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nv">proto&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nb">if&lt;/span> &lt;span class="nv">no-ssl&lt;/span> &lt;span class="s">&amp;#34;http&amp;#34;&lt;/span> &lt;span class="s">&amp;#34;https&amp;#34;&lt;/span>&lt;span class="p">)))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">;;; Comment/uncomment these two lines to enable/disable MELPA and MELPA Stable as desired&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nv">add-to-list&lt;/span> &lt;span class="ss">&amp;#39;package-archives&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nf">cons&lt;/span> &lt;span class="s">&amp;#34;melpa&amp;#34;&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nf">concat&lt;/span> &lt;span class="nv">proto&lt;/span> &lt;span class="s">&amp;#34;://melpa.org/packages/&amp;#34;&lt;/span>&lt;span class="p">))&lt;/span> &lt;span class="no">t&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">;; (add-to-list &amp;#39;package-archives (cons &amp;#34;melpa-stable&amp;#34; (concat proto &amp;#34;://stable.melpa.org/packages/&amp;#34;)) t)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">;;; Marmalade doesn&amp;#39;t work&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">;; (add-to-list &amp;#39;package-archives &amp;#39;(&amp;#34;marmalade&amp;#34; . &amp;#34;http://marmalade-repo.org/packages/&amp;#34;) t)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">;; (add-to-list &amp;#39;package-archives &amp;#39;(&amp;#34;org&amp;#34; . &amp;#34;http://orgmode.org/elpa/&amp;#34;) t)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">;; (add-to-list &amp;#39;package-archives &amp;#39;(&amp;#34;gnu&amp;#34; . (concat proto &amp;#34;://elpa.gnu.org/packages/&amp;#34;)) t)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nb">when&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nf">&amp;lt;&lt;/span> &lt;span class="nv">emacs-major-version&lt;/span> &lt;span class="mi">24&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">;;; For important compatibility libraries like cl-lib&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nv">add-to-list&lt;/span> &lt;span class="ss">&amp;#39;package-archives&lt;/span> &lt;span class="o">&amp;#39;&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;gnu&amp;#34;&lt;/span> &lt;span class="o">.&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nf">concat&lt;/span> &lt;span class="nv">proto&lt;/span> &lt;span class="s">&amp;#34;://elpa.gnu.org/packages/&amp;#34;&lt;/span>&lt;span class="p">)))))&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="средства-управления-пакетами">&lt;span class="section-num">2&lt;/span> Средства управления пакетами&lt;/h2></description></item><item><title>Emacs. Пакет org-agenda-files-track</title><link>https://yamadharma.github.io/ru/post/2023/12/17/emacs-package-org-agenda-files-track/</link><pubDate>Sun, 17 Dec 2023 19:57:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/12/17/emacs-package-org-agenda-files-track/</guid><description>&lt;p>Пакет для динамической генерации списка файлов для агенды.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#подключение">&lt;span class="section-num">2&lt;/span> Подключение&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#org-agenda-files-track">&lt;span class="section-num">2.1&lt;/span> org-agenda-files-track&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#org-agenda-files-track-ql">&lt;span class="section-num">2.2&lt;/span> org-agenda-files-track-ql&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>Репозиторий: &lt;a href="https://github.com/nicolas-graves/org-agenda-files-track" target="_blank" rel="noopener">https://github.com/nicolas-graves/org-agenda-files-track&lt;/a>&lt;/li>
+&lt;li>Состоит из двух библиотек:
+&lt;ul>
+&lt;li>&lt;code>org-agenda-files-track&lt;/code>: использует вызовы &lt;code>org-mode&lt;/code>;&lt;/li>
+&lt;li>&lt;code>org-agenda-files-track-ql&lt;/code>: с поддержкой &lt;code>org-ql&lt;/code> (см. &lt;a href="https://yamadharma.github.io/ru/post/2023/12/17/emacs-package-org-ql/">Emacs. Пакет org-ql&lt;/a>).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="подключение">&lt;span class="section-num">2&lt;/span> Подключение&lt;/h2>
+&lt;h3 id="org-agenda-files-track">&lt;span class="section-num">2.1&lt;/span> org-agenda-files-track&lt;/h3>
+&lt;ul>
+&lt;li>Подключается пакет следующим образом:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">;;; Toggle org-agenda-files-track mode on&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nb">setq&lt;/span> &lt;span class="nv">org-agenda-files-track-mode&lt;/span> &lt;span class="no">t&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">;;; Load package&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nb">require&lt;/span> &lt;span class="ss">&amp;#39;org-agenda-files-track&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nv">add-hook&lt;/span> &lt;span class="ss">&amp;#39;org-mode-hook&lt;/span> &lt;span class="nf">#&amp;#39;&lt;/span>&lt;span class="nv">org-agenda-files-track-mode&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="org-agenda-files-track-ql">&lt;span class="section-num">2.2&lt;/span> org-agenda-files-track-ql&lt;/h3>
+&lt;ul>
+&lt;li>Подключается пакет следующим образом:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">;;; Toggle org-agenda-files-track mode on&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nb">setq&lt;/span> &lt;span class="nv">org-agenda-files-track-ql-mode&lt;/span> &lt;span class="no">t&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">;;; Load package&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nb">require&lt;/span> &lt;span class="ss">&amp;#39;org-agenda-files-track-ql&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nv">add-hook&lt;/span> &lt;span class="ss">&amp;#39;org-mode-hook&lt;/span> &lt;span class="nf">#&amp;#39;&lt;/span>&lt;span class="nv">org-agenda-files-track-ql-mode&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul></description></item><item><title>Emacs. Пакет org-ql</title><link>https://yamadharma.github.io/ru/post/2023/12/17/emacs-package-org-ql/</link><pubDate>Sun, 17 Dec 2023 19:45:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/12/17/emacs-package-org-ql/</guid><description>&lt;p>Инструмент поиска для org-mode.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>Репозиторий: &lt;a href="https://github.com/alphapapa/org-ql" target="_blank" rel="noopener">https://github.com/alphapapa/org-ql&lt;/a>&lt;/li>
+&lt;li>Предоставляет язык запросов для файлов &lt;code>org&lt;/code>.&lt;/li>
+&lt;li>Два стиля синтаксиса:
+&lt;ul>
+&lt;li>стиль Лиспа (s-expressions, sexps);&lt;/li>
+&lt;li>ключевые слова в стиле поисковых систем.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Три библиотеки:
+&lt;ul>
+&lt;li>&lt;code>org-ql&lt;/code>: используется в качестве серверной части для других инструментов;&lt;/li>
+&lt;li>&lt;code>org-ql-search&lt;/code>: команды интерактивного поиска и сохраненные представления;&lt;/li>
+&lt;li>&lt;code>helm-org-ql&lt;/code>: для взаимодействия на основе Helm (см. &lt;a href="https://yamadharma.github.io/ru/post/2022/12/14/emacs-completion-helm/">Emacs. Автодополнение. Helm&lt;/a>).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul></description></item><item><title>Emacs. Табы</title><link>https://yamadharma.github.io/ru/post/2023/12/13/emacs-tabs/</link><pubDate>Wed, 13 Dec 2023 16:22:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/12/13/emacs-tabs/</guid><description>&lt;p>Реализация интерфейса с табами в Emacs.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
 &lt;nav id="TableOfContents">
@@ -3913,15 +4040,17 @@ userи shell commandsотсортированы по алфавиту.&lt;/p>
 &lt;nav id="TableOfContents">
 &lt;ul>
 &lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#подготовка-публикаций">&lt;span class="section-num">2&lt;/span> Подготовка публикаций&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#экспорт">&lt;span class="section-num">3&lt;/span> Экспорт&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#пакеты-использующие-org-mode">&lt;span class="section-num">4&lt;/span> Пакеты, использующие org-mode&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#реализации">&lt;span class="section-num">5&lt;/span> Реализации&lt;/a>
+&lt;li>&lt;a href="#agenda">&lt;span class="section-num">2&lt;/span> Agenda&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#поиск">&lt;span class="section-num">3&lt;/span> Поиск&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#подготовка-публикаций">&lt;span class="section-num">4&lt;/span> Подготовка публикаций&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#экспорт">&lt;span class="section-num">5&lt;/span> Экспорт&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#пакеты-использующие-org-mode">&lt;span class="section-num">6&lt;/span> Пакеты, использующие org-mode&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#реализации">&lt;span class="section-num">7&lt;/span> Реализации&lt;/a>
 &lt;ul>
-&lt;li>&lt;a href="#мобильные-приложения">&lt;span class="section-num">5.1&lt;/span> Мобильные приложения&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#редакторы">&lt;span class="section-num">5.2&lt;/span> Редакторы&lt;/a>
+&lt;li>&lt;a href="#мобильные-приложения">&lt;span class="section-num">7.1&lt;/span> Мобильные приложения&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#редакторы">&lt;span class="section-num">7.2&lt;/span> Редакторы&lt;/a>
 &lt;ul>
-&lt;li>&lt;a href="#vs-code">&lt;span class="section-num">5.2.1&lt;/span> VS Code&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#vs-code">&lt;span class="section-num">7.2.1&lt;/span> VS Code&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
@@ -3934,27 +4063,35 @@ userи shell commandsотсортированы по алфавиту.&lt;/p>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/10/14/org-mode-markup-language/">Язык разметки org-mode&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/10/15/emacs-org-babel/">Emacs. Org Babel&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;h2 id="подготовка-публикаций">&lt;span class="section-num">2&lt;/span> Подготовка публикаций&lt;/h2>
+&lt;h2 id="agenda">&lt;span class="section-num">2&lt;/span> Agenda&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/12/17/emacs-package-org-agenda-files-track/">Emacs. Пакет org-agenda-files-track&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="поиск">&lt;span class="section-num">3&lt;/span> Поиск&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/12/17/emacs-package-org-ql/">Emacs. Пакет org-ql&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="подготовка-публикаций">&lt;span class="section-num">4&lt;/span> Подготовка публикаций&lt;/h2>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2020/12/14/org-mode-prezentation/">Org-mode. Презентации&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/11/27/org-mode-latex-support/">Org-mode. Поддержка LaTeX&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;h2 id="экспорт">&lt;span class="section-num">3&lt;/span> Экспорт&lt;/h2>
+&lt;h2 id="экспорт">&lt;span class="section-num">5&lt;/span> Экспорт&lt;/h2>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2020/12/10/org-mode-export/">Org-mode. Экспорт&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;h2 id="пакеты-использующие-org-mode">&lt;span class="section-num">4&lt;/span> Пакеты, использующие org-mode&lt;/h2>
+&lt;h2 id="пакеты-использующие-org-mode">&lt;span class="section-num">6&lt;/span> Пакеты, использующие org-mode&lt;/h2>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2020/10/05/use-org-roam/">Использование org-roam&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/01/16/emacs-org-appear/">Emacs. Пакет org-appear&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;h2 id="реализации">&lt;span class="section-num">5&lt;/span> Реализации&lt;/h2>
-&lt;h3 id="мобильные-приложения">&lt;span class="section-num">5.1&lt;/span> Мобильные приложения&lt;/h3>
+&lt;h2 id="реализации">&lt;span class="section-num">7&lt;/span> Реализации&lt;/h2>
+&lt;h3 id="мобильные-приложения">&lt;span class="section-num">7.1&lt;/span> Мобильные приложения&lt;/h3>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/11/14/org-mode-android/">Org-mode. Приложения Android&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;h3 id="редакторы">&lt;span class="section-num">5.2&lt;/span> Редакторы&lt;/h3>
-&lt;h4 id="vs-code">&lt;span class="section-num">5.2.1&lt;/span> VS Code&lt;/h4>
+&lt;h3 id="редакторы">&lt;span class="section-num">7.2&lt;/span> Редакторы&lt;/h3>
+&lt;h4 id="vs-code">&lt;span class="section-num">7.2.1&lt;/span> VS Code&lt;/h4>
 &lt;ul>
 &lt;li>VS Code Org Mode&lt;/li>
 &lt;li>Сайт: &lt;a href="https://vscode-org-mode.github.io/vscode-org-mode/" target="_blank" rel="noopener">https://vscode-org-mode.github.io/vscode-org-mode/&lt;/a>&lt;/li>
@@ -4666,10 +4803,12 @@ userи shell commandsотсортированы по алфавиту.&lt;/p>
 &lt;li>&lt;code>cisco&lt;/code>: &lt;a href="https://yamadharma.github.io/ru/post/2021/06/16/cisco-administration/">Администрирование Cisco&lt;/a>&lt;/li>
 &lt;li>&lt;code>emacs&lt;/code>: &lt;a href="https://yamadharma.github.io/ru/post/2020/12/24/emacs/">Emacs&lt;/a>&lt;/li>
 &lt;li>&lt;code>gentoo&lt;/code>&lt;sup id="fnref:3">&lt;a href="#fn:3" class="footnote-ref" role="doc-noteref">3&lt;/a>&lt;/sup>: &lt;a href="https://yamadharma.github.io/ru/post/2022/09/17/linux-gentoo-distribution/">Linux. Дистрибутив Gentoo&lt;/a>&lt;/li>
-&lt;li>&lt;code>hard&lt;/code>:&lt;/li>
 &lt;li>&lt;code>git&lt;/code>: &lt;a href="https://yamadharma.github.io/ru/post/2020/12/07/git-cvs/">Система контроля версий git&lt;/a>&lt;/li>
+&lt;li>&lt;code>hard&lt;/code>:&lt;/li>
 &lt;li>&lt;code>hugo&lt;/code>: &lt;a href="https://yamadharma.github.io/ru/post/2020/12/07/hugo-site-generator/">Генератор статических сайтов Hugo&lt;/a>&lt;/li>
 &lt;li>&lt;code>ipv6&lt;/code>: &lt;a href="https://yamadharma.github.io/ru/post/2023/06/26/ipv6-protocol/">Протокол IPv6&lt;/a>&lt;/li>
+&lt;li>&lt;code>latex3&lt;/code>: &lt;a href="https://yamadharma.github.io/ru/post/2024/01/01/latex3/">Язык программирования LaTeX3&lt;/a>&lt;/li>
+&lt;li>&lt;code>latex&lt;/code>: &lt;a href="https://yamadharma.github.io/ru/post/2024/01/01/latex/">Система LaTeX&lt;/a>&lt;/li>
 &lt;li>&lt;code>linux&lt;/code>: &lt;a href="https://yamadharma.github.io/ru/post/2023/06/07/linux-administration/">Администрирование Linux&lt;/a>&lt;/li>
 &lt;li>&lt;code>network&lt;/code>:&lt;/li>
 &lt;li>&lt;code>org_mode&lt;/code>: &lt;a href="https://yamadharma.github.io/ru/post/2021/10/14/org-mode/">Org-mode&lt;/a>&lt;/li>
@@ -5113,8 +5252,9 @@ userи shell commandsотсортированы по алфавиту.&lt;/p>
 &lt;/ul>
 &lt;/li>
 &lt;li>&lt;a href="#фреймворки">&lt;span class="section-num">6&lt;/span> Фреймворки&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#разное">&lt;span class="section-num">7&lt;/span> Разное&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#ресурсы">&lt;span class="section-num">8&lt;/span> Ресурсы&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#программирование-в-emacs">&lt;span class="section-num">7&lt;/span> Программирование в Emacs&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#разное">&lt;span class="section-num">8&lt;/span> Разное&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#ресурсы">&lt;span class="section-num">9&lt;/span> Ресурсы&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/nav>
 &lt;/details>
@@ -5125,7 +5265,6 @@ userи shell commandsотсортированы по алфавиту.&lt;/p>
 &lt;h2 id="конфигурация-emacs">&lt;span class="section-num">2&lt;/span> Конфигурация Emacs&lt;/h2>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/12/23/emacs-configuration-sets/">Наборы конфигураций Emacs&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/12/23/emacs-deprecated-cl/">Emacs. Устаревшая библиотека cl&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;h2 id="типы-операций-выполняемые-в-emacs">&lt;span class="section-num">3&lt;/span> Типы операций, выполняемые в Emacs&lt;/h2>
 &lt;ul>
@@ -5159,6 +5298,7 @@ userи shell commandsотсортированы по алфавиту.&lt;/p>
 &lt;/ul>
 &lt;h2 id="пакеты">&lt;span class="section-num">5&lt;/span> Пакеты&lt;/h2>
 &lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/12/18/emacs-package-management/">Emacs. Управление пакетами&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/12/25/emacs-outline-cycling/">Emacs. Режим структуры&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/05/19/emacs-languagetool-support/">Emacs. Поддержка LanguageTool&lt;/a>&lt;/li>
 &lt;/ul>
@@ -5181,7 +5321,11 @@ userи shell commandsотсортированы по алфавиту.&lt;/p>
 &lt;ul>
 &lt;li>Системы завершения: &lt;a href="https://yamadharma.github.io/ru/post/2022/08/15/emacs-completion-systems/">Emacs. Completion systems&lt;/a>.&lt;/li>
 &lt;/ul>
-&lt;h2 id="разное">&lt;span class="section-num">7&lt;/span> Разное&lt;/h2>
+&lt;h2 id="программирование-в-emacs">&lt;span class="section-num">7&lt;/span> Программирование в Emacs&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/12/23/emacs-deprecated-cl/">Emacs. Устаревшая библиотека cl&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="разное">&lt;span class="section-num">8&lt;/span> Разное&lt;/h2>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/01/03/emacs-basics/">Emacs. Основы работы&lt;/a>&lt;/li>
 &lt;li>Написание кода для конфигурирования Emacs
@@ -5191,7 +5335,7 @@ userи shell commandsотсортированы по алфавиту.&lt;/p>
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
-&lt;h2 id="ресурсы">&lt;span class="section-num">8&lt;/span> Ресурсы&lt;/h2>
+&lt;h2 id="ресурсы">&lt;span class="section-num">9&lt;/span> Ресурсы&lt;/h2>
 &lt;ul>
 &lt;li>Список ресурсов для Emacs
 &lt;ul>

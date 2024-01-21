@@ -1,4 +1,161 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>emacs | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/emacs/</link><atom:link href="https://yamadharma.github.io/ru/tag/emacs/index.xml" rel="self" type="application/rss+xml"/><description>emacs</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>ru-ru</language><copyright>© 2024 Dmitry S. Kulyabov</copyright><lastBuildDate>Sun, 14 Jan 2024 18:35:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url><title>emacs</title><link>https://yamadharma.github.io/ru/tag/emacs/</link></image><item><title>Emacs. Поддержка LSP</title><link>https://yamadharma.github.io/ru/post/2024/01/14/emacs-lsp/</link><pubDate>Sun, 14 Jan 2024 18:35:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2024/01/14/emacs-lsp/</guid><description>&lt;p>Emacs. Поддержка LSP.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>emacs | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/emacs/</link><atom:link href="https://yamadharma.github.io/ru/tag/emacs/index.xml" rel="self" type="application/rss+xml"/><description>emacs</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>ru-ru</language><copyright>© 2024 Dmitry S. Kulyabov</copyright><lastBuildDate>Fri, 19 Jan 2024 12:15:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url><title>emacs</title><link>https://yamadharma.github.io/ru/tag/emacs/</link></image><item><title>Emacs. Пакеты. Gnuplot</title><link>https://yamadharma.github.io/ru/post/2024/01/19/emacs-gnuplot/</link><pubDate>Fri, 19 Jan 2024 12:15:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2024/01/19/emacs-gnuplot/</guid><description>&lt;p>Поддержка gnuplot в Emacs.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#настройка-пакета">&lt;span class="section-num">2&lt;/span> Настройка пакета&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#использование">&lt;span class="section-num">3&lt;/span> Использование&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#ручной-запуск">&lt;span class="section-num">3.1&lt;/span> Ручной запуск&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#клавиатурные-сочетания">&lt;span class="section-num">3.2&lt;/span> Клавиатурные сочетания&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>Репозиторий: &lt;a href="https://github.com/emacs-gnuplot/gnuplot" target="_blank" rel="noopener">https://github.com/emacs-gnuplot/gnuplot&lt;/a>&lt;/li>
+&lt;li>Позволяет запускать файлы gnuplot из редактора Emacs.&lt;/li>
+&lt;li>Основные свойства:
+&lt;ul>
+&lt;li>Подсветка синтаксиса и отступы для сценариев gnuplot.&lt;/li>
+&lt;li>Интерактивные сеансы gnuplot.&lt;/li>
+&lt;li>Встроенное отображение графиков gnuplot.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="настройка-пакета">&lt;span class="section-num">2&lt;/span> Настройка пакета&lt;/h2>
+&lt;ul>
+&lt;li>Подключите пакет:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nf">autoload&lt;/span> &lt;span class="ss">&amp;#39;gnuplot-mode&lt;/span> &lt;span class="s">&amp;#34;gnuplot&amp;#34;&lt;/span> &lt;span class="s">&amp;#34;Gnuplot major mode&amp;#34;&lt;/span> &lt;span class="no">t&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nf">autoload&lt;/span> &lt;span class="ss">&amp;#39;gnuplot-make-buffer&lt;/span> &lt;span class="s">&amp;#34;gnuplot&amp;#34;&lt;/span> &lt;span class="s">&amp;#34;open a buffer in gnuplot-mode&amp;#34;&lt;/span> &lt;span class="no">t&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nb">setq&lt;/span> &lt;span class="nv">auto-mode-alist&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nf">append&lt;/span> &lt;span class="o">&amp;#39;&lt;/span>&lt;span class="p">((&lt;/span>&lt;span class="s">&amp;#34;\\.gp$&amp;#34;&lt;/span> &lt;span class="o">.&lt;/span> &lt;span class="nv">gnuplot-mode&lt;/span>&lt;span class="p">))&lt;/span> &lt;span class="nv">auto-mode-alist&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="использование">&lt;span class="section-num">3&lt;/span> Использование&lt;/h2>
+&lt;h3 id="ручной-запуск">&lt;span class="section-num">3.1&lt;/span> Ручной запуск&lt;/h3>
+&lt;ul>
+&lt;li>Ручной запуск режима gnuplot:
+&lt;ul>
+&lt;li>&lt;code>M-x gnuplot-mode&lt;/code>: запустить режим &lt;code>gnuplot&lt;/code> в текущем буфере;&lt;/li>
+&lt;li>&lt;code>M-x gnuplot-make-buffer&lt;/code>: открыть новый буфер и запустить режим &lt;code>gnuplot&lt;/code> в этом буфере.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="клавиатурные-сочетания">&lt;span class="section-num">3.2&lt;/span> Клавиатурные сочетания&lt;/h3>
+&lt;div class="table-caption">
+&lt;span class="table-number">&amp;#1058;&amp;#1072;&amp;#1073;&amp;#1083;&amp;#1080;&amp;#1094;&amp;#1072; 1:&lt;/span>
+Клавиатурные сочетания режима gnuplot-mode
+&lt;/div>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Сочетание&lt;/th>
+&lt;th>Описание&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>C-c C-l&lt;/td>
+&lt;td>отправить текущую строку в gnuplot&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>C-c C-v&lt;/td>
+&lt;td>отправить текущую строку в gnuplot и перейти на следующую строку&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>C-c C-r&lt;/td>
+&lt;td>отправить текущий регион в gnuplot&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>C-c C-b&lt;/td>
+&lt;td>отправить весь буфер в gnuplot&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>C-c C-f&lt;/td>
+&lt;td>отправить файл в gnuplot&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>C-c C-i&lt;/td>
+&lt;td>вставить имя файла под курсором&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>C-c C-n&lt;/td>
+&lt;td>отменить параметр установки в текущей строке&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>C-c C-c&lt;/td>
+&lt;td>закомментировать регион&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>C-c C-o&lt;/td>
+&lt;td>установить аргументы для команды под курсором&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>S-mouse-2&lt;/td>
+&lt;td>установить аргументы для команды под курсором мыши&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>C-c C-d&lt;/td>
+&lt;td>просмотреть info-документацию&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>C-c C-e&lt;/td>
+&lt;td>&lt;code>show-gnuplot-buffer&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>C-c C-k&lt;/td>
+&lt;td>завершить процесс gnuplot&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>C-c C-z&lt;/td>
+&lt;td>настроить режим gnuplot&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>M-tab или M-ret&lt;/td>
+&lt;td>дописать команду&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>ret&lt;/td>
+&lt;td>новая строка и отступ&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>tab&lt;/td>
+&lt;td>отступ текущей строки&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;ul>
+&lt;li>За исключением команд отправки строки в gnuplot, эти команды работают и в буфере командного интерпретатора gnuplot.&lt;/li>
+&lt;/ul>
+&lt;div class="table-caption">
+&lt;span class="table-number">&amp;#1058;&amp;#1072;&amp;#1073;&amp;#1083;&amp;#1080;&amp;#1094;&amp;#1072; 2:&lt;/span>
+Клавиатурные сочетания буфера командного интерпретатора gnuplot
+&lt;/div>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Сочетание&lt;/th>
+&lt;th>Описание&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>M-C-p&lt;/td>
+&lt;td>построчно отображать самый последний буфер скрипта&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>M-C-f&lt;/td>
+&lt;td>сохраните текущий буфер скрипта и загрузите файл&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>C-c C-e&lt;/td>
+&lt;td>вернуться к последнему буферу скрипта&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table></description></item><item><title>Emacs. Поддержка LSP</title><link>https://yamadharma.github.io/ru/post/2024/01/14/emacs-lsp/</link><pubDate>Sun, 14 Jan 2024 18:35:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2024/01/14/emacs-lsp/</guid><description>&lt;p>Emacs. Поддержка LSP.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
 &lt;nav id="TableOfContents">
@@ -64,6 +221,7 @@
 &lt;li>&lt;a href="#burly">&lt;span class="section-num">1.7&lt;/span> Burly&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#bufler-dot-el">&lt;span class="section-num">1.8&lt;/span> Bufler.el&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#tabspaces">&lt;span class="section-num">1.9&lt;/span> Tabspaces&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#ibuffer">&lt;span class="section-num">1.10&lt;/span> IBuffer&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
@@ -124,6 +282,13 @@
 &lt;ul>
 &lt;li>Репозиторий: &lt;a href="https://github.com/mclear-tools/tabspaces" target="_blank" rel="noopener">https://github.com/mclear-tools/tabspaces&lt;/a>&lt;/li>
 &lt;li>Использует &lt;code>tab-bar.el&lt;/code> и &lt;code>project.el&lt;/code> для создания изолированных от буфера рабочих пространств (&lt;em>пространств вкладок&lt;/em>).&lt;/li>
+&lt;/ul>
+&lt;h3 id="ibuffer">&lt;span class="section-num">1.10&lt;/span> IBuffer&lt;/h3>
+&lt;ul>
+&lt;li>Информация: &lt;a href="https://www.emacswiki.org/emacs/IbufferMode" target="_blank" rel="noopener">https://www.emacswiki.org/emacs/IbufferMode&lt;/a>&lt;/li>
+&lt;li>В составе Emacs начиная с версии 22.&lt;/li>
+&lt;li>Замена встроенной команды &lt;code>list-buffer&lt;/code>.&lt;/li>
+&lt;li>Позволяет программно группировать буферы.&lt;/li>
 &lt;/ul></description></item><item><title>Emacs. Пакет Centaur tabs</title><link>https://yamadharma.github.io/ru/post/2024/01/08/emacs-centaur-tabs/</link><pubDate>Mon, 08 Jan 2024 20:23:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2024/01/08/emacs-centaur-tabs/</guid><description>&lt;p>Emacs. Пакет Centaur tabs.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
@@ -5496,26 +5661,31 @@ userи shell commandsотсортированы по алфавиту.&lt;/p>
 &lt;li>&lt;a href="#типы-операций-выполняемые-в-emacs">&lt;span class="section-num">3&lt;/span> Типы операций, выполняемые в Emacs&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#настройка">&lt;span class="section-num">4&lt;/span> Настройка&lt;/a>
 &lt;ul>
-&lt;li>&lt;a href="#организация-работы">&lt;span class="section-num">4.1&lt;/span> Организация работы&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#поддержка-языков-программирования">&lt;span class="section-num">4.2&lt;/span> Поддержка языков программирования&lt;/a>
+&lt;li>&lt;a href="#внешний-вид">&lt;span class="section-num">4.1&lt;/span> Внешний вид&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#организация-работы">&lt;span class="section-num">4.2&lt;/span> Организация работы&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#поддержка-языков-программирования">&lt;span class="section-num">4.3&lt;/span> Поддержка языков программирования&lt;/a>
 &lt;ul>
-&lt;li>&lt;a href="#lsp">&lt;span class="section-num">4.2.1&lt;/span> LSP&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#julia">&lt;span class="section-num">4.2.2&lt;/span> Julia&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#lsp">&lt;span class="section-num">4.3.1&lt;/span> LSP&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#julia">&lt;span class="section-num">4.3.2&lt;/span> Julia&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#графики-и-диаграммы">&lt;span class="section-num">4.3.3&lt;/span> Графики и диаграммы&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;li>&lt;a href="#языки-разметки">&lt;span class="section-num">4.3&lt;/span> Языки разметки&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#работа-с-текстом">&lt;span class="section-num">4.4&lt;/span> Работа с текстом&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#внешний-вид">&lt;span class="section-num">4.5&lt;/span> Внешний вид&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#поддержка-языков-программирования">&lt;span class="section-num">4.6&lt;/span> Поддержка языков программирования&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#работа-с-литературой">&lt;span class="section-num">4.4&lt;/span> Работа с литературой&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#работа-с-пакетами">&lt;span class="section-num">4.5&lt;/span> Работа с пакетами&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#работа-с-текстом">&lt;span class="section-num">4.6&lt;/span> Работа с текстом&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#самоорганизация">&lt;span class="section-num">4.7&lt;/span> Самоорганизация&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#работа-с-литературой">&lt;span class="section-num">4.8&lt;/span> Работа с литературой&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#языки-разметки">&lt;span class="section-num">4.8&lt;/span> Языки разметки&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#легковесные-языки-разметки">&lt;span class="section-num">4.8.1&lt;/span> Легковесные языки разметки&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#latex">&lt;span class="section-num">4.8.2&lt;/span> LaTeX&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;li>&lt;a href="#работа-с-пакетами">&lt;span class="section-num">5&lt;/span> Работа с пакетами&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#фреймворки">&lt;span class="section-num">6&lt;/span> Фреймворки&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#программирование-в-emacs">&lt;span class="section-num">7&lt;/span> Программирование в Emacs&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#разное">&lt;span class="section-num">8&lt;/span> Разное&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#ресурсы">&lt;span class="section-num">9&lt;/span> Ресурсы&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#фреймворки">&lt;span class="section-num">5&lt;/span> Фреймворки&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#программирование-в-emacs">&lt;span class="section-num">6&lt;/span> Программирование в Emacs&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#разное">&lt;span class="section-num">7&lt;/span> Разное&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#ресурсы">&lt;span class="section-num">8&lt;/span> Ресурсы&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/nav>
 &lt;/details>
@@ -5532,41 +5702,45 @@ userи shell commandsотсортированы по алфавиту.&lt;/p>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/10/03/emacs-directory-browsing/">Emacs. Просмотр каталогов&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;h2 id="настройка">&lt;span class="section-num">4&lt;/span> Настройка&lt;/h2>
-&lt;h3 id="организация-работы">&lt;span class="section-num">4.1&lt;/span> Организация работы&lt;/h3>
-&lt;ul>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/12/25/emacs-outline-cycling/">Emacs. Режим структуры&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2024/01/14/emacs-workspaces/">Emacs. Рабочее пространство&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/12/13/emacs-tabs/">Emacs. Табы&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;h3 id="поддержка-языков-программирования">&lt;span class="section-num">4.2&lt;/span> Поддержка языков программирования&lt;/h3>
-&lt;h4 id="lsp">&lt;span class="section-num">4.2.1&lt;/span> LSP&lt;/h4>
-&lt;ul>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2024/01/14/emacs-lsp/">Emacs. Поддержка LSP&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;h4 id="julia">&lt;span class="section-num">4.2.2&lt;/span> Julia&lt;/h4>
-&lt;ul>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/01/21/emacs-julia/">Emacs. Julia&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;h3 id="языки-разметки">&lt;span class="section-num">4.3&lt;/span> Языки разметки&lt;/h3>
-&lt;ul>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/10/14/org-mode/">Org-mode&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;h3 id="работа-с-текстом">&lt;span class="section-num">4.4&lt;/span> Работа с текстом&lt;/h3>
-&lt;ul>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/08/01/emacs-spellchecking/">Emacs. Проверка правописания&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/05/19/emacs-languagetool-support/">Emacs. Поддержка LanguageTool&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/10/19/emacs-bibliography/">Emacs. Работа с библиографией&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;h3 id="внешний-вид">&lt;span class="section-num">4.5&lt;/span> Внешний вид&lt;/h3>
+&lt;h3 id="внешний-вид">&lt;span class="section-num">4.1&lt;/span> Внешний вид&lt;/h3>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/02/15/emacs-themes/">Emacs. Темы&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/09/18/emacs-bells-whistles/">Emacs. Украшательства&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2024/01/06/emacs-preview-mathematics/">Emacs. Визуализация математики&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;h3 id="поддержка-языков-программирования">&lt;span class="section-num">4.6&lt;/span> Поддержка языков программирования&lt;/h3>
+&lt;h3 id="организация-работы">&lt;span class="section-num">4.2&lt;/span> Организация работы&lt;/h3>
 &lt;ul>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/09/29/emacs-latex-support/">Emacs. Поддержка LaTeX&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/12/25/emacs-outline-cycling/">Emacs. Режим структуры&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2024/01/14/emacs-workspaces/">Emacs. Рабочее пространство&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/12/13/emacs-tabs/">Emacs. Табы&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="поддержка-языков-программирования">&lt;span class="section-num">4.3&lt;/span> Поддержка языков программирования&lt;/h3>
+&lt;h4 id="lsp">&lt;span class="section-num">4.3.1&lt;/span> LSP&lt;/h4>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2024/01/14/emacs-lsp/">Emacs. Поддержка LSP&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h4 id="julia">&lt;span class="section-num">4.3.2&lt;/span> Julia&lt;/h4>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/01/21/emacs-julia/">Emacs. Julia&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h4 id="графики-и-диаграммы">&lt;span class="section-num">4.3.3&lt;/span> Графики и диаграммы&lt;/h4>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2024/01/19/emacs-gnuplot/">Emacs. Пакеты. Gnuplot&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/10/20/emacs-plantuml/">Emacs. Plantuml&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="работа-с-литературой">&lt;span class="section-num">4.4&lt;/span> Работа с литературой&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/08/08/emacs-org-noter/">Emacs. Org-noter&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/10/19/emacs-bibliography/">Emacs. Работа с библиографией&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="работа-с-пакетами">&lt;span class="section-num">4.5&lt;/span> Работа с пакетами&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/12/18/emacs-package-management/">Emacs. Управление пакетами&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="работа-с-текстом">&lt;span class="section-num">4.6&lt;/span> Работа с текстом&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/08/01/emacs-spellchecking/">Emacs. Проверка правописания&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/05/19/emacs-languagetool-support/">Emacs. Поддержка LanguageTool&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;h3 id="самоорганизация">&lt;span class="section-num">4.7&lt;/span> Самоорганизация&lt;/h3>
 &lt;ul>
@@ -5577,23 +5751,24 @@ userи shell commandsотсортированы по алфавиту.&lt;/p>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/06/15/emacs-calendar/">Emacs. Календарь&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/09/11/emacs-contacts/">Emacs. Контакты&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;h3 id="работа-с-литературой">&lt;span class="section-num">4.8&lt;/span> Работа с литературой&lt;/h3>
+&lt;h3 id="языки-разметки">&lt;span class="section-num">4.8&lt;/span> Языки разметки&lt;/h3>
+&lt;h4 id="легковесные-языки-разметки">&lt;span class="section-num">4.8.1&lt;/span> Легковесные языки разметки&lt;/h4>
 &lt;ul>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/08/08/emacs-org-noter/">Emacs. Org-noter&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/10/14/org-mode/">Org-mode&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;h2 id="работа-с-пакетами">&lt;span class="section-num">5&lt;/span> Работа с пакетами&lt;/h2>
+&lt;h4 id="latex">&lt;span class="section-num">4.8.2&lt;/span> LaTeX&lt;/h4>
 &lt;ul>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/12/18/emacs-package-management/">Emacs. Управление пакетами&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/09/29/emacs-latex-support/">Emacs. Поддержка LaTeX&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;h2 id="фреймворки">&lt;span class="section-num">6&lt;/span> Фреймворки&lt;/h2>
+&lt;h2 id="фреймворки">&lt;span class="section-num">5&lt;/span> Фреймворки&lt;/h2>
 &lt;ul>
 &lt;li>Системы завершения: &lt;a href="https://yamadharma.github.io/ru/post/2022/08/15/emacs-completion-systems/">Emacs. Completion systems&lt;/a>.&lt;/li>
 &lt;/ul>
-&lt;h2 id="программирование-в-emacs">&lt;span class="section-num">7&lt;/span> Программирование в Emacs&lt;/h2>
+&lt;h2 id="программирование-в-emacs">&lt;span class="section-num">6&lt;/span> Программирование в Emacs&lt;/h2>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/12/23/emacs-deprecated-cl/">Emacs. Устаревшая библиотека cl&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;h2 id="разное">&lt;span class="section-num">8&lt;/span> Разное&lt;/h2>
+&lt;h2 id="разное">&lt;span class="section-num">7&lt;/span> Разное&lt;/h2>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/01/03/emacs-basics/">Emacs. Основы работы&lt;/a>&lt;/li>
 &lt;li>Написание кода для конфигурирования Emacs
@@ -5603,7 +5778,7 @@ userи shell commandsотсортированы по алфавиту.&lt;/p>
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
-&lt;h2 id="ресурсы">&lt;span class="section-num">9&lt;/span> Ресурсы&lt;/h2>
+&lt;h2 id="ресурсы">&lt;span class="section-num">8&lt;/span> Ресурсы&lt;/h2>
 &lt;ul>
 &lt;li>Список ресурсов для Emacs
 &lt;ul>

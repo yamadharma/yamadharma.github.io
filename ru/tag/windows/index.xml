@@ -3,8 +3,22 @@
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
 &lt;nav id="TableOfContents">
 &lt;ul>
-&lt;li>&lt;a href="#варианты-установки">&lt;span class="section-num">1&lt;/span> Варианты установки&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#разделы-диска">&lt;span class="section-num">2&lt;/span> Разделы диска&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#варианты-установки">&lt;span class="section-num">1&lt;/span> Варианты установки&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#ограничения">&lt;span class="section-num">1.1&lt;/span> Ограничения&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#uefi">&lt;span class="section-num">1.2&lt;/span> UEFI&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#стандартный-uefi">&lt;span class="section-num">1.2.1&lt;/span> Стандартный UEFI&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#сторонние-загрузчики-uefi">&lt;span class="section-num">1.2.2&lt;/span> Сторонние загрузчики UEFI&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#разделы-диска">&lt;span class="section-num">2&lt;/span> Разделы диска&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#разбивка-диска-под-linux">&lt;span class="section-num">2.1&lt;/span> Разбивка диска под Linux&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
 &lt;li>&lt;a href="#подготовка-файлов">&lt;span class="section-num">3&lt;/span> Подготовка файлов&lt;/a>
 &lt;ul>
 &lt;li>&lt;a href="#использовании-одного-раздела-fat32-и-одного-раздела-ntfs">&lt;span class="section-num">3.1&lt;/span> Использовании одного раздела FAT32 и одного раздела NTFS&lt;/a>
@@ -30,7 +44,27 @@
 &lt;/li>
 &lt;/ul>
 &lt;/li>
+&lt;/ul>
+&lt;h3 id="ограничения">&lt;span class="section-num">1.1&lt;/span> Ограничения&lt;/h3>
+&lt;ul>
+&lt;li>В зависимости от размера файла &lt;code>sources\install.wim&lt;/code> может потребоваться один раздел FAT32 или один раздел FAT32 и раздел NTFS.&lt;/li>
+&lt;li>Если размер &lt;code>sources\install.wim&lt;/code> превышает 4 ГБ, необходимо использовать раздел FAT32 + NTFS, поскольку файловая система FAT32 не поддерживает файлы размером более 4 ГБ.&lt;/li>
+&lt;/ul>
+&lt;h3 id="uefi">&lt;span class="section-num">1.2&lt;/span> UEFI&lt;/h3>
+&lt;ul>
 &lt;li>Рассматриваем вариант с UEFI.&lt;/li>
+&lt;/ul>
+&lt;h4 id="стандартный-uefi">&lt;span class="section-num">1.2.1&lt;/span> Стандартный UEFI&lt;/h4>
+&lt;ul>
+&lt;li>Стандартный UEFI видит только партиции с файловой системой FAT32.&lt;/li>
+&lt;li>Поэтому содержимое образа необходимо скопировать на партицию с NTFS.&lt;/li>
+&lt;li>А на партицию с FAT32 поместить файлы для начальной загрузки установщика Windows.&lt;/li>
+&lt;/ul>
+&lt;h4 id="сторонние-загрузчики-uefi">&lt;span class="section-num">1.2.2&lt;/span> Сторонние загрузчики UEFI&lt;/h4>
+&lt;ul>
+&lt;li>Некоторые загрузчики UEFI поддерживают файловую систему NTFS (см. &lt;a href="https://yamadharma.github.io/ru/post/2024/01/29/refind-boot-manager/">Загрузчик rEFInd&lt;/a>).&lt;/li>
+&lt;li>В этом случае можно ограничиться партицией с файловой системой NTFS.&lt;/li>
+&lt;li>Содержимое образа необходимо скопировать на партицию с NTFS.&lt;/li>
 &lt;/ul>
 &lt;h2 id="разделы-диска">&lt;span class="section-num">2&lt;/span> Разделы диска&lt;/h2>
 &lt;div class="table-caption">
@@ -68,10 +102,6 @@
 &lt;/tr>
 &lt;/tbody>
 &lt;/table>
-&lt;ul>
-&lt;li>В зависимости от размера файла &lt;code>sources\install.wim&lt;/code> может потребоваться один раздел FAT32 или один раздел FAT32 и раздел NTFS.&lt;/li>
-&lt;li>Если размер &lt;code>sources\install.wim&lt;/code> превышает 4 ГБ, необходимо использовать раздел FAT32 + NTFS, поскольку файловая система FAT32 не поддерживает файлы размером более 4 ГБ.&lt;/li>
-&lt;/ul>
 &lt;div class="table-caption">
 &lt;span class="table-number">&amp;#1058;&amp;#1072;&amp;#1073;&amp;#1083;&amp;#1080;&amp;#1094;&amp;#1072; 2:&lt;/span>
 Структура разделов для размещения файлов установщика Windows
@@ -101,6 +131,27 @@
 &lt;li>Установочный раздел нужно разместить после раздела Windows и образа восстановления.&lt;/li>
 &lt;li>Установочный раздел также можно создать на другом жестком диске или внешнем USB-накопителе.&lt;/li>
 &lt;/ul>
+&lt;h3 id="разбивка-диска-под-linux">&lt;span class="section-num">2.1&lt;/span> Разбивка диска под Linux&lt;/h3>
+&lt;ul>
+&lt;li>Создадим на диске партиции:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">partprobe /dev/sda
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sgdisk --zap-all /dev/sda
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">## ef00 EFI system partition&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sgdisk -n 0:0:+512M -t 0:ef00 -c 0:EFI /dev/sda
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">## 0c01 Microsoft reserved&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sgdisk -n 0:0:+128M -t 0:0c01 /dev/sda
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">## 0700 Microsoft basic data&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sgdisk -n 0:0:+60G -t 0:0700 -c 0:windows /dev/sda
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sgdisk -n 0:0:+8G -t 0:0700 /dev/sda
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sgdisk -n 0:0:+10M -t 0:0700 /dev/sda
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Отформатируем диски:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mkfs.ntfs -f -L windows /dev/sda3
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mkfs.vfat -n fat -F32 /dev/sda4
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mkfs.ntfs -f -L windistro /dev/sda5
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
 &lt;h2 id="подготовка-файлов">&lt;span class="section-num">3&lt;/span> Подготовка файлов&lt;/h2>
 &lt;ul>
 &lt;li>Скопируйте файлы из ISO-образа установщика Windows на жёсткий диск.&lt;/li>
@@ -129,18 +180,30 @@
 &lt;/ul>
 &lt;h4 id="использование-linux">&lt;span class="section-num">3.1.2&lt;/span> Использование Linux&lt;/h4>
 &lt;ul>
-&lt;li>Предположим, что
+&lt;li>
+&lt;p>Предположим, что&lt;/p>
 &lt;ul>
 &lt;li>диск ISO установщика Win 10 смонтирован в &lt;code>/media/cdrom/&lt;/code>;&lt;/li>
 &lt;li>раздел FAT32 монтируется в &lt;code>/mnt/fat/&lt;/code>;&lt;/li>
 &lt;li>раздел NTFS монтируется в &lt;code>/mnt/ntfs/&lt;/code>.&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;li>Скопируйте файлы:
+&lt;li>
+&lt;p>Смонтируйте диски:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mkdir -p /mnt/&lt;span class="o">{&lt;/span>fat,ntfs&lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mount /dev/sr0 /media/cdrom/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mount /dev/sda4 /mnt/fat
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mount /dev/sda5 /mnt/ntfs
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Скопируйте файлы на раздел NTFS:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">rsync -ai /media/cdrom/ /mnt/ntfs/
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Скопируйте необходимые файлы на раздел FAT32 (не нужно при наличии загрузчика типа refind):&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">rsync -ai --exclude&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;sources/&amp;#39;&lt;/span> /media/cdrom/ /mnt/fat/
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mkdir /mnt/fat/sources
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">cp /media/cdrom/sources/boot.wim /mnt/fat/sources/
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">rsync -ai /media/cdrom/ /mnt/ntfs/
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul></description></item><item><title>Пакетный менеджер для Windows. WinGet</title><link>https://yamadharma.github.io/ru/post/2023/10/01/package-manager-windows-winget/</link><pubDate>Sun, 01 Oct 2023 18:53:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/10/01/package-manager-windows-winget/</guid><description>&lt;p>Пакетный менеджер для Windows. WinGet.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>

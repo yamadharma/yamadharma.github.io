@@ -16,6 +16,7 @@
 &lt;/li>
 &lt;li>Для установки в виртуальную машину используется дистрибутив Linux Fedora (&lt;a href="https://getfedora.org" target="_blank" rel="noopener">https://getfedora.org&lt;/a>), вариант с менеджером окон &lt;em>sway&lt;/em> (&lt;a href="https://fedoraproject.org/spins/sway/" target="_blank" rel="noopener">https://fedoraproject.org/spins/sway/&lt;/a>).&lt;/li>
 &lt;li>При выполнении лабораторной работы на своей технике вам необходимо скачать необходимый образ операционной системы (&lt;a href="https://fedoraproject.org/spins/sway/download/index.html" target="_blank" rel="noopener">https://fedoraproject.org/spins/sway/download/index.html&lt;/a>).&lt;/li>
+&lt;li>В дисплейных классах можно воспользоваться образом в каталоге &lt;code>/afs/dk.sci.pfu.edu.ru/common/files/iso&lt;/code>.&lt;/li>
 &lt;/ul>
 &lt;h3 id="соглашения-об-именовании">&lt;span class="section-num">2.2&lt;/span> Соглашения об именовании&lt;/h3>
 &lt;ul>
@@ -90,8 +91,30 @@
 &lt;li>
 &lt;p>Командная строка&lt;/p>
 &lt;ul>
+&lt;li>Зададим отображение информации о настройках VirtualBox на английском.&lt;/li>
+&lt;li>Поэтому следует задать кодировку для отображения свойств VirtualBox:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vboxmanage setproperty language C
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Установим папку для виртуальных машине в &lt;code>/var/tmp/имя_пользователя&lt;/code>:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">VBoxManage setproperty machinefolder /var/tmp/имя_пользователя
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vboxmanage setproperty machinefolder /var/tmp/&lt;span class="k">$(&lt;/span>id -un&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Поверьте, что папка виртуальных машин по умолчанию изменена:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vboxmanage list systemproperties &lt;span class="p">|&lt;/span> grep &lt;span class="s2">&amp;#34;Default machine folder:&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Следующая команда выдаст только каталог:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vboxmanage list systemproperties &lt;span class="p">|&lt;/span> grep &lt;span class="s2">&amp;#34;Default machine folder:&amp;#34;&lt;/span> &lt;span class="p">|&lt;/span> cut -d&lt;span class="s2">&amp;#34;:&amp;#34;&lt;/span> -f2 &lt;span class="p">|&lt;/span> tr -d &lt;span class="s1">&amp;#39; &amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;!--list-separator-->
+&lt;ol start="4">
+&lt;li>
+&lt;p>Установочный образ&lt;/p>
+&lt;ul>
+&lt;li>Перенесите установочный образ в папку &lt;code>/var/tmp/имя_пользователя/iso&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mkdir -p &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>vboxmanage list systemproperties &lt;span class="p">|&lt;/span> grep &lt;span class="s1">&amp;#39;Default machine folder:&amp;#39;&lt;/span> &lt;span class="p">|&lt;/span> cut -d&lt;span class="s1">&amp;#39;:&amp;#39;&lt;/span> -f2 &lt;span class="p">|&lt;/span> tr -d &lt;span class="s1">&amp;#39; &amp;#39;&lt;/span>&lt;span class="k">)&lt;/span>&lt;span class="s2">/iso&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mv Fedora-Sway-Live-x86_64-39-1.5.iso &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>vboxmanage list systemproperties &lt;span class="p">|&lt;/span> grep &lt;span class="s1">&amp;#39;Default machine folder:&amp;#39;&lt;/span> &lt;span class="p">|&lt;/span> cut -d&lt;span class="s1">&amp;#39;:&amp;#39;&lt;/span> -f2 &lt;span class="p">|&lt;/span> tr -d &lt;span class="s1">&amp;#39; &amp;#39;&lt;/span>&lt;span class="k">)&lt;/span>&lt;span class="s2">/iso&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;/li>
@@ -141,30 +164,113 @@
 &lt;/ol>
 &lt;h3 id="создание-виртуальной-машины">&lt;span class="section-num">3.2&lt;/span> Создание виртуальной машины&lt;/h3>
 &lt;ul>
-&lt;li>Запустите менеджер виртуальных машин, введя в командной строке:
+&lt;li>
+&lt;p>Для использования графического интерфейса запустите менеджер виртуальных машин, введя в командной строке:&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">VirtualBox &lt;span class="p">&amp;amp;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
-&lt;li>Создайте новую виртуальную машину.&lt;/li>
-&lt;li>Укажите имя виртуальной машины (ваш логин в дисплейном классе), тип операционной системы &amp;mdash; Linux, Fedora.&lt;/li>
-&lt;li>Укажите размер основной памяти виртуальной машины &amp;mdash; от 2048 МБ.&lt;/li>
-&lt;li>Задайте конфигурацию жёсткого диска &amp;mdash; загрузочный, VDI (VirtualBox Disk Image), динамический виртуальный диск.&lt;/li>
-&lt;li>Задайте размер диска &amp;mdash; 80 ГБ (или больше), его расположение &amp;mdash; в данном случае &lt;code>/var/tmp/имя_пользователя/fedora.vdi&lt;/code>.&lt;/li>
-&lt;li>Выберите в VirtualBox Вашей виртуальной машины. Добавьте новый привод оптических дисков и выберите образ.&lt;/li>
-&lt;li>При установке на собственной технике используйте скачанный образ операционной системы Fedora.&lt;/li>
+&lt;li>
+&lt;p>Создайте новую виртуальную машину в графическом интерфейсе или в командной строке.&lt;/p>
+&lt;ul>
+&lt;li>В командной строке:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vboxmanage createvm --name &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>id -un&lt;span class="k">)&lt;/span>&lt;span class="s2">_os-intro&amp;#34;&lt;/span> --ostype Fedora_64 --register
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Укажите имя виртуальной машины (ваш логин в дисплейном классе), тип операционной системы &amp;mdash; Linux, Fedora.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Укажите размер основной памяти виртуальной машины &amp;mdash; от 2048 МБ.&lt;/p>
+&lt;ul>
+&lt;li>В командной строке:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vboxmanage modifyvm &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>id -un&lt;span class="k">)&lt;/span>&lt;span class="s2">_os-intro&amp;#34;&lt;/span> --memory &lt;span class="m">2048&lt;/span> --acpi on --nic1 nat
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Задайте конфигурацию жёсткого диска &amp;mdash; загрузочный, VDI (VirtualBox Disk Image), динамический виртуальный диск.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Задайте размер диска &amp;mdash; 80 ГБ (или больше), его расположение &amp;mdash; в данном случае &lt;code>/var/tmp/имя_пользователя/имя_машины/имя_машины.vdi&lt;/code>.&lt;/p>
+&lt;ul>
+&lt;li>В командной строке:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vboxmanage createhd --filename &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>vboxmanage list systemproperties &lt;span class="p">|&lt;/span> grep &lt;span class="s1">&amp;#39;Default machine folder:&amp;#39;&lt;/span> &lt;span class="p">|&lt;/span> cut -d&lt;span class="s1">&amp;#39;:&amp;#39;&lt;/span> -f2 &lt;span class="p">|&lt;/span> tr -d &lt;span class="s1">&amp;#39; &amp;#39;&lt;/span>&lt;span class="k">)&lt;/span>&lt;span class="s2">/&lt;/span>&lt;span class="k">$(&lt;/span>id -un&lt;span class="k">)&lt;/span>&lt;span class="s2">_os-intro/&lt;/span>&lt;span class="k">$(&lt;/span>id -un&lt;span class="k">)&lt;/span>&lt;span class="s2">_os-intro.vdi&amp;#34;&lt;/span> --size &lt;span class="m">80000&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Выберите в VirtualBox Вашей виртуальной машины. Добавьте новый привод оптических дисков и выберите образ.&lt;/p>
+&lt;ul>
+&lt;li>В командной строке:
+&lt;ul>
+&lt;li>Подключите загрузку с DVD:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vboxmanage modifyvm &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>id -un&lt;span class="k">)&lt;/span>&lt;span class="s2">_os-intro&amp;#34;&lt;/span> --boot1 dvd
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Добавьте IDE-контроллер:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vboxmanage storagectl &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>id -un&lt;span class="k">)&lt;/span>&lt;span class="s2">_os-intro&amp;#34;&lt;/span> --name &lt;span class="s2">&amp;#34;IDE Controller&amp;#34;&lt;/span> --add ide --controller PIIX4
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Установите созданный вами файл VDI в качестве первого виртуального жесткого диска новой виртуальной машины:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vboxmanage storageattach &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>id -un&lt;span class="k">)&lt;/span>&lt;span class="s2">_os-intro&amp;#34;&lt;/span> --storagectl &lt;span class="s2">&amp;#34;IDE Controller&amp;#34;&lt;/span> --port &lt;span class="m">0&lt;/span> --device &lt;span class="m">0&lt;/span> --type hdd --medium &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>vboxmanage list systemproperties &lt;span class="p">|&lt;/span> grep &lt;span class="s1">&amp;#39;Default machine folder:&amp;#39;&lt;/span> &lt;span class="p">|&lt;/span> cut -d&lt;span class="s1">&amp;#39;:&amp;#39;&lt;/span> -f2 &lt;span class="p">|&lt;/span> tr -d &lt;span class="s1">&amp;#39; &amp;#39;&lt;/span>&lt;span class="k">)&lt;/span>&lt;span class="s2">/&lt;/span>&lt;span class="k">$(&lt;/span>id -un&lt;span class="k">)&lt;/span>&lt;span class="s2">_os-intro/&lt;/span>&lt;span class="k">$(&lt;/span>id -un&lt;span class="k">)&lt;/span>&lt;span class="s2">_os-intro.vdi&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Подключите к виртуальной машине ISO-файл:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vboxmanage storageattach &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>id -un&lt;span class="k">)&lt;/span>&lt;span class="s2">_os-intro&amp;#34;&lt;/span> --storagectl &lt;span class="s2">&amp;#34;IDE Controller&amp;#34;&lt;/span> --port &lt;span class="m">0&lt;/span> --device &lt;span class="m">1&lt;/span> --type dvddrive --medium &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>vboxmanage list systemproperties &lt;span class="p">|&lt;/span> grep &lt;span class="s1">&amp;#39;Default machine folder:&amp;#39;&lt;/span> &lt;span class="p">|&lt;/span> cut -d&lt;span class="s1">&amp;#39;:&amp;#39;&lt;/span> -f2 &lt;span class="p">|&lt;/span> tr -d &lt;span class="s1">&amp;#39; &amp;#39;&lt;/span>&lt;span class="k">)&lt;/span>&lt;span class="s2">/iso/Fedora-Sway-Live-x86_64-39-1.5.iso&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>При установке на собственной технике используйте скачанный образ операционной системы Fedora.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>В качестве графического контроллера поставьте VMSVGA.&lt;/p>
+&lt;ul>
+&lt;li>В командной строке:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vboxmanage modifyvm &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>id -un&lt;span class="k">)&lt;/span>&lt;span class="s2">_os-intro&amp;#34;&lt;/span> --graphicscontroller&lt;span class="o">=&lt;/span>vmsvga
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Включите ускорение 3D.&lt;/p>
+&lt;ul>
+&lt;li>В командной строке:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vboxmanage modifyvm &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>id -un&lt;span class="k">)&lt;/span>&lt;span class="s2">_os-intro&amp;#34;&lt;/span> --accelerate-3d&lt;span class="o">=&lt;/span>on
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Если есть проблемы при отображении, загрузитесь в режиме базовой графики.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Включите общий буфер обмена и перетаскивание объектов между хостом и гостевой ОС.&lt;/p>
+&lt;ul>
+&lt;li>В командной строке:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vboxmanage modifyvm &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>id -un&lt;span class="k">)&lt;/span>&lt;span class="s2">_os-intro&amp;#34;&lt;/span> --clipboard-mode&lt;span class="o">=&lt;/span>bidirectional --drag-and-drop&lt;span class="o">=&lt;/span>bidirectional
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Включите поддержку UEFI.&lt;/p>
+&lt;ul>
+&lt;li>В командной строке:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vboxmanage modifyvm &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>id -un&lt;span class="k">)&lt;/span>&lt;span class="s2">_os-intro&amp;#34;&lt;/span> --firmware&lt;span class="o">=&lt;/span>efi
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
 &lt;/ul>
 &lt;h4 id="видео-создание-виртуальной-машины">&lt;span class="section-num">3.2.1&lt;/span> Видео: Создание виртуальной машины&lt;/h4>
 &lt;nav>
 &lt;div class="nav nav-tabs" id="nav-tab" role="tablist">
 &lt;a class="nav-item nav-link active "
-id="nav-eafdbc" data-toggle="tab" href="#eafdbc"
+id="nav-bacefd" data-toggle="tab" href="#bacefd"
 role="tab" aria-controls="nav-home" aria-selected="true">RuTube&lt;/a>
 &lt;a class="nav-item nav-link "
-id="nav-bcadef" data-toggle="tab" href="#bcadef"
+id="nav-befdac" data-toggle="tab" href="#befdac"
 role="tab" aria-controls="nav-home" aria-selected="true">Youtube&lt;/a>
 &lt;/div>
 &lt;/nav>
 &lt;div class="tab-content" id="nav-tab-content">
-&lt;div class="tab-pane fade show active " id="eafdbc" role="tabpanel" aria-labelledby="nav-1">
+&lt;div class="tab-pane fade show active " id="bacefd" role="tabpanel" aria-labelledby="nav-1">
 &lt;div class="embed video-player">
 &lt;iframe class="rutube-player" type="text/html"
 width="720" height="405"
@@ -174,7 +280,7 @@ allow="clipboard-write" frameborder="0">
 &lt;/iframe>
 &lt;/div>
 &lt;/div>
-&lt;div class="tab-pane fade show " id="bcadef" role="tabpanel" aria-labelledby="nav-1">
+&lt;div class="tab-pane fade show " id="befdac" role="tabpanel" aria-labelledby="nav-1">
 &lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
 &lt;iframe src="https://www.youtube.com/embed/9_Vt7R57Yw4" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video">&lt;/iframe>
 &lt;/div>
@@ -207,15 +313,15 @@ allow="clipboard-write" frameborder="0">
 &lt;nav>
 &lt;div class="nav nav-tabs" id="nav-tab" role="tablist">
 &lt;a class="nav-item nav-link active "
-id="nav-dacebf" data-toggle="tab" href="#dacebf"
+id="nav-aedfbc" data-toggle="tab" href="#aedfbc"
 role="tab" aria-controls="nav-home" aria-selected="true">RuTube&lt;/a>
 &lt;a class="nav-item nav-link "
-id="nav-cbfeda" data-toggle="tab" href="#cbfeda"
+id="nav-efadbc" data-toggle="tab" href="#efadbc"
 role="tab" aria-controls="nav-home" aria-selected="true">Youtube&lt;/a>
 &lt;/div>
 &lt;/nav>
 &lt;div class="tab-content" id="nav-tab-content">
-&lt;div class="tab-pane fade show active " id="dacebf" role="tabpanel" aria-labelledby="nav-1">
+&lt;div class="tab-pane fade show active " id="aedfbc" role="tabpanel" aria-labelledby="nav-1">
 &lt;div class="embed video-player">
 &lt;iframe class="rutube-player" type="text/html"
 width="720" height="405"
@@ -225,7 +331,7 @@ allow="clipboard-write" frameborder="0">
 &lt;/iframe>
 &lt;/div>
 &lt;/div>
-&lt;div class="tab-pane fade show " id="cbfeda" role="tabpanel" aria-labelledby="nav-1">
+&lt;div class="tab-pane fade show " id="efadbc" role="tabpanel" aria-labelledby="nav-1">
 &lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
 &lt;iframe src="https://www.youtube.com/embed/XYYbl5ABN9Q" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video">&lt;/iframe>
 &lt;/div>
@@ -248,7 +354,7 @@ allow="clipboard-write" frameborder="0">
 &lt;h4 id="повышение-комфорта-работы">&lt;span class="section-num">3.4.2&lt;/span> Повышение комфорта работы&lt;/h4>
 &lt;ul>
 &lt;li>Программы для удобства работы в консоли:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf install tmux mc
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf -y install tmux mc
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h4 id="автоматическое-обновление">&lt;span class="section-num">3.4.3&lt;/span> Автоматическое обновление&lt;/h4>
@@ -285,6 +391,9 @@ allow="clipboard-write" frameborder="0">
 &lt;li>Переключитесь на роль супер-пользователя:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sudo -i
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Установите средства разработки:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf -y group install &lt;span class="s2">&amp;#34;Development Tools&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Установите пакет &lt;em>DKMS&lt;/em>:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf -y install dkms
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
@@ -305,6 +414,12 @@ allow="clipboard-write" frameborder="0">
 &lt;li>Нажмите комбинацию &lt;em>Win+Enter&lt;/em> для запуска терминала.&lt;/li>
 &lt;li>Запустите терминальный мультиплексор &lt;em>tmux&lt;/em>:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">tmux
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Создайте конфигурационный файл &lt;code>~/.config/sway/config.d/95-system-keyboard-config.conf&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">touch ~/.config/sway/config.d/95-system-keyboard-config.conf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Отредактируйте конфигурационный файл &lt;code>~/.config/sway/config.d/95-system-keyboard-config.conf&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">exec_always /usr/libexec/sway-systemd/locale1-xkb-config --oneshot
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Переключитесь на роль супер-пользователя:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sudo -i
@@ -327,15 +442,15 @@ allow="clipboard-write" frameborder="0">
 &lt;nav>
 &lt;div class="nav nav-tabs" id="nav-tab" role="tablist">
 &lt;a class="nav-item nav-link active "
-id="nav-cebdaf" data-toggle="tab" href="#cebdaf"
+id="nav-caebfd" data-toggle="tab" href="#caebfd"
 role="tab" aria-controls="nav-home" aria-selected="true">RuTube&lt;/a>
 &lt;a class="nav-item nav-link "
-id="nav-fdbcea" data-toggle="tab" href="#fdbcea"
+id="nav-cadbfe" data-toggle="tab" href="#cadbfe"
 role="tab" aria-controls="nav-home" aria-selected="true">Youtube&lt;/a>
 &lt;/div>
 &lt;/nav>
 &lt;div class="tab-content" id="nav-tab-content">
-&lt;div class="tab-pane fade show active " id="cebdaf" role="tabpanel" aria-labelledby="nav-1">
+&lt;div class="tab-pane fade show active " id="caebfd" role="tabpanel" aria-labelledby="nav-1">
 &lt;div class="embed video-player">
 &lt;iframe class="rutube-player" type="text/html"
 width="720" height="405"
@@ -345,7 +460,7 @@ allow="clipboard-write" frameborder="0">
 &lt;/iframe>
 &lt;/div>
 &lt;/div>
-&lt;div class="tab-pane fade show " id="fdbcea" role="tabpanel" aria-labelledby="nav-1">
+&lt;div class="tab-pane fade show " id="cadbfe" role="tabpanel" aria-labelledby="nav-1">
 &lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
 &lt;iframe src="https://www.youtube.com/embed/ayLha0dDiQw" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video">&lt;/iframe>
 &lt;/div>
@@ -379,15 +494,15 @@ allow="clipboard-write" frameborder="0">
 &lt;nav>
 &lt;div class="nav nav-tabs" id="nav-tab" role="tablist">
 &lt;a class="nav-item nav-link active "
-id="nav-fbecda" data-toggle="tab" href="#fbecda"
+id="nav-cedbfa" data-toggle="tab" href="#cedbfa"
 role="tab" aria-controls="nav-home" aria-selected="true">RuTube&lt;/a>
 &lt;a class="nav-item nav-link "
-id="nav-fdabec" data-toggle="tab" href="#fdabec"
+id="nav-cfbaed" data-toggle="tab" href="#cfbaed"
 role="tab" aria-controls="nav-home" aria-selected="true">Youtube&lt;/a>
 &lt;/div>
 &lt;/nav>
 &lt;div class="tab-content" id="nav-tab-content">
-&lt;div class="tab-pane fade show active " id="fbecda" role="tabpanel" aria-labelledby="nav-1">
+&lt;div class="tab-pane fade show active " id="cedbfa" role="tabpanel" aria-labelledby="nav-1">
 &lt;div class="embed video-player">
 &lt;iframe class="rutube-player" type="text/html"
 width="720" height="405"
@@ -397,13 +512,26 @@ allow="clipboard-write" frameborder="0">
 &lt;/iframe>
 &lt;/div>
 &lt;/div>
-&lt;div class="tab-pane fade show " id="fdabec" role="tabpanel" aria-labelledby="nav-1">
+&lt;div class="tab-pane fade show " id="cfbaed" role="tabpanel" aria-labelledby="nav-1">
 &lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
 &lt;iframe src="https://www.youtube.com/embed/zU1x8rx4JjA" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video">&lt;/iframe>
 &lt;/div>
 &lt;/div>
 &lt;/div>
-&lt;h3 id="установка-программного-обеспечения-для-создания-документации">&lt;span class="section-num">3.8&lt;/span> Установка программного обеспечения для создания документации&lt;/h3>
+&lt;h3 id="подключение-общей-папки">&lt;span class="section-num">3.8&lt;/span> Подключение общей папки&lt;/h3>
+&lt;ul>
+&lt;li>Внутри виртуальной машины добавьте своего пользователя в группу &lt;code>vboxsf&lt;/code> (вместо &lt;code>username&lt;/code> укажите ваш логин):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">gpasswd -a username vboxsf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>В хостовой системе подключите разделяемую папку:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vboxmanage sharedfolder add &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>id -un&lt;span class="k">)&lt;/span>&lt;span class="s2">_os-intro&amp;#34;&lt;/span> --name&lt;span class="o">=&lt;/span>work --hostpath&lt;span class="o">=&lt;/span>work --automount
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Перегрузите виртуальную машину:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">reboot
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Папка будет монтироваться в &lt;code>/media/sf_work&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h3 id="установка-программного-обеспечения-для-создания-документации">&lt;span class="section-num">3.9&lt;/span> Установка программного обеспечения для создания документации&lt;/h3>
 &lt;ul>
 &lt;li>Нажмите комбинацию &lt;em>Win+Enter&lt;/em> для запуска терминала.&lt;/li>
 &lt;li>Запустите терминальный мультиплексор &lt;em>tmux&lt;/em>:
@@ -413,34 +541,49 @@ allow="clipboard-write" frameborder="0">
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sudo -i
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
-&lt;h4 id="pandoc">&lt;span class="section-num">3.8.1&lt;/span> pandoc&lt;/h4>
+&lt;h4 id="работа-с-языком-разметки-markdown">&lt;span class="section-num">3.9.1&lt;/span> Работа с языком разметки Markdown&lt;/h4>
 &lt;ul>
-&lt;li>Установим &lt;code>pandoc&lt;/code>:
+&lt;li>Средство &lt;code>pandoc&lt;/code> для работы с языком разметки Markdown.&lt;/li>
+&lt;li>Установка с помощью менеджера пакетов:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf -y install pandoc
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
-&lt;li>Установите необходимые расширения:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pip install pandoc-fignos pandoc-eqnos pandoc-tablenos pandoc-secnos --user
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Для работы с перекрёстными ссылками мы используем пакет &lt;code>pandoc-crossref&lt;/code>.
+&lt;ul>
+&lt;li>Пакет &lt;code>pandoc-crossref&lt;/code> в стандартном репозитории отсутствует.&lt;/li>
+&lt;li>Придётся ставить вручную, скачав с сайта &lt;a href="https://github.com/lierdakil/pandoc-crossref" target="_blank" rel="noopener">https://github.com/lierdakil/pandoc-crossref&lt;/a>.&lt;/li>
+&lt;li>При установке &lt;code>pandoc-crossref&lt;/code> следует обращать внимание, для какой версии &lt;code>pandoc&lt;/code> он скомпилён.&lt;/li>
 &lt;/ul>
-&lt;h4 id="texlive">&lt;span class="section-num">3.8.2&lt;/span> texlive&lt;/h4>
+&lt;/li>
+&lt;li>Лучше установить &lt;code>pandoc&lt;/code> и &lt;code>pandoc-crossref&lt;/code> вручную.
+&lt;ul>
+&lt;li>Скачайте необходимую версию &lt;code>pandoc-crossref&lt;/code> (&lt;a href="https://github.com/lierdakil/pandoc-crossref/releases" target="_blank" rel="noopener">https://github.com/lierdakil/pandoc-crossref/releases&lt;/a>).&lt;/li>
+&lt;li>Посмотрите, для какой версии откомпилён &lt;code>pandoc-crossref&lt;/code>.&lt;/li>
+&lt;li>Скачайте соответствующую версию &lt;code>pandoc&lt;/code> (&lt;a href="https://github.com/jgm/pandoc/releases" target="_blank" rel="noopener">https://github.com/jgm/pandoc/releases&lt;/a>).&lt;/li>
+&lt;li>Распакуйте архивы.&lt;/li>
+&lt;li>Обе программы собраны в виде статически-линкованных бинарных файлов.&lt;/li>
+&lt;li>Поместите их в каталог &lt;code>/usr/local/bin&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="texlive">&lt;span class="section-num">3.9.2&lt;/span> texlive&lt;/h4>
 &lt;ul>
 &lt;li>Установим дистрибутив TeXlive (см. &lt;a href="https://yamadharma.github.io/ru/post/2021/04/23/install-texlive/">Установка TeX Live&lt;/a>):
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf -y install texlive-scheme-full
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
-&lt;h4 id="видео-установка-tex">&lt;span class="section-num">3.8.3&lt;/span> Видео: Установка TeX&lt;/h4>
+&lt;h4 id="видео-установка-tex">&lt;span class="section-num">3.9.3&lt;/span> Видео: Установка TeX&lt;/h4>
 &lt;nav>
 &lt;div class="nav nav-tabs" id="nav-tab" role="tablist">
 &lt;a class="nav-item nav-link active "
-id="nav-abdefc" data-toggle="tab" href="#abdefc"
+id="nav-fabdec" data-toggle="tab" href="#fabdec"
 role="tab" aria-controls="nav-home" aria-selected="true">RuTube&lt;/a>
 &lt;a class="nav-item nav-link "
-id="nav-fadceb" data-toggle="tab" href="#fadceb"
+id="nav-cdafeb" data-toggle="tab" href="#cdafeb"
 role="tab" aria-controls="nav-home" aria-selected="true">Youtube&lt;/a>
 &lt;/div>
 &lt;/nav>
 &lt;div class="tab-content" id="nav-tab-content">
-&lt;div class="tab-pane fade show active " id="abdefc" role="tabpanel" aria-labelledby="nav-1">
+&lt;div class="tab-pane fade show active " id="fabdec" role="tabpanel" aria-labelledby="nav-1">
 &lt;div class="embed video-player">
 &lt;iframe class="rutube-player" type="text/html"
 width="720" height="405"
@@ -450,7 +593,7 @@ allow="clipboard-write" frameborder="0">
 &lt;/iframe>
 &lt;/div>
 &lt;/div>
-&lt;div class="tab-pane fade show " id="fadceb" role="tabpanel" aria-labelledby="nav-1">
+&lt;div class="tab-pane fade show " id="cdafeb" role="tabpanel" aria-labelledby="nav-1">
 &lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
 &lt;iframe src="https://www.youtube.com/embed/65yj0KvKZGM" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video">&lt;/iframe>
 &lt;/div>

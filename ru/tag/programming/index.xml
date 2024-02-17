@@ -266,11 +266,21 @@
 &lt;/ul>
 &lt;h3 id="обратная-миграция">&lt;span class="section-num">3.4&lt;/span> Обратная миграция&lt;/h3>
 &lt;ul>
-&lt;li>Репозиторий с &lt;em>git lfs&lt;/em> можно преобразовать обратно в простой репозиторий &lt;em>git&lt;/em>:
+&lt;li>Репозиторий с &lt;em>git lfs&lt;/em> можно преобразовать обратно в простой репозиторий &lt;em>git&lt;/em>.&lt;/li>
+&lt;li>Следите за файлами, которые находятся в lfs:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git lfs ls-files
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Перенесите ссылки из &lt;em>git lfs&lt;/em> в &lt;em>git&lt;/em> (например, для pdf-файлов):
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git lfs migrate &lt;span class="nb">export&lt;/span> --include&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;*.pdf&amp;#34;&lt;/span> --everything
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Это перезапишет историю и изменит все идентификаторы объектов &lt;em>git&lt;/em> в вашем репозитории.&lt;/li>
 &lt;li>После этого придётся склонировать репозиторий повторно.&lt;/li>
+&lt;li>Удалите хуки:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git lfs uninstall --worktree
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Удалить атрибут &lt;code>lfs&lt;/code> из &lt;code>.gitattributes&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sed -i -e &lt;span class="s2">&amp;#34;s/filter=lfs diff=lfs merge=lfs -text/binary/g&amp;#34;&lt;/span> .gitattributes
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="мониторинг">&lt;span class="section-num">3.5&lt;/span> Мониторинг&lt;/h3>
 &lt;ul>

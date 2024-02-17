@@ -488,6 +488,7 @@
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">btrfs subvol create @portage_local
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">btrfs subvol create @portage_com
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">btrfs subvol create @libvirt
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">btrfs subvol create @home
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;/li>
@@ -565,15 +566,21 @@
 &lt;li>&lt;a href="#свойства">&lt;span class="section-num">1.1&lt;/span> Свойства&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;li>&lt;a href="#разное">&lt;span class="section-num">2&lt;/span> Разное&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#обслуживание-btrfs">&lt;span class="section-num">3&lt;/span> Обслуживание btrfs&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#необходимое-программное-обеспечение">&lt;span class="section-num">4&lt;/span> Необходимое программное обеспечение&lt;/a>
+&lt;li>&lt;a href="#опции-монтирования">&lt;span class="section-num">2&lt;/span> Опции монтирования&lt;/a>
 &lt;ul>
-&lt;li>&lt;a href="#btrfs-progs">&lt;span class="section-num">4.1&lt;/span> btrfs-progs&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#btrfsmaintenance">&lt;span class="section-num">4.2&lt;/span> btrfsmaintenance&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#snapper">&lt;span class="section-num">4.3&lt;/span> snapper&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#ssd-trim">&lt;span class="section-num">2.1&lt;/span> SSD TRIM&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
+&lt;li>&lt;a href="#разное">&lt;span class="section-num">3&lt;/span> Разное&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#обслуживание-btrfs">&lt;span class="section-num">4&lt;/span> Обслуживание btrfs&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#необходимое-программное-обеспечение">&lt;span class="section-num">5&lt;/span> Необходимое программное обеспечение&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#btrfs-progs">&lt;span class="section-num">5.1&lt;/span> btrfs-progs&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#btrfsmaintenance">&lt;span class="section-num">5.2&lt;/span> btrfsmaintenance&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#snapper">&lt;span class="section-num">5.3&lt;/span> snapper&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#ресурсы">&lt;span class="section-num">6&lt;/span> Ресурсы&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/nav>
 &lt;/details>
@@ -601,19 +608,31 @@
 &lt;/li>
 &lt;li>Поддержка дисков SSD.&lt;/li>
 &lt;/ul>
-&lt;h2 id="разное">&lt;span class="section-num">2&lt;/span> Разное&lt;/h2>
+&lt;h2 id="опции-монтирования">&lt;span class="section-num">2&lt;/span> Опции монтирования&lt;/h2>
+&lt;h3 id="ssd-trim">&lt;span class="section-num">2.1&lt;/span> SSD TRIM&lt;/h3>
+&lt;ul>
+&lt;li>Файловая система Btrfs может освобождать неиспользуемые блоки с SSD диска, поддерживающего команду TRIM.&lt;/li>
+&lt;li>Поддерживается асинхронный discard, который доступен в виде опции монтирования &lt;code>discard=async&lt;/code>.
+&lt;ul>
+&lt;li>Включено по умолчанию начиная с linux 6.2.&lt;/li>
+&lt;li>Незанятые экстенты не освобождаются сразу, а группируются и освобождаются позже в отдельном потоке, что улучшает задержки при записи на диск.&lt;/li>
+&lt;li>Асинхронный discard можно безопасно использовать вместе с периодическим TRIM.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="разное">&lt;span class="section-num">3&lt;/span> Разное&lt;/h2>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/05/21/installing-linux-btrfs/">Перенос Linux на btrfs&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/08/27/btrfs-subvolumes/">Подтома btrfs&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;h2 id="обслуживание-btrfs">&lt;span class="section-num">3&lt;/span> Обслуживание btrfs&lt;/h2>
+&lt;h2 id="обслуживание-btrfs">&lt;span class="section-num">4&lt;/span> Обслуживание btrfs&lt;/h2>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/09/23/btrfs-maintenence/">Обслуживание btrfs&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/05/26/deduplication-btrfs-filesystem/">Дедупликация файловой системы btrfs&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/07/21/btrfs-recovery/">Восстановление btrfs&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;h2 id="необходимое-программное-обеспечение">&lt;span class="section-num">4&lt;/span> Необходимое программное обеспечение&lt;/h2>
-&lt;h3 id="btrfs-progs">&lt;span class="section-num">4.1&lt;/span> btrfs-progs&lt;/h3>
+&lt;h2 id="необходимое-программное-обеспечение">&lt;span class="section-num">5&lt;/span> Необходимое программное обеспечение&lt;/h2>
+&lt;h3 id="btrfs-progs">&lt;span class="section-num">5.1&lt;/span> btrfs-progs&lt;/h3>
 &lt;ul>
 &lt;li>Утилиты для работы с &lt;em>btrfs&lt;/em>.&lt;/li>
 &lt;li>Установка
@@ -624,7 +643,7 @@
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
-&lt;h3 id="btrfsmaintenance">&lt;span class="section-num">4.2&lt;/span> btrfsmaintenance&lt;/h3>
+&lt;h3 id="btrfsmaintenance">&lt;span class="section-num">5.2&lt;/span> btrfsmaintenance&lt;/h3>
 &lt;ul>
 &lt;li>Скрипт для регулярного обслуживания файловой системы &lt;em>btrfs&lt;/em>&lt;/li>
 &lt;li>Установка
@@ -635,7 +654,7 @@
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
-&lt;h3 id="snapper">&lt;span class="section-num">4.3&lt;/span> snapper&lt;/h3>
+&lt;h3 id="snapper">&lt;span class="section-num">5.3&lt;/span> snapper&lt;/h3>
 &lt;ul>
 &lt;li>Управление снапшотами&lt;/li>
 &lt;li>Установка
@@ -645,6 +664,10 @@
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;/li>
+&lt;/ul>
+&lt;h2 id="ресурсы">&lt;span class="section-num">6&lt;/span> Ресурсы&lt;/h2>
+&lt;ul>
+&lt;li>Документация: &lt;a href="https://btrfs.readthedocs.io/" target="_blank" rel="noopener">https://btrfs.readthedocs.io/&lt;/a>&lt;/li>
 &lt;/ul></description></item><item><title>Перенос Linux на btrfs</title><link>https://yamadharma.github.io/ru/post/2021/05/21/installing-linux-btrfs/</link><pubDate>Fri, 21 May 2021 20:38:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2021/05/21/installing-linux-btrfs/</guid><description>&lt;p>Перенос Gentoo Linux с одного диска на другой. На новом диске делается система btrfs.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>

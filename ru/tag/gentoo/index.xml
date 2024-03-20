@@ -362,8 +362,19 @@
 &lt;/ul>
 &lt;/li>
 &lt;li>&lt;a href="#установка-загрузчика">&lt;span class="section-num">5&lt;/span> Установка загрузчика&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#создадим-файл-монтирования-fstab">&lt;span class="section-num">6&lt;/span> Создадим файл монтирования fstab&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#файл-подкачки-на-файловой-системе-btrfs">&lt;span class="section-num">7&lt;/span> Файл подкачки на файловой системе btrfs&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#файл-монтирования-fstab">&lt;span class="section-num">6&lt;/span> Файл монтирования fstab&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#файл-подкачки-на-файловой-системе-btrfs">&lt;span class="section-num">7&lt;/span> Файл подкачки на файловой системе btrfs&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#подготовка-к-созданию-файла-подкачки">&lt;span class="section-num">7.1&lt;/span> Подготовка к созданию файла подкачки&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#создание-файла-подкачки">&lt;span class="section-num">7.2&lt;/span> Создание файла подкачки&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#старый-подход">&lt;span class="section-num">7.2.1&lt;/span> Старый подход&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#новый-подход">&lt;span class="section-num">7.2.2&lt;/span> Новый подход&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#активация-файла-подкачки">&lt;span class="section-num">7.3&lt;/span> Активация файла подкачки&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
 &lt;/ul>
 &lt;/nav>
 &lt;/details>
@@ -660,8 +671,9 @@
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">grub-mkconfig -o /boot/grub/grub.cfg
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
-&lt;h2 id="создадим-файл-монтирования-fstab">&lt;span class="section-num">6&lt;/span> Создадим файл монтирования fstab&lt;/h2>
+&lt;h2 id="файл-монтирования-fstab">&lt;span class="section-num">6&lt;/span> Файл монтирования fstab&lt;/h2>
 &lt;ul>
+&lt;li>Создадим файл монтирования fstab.&lt;/li>
 &lt;li>Узнаем идентификатор партиции с файловой системой btrfs:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">blkid /dev/sdc2
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
@@ -687,6 +699,7 @@
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h2 id="файл-подкачки-на-файловой-системе-btrfs">&lt;span class="section-num">7&lt;/span> Файл подкачки на файловой системе btrfs&lt;/h2>
+&lt;h3 id="подготовка-к-созданию-файла-подкачки">&lt;span class="section-num">7.1&lt;/span> Подготовка к созданию файла подкачки&lt;/h3>
 &lt;ul>
 &lt;li>Для раздела файла подкачки следует отключить CoW (copy-on-write).&lt;/li>
 &lt;li>Подмонтируем файловую систему &lt;code>btrfs&lt;/code>:
@@ -697,11 +710,15 @@
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mkdir /mnt/gentoo/swap
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Подмонтируем подтом &lt;code>@swap&lt;/code>:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mount -o &lt;span class="nv">subvol&lt;/span>&lt;span class="o">=&lt;/span>@swap /dev/sda4 /mnt/gentoo/swap
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mount -tbtrfs -orelatime,discard,autodefrag,compress&lt;span class="o">=&lt;/span>zstd:9,subvol&lt;span class="o">=&lt;/span>@swap /dev/sdc2 /mnt/gentoo/swap
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Отключим для этого подтома CoW:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">chattr +C /mnt/gentoo/swap
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="создание-файла-подкачки">&lt;span class="section-num">7.2&lt;/span> Создание файла подкачки&lt;/h3>
+&lt;h4 id="старый-подход">&lt;span class="section-num">7.2.1&lt;/span> Старый подход&lt;/h4>
+&lt;ul>
 &lt;li>Создадим файл подкачки:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">truncate -s &lt;span class="m">0&lt;/span> /mnt/gentoo/swap/swapfile
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
@@ -714,6 +731,19 @@
 &lt;li>Отформатируем файл подкачки:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mkswap /mnt/gentoo/swap/swapfile
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h4 id="новый-подход">&lt;span class="section-num">7.2.2&lt;/span> Новый подход&lt;/h4>
+&lt;ul>
+&lt;li>Работает начиная с версии утилит 6.1.&lt;/li>
+&lt;li>Создадим файл подкачки размером 8ГБ:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">btrfs filesystem mkswapfile --size 4g --uuid clear /mnt/gentooswap/swapfile
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Создадим файл подкачки исходя из размера оперативной памяти:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">btrfs filesystem mkswapfile --size &lt;span class="k">$(&lt;/span>free -h --si &lt;span class="p">|&lt;/span> awk &lt;span class="s1">&amp;#39;NR == 2 {print $2}&amp;#39;&lt;/span>&lt;span class="k">)&lt;/span> --uuid clear /mnt/gentoo/swap/swapfile
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="активация-файла-подкачки">&lt;span class="section-num">7.3&lt;/span> Активация файла подкачки&lt;/h3>
+&lt;ul>
 &lt;li>Активируем файл подкачки:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">swapon /mnt/gentoo/swap/swapfile
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>

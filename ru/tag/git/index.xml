@@ -1,4 +1,139 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Git | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/git/</link><atom:link href="https://yamadharma.github.io/ru/tag/git/index.xml" rel="self" type="application/rss+xml"/><description>Git</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>ru-ru</language><copyright>© 2024 Dmitry S. Kulyabov</copyright><lastBuildDate>Mon, 13 Nov 2023 11:52:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url><title>Git</title><link>https://yamadharma.github.io/ru/tag/git/</link></image><item><title>Расширение git lfs</title><link>https://yamadharma.github.io/ru/post/2023/11/13/git-lfs/</link><pubDate>Mon, 13 Nov 2023 11:52:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/11/13/git-lfs/</guid><description>&lt;p>Расширение для хранения больших бинарных файлов на git.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Git | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/git/</link><atom:link href="https://yamadharma.github.io/ru/tag/git/index.xml" rel="self" type="application/rss+xml"/><description>Git</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>ru-ru</language><copyright>© 2024 Dmitry S. Kulyabov</copyright><lastBuildDate>Sat, 16 Mar 2024 17:34:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url><title>Git</title><link>https://yamadharma.github.io/ru/tag/git/</link></image><item><title>Базовая настройка git</title><link>https://yamadharma.github.io/ru/post/2024/03/16/git-basic-setup/</link><pubDate>Sat, 16 Mar 2024 17:34:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2024/03/16/git-basic-setup/</guid><description>&lt;p>Базовая настройка git.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#первичная-настройка-параметров-git">&lt;span class="section-num">1&lt;/span> Первичная настройка параметров git&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#учёт-переносов-строк">&lt;span class="section-num">2&lt;/span> Учёт переносов строк&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#параметр-autocrlf">&lt;span class="section-num">2.1&lt;/span> Параметр &lt;code>autocrlf&lt;/code>&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#параметр-safecrlf">&lt;span class="section-num">2.2&lt;/span> Параметр &lt;code>safecrlf&lt;/code>&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="первичная-настройка-параметров-git">&lt;span class="section-num">1&lt;/span> Первичная настройка параметров git&lt;/h2>
+&lt;ul>
+&lt;li>Зададим имя и email владельца репозитория:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global user.name &lt;span class="s2">&amp;#34;Name Surname&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git config --global user.email &lt;span class="s2">&amp;#34;work@mail&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Настроим utf-8 в выводе сообщений git:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global core.quotepath &lt;span class="nb">false&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Настройте верификацию и подписание коммитов git (см. &lt;a href="https://yamadharma.github.io/ru/post/2021/01/28/verifying-git-commits-gpg/">Верификация коммитов git с помощью GPG&lt;/a>).&lt;/li>
+&lt;li>Зададим имя начальной ветки (будем называть её &lt;code>master&lt;/code>):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global init.defaultBranch master
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Зададим опцию для автоматического задания удалённой ветки:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global push.autoSetupRemote &lt;span class="nb">true&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="учёт-переносов-строк">&lt;span class="section-num">2&lt;/span> Учёт переносов строк&lt;/h2>
+&lt;ul>
+&lt;li>В разных операционных системах приняты разные символы для перевода строк:
+&lt;ul>
+&lt;li>Windows: &lt;code>\r\n&lt;/code> (&lt;code>CR&lt;/code> и &lt;code>LF&lt;/code>);&lt;/li>
+&lt;li>Unix: &lt;code>\n&lt;/code> (&lt;code>LF&lt;/code>);&lt;/li>
+&lt;li>Mac: &lt;code>\r&lt;/code> (&lt;code>CR&lt;/code>).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Посмотреть значения переносов строк в репозитории можно командой:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git ls-files --eol
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="параметр-autocrlf">&lt;span class="section-num">2.1&lt;/span> Параметр &lt;code>autocrlf&lt;/code>&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>Настройка &lt;code>core.autocrlf&lt;/code> предназначена для того, чтобы в главном репозитории все переводы строк текстовых файлах были одинаковы.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Настройка &lt;code>core.autocrlf&lt;/code> с параметрами &lt;code>true&lt;/code> и &lt;code>input&lt;/code> делает все переводы строк текстовых файлов в главном репозитории одинаковыми.&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>core.autocrlf true&lt;/code>: конвертация &lt;code>CRLF-&amp;gt;LF&lt;/code> при коммите и обратно &lt;code>LF-&amp;gt;CRLF&lt;/code> при выгрузке кода из репозитория на файловую систему (обычно используется в Windows).&lt;/li>
+&lt;li>&lt;code>core.autocrlf input&lt;/code>: конвертация &lt;code>CRLF-&amp;gt;LF&lt;/code> только при коммитах (используются в MacOS/Linux).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Варианты конвертации&lt;/p>
+&lt;div class="table-caption">
+&lt;span class="table-number">&amp;#1058;&amp;#1072;&amp;#1073;&amp;#1083;&amp;#1080;&amp;#1094;&amp;#1072; 1:&lt;/span>
+Варианты конвертации для разных значений параметра core.autocrlf
+&lt;/div>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>core.autocrlf&lt;/th>
+&lt;th>false&lt;/th>
+&lt;th>input&lt;/th>
+&lt;th>true&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>git commit&lt;/td>
+&lt;td>LF -&amp;gt; LF&lt;/td>
+&lt;td>LF -&amp;gt; LF&lt;/td>
+&lt;td>LF -&amp;gt; CRLF&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;/td>
+&lt;td>CR -&amp;gt; CR&lt;/td>
+&lt;td>CR -&amp;gt; CR&lt;/td>
+&lt;td>CR -&amp;gt; CR&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;/td>
+&lt;td>CRLF -&amp;gt; CRLF&lt;/td>
+&lt;td>CRLF -&amp;gt; LF&lt;/td>
+&lt;td>CRLF -&amp;gt; CRLF&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>git checkout&lt;/td>
+&lt;td>LF -&amp;gt; LF&lt;/td>
+&lt;td>LF -&amp;gt; LF&lt;/td>
+&lt;td>LF -&amp;gt; CRLF&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;/td>
+&lt;td>CR -&amp;gt; CR&lt;/td>
+&lt;td>CR -&amp;gt; CR&lt;/td>
+&lt;td>CR -&amp;gt; CR&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;/td>
+&lt;td>CRLF -&amp;gt; CRLF&lt;/td>
+&lt;td>CRLF -&amp;gt; CRLF&lt;/td>
+&lt;td>CRLF -&amp;gt; CRLF&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;/li>
+&lt;li>
+&lt;p>Установка параметра:&lt;/p>
+&lt;ul>
+&lt;li>Для Windows
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global core.autocrlf &lt;span class="nb">true&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Для Linux
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global core.autocrlf input
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="параметр-safecrlf">&lt;span class="section-num">2.2&lt;/span> Параметр &lt;code>safecrlf&lt;/code>&lt;/h3>
+&lt;ul>
+&lt;li>Настройка &lt;code>core.safecrlf&lt;/code> предназначена для проверки, является ли окончаний строк обратимым для текущей настройки &lt;code>core.autocrlf&lt;/code>.
+&lt;ul>
+&lt;li>&lt;code>core.safecrlf true&lt;/code>: запрещается необратимое преобразование &lt;code>lf&amp;lt;-&amp;gt;crlf&lt;/code>. Полезно, когда существуют бинарные файлы, похожие на текстовые файлы.&lt;/li>
+&lt;li>&lt;code>core.safecrlf warn&lt;/code>: печать предупреждения, но коммиты с необратимым переходом принимаются.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Установка параметра:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global core.safecrlf warn
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul></description></item><item><title>Расширение git lfs</title><link>https://yamadharma.github.io/ru/post/2023/11/13/git-lfs/</link><pubDate>Mon, 13 Nov 2023 11:52:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/11/13/git-lfs/</guid><description>&lt;p>Расширение для хранения больших бинарных файлов на git.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
 &lt;nav id="TableOfContents">
@@ -797,6 +932,7 @@
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/01/17/git-practical-use-case/">Практический сценарий использования git&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/08/04/github-command-line-utilities/">github: утилиты командной строки&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/08/23/git-submodules/">git submodules&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2024/03/16/git-basic-setup/">Базовая настройка git&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;h2 id="хостинги-git">&lt;span class="section-num">2&lt;/span> Хостинги git&lt;/h2>
 &lt;ul>
@@ -813,6 +949,7 @@
 &lt;ul>
 &lt;li>Операционные системы (Архитектура ЭВМ)
 &lt;ul>
+&lt;li>Работа с git даётся в стиле &lt;em>monkey see, monkey do&lt;/em>.&lt;/li>
 &lt;li>Основы работы в git.&lt;/li>
 &lt;li>Создание учётной записи на Github.&lt;/li>
 &lt;li>Выкладывание лабораторных работ на Git.&lt;/li>
@@ -820,12 +957,22 @@
 &lt;/li>
 &lt;li>Операционные системы
 &lt;ul>
+&lt;li>Основы работы с git
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/course/os-intro/lab/lab-initial-git-setup/">Лабораторная работа Первоначальна настройка git&lt;/a>&lt;/li>
 &lt;li>Основы работы в git.&lt;/li>
 &lt;li>Создание учётной записи на Github.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Сценарии работы с git
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/course/os-intro/lab/lab-extended-git-setup/">Лабораторная работа Продвинутое использование git&lt;/a>&lt;/li>
 &lt;li>Формат коммитов и версий. Даётся as is, без особых пояснений.&lt;/li>
 &lt;li>Выкладывание лабораторных работ на Git.&lt;/li>
 &lt;li>Использование git-flow.&lt;/li>
 &lt;li>Семантическое версионирование.&lt;/li>
+&lt;/ul>
+&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ul>

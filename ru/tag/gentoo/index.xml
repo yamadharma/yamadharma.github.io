@@ -1,4 +1,184 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Gentoo | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/gentoo/</link><atom:link href="https://yamadharma.github.io/ru/tag/gentoo/index.xml" rel="self" type="application/rss+xml"/><description>Gentoo</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>ru-ru</language><copyright>© 2024 Dmitry S. Kulyabov</copyright><lastBuildDate>Sun, 01 Oct 2023 13:41:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url><title>Gentoo</title><link>https://yamadharma.github.io/ru/tag/gentoo/</link></image><item><title>Gentoo. Дополнительные репозитории</title><link>https://yamadharma.github.io/ru/post/2023/10/01/gentoo-additional-repositories/</link><pubDate>Sun, 01 Oct 2023 13:41:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/10/01/gentoo-additional-repositories/</guid><description>&lt;p>Gentoo. Дополнительные репозитории.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Gentoo | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/gentoo/</link><atom:link href="https://yamadharma.github.io/ru/tag/gentoo/index.xml" rel="self" type="application/rss+xml"/><description>Gentoo</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>ru-ru</language><copyright>© 2024 Dmitry S. Kulyabov</copyright><lastBuildDate>Thu, 16 May 2024 15:18:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url><title>Gentoo</title><link>https://yamadharma.github.io/ru/tag/gentoo/</link></image><item><title>Gentoo. Компиляция системы clang</title><link>https://yamadharma.github.io/ru/post/2024/05/16/gentoo-compiling-clang/</link><pubDate>Thu, 16 May 2024 15:18:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2024/05/16/gentoo-compiling-clang/</guid><description>&lt;p>Переход на Clang для компиляции системы.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#установка">&lt;span class="section-num">2&lt;/span> Установка&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#конфигурация">&lt;span class="section-num">3&lt;/span> Конфигурация&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#основная-системная-конфигурация">&lt;span class="section-num">3.1&lt;/span> Основная системная конфигурация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#конфигурация-для-каждого-пакета">&lt;span class="section-num">3.2&lt;/span> Конфигурация для каждого пакета&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#компиляция-ядра">&lt;span class="section-num">4&lt;/span> Компиляция ядра&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#c-plus-plus-abi">&lt;span class="section-num">5&lt;/span> C++ ABI&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#ресурсы">&lt;span class="section-num">6&lt;/span> Ресурсы&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>Обязательно должен быть запасной вариант с &lt;em>GCC&lt;/em>.&lt;/li>
+&lt;li>На данный момент система не сможет скомпилировать все, что использует &lt;em>Clang&lt;/em>.&lt;/li>
+&lt;/ul>
+&lt;h2 id="установка">&lt;span class="section-num">2&lt;/span> Установка&lt;/h2>
+&lt;ul>
+&lt;li>Установите &lt;em>Clang&lt;/em>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge sys-devel/clang
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="конфигурация">&lt;span class="section-num">3&lt;/span> Конфигурация&lt;/h2>
+&lt;h3 id="основная-системная-конфигурация">&lt;span class="section-num">3.1&lt;/span> Основная системная конфигурация&lt;/h3>
+&lt;ul>
+&lt;li>Файл &lt;code>/etc/portage/make.conf&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># this sources the PORTDIR_OVERLAY variable defined by layman. however, the variable expanded by layman was empty&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># source /var/db/repos/gentoo/local/layman/make.conf&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#CFLAGS=&amp;#34;${CFLAGS} -flto=thin&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">CFLAGS&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;${CFLAGS} -flto=thin&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#CFLAGS=&amp;#34;${CFLAGS} -mllvm -extra-vectorizer-passes -mllvm -enable-cond-stores-vec -mllvm -slp-vectorize-hor-store -mllvm -enable-loopinterchange -mllvm -enable-loop-distribute -mllvm -enable-unroll-and-jam -mllvm -enable-loop-flatten -mllvm -interleave-small-loop-scalar-reduction -mllvm -unroll-runtime-multi-exit -mllvm -aggressive-ext-opt -fno-math-errno -fno-trapping-math -falign-functions=32 -funroll-loops -fno-semantic-interposition -fcf-protection=none -mharden-sls=none -fomit-frame-pointer -mprefer-vector-width=256 -flto&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">CXXFLAGS&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;${CFLAGS} ${CXXFLAGS}&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># -O2 in LDFLAGS refers to binary size optimization during linking, it is NOT related to the -O levels of the compiler&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#LDFLAGS=&amp;#34;${LDFLAGS} -Wl,-O2 -Wl,--as-needed -Wl,--undefined-version -mllvm -extra-vectorizer-passes -mllvm -enable-cond-stores-vec -mllvm -slp-vectorize-hor-store -mllvm -enable-loopinterchange -mllvm -enable-loop-distribute -mllvm -enable-unroll-and-jam -mllvm -enable-loop-flatten -mllvm -interleave-small-loop-scalar-reduction -mllvm -unroll-runtime-multi-exit -mllvm -aggressive-ext-opt -flto&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">CC&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;clang&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">CPP&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;clang-cpp&amp;#34;&lt;/span> &lt;span class="c1"># necessary for xorg-server and possibly other packages&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">CXX&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;clang++&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">AR&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;llvm-ar&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">NM&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;llvm-nm&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">RANLIB&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;llvm-ranlib&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># No need to set this, clang-common can handle this based on chosen USE flags&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#LDFLAGS=&amp;#34;${LDFLAGS} -fuse-ld=lld&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">LDFLAGS&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;${LDFLAGS} -Wl,-O2 -Wl,--as-needed -Wl,--undefined-version&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">LDFLAGS&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;${LDFLAGS} -rtlib=compiler-rt -unwindlib=libunwind&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">LDFLAGS&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;${LDFLAGS} -fuse-ld=mold&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">LDFLAGS&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;${LDFLAGS} -flto&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="конфигурация-для-каждого-пакета">&lt;span class="section-num">3.2&lt;/span> Конфигурация для каждого пакета&lt;/h3>
+&lt;ul>
+&lt;li>Можно задать компилятор для каждого пакета в отдельности в файле &lt;code>/etc/portage/package.env&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="n">sys&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">devel&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">gcc&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span> &lt;span class="c1"># gcc itself&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sys&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">devel&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">binutils&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span> &lt;span class="c1"># gcc itself # configure: error: AR&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sys&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">libs&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">binutils&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">libs&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span> &lt;span class="c1"># gcc itself&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">dev&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">util&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">mingw64&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">toolchain&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span> &lt;span class="c1"># gcc itself&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">dev&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">debug&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">gdb&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span> &lt;span class="c1"># gcc itself&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">=&lt;/span>&lt;span class="n">dev&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">util&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">gengetopt&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mf">2.23&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span> &lt;span class="c1">#&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sys&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">devel&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">bin86&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span> &lt;span class="c1"># error: ISO C99&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#media-video/obs-studio compiler-gcc # cef plugin&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">app&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">emulation&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">virtualbox&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span> &lt;span class="c1"># ld.lld error&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">app&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">emulation&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">virtualbox&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">kvm&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span> &lt;span class="c1"># ld.lld error&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#app-emulation/qemu compiler-gcc # ERROR: sizeof(size_t) doesn&amp;#39;t match&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#dev-lang/mono compiler-gcc # ld.lld error&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#app-cdr/cdrtools compiler-gcc # configure error&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#dev-libs/libsecp256k1 compiler-gcc # unrecognized command-line option&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#dev-util/ostree compiler-gcc # ld.lld error&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#dev-python/ruamel-yaml-clib compiler-gcc # incompatible function pointer types&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#dev-qt/qtwebengine:5 compiler-gcc # build fails&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#media-libs/libpano13 compiler-gcc # build fails&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#media-libs/tg_owt compiler-gcc # build fails&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#media-libs/phonon compiler-gcc # build fails&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#media-libs/vigra compiler-gcc # build fails&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#net-print/hplip compiler-gcc # error: ISO C++17&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#sys-boot/syslinux compiler-gcc # &amp;#39;stdarg.h&amp;#39; file not found&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#sys-libs/db compiler-gcc # build fails with USE=&amp;#34;cxx&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#sys-process/tini compiler-gcc # ld.lld error&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#sys-apps/systemd compiler-gcc&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#net-dialup/ppp compiler-gcc&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#media-libs/audiofile compiler-gcc&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#app-crypt/chntpw compiler-gcc&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">media&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gfx&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">exact&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">image&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">media&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">libs&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">libfpx&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sci&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">libs&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">djbfft&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sci&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">visualization&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">gnuplot&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">=&lt;/span>&lt;span class="n">dev&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">db&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">sqlite&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mf">3.45&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#dev-lang/R compiler-gcc&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">app&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">editors&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">emacs&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span> &lt;span class="c1"># gcc-jit&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sys&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">libs&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">talloc&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sys&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">libs&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">tevent&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#app-text/freelib compiler-gcc&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">app&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">editors&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">wily&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sci&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">mathematics&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">gretl&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#sci-mathematics/octave compiler-gcc&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">dev&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">java&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">openjdk&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">8&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">=&lt;/span>&lt;span class="n">dev&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">perl&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">PDL&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mf">2.63&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">dev&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">python&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">scipy&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">clang&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">no&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">lto&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">dev&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">python&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">pygame&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">dev&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">games&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">openscenegraph&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#dev-util/intel-graphics-compiler compiler-gcc&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#dev-libs/intel-compute-runtime compiler-gcc&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">dev&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">util&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">intel&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">graphics&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">compiler&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">clang&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">no&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">lto&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">dev&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">libs&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">intel&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">compute&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">runtime&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">clang&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">no&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">lto&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">dev&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">libs&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">libdnet&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># sys-devel/llvm compiler-clang&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">=&lt;/span>&lt;span class="n">kde&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">frameworks&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">breeze&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">icons&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mf">6.2&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sys&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">devel&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">llvm&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">15&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">dev&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">libs&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">opencl&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">clang&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">15&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">dev&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">util&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">spirv&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">llvm&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">translator&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">15&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">dev&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">libs&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">intel&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">vc&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">intrinsics&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Нужно задать конфигурации для разных компиляторов.&lt;/li>
+&lt;li>Конфигурация для компилятора &lt;em>gcc&lt;/em> в файле &lt;code>/etc/portage/env/compiler-gcc&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">COMMON_FLAGS=&amp;#34;-O2 -march=native&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">CFLAGS=&amp;#34;${COMMON_FLAGS}&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">CXXFLAGS=&amp;#34;${COMMON_FLAGS}&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">LDFLAGS=&amp;#34;-Wl,--as-needed&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">CC=&amp;#34;gcc&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">CXX=&amp;#34;g++&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">CPP=&amp;#34;gcc -E&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">AR=&amp;#34;ar&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">NM=&amp;#34;nm&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">RANLIB=&amp;#34;ranlib&amp;#34;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Конфигурация для компилятора &lt;em>clang&lt;/em> без &lt;em>LTO&lt;/em> в файле &lt;code>/etc/portage/env/compiler-clang-no-lto&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl"># Normal settings here
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">COMMON_FLAGS=&amp;#34;-O2 -march=native&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">CFLAGS=&amp;#34;${COMMON_FLAGS}&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">CXXFLAGS=&amp;#34;${COMMON_FLAGS}&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">CC=&amp;#34;clang&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">CPP=&amp;#34;clang-cpp&amp;#34; # necessary for xorg-server and possibly other packages
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">CXX=&amp;#34;clang++&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">AR=&amp;#34;llvm-ar&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">NM=&amp;#34;llvm-nm&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">RANLIB=&amp;#34;llvm-ranlib&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># No need to set this, clang-common can handle this based on chosen USE flags
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">LDFLAGS=&amp;#34;${LDFLAGS} -fuse-ld=lld -rtlib=compiler-rt -unwindlib=libunwind -Wl,--as-needed&amp;#34;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="компиляция-ядра">&lt;span class="section-num">4&lt;/span> Компиляция ядра&lt;/h2>
+&lt;ul>
+&lt;li>Ядро Linux можно скомпилировать с помощью &lt;em>Clang&lt;/em> и набора инструментов &lt;em>LLVM&lt;/em>, определив переменную среды:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nv">LLVM&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Чтобы настроить специальные параметры ядра &lt;em>Clang&lt;/em>, такие как оптимизация времени компоновки или целостность потока управления, выполните следующую команду:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nv">LLVM&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1&lt;/span> make menuconfig
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Далее скомпилируйте ядро ​​как обычно:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nv">LLVM&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1&lt;/span> make
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Раньше необходимо было объявить &lt;code>LLVM_IAS=1&lt;/code> для использования внутреннего ассемблера Clang для ядра.&lt;/li>
+&lt;li>Это больше не требуется, поскольку &lt;code>LLVM=1&lt;/code> теперь включён по умолчанию.&lt;/li>
+&lt;/ul>
+&lt;h2 id="c-plus-plus-abi">&lt;span class="section-num">5&lt;/span> C++ ABI&lt;/h2>
+&lt;ul>
+&lt;li>Для Clang по умолчанию устанавливается библиотека C++ &lt;code>libcxx&lt;/code>.&lt;/li>
+&lt;li>При компиляции с помощью &lt;em>gcc&lt;/em> используется библиотека &lt;code>libstdc++&lt;/code>.&lt;/li>
+&lt;li>Необходимо, как минимум, перекомпилить приложения, использующие библиотеку &lt;code>libstdc++&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">revdep-rebuild --library libstdc++ -- -v --keep-going
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="ресурсы">&lt;span class="section-num">6&lt;/span> Ресурсы&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://wiki.gentoo.org/wiki/Clang" target="_blank" rel="noopener">https://wiki.gentoo.org/wiki/Clang&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://wiki.gentoo.org/wiki/Clang/Bootstrapping" target="_blank" rel="noopener">https://wiki.gentoo.org/wiki/Clang/Bootstrapping&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>Gentoo. Дополнительные репозитории</title><link>https://yamadharma.github.io/ru/post/2023/10/01/gentoo-additional-repositories/</link><pubDate>Sun, 01 Oct 2023 13:41:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/10/01/gentoo-additional-repositories/</guid><description>&lt;p>Gentoo. Дополнительные репозитории.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
 &lt;nav id="TableOfContents">
@@ -330,6 +510,7 @@
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/09/17/gentoo-standard-directories/">Стандартные каталоги Gentoo&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/10/01/gentoo-additional-repositories/">Gentoo. Дополнительные репозитории&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2024/05/16/gentoo-compiling-clang/">Gentoo. Компиляция системы clang&lt;/a>&lt;/li>
 &lt;/ul></description></item><item><title>Перенос Linux на btrfs</title><link>https://yamadharma.github.io/ru/post/2021/05/21/installing-linux-btrfs/</link><pubDate>Fri, 21 May 2021 20:38:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2021/05/21/installing-linux-btrfs/</guid><description>&lt;p>Перенос Gentoo Linux с одного диска на другой. На новом диске делается система btrfs.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>

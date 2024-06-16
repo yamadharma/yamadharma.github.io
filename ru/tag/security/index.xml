@@ -1030,6 +1030,11 @@
 &lt;li>&lt;a href="#защита-ssh">&lt;span class="section-num">2.3&lt;/span> Защита ssh&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
+&lt;li>&lt;a href="#основные-операции">&lt;span class="section-num">3&lt;/span> Основные операции&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#удалить-все-записи-из-списков-блокировки">&lt;span class="section-num">3.1&lt;/span> Удалить все записи из списков блокировки&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
 &lt;/ul>
 &lt;/nav>
 &lt;/details>
@@ -1044,7 +1049,7 @@
 &lt;h3 id="время-блокирования">&lt;span class="section-num">2.2&lt;/span> Время блокирования&lt;/h3>
 &lt;ul>
 &lt;li>Создайте файл локальной конфигурации:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mkdir -p /etc/fail2ban/jail.d/50-default.conf
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">touch /etc/fail2ban/jail.d/50-default.conf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>В файле &lt;code>/etc/fail2ban/jail.d/50-default.conf&lt;/code> задайте время блокирования хостов:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[DEFAULT]
@@ -1067,6 +1072,9 @@
 &lt;/ul>
 &lt;h3 id="защита-ssh">&lt;span class="section-num">2.3&lt;/span> Защита ssh&lt;/h3>
 &lt;ul>
+&lt;li>Создадим файл для локальной конфигурации ssh:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">touch /etc/fail2ban/jail.d/80-ssh.conf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>В файле &lt;code>/etc/fail2ban/jail.d/80-ssh.conf&lt;/code> активируйте защиту ssh:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[sshd]
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">enabled = true
@@ -1084,6 +1092,25 @@
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">port = ssh
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">logpath = %(auditd_log)s
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="основные-операции">&lt;span class="section-num">3&lt;/span> Основные операции&lt;/h2>
+&lt;h3 id="удалить-все-записи-из-списков-блокировки">&lt;span class="section-num">3.1&lt;/span> Удалить все записи из списков блокировки&lt;/h3>
+&lt;ul>
+&lt;li>Для удаления всех записей из списков блокировки выполните скрипт:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">!/bin/bash
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span> JAIL in &lt;span class="k">$(&lt;/span>fail2ban-client status &lt;span class="p">|&lt;/span> grep &lt;span class="s1">&amp;#39;Jail list:&amp;#39;&lt;/span> &lt;span class="p">|&lt;/span> awk &lt;span class="s1">&amp;#39;BEGIN {FS=&amp;#34;\t&amp;#34;} {print $2}&amp;#39;&lt;/span> &lt;span class="p">|&lt;/span> sed &lt;span class="s1">&amp;#39;s/, / /g&amp;#39;&lt;/span>&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">do&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> IP in &lt;span class="k">$(&lt;/span>fail2ban-client status &lt;span class="si">${&lt;/span>&lt;span class="nv">JAIL&lt;/span>&lt;span class="si">}&lt;/span> &lt;span class="p">|&lt;/span> grep &lt;span class="s1">&amp;#39;Banned IP list:&amp;#39;&lt;/span> &lt;span class="p">|&lt;/span> awk &lt;span class="s1">&amp;#39;BEGIN {FS=&amp;#34;\t&amp;#34;} {print $2}&amp;#39;&lt;/span> &lt;span class="p">|&lt;/span> sed &lt;span class="s1">&amp;#39;s/ /\n/g&amp;#39;&lt;/span>&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">do&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> fail2ban-client &lt;span class="nb">set&lt;/span> &lt;span class="si">${&lt;/span>&lt;span class="nv">JAIL&lt;/span>&lt;span class="si">}&lt;/span> unbanip &lt;span class="si">${&lt;/span>&lt;span class="nv">IP&lt;/span>&lt;span class="si">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">done&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">done&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">unset&lt;/span> JAIL IP
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">exit&lt;/span> &lt;span class="m">0&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul></description></item><item><title>Менеджер паролей pass. Одноразовые пароли</title><link>https://yamadharma.github.io/ru/post/2023/08/24/password-manager-pass-one-time-passwords/</link><pubDate>Thu, 24 Aug 2023 20:29:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/08/24/password-manager-pass-one-time-passwords/</guid><description>&lt;p>Одноразовые пароли в менеджере паролей pass.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>

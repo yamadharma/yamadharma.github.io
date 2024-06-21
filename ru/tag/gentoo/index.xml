@@ -2178,18 +2178,7 @@
 &lt;/ul>
 &lt;/li>
 &lt;li>&lt;a href="#замена-приложений">&lt;span class="section-num">6&lt;/span> Замена приложений&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#совместимость-приложений">&lt;span class="section-num">7&lt;/span> Совместимость приложений&lt;/a>
-&lt;ul>
-&lt;li>&lt;a href="#java">&lt;span class="section-num">7.1&lt;/span> Java&lt;/a>
-&lt;ul>
-&lt;li>&lt;a href="#серое-окно-приложения-не-меняют-размер-с-помощью-wm-меню-сразу-закрываются">&lt;span class="section-num">7.1.1&lt;/span> Серое окно, приложения не меняют размер с помощью WM, меню сразу закрываются&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#меню-в-приложениях-плавает-отдельно-им-невозможно-пользоваться">&lt;span class="section-num">7.1.2&lt;/span> Меню в приложениях плавает отдельно, им невозможно пользоваться&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>&lt;a href="#приложения-gtk-plus-запускаются-с-задержкой">&lt;span class="section-num">7.2&lt;/span> Приложения GTK+ запускаются с задержкой&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#qt-приложения">&lt;span class="section-num">7.3&lt;/span> Qt приложения&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;/li>
+&lt;li>&lt;a href="#совместимость-приложений">&lt;span class="section-num">7&lt;/span> Совместимость приложений&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#конфигурация">&lt;span class="section-num">8&lt;/span> Конфигурация&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/nav>
@@ -2397,48 +2386,13 @@
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/12/08/sway-systemd-integration/">Sway. Интеграция systemd&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;h2 id="совместимость-приложений">&lt;span class="section-num">7&lt;/span> Совместимость приложений&lt;/h2>
-&lt;h3 id="java">&lt;span class="section-num">7.1&lt;/span> Java&lt;/h3>
-&lt;h4 id="серое-окно-приложения-не-меняют-размер-с-помощью-wm-меню-сразу-закрываются">&lt;span class="section-num">7.1.1&lt;/span> Серое окно, приложения не меняют размер с помощью WM, меню сразу закрываются&lt;/h4>
 &lt;ul>
-&lt;li>В стандартных тулкитах для Java жестко зашит список оконных менеджеров.&lt;/li>
-&lt;li>Следует установить переменную окружения:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">_JAVA_AWT_WM_NONREPARENTING&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
-&lt;/ul>
-&lt;h4 id="меню-в-приложениях-плавает-отдельно-им-невозможно-пользоваться">&lt;span class="section-num">7.1.2&lt;/span> Меню в приложениях плавает отдельно, им невозможно пользоваться&lt;/h4>
-&lt;ul>
-&lt;li>В выпусках Java до версии 9 GTK интерфейс ориентирован на GTK2, в последующих версиях на GTK3.&lt;/li>
-&lt;li>GTK LookAndFeel может работать с GTK версий 2, 2.2 и 3.&lt;/li>
-&lt;li>По умолчанию используется GTK3.&lt;/li>
-&lt;li>Следует явно задать более старую версию:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">JAVA_TOOL_OPTIONS&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;-Djdk.gtk.version=2.2&amp;#39;&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
-&lt;li>Например, в файле &lt;code>~/.profile&lt;/code>:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="k">if&lt;/span> &lt;span class="o">[&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$XDG_SESSION_DESKTOP&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;sway&amp;#34;&lt;/span> &lt;span class="o">]&lt;/span> &lt;span class="o">||&lt;/span> &lt;span class="o">[&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$XDG_SESSION_DESKTOP&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;i3&amp;#34;&lt;/span> &lt;span class="o">]&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">then&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># https://github.com/swaywm/sway/issues/595&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">export&lt;/span> &lt;span class="nv">_JAVA_AWT_WM_NONREPARENTING&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">export&lt;/span> &lt;span class="nv">JAVA_TOOL_OPTIONS&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;-Djdk.gtk.version=2.2&amp;#39;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">fi&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
-&lt;/ul>
-&lt;h3 id="приложения-gtk-plus-запускаются-с-задержкой">&lt;span class="section-num">7.2&lt;/span> Приложения GTK+ запускаются с задержкой&lt;/h3>
-&lt;ul>
-&lt;li>Приложения GTK+ ожидают запуск &lt;code>xdg-desktop-portal&lt;/code> через D-Bus.&lt;/li>
-&lt;li>Ожидание прекращается по таймауту потому, что активированная служба D-Bus не знает, к какому &lt;code>WAYLAND_DISPLAY&lt;/code> подключиться.&lt;/li>
-&lt;li>Это можно исправить, добавив в файл конфигурации следующее:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">exec&lt;/span> systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">exec&lt;/span> &lt;span class="nb">hash&lt;/span> dbus-update-activation-environment 2&amp;gt;/dev/null &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
-&lt;/ul>
-&lt;h3 id="qt-приложения">&lt;span class="section-num">7.3&lt;/span> Qt приложения&lt;/h3>
-&lt;ul>
-&lt;li>Qt по умолчанию использует бэкэнд X11 вместо собственного бэкэнда Wayland. Чтобы использовать бэкэнд Wayland, установите &lt;code>QT_QPA_PLATFORM=wayland&lt;/code>.&lt;/li>
-&lt;li>Qt прорисовает оформление окон на стороне клиента. Чтобы отключить это, установите &lt;code>QT_WAYLAND_DISABLE_WINDOWDECORATION=&amp;quot;1&amp;quot;&lt;/code>.&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2024/06/20/sway-application-compatibility/">Sway. Совместимость приложений&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;h2 id="конфигурация">&lt;span class="section-num">8&lt;/span> Конфигурация&lt;/h2>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2024/06/12/sway-configuration/">Sway. Конфигурация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2024/06/20/sway-loading/">Sway. Загрузка&lt;/a>&lt;/li>
 &lt;/ul></description></item><item><title>amd64 и flash</title><link>https://yamadharma.github.io/ru/post/2006/09/24/amd64-i-flash/</link><pubDate>Sun, 24 Sep 2006 15:19:00 +0000</pubDate><guid>https://yamadharma.github.io/ru/post/2006/09/24/amd64-i-flash/</guid><description>&lt;p>Попробовал использовать сначала &lt;code>nspluginwrapper&lt;/code>. Работает хорошо. Через &lt;code>qemu&lt;/code>. Но &lt;code>qemu&lt;/code>, откомпилированный &lt;code>gcc-4&lt;/code>, не работает. Поэтому пришлось перейти на &lt;code>gnash&lt;/code>. Snapshot августовский не откомпилировался. Июньский нормально, но нет звука. Поставил из cvs &amp;mdash; проблемы с прозрачностью. Звука тоже нет.&lt;/p></description></item><item><title>Monit и gentoo rc-scripts</title><link>https://yamadharma.github.io/ru/post/2006/09/17/monit-i-gentoo-rc-scripts/</link><pubDate>Sun, 17 Sep 2006 20:55:00 +0000</pubDate><guid>https://yamadharma.github.io/ru/post/2006/09/17/monit-i-gentoo-rc-scripts/</guid><description>&lt;p>При использовании monit для перезапуска rc-скриптов в gentoo использовал killall и опцию zap.&lt;br>
 Нашёл это-же решение, но оформленное красивее.&lt;/p>
 &lt;p>Это файл /etc/monit.d/bin/kickservice&lt;/p>

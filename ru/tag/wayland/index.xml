@@ -1,4 +1,214 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Wayland | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/wayland/</link><atom:link href="https://yamadharma.github.io/ru/tag/wayland/index.xml" rel="self" type="application/rss+xml"/><description>Wayland</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>ru-ru</language><copyright>© 2024 Dmitry S. Kulyabov</copyright><lastBuildDate>Wed, 01 May 2024 18:44:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url><title>Wayland</title><link>https://yamadharma.github.io/ru/tag/wayland/</link></image><item><title>Wayland. Просмотрщик изображений Swayimg</title><link>https://yamadharma.github.io/ru/post/2024/05/01/wayland-swayimg-image-viewer/</link><pubDate>Wed, 01 May 2024 18:44:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2024/05/01/wayland-swayimg-image-viewer/</guid><description>&lt;p>Wayland. Просмотрщик изображений Swayimg.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Wayland | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/wayland/</link><atom:link href="https://yamadharma.github.io/ru/tag/wayland/index.xml" rel="self" type="application/rss+xml"/><description>Wayland</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>ru-ru</language><copyright>© 2024 Dmitry S. Kulyabov</copyright><lastBuildDate>Thu, 20 Jun 2024 21:29:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu0a661dd90139895e92e2f18ae9404407_611148_512x512_fill_lanczos_center_3.png</url><title>Wayland</title><link>https://yamadharma.github.io/ru/tag/wayland/</link></image><item><title>Sway. Загрузка</title><link>https://yamadharma.github.io/ru/post/2024/06/20/sway-loading/</link><pubDate>Thu, 20 Jun 2024 21:29:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2024/06/20/sway-loading/</guid><description>&lt;p>Загрузка сессии Sway.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#дисплей-менеджеры">&lt;span class="section-num">1&lt;/span> Дисплей-менеджеры&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#загрузка-переменных-среды-перед-сессией">&lt;span class="section-num">2&lt;/span> Загрузка переменных среды перед сессией&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#скрипт-загрузки-sway">&lt;span class="section-num">2.1&lt;/span> Скрипт загрузки Sway&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#локальные-переменные-среды-для-sway">&lt;span class="section-num">2.2&lt;/span> Локальные переменные среды для Sway&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="дисплей-менеджеры">&lt;span class="section-num">1&lt;/span> Дисплей-менеджеры&lt;/h2>
+&lt;h2 id="загрузка-переменных-среды-перед-сессией">&lt;span class="section-num">2&lt;/span> Загрузка переменных среды перед сессией&lt;/h2>
+&lt;ul>
+&lt;li>Для работоспособности Sway необходимо часть переменных загрузить перед сессией (см. &lt;a href="https://yamadharma.github.io/ru/post/2024/06/20/sway-application-compatibility/">Sway. Совместимость приложений&lt;/a>).&lt;/li>
+&lt;/ul>
+&lt;h3 id="скрипт-загрузки-sway">&lt;span class="section-num">2.1&lt;/span> Скрипт загрузки Sway&lt;/h3>
+&lt;ul>
+&lt;li>Можно использовать наработки Fedora.&lt;/li>
+&lt;li>Репозиторий: &lt;a href="https://gitlab.com/fedora/sigs/sway/sway-config-fedora" target="_blank" rel="noopener">https://gitlab.com/fedora/sigs/sway/sway-config-fedora&lt;/a>&lt;/li>
+&lt;li>Для запуска используется скрипт &lt;code>/usr/bin/start-sway&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#!/bin/sh
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">## Internal variables&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">readonly&lt;/span> &lt;span class="nv">_SWAY_COMMAND&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;/usr/bin/sway&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">SWAY_EXTRA_ARGS&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">## General exports&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">XDG_CURRENT_DESKTOP&lt;/span>&lt;span class="o">=&lt;/span>sway
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">XDG_SESSION_DESKTOP&lt;/span>&lt;span class="o">=&lt;/span>sway
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">XDG_SESSION_TYPE&lt;/span>&lt;span class="o">=&lt;/span>wayland
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">## Hardware compatibility&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># We can&amp;#39;t be sure that the virtual GPU is compatible with Sway.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># We should be attempting to detect an EGL driver instead, but that appears&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># to be a bit more complicated.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">case&lt;/span> &lt;span class="k">$(&lt;/span>systemd-detect-virt --vm&lt;span class="k">)&lt;/span> in
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;none&amp;#34;&lt;/span>&lt;span class="p">|&lt;/span>&lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">;;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;kvm&amp;#34;&lt;/span>&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># There&amp;#39;s two drivers we can get here, depending on the 3D acceleration&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># flag state: either virtio_gpu/virgl or kms_swrast/llvmpipe.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">#&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># The former one causes graphical glitches in OpenGL apps when using&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># &amp;#39;pixman&amp;#39; renderer. The latter will crash &amp;#39;gles2&amp;#39; renderer outright.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># Neither of those support &amp;#39;vulkan&amp;#39;.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">#&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># The choice is obvious, at least until we learn to detect the driver&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># instead of abusing the virtualization technology identifier.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">#&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># See also: https://gitlab.freedesktop.org/wlroots/wlroots/-/issues/2871&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">export&lt;/span> &lt;span class="nv">WLR_RENDERER&lt;/span>&lt;span class="o">=&lt;/span>pixman
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># &amp;#39;pixman&amp;#39; on virtio_gpu with recent kernels is glitchy. Appears that&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># it only affects atomic KMS, and legacy interface works.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">export&lt;/span> &lt;span class="nv">WLR_DRM_NO_ATOMIC&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># WLR_NO_HARDWARE_CURSORS=1 is not needed with legacy DRM interface&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">;;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> *&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># https://github.com/swaywm/sway/issues/6581&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">export&lt;/span> &lt;span class="nv">WLR_NO_HARDWARE_CURSORS&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">;;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">esac&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">## Apply `environment.d(5)` customizations&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># This can be used to share the custom environment configs with systemd --user.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Importing `systemd --user show-environment` here may have unexpected&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># consequences, such as getting a leftover `WAYLAND_DISPLAY` or `DISPLAY`&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># and breaking Sway startup. Thus, the direct call to a systemd generator.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">set&lt;/span> -o allexport
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">eval&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>/usr/lib/systemd/user-environment-generators/30-systemd-environment-d-generator&lt;span class="k">)&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">set&lt;/span> +o allexport
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">## Load Sway-specific system environment customizations&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">if&lt;/span> &lt;span class="o">[&lt;/span> -f /etc/sway/environment &lt;span class="o">]&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="k">then&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">set&lt;/span> -o allexport
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># shellcheck source=/dev/null&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> . /etc/sway/environment
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">set&lt;/span> +o allexport
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">fi&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">## Load Sway-specific user environment customizations&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">if&lt;/span> &lt;span class="o">[&lt;/span> -f &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">XDG_CONFIG_HOME&lt;/span>&lt;span class="k">:-&lt;/span>&lt;span class="nv">$HOME&lt;/span>&lt;span class="p">/.config&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">/sway/environment&amp;#34;&lt;/span> &lt;span class="o">]&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="k">then&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">set&lt;/span> -o allexport
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># shellcheck source=/dev/null&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> . &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">XDG_CONFIG_HOME&lt;/span>&lt;span class="k">:-&lt;/span>&lt;span class="nv">$HOME&lt;/span>&lt;span class="p">/.config&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">/sway/environment&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">set&lt;/span> +o allexport
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">fi&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">## Unexport internal variables&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># export -n is not POSIX :(&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">_SWAY_EXTRA_ARGS&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$SWAY_EXTRA_ARGS&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">unset&lt;/span> SWAY_EXTRA_ARGS
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">## Log all exported WLR_ variables&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">if&lt;/span> &lt;span class="nv">_WLR_VARS&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>env &lt;span class="p">|&lt;/span> grep &lt;span class="s1">&amp;#39;^WLR_&amp;#39;&lt;/span>&lt;span class="k">)&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="k">then&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">printf&lt;/span> &lt;span class="s1">&amp;#39;environment variables for wlroots: %s&amp;#39;&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$_WLR_VARS&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="p">|&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> tr &lt;span class="s1">&amp;#39;\n&amp;#39;&lt;/span> &lt;span class="s1">&amp;#39; &amp;#39;&lt;/span> &lt;span class="p">|&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> systemd-cat -p notice -t &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">_SWAY_COMMAND&lt;/span>&lt;span class="p">##*/&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">fi&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Start sway with extra arguments and send output to the journal&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># shellcheck disable=SC2086 # quoted expansion of EXTRA_ARGS can produce empty field&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">exec&lt;/span> systemd-cat -- &lt;span class="nv">$_SWAY_COMMAND&lt;/span> &lt;span class="nv">$_SWAY_EXTRA_ARGS&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$@&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Этот скрипт читает переменные для сессии Sway из файлов:
+&lt;ul>
+&lt;li>&lt;code>/etc/sway/environment&lt;/code>;&lt;/li>
+&lt;li>&lt;code>${XDG_CONFIG_HOME}/sway/environment&lt;/code> (&lt;code>~/.config/sway/environment&lt;/code>).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Для запуска этого файла из стандартный дисплей-менеджеров нужно поправить файл &lt;code>/usr/share/wayland-sessions/sway.desktop&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-toml" data-lang="toml">&lt;span class="line">&lt;span class="cl">&lt;span class="p">[&lt;/span>&lt;span class="nx">Desktop&lt;/span> &lt;span class="nx">Entry&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nx">Name&lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="nx">Sway&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nx">Comment&lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="nx">An&lt;/span> &lt;span class="nx">i3-compatible&lt;/span> &lt;span class="nx">Wayland&lt;/span> &lt;span class="nx">compositor&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nx">Exec&lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="nx">start-sway&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nx">Type&lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="nx">Application&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nx">DesktopNames&lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="nx">sway&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Эти патчи добавлены в оверлей &lt;em>karma&lt;/em> (см. &lt;a href="https://yamadharma.github.io/ru/post/2023/10/01/gentoo-additional-repositories/">Gentoo. Дополнительные репозитории&lt;/a>).&lt;/li>
+&lt;/ul>
+&lt;h3 id="локальные-переменные-среды-для-sway">&lt;span class="section-num">2.2&lt;/span> Локальные переменные среды для Sway&lt;/h3>
+&lt;ul>
+&lt;li>Файл с заданными локальными переменными находится в &lt;code>~/.config/sway/environment&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># -*- mode: shell -*-&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># vim: set ft=sh:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># This file will be sourced from /usr/bin/start-sway script.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># User-specific variables should be placed in $XDG_CONFIG_HOME/sway/environment&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">## Pass extra arguments to the /usr/bin/sway executable&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#SWAY_EXTRA_ARGS=&amp;#34;$SWAY_EXTRA_ARGS --unsupported-gpu&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#SWAY_EXTRA_ARGS=&amp;#34;$SWAY_EXTRA_ARGS --debug&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">## Set environment variables&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Useful variables for wlroots:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># https://gitlab.freedesktop.org/wlroots/wlroots/-/blob/master/docs/env_vars.md&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#WLR_NO_HARDWARE_CURSORS=1&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Исправления для Java (см. &lt;a href="https://yamadharma.github.io/ru/post/2024/06/20/sway-application-compatibility/">Sway. Совместимость приложений&lt;/a>):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">## Java compatibility&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">_JAVA_AWT_WM_NONREPARENTING&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Исправления для Qt (см. &lt;a href="https://yamadharma.github.io/ru/post/2024/06/20/sway-application-compatibility/">Sway. Совместимость приложений&lt;/a>):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">## Qt tuning&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">QT_QPA_PLATFORM&lt;/span>&lt;span class="o">=&lt;/span>wayland
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">QT_QPA_PLATFORMTHEME&lt;/span>&lt;span class="o">=&lt;/span>qt6ct
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">QT_WAYLAND_DISABLE_WINDOWDECORATION&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul></description></item><item><title>Sway. Совместимость приложений</title><link>https://yamadharma.github.io/ru/post/2024/06/20/sway-application-compatibility/</link><pubDate>Thu, 20 Jun 2024 21:26:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2024/06/20/sway-application-compatibility/</guid><description>&lt;p>Sway. Совместимость приложений.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#java">&lt;span class="section-num">1&lt;/span> Java&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#серое-окно-приложения-не-меняют-размер-с-помощью-wm-меню-сразу-закрываются">&lt;span class="section-num">1.1&lt;/span> Серое окно, приложения не меняют размер с помощью WM, меню сразу закрываются&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#меню-в-приложениях-плавает-отдельно-им-невозможно-пользоваться">&lt;span class="section-num">1.2&lt;/span> Меню в приложениях плавает отдельно, им невозможно пользоваться&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#приложения-gtk-plus-запускаются-с-задержкой">&lt;span class="section-num">2&lt;/span> Приложения GTK+ запускаются с задержкой&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#qt-приложения">&lt;span class="section-num">3&lt;/span> Qt приложения&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="java">&lt;span class="section-num">1&lt;/span> Java&lt;/h2>
+&lt;h3 id="серое-окно-приложения-не-меняют-размер-с-помощью-wm-меню-сразу-закрываются">&lt;span class="section-num">1.1&lt;/span> Серое окно, приложения не меняют размер с помощью WM, меню сразу закрываются&lt;/h3>
+&lt;ul>
+&lt;li>В стандартных тулкитах для Java жестко зашит список оконных менеджеров.&lt;/li>
+&lt;li>Следует установить переменную окружения:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">_JAVA_AWT_WM_NONREPARENTING&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="меню-в-приложениях-плавает-отдельно-им-невозможно-пользоваться">&lt;span class="section-num">1.2&lt;/span> Меню в приложениях плавает отдельно, им невозможно пользоваться&lt;/h3>
+&lt;ul>
+&lt;li>В выпусках Java до версии 9 GTK интерфейс ориентирован на GTK2, в последующих версиях на GTK3.&lt;/li>
+&lt;li>GTK LookAndFeel может работать с GTK версий 2, 2.2 и 3.&lt;/li>
+&lt;li>По умолчанию используется GTK3.&lt;/li>
+&lt;li>Следует явно задать более старую версию:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">JAVA_TOOL_OPTIONS&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;-Djdk.gtk.version=2.2&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Например, в файле &lt;code>~/.profile&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="k">if&lt;/span> &lt;span class="o">[&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$XDG_SESSION_DESKTOP&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;sway&amp;#34;&lt;/span> &lt;span class="o">]&lt;/span> &lt;span class="o">||&lt;/span> &lt;span class="o">[&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$XDG_SESSION_DESKTOP&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;i3&amp;#34;&lt;/span> &lt;span class="o">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">then&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># https://github.com/swaywm/sway/issues/595&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">export&lt;/span> &lt;span class="nv">_JAVA_AWT_WM_NONREPARENTING&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">export&lt;/span> &lt;span class="nv">JAVA_TOOL_OPTIONS&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;-Djdk.gtk.version=2.2&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">fi&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="приложения-gtk-plus-запускаются-с-задержкой">&lt;span class="section-num">2&lt;/span> Приложения GTK+ запускаются с задержкой&lt;/h2>
+&lt;ul>
+&lt;li>Приложения GTK+ ожидают запуск &lt;code>xdg-desktop-portal&lt;/code> через D-Bus.&lt;/li>
+&lt;li>Ожидание прекращается по таймауту потому, что активированная служба D-Bus не знает, к какому &lt;code>WAYLAND_DISPLAY&lt;/code> подключиться.&lt;/li>
+&lt;li>Это можно исправить, добавив в файл конфигурации следующее:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">exec&lt;/span> systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">exec&lt;/span> &lt;span class="nb">hash&lt;/span> dbus-update-activation-environment 2&amp;gt;/dev/null &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="qt-приложения">&lt;span class="section-num">3&lt;/span> Qt приложения&lt;/h2>
+&lt;ul>
+&lt;li>Qt по умолчанию использует бэкэнд X11 вместо собственного бэкэнда Wayland. Чтобы использовать бэкэнд Wayland, установите &lt;code>QT_QPA_PLATFORM=wayland&lt;/code>.&lt;/li>
+&lt;li>Qt прорисовает оформление окон на стороне клиента. Чтобы отключить это, установите &lt;code>QT_WAYLAND_DISABLE_WINDOWDECORATION=&amp;quot;1&amp;quot;&lt;/code>.&lt;/li>
+&lt;/ul></description></item><item><title>Wayland. Просмотрщик изображений Swayimg</title><link>https://yamadharma.github.io/ru/post/2024/05/01/wayland-swayimg-image-viewer/</link><pubDate>Wed, 01 May 2024 18:44:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2024/05/01/wayland-swayimg-image-viewer/</guid><description>&lt;p>Wayland. Просмотрщик изображений Swayimg.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
 &lt;summary class="font-weight-bold">Содержание&lt;/summary>
 &lt;nav id="TableOfContents">
@@ -801,18 +1011,7 @@
 &lt;/ul>
 &lt;/li>
 &lt;li>&lt;a href="#замена-приложений">&lt;span class="section-num">6&lt;/span> Замена приложений&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#совместимость-приложений">&lt;span class="section-num">7&lt;/span> Совместимость приложений&lt;/a>
-&lt;ul>
-&lt;li>&lt;a href="#java">&lt;span class="section-num">7.1&lt;/span> Java&lt;/a>
-&lt;ul>
-&lt;li>&lt;a href="#серое-окно-приложения-не-меняют-размер-с-помощью-wm-меню-сразу-закрываются">&lt;span class="section-num">7.1.1&lt;/span> Серое окно, приложения не меняют размер с помощью WM, меню сразу закрываются&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#меню-в-приложениях-плавает-отдельно-им-невозможно-пользоваться">&lt;span class="section-num">7.1.2&lt;/span> Меню в приложениях плавает отдельно, им невозможно пользоваться&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>&lt;a href="#приложения-gtk-plus-запускаются-с-задержкой">&lt;span class="section-num">7.2&lt;/span> Приложения GTK+ запускаются с задержкой&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#qt-приложения">&lt;span class="section-num">7.3&lt;/span> Qt приложения&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;/li>
+&lt;li>&lt;a href="#совместимость-приложений">&lt;span class="section-num">7&lt;/span> Совместимость приложений&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#конфигурация">&lt;span class="section-num">8&lt;/span> Конфигурация&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/nav>
@@ -1020,46 +1219,11 @@
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/12/08/sway-systemd-integration/">Sway. Интеграция systemd&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;h2 id="совместимость-приложений">&lt;span class="section-num">7&lt;/span> Совместимость приложений&lt;/h2>
-&lt;h3 id="java">&lt;span class="section-num">7.1&lt;/span> Java&lt;/h3>
-&lt;h4 id="серое-окно-приложения-не-меняют-размер-с-помощью-wm-меню-сразу-закрываются">&lt;span class="section-num">7.1.1&lt;/span> Серое окно, приложения не меняют размер с помощью WM, меню сразу закрываются&lt;/h4>
 &lt;ul>
-&lt;li>В стандартных тулкитах для Java жестко зашит список оконных менеджеров.&lt;/li>
-&lt;li>Следует установить переменную окружения:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">_JAVA_AWT_WM_NONREPARENTING&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
-&lt;/ul>
-&lt;h4 id="меню-в-приложениях-плавает-отдельно-им-невозможно-пользоваться">&lt;span class="section-num">7.1.2&lt;/span> Меню в приложениях плавает отдельно, им невозможно пользоваться&lt;/h4>
-&lt;ul>
-&lt;li>В выпусках Java до версии 9 GTK интерфейс ориентирован на GTK2, в последующих версиях на GTK3.&lt;/li>
-&lt;li>GTK LookAndFeel может работать с GTK версий 2, 2.2 и 3.&lt;/li>
-&lt;li>По умолчанию используется GTK3.&lt;/li>
-&lt;li>Следует явно задать более старую версию:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">JAVA_TOOL_OPTIONS&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;-Djdk.gtk.version=2.2&amp;#39;&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
-&lt;li>Например, в файле &lt;code>~/.profile&lt;/code>:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="k">if&lt;/span> &lt;span class="o">[&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$XDG_SESSION_DESKTOP&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;sway&amp;#34;&lt;/span> &lt;span class="o">]&lt;/span> &lt;span class="o">||&lt;/span> &lt;span class="o">[&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$XDG_SESSION_DESKTOP&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;i3&amp;#34;&lt;/span> &lt;span class="o">]&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">then&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># https://github.com/swaywm/sway/issues/595&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">export&lt;/span> &lt;span class="nv">_JAVA_AWT_WM_NONREPARENTING&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">export&lt;/span> &lt;span class="nv">JAVA_TOOL_OPTIONS&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;-Djdk.gtk.version=2.2&amp;#39;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">fi&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
-&lt;/ul>
-&lt;h3 id="приложения-gtk-plus-запускаются-с-задержкой">&lt;span class="section-num">7.2&lt;/span> Приложения GTK+ запускаются с задержкой&lt;/h3>
-&lt;ul>
-&lt;li>Приложения GTK+ ожидают запуск &lt;code>xdg-desktop-portal&lt;/code> через D-Bus.&lt;/li>
-&lt;li>Ожидание прекращается по таймауту потому, что активированная служба D-Bus не знает, к какому &lt;code>WAYLAND_DISPLAY&lt;/code> подключиться.&lt;/li>
-&lt;li>Это можно исправить, добавив в файл конфигурации следующее:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">exec&lt;/span> systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">exec&lt;/span> &lt;span class="nb">hash&lt;/span> dbus-update-activation-environment 2&amp;gt;/dev/null &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
-&lt;/ul>
-&lt;h3 id="qt-приложения">&lt;span class="section-num">7.3&lt;/span> Qt приложения&lt;/h3>
-&lt;ul>
-&lt;li>Qt по умолчанию использует бэкэнд X11 вместо собственного бэкэнда Wayland. Чтобы использовать бэкэнд Wayland, установите &lt;code>QT_QPA_PLATFORM=wayland&lt;/code>.&lt;/li>
-&lt;li>Qt прорисовает оформление окон на стороне клиента. Чтобы отключить это, установите &lt;code>QT_WAYLAND_DISABLE_WINDOWDECORATION=&amp;quot;1&amp;quot;&lt;/code>.&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2024/06/20/sway-application-compatibility/">Sway. Совместимость приложений&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;h2 id="конфигурация">&lt;span class="section-num">8&lt;/span> Конфигурация&lt;/h2>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2024/06/12/sway-configuration/">Sway. Конфигурация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2024/06/20/sway-loading/">Sway. Загрузка&lt;/a>&lt;/li>
 &lt;/ul></description></item></channel></rss>

@@ -255,8 +255,17 @@
 &lt;li>Очистите, исправьте перекос и поверните плохо отсканированные страницы:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">ocrmypdf --clean --deskew --rotate-pages input.pdf output.pdf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Убрать фон:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">ocrmypdf --clean --remove-background input.pdf output.pdf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Разделить сдвоенные страницы:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">ocrmypdf --clean --clean-final --unpaper-args &lt;span class="s1">&amp;#39;--layout double&amp;#39;&lt;/span> input.pdf output.pdf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Контролируем оптимизацию:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">ocrmypdf --optimize &lt;span class="m">3&lt;/span> --jbig2-lossy input.pdf output.pdf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Задать метаданные PDF-файла:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">ocrmypdf --title &lt;span class="s2">&amp;#34;&amp;lt;title&amp;gt;&amp;#34;&lt;/span> --author &lt;span class="s2">&amp;#34;&amp;lt;author&amp;gt;&amp;#34;&lt;/span> --subject &lt;span class="s2">&amp;#34;&amp;lt;subject&amp;gt;&amp;#34;&lt;/span> --keywords &lt;span class="s2">&amp;#34;&amp;lt;keyword; key phrase; ...&amp;gt;&amp;#34;&lt;/span> input_file.pdf output.pdf
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">ocrmypdf --skip-text --title &lt;span class="s2">&amp;#34;&amp;lt;title&amp;gt;&amp;#34;&lt;/span> --author &lt;span class="s2">&amp;#34;&amp;lt;author&amp;gt;&amp;#34;&lt;/span> --subject &lt;span class="s2">&amp;#34;&amp;lt;subject&amp;gt;&amp;#34;&lt;/span> --keywords &lt;span class="s2">&amp;#34;&amp;lt;keyword; key phrase; ...&amp;gt;&amp;#34;&lt;/span> input_file.pdf output.pdf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul></description></item><item><title>Примеры команд для обработки pdf</title><link>https://yamadharma.github.io/ru/post/2024/04/28/examples-pdf-processing-commands/</link><pubDate>Sun, 28 Apr 2024 18:02:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2024/04/28/examples-pdf-processing-commands/</guid><description>&lt;p>Примеры команд для обработки pdf.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>
@@ -270,7 +279,16 @@
 &lt;li>&lt;a href="#извлечение-изображений-из-pdf-файла">&lt;span class="section-num">5&lt;/span> Извлечение изображений из PDF-файла&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#извлечение-диапазона-страниц-из-pdf-разделение-многостраничного-pdf-документа">&lt;span class="section-num">6&lt;/span> Извлечение диапазона страниц из PDF, разделение многостраничного PDF-документа&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#наложить-pdf--nup">&lt;span class="section-num">7&lt;/span> Наложить PDF (nup)&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#проверка-метаданных">&lt;span class="section-num">8&lt;/span> Проверка метаданных&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#метаданные">&lt;span class="section-num">8&lt;/span> Метаданные&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#проверка-метаданных">&lt;span class="section-num">8.1&lt;/span> Проверка метаданных&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#записать-метаданные">&lt;span class="section-num">8.2&lt;/span> Записать метаданные&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#exiftool">&lt;span class="section-num">8.2.1&lt;/span> exiftool&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
 &lt;li>&lt;a href="#уменьшить-размер-pdf-файла--сжатие">&lt;span class="section-num">9&lt;/span> Уменьшить размер pdf-файла (сжатие)&lt;/a>
 &lt;ul>
 &lt;li>&lt;a href="#ghostscript">&lt;span class="section-num">9.1&lt;/span> Ghostscript&lt;/a>&lt;/li>
@@ -401,7 +419,8 @@
 &lt;p>$ pdfjam &amp;ndash;nup строк x столбцов input.pdf &amp;ndash;outfile output.pdf
 или с pdfsak :&lt;/p>
 &lt;p>$ pdfsak &amp;ndash;input-file input.pdf &amp;ndash;output output.pdf &amp;ndash;nup rows columns&lt;/p>
-&lt;h2 id="проверка-метаданных">&lt;span class="section-num">8&lt;/span> Проверка метаданных&lt;/h2>
+&lt;h2 id="метаданные">&lt;span class="section-num">8&lt;/span> Метаданные&lt;/h2>
+&lt;h3 id="проверка-метаданных">&lt;span class="section-num">8.1&lt;/span> Проверка метаданных&lt;/h3>
 &lt;p>С помощью ExifTool :&lt;/p>
 &lt;p>$ exiftool -Все файлы.pdf
 С Попплером:&lt;/p>
@@ -417,6 +436,16 @@ $ qpdf &amp;ndash;линеаризовать /tmp/temp.pdf input.pdf
 Многие PDF-файлы хранят метаданные документа, используя как словарь Info (старая школа), так и поток XMP (новая школа). Эта команда pdftk полностью удаляет поток XMP из PDF-файла. Информационный словарь не удаляется.&lt;/p>
 &lt;p>Обратите внимание, что объекты внутри PDF-файла могут иметь свои собственные отдельные потоки метаданных XMP, и эта команда не удаляет их. Он удаляет только поток XMP на уровне документа PDF.&lt;/p>
 &lt;p>$ pdftk input.pdf drop_xmp вывод output.pdf&lt;/p>
+&lt;h3 id="записать-метаданные">&lt;span class="section-num">8.2&lt;/span> Записать метаданные&lt;/h3>
+&lt;h4 id="exiftool">&lt;span class="section-num">8.2.1&lt;/span> exiftool&lt;/h4>
+&lt;ul>
+&lt;li>Обновить метаданные:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">exiftool -Title&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;This is the Title&amp;#34;&lt;/span> -Author&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;Author&amp;#34;&lt;/span> -Subject&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;Subject&amp;#34;&lt;/span> file.pdf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>При просмотре в evince тема оказывается в поле ключевых слов метаданных файла PDF.&lt;/li>
+&lt;li>Adobe Acrobat и PDF-XChange показывают правильно.&lt;/li>
+&lt;li>&lt;code>pdfinfo&lt;/code> показывает правильно.&lt;/li>
+&lt;/ul>
 &lt;h2 id="уменьшить-размер-pdf-файла--сжатие">&lt;span class="section-num">9&lt;/span> Уменьшить размер pdf-файла (сжатие)&lt;/h2>
 &lt;h3 id="ghostscript">&lt;span class="section-num">9.1&lt;/span> Ghostscript&lt;/h3>
 &lt;ul>
@@ -451,7 +480,7 @@ $ qpdf &amp;ndash;линеаризовать /tmp/temp.pdf input.pdf
 &lt;ul>
 &lt;li>
 &lt;p>Команда qpdf:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">qpdf --compress-streams&lt;span class="o">=&lt;/span>y --object-streams&lt;span class="o">=&lt;/span>generate --recompress-flate --optimize-images document.pdf qpdf_compressed.pdf
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">qpdf --compress-streams&lt;span class="o">=&lt;/span>y --object-streams&lt;span class="o">=&lt;/span>generate --recompress-flate --optimize-images --linearize document.pdf qpdf_compressed.pdf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
 &lt;li>&lt;code>--compress-streams=y&lt;/code> : указывает &lt;code>qpdf&lt;/code> сжимать потоки контента в файле PDF. Потоки контента содержат фактические данные, такие как текст и изображения, в документе PDF;&lt;/li>
 &lt;li>&lt;code>--object-streams=generate&lt;/code> : определяет обработку объектных потоков в файле PDF. Опция генерации указывает qpdf генерировать новые потоки объектов во время процесса оптимизации;&lt;/li>
@@ -684,6 +713,9 @@ pdftk &amp;ldquo;${IN}&amp;rdquo; cat \((non_blank) вывод &amp;ldquo;\){fil
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/07/30/pdf-a-standard/">Стандарт PDF/A&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;h3 id="преобразование-pdf-в-стандарт-pdf-a">&lt;span class="section-num">19.1&lt;/span> Преобразование PDF в стандарт PDF/A&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2024/06/07/pdf-ocr-ocrmypdf/">Распознавание pdf. OCRmyPDF&lt;/a>&lt;/li>
+&lt;/ul>
 &lt;h4 id="ghostscript">&lt;span class="section-num">19.1.1&lt;/span> ghostscript&lt;/h4>
 &lt;ul>
 &lt;li>Конвертация:

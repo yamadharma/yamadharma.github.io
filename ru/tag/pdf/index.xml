@@ -327,9 +327,14 @@
 &lt;/li>
 &lt;li>&lt;a href="#шрифты">&lt;span class="section-num">17&lt;/span> Шрифты&lt;/a>
 &lt;ul>
-&lt;li>&lt;a href="#шрифты-используемые-в-pdf-файле">&lt;span class="section-num">17.1&lt;/span> Шрифты, используемые в PDF-файле&lt;/a>
+&lt;li>&lt;a href="#список-шрифтов">&lt;span class="section-num">17.1&lt;/span> Список шрифтов&lt;/a>
 &lt;ul>
 &lt;li>&lt;a href="#poppler">&lt;span class="section-num">17.1.1&lt;/span> poppler&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#внедрить-шрифты-в-файл">&lt;span class="section-num">17.2&lt;/span> Внедрить шрифты в файл&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#ghostscript">&lt;span class="section-num">17.2.1&lt;/span> ghostscript&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
@@ -682,11 +687,18 @@ pdftk &amp;ldquo;${IN}&amp;rdquo; cat \((non_blank) вывод &amp;ldquo;\){fil
 Используйте его как pdf_remove_blank_pages input.pdf.&lt;/p>
 &lt;p>Для сценария необходимы pdftk , nawk и Ghostscript .&lt;/p>
 &lt;h2 id="шрифты">&lt;span class="section-num">17&lt;/span> Шрифты&lt;/h2>
-&lt;h3 id="шрифты-используемые-в-pdf-файле">&lt;span class="section-num">17.1&lt;/span> Шрифты, используемые в PDF-файле&lt;/h3>
+&lt;h3 id="список-шрифтов">&lt;span class="section-num">17.1&lt;/span> Список шрифтов&lt;/h3>
 &lt;h4 id="poppler">&lt;span class="section-num">17.1.1&lt;/span> poppler&lt;/h4>
 &lt;ul>
 &lt;li>Используем команду &lt;code>pdffonts&lt;/code> чтобы узнать, какие шрифты используются в PDF-файле и встроены ли они в него или нет:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pdffonts file.pdf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="внедрить-шрифты-в-файл">&lt;span class="section-num">17.2&lt;/span> Внедрить шрифты в файл&lt;/h3>
+&lt;h4 id="ghostscript">&lt;span class="section-num">17.2.1&lt;/span> ghostscript&lt;/h4>
+&lt;ul>
+&lt;li>Перегенерим файл с помощью ghostscript:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">gs -q -dNOPAUSE -dBATCH -dPDFSETTINGS&lt;span class="o">=&lt;/span>/prepress -sDEVICE&lt;span class="o">=&lt;/span>pdfwrite -dEmbedAllFonts&lt;span class="o">=&lt;/span>&lt;span class="nb">true&lt;/span> -sOutputFile&lt;span class="o">=&lt;/span>&amp;lt;outfile.pdf&amp;gt; &amp;lt;infile.pdf&amp;gt;
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h2 id="восстановить-повреждённый-pdf-файл">&lt;span class="section-num">18&lt;/span> Восстановить повреждённый PDF-файл&lt;/h2>

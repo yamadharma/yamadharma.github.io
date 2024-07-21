@@ -564,8 +564,9 @@
 &lt;li>&lt;a href="#установка-nginx">&lt;span class="section-num">4.1&lt;/span> Установка nginx&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#брандмауэр">&lt;span class="section-num">4.2&lt;/span> Брандмауэр&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#selinux">&lt;span class="section-num">4.3&lt;/span> SELinux&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#конфигурация-nginx">&lt;span class="section-num">4.4&lt;/span> Конфигурация nginx:&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#конфигурация-nginx">&lt;span class="section-num">4.4&lt;/span> Конфигурация nginx&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#конфигурационный-файл-app-dot-ini">&lt;span class="section-num">4.5&lt;/span> Конфигурационный файл app.ini&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#настройка-ssl">&lt;span class="section-num">4.6&lt;/span> Настройка SSL&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>&lt;a href="#начальная-конфигурация">&lt;span class="section-num">5&lt;/span> Начальная конфигурация&lt;/a>&lt;/li>
@@ -782,8 +783,8 @@
 &lt;/ul>
 &lt;h3 id="брандмауэр">&lt;span class="section-num">4.2&lt;/span> Брандмауэр&lt;/h3>
 &lt;ul>
-&lt;li>Разрешим работать сервису &lt;code>http&lt;/code>:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">firewall-cmd --permanent --zone&lt;span class="o">=&lt;/span>public --add-service&lt;span class="o">=&lt;/span>http
+&lt;li>Настроим брандмауэр:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">firewall-cmd --add-servic&lt;span class="o">={&lt;/span>http,https&lt;span class="o">}&lt;/span> --permanent
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">firewall-cmd --reload
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
@@ -794,7 +795,7 @@
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">setsebool httpd_can_network_connect &lt;span class="m">1&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
-&lt;h3 id="конфигурация-nginx">&lt;span class="section-num">4.4&lt;/span> Конфигурация nginx:&lt;/h3>
+&lt;h3 id="конфигурация-nginx">&lt;span class="section-num">4.4&lt;/span> Конфигурация nginx&lt;/h3>
 &lt;ul>
 &lt;li>В файле &lt;code>/etc/nginx/conf.d/gitea.conf&lt;/code> опишем конфигурацию для перенаправления:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">server {
@@ -817,6 +818,52 @@
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[security]
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">REVERSE_PROXY_LIMIT = 1
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">REVERSE_PROXY_TRUSTED_PROXIES = 127.0.0.1/8
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="настройка-ssl">&lt;span class="section-num">4.6&lt;/span> Настройка SSL&lt;/h3>
+&lt;ul>
+&lt;li>Установите &lt;em>certbot&lt;/em> (см. &lt;a href="https://yamadharma.github.io/ru/post/2022/05/02/acme-clients-certbot/">Клиенты ACME. Certbot&lt;/a>)&lt;/li>
+&lt;li>Создайте сертификат.&lt;/li>
+&lt;li>Конфигурационный файл &lt;em>Nginx&lt;/em> будет иметь вид:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">server {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> listen 443 ssl http2;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> listen [::]:443 ssl http2;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> server_name hub.example.com;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ssl_certificate /etc/letsencrypt/live/hub.example.com/fullchain.pem;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ssl_certificate_key /etc/letsencrypt/live/hub.example.com/privkey.pem;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> include /etc/letsencrypt/options-ssl-nginx.conf;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> charset utf-8;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> gzip on;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> gzip_types text/css application/javascript text/javascript application/x-javascript image/svg+xml text/plain text/xsd text/xsl text/xml image/x-icon;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> proxy_read_timeout 300;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> proxy_connect_timeout 300;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> proxy_send_timeout 300;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> location / {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> client_max_body_size 512M;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> proxy_pass http://localhost:3000;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> proxy_set_header Connection $http_connection;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> proxy_set_header Upgrade $http_upgrade;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> proxy_set_header Host $host;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> proxy_set_header X-Real-IP $remote_addr;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> proxy_set_header X-Forwarded-Proto $scheme;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">server {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # Redirect HTTP traffic to HTTPS
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> listen 80;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> listen [::]:80;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> server_name hub.example.com;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> return 301 https://$server_name$request_uri;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h2 id="начальная-конфигурация">&lt;span class="section-num">5&lt;/span> Начальная конфигурация&lt;/h2>

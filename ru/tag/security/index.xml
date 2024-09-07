@@ -1204,17 +1204,22 @@
 &lt;li>&lt;a href="#настройка">&lt;span class="section-num">2&lt;/span> Настройка&lt;/a>
 &lt;ul>
 &lt;li>&lt;a href="#общие-настройки">&lt;span class="section-num">2.1&lt;/span> Общие настройки&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#время-блокирования">&lt;span class="section-num">2.2&lt;/span> Время блокирования&lt;/a>
-&lt;ul>
-&lt;li>&lt;a href="#игнорирование-избранных-ip-адресов">&lt;span class="section-num">2.2.1&lt;/span> Игнорирование избранных ip-адресов&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#время-блокирования">&lt;span class="section-num">2.2&lt;/span> Время блокирования&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#игнорирование-избранных-ip-адресов">&lt;span class="section-num">2.3&lt;/span> Игнорирование избранных ip-адресов&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#защита-ssh">&lt;span class="section-num">2.4&lt;/span> Защита ssh&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;li>&lt;a href="#защита-ssh">&lt;span class="section-num">2.3&lt;/span> Защита ssh&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#настройка-для-proxmox">&lt;span class="section-num">3&lt;/span> Настройка для Proxmox&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#время-блокирования">&lt;span class="section-num">3.1&lt;/span> Время блокирования&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#игнорирование-избранных-ip-адресов">&lt;span class="section-num">3.2&lt;/span> Игнорирование избранных ip-адресов&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#защита-ssh">&lt;span class="section-num">3.3&lt;/span> Защита ssh&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#защита-proxmox-web-интерфейс">&lt;span class="section-num">3.4&lt;/span> Защита proxmox web-интерфейс&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;li>&lt;a href="#основные-операции">&lt;span class="section-num">3&lt;/span> Основные операции&lt;/a>
+&lt;li>&lt;a href="#основные-операции">&lt;span class="section-num">4&lt;/span> Основные операции&lt;/a>
 &lt;ul>
-&lt;li>&lt;a href="#удалить-все-записи-из-списков-блокировки">&lt;span class="section-num">3.1&lt;/span> Удалить все записи из списков блокировки&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#удалить-все-записи-из-списков-блокировки">&lt;span class="section-num">4.1&lt;/span> Удалить все записи из списков блокировки&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
@@ -1238,7 +1243,7 @@
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bantime = 360000
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
-&lt;h4 id="игнорирование-избранных-ip-адресов">&lt;span class="section-num">2.2.1&lt;/span> Игнорирование избранных ip-адресов&lt;/h4>
+&lt;h3 id="игнорирование-избранных-ip-адресов">&lt;span class="section-num">2.3&lt;/span> Игнорирование избранных ip-адресов&lt;/h3>
 &lt;ul>
 &lt;li>Добавим игнорирование избранных ip-адресов в файле &lt;code>/etc/fail2ban/jail.d/50-default.conf&lt;/code>:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl"># &amp;#34;ignoreself&amp;#34; specifies whether the local resp. own IP addresses should be ignored
@@ -1248,11 +1253,11 @@
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># &amp;#34;ignoreip&amp;#34; can be a list of IP addresses, CIDR masks or DNS hosts. Fail2ban
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># will not ban a host which matches an address in this list. Several addresses
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># can be defined using space (and/or comma) separator.
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ignoreip = 127.0.0.1/8 ::1 10.128.0.0/8
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ignoreip = 127.0.0.1/8 ::1 10.0.0.0/8
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
-&lt;li>Диапазон &lt;code>10.128.0.0/8&lt;/code> добавлен для примера.&lt;/li>
+&lt;li>Диапазон &lt;code>10.0.0.0/8&lt;/code> добавлен для примера.&lt;/li>
 &lt;/ul>
-&lt;h3 id="защита-ssh">&lt;span class="section-num">2.3&lt;/span> Защита ssh&lt;/h3>
+&lt;h3 id="защита-ssh">&lt;span class="section-num">2.4&lt;/span> Защита ssh&lt;/h3>
 &lt;ul>
 &lt;li>Создадим файл для локальной конфигурации ssh:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">touch /etc/fail2ban/jail.d/80-ssh.conf
@@ -1276,8 +1281,73 @@
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">logpath = %(auditd_log)s
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
-&lt;h2 id="основные-операции">&lt;span class="section-num">3&lt;/span> Основные операции&lt;/h2>
-&lt;h3 id="удалить-все-записи-из-списков-блокировки">&lt;span class="section-num">3.1&lt;/span> Удалить все записи из списков блокировки&lt;/h3>
+&lt;h2 id="настройка-для-proxmox">&lt;span class="section-num">3&lt;/span> Настройка для Proxmox&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2024/06/04/linux-proxmox-distribution/">Linux. Дистрибутив Proxmox&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="время-блокирования">&lt;span class="section-num">3.1&lt;/span> Время блокирования&lt;/h3>
+&lt;ul>
+&lt;li>Создайте файл локальной конфигурации:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">touch /etc/fail2ban/jail.d/50-default.conf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>В файле &lt;code>/etc/fail2ban/jail.d/50-default.conf&lt;/code> задайте время блокирования хостов:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[DEFAULT]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bantime = 360000
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="игнорирование-избранных-ip-адресов">&lt;span class="section-num">3.2&lt;/span> Игнорирование избранных ip-адресов&lt;/h3>
+&lt;ul>
+&lt;li>Добавим игнорирование избранных ip-адресов в файле &lt;code>/etc/fail2ban/jail.d/50-default.conf&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl"># &amp;#34;ignoreself&amp;#34; specifies whether the local resp. own IP addresses should be ignored
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># (default is true). Fail2ban will not ban a host which matches such addresses.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ignoreself = true
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># &amp;#34;ignoreip&amp;#34; can be a list of IP addresses, CIDR masks or DNS hosts. Fail2ban
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># will not ban a host which matches an address in this list. Several addresses
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># can be defined using space (and/or comma) separator.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ignoreip = 127.0.0.1/8 ::1 10.0.0.0/8
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Диапазон &lt;code>10.0.0.0/8&lt;/code> добавлен для примера.&lt;/li>
+&lt;/ul>
+&lt;h3 id="защита-ssh">&lt;span class="section-num">3.3&lt;/span> Защита ssh&lt;/h3>
+&lt;ul>
+&lt;li>Создадим файл для локальной конфигурации ssh:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">touch /etc/fail2ban/jail.d/80-ssh.conf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>В файле &lt;code>/etc/fail2ban/jail.d/80-ssh.conf&lt;/code> активируйте защиту ssh:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[sshd]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">enabled = true
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">backend = systemd
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Удалите файл &lt;code>/etc/fail2ban/jail.d/defaults-debian.conf&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h3 id="защита-proxmox-web-интерфейс">&lt;span class="section-num">3.4&lt;/span> Защита proxmox web-интерфейс&lt;/h3>
+&lt;ul>
+&lt;li>Создадим файл для локальной конфигурации proxmox:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">touch /etc/fail2ban/jail.d/80-proxmox.conf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>В файле &lt;code>/etc/fail2ban/jail.d/80-proxmox.conf&lt;/code> активируйте защиту web-интерфейса:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[proxmox]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">enabled = true
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">port = https,http,8006
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">filter = proxmox
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">backend = systemd
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">maxretry = 3
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">findtime = 2d
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bantime = 1h
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Создайте файл фильтра:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">touch /etc/fail2ban/filter.d/proxmox.conf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Настройте фильтр в файле &lt;code>/etc/fail2ban/filter.d/proxmox.conf&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="o">[&lt;/span>Definition&lt;span class="o">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">failregex&lt;/span> &lt;span class="o">=&lt;/span> pvedaemon&lt;span class="se">\[&lt;/span>.*authentication failure&lt;span class="p">;&lt;/span> &lt;span class="nv">rhost&lt;/span>&lt;span class="o">=&lt;/span>&amp;lt;HOST&amp;gt; &lt;span class="nv">user&lt;/span>&lt;span class="o">=&lt;/span>.* &lt;span class="nv">msg&lt;/span>&lt;span class="o">=&lt;/span>.*
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">ignoreregex&lt;/span> &lt;span class="o">=&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">journalmatch&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nv">_SYSTEMD_UNIT&lt;/span>&lt;span class="o">=&lt;/span>pvedaemon.service
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="основные-операции">&lt;span class="section-num">4&lt;/span> Основные операции&lt;/h2>
+&lt;h3 id="удалить-все-записи-из-списков-блокировки">&lt;span class="section-num">4.1&lt;/span> Удалить все записи из списков блокировки&lt;/h3>
 &lt;ul>
 &lt;li>Для удаления всех записей из списков блокировки выполните скрипт:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#!/bin/bash

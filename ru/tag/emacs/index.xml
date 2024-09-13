@@ -4026,6 +4026,13 @@ userи shell commandsотсортированы по алфавиту.&lt;/p>
 &lt;/li>
 &lt;li>&lt;a href="#экспорт-блоков-кода">&lt;span class="section-num">4&lt;/span> Экспорт блоков кода&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#экспорт-рисунков-svg">&lt;span class="section-num">5&lt;/span> Экспорт рисунков &lt;code>svg&lt;/code>&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#задание-конфигурации-в-свойствах">&lt;span class="section-num">6&lt;/span> Задание конфигурации в свойствах&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#аргументы-заголовка-уровня-буфера">&lt;span class="section-num">6.1&lt;/span> Аргументы заголовка уровня буфера&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#аргументы-заголовка-поддерева">&lt;span class="section-num">6.2&lt;/span> Аргументы заголовка поддерева&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#аргументы-заголовка-блока-кода">&lt;span class="section-num">6.3&lt;/span> Аргументы заголовка блока кода&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
 &lt;/ul>
 &lt;/nav>
 &lt;/details>
@@ -4036,6 +4043,7 @@ userи shell commandsотсортированы по алфавиту.&lt;/p>
 &lt;li>Для редактирования и форматирования блока исходного кода используется соответствующий основной режим Emacs, включающий функции, специально разработанные для исходного кода на этом языке.&lt;/li>
 &lt;li>Для выполнения компиляции блока исходного кода можно использовать соответствующий компилятор.&lt;/li>
 &lt;li>Важной особенностью управления блоками исходного кода в &lt;em>org-mode&lt;/em> является возможность передавать переменные, функции и результаты друг другу, используя общий синтаксис для блоков исходного кода на любом языке.&lt;/li>
+&lt;li>Документация: &lt;a href="https://org-babel.readthedocs.io/" target="_blank" rel="noopener">https://org-babel.readthedocs.io/&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;h2 id="структура-блока-кода">&lt;span class="section-num">2&lt;/span> Структура блока кода&lt;/h2>
 &lt;ul>
@@ -4135,6 +4143,40 @@ userи shell commandsотсортированы по алфавиту.&lt;/p>
 &lt;li>При экспорте результатов вычисления, являющимися фигурами в формате &lt;code>svg&lt;/code>, можно внедрить код в текст.&lt;/li>
 &lt;li>Для этого нужно добавить к результату атрибут:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-org" data-lang="org">&lt;span class="line">&lt;span class="cl">&lt;span class="cs">#+attr_html&lt;/span>&lt;span class="c">: :inlined t&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="задание-конфигурации-в-свойствах">&lt;span class="section-num">6&lt;/span> Задание конфигурации в свойствах&lt;/h2>
+&lt;h3 id="аргументы-заголовка-уровня-буфера">&lt;span class="section-num">6.1&lt;/span> Аргументы заголовка уровня буфера&lt;/h3>
+&lt;ul>
+&lt;li>Строка &lt;code>#+PROPERTY:&lt;/code>, расположенная в любом месте буфера, влияет на весь файл. Она устанавливает глобальное свойство.&lt;/li>
+&lt;li>Для &lt;em>babel&lt;/em> свойства задаются для &lt;code>header-args&lt;/code>.&lt;/li>
+&lt;li>Сгенерить все блоки исходного кода в файле:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-org" data-lang="org">&lt;span class="line">&lt;span class="cl">&lt;span class="cs">#+PROPERTY&lt;/span>&lt;span class="c">: header-args :tangle yes&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Можно указать несколько аргументов:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-org" data-lang="org">&lt;span class="line">&lt;span class="cl">&lt;span class="cs">#+PROPERTY&lt;/span>&lt;span class="c">: header-args :results output :cache yes&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Можно объединять свойства (накопленные значения):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-org" data-lang="org">&lt;span class="line">&lt;span class="cl">&lt;span class="cs">#+PROPERTY&lt;/span>&lt;span class="c">: header-args:R :exports results&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cs">#+PROPERTY&lt;/span>&lt;span class="c">: header-args:R+ :width 800&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="аргументы-заголовка-поддерева">&lt;span class="section-num">6.2&lt;/span> Аргументы заголовка поддерева&lt;/h3>
+&lt;ul>
+&lt;li>Блок &lt;code>:PROPERTIES:&lt;/code> действителен только для данного дерева (и поддеревьев):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-org" data-lang="org">&lt;span class="line">&lt;span class="cl">​* Outline heading
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"> :PROPERTIES:
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span>&lt;span class="cs"> :header-args: :results output :cache yes
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cs">&lt;/span>&lt;span class="c"> :END:&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="аргументы-заголовка-блока-кода">&lt;span class="section-num">6.3&lt;/span> Аргументы заголовка блока кода&lt;/h3>
+&lt;ul>
+&lt;li>Можно параметры указывать непосредственно в блоке кода:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-org" data-lang="org">&lt;span class="line">&lt;span class="cl">&lt;span class="cs">#+header&lt;/span>&lt;span class="c">: :exports code :var data=2&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">#+begin_src &lt;/span>&lt;span class="cs">emacs-lisp&lt;/span>&lt;span class="c">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span>&lt;span class="o">...&lt;/span> &lt;span class="nv">some&lt;/span> &lt;span class="nv">code&lt;/span> &lt;span class="o">...&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">#+end_src&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul></description></item><item><title>Emacs. Работа с библиографией. Org-cite</title><link>https://yamadharma.github.io/ru/post/2022/10/10/emacs-bibliography-org-cite/</link><pubDate>Mon, 10 Oct 2022 12:34:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/10/10/emacs-bibliography-org-cite/</guid><description>&lt;p>Библиография в org-mode на основе org-cite.&lt;/p>
 &lt;details class="toc-inpage d-print-none " open>

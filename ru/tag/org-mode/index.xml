@@ -35,7 +35,14 @@
 &lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#использование">&lt;span class="section-num">2&lt;/span> Использование&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#реализация">&lt;span class="section-num">3&lt;/span> Реализация&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#настройка">&lt;span class="section-num">4&lt;/span> Настройка&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#настройка">&lt;span class="section-num">4&lt;/span> Настройка&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#метод-конвертации">&lt;span class="section-num">4.1&lt;/span> Метод конвертации&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#список-методов-конвертации">&lt;span class="section-num">4.2&lt;/span> Список методов конвертации&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#пакеты">&lt;span class="section-num">4.3&lt;/span> Пакеты&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#разное">&lt;span class="section-num">4.4&lt;/span> Разное&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
 &lt;li>&lt;a href="#опции-в-org-файле">&lt;span class="section-num">5&lt;/span> Опции в org-файле&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/nav>
@@ -60,16 +67,72 @@
 &lt;li>Затем результирующий файл преобразуется в формат png или svg.&lt;/li>
 &lt;/ul>
 &lt;h2 id="настройка">&lt;span class="section-num">4&lt;/span> Настройка&lt;/h2>
+&lt;h3 id="метод-конвертации">&lt;span class="section-num">4.1&lt;/span> Метод конвертации&lt;/h3>
 &lt;ul>
 &lt;li>Необходимо выбрать метод конвертации (&lt;code>dvipng&lt;/code>, &lt;code>imagemagick&lt;/code>, &lt;code>dvisvgm&lt;/code>):
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nb">setq&lt;/span> &lt;span class="nv">org-latex-create-formula-image-program&lt;/span> &lt;span class="ss">&amp;#39;dvipng&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">;;; Use svg for rendering&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nb">setq&lt;/span> &lt;span class="nv">org-latex-create-formula-image-program&lt;/span> &lt;span class="ss">&amp;#39;dvisvgm&lt;/span>&lt;span class="p">)&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Параметры создаваемых изображений:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nb">setq&lt;/span> &lt;span class="nv">org-format-latex-options&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nf">plist-put&lt;/span> &lt;span class="nv">org-format-latex-options&lt;/span> &lt;span class="nb">:scale&lt;/span> &lt;span class="mf">0.8&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nb">setq&lt;/span> &lt;span class="nv">org-format-latex-options&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nf">plist-put&lt;/span> &lt;span class="nv">org-format-latex-options&lt;/span> &lt;span class="nb">:density&lt;/span> &lt;span class="mi">600&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nb">setq&lt;/span> &lt;span class="nv">org-format-latex-options&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nf">plist-put&lt;/span> &lt;span class="nv">org-format-latex-options&lt;/span> &lt;span class="nb">:background&lt;/span> &lt;span class="s">&amp;#34;Transparent&amp;#34;&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="список-методов-конвертации">&lt;span class="section-num">4.2&lt;/span> Список методов конвертации&lt;/h3>
+&lt;ul>
+&lt;li>Стандартный список методов конвертации задан в файле &lt;code>org.el&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nb">defcustom&lt;/span> &lt;span class="nv">org-preview-latex-process-alist&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">&amp;#39;&lt;/span>&lt;span class="p">((&lt;/span>&lt;span class="nv">dvipng&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:programs&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;latex&amp;#34;&lt;/span> &lt;span class="s">&amp;#34;dvipng&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:description&lt;/span> &lt;span class="s">&amp;#34;dvi &amp;gt; png&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:message&lt;/span> &lt;span class="s">&amp;#34;you need to install the programs: latex and dvipng.&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:image-input-type&lt;/span> &lt;span class="s">&amp;#34;dvi&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:image-output-type&lt;/span> &lt;span class="s">&amp;#34;png&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:image-size-adjust&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="mf">1.0&lt;/span> &lt;span class="o">.&lt;/span> &lt;span class="mf">1.0&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:latex-compiler&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;latex -interaction nonstopmode -output-directory %o %f&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:image-converter&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;dvipng -D %D -T tight -o %O %f&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:transparent-image-converter&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;dvipng -D %D -T tight -bg Transparent -o %O %f&amp;#34;&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nv">dvisvgm&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:programs&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;latex&amp;#34;&lt;/span> &lt;span class="s">&amp;#34;dvisvgm&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:description&lt;/span> &lt;span class="s">&amp;#34;dvi &amp;gt; svg&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:message&lt;/span> &lt;span class="s">&amp;#34;you need to install the programs: latex and dvisvgm.&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:image-input-type&lt;/span> &lt;span class="s">&amp;#34;dvi&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:image-output-type&lt;/span> &lt;span class="s">&amp;#34;svg&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:image-size-adjust&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="mf">1.7&lt;/span> &lt;span class="o">.&lt;/span> &lt;span class="mf">1.5&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:latex-compiler&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;latex -interaction nonstopmode -output-directory %o %f&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:image-converter&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;dvisvgm %f --no-fonts --exact-bbox --scale=%S --output=%O&amp;#34;&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nv">imagemagick&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:programs&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;latex&amp;#34;&lt;/span> &lt;span class="s">&amp;#34;convert&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:description&lt;/span> &lt;span class="s">&amp;#34;pdf &amp;gt; png&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:message&lt;/span> &lt;span class="s">&amp;#34;you need to install the programs: latex and imagemagick.&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:image-input-type&lt;/span> &lt;span class="s">&amp;#34;pdf&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:image-output-type&lt;/span> &lt;span class="s">&amp;#34;png&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:image-size-adjust&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="mf">1.0&lt;/span> &lt;span class="o">.&lt;/span> &lt;span class="mf">1.0&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:latex-compiler&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;pdflatex -interaction nonstopmode -output-directory %o %f&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:image-converter&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;convert -density %D -trim -antialias %f -quality 100 %O&amp;#34;&lt;/span>&lt;span class="p">))))&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>При необходимости эту запись можно заменить полностью, либо отредактировать по частям.&lt;/li>
+&lt;li>Например, будем запускать компилятор дважды:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nf">plist-put&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nf">cdr&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nf">assoc&lt;/span> &lt;span class="ss">&amp;#39;dvipng&lt;/span> &lt;span class="nv">org-preview-latex-process-alist&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:latex-compiler&lt;/span> &lt;span class="o">&amp;#39;&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;latex -interaction nonstopmode -output-directory %o %f&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s">&amp;#34;latex -interaction nonstopmode -output-directory %o %f&amp;#34;&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="пакеты">&lt;span class="section-num">4.3&lt;/span> Пакеты&lt;/h3>
+&lt;ul>
 &lt;li>Набор используемых пакетов LaTeX заносятся в переменные:
 &lt;ul>
 &lt;li>&lt;code>org-latex-default-packages-alist&lt;/code> : список пакетов по умолчанию, лучше не изменять;&lt;/li>
 &lt;li>&lt;code>org-latex-packages-alist&lt;/code> : пустая по умолчанию переменная, заносите информацию сюда.&lt;/li>
 &lt;/ul>
 &lt;/li>
+&lt;/ul>
+&lt;h3 id="разное">&lt;span class="section-num">4.4&lt;/span> Разное&lt;/h3>
+&lt;ul>
 &lt;li>Созданные изображения лучше поместить в отдельный кэш:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nb">setq&lt;/span> &lt;span class="nv">org-preview-latex-image-directory&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nf">concat&lt;/span> &lt;span class="nv">home-cache-path&lt;/span> &lt;span class="s">&amp;#34;org-latex/&amp;#34;&lt;/span>&lt;span class="p">))&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>

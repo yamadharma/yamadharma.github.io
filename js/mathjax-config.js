@@ -25,6 +25,9 @@ window.MathJax = {
 	packages: {'[+]': ['physics']},
 	macros: {
 	    crd: ["{\\underline {\\vphantom{j} #1}}", 1],
+	    ii: ["{\\mathrm{i}}", 1],
+	    iiz: ["{\\varepsilon}", 1],
+	    iip: ["{\\mathrm{e}}", 1],
 	},
     }
 };

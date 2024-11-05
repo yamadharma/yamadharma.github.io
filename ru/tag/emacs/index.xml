@@ -1210,13 +1210,107 @@ rc.packages.el
 &lt;span class="src-block-number">&amp;#1056;&amp;#1072;&amp;#1089;&amp;#1087;&amp;#1077;&amp;#1095;&amp;#1072;&amp;#1090;&amp;#1082;&amp;#1072; 22:&lt;/span>
 rc.packages.el
 &lt;/div>
+&lt;!--list-separator-->
+&lt;ol>
+&lt;li>
+&lt;p>Предпросмотр LaTeX&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2024/01/06/org-mode-latex-preview/">Org-mode. Предпросмотр TeX&lt;/a>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">;;; Previewing LaTeX fragments&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">;;; https://orgmode.org/manual/Previewing-LaTeX-fragments.html&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="src-block-caption">
+&lt;span class="src-block-number">&amp;#1056;&amp;#1072;&amp;#1089;&amp;#1087;&amp;#1077;&amp;#1095;&amp;#1072;&amp;#1090;&amp;#1082;&amp;#1072; 23:&lt;/span>
+packages/org/desire.ecd/preview-latex.ecf
+&lt;/div>
+&lt;/li>
+&lt;li>Зададим каталог для создаваемых изображений (по умолчанию они создаются в рабочем каталоге):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">;;; LaTeX image directory&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nb">setq&lt;/span> &lt;span class="nv">org-preview-latex-image-directory&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nf">concat&lt;/span> &lt;span class="nv">home-cache-path&lt;/span> &lt;span class="s">&amp;#34;org-latex/&amp;#34;&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="src-block-caption">
+&lt;span class="src-block-number">&amp;#1056;&amp;#1072;&amp;#1089;&amp;#1087;&amp;#1077;&amp;#1095;&amp;#1072;&amp;#1090;&amp;#1082;&amp;#1072; 24:&lt;/span>
+packages/org/desire.ecd/preview-latex.ecf
+&lt;/div>
+&lt;/li>
+&lt;li>Зададим опции создания изображений:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">;;; Output format&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nb">setq&lt;/span> &lt;span class="nv">org-format-latex-options&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nf">plist-put&lt;/span> &lt;span class="nv">org-format-latex-options&lt;/span> &lt;span class="nb">:scale&lt;/span> &lt;span class="mf">1.0&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nb">setq&lt;/span> &lt;span class="nv">org-format-latex-options&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nf">plist-put&lt;/span> &lt;span class="nv">org-format-latex-options&lt;/span> &lt;span class="nb">:density&lt;/span> &lt;span class="mi">600&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nb">setq&lt;/span> &lt;span class="nv">org-format-latex-options&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nf">plist-put&lt;/span> &lt;span class="nv">org-format-latex-options&lt;/span> &lt;span class="nb">:background&lt;/span> &lt;span class="s">&amp;#34;Transparent&amp;#34;&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="src-block-caption">
+&lt;span class="src-block-number">&amp;#1056;&amp;#1072;&amp;#1089;&amp;#1087;&amp;#1077;&amp;#1095;&amp;#1072;&amp;#1090;&amp;#1082;&amp;#1072; 25:&lt;/span>
+packages/org/desire.ecd/preview-latex.ecf
+&lt;/div>
+&lt;/li>
+&lt;li>Зададим формат изображений. В данном случае это формат &lt;code>svg&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nb">setq&lt;/span> &lt;span class="nv">org-latex-create-formula-image-program&lt;/span> &lt;span class="ss">&amp;#39;dvisvgm&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nb">setq&lt;/span> &lt;span class="nv">org-preview-latex-process-alist&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">&amp;#39;&lt;/span>&lt;span class="p">((&lt;/span>&lt;span class="nv">dvipng&lt;/span> &lt;span class="nb">:programs&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;lualatex&amp;#34;&lt;/span> &lt;span class="s">&amp;#34;dvipng&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:description&lt;/span> &lt;span class="s">&amp;#34;dvi &amp;gt; png&amp;#34;&lt;/span> &lt;span class="nb">:message&lt;/span> &lt;span class="s">&amp;#34;you need to install the programs: latex and dvipng.&amp;#34;&lt;/span> &lt;span class="nb">:image-input-type&lt;/span> &lt;span class="s">&amp;#34;dvi&amp;#34;&lt;/span> &lt;span class="nb">:image-output-type&lt;/span> &lt;span class="s">&amp;#34;png&amp;#34;&lt;/span> &lt;span class="nb">:image-size-adjust&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="mf">1.0&lt;/span> &lt;span class="o">.&lt;/span> &lt;span class="mf">1.0&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:latex-compiler&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;lualatex -output-format dvi -interaction nonstopmode -output-directory %o %f&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:image-converter&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;dvipng -D %D -T tight -o %O %f&amp;#34;&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nv">dvisvgm&lt;/span> &lt;span class="nb">:programs&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;latex&amp;#34;&lt;/span> &lt;span class="s">&amp;#34;dvisvgm&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:description&lt;/span> &lt;span class="s">&amp;#34;dvi &amp;gt; svg&amp;#34;&lt;/span> &lt;span class="nb">:message&lt;/span> &lt;span class="s">&amp;#34;you need to install the programs: latex and dvisvgm.&amp;#34;&lt;/span> &lt;span class="nb">:use-xcolor&lt;/span> &lt;span class="no">t&lt;/span> &lt;span class="nb">:image-input-type&lt;/span> &lt;span class="s">&amp;#34;xdv&amp;#34;&lt;/span> &lt;span class="nb">:image-output-type&lt;/span> &lt;span class="s">&amp;#34;svg&amp;#34;&lt;/span> &lt;span class="nb">:image-size-adjust&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="mf">1.7&lt;/span> &lt;span class="o">.&lt;/span> &lt;span class="mf">1.5&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:latex-compiler&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;xelatex -no-pdf -interaction nonstopmode -output-directory %o %f&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:image-converter&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;dvisvgm %f -n -b min -c %S -o %O&amp;#34;&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nv">imagemagick&lt;/span> &lt;span class="nb">:programs&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;latex&amp;#34;&lt;/span> &lt;span class="s">&amp;#34;convert&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:description&lt;/span> &lt;span class="s">&amp;#34;pdf &amp;gt; png&amp;#34;&lt;/span> &lt;span class="nb">:message&lt;/span> &lt;span class="s">&amp;#34;you need to install the programs: latex and imagemagick.&amp;#34;&lt;/span> &lt;span class="nb">:use-xcolor&lt;/span> &lt;span class="no">t&lt;/span> &lt;span class="nb">:image-input-type&lt;/span> &lt;span class="s">&amp;#34;pdf&amp;#34;&lt;/span> &lt;span class="nb">:image-output-type&lt;/span> &lt;span class="s">&amp;#34;png&amp;#34;&lt;/span> &lt;span class="nb">:image-size-adjust&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="mf">1.0&lt;/span> &lt;span class="o">.&lt;/span> &lt;span class="mf">1.0&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:latex-compiler&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;xelatex -no-pdf -interaction nonstopmode -output-directory %o %f&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:image-converter&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;convert -density %D -trim -antialias %f -quality 100 %O&amp;#34;&lt;/span>&lt;span class="p">))))&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="src-block-caption">
+&lt;span class="src-block-number">&amp;#1056;&amp;#1072;&amp;#1089;&amp;#1087;&amp;#1077;&amp;#1095;&amp;#1072;&amp;#1090;&amp;#1082;&amp;#1072; 26:&lt;/span>
+packages/org/desire.ecd/preview-latex.ecf
+&lt;/div>
+&lt;/li>
+&lt;li>Теперь зададим настройки для LaTeX:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">;;; Configure latex&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nb">setq&lt;/span> &lt;span class="nv">org-latex-inputenc-alist&lt;/span> &lt;span class="o">&amp;#39;&lt;/span>&lt;span class="p">((&lt;/span>&lt;span class="s">&amp;#34;utf8&amp;#34;&lt;/span> &lt;span class="o">.&lt;/span> &lt;span class="s">&amp;#34;utf8x&amp;#34;&lt;/span>&lt;span class="p">)))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">;;; Default position for LaTeX figures&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nb">setq&lt;/span> &lt;span class="nv">org-latex-default-figure-position&lt;/span> &lt;span class="s">&amp;#34;!htbp&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="src-block-caption">
+&lt;span class="src-block-number">&amp;#1056;&amp;#1072;&amp;#1089;&amp;#1087;&amp;#1077;&amp;#1095;&amp;#1072;&amp;#1090;&amp;#1082;&amp;#1072; 27:&lt;/span>
+packages/org/desire.ecd/preview-latex.ecf
+&lt;/div>
+&lt;/li>
+&lt;li>Опишем используемые пакеты:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">;;; Unicode fonts&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nv">add-to-list&lt;/span> &lt;span class="ss">&amp;#39;org-latex-packages-alist&lt;/span> &lt;span class="o">&amp;#39;&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;&amp;#34;&lt;/span> &lt;span class="s">&amp;#34;unicode-math&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="no">t&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">;;; Physics2 package&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">;; (add-to-list &amp;#39;org-latex-packages-alist &amp;#39;(&amp;#34;&amp;#34; &amp;#34;physics2&amp;#34;) t)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">;;; Math&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nv">add-to-list&lt;/span> &lt;span class="ss">&amp;#39;org-latex-packages-alist&lt;/span> &lt;span class="o">&amp;#39;&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;&amp;#34;&lt;/span> &lt;span class="s">&amp;#34;amsmath&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="no">t&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nv">add-to-list&lt;/span> &lt;span class="ss">&amp;#39;org-latex-packages-alist&lt;/span> &lt;span class="o">&amp;#39;&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;&amp;#34;&lt;/span> &lt;span class="s">&amp;#34;mathtools&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="no">t&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">;;; Local definitions&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">;; (add-to-list &amp;#39;org-latex-packages-alist &amp;#39;(&amp;#34;&amp;#34; &amp;#34;local-define&amp;#34;) t)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">;;;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="src-block-caption">
+&lt;span class="src-block-number">&amp;#1056;&amp;#1072;&amp;#1089;&amp;#1087;&amp;#1077;&amp;#1095;&amp;#1072;&amp;#1090;&amp;#1082;&amp;#1072; 28:&lt;/span>
+packages/org/desire.ecd/preview-latex.ecf
+&lt;/div>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
 &lt;h3 id="заметочники">&lt;span class="section-num">4.9&lt;/span> Заметочники&lt;/h3>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/11/07/emacs-personal-knowledge-base/">Emacs. Персональная база знаний&lt;/a>&lt;/li>
 &lt;li>Разные заметочники:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">;;; Notes {{{&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="src-block-caption">
-&lt;span class="src-block-number">&amp;#1056;&amp;#1072;&amp;#1089;&amp;#1087;&amp;#1077;&amp;#1095;&amp;#1072;&amp;#1090;&amp;#1082;&amp;#1072; 23:&lt;/span>
+&lt;span class="src-block-number">&amp;#1056;&amp;#1072;&amp;#1089;&amp;#1087;&amp;#1077;&amp;#1095;&amp;#1072;&amp;#1090;&amp;#1082;&amp;#1072; 29:&lt;/span>
 rc.packages.el
 &lt;/div>
 &lt;/li>
@@ -1470,7 +1564,7 @@ rc.packages.el
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">;;; Ebuild files&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nv">desire&lt;/span> &lt;span class="ss">&amp;#39;ebuild-mode&lt;/span> &lt;span class="nb">:recipe&lt;/span> &lt;span class="o">&amp;#39;&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nb">:fetcher&lt;/span> &lt;span class="nv">github&lt;/span> &lt;span class="nb">:repo&lt;/span> &lt;span class="s">&amp;#34;emacsmirror/ebuild-mode&amp;#34;&lt;/span> &lt;span class="nb">:branch&lt;/span> &lt;span class="s">&amp;#34;master&amp;#34;&lt;/span>&lt;span class="p">))&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="src-block-caption">
-&lt;span class="src-block-number">&amp;#1056;&amp;#1072;&amp;#1089;&amp;#1087;&amp;#1077;&amp;#1095;&amp;#1072;&amp;#1090;&amp;#1082;&amp;#1072; 24:&lt;/span>
+&lt;span class="src-block-number">&amp;#1056;&amp;#1072;&amp;#1089;&amp;#1087;&amp;#1077;&amp;#1095;&amp;#1072;&amp;#1090;&amp;#1082;&amp;#1072; 30:&lt;/span>
 rc.packages.el
 &lt;/div>
 &lt;/li>
@@ -1515,7 +1609,7 @@ rc.packages.el
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nv">add-hook&lt;/span> &lt;span class="ss">&amp;#39;find-file-hook&lt;/span> &lt;span class="nf">#&amp;#39;&lt;/span>&lt;span class="nv">ebuild-repo-mode-maybe-enable&lt;/span>&lt;span class="p">)&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nv">modify-coding-system-alist&lt;/span> &lt;span class="ss">&amp;#39;file&lt;/span> &lt;span class="s">&amp;#34;\\.\\(ebuild\\|eclass\\)\\&amp;#39;&amp;#34;&lt;/span> &lt;span class="ss">&amp;#39;utf-8&lt;/span>&lt;span class="p">)&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="src-block-caption">
-&lt;span class="src-block-number">&amp;#1056;&amp;#1072;&amp;#1089;&amp;#1087;&amp;#1077;&amp;#1095;&amp;#1072;&amp;#1090;&amp;#1082;&amp;#1072; 25:&lt;/span>
+&lt;span class="src-block-number">&amp;#1056;&amp;#1072;&amp;#1089;&amp;#1087;&amp;#1077;&amp;#1095;&amp;#1072;&amp;#1090;&amp;#1082;&amp;#1072; 31:&lt;/span>
 packages/ebuild-mode/loaddefs.ecf
 &lt;/div>
 &lt;/li>
@@ -2131,7 +2225,14 @@ packages/ebuild-mode/loaddefs.ecf
 &lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#использование">&lt;span class="section-num">2&lt;/span> Использование&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#реализация">&lt;span class="section-num">3&lt;/span> Реализация&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#настройка">&lt;span class="section-num">4&lt;/span> Настройка&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#настройка">&lt;span class="section-num">4&lt;/span> Настройка&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#метод-конвертации">&lt;span class="section-num">4.1&lt;/span> Метод конвертации&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#список-методов-конвертации">&lt;span class="section-num">4.2&lt;/span> Список методов конвертации&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#пакеты">&lt;span class="section-num">4.3&lt;/span> Пакеты&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#разное">&lt;span class="section-num">4.4&lt;/span> Разное&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
 &lt;li>&lt;a href="#опции-в-org-файле">&lt;span class="section-num">5&lt;/span> Опции в org-файле&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/nav>
@@ -2156,16 +2257,72 @@ packages/ebuild-mode/loaddefs.ecf
 &lt;li>Затем результирующий файл преобразуется в формат png или svg.&lt;/li>
 &lt;/ul>
 &lt;h2 id="настройка">&lt;span class="section-num">4&lt;/span> Настройка&lt;/h2>
+&lt;h3 id="метод-конвертации">&lt;span class="section-num">4.1&lt;/span> Метод конвертации&lt;/h3>
 &lt;ul>
 &lt;li>Необходимо выбрать метод конвертации (&lt;code>dvipng&lt;/code>, &lt;code>imagemagick&lt;/code>, &lt;code>dvisvgm&lt;/code>):
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nb">setq&lt;/span> &lt;span class="nv">org-latex-create-formula-image-program&lt;/span> &lt;span class="ss">&amp;#39;dvipng&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">;;; Use svg for rendering&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nb">setq&lt;/span> &lt;span class="nv">org-latex-create-formula-image-program&lt;/span> &lt;span class="ss">&amp;#39;dvisvgm&lt;/span>&lt;span class="p">)&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Параметры создаваемых изображений:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nb">setq&lt;/span> &lt;span class="nv">org-format-latex-options&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nf">plist-put&lt;/span> &lt;span class="nv">org-format-latex-options&lt;/span> &lt;span class="nb">:scale&lt;/span> &lt;span class="mf">0.8&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nb">setq&lt;/span> &lt;span class="nv">org-format-latex-options&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nf">plist-put&lt;/span> &lt;span class="nv">org-format-latex-options&lt;/span> &lt;span class="nb">:density&lt;/span> &lt;span class="mi">600&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nb">setq&lt;/span> &lt;span class="nv">org-format-latex-options&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nf">plist-put&lt;/span> &lt;span class="nv">org-format-latex-options&lt;/span> &lt;span class="nb">:background&lt;/span> &lt;span class="s">&amp;#34;Transparent&amp;#34;&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="список-методов-конвертации">&lt;span class="section-num">4.2&lt;/span> Список методов конвертации&lt;/h3>
+&lt;ul>
+&lt;li>Стандартный список методов конвертации задан в файле &lt;code>org.el&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nb">defcustom&lt;/span> &lt;span class="nv">org-preview-latex-process-alist&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">&amp;#39;&lt;/span>&lt;span class="p">((&lt;/span>&lt;span class="nv">dvipng&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:programs&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;latex&amp;#34;&lt;/span> &lt;span class="s">&amp;#34;dvipng&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:description&lt;/span> &lt;span class="s">&amp;#34;dvi &amp;gt; png&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:message&lt;/span> &lt;span class="s">&amp;#34;you need to install the programs: latex and dvipng.&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:image-input-type&lt;/span> &lt;span class="s">&amp;#34;dvi&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:image-output-type&lt;/span> &lt;span class="s">&amp;#34;png&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:image-size-adjust&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="mf">1.0&lt;/span> &lt;span class="o">.&lt;/span> &lt;span class="mf">1.0&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:latex-compiler&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;latex -interaction nonstopmode -output-directory %o %f&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:image-converter&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;dvipng -D %D -T tight -o %O %f&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:transparent-image-converter&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;dvipng -D %D -T tight -bg Transparent -o %O %f&amp;#34;&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nv">dvisvgm&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:programs&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;latex&amp;#34;&lt;/span> &lt;span class="s">&amp;#34;dvisvgm&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:description&lt;/span> &lt;span class="s">&amp;#34;dvi &amp;gt; svg&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:message&lt;/span> &lt;span class="s">&amp;#34;you need to install the programs: latex and dvisvgm.&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:image-input-type&lt;/span> &lt;span class="s">&amp;#34;dvi&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:image-output-type&lt;/span> &lt;span class="s">&amp;#34;svg&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:image-size-adjust&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="mf">1.7&lt;/span> &lt;span class="o">.&lt;/span> &lt;span class="mf">1.5&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:latex-compiler&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;latex -interaction nonstopmode -output-directory %o %f&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:image-converter&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;dvisvgm %f --no-fonts --exact-bbox --scale=%S --output=%O&amp;#34;&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nv">imagemagick&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:programs&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;latex&amp;#34;&lt;/span> &lt;span class="s">&amp;#34;convert&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:description&lt;/span> &lt;span class="s">&amp;#34;pdf &amp;gt; png&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:message&lt;/span> &lt;span class="s">&amp;#34;you need to install the programs: latex and imagemagick.&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:image-input-type&lt;/span> &lt;span class="s">&amp;#34;pdf&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:image-output-type&lt;/span> &lt;span class="s">&amp;#34;png&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:image-size-adjust&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="mf">1.0&lt;/span> &lt;span class="o">.&lt;/span> &lt;span class="mf">1.0&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:latex-compiler&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;pdflatex -interaction nonstopmode -output-directory %o %f&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:image-converter&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;convert -density %D -trim -antialias %f -quality 100 %O&amp;#34;&lt;/span>&lt;span class="p">))))&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>При необходимости эту запись можно заменить полностью, либо отредактировать по частям.&lt;/li>
+&lt;li>Например, будем запускать компилятор дважды:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nf">plist-put&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nf">cdr&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nf">assoc&lt;/span> &lt;span class="ss">&amp;#39;dvipng&lt;/span> &lt;span class="nv">org-preview-latex-process-alist&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">:latex-compiler&lt;/span> &lt;span class="o">&amp;#39;&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;latex -interaction nonstopmode -output-directory %o %f&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s">&amp;#34;latex -interaction nonstopmode -output-directory %o %f&amp;#34;&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="пакеты">&lt;span class="section-num">4.3&lt;/span> Пакеты&lt;/h3>
+&lt;ul>
 &lt;li>Набор используемых пакетов LaTeX заносятся в переменные:
 &lt;ul>
 &lt;li>&lt;code>org-latex-default-packages-alist&lt;/code> : список пакетов по умолчанию, лучше не изменять;&lt;/li>
 &lt;li>&lt;code>org-latex-packages-alist&lt;/code> : пустая по умолчанию переменная, заносите информацию сюда.&lt;/li>
 &lt;/ul>
 &lt;/li>
+&lt;/ul>
+&lt;h3 id="разное">&lt;span class="section-num">4.4&lt;/span> Разное&lt;/h3>
+&lt;ul>
 &lt;li>Созданные изображения лучше поместить в отдельный кэш:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nb">setq&lt;/span> &lt;span class="nv">org-preview-latex-image-directory&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nf">concat&lt;/span> &lt;span class="nv">home-cache-path&lt;/span> &lt;span class="s">&amp;#34;org-latex/&amp;#34;&lt;/span>&lt;span class="p">))&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>

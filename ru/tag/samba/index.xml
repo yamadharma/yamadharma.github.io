@@ -2,154 +2,154 @@
 &lt;p>В качестве системы для сервера используем Centos7. Там пока не
 поддерживается функционал Samba4 AD (конфликт mit-krb и heimdal). Поэтому поставим самбу с
 EnterpriseSAMBA.com &lt;a href="https://portal.enterprisesamba.com/" target="_blank" rel="noopener">https://portal.enterprisesamba.com/&lt;/a>.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> /etc/yum.repos.d
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wget https://sernet-samba-public:Noo1oxe4zo@download.sernet.de/packages/samba/4.2/rhel/7/sernet-samba-4.2.repo
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="ln" id="hl-0-1">&lt;a class="lnlinks" href="#hl-0-1">1&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="nb">cd&lt;/span> /etc/yum.repos.d
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-2">&lt;a class="lnlinks" href="#hl-0-2">2&lt;/a>&lt;/span>&lt;span class="cl">wget https://sernet-samba-public:Noo1oxe4zo@download.sernet.de/packages/samba/4.2/rhel/7/sernet-samba-4.2.repo
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>В файле &lt;code>/etc/yum.repos.d/sernet-samba-4.2.repo&lt;/code> заменим
 &lt;code>USERNAME:ACCESSKEY&lt;/code> на свои данные либо на публичную учётную запись
 &lt;code>sernet-samba-public:Noo1oxe4zo&lt;/code>.&lt;/p>
 &lt;p>Установим нужные пакеты:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">yum -y install sernet-samba sernet-samba-ad
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">yum -y install &lt;span class="nb">bind&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="ln" id="hl-1-1">&lt;a class="lnlinks" href="#hl-1-1">1&lt;/a>&lt;/span>&lt;span class="cl">yum -y install sernet-samba sernet-samba-ad
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-1-2">&lt;a class="lnlinks" href="#hl-1-2">2&lt;/a>&lt;/span>&lt;span class="cl">yum -y install &lt;span class="nb">bind&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="поиск-дубликатов-sid">Поиск дубликатов SID&lt;/h2>
 &lt;p>Найдём дубликаты SID с помощью следующего скрипта (запусткается на
 машине, где расположен ldap).&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="ch">#!/usr/bin/python&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># A quick and dirty python script that checks for duplicat SID&amp;#39;s using slapcat.&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">os&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">data&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">os&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">popen&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;slapcat | grep sambaSID&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s1">&amp;#39;r&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">line&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[]&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">def&lt;/span> &lt;span class="nf">anydup&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">thelist&lt;/span>&lt;span class="p">):&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">dups&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">list&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nb">set&lt;/span>&lt;span class="p">([&lt;/span>&lt;span class="n">x&lt;/span> &lt;span class="k">for&lt;/span> &lt;span class="n">x&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">thelist&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="n">thelist&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">count&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">&amp;gt;&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">]))&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">dups&lt;/span>&lt;span class="p">:&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">print&lt;/span> &lt;span class="s2">&amp;#34;Duplicate id: &amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">i&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span> &lt;span class="n">each_line&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">data&lt;/span>&lt;span class="p">:&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">line&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">append&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">each_line&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">strip&lt;/span>&lt;span class="p">())&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">anydup&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">line&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="ln" id="hl-2-1">&lt;a class="lnlinks" href="#hl-2-1"> 1&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="ch">#!/usr/bin/python&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-2-2">&lt;a class="lnlinks" href="#hl-2-2"> 2&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="c1"># A quick and dirty python script that checks for duplicat SID&amp;#39;s using slapcat.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-2-3">&lt;a class="lnlinks" href="#hl-2-3"> 3&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">os&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-2-4">&lt;a class="lnlinks" href="#hl-2-4"> 4&lt;/a>&lt;/span>&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-2-5">&lt;a class="lnlinks" href="#hl-2-5"> 5&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="n">data&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">os&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">popen&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;slapcat | grep sambaSID&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s1">&amp;#39;r&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-2-6">&lt;a class="lnlinks" href="#hl-2-6"> 6&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="n">line&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-2-7">&lt;a class="lnlinks" href="#hl-2-7"> 7&lt;/a>&lt;/span>&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-2-8">&lt;a class="lnlinks" href="#hl-2-8"> 8&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="k">def&lt;/span> &lt;span class="nf">anydup&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">thelist&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-2-9">&lt;a class="lnlinks" href="#hl-2-9"> 9&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="n">dups&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">list&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nb">set&lt;/span>&lt;span class="p">([&lt;/span>&lt;span class="n">x&lt;/span> &lt;span class="k">for&lt;/span> &lt;span class="n">x&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">thelist&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="n">thelist&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">count&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">&amp;gt;&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">]))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-2-10">&lt;a class="lnlinks" href="#hl-2-10">10&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">dups&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-2-11">&lt;a class="lnlinks" href="#hl-2-11">11&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nb">print&lt;/span> &lt;span class="s2">&amp;#34;Duplicate id: &amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">i&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-2-12">&lt;a class="lnlinks" href="#hl-2-12">12&lt;/a>&lt;/span>&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-2-13">&lt;a class="lnlinks" href="#hl-2-13">13&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="k">for&lt;/span> &lt;span class="n">each_line&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">data&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-2-14">&lt;a class="lnlinks" href="#hl-2-14">14&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="n">line&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">append&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">each_line&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">strip&lt;/span>&lt;span class="p">())&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-2-15">&lt;a class="lnlinks" href="#hl-2-15">15&lt;/a>&lt;/span>&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-2-16">&lt;a class="lnlinks" href="#hl-2-16">16&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="n">anydup&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">line&lt;/span>&lt;span class="p">)&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Далее дубликаты удаляются с помощью редактирования ldap (я использовал
 &lt;a href="https://directory.apache.org/studio/" target="_blank" rel="noopener">https://directory.apache.org/studio/&lt;/a>).&lt;/p>
 &lt;h2 id="предварительная-конфигурация">Предварительная конфигурация&lt;/h2>
 &lt;p>Добавил в файл &lt;code>/etc/hosts&lt;/code> адрес хоста.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">127.0.0.1 localhost.localdomain localhost
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">10.130.64.23 dc.dk.sci.pfu.edu.ru dc
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="ln" id="hl-3-1">&lt;a class="lnlinks" href="#hl-3-1">1&lt;/a>&lt;/span>&lt;span class="cl">127.0.0.1 localhost.localdomain localhost
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-3-2">&lt;a class="lnlinks" href="#hl-3-2">2&lt;/a>&lt;/span>&lt;span class="cl">10.130.64.23 dc.dk.sci.pfu.edu.ru dc
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Также прописал его в прямой и обратной зонах DNS.&lt;/p>
 &lt;h2 id="перенос-конфигурационных-файлов">Перенос конфигурационных файлов&lt;/h2>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">pdc ~ &lt;span class="c1"># scp -r /var/lib/samba/private/ dc.dk.sci.pfu.edu.ru:/var/lib/samba/samba3tdb/&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">pdc ~ &lt;span class="c1"># scp /etc/samba/smb.conf dc.dk.sci.pfu.edu.ru:/var/lib/samba/samba3tdb/&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="ln" id="hl-4-1">&lt;a class="lnlinks" href="#hl-4-1">1&lt;/a>&lt;/span>&lt;span class="cl">pdc ~ &lt;span class="c1"># scp -r /var/lib/samba/private/ dc.dk.sci.pfu.edu.ru:/var/lib/samba/samba3tdb/&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-2">&lt;a class="lnlinks" href="#hl-4-2">2&lt;/a>&lt;/span>&lt;span class="cl">pdc ~ &lt;span class="c1"># scp /etc/samba/smb.conf dc.dk.sci.pfu.edu.ru:/var/lib/samba/samba3tdb/&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>В &lt;code>/var/lib/samba/samba3tdb/smb.conf&lt;/code> следует заменить имя контроллера домена.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">netbios name = dc
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="ln" id="hl-5-1">&lt;a class="lnlinks" href="#hl-5-1">1&lt;/a>&lt;/span>&lt;span class="cl">netbios name = dc
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Поскольку при миграции используется информация из ldap, на хосте &lt;code>dc&lt;/code>
 задаю файл &lt;code>/etc/openldap/ldap.conf&lt;/code>.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">BASE dc=dk,dc=sci,dc=pfu,dc=edu,dc=ru
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">URI ldap://ldap.dk.sci.pfu.edu.ru
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">TLS_REQCERT allow
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="ln" id="hl-6-1">&lt;a class="lnlinks" href="#hl-6-1">1&lt;/a>&lt;/span>&lt;span class="cl">BASE dc=dk,dc=sci,dc=pfu,dc=edu,dc=ru
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-6-2">&lt;a class="lnlinks" href="#hl-6-2">2&lt;/a>&lt;/span>&lt;span class="cl">URI ldap://ldap.dk.sci.pfu.edu.ru
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-6-3">&lt;a class="lnlinks" href="#hl-6-3">3&lt;/a>&lt;/span>&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-6-4">&lt;a class="lnlinks" href="#hl-6-4">4&lt;/a>&lt;/span>&lt;span class="cl">TLS_REQCERT allow
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="проведение-миграции">Проведение миграции&lt;/h2>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">samba-tool domain classicupgrade --dbdir&lt;span class="o">=&lt;/span>/var/lib/samba/samba3tdb/ --use-xattrs&lt;span class="o">=&lt;/span>yes --realm&lt;span class="o">=&lt;/span>dk.sci.pfu.edu.ru --dns-backend&lt;span class="o">=&lt;/span>BIND9_DLZ /var/lib/samba/samba3tdb/smb.conf
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="ln" id="hl-7-1">&lt;a class="lnlinks" href="#hl-7-1">1&lt;/a>&lt;/span>&lt;span class="cl">samba-tool domain classicupgrade --dbdir&lt;span class="o">=&lt;/span>/var/lib/samba/samba3tdb/ --use-xattrs&lt;span class="o">=&lt;/span>yes --realm&lt;span class="o">=&lt;/span>dk.sci.pfu.edu.ru --dns-backend&lt;span class="o">=&lt;/span>BIND9_DLZ /var/lib/samba/samba3tdb/smb.conf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="шаманство">Шаманство&lt;/h3>
 &lt;p>В файле &lt;code>/var/lib/samba/samba3tdb/smb.conf&lt;/code> заменил доменное имя&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">passdb backend = ldapsam:ldap://ldap.dk.sci.pfu.edu.ru
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="ln" id="hl-8-1">&lt;a class="lnlinks" href="#hl-8-1">1&lt;/a>&lt;/span>&lt;span class="cl">passdb backend = ldapsam:ldap://ldap.dk.sci.pfu.edu.ru
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>на ip-адрес&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">passdb backend = ldapsam:ldap://10.130.64.11
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="ln" id="hl-9-1">&lt;a class="lnlinks" href="#hl-9-1">1&lt;/a>&lt;/span>&lt;span class="cl">passdb backend = ldapsam:ldap://10.130.64.11
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Без этого миграция падала с ошибкой &lt;code>LDAP client internal error: NT_STATUS_BAD_NETWORK_NAME&lt;/code>.&lt;/p>
 &lt;h3 id="настройка-firewalld">Настройка firewalld&lt;/h3>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">firewall-cmd --add-service&lt;span class="o">=&lt;/span>ldap --permanent
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">firewall-cmd --add-service&lt;span class="o">=&lt;/span>kerberos --permanent
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">firewall-cmd --add-service&lt;span class="o">=&lt;/span>kpasswd --permanent
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">firewall-cmd --add-service&lt;span class="o">=&lt;/span>samba --permanent
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">firewall-cmd --add-service&lt;span class="o">=&lt;/span>samba-client --permanent
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">firewall-cmd --reload
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="ln" id="hl-10-1">&lt;a class="lnlinks" href="#hl-10-1">1&lt;/a>&lt;/span>&lt;span class="cl">firewall-cmd --add-service&lt;span class="o">=&lt;/span>ldap --permanent
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-10-2">&lt;a class="lnlinks" href="#hl-10-2">2&lt;/a>&lt;/span>&lt;span class="cl">firewall-cmd --add-service&lt;span class="o">=&lt;/span>kerberos --permanent
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-10-3">&lt;a class="lnlinks" href="#hl-10-3">3&lt;/a>&lt;/span>&lt;span class="cl">firewall-cmd --add-service&lt;span class="o">=&lt;/span>kpasswd --permanent
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-10-4">&lt;a class="lnlinks" href="#hl-10-4">4&lt;/a>&lt;/span>&lt;span class="cl">firewall-cmd --add-service&lt;span class="o">=&lt;/span>samba --permanent
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-10-5">&lt;a class="lnlinks" href="#hl-10-5">5&lt;/a>&lt;/span>&lt;span class="cl">firewall-cmd --add-service&lt;span class="o">=&lt;/span>samba-client --permanent
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-10-6">&lt;a class="lnlinks" href="#hl-10-6">6&lt;/a>&lt;/span>&lt;span class="cl">firewall-cmd --reload
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="настройка-selinux">Настройка SELinux&lt;/h3>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">setsebool -P samba_export_all_ro &lt;span class="m">1&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">setsebool -P samba_export_all_rw &lt;span class="m">1&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">setsebool -P samba_domain_controller &lt;span class="m">1&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="ln" id="hl-11-1">&lt;a class="lnlinks" href="#hl-11-1">1&lt;/a>&lt;/span>&lt;span class="cl">setsebool -P samba_export_all_ro &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-11-2">&lt;a class="lnlinks" href="#hl-11-2">2&lt;/a>&lt;/span>&lt;span class="cl">setsebool -P samba_export_all_rw &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-11-3">&lt;a class="lnlinks" href="#hl-11-3">3&lt;/a>&lt;/span>&lt;span class="cl">setsebool -P samba_domain_controller &lt;span class="m">1&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="настройка-kerberos">Настройка Kerberos&lt;/h3>
 &lt;p>Создадим файл конфигурации kerberos:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">mv /etc/krb5.conf&lt;span class="o">{&lt;/span>,.default&lt;span class="o">}&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">cp /var/lib/samba/private/krb5.conf /etc
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="ln" id="hl-12-1">&lt;a class="lnlinks" href="#hl-12-1">1&lt;/a>&lt;/span>&lt;span class="cl">mv /etc/krb5.conf&lt;span class="o">{&lt;/span>,.default&lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-12-2">&lt;a class="lnlinks" href="#hl-12-2">2&lt;/a>&lt;/span>&lt;span class="cl">cp /var/lib/samba/private/krb5.conf /etc
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="настройка-dns">Настройка DNS&lt;/h3>
 &lt;p>В файле &lt;code>/etc/resolv.conf&lt;/code> задаём локальный DNS-сервер:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">search dk.sci.pfu.edu.ru
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">nameserver 127.0.0.1
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="ln" id="hl-13-1">&lt;a class="lnlinks" href="#hl-13-1">1&lt;/a>&lt;/span>&lt;span class="cl">search dk.sci.pfu.edu.ru
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-13-2">&lt;a class="lnlinks" href="#hl-13-2">2&lt;/a>&lt;/span>&lt;span class="cl">nameserver 127.0.0.1
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>В &lt;code>/etc/named.conf&lt;/code> подключаем сконфигурённую конфигурацию:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="n">include&lt;/span> &lt;span class="s2">&amp;#34;/var/lib/samba/private/named.conf&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="ln" id="hl-14-1">&lt;a class="lnlinks" href="#hl-14-1">1&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="n">include&lt;/span> &lt;span class="s2">&amp;#34;/var/lib/samba/private/named.conf&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Также в раздел &lt;code>options&lt;/code> добавляем:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="n">options&lt;/span> &lt;span class="p">{&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">[&lt;/span>&lt;span class="o">...&lt;/span>&lt;span class="p">]&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">tkey&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gssapi&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">keytab&lt;/span> &lt;span class="s2">&amp;#34;/var/lib/samba/private/dns.keytab&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">[&lt;/span>&lt;span class="o">...&lt;/span>&lt;span class="p">]&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">};&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="ln" id="hl-15-1">&lt;a class="lnlinks" href="#hl-15-1">1&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="n">options&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-15-2">&lt;a class="lnlinks" href="#hl-15-2">2&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="p">[&lt;/span>&lt;span class="o">...&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-15-3">&lt;a class="lnlinks" href="#hl-15-3">3&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="n">tkey&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gssapi&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">keytab&lt;/span> &lt;span class="s2">&amp;#34;/var/lib/samba/private/dns.keytab&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-15-4">&lt;a class="lnlinks" href="#hl-15-4">4&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="p">[&lt;/span>&lt;span class="o">...&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-15-5">&lt;a class="lnlinks" href="#hl-15-5">5&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="p">};&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>А также следующее:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">options {
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> [...]
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> allow-query { localhost; 10.128.0.0/9; };
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> allow-update { 10.128.0.0/9; 127.0.0.0/8; };
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> forwarders { 10.130.64.239; 8.8.8.8; 8.8.4.4; };
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> allow-transfer {
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # this config is for a single master DNS server
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> none;
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> };
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> [...]
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">};
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="ln" id="hl-16-1">&lt;a class="lnlinks" href="#hl-16-1"> 1&lt;/a>&lt;/span>&lt;span class="cl">options {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-16-2">&lt;a class="lnlinks" href="#hl-16-2"> 2&lt;/a>&lt;/span>&lt;span class="cl"> [...]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-16-3">&lt;a class="lnlinks" href="#hl-16-3"> 3&lt;/a>&lt;/span>&lt;span class="cl"> allow-query { localhost; 10.128.0.0/9; };
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-16-4">&lt;a class="lnlinks" href="#hl-16-4"> 4&lt;/a>&lt;/span>&lt;span class="cl"> allow-update { 10.128.0.0/9; 127.0.0.0/8; };
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-16-5">&lt;a class="lnlinks" href="#hl-16-5"> 5&lt;/a>&lt;/span>&lt;span class="cl"> forwarders { 10.130.64.239; 8.8.8.8; 8.8.4.4; };
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-16-6">&lt;a class="lnlinks" href="#hl-16-6"> 6&lt;/a>&lt;/span>&lt;span class="cl"> allow-transfer {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-16-7">&lt;a class="lnlinks" href="#hl-16-7"> 7&lt;/a>&lt;/span>&lt;span class="cl"> # this config is for a single master DNS server
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-16-8">&lt;a class="lnlinks" href="#hl-16-8"> 8&lt;/a>&lt;/span>&lt;span class="cl"> none;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-16-9">&lt;a class="lnlinks" href="#hl-16-9"> 9&lt;/a>&lt;/span>&lt;span class="cl"> };
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-16-10">&lt;a class="lnlinks" href="#hl-16-10">10&lt;/a>&lt;/span>&lt;span class="cl"> [...]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-16-11">&lt;a class="lnlinks" href="#hl-16-11">11&lt;/a>&lt;/span>&lt;span class="cl">};
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="настройка-firewalld-1">Настройка firewalld&lt;/h3>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">firewall-cmd --add-service&lt;span class="o">=&lt;/span>dns --permanent
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">firewall-cmd --reload
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="ln" id="hl-17-1">&lt;a class="lnlinks" href="#hl-17-1">1&lt;/a>&lt;/span>&lt;span class="cl">firewall-cmd --add-service&lt;span class="o">=&lt;/span>dns --permanent
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-17-2">&lt;a class="lnlinks" href="#hl-17-2">2&lt;/a>&lt;/span>&lt;span class="cl">firewall-cmd --reload
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="настройки-прав-доступа">Настройки прав доступа&lt;/h3>
 &lt;p>Права доступа:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">chown -R root:named /var/lib/samba/private/dns
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">chmod &lt;span class="m">770&lt;/span> /var/lib/samba/private/dns
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">chgrp named /var/lib/samba/private/dns.keytab
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">chmod g+r /var/lib/samba/private/dns.keytab
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">chgrp named /var/lib/samba/private
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">chgrp -R named /var/lib/samba/private/sam.ldb.d
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">chmod g+rw /var/lib/samba/private/sam.ldb.d/*
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="ln" id="hl-18-1">&lt;a class="lnlinks" href="#hl-18-1">1&lt;/a>&lt;/span>&lt;span class="cl">chown -R root:named /var/lib/samba/private/dns
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-18-2">&lt;a class="lnlinks" href="#hl-18-2">2&lt;/a>&lt;/span>&lt;span class="cl">chmod &lt;span class="m">770&lt;/span> /var/lib/samba/private/dns
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-18-3">&lt;a class="lnlinks" href="#hl-18-3">3&lt;/a>&lt;/span>&lt;span class="cl">chgrp named /var/lib/samba/private/dns.keytab
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-18-4">&lt;a class="lnlinks" href="#hl-18-4">4&lt;/a>&lt;/span>&lt;span class="cl">chmod g+r /var/lib/samba/private/dns.keytab
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-18-5">&lt;a class="lnlinks" href="#hl-18-5">5&lt;/a>&lt;/span>&lt;span class="cl">chgrp named /var/lib/samba/private
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-18-6">&lt;a class="lnlinks" href="#hl-18-6">6&lt;/a>&lt;/span>&lt;span class="cl">chgrp -R named /var/lib/samba/private/sam.ldb.d
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-18-7">&lt;a class="lnlinks" href="#hl-18-7">7&lt;/a>&lt;/span>&lt;span class="cl">chmod g+rw /var/lib/samba/private/sam.ldb.d/*
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="настройка-selinux-1">Настройка SELinux&lt;/h3>
 &lt;p>Изменим текущий контекст:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">chcon -t named_conf_t /var/lib/samba/private/dns.keytab
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">chcon -t named_conf_t /var/lib/samba/private/named.conf
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">chcon -t named_conf_t /var/lib/samba/private/named.conf.update
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">chcon -R -t named_var_run_t /var/lib/samba/private/dns
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">chcon -t named_var_run_t /var/lib/samba/private/dns/&lt;span class="si">${&lt;/span>&lt;span class="nv">MYREALM&lt;/span>&lt;span class="si">}&lt;/span>.zone
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="ln" id="hl-19-1">&lt;a class="lnlinks" href="#hl-19-1">1&lt;/a>&lt;/span>&lt;span class="cl">chcon -t named_conf_t /var/lib/samba/private/dns.keytab
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-19-2">&lt;a class="lnlinks" href="#hl-19-2">2&lt;/a>&lt;/span>&lt;span class="cl">chcon -t named_conf_t /var/lib/samba/private/named.conf
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-19-3">&lt;a class="lnlinks" href="#hl-19-3">3&lt;/a>&lt;/span>&lt;span class="cl">chcon -t named_conf_t /var/lib/samba/private/named.conf.update
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-19-4">&lt;a class="lnlinks" href="#hl-19-4">4&lt;/a>&lt;/span>&lt;span class="cl">chcon -R -t named_var_run_t /var/lib/samba/private/dns
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-19-5">&lt;a class="lnlinks" href="#hl-19-5">5&lt;/a>&lt;/span>&lt;span class="cl">chcon -t named_var_run_t /var/lib/samba/private/dns/&lt;span class="si">${&lt;/span>&lt;span class="nv">MYREALM&lt;/span>&lt;span class="si">}&lt;/span>.zone
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Изменим постоянный контекст:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">semanage fcontext -a -t named_conf_t /var/lib/samba/private/dns.keytab
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">semanage fcontext -a -t named_conf_t /var/lib/samba/private/named.conf
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">semanage fcontext -a -t named_conf_t /var/lib/samba/private/named.conf.update
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">semanage fcontext -a -t named_var_run_t &lt;span class="s2">&amp;#34;/var/lib/samba/private/dns(/.*)?&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">semanage fcontext -a -t named_var_run_t /var/lib/samba/private/dns/&lt;span class="si">${&lt;/span>&lt;span class="nv">MYREALM&lt;/span>&lt;span class="si">}&lt;/span>.zone
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">semanage fcontext -a -t named_var_run_t /var/lib/samba/private/dns/&lt;span class="si">${&lt;/span>&lt;span class="nv">MYREALM&lt;/span>&lt;span class="si">}&lt;/span>.zone.jnl
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="ln" id="hl-20-1">&lt;a class="lnlinks" href="#hl-20-1">1&lt;/a>&lt;/span>&lt;span class="cl">semanage fcontext -a -t named_conf_t /var/lib/samba/private/dns.keytab
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-20-2">&lt;a class="lnlinks" href="#hl-20-2">2&lt;/a>&lt;/span>&lt;span class="cl">semanage fcontext -a -t named_conf_t /var/lib/samba/private/named.conf
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-20-3">&lt;a class="lnlinks" href="#hl-20-3">3&lt;/a>&lt;/span>&lt;span class="cl">semanage fcontext -a -t named_conf_t /var/lib/samba/private/named.conf.update
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-20-4">&lt;a class="lnlinks" href="#hl-20-4">4&lt;/a>&lt;/span>&lt;span class="cl">semanage fcontext -a -t named_var_run_t &lt;span class="s2">&amp;#34;/var/lib/samba/private/dns(/.*)?&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-20-5">&lt;a class="lnlinks" href="#hl-20-5">5&lt;/a>&lt;/span>&lt;span class="cl">semanage fcontext -a -t named_var_run_t /var/lib/samba/private/dns/&lt;span class="si">${&lt;/span>&lt;span class="nv">MYREALM&lt;/span>&lt;span class="si">}&lt;/span>.zone
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-20-6">&lt;a class="lnlinks" href="#hl-20-6">6&lt;/a>&lt;/span>&lt;span class="cl">semanage fcontext -a -t named_var_run_t /var/lib/samba/private/dns/&lt;span class="si">${&lt;/span>&lt;span class="nv">MYREALM&lt;/span>&lt;span class="si">}&lt;/span>.zone.jnl
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="запуск-демонов">Запуск демонов&lt;/h2>
 &lt;p>Сконфигурим тип сервера samba в файле &lt;code>/etc/default/sernet-samba&lt;/code>:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">SAMBA_START_MODE=&amp;#34;ad&amp;#34;
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="ln" id="hl-21-1">&lt;a class="lnlinks" href="#hl-21-1">1&lt;/a>&lt;/span>&lt;span class="cl">SAMBA_START_MODE=&amp;#34;ad&amp;#34;
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Запустим демоны:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">systemctl start named.service
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">systemctl start sernet-samba-ad.service
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="ln" id="hl-22-1">&lt;a class="lnlinks" href="#hl-22-1">1&lt;/a>&lt;/span>&lt;span class="cl">systemctl start named.service
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-22-2">&lt;a class="lnlinks" href="#hl-22-2">2&lt;/a>&lt;/span>&lt;span class="cl">systemctl start sernet-samba-ad.service
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Добавим их в автозагрузку:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">systemctl &lt;span class="nb">enable&lt;/span> named.service
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">systemctl &lt;span class="nb">enable&lt;/span> sernet-samba-ad.service
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="ln" id="hl-23-1">&lt;a class="lnlinks" href="#hl-23-1">1&lt;/a>&lt;/span>&lt;span class="cl">systemctl &lt;span class="nb">enable&lt;/span> named.service
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-23-2">&lt;a class="lnlinks" href="#hl-23-2">2&lt;/a>&lt;/span>&lt;span class="cl">systemctl &lt;span class="nb">enable&lt;/span> sernet-samba-ad.service
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="проверка">Проверка&lt;/h2>
 &lt;p>Проверка DNS.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># host -t SRV _ldap._tcp.dk.sci.pfu.edu.ru.&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">_ldap._tcp.dk.sci.pfu.edu.ru has SRV record &lt;span class="m">0&lt;/span> &lt;span class="m">100&lt;/span> &lt;span class="m">389&lt;/span> dc.dk.sci.pfu.edu.ru.
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># host -t SRV _kerberos._udp.dk.sci.pfu.edu.ru.&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">_kerberos._udp.dk.sci.pfu.edu.ru has SRV record &lt;span class="m">0&lt;/span> &lt;span class="m">100&lt;/span> &lt;span class="m">88&lt;/span> dc.dk.sci.pfu.edu.ru.
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># host -t A dc.dk.sci.pfu.edu.ru.&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">dc.dk.sci.pfu.edu.ru has address 10.130.64.23
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="ln" id="hl-24-1">&lt;a class="lnlinks" href="#hl-24-1">1&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="c1"># host -t SRV _ldap._tcp.dk.sci.pfu.edu.ru.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-24-2">&lt;a class="lnlinks" href="#hl-24-2">2&lt;/a>&lt;/span>&lt;span class="cl">_ldap._tcp.dk.sci.pfu.edu.ru has SRV record &lt;span class="m">0&lt;/span> &lt;span class="m">100&lt;/span> &lt;span class="m">389&lt;/span> dc.dk.sci.pfu.edu.ru.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-24-3">&lt;a class="lnlinks" href="#hl-24-3">3&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="c1"># host -t SRV _kerberos._udp.dk.sci.pfu.edu.ru.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-24-4">&lt;a class="lnlinks" href="#hl-24-4">4&lt;/a>&lt;/span>&lt;span class="cl">_kerberos._udp.dk.sci.pfu.edu.ru has SRV record &lt;span class="m">0&lt;/span> &lt;span class="m">100&lt;/span> &lt;span class="m">88&lt;/span> dc.dk.sci.pfu.edu.ru.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-24-5">&lt;a class="lnlinks" href="#hl-24-5">5&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="c1"># host -t A dc.dk.sci.pfu.edu.ru.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-24-6">&lt;a class="lnlinks" href="#hl-24-6">6&lt;/a>&lt;/span>&lt;span class="cl">dc.dk.sci.pfu.edu.ru has address 10.130.64.23
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Замена пароля администратора:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">samba-tool user setpassword Administrator
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="ln" id="hl-25-1">&lt;a class="lnlinks" href="#hl-25-1">1&lt;/a>&lt;/span>&lt;span class="cl">samba-tool user setpassword Administrator
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Проверка &lt;code>smbclient&lt;/code>:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">smbclient //localhost/netlogon -UAdministrator -c &lt;span class="s1">&amp;#39;ls&amp;#39;&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="ln" id="hl-26-1">&lt;a class="lnlinks" href="#hl-26-1">1&lt;/a>&lt;/span>&lt;span class="cl">smbclient //localhost/netlogon -UAdministrator -c &lt;span class="s1">&amp;#39;ls&amp;#39;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Аналогичный результат должно давать (&lt;code>dc&lt;/code> &amp;mdash; имя сервера):&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">smbclient //dc/netlogon -k -c &lt;span class="s1">&amp;#39;ls&amp;#39;&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="ln" id="hl-27-1">&lt;a class="lnlinks" href="#hl-27-1">1&lt;/a>&lt;/span>&lt;span class="cl">smbclient //dc/netlogon -k -c &lt;span class="s1">&amp;#39;ls&amp;#39;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Проверка kerberos:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">kinit administrator@DK.SCI.PFU.EDU.RU
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">klist
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="ln" id="hl-28-1">&lt;a class="lnlinks" href="#hl-28-1">1&lt;/a>&lt;/span>&lt;span class="cl">kinit administrator@DK.SCI.PFU.EDU.RU
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-28-2">&lt;a class="lnlinks" href="#hl-28-2">2&lt;/a>&lt;/span>&lt;span class="cl">klist
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="дополнительно">Дополнительно&lt;/h2>
 &lt;p>Убрать проверку сложности пароля:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">samba-tool domain passwordsettings &lt;span class="nb">set&lt;/span> --complexity&lt;span class="o">=&lt;/span>off
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">samba-tool domain passwordsettings &lt;span class="nb">set&lt;/span> --history-length&lt;span class="o">=&lt;/span>&lt;span class="m">0&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">samba-tool domain passwordsettings &lt;span class="nb">set&lt;/span> --min-pwd-age&lt;span class="o">=&lt;/span>&lt;span class="m">0&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">samba-tool domain passwordsettings &lt;span class="nb">set&lt;/span> --max-pwd-age&lt;span class="o">=&lt;/span>&lt;span class="m">0&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="ln" id="hl-29-1">&lt;a class="lnlinks" href="#hl-29-1">1&lt;/a>&lt;/span>&lt;span class="cl">samba-tool domain passwordsettings &lt;span class="nb">set&lt;/span> --complexity&lt;span class="o">=&lt;/span>off
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-29-2">&lt;a class="lnlinks" href="#hl-29-2">2&lt;/a>&lt;/span>&lt;span class="cl">samba-tool domain passwordsettings &lt;span class="nb">set&lt;/span> --history-length&lt;span class="o">=&lt;/span>&lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-29-3">&lt;a class="lnlinks" href="#hl-29-3">3&lt;/a>&lt;/span>&lt;span class="cl">samba-tool domain passwordsettings &lt;span class="nb">set&lt;/span> --min-pwd-age&lt;span class="o">=&lt;/span>&lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-29-4">&lt;a class="lnlinks" href="#hl-29-4">4&lt;/a>&lt;/span>&lt;span class="cl">samba-tool domain passwordsettings &lt;span class="nb">set&lt;/span> --max-pwd-age&lt;span class="o">=&lt;/span>&lt;span class="m">0&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item></channel></rss>

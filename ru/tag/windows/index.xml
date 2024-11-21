@@ -11,6 +11,358 @@
 &lt;li>&lt;a href="#создание-образа">&lt;span class="section-num">2&lt;/span> Создание образа&lt;/a>
 &lt;ul>
 &lt;li>&lt;a href="#порядок-действий">&lt;span class="section-num">2.1&lt;/span> Порядок действий&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#удаление-ненужных-редакций">&lt;span class="section-num">2.2&lt;/span> Удаление ненужных редакций&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">2.2.1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#подготовка">&lt;span class="section-num">2.2.2&lt;/span> Подготовка&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#оставляем-одну-редакцию">&lt;span class="section-num">2.2.3&lt;/span> Оставляем одну редакцию&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#несколько-редакций">&lt;span class="section-num">2.2.4&lt;/span> Несколько редакций&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#развёртывание-чистой-windows-на-эталонном-компьютере">&lt;span class="section-num">2.3&lt;/span> Развёртывание чистой Windows на эталонном компьютере&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#установка-необходимых-приложений">&lt;span class="section-num">2.4&lt;/span> Установка необходимых приложений&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#очистка-windows-после-настройки">&lt;span class="section-num">2.5&lt;/span> Очистка Windows после настройки&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#подготовка-к-развёртыванию">&lt;span class="section-num">2.6&lt;/span> Подготовка к развёртыванию&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#захват-настроенного-образа-windows-с-помощью-dism">&lt;span class="section-num">2.7&lt;/span> Захват настроенного образа Windows с помощью DISM&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#замена-оригинального-образа-windows--install-dot-wim--на-носителе">&lt;span class="section-num">2.8&lt;/span> Замена оригинального образа Windows (Install.wim) на носителе&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="общее-описание">&lt;span class="section-num">1&lt;/span> Общее описание&lt;/h2>
+&lt;ul>
+&lt;li>Можно создать образ Windows с предустановленным программным обеспечением и устанавливать его на хосты.&lt;/li>
+&lt;li>Недостаток такого подхода в том, что для обновления любого приложения необходимо пересобрать образ заново.&lt;/li>
+&lt;/ul>
+&lt;h3 id="sysprep">&lt;span class="section-num">1.1&lt;/span> Sysprep&lt;/h3>
+&lt;ul>
+&lt;li>Утилита: &lt;code>C:\Windows\System32\Sysprep\sysprep.exe&lt;/code>&lt;/li>
+&lt;li>Штатный инструмент развёртывания Windows.&lt;/li>
+&lt;li>Действия sysprep:
+&lt;ul>
+&lt;li>удаляются имя хоста, SID, GUID, идентификаторы Active Directory;&lt;/li>
+&lt;li>машина выводится из домена (для последующего успешного добавления в домен с новым именем);&lt;/li>
+&lt;li>удаляются plug-and-play драйвера, что уменьшает риск возникновения проблем с совместимостью;&lt;/li>
+&lt;li>опционально удаляются логи;&lt;/li>
+&lt;li>удаляются точки восстановления;&lt;/li>
+&lt;li>удаляется профиль локального администратора и этот аккаунт отключается;&lt;/li>
+&lt;li>обеспечивается загрузка целевой машины в режим аудита, позволяющий устанавливать дополнительные приложения и драйверы;&lt;/li>
+&lt;li>обеспечивается запуск mini-setup (oobe) при первом запуске для смены имени машины и другой дополнительной конфигурации;&lt;/li>
+&lt;li>сбрасывается период активации Windows (сброс возможен до 3 раз).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="создание-образа">&lt;span class="section-num">2&lt;/span> Создание образа&lt;/h2>
+&lt;h3 id="порядок-действий">&lt;span class="section-num">2.1&lt;/span> Порядок действий&lt;/h3>
+&lt;ul>
+&lt;li>Развёртывание чистой Windows на эталонном компьютере (виртуальной машине).&lt;/li>
+&lt;li>Вход в режим аудита, установка необходимых приложений, настройка окружения.&lt;/li>
+&lt;li>Очистка Windows после настройки.&lt;/li>
+&lt;li>Загрузка в среде WinPE и захват WIM образа Windows с помощью DISM.&lt;/li>
+&lt;li>Замена оригинального &lt;code>install.wim&lt;/code> на установочном ISO образе.&lt;/li>
+&lt;/ul>
+&lt;h3 id="удаление-ненужных-редакций">&lt;span class="section-num">2.2&lt;/span> Удаление ненужных редакций&lt;/h3>
+&lt;h4 id="общая-информация">&lt;span class="section-num">2.2.1&lt;/span> Общая информация&lt;/h4>
+&lt;ul>
+&lt;li>По умолчанию в установочном образе Windows 10 содержаться все доступные редакции Windows.&lt;/li>
+&lt;li>Можно удалить другие редакции из установочного образа.&lt;/li>
+&lt;li>При удалении лишних редакций Windows из установочного образа &lt;code>install.wim&lt;/code> версий его размер почти не уменьшается. Удаляются только XML файлы и некоторые метаданные.&lt;/li>
+&lt;/ul>
+&lt;h4 id="подготовка">&lt;span class="section-num">2.2.2&lt;/span> Подготовка&lt;/h4>
+&lt;ul>
+&lt;li>Можно загрузиться с установочного диска с Windows и на этапе начала установки нажать Shift+F10, чтобы открыть командную строку.&lt;/li>
+&lt;li>Нужно идентифицировать буквы диска, которые назначены разделу с Windows и чистому разделу, куда будет скопирован WIM файл:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-0-1">&lt;a class="lnlinks" href="#hl-0-1">1&lt;/a>&lt;/span>&lt;span class="cl">diskpart
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-2">&lt;a class="lnlinks" href="#hl-0-2">2&lt;/a>&lt;/span>&lt;span class="cl">list vol
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-3">&lt;a class="lnlinks" href="#hl-0-3">3&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="nb">exit&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Пусть диску с файлами установки присвоена бука &lt;code>e:&lt;/code>.&lt;/li>
+&lt;li>Получим список доступных редакций Windows 10 в файле &lt;code>install.wim&lt;/code> установочного образа:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-1-1">&lt;a class="lnlinks" href="#hl-1-1">1&lt;/a>&lt;/span>&lt;span class="cl">Dism /Get-WimInfo /WimFile:&lt;span class="s2">&amp;#34;e:\sources\install.wim&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h4 id="оставляем-одну-редакцию">&lt;span class="section-num">2.2.3&lt;/span> Оставляем одну редакцию&lt;/h4>
+&lt;ul>
+&lt;li>Переименуйте &lt;code>install.wim&lt;/code> (на всякий случай):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-2-1">&lt;a class="lnlinks" href="#hl-2-1">1&lt;/a>&lt;/span>&lt;span class="cl">move e:&lt;span class="se">\s&lt;/span>ources&lt;span class="se">\i&lt;/span>nstall.wim e:&lt;span class="se">\s&lt;/span>ources&lt;span class="se">\i&lt;/span>nstall-all.wim
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Экспортируем установочный образ с одной редакцией Windows (например, 4):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-3-1">&lt;a class="lnlinks" href="#hl-3-1">1&lt;/a>&lt;/span>&lt;span class="cl">Dism /export-image /SourceImageFile:&lt;span class="s2">&amp;#34;e:\sources\install-all.wim&amp;#34;&lt;/span> /SourceIndex:4 /DestinationImageFile:&lt;span class="s2">&amp;#34;e:\sources\install.wim&amp;#34;&lt;/span> /Compress:max /CheckIntegrity
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Параметр &lt;code>/CheckIntegrity&lt;/code> позволяет отменить операции преобразования WIM файла, если команда DISM обнаружит повреждение в его структуре.&lt;/li>
+&lt;li>Индекс редакции windows в образе изменится на 1:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-4-1">&lt;a class="lnlinks" href="#hl-4-1">1&lt;/a>&lt;/span>&lt;span class="cl">Dism /Get-WimInfo /WimFile:&lt;span class="s2">&amp;#34;e:\sources\install.wim&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Получим подробную информацию об оставшемся образе в &lt;code>wim&lt;/code>-файле:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-5-1">&lt;a class="lnlinks" href="#hl-5-1">1&lt;/a>&lt;/span>&lt;span class="cl">Dism /get-wiminfo /wimfile:&lt;span class="s2">&amp;#34;c:\sources\install.wim&amp;#34;&lt;/span> /index:1
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h4 id="несколько-редакций">&lt;span class="section-num">2.2.4&lt;/span> Несколько редакций&lt;/h4>
+&lt;ul>
+&lt;li>FYI.&lt;/li>
+&lt;li>Если нужно оставить в &lt;code>install.wim&lt;/code> несколько редакций Windows, можно удалить ненужные версии с помощью параметра &lt;code>/delete-image&lt;/code> утилиты DISM.&lt;/li>
+&lt;li>Пусть мы хотим удалить редакции &lt;code>Home&lt;/code> и &lt;code>Home Single Language&lt;/code> с индексами 1 и 3:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-6-1">&lt;a class="lnlinks" href="#hl-6-1">1&lt;/a>&lt;/span>&lt;span class="cl">Dism /Delete-Image /ImageFile:&lt;span class="s2">&amp;#34;e:\sources\install.wim&amp;#34;&lt;/span> /Index:1 /CheckIntegrity
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-6-2">&lt;a class="lnlinks" href="#hl-6-2">2&lt;/a>&lt;/span>&lt;span class="cl">Dism /Delete-Image /ImageFile:&lt;span class="s2">&amp;#34;e:\sources\install.wim&amp;#34;&lt;/span> /Index:3 /CheckIntegrity
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Можно удалить редакции по их имени:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-7-1">&lt;a class="lnlinks" href="#hl-7-1">1&lt;/a>&lt;/span>&lt;span class="cl">Dism /Delete-Image /ImageFile:&lt;span class="s2">&amp;#34;e:\sources\install.wim&amp;#34;&lt;/span> /Name:&lt;span class="s2">&amp;#34;Windows 10 Education&amp;#34;&lt;/span> /CheckIntegrity
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="развёртывание-чистой-windows-на-эталонном-компьютере">&lt;span class="section-num">2.3&lt;/span> Развёртывание чистой Windows на эталонном компьютере&lt;/h3>
+&lt;ul>
+&lt;li>Выполните ручную установку Windows.&lt;/li>
+&lt;li>Не обязательно устанавливать систему полностью, достаточно остановиться на этапе OOBE (когда вам предлагают выбрать региональные настройки и создать учётную запись).
+&lt;ul>
+&lt;li>На этом этапе нажмите &lt;code>Ctrl + Shift + F3&lt;/code>.&lt;/li>
+&lt;li>Это переведёт компьютер в режим аудита (Audit Mode), в котором будет выполнен автоматический вход под встроенной учётной записью &lt;code>Administrator&lt;/code>.&lt;/li>
+&lt;li>Это эквивалентно команде:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-8-1">&lt;a class="lnlinks" href="#hl-8-1">1&lt;/a>&lt;/span>&lt;span class="cl">%windir%&lt;span class="se">\s&lt;/span>ystem32&lt;span class="se">\s&lt;/span>ysprep&lt;span class="se">\s&lt;/span>ysprep.exe /audit
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>После появления рабочего стола, сверните окно утилиты &lt;code>sysprep&lt;/code>, не закрывая его.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="установка-необходимых-приложений">&lt;span class="section-num">2.4&lt;/span> Установка необходимых приложений&lt;/h3>
+&lt;ul>
+&lt;li>Можно приступить к установке программ, обновлений, настройке нужных параметров Windows.&lt;/li>
+&lt;li>Можно настроить ярлыки на рабочем столе, плитки в меню Start, фоновые рисунки, заставки, цветовые схемы и прочее.&lt;/li>
+&lt;li>Можно настроить параметры локальной групповой политики с помощью редактора &lt;code>gpedit.msc&lt;/code>.&lt;/li>
+&lt;li>Чтобы применить настройки текущего пользователю к шаблонному пользователю &lt;code>Default&lt;/code>, создайте файл ответов &lt;code>unattend.xml&lt;/code> в каталоге &lt;code>C:\Windows\System32\Sysprep&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-xml" data-lang="xml">&lt;span class="line">&lt;span class="ln" id="hl-9-1">&lt;a class="lnlinks" href="#hl-9-1">1&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="cp">&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;utf-8&amp;#34;?&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-9-2">&lt;a class="lnlinks" href="#hl-9-2">2&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="nt">&amp;lt;unattend&lt;/span> &lt;span class="na">xmlns=&lt;/span>&lt;span class="s">&amp;#34;urn:schemas-microsoft-com:unattend&amp;#34;&lt;/span>&lt;span class="nt">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-9-3">&lt;a class="lnlinks" href="#hl-9-3">3&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;settings&lt;/span> &lt;span class="na">pass=&lt;/span>&lt;span class="s">&amp;#34;specialize&amp;#34;&lt;/span>&lt;span class="nt">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-9-4">&lt;a class="lnlinks" href="#hl-9-4">4&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;component&lt;/span> &lt;span class="na">name=&lt;/span>&lt;span class="s">&amp;#34;Microsoft-Windows-Shell-Setup&amp;#34;&lt;/span> &lt;span class="na">processorArchitecture=&lt;/span>&lt;span class="s">&amp;#34;amd64&amp;#34;&lt;/span> &lt;span class="na">publicKeyToken=&lt;/span>&lt;span class="s">&amp;#34;31bf3856ad364e35&amp;#34;&lt;/span> &lt;span class="na">language=&lt;/span>&lt;span class="s">&amp;#34;neutral&amp;#34;&lt;/span> &lt;span class="na">versionScope=&lt;/span>&lt;span class="s">&amp;#34;nonSxS&amp;#34;&lt;/span> &lt;span class="na">xmlns:wcm=&lt;/span>&lt;span class="s">&amp;#34;http://schemas.microsoft.com/WMIConfig/2002/State&amp;#34;&lt;/span> &lt;span class="na">xmlns:xsi=&lt;/span>&lt;span class="s">&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34;&lt;/span>&lt;span class="nt">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-9-5">&lt;a class="lnlinks" href="#hl-9-5">5&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;CopyProfile&amp;gt;&lt;/span>true&lt;span class="nt">&amp;lt;/CopyProfile&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-9-6">&lt;a class="lnlinks" href="#hl-9-6">6&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;/component&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-9-7">&lt;a class="lnlinks" href="#hl-9-7">7&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;/settings&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-9-8">&lt;a class="lnlinks" href="#hl-9-8">8&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="nt">&amp;lt;/unattend&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="очистка-windows-после-настройки">&lt;span class="section-num">2.5&lt;/span> Очистка Windows после настройки&lt;/h3>
+&lt;ul>
+&lt;li>Удалите имеющиеся теневые копии и точки восстановления:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-10-1">&lt;a class="lnlinks" href="#hl-10-1">1&lt;/a>&lt;/span>&lt;span class="cl">vssadmin delete shadows /All /Quiet
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Очистите неиспользуемые файлы компонентов и обновлений в папке WinSxS:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-11-1">&lt;a class="lnlinks" href="#hl-11-1">1&lt;/a>&lt;/span>&lt;span class="cl">Dism.exe /Online /Cleanup-Image /StartComponentCleanup /ResetBase
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Удалите загруженные файлы обновлений Windows:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-12-1">&lt;a class="lnlinks" href="#hl-12-1">1&lt;/a>&lt;/span>&lt;span class="cl">del %windir%&lt;span class="se">\S&lt;/span>oftwareDistribution&lt;span class="se">\D&lt;/span>ownload&lt;span class="se">\*&lt;/span>.* /f /s /q
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Выполните очистку диска с помощью утилиты &lt;code>cleanmgr&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-13-1">&lt;a class="lnlinks" href="#hl-13-1">1&lt;/a>&lt;/span>&lt;span class="cl">Cleanmgr /sagerun:1
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Очистите логи Windows:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-14-1">&lt;a class="lnlinks" href="#hl-14-1">1&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="k">for&lt;/span> /F &lt;span class="s2">&amp;#34;tokens=*&amp;#34;&lt;/span> %1 in &lt;span class="o">(&lt;/span>&lt;span class="s1">&amp;#39;wevtutil.exe el&amp;#39;&lt;/span>&lt;span class="o">)&lt;/span> DO wevtutil.exe cl &lt;span class="s2">&amp;#34;%1&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Очистите корзину:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-15-1">&lt;a class="lnlinks" href="#hl-15-1">1&lt;/a>&lt;/span>&lt;span class="cl">powershell.exe -NoProfile -Command &lt;span class="s2">&amp;#34;Clear-RecycleBin -Force&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="подготовка-к-развёртыванию">&lt;span class="section-num">2.6&lt;/span> Подготовка к развёртыванию&lt;/h3>
+&lt;ul>
+&lt;li>Разверните окно &lt;code>sysprep&lt;/code> и выберите опции:
+&lt;ul>
+&lt;li>Enter System Out-of-Box Experience (OOBE)&lt;/li>
+&lt;li>Generalize&lt;/li>
+&lt;li>Shutdown&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Это эквивалентно команде:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-16-1">&lt;a class="lnlinks" href="#hl-16-1">1&lt;/a>&lt;/span>&lt;span class="cl">%windir%&lt;span class="se">\s&lt;/span>ystem32&lt;span class="se">\s&lt;/span>ysprep&lt;span class="se">\s&lt;/span>ysprep.exe /generalize /oobe /shutdown
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="захват-настроенного-образа-windows-с-помощью-dism">&lt;span class="section-num">2.7&lt;/span> Захват настроенного образа Windows с помощью DISM&lt;/h3>
+&lt;ul>
+&lt;li>Нужно выполнить офлайн захват образа установленной Windows в WIM файл и поместить его на отдельный диск.&lt;/li>
+&lt;li>Загрузите компьютер с эталонной версией Windows с загрузочного диска в среде WinPE (WinRE).&lt;/li>
+&lt;li>Можно загрузиться с установочного диска с Windows и на этапе начала установки нажать Shift+F10, чтобы открыть командную строку.&lt;/li>
+&lt;li>Нужно идентифицировать буквы диска, которые назначены разделу с Windows и чистому разделу, куда будет скопирован WIM файл:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-17-1">&lt;a class="lnlinks" href="#hl-17-1">1&lt;/a>&lt;/span>&lt;span class="cl">diskpart
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-17-2">&lt;a class="lnlinks" href="#hl-17-2">2&lt;/a>&lt;/span>&lt;span class="cl">list vol
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-17-3">&lt;a class="lnlinks" href="#hl-17-3">3&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="nb">exit&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Пусть диску с Windows присвоена бука &lt;code>c:&lt;/code>, а пустому диску буква &lt;code>e:&lt;/code>.&lt;/li>
+&lt;li>Чтобы выполнить захват офлайн образа Windows на диске &lt;code>c:&lt;/code> и поместить полученный WIM образ на &lt;code>e:&lt;/code>, выполните команду:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-18-1">&lt;a class="lnlinks" href="#hl-18-1">1&lt;/a>&lt;/span>&lt;span class="cl">dism /capture-image /imagefile:&lt;span class="s2">&amp;#34;e:\source\install.wim&amp;#34;&lt;/span> /capturedir:c:&lt;span class="se">\ &lt;/span>/ScratchDir:e:&lt;span class="se">\ &lt;/span>/name:&lt;span class="s2">&amp;#34;Windows 10 Pro&amp;#34;&lt;/span> /compress:maximum /checkintegrity /verify /bootable
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="замена-оригинального-образа-windows--install-dot-wim--на-носителе">&lt;span class="section-num">2.8&lt;/span> Замена оригинального образа Windows (Install.wim) на носителе&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>После получения образа Windows можно заменить файл с оригинальным установочным образом &lt;code>install.wim&lt;/code> (или &lt;code>install.esd&lt;/code>) в каталоге &lt;code>\sources&lt;/code> на установочном носителе.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Если вы используете &lt;code>FAT32&lt;/code>, то вы не сможете разместить файл больше 4 Гб на этой файловой системе. В этом случае большой WIM файл нужно разбить на несколько файлов &lt;code>SWM&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-19-1">&lt;a class="lnlinks" href="#hl-19-1">1&lt;/a>&lt;/span>&lt;span class="cl">Dism /Split-Image /ImageFile:D:&lt;span class="se">\s&lt;/span>ources&lt;span class="se">\i&lt;/span>nstall.wim /SWMFile:c:&lt;span class="se">\t&lt;/span>mp&lt;span class="se">\i&lt;/span>nstall.swm /FileSize:3500
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>В данном случае DISM создаст файлы вида &lt;code>install.swm&lt;/code>, &lt;code>install2.swm&lt;/code> и т. д.&lt;/li>
+&lt;li>Их нужно скопировать в папку &lt;code>\sources&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul></description></item><item><title>Установочный образ Windows</title><link>https://yamadharma.github.io/ru/post/2024/10/22/windows-installation-image/</link><pubDate>Tue, 22 Oct 2024 14:08:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2024/10/22/windows-installation-image/</guid><description>&lt;p>Установочный образ Windows.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общее-описание">&lt;span class="section-num">1&lt;/span> Общее описание&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#sysprep">&lt;span class="section-num">1.1&lt;/span> Sysprep&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#создание-образа">&lt;span class="section-num">2&lt;/span> Создание образа&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#порядок-действий">&lt;span class="section-num">2.1&lt;/span> Порядок действий&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#развёртывание-чистой-windows-на-эталонном-компьютере">&lt;span class="section-num">2.2&lt;/span> Развёртывание чистой Windows на эталонном компьютере&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#установка-необходимых-приложений">&lt;span class="section-num">2.3&lt;/span> Установка необходимых приложений&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#очистка-windows-после-настройки">&lt;span class="section-num">2.4&lt;/span> Очистка Windows после настройки&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#подготовка-к-развёртыванию">&lt;span class="section-num">2.5&lt;/span> Подготовка к развёртыванию&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#захват-настроенного-образа-windows-с-помощью-dism">&lt;span class="section-num">2.6&lt;/span> Захват настроенного образа Windows с помощью DISM&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#замена-оригинального-образа-windows--install-dot-wim--на-носителе">&lt;span class="section-num">2.7&lt;/span> Замена оригинального образа Windows (Install.wim) на носителе&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/details>
+&lt;h2 id="общее-описание">&lt;span class="section-num">1&lt;/span> Общее описание&lt;/h2>
+&lt;ul>
+&lt;li>Можно создать образ Windows с предустановленным программным обеспечением и устанавливать его на хосты.&lt;/li>
+&lt;li>Недостаток такого подхода в том, что для обновления любого приложения необходимо пересобрать образ заново.&lt;/li>
+&lt;/ul>
+&lt;h3 id="sysprep">&lt;span class="section-num">1.1&lt;/span> Sysprep&lt;/h3>
+&lt;ul>
+&lt;li>Утилита: &lt;code>C:\Windows\System32\Sysprep\sysprep.exe&lt;/code>&lt;/li>
+&lt;li>Штатный инструмент развёртывания Windows.&lt;/li>
+&lt;li>Действия sysprep:
+&lt;ul>
+&lt;li>удаляются имя хоста, SID, GUID, идентификаторы Active Directory;&lt;/li>
+&lt;li>машина выводится из домена (для последующего успешного добавления в домен с новым именем);&lt;/li>
+&lt;li>удаляются plug-and-play драйвера, что уменьшает риск возникновения проблем с совместимостью;&lt;/li>
+&lt;li>опционально удаляются логи;&lt;/li>
+&lt;li>удаляются точки восстановления;&lt;/li>
+&lt;li>удаляется профиль локального администратора и этот аккаунт отключается;&lt;/li>
+&lt;li>обеспечивается загрузка целевой машины в режим аудита, позволяющий устанавливать дополнительные приложения и драйверы;&lt;/li>
+&lt;li>обеспечивается запуск mini-setup (oobe) при первом запуске для смены имени машины и другой дополнительной конфигурации;&lt;/li>
+&lt;li>сбрасывается период активации Windows (сброс возможен до 3 раз).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="создание-образа">&lt;span class="section-num">2&lt;/span> Создание образа&lt;/h2>
+&lt;h3 id="порядок-действий">&lt;span class="section-num">2.1&lt;/span> Порядок действий&lt;/h3>
+&lt;ul>
+&lt;li>Развёртывание чистой Windows на эталонном компьютере (виртуальной машине).&lt;/li>
+&lt;li>Вход в режим аудита, установка необходимых приложений, настройка окружения.&lt;/li>
+&lt;li>Очистка Windows после настройки.&lt;/li>
+&lt;li>Загрузка в среде WinPE и захват WIM образа Windows с помощью DISM.&lt;/li>
+&lt;li>Замена оригинального &lt;code>install.wim&lt;/code> на установочном ISO образе.&lt;/li>
+&lt;/ul>
+&lt;h3 id="развёртывание-чистой-windows-на-эталонном-компьютере">&lt;span class="section-num">2.2&lt;/span> Развёртывание чистой Windows на эталонном компьютере&lt;/h3>
+&lt;ul>
+&lt;li>Выполните ручную установку Windows.&lt;/li>
+&lt;li>Не обязательно устанавливать систему полностью, достаточно остановиться на этапе OOBE (когда вам предлагают выбрать региональные настройки и создать учётную запись).
+&lt;ul>
+&lt;li>На этом этапе нажмите &lt;code>Ctrl + Shift + F3&lt;/code>.&lt;/li>
+&lt;li>Это переведёт компьютер в режим аудита (Audit Mode), в котором будет выполнен автоматический вход под встроенной учётной записью &lt;code>Administrator&lt;/code>.&lt;/li>
+&lt;li>Это эквивалентно команде:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-0-1">&lt;a class="lnlinks" href="#hl-0-1">1&lt;/a>&lt;/span>&lt;span class="cl">%windir%&lt;span class="se">\s&lt;/span>ystem32&lt;span class="se">\s&lt;/span>ysprep&lt;span class="se">\s&lt;/span>ysprep.exe /audit
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>После появления рабочего стола, сверните окно утилиты &lt;code>sysprep&lt;/code>, не закрывая его.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="установка-необходимых-приложений">&lt;span class="section-num">2.3&lt;/span> Установка необходимых приложений&lt;/h3>
+&lt;ul>
+&lt;li>Можно приступить к установке программ, обновлений, настройке нужных параметров Windows.&lt;/li>
+&lt;li>Можно настроить ярлыки на рабочем столе, плитки в меню Start, фоновые рисунки, заставки, цветовые схемы и прочее.&lt;/li>
+&lt;li>Можно настроить параметры локальной групповой политики с помощью редактора &lt;code>gpedit.msc&lt;/code>.&lt;/li>
+&lt;li>Чтобы применить настройки текущего пользователю к шаблонному пользователю &lt;code>Default&lt;/code>, создайте файл ответов &lt;code>unattend.xml&lt;/code> в каталоге &lt;code>C:\Windows\System32\Sysprep&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-xml" data-lang="xml">&lt;span class="line">&lt;span class="ln" id="hl-1-1">&lt;a class="lnlinks" href="#hl-1-1">1&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="cp">&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;utf-8&amp;#34;?&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-1-2">&lt;a class="lnlinks" href="#hl-1-2">2&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="nt">&amp;lt;unattend&lt;/span> &lt;span class="na">xmlns=&lt;/span>&lt;span class="s">&amp;#34;urn:schemas-microsoft-com:unattend&amp;#34;&lt;/span>&lt;span class="nt">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-1-3">&lt;a class="lnlinks" href="#hl-1-3">3&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;settings&lt;/span> &lt;span class="na">pass=&lt;/span>&lt;span class="s">&amp;#34;specialize&amp;#34;&lt;/span>&lt;span class="nt">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-1-4">&lt;a class="lnlinks" href="#hl-1-4">4&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;component&lt;/span> &lt;span class="na">name=&lt;/span>&lt;span class="s">&amp;#34;Microsoft-Windows-Shell-Setup&amp;#34;&lt;/span> &lt;span class="na">processorArchitecture=&lt;/span>&lt;span class="s">&amp;#34;amd64&amp;#34;&lt;/span> &lt;span class="na">publicKeyToken=&lt;/span>&lt;span class="s">&amp;#34;31bf3856ad364e35&amp;#34;&lt;/span> &lt;span class="na">language=&lt;/span>&lt;span class="s">&amp;#34;neutral&amp;#34;&lt;/span> &lt;span class="na">versionScope=&lt;/span>&lt;span class="s">&amp;#34;nonSxS&amp;#34;&lt;/span> &lt;span class="na">xmlns:wcm=&lt;/span>&lt;span class="s">&amp;#34;http://schemas.microsoft.com/WMIConfig/2002/State&amp;#34;&lt;/span> &lt;span class="na">xmlns:xsi=&lt;/span>&lt;span class="s">&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34;&lt;/span>&lt;span class="nt">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-1-5">&lt;a class="lnlinks" href="#hl-1-5">5&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;CopyProfile&amp;gt;&lt;/span>true&lt;span class="nt">&amp;lt;/CopyProfile&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-1-6">&lt;a class="lnlinks" href="#hl-1-6">6&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;/component&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-1-7">&lt;a class="lnlinks" href="#hl-1-7">7&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;/settings&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-1-8">&lt;a class="lnlinks" href="#hl-1-8">8&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="nt">&amp;lt;/unattend&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="очистка-windows-после-настройки">&lt;span class="section-num">2.4&lt;/span> Очистка Windows после настройки&lt;/h3>
+&lt;ul>
+&lt;li>Удалите имеющиеся теневые копии и точки восстановления:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-2-1">&lt;a class="lnlinks" href="#hl-2-1">1&lt;/a>&lt;/span>&lt;span class="cl">vssadmin delete shadows /All /Quiet
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Очистите неиспользуемые файлы компонентов и обновлений в папке WinSxS:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-3-1">&lt;a class="lnlinks" href="#hl-3-1">1&lt;/a>&lt;/span>&lt;span class="cl">Dism.exe /Online /Cleanup-Image /StartComponentCleanup /ResetBase
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Удалите загруженные файлы обновлений Windows:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-4-1">&lt;a class="lnlinks" href="#hl-4-1">1&lt;/a>&lt;/span>&lt;span class="cl">del %windir%&lt;span class="se">\S&lt;/span>oftwareDistribution&lt;span class="se">\D&lt;/span>ownload&lt;span class="se">\*&lt;/span>.* /f /s /q
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Выполните очистку диска с помощью утилиты &lt;code>cleanmgr&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-5-1">&lt;a class="lnlinks" href="#hl-5-1">1&lt;/a>&lt;/span>&lt;span class="cl">Cleanmgr /sagerun:1
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Очистите логи Windows:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-6-1">&lt;a class="lnlinks" href="#hl-6-1">1&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="k">for&lt;/span> /F &lt;span class="s2">&amp;#34;tokens=*&amp;#34;&lt;/span> %1 in &lt;span class="o">(&lt;/span>&lt;span class="s1">&amp;#39;wevtutil.exe el&amp;#39;&lt;/span>&lt;span class="o">)&lt;/span> DO wevtutil.exe cl &lt;span class="s2">&amp;#34;%1&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Очистите корзину:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-7-1">&lt;a class="lnlinks" href="#hl-7-1">1&lt;/a>&lt;/span>&lt;span class="cl">powershell.exe -NoProfile -Command &lt;span class="s2">&amp;#34;Clear-RecycleBin -Force&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="подготовка-к-развёртыванию">&lt;span class="section-num">2.5&lt;/span> Подготовка к развёртыванию&lt;/h3>
+&lt;ul>
+&lt;li>Разверните окно &lt;code>sysprep&lt;/code> и выберите опции:
+&lt;ul>
+&lt;li>Enter System Out-of-Box Experience (OOBE)&lt;/li>
+&lt;li>Generalize&lt;/li>
+&lt;li>Shutdown&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Это эквивалентно команде:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-8-1">&lt;a class="lnlinks" href="#hl-8-1">1&lt;/a>&lt;/span>&lt;span class="cl">%windir%&lt;span class="se">\s&lt;/span>ystem32&lt;span class="se">\s&lt;/span>ysprep&lt;span class="se">\s&lt;/span>ysprep.exe /generalize /oobe /shutdown
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="захват-настроенного-образа-windows-с-помощью-dism">&lt;span class="section-num">2.6&lt;/span> Захват настроенного образа Windows с помощью DISM&lt;/h3>
+&lt;ul>
+&lt;li>Нужно выполнить офлайн захват образа установленной Windows в WIM файл и поместить его на отдельный диск.&lt;/li>
+&lt;li>Загрузите компьютер с эталонной версией Windows с загрузочного диска в среде WinPE (WinRE).&lt;/li>
+&lt;li>Можно загрузиться с установочного диска с Windows и на этапе начала установки нажать Shift+F10, чтобы открыть командную строку.&lt;/li>
+&lt;li>Нужно идентифицировать буквы диска, которые назначены разделу с Windows и чистому разделу, куда будет скопирован WIM файл:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-9-1">&lt;a class="lnlinks" href="#hl-9-1">1&lt;/a>&lt;/span>&lt;span class="cl">diskpart
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-9-2">&lt;a class="lnlinks" href="#hl-9-2">2&lt;/a>&lt;/span>&lt;span class="cl">list vol
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-9-3">&lt;a class="lnlinks" href="#hl-9-3">3&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="nb">exit&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Пусть диску с Windows присвоена бука &lt;code>c:&lt;/code>, а пустому диску буква &lt;code>d:&lt;/code>.&lt;/li>
+&lt;li>Чтобы выполнить захват офлайн образа Windows на диске &lt;code>c:&lt;/code> и поместить полученный WIM образ на &lt;code>d:&lt;/code>, выполните команду:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-10-1">&lt;a class="lnlinks" href="#hl-10-1">1&lt;/a>&lt;/span>&lt;span class="cl">dism /capture-image /imagefile:D:&lt;span class="se">\i&lt;/span>nstall.wim /capturedir:C:&lt;span class="se">\ &lt;/span>/ScratchDir:D:&lt;span class="se">\ &lt;/span>/name:&lt;span class="s2">&amp;#34;Win10Image&amp;#34;&lt;/span> /compress:maximum /checkintegrity /verify /bootable
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="замена-оригинального-образа-windows--install-dot-wim--на-носителе">&lt;span class="section-num">2.7&lt;/span> Замена оригинального образа Windows (Install.wim) на носителе&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>После получения образа Windows можно заменить файл с оригинальным установочным образом &lt;code>install.wim&lt;/code> (или &lt;code>install.esd&lt;/code>) в каталоге &lt;code>\sources&lt;/code> на установочном носителе.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Если вы используете &lt;code>FAT32&lt;/code>, то вы не сможете разместить файл больше 4 Гб на этой файловой системе. В этом случае большой WIM файл нужно разбить на несколько файлов &lt;code>SWM&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-11-1">&lt;a class="lnlinks" href="#hl-11-1">1&lt;/a>&lt;/span>&lt;span class="cl">Dism /Split-Image /ImageFile:D:&lt;span class="se">\s&lt;/span>ources&lt;span class="se">\i&lt;/span>nstall.wim /SWMFile:c:&lt;span class="se">\t&lt;/span>mp&lt;span class="se">\i&lt;/span>nstall.swm /FileSize:3500
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>В данном случае DISM создаст файлы вида &lt;code>install.swm&lt;/code>, &lt;code>install2.swm&lt;/code> и т. д.&lt;/li>
+&lt;li>Их нужно скопировать в папку &lt;code>\sources&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul></description></item><item><title>Установочный образ Windows</title><link>https://yamadharma.github.io/ru/post/2024/10/22/windows-installation-image/</link><pubDate>Tue, 22 Oct 2024 14:08:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2024/10/22/windows-installation-image/</guid><description>&lt;p>Установочный образ Windows.&lt;/p>
+&lt;details class="toc-inpage d-print-none " open>
+&lt;summary class="font-weight-bold">Содержание&lt;/summary>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общее-описание">&lt;span class="section-num">1&lt;/span> Общее описание&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#sysprep">&lt;span class="section-num">1.1&lt;/span> Sysprep&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#создание-образа">&lt;span class="section-num">2&lt;/span> Создание образа&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#порядок-действий">&lt;span class="section-num">2.1&lt;/span> Порядок действий&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#развёртывание-чистой-windows-на-эталонном-компьютере">&lt;span class="section-num">2.2&lt;/span> Развёртывание чистой Windows на эталонном компьютере&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#установка-необходимых-приложений">&lt;span class="section-num">2.3&lt;/span> Установка необходимых приложений&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#очистка-windows-после-настройки">&lt;span class="section-num">2.4&lt;/span> Очистка Windows после настройки&lt;/a>&lt;/li>

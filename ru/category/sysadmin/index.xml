@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Sysadmin | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/category/sysadmin/</link><atom:link href="https://yamadharma.github.io/ru/category/sysadmin/index.xml" rel="self" type="application/rss+xml"/><description>Sysadmin</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>ru-ru</language><copyright>© 2024 Dmitry S. Kulyabov</copyright><lastBuildDate>Thu, 17 May 2018 08:43:05 +0000</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu15752663207405015554.png</url><title>Sysadmin</title><link>https://yamadharma.github.io/ru/category/sysadmin/</link></image><item><title>Деинсталляция WebFM из Drupal</title><link>https://yamadharma.github.io/ru/post/2018/05/17/webfm-uninstall/</link><pubDate>Thu, 17 May 2018 08:43:05 +0000</pubDate><guid>https://yamadharma.github.io/ru/post/2018/05/17/webfm-uninstall/</guid><description>&lt;h2 id="circumstantia">Circumstantia&lt;/h2>
 &lt;h3 id="дано">Дано&lt;/h3>
-&lt;p>Сайт на &lt;a href="https://www.drupal.org" target="_blank" rel="noopener">Drupal&lt;/a> 5.&lt;/p>
+&lt;p>Сайт на
+5.&lt;/p>
 &lt;h3 id="требуется">Требуется&lt;/h3>
 &lt;p>Превести сайт на Drupal 8.&lt;/p>
 &lt;h3 id="предварительный-план-действий">Предварительный план действий&lt;/h3>
 &lt;p>Drupal 5 -&amp;gt; Drupal 6 -&amp;gt; Drupal 8.&lt;/p>
 &lt;h3 id="проблема">Проблема&lt;/h3>
-&lt;p>В системе установлен пакет &lt;a href="https://www.drupal.org/project/webfm" target="_blank" rel="noopener">webfm&lt;/a>, который не поддерживается после Drupal 6. Webfm ведёт свою базу файлов, и в тексте сайта ставит указание не на файл, на а запись в своей базе данных.&lt;/p>
+&lt;p>В системе установлен пакет
+, который не поддерживается после Drupal 6. Webfm ведёт свою базу файлов, и в тексте сайта ставит указание не на файл, на а запись в своей базе данных.&lt;/p>
 &lt;h2 id="solutio">Solutio&lt;/h2>
 &lt;p>При поиски решения проблемы были найдены следующие сайты:&lt;/p>
 &lt;ul>
-&lt;li>&lt;a href="http://puna.upf.edu/node/97" target="_blank" rel="noopener">http://puna.upf.edu/node/97&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://gist.github.com/heidar/3707913" target="_blank" rel="noopener">https://gist.github.com/heidar/3707913&lt;/a>&lt;/li>
+&lt;li>
+&lt;/li>
+&lt;li>
+&lt;/li>
 &lt;/ul>
 &lt;p>Основываясь на них, набросал скипт &lt;code>webfm-fix&lt;/code>.&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="ln" id="hl-0-1">&lt;a class="lnlinks" href="#hl-0-1"> 1&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="ch">#!/usr/bin/python2&lt;/span>
@@ -73,7 +77,7 @@
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-57">&lt;a class="lnlinks" href="#hl-0-57">57&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="n">db&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">rollback&lt;/span>&lt;span class="p">()&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-58">&lt;a class="lnlinks" href="#hl-0-58">58&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="n">db&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">close&lt;/span>&lt;span class="p">()&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>При написании скрипта использовал следующую информацию:
-&lt;a href="https://drupal.stackexchange.com/questions/6787/where-does-drupal-store-the-content-of-a-nodes-body" target="_blank" rel="noopener">Where does Drupal store the content of a node&amp;rsquo;s body?&lt;/a>&lt;/p>
+&lt;/p>
 &lt;p>In Drupal 6, content of the node&amp;rsquo;s body is saved in &lt;code>node_revisions&lt;/code> table under &lt;code>body&lt;/code> field.&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="ln" id="hl-1-1">&lt;a class="lnlinks" href="#hl-1-1">1&lt;/a>&lt;/span>&lt;span class="cl">node_revisions.body
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>In Drupal 7, content of the node&amp;rsquo;s body is saved in &lt;code>field_data_body&lt;/code> table under &lt;code>body_value&lt;/code> field. In case content revisions are there then it also saves the data in &lt;code>field_revision_body&lt;/code> table under &lt;code>body_value&lt;/code> field.&lt;/p>
@@ -82,11 +86,14 @@
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>In Drupal 8, content of the node&amp;rsquo;s body is saved in &lt;code>node__body&lt;/code> table under &lt;code>body_value&lt;/code> field. In case content revisions are there then it also saves the data in &lt;code>node_revision__body&lt;/code> table under &lt;code>body_value&lt;/code> field.&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="ln" id="hl-3-1">&lt;a class="lnlinks" href="#hl-3-1">1&lt;/a>&lt;/span>&lt;span class="cl">node__body.body_value
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-3-2">&lt;a class="lnlinks" href="#hl-3-2">2&lt;/a>&lt;/span>&lt;span class="cl">node_revision__body.body_value
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Миграция с livejournal на hexo</title><link>https://yamadharma.github.io/ru/post/2018/04/21/from-lj-to-hexo/</link><pubDate>Sat, 21 Apr 2018 15:37:34 +0000</pubDate><guid>https://yamadharma.github.io/ru/post/2018/04/21/from-lj-to-hexo/</guid><description>&lt;p>Миграция с &lt;a href="https://yamadharma.livejournal.com/" target="_blank" rel="noopener">livejornal&lt;/a> составила некоторые проблемы.&lt;/p>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Миграция с livejournal на hexo</title><link>https://yamadharma.github.io/ru/post/2018/04/21/from-lj-to-hexo/</link><pubDate>Sat, 21 Apr 2018 15:37:34 +0000</pubDate><guid>https://yamadharma.github.io/ru/post/2018/04/21/from-lj-to-hexo/</guid><description>&lt;p>Миграция с
+составила некоторые проблемы.&lt;/p>
 &lt;p>Хочу заметить, что комментарии я не переносил.&lt;/p>
-&lt;p>Наиболее подходящим показался мне &lt;a href="https://github.com/arty-name/livejournal-export" target="_blank" rel="noopener">livejournal-export&lt;/a>. Он переводит сразу в &lt;em>markdown&lt;/em>. Однако, при этом не импортируются теги.
+&lt;p>Наиболее подходящим показался мне
+. Он переводит сразу в &lt;em>markdown&lt;/em>. Однако, при этом не импортируются теги.
 Для идентификации использует параметры сессии броузера.&lt;/p>
-&lt;p>Вторым вариантом я рассмотрел &lt;a href="https://github.com/ghewgill/ljdump" target="_blank" rel="noopener">ljdump&lt;/a>. Он скачивает журнал в &lt;em>html&lt;/em>. Для идентификации использует логин и пароль.&lt;/p>
+&lt;p>Вторым вариантом я рассмотрел
+. Он скачивает журнал в &lt;em>html&lt;/em>. Для идентификации использует логин и пароль.&lt;/p>
 &lt;p>Потом пришлось преобразовать в &lt;em>markdown&lt;/em>. Для этого написал скрипт &lt;em>xml2md&lt;/em>.&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="ln" id="hl-0-1">&lt;a class="lnlinks" href="#hl-0-1"> 1&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="c1">##!/usr/bin/python3&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-2">&lt;a class="lnlinks" href="#hl-0-2"> 2&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="c1">## -*- coding: utf-8 -*-&lt;/span>
@@ -168,11 +175,14 @@
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-78">&lt;a class="lnlinks" href="#hl-0-78">78&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="n">f&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">close&lt;/span>&lt;span class="p">()&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Преобразование можно выполнить с помощью команды:&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="ln" id="hl-1-1">&lt;a class="lnlinks" href="#hl-1-1">1&lt;/a>&lt;/span>&lt;span class="cl">./xml2md &amp;lt;file&amp;gt;
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>При этом создаётся каталог &lt;em>markdown&lt;/em> и в него помещается результат конвертации.&lt;/p></description></item><item><title>Установка темы NexT для hexo</title><link>https://yamadharma.github.io/ru/post/2018/04/04/hexo-theme-next/</link><pubDate>Wed, 04 Apr 2018 13:24:22 +0000</pubDate><guid>https://yamadharma.github.io/ru/post/2018/04/04/hexo-theme-next/</guid><description>&lt;p>Пробую поменять тему оформления блога на &lt;a href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="noopener">NexT&lt;/a>.&lt;/p>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>При этом создаётся каталог &lt;em>markdown&lt;/em> и в него помещается результат конвертации.&lt;/p></description></item><item><title>Установка темы NexT для hexo</title><link>https://yamadharma.github.io/ru/post/2018/04/04/hexo-theme-next/</link><pubDate>Wed, 04 Apr 2018 13:24:22 +0000</pubDate><guid>https://yamadharma.github.io/ru/post/2018/04/04/hexo-theme-next/</guid><description>&lt;p>Пробую поменять тему оформления блога на
+.&lt;/p>
 &lt;p>Также можно посмотреть документацию:&lt;/p>
 &lt;ul>
-&lt;li>&lt;a href="https://github.com/theme-next/hexo-theme-next/blob/master/docs/ru/README.md" target="_blank" rel="noopener">https://github.com/theme-next/hexo-theme-next/blob/master/docs/ru/README.md&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://github.com/iissnan/hexo-theme-next/blob/master/README.md" target="_blank" rel="noopener">https://github.com/iissnan/hexo-theme-next/blob/master/README.md&lt;/a>&lt;/li>
+&lt;li>
+&lt;/li>
+&lt;li>
+&lt;/li>
 &lt;/ul>
 &lt;h2 id="скачиваем-тему">Скачиваем тему&lt;/h2>
 &lt;p>Переходим в каталог блога и скачиваем.&lt;/p>
@@ -220,14 +230,17 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Я сделал ширину 126px.&lt;/p>
 &lt;h3 id="комментарии">Комментарии&lt;/h3>
 &lt;p>Комментарии настроил через Disqus.
-Для этого сконфигурил на &lt;a href="http://www.disqus.com" target="_blank" rel="noopener">Disqus&lt;/a> сайт с коротким именем &lt;em>yamadharma-blog&lt;/em>.
+Для этого сконфигурил на
+сайт с коротким именем &lt;em>yamadharma-blog&lt;/em>.
 Добавил в файл &lt;code>source/_data/next.yml&lt;/code>:&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="ln" id="hl-11-1">&lt;a class="lnlinks" href="#hl-11-1">1&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="nt">disqus&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-11-2">&lt;a class="lnlinks" href="#hl-11-2">2&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">enable&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">true&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-11-3">&lt;a class="lnlinks" href="#hl-11-3">3&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">shortname&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">yamadharma-blog&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-11-4">&lt;a class="lnlinks" href="#hl-11-4">4&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">count&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">true&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-11-5">&lt;a class="lnlinks" href="#hl-11-5">5&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">lazyload&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">false&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Переход блога на hexo</title><link>https://yamadharma.github.io/ru/post/2018/03/28/hexo/</link><pubDate>Wed, 28 Mar 2018 13:10:47 +0000</pubDate><guid>https://yamadharma.github.io/ru/post/2018/03/28/hexo/</guid><description>&lt;p>Блог на &lt;a href="https://jekyllrb.com/" target="_blank" rel="noopener">Jekyll&lt;/a> вести не получилось. Попробовал перейти на &lt;a href="https://hexo.io" target="_blank" rel="noopener">Hexo&lt;/a>. Он
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Переход блога на hexo</title><link>https://yamadharma.github.io/ru/post/2018/03/28/hexo/</link><pubDate>Wed, 28 Mar 2018 13:10:47 +0000</pubDate><guid>https://yamadharma.github.io/ru/post/2018/03/28/hexo/</guid><description>&lt;p>Блог на
+вести не получилось. Попробовал перейти на
+. Он
 попроще, но зато всё, что нужно, работает сразу.&lt;/p>
 &lt;h2 id="установка-hexo">Установка Hexo&lt;/h2>
 &lt;ul>
@@ -364,7 +377,9 @@
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="ln" id="hl-10-1">&lt;a class="lnlinks" href="#hl-10-1">1&lt;/a>&lt;/span>&lt;span class="cl">hexo clean
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul></description></item><item><title>Миграция с blogspot на hexo</title><link>https://yamadharma.github.io/ru/post/2018/03/27/from-blogspot-to-hexo/</link><pubDate>Tue, 27 Mar 2018 15:56:18 +0000</pubDate><guid>https://yamadharma.github.io/ru/post/2018/03/27/from-blogspot-to-hexo/</guid><description>&lt;h2 id="hexo">Hexo&lt;/h2>
-&lt;p>Перешёл на &lt;a href="https://hexo.io" target="_blank" rel="noopener">hexo&lt;/a>. Дополнительно решил перенести свои заметки с &lt;a href="http://yamadharma.blogspot.ru/" target="_blank" rel="noopener">blogspot&lt;/a>.&lt;/p>
+&lt;p>Перешёл на
+. Дополнительно решил перенести свои заметки с
+.&lt;/p>
 &lt;ul>
 &lt;li>
 &lt;p>Установил пакет для миграции:&lt;/p>
@@ -463,7 +478,8 @@ done
 &lt;h1 id="перекодирует-рекурсивно-в-текущем-каталоге-имена">Перекодирует рекурсивно в текущем каталоге имена&lt;/h1>
 &lt;h1 id="файлов-и-каталогов-в-транслит">файлов и каталогов в транслит.&lt;/h1>
 &lt;h1 id="успенский-в-а-к-проблеме-транслитерации-русских-текстов-латинскими-буквами">Успенский В. А. К проблеме транслитерации русских текстов латинскими буквами&lt;/h1>
-&lt;h1 id="httplingvoforumnetindexphptopic357580">&lt;a href="http://lingvoforum.net/index.php?topic=35758.0" target="_blank" rel="noopener">http://lingvoforum.net/index.php?topic=35758.0&lt;/a>&lt;/h1>
+&lt;h1 id="httplingvoforumnetindexphptopic357580">
+&lt;/h1>
 &lt;p>shopt -s nullglob
 for NAME in *
 do
@@ -497,21 +513,26 @@ fi
 {% endcodeblock %}&lt;/p></description></item><item><title>Миграция с Drupal-6 на Drupal-8</title><link>https://yamadharma.github.io/ru/post/2015/11/19/drupal6-to-8/</link><pubDate>Thu, 19 Nov 2015 11:39:41 +0000</pubDate><guid>https://yamadharma.github.io/ru/post/2015/11/19/drupal6-to-8/</guid><description>&lt;h2 id="информация-по-миграции">Информация по миграции&lt;/h2>
 &lt;ul>
 &lt;li>
-&lt;p>&lt;a href="https://www.drupal.org/upgrade/migrate" target="_blank" rel="noopener">Upgrading from Drupal 6 or 7 to Drupal 8&lt;/a>.&lt;/p>
+&lt;p>
+.&lt;/p>
 &lt;/li>
 &lt;li>
-&lt;p>&lt;a href="https://www.drupal.org/node/2257723" target="_blank" rel="noopener">Executing a Drupal 6/7 to Drupal 8 upgrade&lt;/a>.&lt;/p>
+&lt;p>
+.&lt;/p>
 &lt;/li>
 &lt;li>
-&lt;p>&lt;a href="https://drupalwatchdog.com/blog/2014/12/drupal-upgrade-1" target="_blank" rel="noopener">The Drupal 6 to 8 Upgrade Challenge&lt;/a>.&lt;/p>
+&lt;p>
+.&lt;/p>
 &lt;/li>
 &lt;li>
-&lt;p>&lt;a href="https://www.drupal.org/node/2167633" target="_blank" rel="noopener">Known Issues with the Drupal 6/7 -&amp;gt; 8 Upgrade Path&lt;/a>.&lt;/p>
+&lt;p>
+.&lt;/p>
 &lt;/li>
 &lt;/ul>
 &lt;h2 id="обновление-php">Обновление PHP&lt;/h2>
 &lt;p>Для Drupal-8 нужен php-5.5. В Centos-7 идёт php-5.4. Обновим его до php-5.6. Вначале установним нужные репозитории
-(см. &lt;a href="https://webtatic.com/packages/php56/" target="_blank" rel="noopener">https://webtatic.com/packages/php56/&lt;/a>):&lt;/p>
+(см.
+):&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="ln" id="hl-0-1">&lt;a class="lnlinks" href="#hl-0-1">1&lt;/a>&lt;/span>&lt;span class="cl">rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-2">&lt;a class="lnlinks" href="#hl-0-2">2&lt;/a>&lt;/span>&lt;span class="cl">rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Сделаем подмену дистрибутивного php на php-5.6:&lt;/p>
@@ -529,7 +550,8 @@ fi
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Миграция с Samba3 на Samba4</title><link>https://yamadharma.github.io/ru/post/2015/10/27/samba-migrate/</link><pubDate>Tue, 27 Oct 2015 13:48:49 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2015/10/27/samba-migrate/</guid><description>&lt;h2 id="установка-пакетов">Установка пакетов&lt;/h2>
 &lt;p>В качестве системы для сервера используем Centos7. Там пока не
 поддерживается функционал Samba4 AD (конфликт mit-krb и heimdal). Поэтому поставим самбу с
-EnterpriseSAMBA.com &lt;a href="https://portal.enterprisesamba.com/" target="_blank" rel="noopener">https://portal.enterprisesamba.com/&lt;/a>.&lt;/p>
+EnterpriseSAMBA.com
+.&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="ln" id="hl-0-1">&lt;a class="lnlinks" href="#hl-0-1">1&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="nb">cd&lt;/span> /etc/yum.repos.d
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-2">&lt;a class="lnlinks" href="#hl-0-2">2&lt;/a>&lt;/span>&lt;span class="cl">wget https://sernet-samba-public:Noo1oxe4zo@download.sernet.de/packages/samba/4.2/rhel/7/sernet-samba-4.2.repo
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>В файле &lt;code>/etc/yum.repos.d/sernet-samba-4.2.repo&lt;/code> заменим
@@ -558,7 +580,7 @@ EnterpriseSAMBA.com &lt;a href="https://portal.enterprisesamba.com/" target="_bl
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-2-15">&lt;a class="lnlinks" href="#hl-2-15">15&lt;/a>&lt;/span>&lt;span class="cl">
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-2-16">&lt;a class="lnlinks" href="#hl-2-16">16&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="n">anydup&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">line&lt;/span>&lt;span class="p">)&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Далее дубликаты удаляются с помощью редактирования ldap (я использовал
-&lt;a href="https://directory.apache.org/studio/" target="_blank" rel="noopener">https://directory.apache.org/studio/&lt;/a>).&lt;/p>
+).&lt;/p>
 &lt;h2 id="предварительная-конфигурация">Предварительная конфигурация&lt;/h2>
 &lt;p>Добавил в файл &lt;code>/etc/hosts&lt;/code> адрес хоста.&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="ln" id="hl-3-1">&lt;a class="lnlinks" href="#hl-3-1">1&lt;/a>&lt;/span>&lt;span class="cl">127.0.0.1 localhost.localdomain localhost
@@ -703,7 +725,9 @@ EnterpriseSAMBA.com &lt;a href="https://portal.enterprisesamba.com/" target="_bl
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="ojs">OJS&lt;/h2>
 &lt;ul>
 &lt;li>
-&lt;p>Настраиваем &lt;a href="#head_www-server">www-сервер&lt;/a> и &lt;a href="#head_db">базу данных&lt;/a>.&lt;/p>
+&lt;p>Настраиваем
+и
+.&lt;/p>
 &lt;/li>
 &lt;li>
 &lt;p>Настраиваем доступ к файловой системе.&lt;/p>
@@ -718,7 +742,9 @@ EnterpriseSAMBA.com &lt;a href="https://portal.enterprisesamba.com/" target="_bl
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="drupal">Drupal&lt;/h2>
 &lt;ul>
 &lt;li>
-&lt;p>Настраиваем &lt;a href="#head_www-server">www-сервер&lt;/a> и &lt;a href="#head_db">базу данных&lt;/a>.&lt;/p>
+&lt;p>Настраиваем
+и
+.&lt;/p>
 &lt;/li>
 &lt;li>
 &lt;p>Настраиваем доступ к файловой системе.&lt;/p>
@@ -730,7 +756,9 @@ EnterpriseSAMBA.com &lt;a href="https://portal.enterprisesamba.com/" target="_bl
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="moodle">Moodle&lt;/h2>
 &lt;ul>
 &lt;li>
-&lt;p>Настраиваем &lt;a href="#head_www-server">www-сервер&lt;/a> и &lt;a href="#head_db">базу данных&lt;/a>.&lt;/p>
+&lt;p>Настраиваем
+и
+.&lt;/p>
 &lt;/li>
 &lt;li>
 &lt;p>Настраиваем доступ к файловой системе.&lt;/p>
@@ -741,7 +769,9 @@ EnterpriseSAMBA.com &lt;a href="https://portal.enterprisesamba.com/" target="_bl
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-5-3">&lt;a class="lnlinks" href="#hl-5-3">3&lt;/a>&lt;/span>&lt;span class="cl">semanage fcontext --add -t httpd_sys_rw_content_t &lt;span class="s2">&amp;#34;/var/www/moodle/web-git/theme(/.*)?&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="letsencript">LetsEncript&lt;/h2>
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="ln" id="hl-6-1">&lt;a class="lnlinks" href="#hl-6-1">1&lt;/a>&lt;/span>&lt;span class="cl">semanage fcontext -a -t cert_t &lt;span class="s1">&amp;#39;/etc/letsencrypt/(archive|live)(/.*)?&amp;#39;&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Установка виртуальной машины NOC на oVirt</title><link>https://yamadharma.github.io/ru/post/2015/05/13/ova-on-ovirt/</link><pubDate>Wed, 13 May 2015 08:48:57 +0000</pubDate><guid>https://yamadharma.github.io/ru/post/2015/05/13/ova-on-ovirt/</guid><description>&lt;p>Чтобы не мучиться с установкой &lt;a href="https://kb.nocproject.org" target="_blank" rel="noopener">NOC&lt;/a> решил установить с образа, &lt;a href="https://kb.nocproject.org/display/SITE/Downloads" target="_blank" rel="noopener">предлагаемого на сайте&lt;/a>. К сажалению, образ предлагается в формате &lt;code>ova&lt;/code>, а у меня стоит oVirt (&lt;code>ovirt-engine&lt;/code>). Он этот формат не понимает. Однако у меня есть ещё хост с &lt;code>kvm&lt;/code> (&lt;code>kvm-host&lt;/code>).&lt;/p>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Установка виртуальной машины NOC на oVirt</title><link>https://yamadharma.github.io/ru/post/2015/05/13/ova-on-ovirt/</link><pubDate>Wed, 13 May 2015 08:48:57 +0000</pubDate><guid>https://yamadharma.github.io/ru/post/2015/05/13/ova-on-ovirt/</guid><description>&lt;p>Чтобы не мучиться с установкой
+решил установить с образа,
+. К сажалению, образ предлагается в формате &lt;code>ova&lt;/code>, а у меня стоит oVirt (&lt;code>ovirt-engine&lt;/code>). Он этот формат не понимает. Однако у меня есть ещё хост с &lt;code>kvm&lt;/code> (&lt;code>kvm-host&lt;/code>).&lt;/p>
 &lt;ul>
 &lt;li>
 &lt;p>Распаковываю &lt;code>noc-x86_64-Debian-8.ova&lt;/code>:
@@ -840,9 +870,11 @@ virt-v2v -b vlan5 -i libvirtxml -o rhev -os ovirt-node-01:/ovirt/export noc-x86_
 &lt;/ul>
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="ln" id="hl-3-1">&lt;a class="lnlinks" href="#hl-3-1">1&lt;/a>&lt;/span>&lt;span class="cl">git branch &lt;span class="nb">source&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-3-2">&lt;a class="lnlinks" href="#hl-3-2">2&lt;/a>&lt;/span>&lt;span class="cl">git checkout &lt;span class="nb">source&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;a href="##head_site-template-create">Далее создаю шаблон для сайта&lt;/a> в ветке &lt;code>source&lt;/code>.&lt;/p>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>
+в ветке &lt;code>source&lt;/code>.&lt;/p>
 &lt;h4 id="репозиторий-на-bitbucket">Репозиторий на Bitbucket&lt;/h4>
-&lt;p>Я пользовался &lt;a href="https://confluence.atlassian.com/display/BITBUCKET/Publishing&amp;#43;a&amp;#43;Website&amp;#43;on&amp;#43;Bitbucket" target="_blank" rel="noopener">инструкцией от bitbucket&amp;rsquo;а&lt;/a>.&lt;/p>
+&lt;p>Я пользовался
+.&lt;/p>
 &lt;ul>
 &lt;li>
 &lt;p>Создал на bitbucket&amp;rsquo;е репозиторий с названием
@@ -889,7 +921,8 @@ virt-v2v -b vlan5 -i libvirtxml -o rhev -os ovirt-node-01:/ovirt/export noc-x86_
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Счастье есть</title><link>https://yamadharma.github.io/ru/post/2007/06/30/schaste-est/</link><pubDate>Sat, 30 Jun 2007 13:30:00 +0000</pubDate><guid>https://yamadharma.github.io/ru/post/2007/06/30/schaste-est/</guid><description>&lt;p>Просидел всю неделю под виндой. Качал MSDN. К концу недели стало уже плохо. В пятницу поставил Vista. Это добило меня окончательно. Вечером перегрузился под Linux. Счастье есть.&lt;/p></description></item><item><title>К вопросу о настройке маршрутизатора ASUS WL-500gP</title><link>https://yamadharma.github.io/ru/post/2007/01/14/k-voprosu-o-nastrojke-marshrutizatora-asus-wl-500gp/</link><pubDate>Sun, 14 Jan 2007 18:18:00 +0000</pubDate><guid>https://yamadharma.github.io/ru/post/2007/01/14/k-voprosu-o-nastrojke-marshrutizatora-asus-wl-500gp/</guid><description>&lt;p>При настройке возникли следующие проблемы.&lt;/p>
 &lt;ol>
 &lt;li>Нужно было догадаться, что сервер доступа в настройках называется Heart-Beat Server.&lt;/li>
-&lt;li>Задавать маршрутизацию можно либо на на внутреннем eth (LAN), либо на внешнем ppp (WAN). Таким образом, получить доступ к домашней сети провайдера оказалось невозможным. Пришлось качать альтернативную прошивку (&lt;a href="http://oleg.wl500g.info/%29" target="_blank" rel="noopener">http://oleg.wl500g.info/)&lt;/a>, в которой возможно (кроме кучи других бонусов) задавать маршрутную таблицу на внешнем eth (MAN) интерфейсе.&lt;/li>
+&lt;li>Задавать маршрутизацию можно либо на на внутреннем eth (LAN), либо на внешнем ppp (WAN). Таким образом, получить доступ к домашней сети провайдера оказалось невозможным. Пришлось качать альтернативную прошивку (
+, в которой возможно (кроме кучи других бонусов) задавать маршрутную таблицу на внешнем eth (MAN) интерфейсе.&lt;/li>
 &lt;/ol></description></item><item><title>Monit и gentoo rc-scripts</title><link>https://yamadharma.github.io/ru/post/2006/09/17/monit-i-gentoo-rc-scripts/</link><pubDate>Sun, 17 Sep 2006 20:55:00 +0000</pubDate><guid>https://yamadharma.github.io/ru/post/2006/09/17/monit-i-gentoo-rc-scripts/</guid><description>&lt;p>При использовании monit для перезапуска rc-скриптов в gentoo использовал killall и опцию zap.&lt;br>
 Нашёл это-же решение, но оформленное красивее.&lt;/p>
 &lt;p>Это файл /etc/monit.d/bin/kickservice&lt;/p>
@@ -949,7 +982,7 @@ virt-v2v -b vlan5 -i libvirtxml -o rhev -os ovirt-node-01:/ovirt/export noc-x86_
 не нашёл.&lt;/li>
 &lt;li>Так-что решил заняться самодеятельностью. Как получится, напишу об этом (с приложением скриптов).&lt;/li>
 &lt;/ol></description></item><item><title>Пожаротушение</title><link>https://yamadharma.github.io/ru/post/2006/07/14/firefighting/</link><pubDate>Fri, 14 Jul 2006 11:48:00 +0000</pubDate><guid>https://yamadharma.github.io/ru/post/2006/07/14/firefighting/</guid><description>&lt;p>Новая ссылочка по системам пожаротушения:
-&lt;a href="http://www.ista-tech.ru/fire/statya/sx/ART/810/BRN/1245.html" target="_blank" rel="noopener">http://www.ista-tech.ru/fire/statya/sx/ART/810/BRN/1245.html&lt;/a>&lt;/p>
+&lt;/p>
 &lt;p>Цитата:&lt;/p>
 &lt;blockquote>
 &lt;p>По степени вредного воздействия на материальные ценности при срабатывании САП образуют (в порядке убывания вредности) следующий ряд:&lt;/p>
@@ -964,7 +997,7 @@ virt-v2v -b vlan5 -i libvirtxml -o rhev -os ovirt-node-01:/ovirt/export noc-x86_
 &lt;p>В понедельник была гроза. Дома сгорел монитор.&lt;/p>
 &lt;p>Почту ещё не поднял.&lt;/p>
 &lt;p>Вот ссылочка:
-&lt;a href="http://www.ivd.ru/document.xgi?id=4941&amp;amp;gid=393&amp;amp;hid=485&amp;amp;oid=485" target="_blank" rel="noopener">http://www.ivd.ru/document.xgi?id=4941&amp;gid=393&amp;hid=485&amp;oid=485&lt;/a>&lt;/p>
+&lt;/p>
 &lt;p>Цитата:&lt;/p>
 &lt;blockquote>
 &lt;p>Недостатков тоже хватает. Во-первых, тушащий материал при взаимодействии с влагой дает щелочную (аэрозоли) или кислотную реакцию (порошки), что может приводить к коррозии металла, деструкции материалов, а также к выводу из строя электронной техники. Во-вторых, в момент срабатывания системы видимость в помещении снижается почти до нуля, что небезопасно для не успевших эвакуироваться людей. В-третьих, попадание порошков и аэрозолей в глаза или дыхательные пути вредно для здоровья. В-четвертых, порошки слеживаются, что ограничивает срок их хранения (необходима перезарядка или замена устройств тушения раз в 5 - 10 лет).&lt;/p>

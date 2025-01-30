@@ -658,17 +658,17 @@
 &lt;h2 id="преобразование-pfx-в-key-и-crt">&lt;span class="section-num">2&lt;/span> Преобразование pfx в key и crt&lt;/h2>
 &lt;ul>
 &lt;li>Используем утилиту &lt;em>openssl&lt;/em>:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-0-1">&lt;a class="lnlinks" href="#hl-0-1">1&lt;/a>&lt;/span>&lt;span class="cl">openssl pkcs12 -in certificate.pfx -clcerts -nokeys -out certificate.crt
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">openssl pkcs12 -in certificate.pfx -clcerts -nokeys -out certificate.crt
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Нужно будет ввести пароль, который вы указывали при экспорте .pfx-сертификата.&lt;/li>
 &lt;li>Если при создании сертификата в формате &lt;code>.pfx&lt;/code> были использованы устаревшие алгоритмы, то мы получим ошибки (подобную следующей):
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-1-1">&lt;a class="lnlinks" href="#hl-1-1">1&lt;/a>&lt;/span>&lt;span class="cl">… error:0308010C:digital envelope routines:inner_evp_generic_fetch:unsupported … Algorithm &lt;span class="o">(&lt;/span>RC2-40-CBC : 0&lt;span class="o">)&lt;/span> …
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">… error:0308010C:digital envelope routines:inner_evp_generic_fetch:unsupported … Algorithm &lt;span class="o">(&lt;/span>RC2-40-CBC : 0&lt;span class="o">)&lt;/span> …
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Необходимо добавить флаг &lt;code>-legacy&lt;/code>:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-2-1">&lt;a class="lnlinks" href="#hl-2-1">1&lt;/a>&lt;/span>&lt;span class="cl">openssl pkcs12 -in certificate.pfx -clcerts -nokeys -legacy -out certificate.crt
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">openssl pkcs12 -in certificate.pfx -clcerts -nokeys -legacy -out certificate.crt
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Извлечём закрытую часть сертификата:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-3-1">&lt;a class="lnlinks" href="#hl-3-1">1&lt;/a>&lt;/span>&lt;span class="cl">openssl pkcs12 -in certificate.pfx -nocerts -out key-encrypted.key
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">openssl pkcs12 -in certificate.pfx -nocerts -out key-encrypted.key
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Необходимо ввести пароль, который использовался для экспорта .pfx-сертификата.&lt;/li>
 &lt;li>Также желательно задать пароль для &lt;code>.key&lt;/code>-файла.
@@ -678,13 +678,13 @@
 &lt;/ul>
 &lt;/li>
 &lt;li>Можно удалить пароль закрытого ключа:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-4-1">&lt;a class="lnlinks" href="#hl-4-1">1&lt;/a>&lt;/span>&lt;span class="cl">openssl rsa -in key-encrypted.key -out key-decrypted.key
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">openssl rsa -in key-encrypted.key -out key-decrypted.key
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h2 id="преобразование-key-и-crt-в-pfx">&lt;span class="section-num">3&lt;/span> Преобразование key и crt в pfx&lt;/h2>
 &lt;ul>
 &lt;li>Объединим &lt;code>crt&lt;/code> и &lt;code>key&lt;/code> в &lt;code>pfx&lt;/code>:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-5-1">&lt;a class="lnlinks" href="#hl-5-1">1&lt;/a>&lt;/span>&lt;span class="cl">openssl pkcs12 -inkey certificate.key -in certificate.crt -export -out certificate.pfx
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">openssl pkcs12 -inkey certificate.key -in certificate.crt -export -out certificate.pfx
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Нужно будет ввести пароль от файла закрытого ключа (если этот пароль есть) и пароль для экспорта в pfx.&lt;/li>
 &lt;/ul></description></item><item><title>Менеджер паролей pass. Tessen</title><link>https://yamadharma.github.io/ru/post/2024/12/01/password-manager-pass-tessen/</link><pubDate>Sun, 01 Dec 2024 18:57:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2024/12/01/password-manager-pass-tessen/</guid><description>&lt;p>Менеджер паролей pass. Tessen.&lt;/p>
@@ -705,56 +705,56 @@
 &lt;li>Работает в Wayland.&lt;/li>
 &lt;/ul>
 &lt;h2 id="конфигурация">&lt;span class="section-num">2&lt;/span> Конфигурация&lt;/h2>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="ln" id="hl-0-1">&lt;a class="lnlinks" href="#hl-0-1"> 1&lt;/a>&lt;/span>&lt;span class="cl"># vim:ft=sh
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-2">&lt;a class="lnlinks" href="#hl-0-2"> 2&lt;/a>&lt;/span>&lt;span class="cl"># shellcheck disable=SC2148,SC2034
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-3">&lt;a class="lnlinks" href="#hl-0-3"> 3&lt;/a>&lt;/span>&lt;span class="cl">#
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-4">&lt;a class="lnlinks" href="#hl-0-4"> 4&lt;/a>&lt;/span>&lt;span class="cl"># configuration file for tessen
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-5">&lt;a class="lnlinks" href="#hl-0-5"> 5&lt;/a>&lt;/span>&lt;span class="cl"># place this file in $XDG_CONFIG_HOME/tessen/config
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-6">&lt;a class="lnlinks" href="#hl-0-6"> 6&lt;/a>&lt;/span>&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-7">&lt;a class="lnlinks" href="#hl-0-7"> 7&lt;/a>&lt;/span>&lt;span class="cl"># the default pass program to use - pass or gopass
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-8">&lt;a class="lnlinks" href="#hl-0-8"> 8&lt;/a>&lt;/span>&lt;span class="cl">pass_backend=&amp;#34;gopass&amp;#34;
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-9">&lt;a class="lnlinks" href="#hl-0-9"> 9&lt;/a>&lt;/span>&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-10">&lt;a class="lnlinks" href="#hl-0-10">10&lt;/a>&lt;/span>&lt;span class="cl"># the default dmenu backend program to use - rofi, fuzzel, bemenu, rofi, or dmenu
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-11">&lt;a class="lnlinks" href="#hl-0-11">11&lt;/a>&lt;/span>&lt;span class="cl">dmenu_backend=&amp;#34;fuzzel&amp;#34;
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-12">&lt;a class="lnlinks" href="#hl-0-12">12&lt;/a>&lt;/span>&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-13">&lt;a class="lnlinks" href="#hl-0-13">13&lt;/a>&lt;/span>&lt;span class="cl"># leave it commented if you want the default behavior - the choice to either
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-14">&lt;a class="lnlinks" href="#hl-0-14">14&lt;/a>&lt;/span>&lt;span class="cl"># autotype or copy should be presented in the menu
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-15">&lt;a class="lnlinks" href="#hl-0-15">15&lt;/a>&lt;/span>&lt;span class="cl"># action=&amp;#34;autotype&amp;#34;
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-16">&lt;a class="lnlinks" href="#hl-0-16">16&lt;/a>&lt;/span>&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-17">&lt;a class="lnlinks" href="#hl-0-17">17&lt;/a>&lt;/span>&lt;span class="cl"># config files for dmenu_backends should be specified AFTER specifying the
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-18">&lt;a class="lnlinks" href="#hl-0-18">18&lt;/a>&lt;/span>&lt;span class="cl"># dmenu_backend in this config file
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-19">&lt;a class="lnlinks" href="#hl-0-19">19&lt;/a>&lt;/span>&lt;span class="cl"># alternatively, use the command line arguments to specify the dmenu backend
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-20">&lt;a class="lnlinks" href="#hl-0-20">20&lt;/a>&lt;/span>&lt;span class="cl"># while running tessen
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-21">&lt;a class="lnlinks" href="#hl-0-21">21&lt;/a>&lt;/span>&lt;span class="cl"># fuzzel_config_file=&amp;#34;&amp;#34;
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-22">&lt;a class="lnlinks" href="#hl-0-22">22&lt;/a>&lt;/span>&lt;span class="cl"># tofi_config_file=&amp;#34;&amp;#34;
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-23">&lt;a class="lnlinks" href="#hl-0-23">23&lt;/a>&lt;/span>&lt;span class="cl"># rofi_config_file=&amp;#34;$XDG_CONFIG_HOME/rofi/test.rasi&amp;#34;
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-24">&lt;a class="lnlinks" href="#hl-0-24">24&lt;/a>&lt;/span>&lt;span class="cl"># wofi_config_file=&amp;#34;&amp;#34;
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-25">&lt;a class="lnlinks" href="#hl-0-25">25&lt;/a>&lt;/span>&lt;span class="cl"># wofi_style_file=&amp;#34;&amp;#34;
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-26">&lt;a class="lnlinks" href="#hl-0-26">26&lt;/a>&lt;/span>&lt;span class="cl"># wofi_color_file=&amp;#34;&amp;#34;
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-27">&lt;a class="lnlinks" href="#hl-0-27">27&lt;/a>&lt;/span>&lt;span class="cl"># yofi_config_file=&amp;#34;&amp;#34;
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-28">&lt;a class="lnlinks" href="#hl-0-28">28&lt;/a>&lt;/span>&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-29">&lt;a class="lnlinks" href="#hl-0-29">29&lt;/a>&lt;/span>&lt;span class="cl"># the name of the key which will be used to decide the username
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-30">&lt;a class="lnlinks" href="#hl-0-30">30&lt;/a>&lt;/span>&lt;span class="cl"># this can also be a simple regex such as (user|login)
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-31">&lt;a class="lnlinks" href="#hl-0-31">31&lt;/a>&lt;/span>&lt;span class="cl"># userkey=&amp;#34;(user|login)&amp;#34;
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-32">&lt;a class="lnlinks" href="#hl-0-32">32&lt;/a>&lt;/span>&lt;span class="cl"># the name of the key which will be used to decide the url
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-33">&lt;a class="lnlinks" href="#hl-0-33">33&lt;/a>&lt;/span>&lt;span class="cl"># this can also be a simple regex such as (url|website)
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-34">&lt;a class="lnlinks" href="#hl-0-34">34&lt;/a>&lt;/span>&lt;span class="cl"># urlkey=&amp;#34;(url|website)&amp;#34;
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-35">&lt;a class="lnlinks" href="#hl-0-35">35&lt;/a>&lt;/span>&lt;span class="cl"># the name of the key which will be used to implement a custom autotype operation
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-36">&lt;a class="lnlinks" href="#hl-0-36">36&lt;/a>&lt;/span>&lt;span class="cl"># this can also be a simple regex as such as (auto|type)
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-37">&lt;a class="lnlinks" href="#hl-0-37">37&lt;/a>&lt;/span>&lt;span class="cl"># autotype_key=&amp;#34;(autotype|type)&amp;#34;
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-38">&lt;a class="lnlinks" href="#hl-0-38">38&lt;/a>&lt;/span>&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-39">&lt;a class="lnlinks" href="#hl-0-39">39&lt;/a>&lt;/span>&lt;span class="cl"># the delay (in milliseconds) introduced between successive autotype operations
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-40">&lt;a class="lnlinks" href="#hl-0-40">40&lt;/a>&lt;/span>&lt;span class="cl"># leave it commented to use the default value of 100ms
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-41">&lt;a class="lnlinks" href="#hl-0-41">41&lt;/a>&lt;/span>&lt;span class="cl"># delay=&amp;#34;&amp;#34;
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-42">&lt;a class="lnlinks" href="#hl-0-42">42&lt;/a>&lt;/span>&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-43">&lt;a class="lnlinks" href="#hl-0-43">43&lt;/a>&lt;/span>&lt;span class="cl"># the default web browser to open urls
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-44">&lt;a class="lnlinks" href="#hl-0-44">44&lt;/a>&lt;/span>&lt;span class="cl"># use this only if xdg-open is either not installed on your system or you don&amp;#39;t
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-45">&lt;a class="lnlinks" href="#hl-0-45">45&lt;/a>&lt;/span>&lt;span class="cl"># want to use it
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-46">&lt;a class="lnlinks" href="#hl-0-46">46&lt;/a>&lt;/span>&lt;span class="cl"># if this key is set, xdg-open will not be used even if it&amp;#39;s installed
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-47">&lt;a class="lnlinks" href="#hl-0-47">47&lt;/a>&lt;/span>&lt;span class="cl"># web_browser=&amp;#34;&amp;#34;
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-48">&lt;a class="lnlinks" href="#hl-0-48">48&lt;/a>&lt;/span>&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-49">&lt;a class="lnlinks" href="#hl-0-49">49&lt;/a>&lt;/span>&lt;span class="cl"># whether to send notifications about copied data via notify-send
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-50">&lt;a class="lnlinks" href="#hl-0-50">50&lt;/a>&lt;/span>&lt;span class="cl"># notify=&amp;#34;true&amp;#34;
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl"># vim:ft=sh
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># shellcheck disable=SC2148,SC2034
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">#
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># configuration file for tessen
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># place this file in $XDG_CONFIG_HOME/tessen/config
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># the default pass program to use - pass or gopass
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">pass_backend=&amp;#34;gopass&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># the default dmenu backend program to use - rofi, fuzzel, bemenu, rofi, or dmenu
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">dmenu_backend=&amp;#34;fuzzel&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># leave it commented if you want the default behavior - the choice to either
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># autotype or copy should be presented in the menu
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># action=&amp;#34;autotype&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># config files for dmenu_backends should be specified AFTER specifying the
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># dmenu_backend in this config file
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># alternatively, use the command line arguments to specify the dmenu backend
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># while running tessen
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># fuzzel_config_file=&amp;#34;&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># tofi_config_file=&amp;#34;&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># rofi_config_file=&amp;#34;$XDG_CONFIG_HOME/rofi/test.rasi&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># wofi_config_file=&amp;#34;&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># wofi_style_file=&amp;#34;&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># wofi_color_file=&amp;#34;&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># yofi_config_file=&amp;#34;&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># the name of the key which will be used to decide the username
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># this can also be a simple regex such as (user|login)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># userkey=&amp;#34;(user|login)&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># the name of the key which will be used to decide the url
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># this can also be a simple regex such as (url|website)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># urlkey=&amp;#34;(url|website)&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># the name of the key which will be used to implement a custom autotype operation
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># this can also be a simple regex as such as (auto|type)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># autotype_key=&amp;#34;(autotype|type)&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># the delay (in milliseconds) introduced between successive autotype operations
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># leave it commented to use the default value of 100ms
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># delay=&amp;#34;&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># the default web browser to open urls
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># use this only if xdg-open is either not installed on your system or you don&amp;#39;t
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># want to use it
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># if this key is set, xdg-open will not be used even if it&amp;#39;s installed
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># web_browser=&amp;#34;&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># whether to send notifications about copied data via notify-send
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># notify=&amp;#34;true&amp;#34;
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="src-block-caption">
 &lt;span class="src-block-number">&amp;#1056;&amp;#1072;&amp;#1089;&amp;#1087;&amp;#1077;&amp;#1095;&amp;#1072;&amp;#1090;&amp;#1082;&amp;#1072; 1:&lt;/span>
 tessen/config
@@ -783,15 +783,15 @@ tessen/config
 &lt;h3 id="gentoo">&lt;span class="section-num">2.1&lt;/span> Gentoo&lt;/h3>
 &lt;ul>
 &lt;li>Установим пакет:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-0-1">&lt;a class="lnlinks" href="#hl-0-1">1&lt;/a>&lt;/span>&lt;span class="cl">emerge net-misc/keychain
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge net-misc/keychain
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h2 id="интеграция-в-систему">&lt;span class="section-num">3&lt;/span> Интеграция в систему&lt;/h2>
 &lt;ul>
 &lt;li>Добавьте в &lt;code>~/.bashrc&lt;/code>:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-1-1">&lt;a class="lnlinks" href="#hl-1-1">1&lt;/a>&lt;/span>&lt;span class="cl">keychain ~/.ssh/id_rsa
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-1-2">&lt;a class="lnlinks" href="#hl-1-2">2&lt;/a>&lt;/span>&lt;span class="cl">. ~/.keychain/&lt;span class="si">${&lt;/span>&lt;span class="nv">HOSTNAME&lt;/span>&lt;span class="si">}&lt;/span>-sh
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-1-3">&lt;a class="lnlinks" href="#hl-1-3">3&lt;/a>&lt;/span>&lt;span class="cl">. ~/.keychain/&lt;span class="si">${&lt;/span>&lt;span class="nv">HOSTNAME&lt;/span>&lt;span class="si">}&lt;/span>-sh-gpg
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">keychain ~/.ssh/id_rsa
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">. ~/.keychain/&lt;span class="si">${&lt;/span>&lt;span class="nv">HOSTNAME&lt;/span>&lt;span class="si">}&lt;/span>-sh
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">. ~/.keychain/&lt;span class="si">${&lt;/span>&lt;span class="nv">HOSTNAME&lt;/span>&lt;span class="si">}&lt;/span>-sh-gpg
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>По желанию можно добавить ещё несколько ключей.&lt;/li>
 &lt;/ul></description></item><item><title>Агент для ключей gpg-agent</title><link>https://yamadharma.github.io/ru/post/2024/08/23/gpg-agent/</link><pubDate>Fri, 23 Aug 2024 13:55:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2024/08/23/gpg-agent/</guid><description>&lt;p>Агент для ключей gpg-agent.&lt;/p>
@@ -839,10 +839,10 @@ tessen/config
 &lt;h3 id="gentoo">&lt;span class="section-num">2.1&lt;/span> Gentoo&lt;/h3>
 &lt;ul>
 &lt;li>Установим gpg:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-0-1">&lt;a class="lnlinks" href="#hl-0-1">1&lt;/a>&lt;/span>&lt;span class="cl">emerge app-crypt/gnupg
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge app-crypt/gnupg
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Установим приложение для ввода пароля:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-1-1">&lt;a class="lnlinks" href="#hl-1-1">1&lt;/a>&lt;/span>&lt;span class="cl">emerge app-crypt/pinentry
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge app-crypt/pinentry
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="fedora">&lt;span class="section-num">2.2&lt;/span> Fedora&lt;/h3>
@@ -866,16 +866,16 @@ tessen/config
 &lt;h3 id="установка-ssh-auth-sock">&lt;span class="section-num">4.1&lt;/span> Установка SSH_AUTH_SOCK&lt;/h3>
 &lt;ul>
 &lt;li>Установите переменные окружения (в &lt;code>~/.bashrc&lt;/code>):
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-2-1">&lt;a class="lnlinks" href="#hl-2-1">1&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="nb">unset&lt;/span> SSH_AGENT_PID
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-2-2">&lt;a class="lnlinks" href="#hl-2-2">2&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="k">if&lt;/span> &lt;span class="o">[&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">gnupg_SSH_AUTH_SOCK_by&lt;/span>&lt;span class="k">:-&lt;/span>&lt;span class="nv">0&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> -ne &lt;span class="nv">$$&lt;/span> &lt;span class="o">]&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="k">then&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-2-3">&lt;a class="lnlinks" href="#hl-2-3">3&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nb">export&lt;/span> &lt;span class="nv">SSH_AUTH_SOCK&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>gpgconf --list-dirs agent-ssh-socket&lt;span class="k">)&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-2-4">&lt;a class="lnlinks" href="#hl-2-4">4&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="k">fi&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">unset&lt;/span> SSH_AGENT_PID
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">if&lt;/span> &lt;span class="o">[&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">gnupg_SSH_AUTH_SOCK_by&lt;/span>&lt;span class="k">:-&lt;/span>&lt;span class="nv">0&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> -ne &lt;span class="nv">$$&lt;/span> &lt;span class="o">]&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="k">then&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">export&lt;/span> &lt;span class="nv">SSH_AUTH_SOCK&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>gpgconf --list-dirs agent-ssh-socket&lt;span class="k">)&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">fi&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="добавление-поддержки-в-gpg-agent">&lt;span class="section-num">4.2&lt;/span> Добавление поддержки в gpg-agent&lt;/h3>
 &lt;ul>
 &lt;li>Включим поддержку ssh:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-3-1">&lt;a class="lnlinks" href="#hl-3-1">1&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="nb">echo&lt;/span> enable-ssh-support &amp;gt;&amp;gt; ~/.gnupg/gpg-agent.conf
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> enable-ssh-support &amp;gt;&amp;gt; ~/.gnupg/gpg-agent.conf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="добавление-ключей">&lt;span class="section-num">4.3&lt;/span> Добавление ключей&lt;/h3>
@@ -883,9 +883,9 @@ tessen/config
 &lt;li>Идентификаторы одобренных для агента ключей сохраняются в &lt;code>~/.gnupg/sshcontrol&lt;/code>.&lt;/li>
 &lt;li>Рекомендуется отключить в &lt;code>/etc/ssh/ssh_config&lt;/code>, &lt;code>~/.ssh/config&lt;/code> опцию &lt;code>AddKeysToAgent&lt;/code>, ответственную за автоматическое добавление ключей ssh.&lt;/li>
 &lt;li>Их можно туда добавлять вручную или через &lt;code>ssh-add&lt;/code>:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-4-1">&lt;a class="lnlinks" href="#hl-4-1">1&lt;/a>&lt;/span>&lt;span class="cl">ssh-add ~/.ssh/id_rsa
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-2">&lt;a class="lnlinks" href="#hl-4-2">2&lt;/a>&lt;/span>&lt;span class="cl">ssh-add ~/.ssh/id_ed25519
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-3">&lt;a class="lnlinks" href="#hl-4-3">3&lt;/a>&lt;/span>&lt;span class="cl">ssh-add ~/.ssh/id_ecdsa
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">ssh-add ~/.ssh/id_rsa
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ssh-add ~/.ssh/id_ed25519
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ssh-add ~/.ssh/id_ecdsa
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Сначала &lt;code>ssh&lt;/code> спросит парольную фразу для ключа, после чего появится диалог, где нужно выбрать пароль для шифрования ключа в агенте, обычно это простая короткая фраза (не пароль к ключу).&lt;/li>
 &lt;/ul></description></item><item><title>Агент для ключей ssh-agent</title><link>https://yamadharma.github.io/ru/post/2024/08/22/ssh-agent/</link><pubDate>Thu, 22 Aug 2024 20:08:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2024/08/22/ssh-agent/</guid><description>&lt;p>Агент для ключей ssh-agent.&lt;/p>
@@ -913,20 +913,20 @@ tessen/config
 &lt;li>&lt;em>ssh-agent&lt;/em> создаёт файл-сокет с именем &lt;code>/tmp/ssh-XXXXXXXX/agent.ppid&lt;/code>, через который осуществляется взаимодействие с агентом.&lt;/li>
 &lt;li>Всем дочерним процессам агент при помощи переменных окружения &lt;code>SSH_AUTH_SOCK&lt;/code> (имя файла-сокета) и &lt;code>SSH_AGENT_PID&lt;/code> (идентификатор процесс агента) сообщает информацию о том, как с ним можно связаться.&lt;/li>
 &lt;li>Чтобы использовать эти переменные, запустите через &lt;code>eval&lt;/code>:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-0-1">&lt;a class="lnlinks" href="#hl-0-1">1&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="nb">eval&lt;/span> &lt;span class="k">$(&lt;/span>ssh-agent&lt;span class="k">)&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">eval&lt;/span> &lt;span class="k">$(&lt;/span>ssh-agent&lt;span class="k">)&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Программа &lt;em>ssh-add&lt;/em> добавляет и удаляет ключи у агента:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-1-1">&lt;a class="lnlinks" href="#hl-1-1">1&lt;/a>&lt;/span>&lt;span class="cl">ssh-add options file
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">ssh-add options file
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>После того как агент запущен и выполняется, необходимо сообщить ему информацию о ключах, например:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-2-1">&lt;a class="lnlinks" href="#hl-2-1">1&lt;/a>&lt;/span>&lt;span class="cl">ssh-add ~/.ssh/id_ed25519
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">ssh-add ~/.ssh/id_ed25519
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>При вызове без параметров &lt;em>ssh-add&lt;/em> сообщает агенту информацию о ключах из файлов &lt;code>identity&lt;/code>, &lt;code>id_dsa&lt;/code> и &lt;code>id_rsa&lt;/code>.&lt;/li>
 &lt;li>При этом программа спрашивает парольную фразу для каждого из ключей.&lt;/li>
 &lt;li>Ключ, для которого правильно была введена парольная фраза передаётся агенту.&lt;/li>
 &lt;li>Если в качестве аргумента командной строки указан файл, программа сообщает агенту информацию только о том ключе, который находится в файле.&lt;/li>
 &lt;li>Список известных агенту секретных ключей:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-3-1">&lt;a class="lnlinks" href="#hl-3-1">1&lt;/a>&lt;/span>&lt;span class="cl">ssh-add -l
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">ssh-add -l
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Опции командной строки программы &lt;em>ssh-add&lt;/em>:
 &lt;ul>
@@ -939,12 +939,12 @@ tessen/config
 &lt;/ul>
 &lt;/li>
 &lt;li>Чтобы запустить агент автоматически и убедиться, что только один &lt;code>ssh-agent&lt;/code> процесс выполняется одновременно, добавьте следующее в &lt;code>~/.bashrc&lt;/code>:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-4-1">&lt;a class="lnlinks" href="#hl-4-1">1&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="k">if&lt;/span> ! pgrep -u &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$USER&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> ssh-agent &amp;gt; /dev/null&lt;span class="p">;&lt;/span> &lt;span class="k">then&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-2">&lt;a class="lnlinks" href="#hl-4-2">2&lt;/a>&lt;/span>&lt;span class="cl"> ssh-agent -t 1h &amp;gt; &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$XDG_RUNTIME_DIR&lt;/span>&lt;span class="s2">/ssh-agent.env&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-3">&lt;a class="lnlinks" href="#hl-4-3">3&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="k">fi&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-4">&lt;a class="lnlinks" href="#hl-4-4">4&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="k">if&lt;/span> &lt;span class="o">[[&lt;/span> ! -f &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$SSH_AUTH_SOCK&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="o">]]&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="k">then&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-5">&lt;a class="lnlinks" href="#hl-4-5">5&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nb">source&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$XDG_RUNTIME_DIR&lt;/span>&lt;span class="s2">/ssh-agent.env&amp;#34;&lt;/span> &amp;gt;/dev/null
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-6">&lt;a class="lnlinks" href="#hl-4-6">6&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="k">fi&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="k">if&lt;/span> ! pgrep -u &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$USER&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> ssh-agent &amp;gt; /dev/null&lt;span class="p">;&lt;/span> &lt;span class="k">then&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ssh-agent -t 1h &amp;gt; &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$XDG_RUNTIME_DIR&lt;/span>&lt;span class="s2">/ssh-agent.env&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">fi&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">if&lt;/span> &lt;span class="o">[[&lt;/span> ! -f &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$SSH_AUTH_SOCK&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="o">]]&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="k">then&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">source&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$XDG_RUNTIME_DIR&lt;/span>&lt;span class="s2">/ssh-agent.env&amp;#34;&lt;/span> &amp;gt;/dev/null
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">fi&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul></description></item><item><title>Безопасность. Темы дипломных работ</title><link>https://yamadharma.github.io/ru/post/2024/04/30/security-topics-theses/</link><pubDate>Tue, 30 Apr 2024 10:26:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2024/04/30/security-topics-theses/</guid><description>&lt;p>Безопасность. Темы дипломных работ&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
@@ -1259,7 +1259,7 @@ tessen/config
 &lt;li>Репозиторий: &lt;a href="https://github.com/NicolasPetton/pass" target="_blank" rel="noopener">https://github.com/NicolasPetton/pass&lt;/a>&lt;/li>
 &lt;li>Позволяет редактировать базу данных паролей.&lt;/li>
 &lt;li>Запуск:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-elisp" data-lang="elisp">&lt;span class="line">&lt;span class="ln" id="hl-0-1">&lt;a class="lnlinks" href="#hl-0-1">1&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="nv">M-x&lt;/span> &lt;span class="nv">pass&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-elisp" data-lang="elisp">&lt;span class="line">&lt;span class="cl">&lt;span class="nv">M-x&lt;/span> &lt;span class="nv">pass&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h2 id="комбинации-клавиш">&lt;span class="section-num">2&lt;/span> Комбинации клавиш&lt;/h2>
@@ -1351,49 +1351,49 @@ tessen/config
 &lt;h3 id="время-блокирования">&lt;span class="section-num">2.2&lt;/span> Время блокирования&lt;/h3>
 &lt;ul>
 &lt;li>Создайте файл локальной конфигурации:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-0-1">&lt;a class="lnlinks" href="#hl-0-1">1&lt;/a>&lt;/span>&lt;span class="cl">touch /etc/fail2ban/jail.d/50-default.conf
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">touch /etc/fail2ban/jail.d/50-default.conf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>В файле &lt;code>/etc/fail2ban/jail.d/50-default.conf&lt;/code> задайте время блокирования хостов:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="ln" id="hl-1-1">&lt;a class="lnlinks" href="#hl-1-1">1&lt;/a>&lt;/span>&lt;span class="cl">[DEFAULT]
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-1-2">&lt;a class="lnlinks" href="#hl-1-2">2&lt;/a>&lt;/span>&lt;span class="cl">bantime = 360000
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[DEFAULT]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bantime = 360000
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="игнорирование-избранных-ip-адресов">&lt;span class="section-num">2.3&lt;/span> Игнорирование избранных ip-адресов&lt;/h3>
 &lt;ul>
 &lt;li>Добавим игнорирование избранных ip-адресов в файле &lt;code>/etc/fail2ban/jail.d/50-default.conf&lt;/code>:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="ln" id="hl-2-1">&lt;a class="lnlinks" href="#hl-2-1">1&lt;/a>&lt;/span>&lt;span class="cl"># &amp;#34;ignoreself&amp;#34; specifies whether the local resp. own IP addresses should be ignored
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-2-2">&lt;a class="lnlinks" href="#hl-2-2">2&lt;/a>&lt;/span>&lt;span class="cl"># (default is true). Fail2ban will not ban a host which matches such addresses.
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-2-3">&lt;a class="lnlinks" href="#hl-2-3">3&lt;/a>&lt;/span>&lt;span class="cl">ignoreself = true
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-2-4">&lt;a class="lnlinks" href="#hl-2-4">4&lt;/a>&lt;/span>&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-2-5">&lt;a class="lnlinks" href="#hl-2-5">5&lt;/a>&lt;/span>&lt;span class="cl"># &amp;#34;ignoreip&amp;#34; can be a list of IP addresses, CIDR masks or DNS hosts. Fail2ban
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-2-6">&lt;a class="lnlinks" href="#hl-2-6">6&lt;/a>&lt;/span>&lt;span class="cl"># will not ban a host which matches an address in this list. Several addresses
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-2-7">&lt;a class="lnlinks" href="#hl-2-7">7&lt;/a>&lt;/span>&lt;span class="cl"># can be defined using space (and/or comma) separator.
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-2-8">&lt;a class="lnlinks" href="#hl-2-8">8&lt;/a>&lt;/span>&lt;span class="cl">ignoreip = 127.0.0.1/8 ::1 10.0.0.0/8
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl"># &amp;#34;ignoreself&amp;#34; specifies whether the local resp. own IP addresses should be ignored
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># (default is true). Fail2ban will not ban a host which matches such addresses.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ignoreself = true
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># &amp;#34;ignoreip&amp;#34; can be a list of IP addresses, CIDR masks or DNS hosts. Fail2ban
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># will not ban a host which matches an address in this list. Several addresses
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># can be defined using space (and/or comma) separator.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ignoreip = 127.0.0.1/8 ::1 10.0.0.0/8
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Диапазон &lt;code>10.0.0.0/8&lt;/code> добавлен для примера.&lt;/li>
 &lt;/ul>
 &lt;h3 id="защита-ssh">&lt;span class="section-num">2.4&lt;/span> Защита ssh&lt;/h3>
 &lt;ul>
 &lt;li>Создадим файл для локальной конфигурации ssh:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-3-1">&lt;a class="lnlinks" href="#hl-3-1">1&lt;/a>&lt;/span>&lt;span class="cl">touch /etc/fail2ban/jail.d/80-ssh.conf
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">touch /etc/fail2ban/jail.d/80-ssh.conf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>В файле &lt;code>/etc/fail2ban/jail.d/80-ssh.conf&lt;/code> активируйте защиту ssh:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="ln" id="hl-4-1">&lt;a class="lnlinks" href="#hl-4-1"> 1&lt;/a>&lt;/span>&lt;span class="cl">[sshd]
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-2">&lt;a class="lnlinks" href="#hl-4-2"> 2&lt;/a>&lt;/span>&lt;span class="cl">enabled = true
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-3">&lt;a class="lnlinks" href="#hl-4-3"> 3&lt;/a>&lt;/span>&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-4">&lt;a class="lnlinks" href="#hl-4-4"> 4&lt;/a>&lt;/span>&lt;span class="cl"># To use more aggressive sshd modes set filter parameter &amp;#34;mode&amp;#34; in jail.local:
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-5">&lt;a class="lnlinks" href="#hl-4-5"> 5&lt;/a>&lt;/span>&lt;span class="cl"># normal (default), ddos, extra or aggressive (combines all).
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-6">&lt;a class="lnlinks" href="#hl-4-6"> 6&lt;/a>&lt;/span>&lt;span class="cl"># See &amp;#34;tests/files/logs/sshd&amp;#34; or &amp;#34;filter.d/sshd.conf&amp;#34; for usage example and details.
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-7">&lt;a class="lnlinks" href="#hl-4-7"> 7&lt;/a>&lt;/span>&lt;span class="cl">#mode = normal
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-8">&lt;a class="lnlinks" href="#hl-4-8"> 8&lt;/a>&lt;/span>&lt;span class="cl">port = ssh
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-9">&lt;a class="lnlinks" href="#hl-4-9"> 9&lt;/a>&lt;/span>&lt;span class="cl">logpath = %(sshd_log)s
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-10">&lt;a class="lnlinks" href="#hl-4-10">10&lt;/a>&lt;/span>&lt;span class="cl">backend = %(sshd_backend)s
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-11">&lt;a class="lnlinks" href="#hl-4-11">11&lt;/a>&lt;/span>&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-12">&lt;a class="lnlinks" href="#hl-4-12">12&lt;/a>&lt;/span>&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-13">&lt;a class="lnlinks" href="#hl-4-13">13&lt;/a>&lt;/span>&lt;span class="cl">[selinux-ssh]
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-14">&lt;a class="lnlinks" href="#hl-4-14">14&lt;/a>&lt;/span>&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-15">&lt;a class="lnlinks" href="#hl-4-15">15&lt;/a>&lt;/span>&lt;span class="cl">port = ssh
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-16">&lt;a class="lnlinks" href="#hl-4-16">16&lt;/a>&lt;/span>&lt;span class="cl">logpath = %(auditd_log)s
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[sshd]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">enabled = true
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># To use more aggressive sshd modes set filter parameter &amp;#34;mode&amp;#34; in jail.local:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># normal (default), ddos, extra or aggressive (combines all).
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># See &amp;#34;tests/files/logs/sshd&amp;#34; or &amp;#34;filter.d/sshd.conf&amp;#34; for usage example and details.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">#mode = normal
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">port = ssh
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">logpath = %(sshd_log)s
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">backend = %(sshd_backend)s
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[selinux-ssh]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">port = ssh
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">logpath = %(auditd_log)s
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h2 id="настройка-для-proxmox">&lt;span class="section-num">3&lt;/span> Настройка для Proxmox&lt;/h2>
@@ -1403,81 +1403,81 @@ tessen/config
 &lt;h3 id="время-блокирования">&lt;span class="section-num">3.1&lt;/span> Время блокирования&lt;/h3>
 &lt;ul>
 &lt;li>Создайте файл локальной конфигурации:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-5-1">&lt;a class="lnlinks" href="#hl-5-1">1&lt;/a>&lt;/span>&lt;span class="cl">touch /etc/fail2ban/jail.d/50-default.conf
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">touch /etc/fail2ban/jail.d/50-default.conf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>В файле &lt;code>/etc/fail2ban/jail.d/50-default.conf&lt;/code> задайте время блокирования хостов:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="ln" id="hl-6-1">&lt;a class="lnlinks" href="#hl-6-1">1&lt;/a>&lt;/span>&lt;span class="cl">[DEFAULT]
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-6-2">&lt;a class="lnlinks" href="#hl-6-2">2&lt;/a>&lt;/span>&lt;span class="cl">bantime = 360000
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[DEFAULT]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bantime = 360000
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="игнорирование-избранных-ip-адресов">&lt;span class="section-num">3.2&lt;/span> Игнорирование избранных ip-адресов&lt;/h3>
 &lt;ul>
 &lt;li>Добавим игнорирование избранных ip-адресов в файле &lt;code>/etc/fail2ban/jail.d/50-default.conf&lt;/code>:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="ln" id="hl-7-1">&lt;a class="lnlinks" href="#hl-7-1">1&lt;/a>&lt;/span>&lt;span class="cl"># &amp;#34;ignoreself&amp;#34; specifies whether the local resp. own IP addresses should be ignored
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-7-2">&lt;a class="lnlinks" href="#hl-7-2">2&lt;/a>&lt;/span>&lt;span class="cl"># (default is true). Fail2ban will not ban a host which matches such addresses.
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-7-3">&lt;a class="lnlinks" href="#hl-7-3">3&lt;/a>&lt;/span>&lt;span class="cl">ignoreself = true
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-7-4">&lt;a class="lnlinks" href="#hl-7-4">4&lt;/a>&lt;/span>&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-7-5">&lt;a class="lnlinks" href="#hl-7-5">5&lt;/a>&lt;/span>&lt;span class="cl"># &amp;#34;ignoreip&amp;#34; can be a list of IP addresses, CIDR masks or DNS hosts. Fail2ban
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-7-6">&lt;a class="lnlinks" href="#hl-7-6">6&lt;/a>&lt;/span>&lt;span class="cl"># will not ban a host which matches an address in this list. Several addresses
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-7-7">&lt;a class="lnlinks" href="#hl-7-7">7&lt;/a>&lt;/span>&lt;span class="cl"># can be defined using space (and/or comma) separator.
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-7-8">&lt;a class="lnlinks" href="#hl-7-8">8&lt;/a>&lt;/span>&lt;span class="cl">ignoreip = 127.0.0.1/8 ::1 10.0.0.0/8
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl"># &amp;#34;ignoreself&amp;#34; specifies whether the local resp. own IP addresses should be ignored
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># (default is true). Fail2ban will not ban a host which matches such addresses.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ignoreself = true
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># &amp;#34;ignoreip&amp;#34; can be a list of IP addresses, CIDR masks or DNS hosts. Fail2ban
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># will not ban a host which matches an address in this list. Several addresses
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># can be defined using space (and/or comma) separator.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ignoreip = 127.0.0.1/8 ::1 10.0.0.0/8
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Диапазон &lt;code>10.0.0.0/8&lt;/code> добавлен для примера.&lt;/li>
 &lt;/ul>
 &lt;h3 id="защита-ssh">&lt;span class="section-num">3.3&lt;/span> Защита ssh&lt;/h3>
 &lt;ul>
 &lt;li>Создадим файл для локальной конфигурации ssh:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-8-1">&lt;a class="lnlinks" href="#hl-8-1">1&lt;/a>&lt;/span>&lt;span class="cl">touch /etc/fail2ban/jail.d/80-ssh.conf
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">touch /etc/fail2ban/jail.d/80-ssh.conf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>В файле &lt;code>/etc/fail2ban/jail.d/80-ssh.conf&lt;/code> активируйте защиту ssh:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="ln" id="hl-9-1">&lt;a class="lnlinks" href="#hl-9-1">1&lt;/a>&lt;/span>&lt;span class="cl">[sshd]
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-9-2">&lt;a class="lnlinks" href="#hl-9-2">2&lt;/a>&lt;/span>&lt;span class="cl">enabled = true
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-9-3">&lt;a class="lnlinks" href="#hl-9-3">3&lt;/a>&lt;/span>&lt;span class="cl">backend = systemd
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[sshd]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">enabled = true
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">backend = systemd
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Удалите файл &lt;code>/etc/fail2ban/jail.d/defaults-debian.conf&lt;/code>.&lt;/li>
 &lt;/ul>
 &lt;h3 id="защита-proxmox-web-интерфейс">&lt;span class="section-num">3.4&lt;/span> Защита proxmox web-интерфейс&lt;/h3>
 &lt;ul>
 &lt;li>Создадим файл для локальной конфигурации proxmox:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-10-1">&lt;a class="lnlinks" href="#hl-10-1">1&lt;/a>&lt;/span>&lt;span class="cl">touch /etc/fail2ban/jail.d/80-proxmox.conf
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">touch /etc/fail2ban/jail.d/80-proxmox.conf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>В файле &lt;code>/etc/fail2ban/jail.d/80-proxmox.conf&lt;/code> активируйте защиту web-интерфейса:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="ln" id="hl-11-1">&lt;a class="lnlinks" href="#hl-11-1">1&lt;/a>&lt;/span>&lt;span class="cl">[proxmox]
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-11-2">&lt;a class="lnlinks" href="#hl-11-2">2&lt;/a>&lt;/span>&lt;span class="cl">enabled = true
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-11-3">&lt;a class="lnlinks" href="#hl-11-3">3&lt;/a>&lt;/span>&lt;span class="cl">port = https,http,8006
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-11-4">&lt;a class="lnlinks" href="#hl-11-4">4&lt;/a>&lt;/span>&lt;span class="cl">filter = proxmox
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-11-5">&lt;a class="lnlinks" href="#hl-11-5">5&lt;/a>&lt;/span>&lt;span class="cl">backend = systemd
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-11-6">&lt;a class="lnlinks" href="#hl-11-6">6&lt;/a>&lt;/span>&lt;span class="cl">maxretry = 3
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-11-7">&lt;a class="lnlinks" href="#hl-11-7">7&lt;/a>&lt;/span>&lt;span class="cl">findtime = 2d
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-11-8">&lt;a class="lnlinks" href="#hl-11-8">8&lt;/a>&lt;/span>&lt;span class="cl">bantime = 1h
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[proxmox]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">enabled = true
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">port = https,http,8006
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">filter = proxmox
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">backend = systemd
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">maxretry = 3
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">findtime = 2d
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bantime = 1h
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Создайте файл фильтра:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-12-1">&lt;a class="lnlinks" href="#hl-12-1">1&lt;/a>&lt;/span>&lt;span class="cl">touch /etc/fail2ban/filter.d/proxmox.conf
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">touch /etc/fail2ban/filter.d/proxmox.conf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Настройте фильтр в файле &lt;code>/etc/fail2ban/filter.d/proxmox.conf&lt;/code>:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-13-1">&lt;a class="lnlinks" href="#hl-13-1">1&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="o">[&lt;/span>Definition&lt;span class="o">]&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-13-2">&lt;a class="lnlinks" href="#hl-13-2">2&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="nv">failregex&lt;/span> &lt;span class="o">=&lt;/span> pvedaemon&lt;span class="se">\[&lt;/span>.*authentication failure&lt;span class="p">;&lt;/span> &lt;span class="nv">rhost&lt;/span>&lt;span class="o">=&lt;/span>&amp;lt;HOST&amp;gt; &lt;span class="nv">user&lt;/span>&lt;span class="o">=&lt;/span>.* &lt;span class="nv">msg&lt;/span>&lt;span class="o">=&lt;/span>.*
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-13-3">&lt;a class="lnlinks" href="#hl-13-3">3&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="nv">ignoreregex&lt;/span> &lt;span class="o">=&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-13-4">&lt;a class="lnlinks" href="#hl-13-4">4&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="nv">journalmatch&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nv">_SYSTEMD_UNIT&lt;/span>&lt;span class="o">=&lt;/span>pvedaemon.service
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="o">[&lt;/span>Definition&lt;span class="o">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">failregex&lt;/span> &lt;span class="o">=&lt;/span> pvedaemon&lt;span class="se">\[&lt;/span>.*authentication failure&lt;span class="p">;&lt;/span> &lt;span class="nv">rhost&lt;/span>&lt;span class="o">=&lt;/span>&amp;lt;HOST&amp;gt; &lt;span class="nv">user&lt;/span>&lt;span class="o">=&lt;/span>.* &lt;span class="nv">msg&lt;/span>&lt;span class="o">=&lt;/span>.*
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">ignoreregex&lt;/span> &lt;span class="o">=&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">journalmatch&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nv">_SYSTEMD_UNIT&lt;/span>&lt;span class="o">=&lt;/span>pvedaemon.service
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h2 id="основные-операции">&lt;span class="section-num">4&lt;/span> Основные операции&lt;/h2>
 &lt;h3 id="удалить-все-записи-из-списков-блокировки">&lt;span class="section-num">4.1&lt;/span> Удалить все записи из списков блокировки&lt;/h3>
 &lt;ul>
 &lt;li>Для удаления всех записей из списков блокировки выполните скрипт:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-14-1">&lt;a class="lnlinks" href="#hl-14-1"> 1&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="cp">#!/bin/bash
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-14-2">&lt;a class="lnlinks" href="#hl-14-2"> 2&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="cp">&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-14-3">&lt;a class="lnlinks" href="#hl-14-3"> 3&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="k">for&lt;/span> JAIL in &lt;span class="k">$(&lt;/span>fail2ban-client status &lt;span class="p">|&lt;/span> grep &lt;span class="s1">&amp;#39;Jail list:&amp;#39;&lt;/span> &lt;span class="p">|&lt;/span> awk &lt;span class="s1">&amp;#39;BEGIN {FS=&amp;#34;\t&amp;#34;} {print $2}&amp;#39;&lt;/span> &lt;span class="p">|&lt;/span> sed &lt;span class="s1">&amp;#39;s/, / /g&amp;#39;&lt;/span>&lt;span class="k">)&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-14-4">&lt;a class="lnlinks" href="#hl-14-4"> 4&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="k">do&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-14-5">&lt;a class="lnlinks" href="#hl-14-5"> 5&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="k">for&lt;/span> IP in &lt;span class="k">$(&lt;/span>fail2ban-client status &lt;span class="si">${&lt;/span>&lt;span class="nv">JAIL&lt;/span>&lt;span class="si">}&lt;/span> &lt;span class="p">|&lt;/span> grep &lt;span class="s1">&amp;#39;Banned IP list:&amp;#39;&lt;/span> &lt;span class="p">|&lt;/span> awk &lt;span class="s1">&amp;#39;BEGIN {FS=&amp;#34;\t&amp;#34;} {print $2}&amp;#39;&lt;/span> &lt;span class="p">|&lt;/span> sed &lt;span class="s1">&amp;#39;s/ /\n/g&amp;#39;&lt;/span>&lt;span class="k">)&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-14-6">&lt;a class="lnlinks" href="#hl-14-6"> 6&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="k">do&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-14-7">&lt;a class="lnlinks" href="#hl-14-7"> 7&lt;/a>&lt;/span>&lt;span class="cl"> fail2ban-client &lt;span class="nb">set&lt;/span> &lt;span class="si">${&lt;/span>&lt;span class="nv">JAIL&lt;/span>&lt;span class="si">}&lt;/span> unbanip &lt;span class="si">${&lt;/span>&lt;span class="nv">IP&lt;/span>&lt;span class="si">}&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-14-8">&lt;a class="lnlinks" href="#hl-14-8"> 8&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="k">done&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-14-9">&lt;a class="lnlinks" href="#hl-14-9"> 9&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="k">done&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-14-10">&lt;a class="lnlinks" href="#hl-14-10">10&lt;/a>&lt;/span>&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-14-11">&lt;a class="lnlinks" href="#hl-14-11">11&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="nb">unset&lt;/span> JAIL IP
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-14-12">&lt;a class="lnlinks" href="#hl-14-12">12&lt;/a>&lt;/span>&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-14-13">&lt;a class="lnlinks" href="#hl-14-13">13&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="nb">exit&lt;/span> &lt;span class="m">0&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#!/bin/bash
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span> JAIL in &lt;span class="k">$(&lt;/span>fail2ban-client status &lt;span class="p">|&lt;/span> grep &lt;span class="s1">&amp;#39;Jail list:&amp;#39;&lt;/span> &lt;span class="p">|&lt;/span> awk &lt;span class="s1">&amp;#39;BEGIN {FS=&amp;#34;\t&amp;#34;} {print $2}&amp;#39;&lt;/span> &lt;span class="p">|&lt;/span> sed &lt;span class="s1">&amp;#39;s/, / /g&amp;#39;&lt;/span>&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">do&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> IP in &lt;span class="k">$(&lt;/span>fail2ban-client status &lt;span class="si">${&lt;/span>&lt;span class="nv">JAIL&lt;/span>&lt;span class="si">}&lt;/span> &lt;span class="p">|&lt;/span> grep &lt;span class="s1">&amp;#39;Banned IP list:&amp;#39;&lt;/span> &lt;span class="p">|&lt;/span> awk &lt;span class="s1">&amp;#39;BEGIN {FS=&amp;#34;\t&amp;#34;} {print $2}&amp;#39;&lt;/span> &lt;span class="p">|&lt;/span> sed &lt;span class="s1">&amp;#39;s/ /\n/g&amp;#39;&lt;/span>&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">do&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> fail2ban-client &lt;span class="nb">set&lt;/span> &lt;span class="si">${&lt;/span>&lt;span class="nv">JAIL&lt;/span>&lt;span class="si">}&lt;/span> unbanip &lt;span class="si">${&lt;/span>&lt;span class="nv">IP&lt;/span>&lt;span class="si">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">done&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">done&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">unset&lt;/span> JAIL IP
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">exit&lt;/span> &lt;span class="m">0&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul></description></item><item><title>Менеджер паролей pass. Одноразовые пароли</title><link>https://yamadharma.github.io/ru/post/2023/08/24/password-manager-pass-one-time-passwords/</link><pubDate>Thu, 24 Aug 2023 20:29:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/08/24/password-manager-pass-one-time-passwords/</guid><description>&lt;p>Одноразовые пароли в менеджере паролей pass.&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
@@ -1506,34 +1506,34 @@ tessen/config
 &lt;ul>
 &lt;li>
 &lt;p>Формат может быть следующий:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="ln" id="hl-0-1">&lt;a class="lnlinks" href="#hl-0-1">1&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="l">yourPassword&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-2">&lt;a class="lnlinks" href="#hl-0-2">2&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nn">---&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-3">&lt;a class="lnlinks" href="#hl-0-3">3&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">login&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">yourLogin&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-4">&lt;a class="lnlinks" href="#hl-0-4">4&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">url&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">https://website.com&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-5">&lt;a class="lnlinks" href="#hl-0-5">5&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">totp&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">YourOtpTokenBase32Encoded&lt;/span>&lt;span class="w">
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="l">yourPassword&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nn">---&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">login&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">yourLogin&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">url&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">https://website.com&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">totp&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">YourOtpTokenBase32Encoded&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
 &lt;li>Формат &lt;code>totp:&lt;/code> поддерживается не всеми программами работы с паролями.&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>
 &lt;p>Можно хранить и в виде указателя на URL (этот формат является предпочтительным):&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="ln" id="hl-1-1">&lt;a class="lnlinks" href="#hl-1-1">1&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="l">yourPassword&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-1-2">&lt;a class="lnlinks" href="#hl-1-2">2&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nn">---&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-1-3">&lt;a class="lnlinks" href="#hl-1-3">3&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">login&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">yourLogin&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-1-4">&lt;a class="lnlinks" href="#hl-1-4">4&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">url&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">https://website.com&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-1-5">&lt;a class="lnlinks" href="#hl-1-5">5&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="l">otpauth://totp/Website:yourLogin?secret=YourOtpTokenBase32Encoded&amp;amp;issuer=Website&lt;/span>&lt;span class="w">
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="l">yourPassword&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nn">---&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">login&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">yourLogin&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">url&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">https://website.com&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="l">otpauth://totp/Website:yourLogin?secret=YourOtpTokenBase32Encoded&amp;amp;issuer=Website&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>Хранение в отдельном файле &lt;code>local-passwordstore/website/yourOtp&lt;/code>.
 &lt;ul>
 &lt;li>Только в виде указателя на URL:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="ln" id="hl-2-1">&lt;a class="lnlinks" href="#hl-2-1">1&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="l">otpauth://totp/Website:yourLogin?secret=YourOtpTokenBase32Encoded&amp;amp;issuer=Website&lt;/span>&lt;span class="w">
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="l">otpauth://totp/Website:yourLogin?secret=YourOtpTokenBase32Encoded&amp;amp;issuer=Website&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>Например, URL для github имеет вид:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="ln" id="hl-3-1">&lt;a class="lnlinks" href="#hl-3-1">1&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="l">otpauth://totp/GitHub:&amp;lt;username&amp;gt;?secret=&amp;lt;secret&amp;gt;&amp;amp;issuer=GitHub&lt;/span>&lt;span class="w">
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="l">otpauth://totp/GitHub:&amp;lt;username&amp;gt;?secret=&amp;lt;secret&amp;gt;&amp;amp;issuer=GitHub&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h2 id="аппаратный-токен">&lt;span class="section-num">3&lt;/span> Аппаратный токен&lt;/h2>
@@ -1549,38 +1549,38 @@ tessen/config
 &lt;h2 id="добавить-токен-в-запись">&lt;span class="section-num">5&lt;/span> Добавить токен в запись&lt;/h2>
 &lt;ul>
 &lt;li>Ввести токен с терминала (скрывая ввод):
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-4-1">&lt;a class="lnlinks" href="#hl-4-1">1&lt;/a>&lt;/span>&lt;span class="cl">pass otp insert totp-secret
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pass otp insert totp-secret
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Ввести токен с терминала (повторяя ввод):
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-5-1">&lt;a class="lnlinks" href="#hl-5-1">1&lt;/a>&lt;/span>&lt;span class="cl">pass otp insert -e totp-secret
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pass otp insert -e totp-secret
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Направьте otpauth://URI в файл паролей:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-6-1">&lt;a class="lnlinks" href="#hl-6-1">1&lt;/a>&lt;/span>&lt;span class="cl">pass otp insert totp-secret &amp;lt; totp-secret.txt
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pass otp insert totp-secret &amp;lt; totp-secret.txt
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Декодировать QR-изображения (используя &lt;code>zbar&lt;/code>).
 &lt;ul>
 &lt;li>Файл пароля будет заменён или создан:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-7-1">&lt;a class="lnlinks" href="#hl-7-1">1&lt;/a>&lt;/span>&lt;span class="cl">zbarimg -q --raw qrcode.png &lt;span class="p">|&lt;/span> pass otp insert totp-secret
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">zbarimg -q --raw qrcode.png &lt;span class="p">|&lt;/span> pass otp insert totp-secret
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Добавление к существующему файлу паролей:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-8-1">&lt;a class="lnlinks" href="#hl-8-1">1&lt;/a>&lt;/span>&lt;span class="cl">zbarimg -q --raw google-qrcode.png &lt;span class="p">|&lt;/span> pass otp append google/example@gmail.com
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">zbarimg -q --raw google-qrcode.png &lt;span class="p">|&lt;/span> pass otp append google/example@gmail.com
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>Декодировать QR, получаемый из веб-камеры. Файл пароля будет заменён или создан:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-9-1">&lt;a class="lnlinks" href="#hl-9-1">1&lt;/a>&lt;/span>&lt;span class="cl">zbarcam -q --raw &lt;span class="p">|&lt;/span> pass otp insert totp-secret
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">zbarcam -q --raw &lt;span class="p">|&lt;/span> pass otp insert totp-secret
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Из буфера обмена (для Wayland):
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-10-1">&lt;a class="lnlinks" href="#hl-10-1">1&lt;/a>&lt;/span>&lt;span class="cl">wl-paste &lt;span class="p">|&lt;/span> zbarimg -q --raw - &lt;span class="p">|&lt;/span> pass otp append google/example@gmail.com
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">wl-paste &lt;span class="p">|&lt;/span> zbarimg -q --raw - &lt;span class="p">|&lt;/span> pass otp append google/example@gmail.com
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h2 id="использование-токена">&lt;span class="section-num">6&lt;/span> Использование токена&lt;/h2>
 &lt;ul>
 &lt;li>Сгенерировать код 2FA, используя токен:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-11-1">&lt;a class="lnlinks" href="#hl-11-1">1&lt;/a>&lt;/span>&lt;span class="cl">pass otp &amp;lt;totp-secret&amp;gt;
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pass otp &amp;lt;totp-secret&amp;gt;
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Отобразить QR-код для токена OTP:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-12-1">&lt;a class="lnlinks" href="#hl-12-1">1&lt;/a>&lt;/span>&lt;span class="cl">pass otp uri -q &amp;lt;totp-secret&amp;gt;
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pass otp uri -q &amp;lt;totp-secret&amp;gt;
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul></description></item><item><title>Одноразовые пароли</title><link>https://yamadharma.github.io/ru/post/2023/08/24/one-time-passwords/</link><pubDate>Thu, 24 Aug 2023 20:09:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/08/24/one-time-passwords/</guid><description>&lt;p>Одноразовые пароли.&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
@@ -2132,7 +2132,7 @@ tessen/config
 &lt;/ul>
 &lt;/li>
 &lt;li>Запрос к Hydra будет выглядеть примерно так:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-0-1">&lt;a class="lnlinks" href="#hl-0-1">1&lt;/a>&lt;/span>&lt;span class="cl">hydra -l root -P ~/pass_lists/dedik_passes.txt -o ./hydra_result.log -f -V -s &lt;span class="m">80&lt;/span> 178.72.90.181 http-post-form &lt;span class="s2">&amp;#34;/cgi-bin/luci:username=^USER^&amp;amp;password=^PASS^:Invalid username&amp;#34;&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">hydra -l root -P ~/pass_lists/dedik_passes.txt -o ./hydra_result.log -f -V -s &lt;span class="m">80&lt;/span> 178.72.90.181 http-post-form &lt;span class="s2">&amp;#34;/cgi-bin/luci:username=^USER^&amp;amp;password=^PASS^:Invalid username&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Используется &lt;code>http-post-form&lt;/code> потому, что авторизация происходит по http методом post.&lt;/li>
 &lt;li>После указания этого модуля идёт строка &lt;code>/cgi-bin/luci:username=^USER^&amp;amp;password=^PASS^:Invalid username&lt;/code>, у которой через двоеточие (&lt;code>:&lt;/code>) указывается:
@@ -2332,7 +2332,7 @@ tessen/config
 &lt;li>Решить проблему можно следующим образом:
 &lt;ul>
 &lt;li>либо установить strongswan без поддержки capabilities и возможности запуска под непривилегированным пользователем:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-0-1">&lt;a class="lnlinks" href="#hl-0-1">1&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="nv">USE&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;-caps -non-root&amp;#34;&lt;/span> emerge strongswan
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nv">USE&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;-caps -non-root&amp;#34;&lt;/span> emerge strongswan
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>либо собрать NetworkManager с поддержкой capabilities (см. &lt;a href="https://gitlab.freedesktop.org/NetworkManager/NetworkManager/-/merge_requests/1053" target="_blank" rel="noopener">https://gitlab.freedesktop.org/NetworkManager/NetworkManager/-/merge_requests/1053&lt;/a>).&lt;/li>
 &lt;/ul>
@@ -2430,11 +2430,11 @@ tessen/config
 &lt;/li>
 &lt;li>
 &lt;p>Для блока &lt;code>&amp;lt;VirtualHost *:443&amp;gt;&lt;/code> следует установить&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="ln" id="hl-0-1">&lt;a class="lnlinks" href="#hl-0-1">1&lt;/a>&lt;/span>&lt;span class="cl">&amp;lt;VirtualHost *:443&amp;gt;
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-2">&lt;a class="lnlinks" href="#hl-0-2">2&lt;/a>&lt;/span>&lt;span class="cl">...
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-3">&lt;a class="lnlinks" href="#hl-0-3">3&lt;/a>&lt;/span>&lt;span class="cl">Header always set Strict-Transport-Security &amp;#34;max-age=31536000; includeSubDomains&amp;#34;
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-4">&lt;a class="lnlinks" href="#hl-0-4">4&lt;/a>&lt;/span>&lt;span class="cl">...
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-5">&lt;a class="lnlinks" href="#hl-0-5">5&lt;/a>&lt;/span>&lt;span class="cl">&amp;lt;/VirtualHost&amp;gt;
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">&amp;lt;VirtualHost *:443&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Header always set Strict-Transport-Security &amp;#34;max-age=31536000; includeSubDomains&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&amp;lt;/VirtualHost&amp;gt;
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
 &lt;li>&lt;code>max-age&lt;/code>: время, в течение которого броузер должен применять заголовок HSTS для этого сайта. Указан 1 год.&lt;/li>
 &lt;li>&lt;code>includeSubDomains&lt;/code>: применять HSTS также для субдоменов.&lt;/li>
@@ -2563,8 +2563,8 @@ tessen/config
 &lt;p>Snap&lt;/p>
 &lt;ul>
 &lt;li>Установка плагина &lt;code>certbot-dns-rfc2136&lt;/code> для &lt;em>Snap&lt;/em>:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-0-1">&lt;a class="lnlinks" href="#hl-0-1">1&lt;/a>&lt;/span>&lt;span class="cl">snap &lt;span class="nb">set&lt;/span> certbot trust-plugin-with-root&lt;span class="o">=&lt;/span>ok
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-2">&lt;a class="lnlinks" href="#hl-0-2">2&lt;/a>&lt;/span>&lt;span class="cl">sudo snap install certbot-dns-rfc2136
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">snap &lt;span class="nb">set&lt;/span> certbot trust-plugin-with-root&lt;span class="o">=&lt;/span>ok
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo snap install certbot-dns-rfc2136
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Сам &lt;em>Certbot&lt;/em> может находиться на произвольном сервере.&lt;/li>
 &lt;/ul>
@@ -2576,7 +2576,7 @@ tessen/config
 &lt;p>Пакетный менеджер&lt;/p>
 &lt;ul>
 &lt;li>Rocky Linux:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-1-1">&lt;a class="lnlinks" href="#hl-1-1">1&lt;/a>&lt;/span>&lt;span class="cl">sudo dnf -y install certbot python3-certbot-dns-rfc2136
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sudo dnf -y install certbot python3-certbot-dns-rfc2136
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;/li>
@@ -2585,54 +2585,54 @@ tessen/config
 &lt;ul>
 &lt;li>
 &lt;p>Сгенерируйте секретный TSIG-ключ:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-2-1">&lt;a class="lnlinks" href="#hl-2-1">1&lt;/a>&lt;/span>&lt;span class="cl">tsig-keygen -a HMAC-SHA512 example-key
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">tsig-keygen -a HMAC-SHA512 example-key
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
 &lt;li>Здесь &lt;code>example-key&lt;/code> &amp;mdash; имя вашего ключа. Выбирается произвольно. Можно назвать по имени домена.&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>
 &lt;p>Добавьте ключ в файл конфигурации &lt;em>Bind&lt;/em> &lt;code>/etc/named.conf&lt;/code>:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="ln" id="hl-3-1">&lt;a class="lnlinks" href="#hl-3-1"> 1&lt;/a>&lt;/span>&lt;span class="cl">// /etc/named.conf
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-3-2">&lt;a class="lnlinks" href="#hl-3-2"> 2&lt;/a>&lt;/span>&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-3-3">&lt;a class="lnlinks" href="#hl-3-3"> 3&lt;/a>&lt;/span>&lt;span class="cl">zone &amp;#34;domain.ltd&amp;#34; IN {
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-3-4">&lt;a class="lnlinks" href="#hl-3-4"> 4&lt;/a>&lt;/span>&lt;span class="cl"> // this is for certbot
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-3-5">&lt;a class="lnlinks" href="#hl-3-5"> 5&lt;/a>&lt;/span>&lt;span class="cl"> update-policy {
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-3-6">&lt;a class="lnlinks" href="#hl-3-6"> 6&lt;/a>&lt;/span>&lt;span class="cl"> grant example-key name _acme-challenge.domain.ltd. txt;
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-3-7">&lt;a class="lnlinks" href="#hl-3-7"> 7&lt;/a>&lt;/span>&lt;span class="cl"> };
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-3-8">&lt;a class="lnlinks" href="#hl-3-8"> 8&lt;/a>&lt;/span>&lt;span class="cl">};
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-3-9">&lt;a class="lnlinks" href="#hl-3-9"> 9&lt;/a>&lt;/span>&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-3-10">&lt;a class="lnlinks" href="#hl-3-10">10&lt;/a>&lt;/span>&lt;span class="cl">key &amp;#34;example-key&amp;#34; {
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-3-11">&lt;a class="lnlinks" href="#hl-3-11">11&lt;/a>&lt;/span>&lt;span class="cl"> algorithm hmac-sha512;
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-3-12">&lt;a class="lnlinks" href="#hl-3-12">12&lt;/a>&lt;/span>&lt;span class="cl"> secret &amp;#34;секретный_ключ&amp;#34;;
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-3-13">&lt;a class="lnlinks" href="#hl-3-13">13&lt;/a>&lt;/span>&lt;span class="cl">};
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">// /etc/named.conf
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">zone &amp;#34;domain.ltd&amp;#34; IN {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> // this is for certbot
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> update-policy {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> grant example-key name _acme-challenge.domain.ltd. txt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> };
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">};
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">key &amp;#34;example-key&amp;#34; {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> algorithm hmac-sha512;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> secret &amp;#34;секретный_ключ&amp;#34;;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">};
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Перезапустите &lt;em>named&lt;/em>:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-4-1">&lt;a class="lnlinks" href="#hl-4-1">1&lt;/a>&lt;/span>&lt;span class="cl">systemctl restart named.service
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">systemctl restart named.service
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h4 id="настройка-certbot">&lt;span class="section-num">2.1.4&lt;/span> Настройка certbot&lt;/h4>
 &lt;ul>
 &lt;li>Сгенерируйте файл конфигурации для плагина &lt;em>rfc2136&lt;/em> &lt;code>/etc/letsencrypt/rfc2136_domain.ltd.ini&lt;/code>:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-ini" data-lang="ini">&lt;span class="line">&lt;span class="ln" id="hl-5-1">&lt;a class="lnlinks" href="#hl-5-1"> 1&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="c1"># Target DNS server&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-5-2">&lt;a class="lnlinks" href="#hl-5-2"> 2&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="na">dns_rfc2136_server&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s">IP-адрес&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-5-3">&lt;a class="lnlinks" href="#hl-5-3"> 3&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="c1"># Target DNS port&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-5-4">&lt;a class="lnlinks" href="#hl-5-4"> 4&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="na">dns_rfc2136_port&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">53&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-5-5">&lt;a class="lnlinks" href="#hl-5-5"> 5&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="c1"># TSIG key name&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-5-6">&lt;a class="lnlinks" href="#hl-5-6"> 6&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="na">dns_rfc2136_name&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s">example-key&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-5-7">&lt;a class="lnlinks" href="#hl-5-7"> 7&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="c1"># TSIG key secret&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-5-8">&lt;a class="lnlinks" href="#hl-5-8"> 8&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="na">dns_rfc2136_secret&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s">ключ_без_кавычек&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-5-9">&lt;a class="lnlinks" href="#hl-5-9"> 9&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="c1"># TSIG key algorithm&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-5-10">&lt;a class="lnlinks" href="#hl-5-10">10&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="na">dns_rfc2136_algorithm&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s">HMAC-SHA512&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-ini" data-lang="ini">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Target DNS server&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="na">dns_rfc2136_server&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s">IP-адрес&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Target DNS port&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="na">dns_rfc2136_port&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">53&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># TSIG key name&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="na">dns_rfc2136_name&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s">example-key&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># TSIG key secret&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="na">dns_rfc2136_secret&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s">ключ_без_кавычек&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># TSIG key algorithm&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="na">dns_rfc2136_algorithm&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s">HMAC-SHA512&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Поправьте права доступа:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-6-1">&lt;a class="lnlinks" href="#hl-6-1">1&lt;/a>&lt;/span>&lt;span class="cl">chmod &lt;span class="m">600&lt;/span> /etc/letsencrypt/rfc2136_domain.ltd.ini
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">chmod &lt;span class="m">600&lt;/span> /etc/letsencrypt/rfc2136_domain.ltd.ini
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h4 id="получение-сертификата">&lt;span class="section-num">2.1.5&lt;/span> Получение сертификата&lt;/h4>
 &lt;ul>
 &lt;li>Выполните команду
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-7-1">&lt;a class="lnlinks" href="#hl-7-1">1&lt;/a>&lt;/span>&lt;span class="cl">certbot certonly --dns-rfc2136 --force-renewal --dns-rfc2136-credentials /etc/letsencrypt/rfc2136_domain.ltd.ini --server https://acme-v02.api.letsencrypt.org/directory --email admin@domain.ltd --agree-tos --no-eff-email --dns-rfc2136-propagation-seconds &lt;span class="m">60&lt;/span> -d &lt;span class="s1">&amp;#39;domain.ltd&amp;#39;&lt;/span> -d &lt;span class="s1">&amp;#39;*.domain.ltd&amp;#39;&lt;/span> --non-interactive --quiet
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">certbot certonly --dns-rfc2136 --force-renewal --dns-rfc2136-credentials /etc/letsencrypt/rfc2136_domain.ltd.ini --server https://acme-v02.api.letsencrypt.org/directory --email admin@domain.ltd --agree-tos --no-eff-email --dns-rfc2136-propagation-seconds &lt;span class="m">60&lt;/span> -d &lt;span class="s1">&amp;#39;domain.ltd&amp;#39;&lt;/span> -d &lt;span class="s1">&amp;#39;*.domain.ltd&amp;#39;&lt;/span> --non-interactive --quiet
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Сертификаты помещаются в каталог &lt;code>/etc/letsencrypt/live/domain.ltd&lt;/code>.&lt;/li>
 &lt;/ul>
@@ -2642,13 +2642,13 @@ tessen/config
 &lt;li>Плагин &lt;code>certbot-apache&lt;/code> предоставляет автоматическую настройку &lt;em>Apache HTTP Server&lt;/em>.&lt;/li>
 &lt;li>Он пытается найти конфигурацию каждого домена, а также добавляет рекомендованные для безопасности параметры, настройки использования сертификатов и пути к сертификатам Let&amp;rsquo;s Encrypt.&lt;/li>
 &lt;li>Первоначальная настройка виртуальных хостов:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-8-1">&lt;a class="lnlinks" href="#hl-8-1">1&lt;/a>&lt;/span>&lt;span class="cl">certbot --apache
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">certbot --apache
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Обновление сертификатов:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-9-1">&lt;a class="lnlinks" href="#hl-9-1">1&lt;/a>&lt;/span>&lt;span class="cl">certbot renew
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">certbot renew
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Изменение сертификатов без изменения файлов конфигурации &lt;em>apache&lt;/em>:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-10-1">&lt;a class="lnlinks" href="#hl-10-1">1&lt;/a>&lt;/span>&lt;span class="cl">certbot --apache certonly
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">certbot --apache certonly
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h4 id="сервер-nginx">&lt;span class="section-num">2.2.2&lt;/span> Сервер &lt;em>Nginx&lt;/em>&lt;/h4>
@@ -2656,32 +2656,32 @@ tessen/config
 &lt;li>Плагин &lt;code>certbot-nginx&lt;/code> предоставляет автоматическую настройку &lt;em>Nginx HTTP Server&lt;/em>.&lt;/li>
 &lt;li>Он пытается найти конфигурацию каждого домена, а также добавляет рекомендованные для безопасности параметры, настройки использования сертификатов и пути к сертификатам Let&amp;rsquo;s Encrypt.&lt;/li>
 &lt;li>Первоначальная настройка виртуальных хостов:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-11-1">&lt;a class="lnlinks" href="#hl-11-1">1&lt;/a>&lt;/span>&lt;span class="cl">certbot --nginx
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">certbot --nginx
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Обновление сертификатов:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-12-1">&lt;a class="lnlinks" href="#hl-12-1">1&lt;/a>&lt;/span>&lt;span class="cl">certbot renew
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">certbot renew
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Изменение сертификатов без изменения файлов конфигурации &lt;em>nginx&lt;/em>:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-13-1">&lt;a class="lnlinks" href="#hl-13-1">1&lt;/a>&lt;/span>&lt;span class="cl">certbot --nginx certonly
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">certbot --nginx certonly
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h2 id="установка">&lt;span class="section-num">3&lt;/span> Установка&lt;/h2>
 &lt;h3 id="установка-certbot">&lt;span class="section-num">3.1&lt;/span> Установка &lt;em>certbot&lt;/em>&lt;/h3>
 &lt;ul>
 &lt;li>Проверьте, что установлен репозитории EPEL:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-14-1">&lt;a class="lnlinks" href="#hl-14-1">1&lt;/a>&lt;/span>&lt;span class="cl">dnf -y install epel-release
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf -y install epel-release
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Установите &lt;em>certbot&lt;/em>:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-15-1">&lt;a class="lnlinks" href="#hl-15-1">1&lt;/a>&lt;/span>&lt;span class="cl">dnf -y install certbot
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf -y install certbot
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Для веб-сервера Apache:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-16-1">&lt;a class="lnlinks" href="#hl-16-1">1&lt;/a>&lt;/span>&lt;span class="cl">dnf -y install python3-certbot-apache
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf -y install python3-certbot-apache
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Для веб-сервера Nginx:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-17-1">&lt;a class="lnlinks" href="#hl-17-1">1&lt;/a>&lt;/span>&lt;span class="cl">dnf -y install python3-certbot-nginx
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf -y install python3-certbot-nginx
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Для сертификата DNS:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-18-1">&lt;a class="lnlinks" href="#hl-18-1">1&lt;/a>&lt;/span>&lt;span class="cl">dnf -y install python3-certbot-dns-rfc2136
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf -y install python3-certbot-dns-rfc2136
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="установка-реализации-snap-certbot">&lt;span class="section-num">3.2&lt;/span> Установка реализации &lt;em>snap certbot&lt;/em>&lt;/h3>
@@ -2691,29 +2691,29 @@ tessen/config
 &lt;li>Centos
 &lt;ul>
 &lt;li>Установите репозиторий &lt;em>Epel&lt;/em>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-19-1">&lt;a class="lnlinks" href="#hl-19-1">1&lt;/a>&lt;/span>&lt;span class="cl">sudo dnf install epel-release
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-19-2">&lt;a class="lnlinks" href="#hl-19-2">2&lt;/a>&lt;/span>&lt;span class="cl">sudo dnf upgrade
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sudo dnf install epel-release
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo dnf upgrade
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Установите &lt;em>Snap&lt;/em>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-20-1">&lt;a class="lnlinks" href="#hl-20-1">1&lt;/a>&lt;/span>&lt;span class="cl">sudo dnf -y install snapd
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sudo dnf -y install snapd
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>Запустите &lt;em>Snap&lt;/em>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-21-1">&lt;a class="lnlinks" href="#hl-21-1">1&lt;/a>&lt;/span>&lt;span class="cl">sudo systemctl &lt;span class="nb">enable&lt;/span> --now snapd.socket
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-21-2">&lt;a class="lnlinks" href="#hl-21-2">2&lt;/a>&lt;/span>&lt;span class="cl">sudo ln -s /var/lib/snapd/snap /snap
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sudo systemctl &lt;span class="nb">enable&lt;/span> --now snapd.socket
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo ln -s /var/lib/snapd/snap /snap
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Обновите &lt;em>Snap&lt;/em> (перед этим необходимо немного подождать, чтобы запустился snapd)
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-22-1">&lt;a class="lnlinks" href="#hl-22-1">1&lt;/a>&lt;/span>&lt;span class="cl">sudo snap install core
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-22-2">&lt;a class="lnlinks" href="#hl-22-2">2&lt;/a>&lt;/span>&lt;span class="cl">sudo snap refresh core
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sudo snap install core
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo snap refresh core
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Установка &lt;em>certbot&lt;/em>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-23-1">&lt;a class="lnlinks" href="#hl-23-1">1&lt;/a>&lt;/span>&lt;span class="cl">sudo snap install --classic certbot
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sudo snap install --classic certbot
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Сделайте символьную ссылку для запуска:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-24-1">&lt;a class="lnlinks" href="#hl-24-1">1&lt;/a>&lt;/span>&lt;span class="cl">sudo ln -s /snap/bin/certbot /usr/local/bin/certbot
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sudo ln -s /snap/bin/certbot /usr/local/bin/certbot
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul></description></item><item><title>Клиенты ACME</title><link>https://yamadharma.github.io/ru/post/2022/05/02/acme-clients/</link><pubDate>Mon, 02 May 2022 16:50:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/05/02/acme-clients/</guid><description>&lt;p>Выдача сертификатов SSL по протоколу ACME.&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
@@ -2897,18 +2897,18 @@ tessen/config
 &lt;h3 id="однократное-подключение">&lt;span class="section-num">2.1&lt;/span> Однократное подключение&lt;/h3>
 &lt;ul>
 &lt;li>Зададим алгоритм подключения как опции командной строки:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-0-1">&lt;a class="lnlinks" href="#hl-0-1">1&lt;/a>&lt;/span>&lt;span class="cl">ssh -oHostKeyAlgorithms&lt;span class="o">=&lt;/span>+ssh-rsa root@192.168.0.10
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">ssh -oHostKeyAlgorithms&lt;span class="o">=&lt;/span>+ssh-rsa root@192.168.0.10
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="конфигурация-для-конкретного-хоста">&lt;span class="section-num">2.2&lt;/span> Конфигурация для конкретного хоста&lt;/h3>
 &lt;ul>
 &lt;li>Создайте файл конфигурации &lt;code>~/.ssh/config&lt;/code>:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-1-1">&lt;a class="lnlinks" href="#hl-1-1">1&lt;/a>&lt;/span>&lt;span class="cl">touch ~/.ssh/config
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">touch ~/.ssh/config
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Зададим конфигурацию конкретного хоста в файле &lt;code>~/.ssh/config&lt;/code>:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="ln" id="hl-2-1">&lt;a class="lnlinks" href="#hl-2-1">1&lt;/a>&lt;/span>&lt;span class="cl">Host 192.168.0.10
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-2-2">&lt;a class="lnlinks" href="#hl-2-2">2&lt;/a>&lt;/span>&lt;span class="cl"> HostKeyAlgorithms=+ssh-rsa
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-2-3">&lt;a class="lnlinks" href="#hl-2-3">3&lt;/a>&lt;/span>&lt;span class="cl"> PubkeyAcceptedKeyTypes +ssh-rsa
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">Host 192.168.0.10
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> HostKeyAlgorithms=+ssh-rsa
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> PubkeyAcceptedKeyTypes +ssh-rsa
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="src-block-caption">
 &lt;span class="src-block-number">&amp;#1056;&amp;#1072;&amp;#1089;&amp;#1087;&amp;#1077;&amp;#1095;&amp;#1072;&amp;#1090;&amp;#1082;&amp;#1072; 1:&lt;/span>
 &lt;code>~/.ssh/config&lt;/code>
@@ -2920,18 +2920,18 @@ tessen/config
 &lt;li>Можно задать группу хостов в виде шаблонов командной строки (wildcards).
 &lt;ul>
 &lt;li>Например, правило для сети:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="ln" id="hl-3-1">&lt;a class="lnlinks" href="#hl-3-1">1&lt;/a>&lt;/span>&lt;span class="cl">Host 192.168.0.*
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-3-2">&lt;a class="lnlinks" href="#hl-3-2">2&lt;/a>&lt;/span>&lt;span class="cl"> HostKeyAlgorithms=+ssh-rsa
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-3-3">&lt;a class="lnlinks" href="#hl-3-3">3&lt;/a>&lt;/span>&lt;span class="cl"> PubkeyAcceptedKeyTypes +ssh-rsa
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">Host 192.168.0.*
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> HostKeyAlgorithms=+ssh-rsa
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> PubkeyAcceptedKeyTypes +ssh-rsa
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="src-block-caption">
 &lt;span class="src-block-number">&amp;#1056;&amp;#1072;&amp;#1089;&amp;#1087;&amp;#1077;&amp;#1095;&amp;#1072;&amp;#1090;&amp;#1082;&amp;#1072; 2:&lt;/span>
 &lt;code>~/.ssh/config&lt;/code>
 &lt;/div>
 &lt;/li>
 &lt;li>Можно задать привило для всех хостов:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="ln" id="hl-4-1">&lt;a class="lnlinks" href="#hl-4-1">1&lt;/a>&lt;/span>&lt;span class="cl">Host *
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-2">&lt;a class="lnlinks" href="#hl-4-2">2&lt;/a>&lt;/span>&lt;span class="cl"> HostKeyAlgorithms=+ssh-rsa
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-3">&lt;a class="lnlinks" href="#hl-4-3">3&lt;/a>&lt;/span>&lt;span class="cl"> PubkeyAcceptedKeyTypes +ssh-rsa
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">Host *
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> HostKeyAlgorithms=+ssh-rsa
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> PubkeyAcceptedKeyTypes +ssh-rsa
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="src-block-caption">
 &lt;span class="src-block-number">&amp;#1056;&amp;#1072;&amp;#1089;&amp;#1087;&amp;#1077;&amp;#1095;&amp;#1072;&amp;#1090;&amp;#1082;&amp;#1072; 3:&lt;/span>
 &lt;code>~/.ssh/config&lt;/code>
@@ -3004,7 +3004,7 @@ tessen/config
 &lt;/li>
 &lt;li>
 &lt;p>Установка (см. &lt;a href="https://yamadharma.github.io/ru/post/2021/01/18/package-manager-windows-chocolatey/">Пакетный менеджер для Windows. Chocolatey&lt;/a>):&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-0-1">&lt;a class="lnlinks" href="#hl-0-1">1&lt;/a>&lt;/span>&lt;span class="cl">choco install pass-winmenu
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install pass-winmenu
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
 &lt;li>Страница: &lt;a href="https://chocolatey.org/packages/pass-winmenu" target="_blank" rel="noopener">https://chocolatey.org/packages/pass-winmenu&lt;/a>&lt;/li>
 &lt;/ul>
@@ -3029,16 +3029,16 @@ tessen/config
 &lt;ul>
 &lt;li>Репозиторий: &lt;a href="https://github.com/browserpass/browserpass-native" target="_blank" rel="noopener">https://github.com/browserpass/browserpass-native&lt;/a>&lt;/li>
 &lt;li>Gentoo:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-1-1">&lt;a class="lnlinks" href="#hl-1-1">1&lt;/a>&lt;/span>&lt;span class="cl">emerge www-plugins/browserpass
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge www-plugins/browserpass
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Ubuntu, Debian
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-2-1">&lt;a class="lnlinks" href="#hl-2-1">1&lt;/a>&lt;/span>&lt;span class="cl">apt-get install webext-browserpass
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">apt-get install webext-browserpass
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Fedora
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-3-1">&lt;a class="lnlinks" href="#hl-3-1">1&lt;/a>&lt;/span>&lt;span class="cl">dnf copr &lt;span class="nb">enable&lt;/span> maximbaz/browserpass
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-3-2">&lt;a class="lnlinks" href="#hl-3-2">2&lt;/a>&lt;/span>&lt;span class="cl">dnf install browserpass
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-3-3">&lt;a class="lnlinks" href="#hl-3-3">3&lt;/a>&lt;/span>&lt;span class="cl">dnf install browserpass-chromium
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-3-4">&lt;a class="lnlinks" href="#hl-3-4">4&lt;/a>&lt;/span>&lt;span class="cl">dnf install browserpass-firefox
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf copr &lt;span class="nb">enable&lt;/span> maximbaz/browserpass
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">dnf install browserpass
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">dnf install browserpass-chromium
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">dnf install browserpass-firefox
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;/li>
@@ -3054,8 +3054,8 @@ tessen/config
 &lt;li>Интерфейс для взаимодействия с броузером (native messaging)
 &lt;ul>
 &lt;li>Установка для пользователя:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-4-1">&lt;a class="lnlinks" href="#hl-4-1">1&lt;/a>&lt;/span>&lt;span class="cl">pip3 install --user chrome-pass&lt;span class="o">==&lt;/span>0.3.0
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-2">&lt;a class="lnlinks" href="#hl-4-2">2&lt;/a>&lt;/span>&lt;span class="cl">nativePass install
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pip3 install --user chrome-pass&lt;span class="o">==&lt;/span>0.3.0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">nativePass install
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;/li>
@@ -3075,7 +3075,7 @@ tessen/config
 &lt;/li>
 &lt;li>
 &lt;p>Установка:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-5-1">&lt;a class="lnlinks" href="#hl-5-1">1&lt;/a>&lt;/span>&lt;span class="cl">curl -sSL github.com/passff/passff-host/releases/latest/download/install_host_app.sh &lt;span class="p">|&lt;/span> bash -s -- firefox
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">curl -sSL github.com/passff/passff-host/releases/latest/download/install_host_app.sh &lt;span class="p">|&lt;/span> bash -s -- firefox
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
 &lt;li>Пользователям других поддерживаемых броузеров необходимо заменить последний аргумент (&lt;code>firefox&lt;/code>) на &lt;code>chrome&lt;/code>, &lt;code>opera&lt;/code>, &lt;code>chromium&lt;/code> или &lt;code>vivaldi&lt;/code>.&lt;/li>
 &lt;li>Скрипт загрузит хост-приложение (небольшой скрипт на &lt;em>python&lt;/em>) и файл манифеста плагина (файл конфигурации &lt;em>JSON&lt;/em>) и поместит их в нужное место.&lt;/li>
@@ -3097,15 +3097,15 @@ tessen/config
 &lt;li>Устанавливаем интерфейс для взаимодействия с броузером (native messaging):
 &lt;ul>
 &lt;li>Gentoo
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-6-1">&lt;a class="lnlinks" href="#hl-6-1">1&lt;/a>&lt;/span>&lt;span class="cl">emerge app-admin/gopass-jsonapi
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge app-admin/gopass-jsonapi
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Fedora
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-7-1">&lt;a class="lnlinks" href="#hl-7-1">1&lt;/a>&lt;/span>&lt;span class="cl">dnf install gopass-jsonapi
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf install gopass-jsonapi
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>Для связки плагина с &lt;code>gopass&lt;/code> необходимо создать вспомогательный скрипт и манифест:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-8-1">&lt;a class="lnlinks" href="#hl-8-1">1&lt;/a>&lt;/span>&lt;span class="cl">gopass-jsonapi configure
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">gopass-jsonapi configure
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul></description></item><item><title>Have I Been Pwned (HIBP)</title><link>https://yamadharma.github.io/ru/post/2021/05/03/have-i-been-pwned-hibp/</link><pubDate>Mon, 03 May 2021 15:21:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2021/05/03/have-i-been-pwned-hibp/</guid><description>&lt;p>Сервис &lt;em>Have I Been Pwned?&lt;/em> содержит данные по скомпрометированным интернет-ресурсам и позволяет проверить, скомпрометирована ли Ваша личная информация.&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
@@ -3296,18 +3296,18 @@ tessen/config
 &lt;ul>
 &lt;li>Рассмотрим пользователя &lt;code>user&lt;/code> в домене &lt;code>example.com&lt;/code>, порт &lt;code>22&lt;/code>.&lt;/li>
 &lt;li>Отсутствие имени пользователя или порта в имени файла означает, что любое имя пользователя и порт будут совпадать:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-0-1">&lt;a class="lnlinks" href="#hl-0-1">1&lt;/a>&lt;/span>&lt;span class="cl">example.com.pgp
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">example.com.pgp
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Соответствующее имя пользователя может быть именем файла внутри каталога, имя которого совпадает с хостом. Это полезно, если в базе есть пароли для нескольких пользователей на одном хосте:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-1-1">&lt;a class="lnlinks" href="#hl-1-1">1&lt;/a>&lt;/span>&lt;span class="cl">example.com/user.pgp
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">example.com/user.pgp
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Имя пользователя также может быть записано в виде префикса, отделенного от хоста знаком &lt;code>@&lt;/code>:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-2-1">&lt;a class="lnlinks" href="#hl-2-1">1&lt;/a>&lt;/span>&lt;span class="cl">user@example.com.pgp
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">user@example.com.pgp
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Соответствующий порт может быть указан после хоста, отделённый двоеточием (&lt;code>:&lt;/code>):
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-3-1">&lt;a class="lnlinks" href="#hl-3-1">1&lt;/a>&lt;/span>&lt;span class="cl">example.com:22.pgp
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-3-2">&lt;a class="lnlinks" href="#hl-3-2">2&lt;/a>&lt;/span>&lt;span class="cl">example.com:22/user.pgp
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-3-3">&lt;a class="lnlinks" href="#hl-3-3">3&lt;/a>&lt;/span>&lt;span class="cl">user@example.com:22.pgp
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">example.com:22.pgp
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">example.com:22/user.pgp
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">user@example.com:22.pgp
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Эти все записи могут быть расположены в произвольных каталогах, задающих Вашу собственную иерархию.&lt;/li>
 &lt;/ul>
@@ -3379,7 +3379,7 @@ tessen/config
 &lt;li>Репозиторий: &lt;a href="https://github.com/NicolasPetton/pass" target="_blank" rel="noopener">https://github.com/NicolasPetton/pass&lt;/a>&lt;/li>
 &lt;li>Позволяет редактировать базу данных паролей.&lt;/li>
 &lt;li>Запуск:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-elisp" data-lang="elisp">&lt;span class="line">&lt;span class="ln" id="hl-4-1">&lt;a class="lnlinks" href="#hl-4-1">1&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="nv">M-x&lt;/span> &lt;span class="nv">pass&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-elisp" data-lang="elisp">&lt;span class="line">&lt;span class="cl">&lt;span class="nv">M-x&lt;/span> &lt;span class="nv">pass&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h4 id="helm-pass">&lt;span class="section-num">3.4.2&lt;/span> helm-pass&lt;/h4>
@@ -3387,7 +3387,7 @@ tessen/config
 &lt;li>Интерфейс &lt;em>helm&lt;/em> для &lt;em>pass&lt;/em>.&lt;/li>
 &lt;li>Репозиторий: &lt;a href="https://github.com/emacs-helm/helm-pass" target="_blank" rel="noopener">https://github.com/emacs-helm/helm-pass&lt;/a>&lt;/li>
 &lt;li>Запуск:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-elisp" data-lang="elisp">&lt;span class="line">&lt;span class="ln" id="hl-5-1">&lt;a class="lnlinks" href="#hl-5-1">1&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="nv">M-x&lt;/span> &lt;span class="nv">helm-pass&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-elisp" data-lang="elisp">&lt;span class="line">&lt;span class="cl">&lt;span class="nv">M-x&lt;/span> &lt;span class="nv">helm-pass&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Выдаёт в минибуфере список записей из базы паролей. При нажатии &lt;code>Enter&lt;/code> копирует пароль в буфер.&lt;/li>
 &lt;/ul>
@@ -3404,19 +3404,19 @@ tessen/config
 &lt;li>Gentoo
 &lt;ul>
 &lt;li>&lt;code>pass&lt;/code>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-6-1">&lt;a class="lnlinks" href="#hl-6-1">1&lt;/a>&lt;/span>&lt;span class="cl">emerge app-admin/pass
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge app-admin/pass
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>&lt;code>gopass&lt;/code>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-7-1">&lt;a class="lnlinks" href="#hl-7-1">1&lt;/a>&lt;/span>&lt;span class="cl">emerge app-admin/gopass
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge app-admin/gopass
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>&lt;code>qtpass&lt;/code>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-8-1">&lt;a class="lnlinks" href="#hl-8-1">1&lt;/a>&lt;/span>&lt;span class="cl">emerge app-admin/qtpass
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge app-admin/qtpass
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Gopass UI
 &lt;ul>
 &lt;li>Находится в оверлее awesome (&lt;a href="https://gitlab.awesome-it.de/overlays/awesome/" target="_blank" rel="noopener">https://gitlab.awesome-it.de/overlays/awesome/&lt;/a>).&lt;/li>
 &lt;li>Установка:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-9-1">&lt;a class="lnlinks" href="#hl-9-1">1&lt;/a>&lt;/span>&lt;span class="cl">emerge app-admin/gopass-ui
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge app-admin/gopass-ui
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;/li>
@@ -3426,10 +3426,10 @@ tessen/config
 &lt;ul>
 &lt;li>
 &lt;p>&lt;code>pass&lt;/code>&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-10-1">&lt;a class="lnlinks" href="#hl-10-1">1&lt;/a>&lt;/span>&lt;span class="cl">dnf install pass pass-otp
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf install pass pass-otp
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
 &lt;li>&lt;code>gopass&lt;/code>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-11-1">&lt;a class="lnlinks" href="#hl-11-1">1&lt;/a>&lt;/span>&lt;span class="cl">dnf install gopass
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf install gopass
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;/li>
@@ -3439,16 +3439,16 @@ tessen/config
 &lt;/li>
 &lt;li>
 &lt;p>Macintosh&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-12-1">&lt;a class="lnlinks" href="#hl-12-1">1&lt;/a>&lt;/span>&lt;span class="cl">brew install pass
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">brew install pass
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Windows&lt;/p>
 &lt;ul>
 &lt;li>&lt;code>pass&lt;/code>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-13-1">&lt;a class="lnlinks" href="#hl-13-1">1&lt;/a>&lt;/span>&lt;span class="cl">choco install pass4win
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install pass4win
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>&lt;code>gopass&lt;/code>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-14-1">&lt;a class="lnlinks" href="#hl-14-1">1&lt;/a>&lt;/span>&lt;span class="cl">choco install gopass
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install gopass
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;/li>
@@ -3457,24 +3457,24 @@ tessen/config
 &lt;h3 id="ключи-gpg">&lt;span class="section-num">5.1&lt;/span> Ключи GPG&lt;/h3>
 &lt;ul>
 &lt;li>Просмотр списка ключей:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-15-1">&lt;a class="lnlinks" href="#hl-15-1">1&lt;/a>&lt;/span>&lt;span class="cl">gpg --list-secret-keys
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">gpg --list-secret-keys
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Если ключа нет, нужно создать новый:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-16-1">&lt;a class="lnlinks" href="#hl-16-1">1&lt;/a>&lt;/span>&lt;span class="cl">gpg --full-generate-key
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">gpg --full-generate-key
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="инициализация-хранилища">&lt;span class="section-num">5.2&lt;/span> Инициализация хранилища&lt;/h3>
 &lt;h4 id="pass">&lt;span class="section-num">5.2.1&lt;/span> pass&lt;/h4>
 &lt;ul>
 &lt;li>Инициализируем хранилище:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-17-1">&lt;a class="lnlinks" href="#hl-17-1">1&lt;/a>&lt;/span>&lt;span class="cl">pass init &amp;lt;gpg-id or email&amp;gt;
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pass init &amp;lt;gpg-id or email&amp;gt;
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h4 id="gopass">&lt;span class="section-num">5.2.2&lt;/span> gopass&lt;/h4>
 &lt;ul>
 &lt;li>
 &lt;p>Для &lt;code>gopass&lt;/code> можно просто ввести:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-18-1">&lt;a class="lnlinks" href="#hl-18-1">1&lt;/a>&lt;/span>&lt;span class="cl">gopass init
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">gopass init
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
 &lt;li>Программа запросит ключ и почту для git.&lt;/li>
 &lt;li>Будет инициализирована сразу структура git в каталоге &lt;code>~/.password-store&lt;/code>.&lt;/li>
@@ -3484,7 +3484,7 @@ tessen/config
 &lt;h4 id="qtpass">&lt;span class="section-num">5.2.3&lt;/span> qtpass&lt;/h4>
 &lt;ul>
 &lt;li>Также можно инициализировать с помощью графического инструмента &lt;code>qtpass&lt;/code>:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-19-1">&lt;a class="lnlinks" href="#hl-19-1">1&lt;/a>&lt;/span>&lt;span class="cl">qtpass
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">qtpass
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="синхронизация-с-git">&lt;span class="section-num">5.3&lt;/span> Синхронизация с git&lt;/h3>
@@ -3492,26 +3492,26 @@ tessen/config
 &lt;ul>
 &lt;li>При инициализации &lt;code>gopass&lt;/code> инициализирует также структуру git.&lt;/li>
 &lt;li>При необходимости это можно сделать отдельно:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-20-1">&lt;a class="lnlinks" href="#hl-20-1">1&lt;/a>&lt;/span>&lt;span class="cl">gopass git init
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">gopass git init
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Также можно задать адрес репозитория на хостинге (репозиторий необходимо предварительно создать):
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-21-1">&lt;a class="lnlinks" href="#hl-21-1">1&lt;/a>&lt;/span>&lt;span class="cl">gopass git remote add origin git@github.com:&amp;lt;git_username&amp;gt;/&amp;lt;git_repo&amp;gt;.git
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">gopass git remote add origin git@github.com:&amp;lt;git_username&amp;gt;/&amp;lt;git_repo&amp;gt;.git
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Для синхронизации выполняется следующая команда:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-22-1">&lt;a class="lnlinks" href="#hl-22-1">1&lt;/a>&lt;/span>&lt;span class="cl">gopass sync
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">gopass sync
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h4 id="прямые-изменения">&lt;span class="section-num">5.3.2&lt;/span> Прямые изменения&lt;/h4>
 &lt;ul>
 &lt;li>Следует заметить, что отслеживаются только изменения, сделанные через сам &lt;code>gopass&lt;/code> (или &lt;code>pass&lt;/code>).&lt;/li>
 &lt;li>Если изменения сделаны непосредственно на файловой системе, необходимо вручную закоммитить и выложить изменения:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-23-1">&lt;a class="lnlinks" href="#hl-23-1">1&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="nb">cd&lt;/span> ~/.password-store/
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-23-2">&lt;a class="lnlinks" href="#hl-23-2">2&lt;/a>&lt;/span>&lt;span class="cl">git add .
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-23-3">&lt;a class="lnlinks" href="#hl-23-3">3&lt;/a>&lt;/span>&lt;span class="cl">git commit -am &lt;span class="s1">&amp;#39;edit manually&amp;#39;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-23-4">&lt;a class="lnlinks" href="#hl-23-4">4&lt;/a>&lt;/span>&lt;span class="cl">git push
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> ~/.password-store/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git add .
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git commit -am &lt;span class="s1">&amp;#39;edit manually&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git push
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Проверить статус синхронизации модно командой
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-24-1">&lt;a class="lnlinks" href="#hl-24-1">1&lt;/a>&lt;/span>&lt;span class="cl">gopass git status
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">gopass git status
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="тонкие-настройки">&lt;span class="section-num">5.4&lt;/span> Тонкие настройки&lt;/h3>
@@ -3526,7 +3526,7 @@ tessen/config
 &lt;/li>
 &lt;li>
 &lt;p>Можно установить в &lt;code>~/.bashrc&lt;/code> или &lt;code>~/.profile&lt;/code>:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-25-1">&lt;a class="lnlinks" href="#hl-25-1">1&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">GPG_TTY&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>tty&lt;span class="k">)&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">GPG_TTY&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>tty&lt;span class="k">)&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
 &lt;li>&lt;a href="https://github.com/gopasspw/gopass/issues/208" target="_blank" rel="noopener">https://github.com/gopasspw/gopass/issues/208&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://github.com/gopasspw/gopass/issues/209" target="_blank" rel="noopener">https://github.com/gopasspw/gopass/issues/209&lt;/a>&lt;/li>
@@ -3542,7 +3542,7 @@ tessen/config
 &lt;li>Синхронизацию с &lt;em>git&lt;/em> придётся выполнять вручную.&lt;/li>
 &lt;li>Не следует использовать символьные ссылки. Они не переносимы между разными операционными системами и могут нарушиться при синхронизации (например, с Android).&lt;/li>
 &lt;li>После ручного редактирования рекомендуется проверить структуру базы паролей:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-26-1">&lt;a class="lnlinks" href="#hl-26-1">1&lt;/a>&lt;/span>&lt;span class="cl">gopass fsck
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">gopass fsck
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h2 id="миграция-баз-паролей-из-других-программ">&lt;span class="section-num">7&lt;/span> Миграция баз паролей из других программ&lt;/h2>
@@ -3597,7 +3597,7 @@ tessen/config
 &lt;ul>
 &lt;li>Находится в оверлее &lt;code>wjn-overlay&lt;/code> (&lt;a href="https://data.gpo.zugaina.org/wjn-overlay/" target="_blank" rel="noopener">https://data.gpo.zugaina.org/wjn-overlay/&lt;/a>).&lt;/li>
 &lt;li>Установка:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-27-1">&lt;a class="lnlinks" href="#hl-27-1">1&lt;/a>&lt;/span>&lt;span class="cl">emerge app-admin/pass-import
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge app-admin/pass-import
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;/li>
@@ -3612,13 +3612,13 @@ tessen/config
 &lt;li>Для &lt;code>pass&lt;/code>:
 &lt;ul>
 &lt;li>Автоопределение формата источника:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-28-1">&lt;a class="lnlinks" href="#hl-28-1">1&lt;/a>&lt;/span>&lt;span class="cl">pass import path/to/passwords
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pass import path/to/passwords
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Если автоопределение не сработало:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-29-1">&lt;a class="lnlinks" href="#hl-29-1">1&lt;/a>&lt;/span>&lt;span class="cl">pass import &amp;lt;password_manager&amp;gt; path/to/passwords
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pass import &amp;lt;password_manager&amp;gt; path/to/passwords
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Если конвертация не для &lt;code>pass&lt;/code>:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-30-1">&lt;a class="lnlinks" href="#hl-30-1">1&lt;/a>&lt;/span>&lt;span class="cl">pimport &amp;lt;new_pm&amp;gt; &amp;lt;former_pm&amp;gt; path/to/passwords --out path/to/destination/pm
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pimport &amp;lt;new_pm&amp;gt; &amp;lt;former_pm&amp;gt; path/to/passwords --out path/to/destination/pm
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;/li>
@@ -3636,18 +3636,18 @@ tessen/config
 &lt;li>В меню выберите &lt;em>Account options &amp;gt; Advanced &amp;gt; Export &amp;gt; LastPass CVS File&lt;/em>.&lt;/li>
 &lt;li>Сохраняем результат в файл &lt;code>lastpass_export.csv&lt;/code>.&lt;/li>
 &lt;li>Конвертация с помощью &lt;code>pass-import&lt;/code>:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-31-1">&lt;a class="lnlinks" href="#hl-31-1">1&lt;/a>&lt;/span>&lt;span class="cl">pass import lastpass lastpass_export.csv
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pass import lastpass lastpass_export.csv
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Альтернативный вариант. Не используйте его. Результат не соответствует структуре именования &lt;code>pass&lt;/code>.
 &lt;ul>
 &lt;li>Скачайте скрипт:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-32-1">&lt;a class="lnlinks" href="#hl-32-1">1&lt;/a>&lt;/span>&lt;span class="cl">wget https://git.zx2c4.com/password-store/plain/contrib/importers/lastpass2pass.rb
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">wget https://git.zx2c4.com/password-store/plain/contrib/importers/lastpass2pass.rb
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Сделайте скрипт исполняемым:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-33-1">&lt;a class="lnlinks" href="#hl-33-1">1&lt;/a>&lt;/span>&lt;span class="cl">chmod +x lastpass2pass.rb
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">chmod +x lastpass2pass.rb
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Импортируйте пароли:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-34-1">&lt;a class="lnlinks" href="#hl-34-1">1&lt;/a>&lt;/span>&lt;span class="cl">./lastpass2pass.rb lastpass_export.csv
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">./lastpass2pass.rb lastpass_export.csv
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;/li>
@@ -3673,14 +3673,14 @@ tessen/config
 &lt;ul>
 &lt;li>Gentoo:
 Находится в репозитории &lt;a href="https://github.com/yamadharma/gentoo-portage-local" target="_blank" rel="noopener">https://github.com/yamadharma/gentoo-portage-local&lt;/a>.
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-35-1">&lt;a class="lnlinks" href="#hl-35-1">1&lt;/a>&lt;/span>&lt;span class="cl">emerge app-admin/pass-audit
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge app-admin/pass-audit
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>Использование:
 &lt;ul>
 &lt;li>Проверка по парольному каталогу или по парольной записи:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-36-1">&lt;a class="lnlinks" href="#hl-36-1">1&lt;/a>&lt;/span>&lt;span class="cl">pass audit &lt;span class="o">[&lt;/span>каталог или одна запись&lt;span class="o">]&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pass audit &lt;span class="o">[&lt;/span>каталог или одна запись&lt;span class="o">]&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Без параметра проверяет всю базу паролей.&lt;/li>
 &lt;/ul>
@@ -3693,7 +3693,7 @@ tessen/config
 &lt;p>Простая проверка качества пароля&lt;/p>
 &lt;ul>
 &lt;li>Простая проверка качества пароля по парольному каталогу или по парольной записи:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-37-1">&lt;a class="lnlinks" href="#hl-37-1">1&lt;/a>&lt;/span>&lt;span class="cl">gopass audit &lt;span class="o">[&lt;/span>каталог или одна запись&lt;span class="o">]&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">gopass audit &lt;span class="o">[&lt;/span>каталог или одна запись&lt;span class="o">]&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Без параметра проверяет всю базу паролей.&lt;/li>
 &lt;/ul>
@@ -3710,20 +3710,20 @@ tessen/config
 &lt;li>Установка:
 &lt;ul>
 &lt;li>Gentoo:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-38-1">&lt;a class="lnlinks" href="#hl-38-1">1&lt;/a>&lt;/span>&lt;span class="cl">emerge app-admin/gopass-hibp
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge app-admin/gopass-hibp
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>Использование:
 &lt;ul>
 &lt;li>Использование HIBPv2 API
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-39-1">&lt;a class="lnlinks" href="#hl-39-1">1&lt;/a>&lt;/span>&lt;span class="cl">gopass-hibp api
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">gopass-hibp api
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Сравнение хешей паролей с дампом HIBP:
 &lt;ul>
 &lt;li>Скачиваем дамп SHA-1 хешей паролей с &lt;a href="https://haveibeenpwned.com/Passwords" target="_blank" rel="noopener">https://haveibeenpwned.com/Passwords&lt;/a> и распаковываем его.&lt;/li>
 &lt;li>Проверяем пароли:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-40-1">&lt;a class="lnlinks" href="#hl-40-1">1&lt;/a>&lt;/span>&lt;span class="cl">gopass-hibp dump pwned-passwords-1.0.txt
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">gopass-hibp dump pwned-passwords-1.0.txt
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>Этот вариант помедленнее.&lt;/li>
 &lt;/ul>
 &lt;/li>
@@ -5471,7 +5471,7 @@ tessen/config
 &lt;/tbody>
 &lt;/table>
 &lt;p>&lt;a id="code-snippet--intensity-csv">&lt;/a>&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-elisp" data-lang="elisp">&lt;span class="line">&lt;span class="ln" id="hl-0-1">&lt;a class="lnlinks" href="#hl-0-1">1&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nv">orgtbl-to-csv&lt;/span> &lt;span class="nv">x&lt;/span> &lt;span class="no">nil&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-elisp" data-lang="elisp">&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nv">orgtbl-to-csv&lt;/span> &lt;span class="nv">x&lt;/span> &lt;span class="no">nil&lt;/span>&lt;span class="p">)&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="план-разработки">&lt;span class="section-num">3.2&lt;/span> План разработки&lt;/h3>
 &lt;p>&lt;a id="table--weeks">&lt;/a>&lt;/p>
 &lt;div class="table-caption">
@@ -5639,7 +5639,7 @@ tessen/config
 &lt;/tbody>
 &lt;/table>
 &lt;p>&lt;a id="code-snippet--weeks-csv">&lt;/a>&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-elisp" data-lang="elisp">&lt;span class="line">&lt;span class="ln" id="hl-1-1">&lt;a class="lnlinks" href="#hl-1-1">1&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nv">orgtbl-to-csv&lt;/span> &lt;span class="nv">x&lt;/span> &lt;span class="no">nil&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-elisp" data-lang="elisp">&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nv">orgtbl-to-csv&lt;/span> &lt;span class="nv">x&lt;/span> &lt;span class="no">nil&lt;/span>&lt;span class="p">)&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="трудоёмкости-разработки-элементов-цифрового-умк">&lt;span class="section-num">3.3&lt;/span> Трудоёмкости разработки элементов цифрового УМК&lt;/h3>
 &lt;p>Информация, запрошенная проректором.&lt;/p>
 &lt;div class="table-caption">

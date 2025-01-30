@@ -75,29 +75,29 @@
 &lt;ul>
 &lt;li>Можно загрузиться с установочного диска с Windows и на этапе начала установки нажать Shift+F10, чтобы открыть командную строку.&lt;/li>
 &lt;li>Нужно идентифицировать буквы диска, которые назначены разделу с Windows и чистому разделу, куда будет скопирован WIM файл:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-0-1">&lt;a class="lnlinks" href="#hl-0-1">1&lt;/a>&lt;/span>&lt;span class="cl">diskpart
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-2">&lt;a class="lnlinks" href="#hl-0-2">2&lt;/a>&lt;/span>&lt;span class="cl">list vol
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-3">&lt;a class="lnlinks" href="#hl-0-3">3&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="nb">exit&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">diskpart
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">list vol
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">exit&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Пусть диску с файлами установки присвоена бука &lt;code>e:&lt;/code>.&lt;/li>
 &lt;li>Получим список доступных редакций Windows 10 в файле &lt;code>install.wim&lt;/code> установочного образа:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-1-1">&lt;a class="lnlinks" href="#hl-1-1">1&lt;/a>&lt;/span>&lt;span class="cl">Dism /Get-WimInfo /WimFile:&lt;span class="s2">&amp;#34;e:\sources\install.wim&amp;#34;&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">Dism /Get-WimInfo /WimFile:&lt;span class="s2">&amp;#34;e:\sources\install.wim&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h4 id="оставляем-одну-редакцию">&lt;span class="section-num">2.2.3&lt;/span> Оставляем одну редакцию&lt;/h4>
 &lt;ul>
 &lt;li>Переименуйте &lt;code>install.wim&lt;/code> (на всякий случай):
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-2-1">&lt;a class="lnlinks" href="#hl-2-1">1&lt;/a>&lt;/span>&lt;span class="cl">move e:&lt;span class="se">\s&lt;/span>ources&lt;span class="se">\i&lt;/span>nstall.wim e:&lt;span class="se">\s&lt;/span>ources&lt;span class="se">\i&lt;/span>nstall-all.wim
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">move e:&lt;span class="se">\s&lt;/span>ources&lt;span class="se">\i&lt;/span>nstall.wim e:&lt;span class="se">\s&lt;/span>ources&lt;span class="se">\i&lt;/span>nstall-all.wim
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Экспортируем установочный образ с одной редакцией Windows (например, 4):
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-3-1">&lt;a class="lnlinks" href="#hl-3-1">1&lt;/a>&lt;/span>&lt;span class="cl">Dism /export-image /SourceImageFile:&lt;span class="s2">&amp;#34;e:\sources\install-all.wim&amp;#34;&lt;/span> /SourceIndex:4 /DestinationImageFile:&lt;span class="s2">&amp;#34;e:\sources\install.wim&amp;#34;&lt;/span> /Compress:max /CheckIntegrity
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">Dism /export-image /SourceImageFile:&lt;span class="s2">&amp;#34;e:\sources\install-all.wim&amp;#34;&lt;/span> /SourceIndex:4 /DestinationImageFile:&lt;span class="s2">&amp;#34;e:\sources\install.wim&amp;#34;&lt;/span> /Compress:max /CheckIntegrity
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Параметр &lt;code>/CheckIntegrity&lt;/code> позволяет отменить операции преобразования WIM файла, если команда DISM обнаружит повреждение в его структуре.&lt;/li>
 &lt;li>Индекс редакции windows в образе изменится на 1:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-4-1">&lt;a class="lnlinks" href="#hl-4-1">1&lt;/a>&lt;/span>&lt;span class="cl">Dism /Get-WimInfo /WimFile:&lt;span class="s2">&amp;#34;e:\sources\install.wim&amp;#34;&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">Dism /Get-WimInfo /WimFile:&lt;span class="s2">&amp;#34;e:\sources\install.wim&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Получим подробную информацию об оставшемся образе в &lt;code>wim&lt;/code>-файле:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-5-1">&lt;a class="lnlinks" href="#hl-5-1">1&lt;/a>&lt;/span>&lt;span class="cl">Dism /get-wiminfo /wimfile:&lt;span class="s2">&amp;#34;c:\sources\install.wim&amp;#34;&lt;/span> /index:1
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">Dism /get-wiminfo /wimfile:&lt;span class="s2">&amp;#34;c:\sources\install.wim&amp;#34;&lt;/span> /index:1
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h4 id="несколько-редакций">&lt;span class="section-num">2.2.4&lt;/span> Несколько редакций&lt;/h4>
@@ -105,11 +105,11 @@
 &lt;li>FYI.&lt;/li>
 &lt;li>Если нужно оставить в &lt;code>install.wim&lt;/code> несколько редакций Windows, можно удалить ненужные версии с помощью параметра &lt;code>/delete-image&lt;/code> утилиты DISM.&lt;/li>
 &lt;li>Пусть мы хотим удалить редакции &lt;code>Home&lt;/code> и &lt;code>Home Single Language&lt;/code> с индексами 1 и 3:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-6-1">&lt;a class="lnlinks" href="#hl-6-1">1&lt;/a>&lt;/span>&lt;span class="cl">Dism /Delete-Image /ImageFile:&lt;span class="s2">&amp;#34;e:\sources\install.wim&amp;#34;&lt;/span> /Index:1 /CheckIntegrity
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-6-2">&lt;a class="lnlinks" href="#hl-6-2">2&lt;/a>&lt;/span>&lt;span class="cl">Dism /Delete-Image /ImageFile:&lt;span class="s2">&amp;#34;e:\sources\install.wim&amp;#34;&lt;/span> /Index:3 /CheckIntegrity
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">Dism /Delete-Image /ImageFile:&lt;span class="s2">&amp;#34;e:\sources\install.wim&amp;#34;&lt;/span> /Index:1 /CheckIntegrity
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Dism /Delete-Image /ImageFile:&lt;span class="s2">&amp;#34;e:\sources\install.wim&amp;#34;&lt;/span> /Index:3 /CheckIntegrity
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Можно удалить редакции по их имени:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-7-1">&lt;a class="lnlinks" href="#hl-7-1">1&lt;/a>&lt;/span>&lt;span class="cl">Dism /Delete-Image /ImageFile:&lt;span class="s2">&amp;#34;e:\sources\install.wim&amp;#34;&lt;/span> /Name:&lt;span class="s2">&amp;#34;Windows 10 Education&amp;#34;&lt;/span> /CheckIntegrity
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">Dism /Delete-Image /ImageFile:&lt;span class="s2">&amp;#34;e:\sources\install.wim&amp;#34;&lt;/span> /Name:&lt;span class="s2">&amp;#34;Windows 10 Education&amp;#34;&lt;/span> /CheckIntegrity
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="развёртывание-чистой-windows-на-эталонном-компьютере">&lt;span class="section-num">2.3&lt;/span> Развёртывание чистой Windows на эталонном компьютере&lt;/h3>
@@ -120,7 +120,7 @@
 &lt;li>На этом этапе нажмите &lt;code>Ctrl + Shift + F3&lt;/code>.&lt;/li>
 &lt;li>Это переведёт компьютер в режим аудита (Audit Mode), в котором будет выполнен автоматический вход под встроенной учётной записью &lt;code>Administrator&lt;/code>.&lt;/li>
 &lt;li>Это эквивалентно команде:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-8-1">&lt;a class="lnlinks" href="#hl-8-1">1&lt;/a>&lt;/span>&lt;span class="cl">%windir%&lt;span class="se">\s&lt;/span>ystem32&lt;span class="se">\s&lt;/span>ysprep&lt;span class="se">\s&lt;/span>ysprep.exe /audit
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">%windir%&lt;span class="se">\s&lt;/span>ystem32&lt;span class="se">\s&lt;/span>ysprep&lt;span class="se">\s&lt;/span>ysprep.exe /audit
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>После появления рабочего стола, сверните окно утилиты &lt;code>sysprep&lt;/code>, не закрывая его.&lt;/li>
 &lt;/ul>
@@ -132,35 +132,35 @@
 &lt;li>Можно настроить ярлыки на рабочем столе, плитки в меню Start, фоновые рисунки, заставки, цветовые схемы и прочее.&lt;/li>
 &lt;li>Можно настроить параметры локальной групповой политики с помощью редактора &lt;code>gpedit.msc&lt;/code>.&lt;/li>
 &lt;li>Чтобы применить настройки текущего пользователю к шаблонному пользователю &lt;code>Default&lt;/code>, создайте файл ответов &lt;code>unattend.xml&lt;/code> в каталоге &lt;code>C:\Windows\System32\Sysprep&lt;/code>:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-xml" data-lang="xml">&lt;span class="line">&lt;span class="ln" id="hl-9-1">&lt;a class="lnlinks" href="#hl-9-1">1&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="cp">&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;utf-8&amp;#34;?&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-9-2">&lt;a class="lnlinks" href="#hl-9-2">2&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="nt">&amp;lt;unattend&lt;/span> &lt;span class="na">xmlns=&lt;/span>&lt;span class="s">&amp;#34;urn:schemas-microsoft-com:unattend&amp;#34;&lt;/span>&lt;span class="nt">&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-9-3">&lt;a class="lnlinks" href="#hl-9-3">3&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;settings&lt;/span> &lt;span class="na">pass=&lt;/span>&lt;span class="s">&amp;#34;specialize&amp;#34;&lt;/span>&lt;span class="nt">&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-9-4">&lt;a class="lnlinks" href="#hl-9-4">4&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;component&lt;/span> &lt;span class="na">name=&lt;/span>&lt;span class="s">&amp;#34;Microsoft-Windows-Shell-Setup&amp;#34;&lt;/span> &lt;span class="na">processorArchitecture=&lt;/span>&lt;span class="s">&amp;#34;amd64&amp;#34;&lt;/span> &lt;span class="na">publicKeyToken=&lt;/span>&lt;span class="s">&amp;#34;31bf3856ad364e35&amp;#34;&lt;/span> &lt;span class="na">language=&lt;/span>&lt;span class="s">&amp;#34;neutral&amp;#34;&lt;/span> &lt;span class="na">versionScope=&lt;/span>&lt;span class="s">&amp;#34;nonSxS&amp;#34;&lt;/span> &lt;span class="na">xmlns:wcm=&lt;/span>&lt;span class="s">&amp;#34;http://schemas.microsoft.com/WMIConfig/2002/State&amp;#34;&lt;/span> &lt;span class="na">xmlns:xsi=&lt;/span>&lt;span class="s">&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34;&lt;/span>&lt;span class="nt">&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-9-5">&lt;a class="lnlinks" href="#hl-9-5">5&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;CopyProfile&amp;gt;&lt;/span>true&lt;span class="nt">&amp;lt;/CopyProfile&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-9-6">&lt;a class="lnlinks" href="#hl-9-6">6&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;/component&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-9-7">&lt;a class="lnlinks" href="#hl-9-7">7&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;/settings&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-9-8">&lt;a class="lnlinks" href="#hl-9-8">8&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="nt">&amp;lt;/unattend&amp;gt;&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-xml" data-lang="xml">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;utf-8&amp;#34;?&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nt">&amp;lt;unattend&lt;/span> &lt;span class="na">xmlns=&lt;/span>&lt;span class="s">&amp;#34;urn:schemas-microsoft-com:unattend&amp;#34;&lt;/span>&lt;span class="nt">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;settings&lt;/span> &lt;span class="na">pass=&lt;/span>&lt;span class="s">&amp;#34;specialize&amp;#34;&lt;/span>&lt;span class="nt">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;component&lt;/span> &lt;span class="na">name=&lt;/span>&lt;span class="s">&amp;#34;Microsoft-Windows-Shell-Setup&amp;#34;&lt;/span> &lt;span class="na">processorArchitecture=&lt;/span>&lt;span class="s">&amp;#34;amd64&amp;#34;&lt;/span> &lt;span class="na">publicKeyToken=&lt;/span>&lt;span class="s">&amp;#34;31bf3856ad364e35&amp;#34;&lt;/span> &lt;span class="na">language=&lt;/span>&lt;span class="s">&amp;#34;neutral&amp;#34;&lt;/span> &lt;span class="na">versionScope=&lt;/span>&lt;span class="s">&amp;#34;nonSxS&amp;#34;&lt;/span> &lt;span class="na">xmlns:wcm=&lt;/span>&lt;span class="s">&amp;#34;http://schemas.microsoft.com/WMIConfig/2002/State&amp;#34;&lt;/span> &lt;span class="na">xmlns:xsi=&lt;/span>&lt;span class="s">&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34;&lt;/span>&lt;span class="nt">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;CopyProfile&amp;gt;&lt;/span>true&lt;span class="nt">&amp;lt;/CopyProfile&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;/component&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;/settings&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nt">&amp;lt;/unattend&amp;gt;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="очистка-windows-после-настройки">&lt;span class="section-num">2.5&lt;/span> Очистка Windows после настройки&lt;/h3>
 &lt;ul>
 &lt;li>Удалите имеющиеся теневые копии и точки восстановления:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-10-1">&lt;a class="lnlinks" href="#hl-10-1">1&lt;/a>&lt;/span>&lt;span class="cl">vssadmin delete shadows /All /Quiet
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vssadmin delete shadows /All /Quiet
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Очистите неиспользуемые файлы компонентов и обновлений в папке WinSxS:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-11-1">&lt;a class="lnlinks" href="#hl-11-1">1&lt;/a>&lt;/span>&lt;span class="cl">Dism.exe /Online /Cleanup-Image /StartComponentCleanup /ResetBase
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">Dism.exe /Online /Cleanup-Image /StartComponentCleanup /ResetBase
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Удалите загруженные файлы обновлений Windows:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-12-1">&lt;a class="lnlinks" href="#hl-12-1">1&lt;/a>&lt;/span>&lt;span class="cl">del %windir%&lt;span class="se">\S&lt;/span>oftwareDistribution&lt;span class="se">\D&lt;/span>ownload&lt;span class="se">\*&lt;/span>.* /f /s /q
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">del %windir%&lt;span class="se">\S&lt;/span>oftwareDistribution&lt;span class="se">\D&lt;/span>ownload&lt;span class="se">\*&lt;/span>.* /f /s /q
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Выполните очистку диска с помощью утилиты &lt;code>cleanmgr&lt;/code>:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-13-1">&lt;a class="lnlinks" href="#hl-13-1">1&lt;/a>&lt;/span>&lt;span class="cl">Cleanmgr /sagerun:1
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">Cleanmgr /sagerun:1
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Очистите логи Windows:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-14-1">&lt;a class="lnlinks" href="#hl-14-1">1&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="k">for&lt;/span> /F &lt;span class="s2">&amp;#34;tokens=*&amp;#34;&lt;/span> %1 in &lt;span class="o">(&lt;/span>&lt;span class="s1">&amp;#39;wevtutil.exe el&amp;#39;&lt;/span>&lt;span class="o">)&lt;/span> DO wevtutil.exe cl &lt;span class="s2">&amp;#34;%1&amp;#34;&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span> /F &lt;span class="s2">&amp;#34;tokens=*&amp;#34;&lt;/span> %1 in &lt;span class="o">(&lt;/span>&lt;span class="s1">&amp;#39;wevtutil.exe el&amp;#39;&lt;/span>&lt;span class="o">)&lt;/span> DO wevtutil.exe cl &lt;span class="s2">&amp;#34;%1&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Очистите корзину:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-15-1">&lt;a class="lnlinks" href="#hl-15-1">1&lt;/a>&lt;/span>&lt;span class="cl">powershell.exe -NoProfile -Command &lt;span class="s2">&amp;#34;Clear-RecycleBin -Force&amp;#34;&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">powershell.exe -NoProfile -Command &lt;span class="s2">&amp;#34;Clear-RecycleBin -Force&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="подготовка-к-развёртыванию">&lt;span class="section-num">2.6&lt;/span> Подготовка к развёртыванию&lt;/h3>
@@ -173,7 +173,7 @@
 &lt;/ul>
 &lt;/li>
 &lt;li>Это эквивалентно команде:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-16-1">&lt;a class="lnlinks" href="#hl-16-1">1&lt;/a>&lt;/span>&lt;span class="cl">%windir%&lt;span class="se">\s&lt;/span>ystem32&lt;span class="se">\s&lt;/span>ysprep&lt;span class="se">\s&lt;/span>ysprep.exe /generalize /oobe /shutdown
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">%windir%&lt;span class="se">\s&lt;/span>ystem32&lt;span class="se">\s&lt;/span>ysprep&lt;span class="se">\s&lt;/span>ysprep.exe /generalize /oobe /shutdown
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="захват-настроенного-образа-windows-с-помощью-dism">&lt;span class="section-num">2.7&lt;/span> Захват настроенного образа Windows с помощью DISM&lt;/h3>
@@ -182,13 +182,13 @@
 &lt;li>Загрузите компьютер с эталонной версией Windows с загрузочного диска в среде WinPE (WinRE).&lt;/li>
 &lt;li>Можно загрузиться с установочного диска с Windows и на этапе начала установки нажать Shift+F10, чтобы открыть командную строку.&lt;/li>
 &lt;li>Нужно идентифицировать буквы диска, которые назначены разделу с Windows и чистому разделу, куда будет скопирован WIM файл:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-17-1">&lt;a class="lnlinks" href="#hl-17-1">1&lt;/a>&lt;/span>&lt;span class="cl">diskpart
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-17-2">&lt;a class="lnlinks" href="#hl-17-2">2&lt;/a>&lt;/span>&lt;span class="cl">list vol
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-17-3">&lt;a class="lnlinks" href="#hl-17-3">3&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="nb">exit&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">diskpart
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">list vol
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">exit&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Пусть диску с Windows присвоена бука &lt;code>c:&lt;/code>, а пустому диску буква &lt;code>e:&lt;/code>.&lt;/li>
 &lt;li>Чтобы выполнить захват офлайн образа Windows на диске &lt;code>c:&lt;/code> и поместить полученный WIM образ на &lt;code>e:&lt;/code>, выполните команду:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-18-1">&lt;a class="lnlinks" href="#hl-18-1">1&lt;/a>&lt;/span>&lt;span class="cl">dism /capture-image /imagefile:&lt;span class="s2">&amp;#34;e:\source\install.wim&amp;#34;&lt;/span> /capturedir:c:&lt;span class="se">\ &lt;/span>/ScratchDir:e:&lt;span class="se">\ &lt;/span>/name:&lt;span class="s2">&amp;#34;Windows 10 Pro&amp;#34;&lt;/span> /compress:maximum /checkintegrity /verify /bootable
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dism /capture-image /imagefile:&lt;span class="s2">&amp;#34;e:\source\install.wim&amp;#34;&lt;/span> /capturedir:c:&lt;span class="se">\ &lt;/span>/ScratchDir:e:&lt;span class="se">\ &lt;/span>/name:&lt;span class="s2">&amp;#34;Windows 10 Pro&amp;#34;&lt;/span> /compress:maximum /checkintegrity /verify /bootable
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="замена-оригинального-образа-windows--install-dot-wim--на-носителе">&lt;span class="section-num">2.8&lt;/span> Замена оригинального образа Windows (Install.wim) на носителе&lt;/h3>
@@ -198,7 +198,7 @@
 &lt;/li>
 &lt;li>
 &lt;p>Если вы используете &lt;code>FAT32&lt;/code>, то вы не сможете разместить файл больше 4 Гб на этой файловой системе. В этом случае большой WIM файл нужно разбить на несколько файлов &lt;code>SWM&lt;/code>:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-19-1">&lt;a class="lnlinks" href="#hl-19-1">1&lt;/a>&lt;/span>&lt;span class="cl">Dism /Split-Image /ImageFile:D:&lt;span class="se">\s&lt;/span>ources&lt;span class="se">\i&lt;/span>nstall.wim /SWMFile:c:&lt;span class="se">\t&lt;/span>mp&lt;span class="se">\i&lt;/span>nstall.swm /FileSize:3500
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">Dism /Split-Image /ImageFile:D:&lt;span class="se">\s&lt;/span>ources&lt;span class="se">\i&lt;/span>nstall.wim /SWMFile:c:&lt;span class="se">\t&lt;/span>mp&lt;span class="se">\i&lt;/span>nstall.swm /FileSize:3500
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
 &lt;li>В данном случае DISM создаст файлы вида &lt;code>install.swm&lt;/code>, &lt;code>install2.swm&lt;/code> и т. д.&lt;/li>
 &lt;li>Их нужно скопировать в папку &lt;code>\sources&lt;/code>.&lt;/li>
@@ -275,7 +275,7 @@
 &lt;ul>
 &lt;li>
 &lt;p>Установите wsl:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-0-1">&lt;a class="lnlinks" href="#hl-0-1">1&lt;/a>&lt;/span>&lt;span class="cl">wsl --install
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">wsl --install
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
 &lt;li>включает дополнительные компоненты WSL и платформы виртуальных машин;&lt;/li>
 &lt;li>скачивает и устанавливает последнюю версию ядра Linux;&lt;/li>
@@ -309,94 +309,94 @@
 &lt;h2 id="поддержка-systemd">&lt;span class="section-num">4&lt;/span> Поддержка systemd&lt;/h2>
 &lt;ul>
 &lt;li>Убедитесь, что версия WSL: 0.67.6 или более поздняя:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-1-1">&lt;a class="lnlinks" href="#hl-1-1">1&lt;/a>&lt;/span>&lt;span class="cl">wsl --version
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">wsl --version
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>В консоли Linux перейдите под суперпользователя:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-2-1">&lt;a class="lnlinks" href="#hl-2-1">1&lt;/a>&lt;/span>&lt;span class="cl">sudo -i
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sudo -i
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Откройте для редактирования файл &lt;code>/etc/wsl.conf&lt;/code>:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-3-1">&lt;a class="lnlinks" href="#hl-3-1">1&lt;/a>&lt;/span>&lt;span class="cl">vi /etc/wsl.conf
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vi /etc/wsl.conf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Активируйте systemd:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-toml" data-lang="toml">&lt;span class="line">&lt;span class="ln" id="hl-4-1">&lt;a class="lnlinks" href="#hl-4-1">1&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="p">[&lt;/span>&lt;span class="nx">boot&lt;/span>&lt;span class="p">]&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-2">&lt;a class="lnlinks" href="#hl-4-2">2&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="nx">systemd&lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="kc">true&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-toml" data-lang="toml">&lt;span class="line">&lt;span class="cl">&lt;span class="p">[&lt;/span>&lt;span class="nx">boot&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nx">systemd&lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="kc">true&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Из консоли Windows остановите выполнение WSL:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-5-1">&lt;a class="lnlinks" href="#hl-5-1">1&lt;/a>&lt;/span>&lt;span class="cl">wsl.exe --shutdown
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">wsl.exe --shutdown
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>После повторного запуска WSL проверьте работу systemd:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-6-1">&lt;a class="lnlinks" href="#hl-6-1">1&lt;/a>&lt;/span>&lt;span class="cl">systemctl list-unit-files --type&lt;span class="o">=&lt;/span>service
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">systemctl list-unit-files --type&lt;span class="o">=&lt;/span>service
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h2 id="установка-базового-программного-обеспечения">&lt;span class="section-num">5&lt;/span> Установка базового программного обеспечения&lt;/h2>
 &lt;ul>
 &lt;li>В консоли Linux перейдите под суперпользователя:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-7-1">&lt;a class="lnlinks" href="#hl-7-1">1&lt;/a>&lt;/span>&lt;span class="cl">sudo -i
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sudo -i
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="fedora">&lt;span class="section-num">5.1&lt;/span> Fedora&lt;/h3>
 &lt;ul>
 &lt;li>Обновите систему:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-8-1">&lt;a class="lnlinks" href="#hl-8-1">1&lt;/a>&lt;/span>&lt;span class="cl">dnf -y update
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf -y update
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Установка системных библиотек:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-9-1">&lt;a class="lnlinks" href="#hl-9-1">1&lt;/a>&lt;/span>&lt;span class="cl">dnf -y install vulkan
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf -y install vulkan
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Устанавливаем утилиту для удобства работы &lt;em>tmux&lt;/em>:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-10-1">&lt;a class="lnlinks" href="#hl-10-1">1&lt;/a>&lt;/span>&lt;span class="cl">dnf -y install tmux
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf -y install tmux
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Устанавливаем утилиту для удобства работы &lt;em>mc&lt;/em>:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-11-1">&lt;a class="lnlinks" href="#hl-11-1">1&lt;/a>&lt;/span>&lt;span class="cl">dnf -y install mc
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf -y install mc
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Автодополнение для bash:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-12-1">&lt;a class="lnlinks" href="#hl-12-1">1&lt;/a>&lt;/span>&lt;span class="cl">dnf -y install bash-completion
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf -y install bash-completion
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Просмотр pdf:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-13-1">&lt;a class="lnlinks" href="#hl-13-1">1&lt;/a>&lt;/span>&lt;span class="cl">dnf -y install evince
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf -y install evince
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Терминал kitty:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-14-1">&lt;a class="lnlinks" href="#hl-14-1">1&lt;/a>&lt;/span>&lt;span class="cl">dnf -y install kitty
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf -y install kitty
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Установите libreoffice:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-15-1">&lt;a class="lnlinks" href="#hl-15-1">1&lt;/a>&lt;/span>&lt;span class="cl">dnf -y install libreoffice
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf -y install libreoffice
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="arch">&lt;span class="section-num">5.2&lt;/span> Arch&lt;/h3>
 &lt;ul>
 &lt;li>Используется пакетный менеджер &lt;em>pacman&lt;/em> (&lt;a href="https://wiki.archlinux.org/title/Pacman_%28%D0%A0%D1%83%D1%81%D1%81%D0%BA%D0%B8%D0%B9%29" target="_blank" rel="noopener">https://wiki.archlinux.org/title/Pacman_(%D0%A0%D1%83%D1%81%D1%81%D0%BA%D0%B8%D0%B9)&lt;/a>).&lt;/li>
 &lt;li>Обновите систему:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-16-1">&lt;a class="lnlinks" href="#hl-16-1">1&lt;/a>&lt;/span>&lt;span class="cl">pacman -Suy
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pacman -Suy
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Устанавливаем утилиту для удобства работы &lt;em>tmux&lt;/em>:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-17-1">&lt;a class="lnlinks" href="#hl-17-1">1&lt;/a>&lt;/span>&lt;span class="cl">pacman -S tmux
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pacman -S tmux
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Устанавливаем утилиту для удобства работы &lt;em>mc&lt;/em>:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-18-1">&lt;a class="lnlinks" href="#hl-18-1">1&lt;/a>&lt;/span>&lt;span class="cl">pacman -S mc
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pacman -S mc
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Автодополнение для bash:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-19-1">&lt;a class="lnlinks" href="#hl-19-1">1&lt;/a>&lt;/span>&lt;span class="cl">pacman -S bash-completion
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pacman -S bash-completion
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Просмотр pdf:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-20-1">&lt;a class="lnlinks" href="#hl-20-1">1&lt;/a>&lt;/span>&lt;span class="cl">pacman -S evince
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pacman -S evince
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Терминал kitty:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-21-1">&lt;a class="lnlinks" href="#hl-21-1">1&lt;/a>&lt;/span>&lt;span class="cl">pacman -S kitty
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pacman -S kitty
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Установите libreoffice:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-22-1">&lt;a class="lnlinks" href="#hl-22-1">1&lt;/a>&lt;/span>&lt;span class="cl">pacman -S libreoffice-fresh
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pacman -S libreoffice-fresh
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h2 id="emacs">&lt;span class="section-num">6&lt;/span> Emacs&lt;/h2>
 &lt;h3 id="fedora">&lt;span class="section-num">6.1&lt;/span> Fedora&lt;/h3>
 &lt;ul>
 &lt;li>Установите emacs:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-23-1">&lt;a class="lnlinks" href="#hl-23-1">1&lt;/a>&lt;/span>&lt;span class="cl">dnf -y install emacs
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf -y install emacs
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="arch">&lt;span class="section-num">6.2&lt;/span> Arch&lt;/h3>
 &lt;ul>
 &lt;li>Установите emacs:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-24-1">&lt;a class="lnlinks" href="#hl-24-1">1&lt;/a>&lt;/span>&lt;span class="cl">pacman -S emacs
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pacman -S emacs
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul></description></item><item><title>Windows. Установка в kvm</title><link>https://yamadharma.github.io/ru/post/2024/05/29/windows-install-kvm/</link><pubDate>Wed, 29 May 2024 19:46:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2024/05/29/windows-install-kvm/</guid><description>&lt;p>Установка Windows на KVM.&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
@@ -416,7 +416,7 @@
 &lt;li>Рекомендуется использовать драйвера Virtio для Windows.&lt;/li>
 &lt;li>Работа через устройства Virtio осуществляется быстрее, чем через эмуляцию SCSI и т.д.&lt;/li>
 &lt;li>Gentoo:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-0-1">&lt;a class="lnlinks" href="#hl-0-1">1&lt;/a>&lt;/span>&lt;span class="cl">emerge app-emulation/virtio-win
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge app-emulation/virtio-win
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Можно просто скачать с репозитория:
 &lt;ul>
@@ -429,7 +429,7 @@
 &lt;ul>
 &lt;li>Можно устанавливать с помощью какого-либо графического интерфейса управления qemu, например с помощью virt-manager:&lt;/li>
 &lt;li>Gentoo:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-1-1">&lt;a class="lnlinks" href="#hl-1-1">1&lt;/a>&lt;/span>&lt;span class="cl">emerge app-emulation/virt-manager
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge app-emulation/virt-manager
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>При установке следует выбрать пункт о дополнительной конфигурации перед установкой.&lt;/li>
 &lt;li>На этом этапе следует добавить второй виртуальный cdrom с драйверами virtio-win.&lt;/li>
@@ -599,27 +599,27 @@
 &lt;h4 id="консоль-linux">&lt;span class="section-num">2.1.2&lt;/span> Консоль Linux&lt;/h4>
 &lt;ul>
 &lt;li>Создадим на диске партиции:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-0-1">&lt;a class="lnlinks" href="#hl-0-1"> 1&lt;/a>&lt;/span>&lt;span class="cl">partprobe /dev/sda
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-2">&lt;a class="lnlinks" href="#hl-0-2"> 2&lt;/a>&lt;/span>&lt;span class="cl">sgdisk --zap-all /dev/sda
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-3">&lt;a class="lnlinks" href="#hl-0-3"> 3&lt;/a>&lt;/span>&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-4">&lt;a class="lnlinks" href="#hl-0-4"> 4&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="c1">## ef00 EFI system partition&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-5">&lt;a class="lnlinks" href="#hl-0-5"> 5&lt;/a>&lt;/span>&lt;span class="cl">sgdisk -n 0:0:+512M -t 0:ef00 -c 0:EFI /dev/sda
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-6">&lt;a class="lnlinks" href="#hl-0-6"> 6&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="c1">## 0c01 Microsoft reserved&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-7">&lt;a class="lnlinks" href="#hl-0-7"> 7&lt;/a>&lt;/span>&lt;span class="cl">sgdisk -n 0:0:+128M -t 0:0c01 /dev/sda
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-8">&lt;a class="lnlinks" href="#hl-0-8"> 8&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="c1">## 0700 Microsoft basic data&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-9">&lt;a class="lnlinks" href="#hl-0-9"> 9&lt;/a>&lt;/span>&lt;span class="cl">sgdisk -n 0:0:+60G -t 0:0700 -c 0:windows /dev/sda
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-10">&lt;a class="lnlinks" href="#hl-0-10">10&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="c1">## 2700 Windows recovery partition&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-11">&lt;a class="lnlinks" href="#hl-0-11">11&lt;/a>&lt;/span>&lt;span class="cl">sgdisk -n 0:0:+10G -t 0:2700 &lt;span class="si">${&lt;/span>&lt;span class="nv">DISK0&lt;/span>&lt;span class="si">}&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-12">&lt;a class="lnlinks" href="#hl-0-12">12&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="c1">## 0700 Microsoft basic data&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-13">&lt;a class="lnlinks" href="#hl-0-13">13&lt;/a>&lt;/span>&lt;span class="cl">sgdisk -n 0:0:+8G -t 0:0700 /dev/sda
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-14">&lt;a class="lnlinks" href="#hl-0-14">14&lt;/a>&lt;/span>&lt;span class="cl">sgdisk -n 0:0:+10M -t 0:0700 /dev/sda
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-15">&lt;a class="lnlinks" href="#hl-0-15">15&lt;/a>&lt;/span>&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-16">&lt;a class="lnlinks" href="#hl-0-16">16&lt;/a>&lt;/span>&lt;span class="cl">partprobe /dev/sda
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">partprobe /dev/sda
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sgdisk --zap-all /dev/sda
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">## ef00 EFI system partition&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sgdisk -n 0:0:+512M -t 0:ef00 -c 0:EFI /dev/sda
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">## 0c01 Microsoft reserved&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sgdisk -n 0:0:+128M -t 0:0c01 /dev/sda
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">## 0700 Microsoft basic data&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sgdisk -n 0:0:+60G -t 0:0700 -c 0:windows /dev/sda
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">## 2700 Windows recovery partition&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sgdisk -n 0:0:+10G -t 0:2700 &lt;span class="si">${&lt;/span>&lt;span class="nv">DISK0&lt;/span>&lt;span class="si">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">## 0700 Microsoft basic data&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sgdisk -n 0:0:+8G -t 0:0700 /dev/sda
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sgdisk -n 0:0:+10M -t 0:0700 /dev/sda
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">partprobe /dev/sda
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Отформатируем диски:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-1-1">&lt;a class="lnlinks" href="#hl-1-1">1&lt;/a>&lt;/span>&lt;span class="cl">mkfs.ntfs -f -L windows /dev/sda3
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-1-2">&lt;a class="lnlinks" href="#hl-1-2">2&lt;/a>&lt;/span>&lt;span class="cl">mkfs.vfat -n fat -F32 /dev/sda5
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-1-3">&lt;a class="lnlinks" href="#hl-1-3">3&lt;/a>&lt;/span>&lt;span class="cl">mkfs.ntfs -f -L windistro /dev/sda6
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mkfs.ntfs -f -L windows /dev/sda3
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mkfs.vfat -n fat -F32 /dev/sda5
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mkfs.ntfs -f -L windistro /dev/sda6
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h2 id="подготовка-файлов">&lt;span class="section-num">3&lt;/span> Подготовка файлов&lt;/h2>
@@ -642,10 +642,10 @@
 &lt;/ul>
 &lt;/li>
 &lt;li>Скопируйте файлы:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-2-1">&lt;a class="lnlinks" href="#hl-2-1">1&lt;/a>&lt;/span>&lt;span class="cl">robocopy /s /xd:Sources X: E:
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-2-2">&lt;a class="lnlinks" href="#hl-2-2">2&lt;/a>&lt;/span>&lt;span class="cl">md E:&lt;span class="se">\S&lt;/span>ources
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-2-3">&lt;a class="lnlinks" href="#hl-2-3">3&lt;/a>&lt;/span>&lt;span class="cl">copy X:&lt;span class="se">\S&lt;/span>ources&lt;span class="se">\b&lt;/span>oot.wim E:&lt;span class="se">\S&lt;/span>ources&lt;span class="se">\
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-2-4">&lt;a class="lnlinks" href="#hl-2-4">4&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="se">&lt;/span>robocopy /s X: F:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">robocopy /s /xd:Sources X: E:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">md E:&lt;span class="se">\S&lt;/span>ources
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">copy X:&lt;span class="se">\S&lt;/span>ources&lt;span class="se">\b&lt;/span>oot.wim E:&lt;span class="se">\S&lt;/span>ources&lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>robocopy /s X: F:
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h4 id="использование-linux">&lt;span class="section-num">3.1.2&lt;/span> Использование Linux&lt;/h4>
@@ -660,20 +660,20 @@
 &lt;/li>
 &lt;li>
 &lt;p>Смонтируйте диски:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-3-1">&lt;a class="lnlinks" href="#hl-3-1">1&lt;/a>&lt;/span>&lt;span class="cl">mkdir -p /mnt/&lt;span class="o">{&lt;/span>fat,ntfs&lt;span class="o">}&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-3-2">&lt;a class="lnlinks" href="#hl-3-2">2&lt;/a>&lt;/span>&lt;span class="cl">mount /dev/sr0 /media/cdrom/
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-3-3">&lt;a class="lnlinks" href="#hl-3-3">3&lt;/a>&lt;/span>&lt;span class="cl">mount /dev/sda5 /mnt/fat
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-3-4">&lt;a class="lnlinks" href="#hl-3-4">4&lt;/a>&lt;/span>&lt;span class="cl">mount /dev/sda6 /mnt/ntfs
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mkdir -p /mnt/&lt;span class="o">{&lt;/span>fat,ntfs&lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mount /dev/sr0 /media/cdrom/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mount /dev/sda5 /mnt/fat
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mount /dev/sda6 /mnt/ntfs
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Скопируйте файлы на раздел NTFS:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-4-1">&lt;a class="lnlinks" href="#hl-4-1">1&lt;/a>&lt;/span>&lt;span class="cl">rsync -ai /media/cdrom/ /mnt/ntfs/
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">rsync -ai /media/cdrom/ /mnt/ntfs/
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Скопируйте необходимые файлы на раздел FAT32 (не нужно при наличии загрузчика типа refind):&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-5-1">&lt;a class="lnlinks" href="#hl-5-1">1&lt;/a>&lt;/span>&lt;span class="cl">rsync -ai --exclude&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;sources/&amp;#39;&lt;/span> /media/cdrom/ /mnt/fat/
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-5-2">&lt;a class="lnlinks" href="#hl-5-2">2&lt;/a>&lt;/span>&lt;span class="cl">mkdir /mnt/fat/sources
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-5-3">&lt;a class="lnlinks" href="#hl-5-3">3&lt;/a>&lt;/span>&lt;span class="cl">cp /media/cdrom/sources/boot.wim /mnt/fat/sources/
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">rsync -ai --exclude&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;sources/&amp;#39;&lt;/span> /media/cdrom/ /mnt/fat/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mkdir /mnt/fat/sources
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">cp /media/cdrom/sources/boot.wim /mnt/fat/sources/
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul></description></item><item><title>Пакетный менеджер для Windows. WinGet</title><link>https://yamadharma.github.io/ru/post/2023/10/01/package-manager-windows-winget/</link><pubDate>Sun, 01 Oct 2023 18:53:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/10/01/package-manager-windows-winget/</guid><description>&lt;p>Пакетный менеджер для Windows. WinGet.&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
@@ -708,11 +708,11 @@
 &lt;ul>
 &lt;li>
 &lt;p>Получение списка уже установленных приложений:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-0-1">&lt;a class="lnlinks" href="#hl-0-1">1&lt;/a>&lt;/span>&lt;span class="cl">winget list
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">winget list
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Посмотреть список подключённых репозиториев:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-1-1">&lt;a class="lnlinks" href="#hl-1-1">1&lt;/a>&lt;/span>&lt;span class="cl">winget &lt;span class="nb">source&lt;/span> list
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">winget &lt;span class="nb">source&lt;/span> list
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
 &lt;li>По умолчанию подключено два репозитория: Магазин Windows и WinGet.&lt;/li>
 &lt;/ul>
@@ -722,19 +722,19 @@
 &lt;ul>
 &lt;li>
 &lt;p>Найти пакет в репозитории:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-2-1">&lt;a class="lnlinks" href="#hl-2-1">1&lt;/a>&lt;/span>&lt;span class="cl">winget search office
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">winget search office
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Можно искать не по подстроке в названии, а по категории (прозвищу):&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-3-1">&lt;a class="lnlinks" href="#hl-3-1">1&lt;/a>&lt;/span>&lt;span class="cl">winget search --moniker office
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">winget search --moniker office
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Можно задать репозиторий:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-4-1">&lt;a class="lnlinks" href="#hl-4-1">1&lt;/a>&lt;/span>&lt;span class="cl">winget search --moniker office -s winget
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">winget search --moniker office -s winget
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Если нужно строгое вхождение, то к строке запроса нужно добавить ключ &lt;code>-e&lt;/code>, в этом случае будет искаться полное совпадение с учетом регистра:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-5-1">&lt;a class="lnlinks" href="#hl-5-1">1&lt;/a>&lt;/span>&lt;span class="cl">winget search --moniker office -s winget -e
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">winget search --moniker office -s winget -e
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Фильтры для запросов:&lt;/p>
@@ -747,18 +747,18 @@
 &lt;/li>
 &lt;li>
 &lt;p>Посмотреть информацию о пакете:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-6-1">&lt;a class="lnlinks" href="#hl-6-1">1&lt;/a>&lt;/span>&lt;span class="cl">winget show &lt;span class="s2">&amp;#34;WPS Office&amp;#34;&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">winget show &lt;span class="s2">&amp;#34;WPS Office&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Получения списка версий доступных в репозитории:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-7-1">&lt;a class="lnlinks" href="#hl-7-1">1&lt;/a>&lt;/span>&lt;span class="cl">winget show Kingsoft.WPSOffice --versions
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">winget show Kingsoft.WPSOffice --versions
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="установка-пакета">&lt;span class="section-num">2.3&lt;/span> Установка пакета&lt;/h3>
 &lt;ul>
 &lt;li>
 &lt;p>Установить пакет:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-8-1">&lt;a class="lnlinks" href="#hl-8-1">1&lt;/a>&lt;/span>&lt;span class="cl">winget install Kingsoft.WPSOffice
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">winget install Kingsoft.WPSOffice
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Приложение будет установлено с параметрами по умолчанию.&lt;/p>
@@ -775,53 +775,53 @@
 &lt;/li>
 &lt;li>
 &lt;p>Скачивание пакета в папку &lt;em>Загрузки&lt;/em>:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-9-1">&lt;a class="lnlinks" href="#hl-9-1">1&lt;/a>&lt;/span>&lt;span class="cl">winget download RARLab.WinRAR
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">winget download RARLab.WinRAR
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Скачать 32-разрядную английскую версию:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-10-1">&lt;a class="lnlinks" href="#hl-10-1">1&lt;/a>&lt;/span>&lt;span class="cl">winget download RARLab.WinRAR --locale en-US -a X86
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">winget download RARLab.WinRAR --locale en-US -a X86
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="обновление-пакетов">&lt;span class="section-num">2.4&lt;/span> Обновление пакетов&lt;/h3>
 &lt;ul>
 &lt;li>Обновить отдельный пакет:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-11-1">&lt;a class="lnlinks" href="#hl-11-1">1&lt;/a>&lt;/span>&lt;span class="cl">winget upgrade Microsoft.VCRedist.2015+.x64
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">winget upgrade Microsoft.VCRedist.2015+.x64
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Обновить все пакеты:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-12-1">&lt;a class="lnlinks" href="#hl-12-1">1&lt;/a>&lt;/span>&lt;span class="cl">winget upgrade --all
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">winget upgrade --all
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Зафиксировать текущую версию пакета и сделать его недоступным для обновления:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-13-1">&lt;a class="lnlinks" href="#hl-13-1">1&lt;/a>&lt;/span>&lt;span class="cl">winget pin add RARLab.WinRAR
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">winget pin add RARLab.WinRAR
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Пакет может быть обновлён командой обновления пакета или добавлением к &lt;code>upgrade --all&lt;/code> ключа &lt;code>--include-pinned&lt;/code>.&lt;/li>
 &lt;li>Полностью заблокировать обновление пакета:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-14-1">&lt;a class="lnlinks" href="#hl-14-1">1&lt;/a>&lt;/span>&lt;span class="cl">winget pin add RARLab.WinRAR --blocking
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">winget pin add RARLab.WinRAR --blocking
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Закрепление пакета в рамках определённой версии:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-15-1">&lt;a class="lnlinks" href="#hl-15-1">1&lt;/a>&lt;/span>&lt;span class="cl">winget pin add LibreOffice --version 7.4.*
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">winget pin add LibreOffice --version 7.4.*
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Просмотр закреплённых пакетов:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-16-1">&lt;a class="lnlinks" href="#hl-16-1">1&lt;/a>&lt;/span>&lt;span class="cl">winget pin list
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">winget pin list
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Для удаления закрепления:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-17-1">&lt;a class="lnlinks" href="#hl-17-1">1&lt;/a>&lt;/span>&lt;span class="cl">winget pin remove LibreOffice
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">winget pin remove LibreOffice
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Удалить установленную программу:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-18-1">&lt;a class="lnlinks" href="#hl-18-1">1&lt;/a>&lt;/span>&lt;span class="cl">winget uninstall LibreOffice
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">winget uninstall LibreOffice
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="список-программного-обеспечения">&lt;span class="section-num">2.5&lt;/span> Список программного обеспечения&lt;/h3>
 &lt;ul>
 &lt;li>
 &lt;p>Экспортировать список установленного программного обеспечения:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-19-1">&lt;a class="lnlinks" href="#hl-19-1">1&lt;/a>&lt;/span>&lt;span class="cl">winget &lt;span class="nb">export&lt;/span> -o C:&lt;span class="se">\A&lt;/span>DM&lt;span class="se">\m&lt;/span>yapp.json
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">winget &lt;span class="nb">export&lt;/span> -o C:&lt;span class="se">\A&lt;/span>DM&lt;span class="se">\m&lt;/span>yapp.json
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
 &lt;li>Если требуется указать конкретные версии, то добавьте ключ &lt;code>--include-versions&lt;/code>.&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>
 &lt;p>Автоматической установки программного обеспечения из списка:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-20-1">&lt;a class="lnlinks" href="#hl-20-1">1&lt;/a>&lt;/span>&lt;span class="cl">winget import -i C:&lt;span class="se">\A&lt;/span>DM&lt;span class="se">\m&lt;/span>yapp.json
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">winget import -i C:&lt;span class="se">\A&lt;/span>DM&lt;span class="se">\m&lt;/span>yapp.json
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Ключи:&lt;/p>
@@ -835,7 +835,7 @@
 &lt;/li>
 &lt;li>
 &lt;p>Вариант команды импорта:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-21-1">&lt;a class="lnlinks" href="#hl-21-1">1&lt;/a>&lt;/span>&lt;span class="cl">winget import -i C:&lt;span class="se">\A&lt;/span>DM&lt;span class="se">\m&lt;/span>yapp.json --accept-source-agreements --accept-package-agreements --ignore-unavailable --no-upgrade
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">winget import -i C:&lt;span class="se">\A&lt;/span>DM&lt;span class="se">\m&lt;/span>yapp.json --accept-source-agreements --accept-package-agreements --ignore-unavailable --no-upgrade
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul></description></item><item><title>Перенос настроек профиля пользователя Windows</title><link>https://yamadharma.github.io/ru/post/2023/09/26/transferring-windows-user-profile/</link><pubDate>Tue, 26 Sep 2023 14:39:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/09/26/transferring-windows-user-profile/</guid><description>&lt;details class="print:hidden xl:hidden" >
 &lt;summary>Содержание&lt;/summary>
@@ -1005,15 +1005,15 @@
 &lt;h2 id="установка">&lt;span class="section-num">2&lt;/span> Установка&lt;/h2>
 &lt;ul>
 &lt;li>Установка с помощью Chocolatey (см. &lt;a href="https://yamadharma.github.io/ru/post/2021/01/18/package-manager-windows-chocolatey/">Пакетный менеджер для Windows. Chocolatey&lt;/a>):
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-0-1">&lt;a class="lnlinks" href="#hl-0-1">1&lt;/a>&lt;/span>&lt;span class="cl">choco install msys2
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install msys2
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Далее, возможно, придётся перелогиниться или перегрузиться.&lt;/li>
 &lt;li>Запустите &lt;code>msys2&lt;/code> (через ярлык или через поиск).&lt;/li>
 &lt;li>Возможно будет необходимо обновить основные системные пакеты MSYS2 и базу данных с информацией об доступных пакетах:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-1-1">&lt;a class="lnlinks" href="#hl-1-1">1&lt;/a>&lt;/span>&lt;span class="cl">pacman -Syu
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pacman -Syu
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Также может потребоваться обновить другие установленные пакеты:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-2-1">&lt;a class="lnlinks" href="#hl-2-1">1&lt;/a>&lt;/span>&lt;span class="cl">pacman -Su
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pacman -Su
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h2 id="настройка">&lt;span class="section-num">3&lt;/span> Настройка&lt;/h2>
@@ -1023,7 +1023,7 @@
 &lt;li>Все они запускают команду &lt;code>msys2_shell.cmd&lt;/code> с разными параметрами.&lt;/li>
 &lt;li>Этот пакетный фал запускает необходимое окружение в параметрами, заданными в соответствующем &lt;code>.ini&lt;/code>-файле.&lt;/li>
 &lt;li>Например, ярлык &lt;code>MSYS2 MinGW x64&lt;/code> содержит в себе следующую командную строку запуска:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-3-1">&lt;a class="lnlinks" href="#hl-3-1">1&lt;/a>&lt;/span>&lt;span class="cl">C:&lt;span class="se">\t&lt;/span>ools&lt;span class="se">\m&lt;/span>sys64&lt;span class="se">\m&lt;/span>sys2_shell.cmd -mingw64
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">C:&lt;span class="se">\t&lt;/span>ools&lt;span class="se">\m&lt;/span>sys64&lt;span class="se">\m&lt;/span>sys2_shell.cmd -mingw64
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Будем использовать окружение &lt;code>mingw64&lt;/code>.&lt;/li>
 &lt;/ul>
@@ -1041,7 +1041,7 @@
 &lt;ul>
 &lt;li>&lt;code>PATH&lt;/code> можно поменять командой &lt;code>export&lt;/code>.&lt;/li>
 &lt;li>Самый простой способ добавить что-либо в конец &lt;code>PATH&lt;/code> (на примере добавления каталога &lt;code>c:\opt\Нужные программы&lt;/code>):
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-4-1">&lt;a class="lnlinks" href="#hl-4-1">1&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">PATH&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="nv">$PATH&lt;/span>:&lt;span class="s1">&amp;#39;/c/opt/Нужные программы&amp;#39;&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">PATH&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="nv">$PATH&lt;/span>:&lt;span class="s1">&amp;#39;/c/opt/Нужные программы&amp;#39;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Следует обратить внимание на нотацию Cygwin:
 &lt;ul>
@@ -1056,7 +1056,7 @@
 &lt;h4 id="импорт-path-из-переменной-path-windows">&lt;span class="section-num">3.3.2&lt;/span> Импорт $PATH из переменной %Path% Windows&lt;/h4>
 &lt;ul>
 &lt;li>Можно в ini-файле &lt;code>msys2.ini&lt;/code> раскомментировать строчку с переменной &lt;code>MSYS2_PATH_TYPE&lt;/code>, в результате чего в $PATH будут наследоваться значения из системной переменной окружения %Path% Windows:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-5-1">&lt;a class="lnlinks" href="#hl-5-1">1&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="nb">set&lt;/span> &lt;span class="nv">MSYS2_PATH_TYPE&lt;/span>&lt;span class="o">=&lt;/span>inherit
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">set&lt;/span> &lt;span class="nv">MSYS2_PATH_TYPE&lt;/span>&lt;span class="o">=&lt;/span>inherit
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>То же самое нужно сделать для ini-файла запускаемого профиля, например, отредактировать файл &lt;code>mingw64.ini&lt;/code>.&lt;/li>
 &lt;/ul>
@@ -1066,7 +1066,7 @@
 &lt;ul>
 &lt;li>
 &lt;p>Средства разработки содержит группа &lt;code>mingw-w64-x86_64-toolchain&lt;/code>:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-6-1">&lt;a class="lnlinks" href="#hl-6-1">1&lt;/a>&lt;/span>&lt;span class="cl">pacman -S mingw-w64-x86_64-toolchain
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pacman -S mingw-w64-x86_64-toolchain
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
 &lt;li>Будут предложены для установки несколько пакетов.&lt;/li>
 &lt;li>Можно установить все сразу, или избранные.&lt;/li>
@@ -1076,7 +1076,7 @@
 &lt;h4 id="git">&lt;span class="section-num">4.1.2&lt;/span> git&lt;/h4>
 &lt;ul>
 &lt;li>Установка git:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-7-1">&lt;a class="lnlinks" href="#hl-7-1">1&lt;/a>&lt;/span>&lt;span class="cl">pacman -S git
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pacman -S git
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="терминалы">&lt;span class="section-num">4.2&lt;/span> Терминалы&lt;/h3>
@@ -1089,14 +1089,14 @@
 &lt;ul>
 &lt;li>Сайт: &lt;a href="https://konsole.kde.org/" target="_blank" rel="noopener">https://konsole.kde.org/&lt;/a>.&lt;/li>
 &lt;li>Установите терминал &lt;em>Konsole&lt;/em>:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-8-1">&lt;a class="lnlinks" href="#hl-8-1">1&lt;/a>&lt;/span>&lt;span class="cl">pacman -S mingw-w64-x86_64-konsole
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pacman -S mingw-w64-x86_64-konsole
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>По умолчанию &lt;code>konsole&lt;/code> запускает powershell.&lt;/li>
 &lt;li>Заменим оболочку на mingw64.&lt;/li>
 &lt;li>В строке меню окна Konsole выберите &lt;em>Настройки&lt;/em> &amp;gt; &lt;em>Создать новый профиль&lt;/em>.&lt;/li>
 &lt;li>Выберите его в качестве профиля по умолчанию, чтобы всегда открывать среду &lt;em>msys2&lt;/em> при запуске.&lt;/li>
 &lt;li>Добавьте имя профиля и следующую команду:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-9-1">&lt;a class="lnlinks" href="#hl-9-1">1&lt;/a>&lt;/span>&lt;span class="cl">C:&lt;span class="se">\t&lt;/span>ools&lt;span class="se">\m&lt;/span>sys64&lt;span class="se">\m&lt;/span>sys2_shell.cmd -defterm -here -no-start -mingw64
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">C:&lt;span class="se">\t&lt;/span>ools&lt;span class="se">\m&lt;/span>sys64&lt;span class="se">\m&lt;/span>sys2_shell.cmd -defterm -here -no-start -mingw64
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Закройте и перезапустите Konsole.&lt;/li>
 &lt;/ul>
@@ -1104,47 +1104,47 @@
 &lt;h4 id="midnight-commander">&lt;span class="section-num">4.3.1&lt;/span> Midnight commander&lt;/h4>
 &lt;ul>
 &lt;li>Установите Midnight commander:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-10-1">&lt;a class="lnlinks" href="#hl-10-1">1&lt;/a>&lt;/span>&lt;span class="cl">pacman -S mc
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pacman -S mc
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="просмотр-pdf">&lt;span class="section-num">4.4&lt;/span> Просмотр Pdf&lt;/h3>
 &lt;h4 id="evince">&lt;span class="section-num">4.4.1&lt;/span> Evince&lt;/h4>
 &lt;ul>
 &lt;li>Установите &lt;em>Evince&lt;/em>:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-11-1">&lt;a class="lnlinks" href="#hl-11-1">1&lt;/a>&lt;/span>&lt;span class="cl">pacman -S mingw-w64-x86_64-evince
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pacman -S mingw-w64-x86_64-evince
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h4 id="okular">&lt;span class="section-num">4.4.2&lt;/span> Okular&lt;/h4>
 &lt;ul>
 &lt;li>Установим okular:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-12-1">&lt;a class="lnlinks" href="#hl-12-1">1&lt;/a>&lt;/span>&lt;span class="cl">pacman -S mingw-w64-x86_64-okular
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pacman -S mingw-w64-x86_64-okular
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="шрифты">&lt;span class="section-num">4.5&lt;/span> Шрифты&lt;/h3>
 &lt;h4 id="iosevka">&lt;span class="section-num">4.5.1&lt;/span> Iosevka&lt;/h4>
 &lt;ul>
 &lt;li>Шрифты Iosevka с патчами от nerd-fonts:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-13-1">&lt;a class="lnlinks" href="#hl-13-1">1&lt;/a>&lt;/span>&lt;span class="cl">pacman -S mingw-w64-x86_64-ttf-iosevka-nerd mingw-w64-x86_64-ttf-iosevkaterm-nerd
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pacman -S mingw-w64-x86_64-ttf-iosevka-nerd mingw-w64-x86_64-ttf-iosevkaterm-nerd
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Подключить эти шрифты к оформлению Konsole у меня не получилось, поэтому я установил шрифты через Chocolatey:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-14-1">&lt;a class="lnlinks" href="#hl-14-1">1&lt;/a>&lt;/span>&lt;span class="cl">choco install nerd-fonts-iosevka nerd-fonts-iosevkaterm -y
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install nerd-fonts-iosevka nerd-fonts-iosevkaterm -y
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="редакторы">&lt;span class="section-num">4.6&lt;/span> Редакторы&lt;/h3>
 &lt;h4 id="neovim">&lt;span class="section-num">4.6.1&lt;/span> Neovim&lt;/h4>
 &lt;ul>
 &lt;li>Установим &lt;em>neovim&lt;/em>:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-15-1">&lt;a class="lnlinks" href="#hl-15-1">1&lt;/a>&lt;/span>&lt;span class="cl">pacman -S mingw-w64-x86_64-neovim
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pacman -S mingw-w64-x86_64-neovim
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Также можно установить его графический вариант:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-16-1">&lt;a class="lnlinks" href="#hl-16-1">1&lt;/a>&lt;/span>&lt;span class="cl">pacman -S mingw-w64-x86_64-neovim-qt
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pacman -S mingw-w64-x86_64-neovim-qt
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="утилиты-для-удобства">&lt;span class="section-num">4.7&lt;/span> Утилиты для удобства&lt;/h3>
 &lt;h4 id="tmux">&lt;span class="section-num">4.7.1&lt;/span> tmux&lt;/h4>
 &lt;ul>
 &lt;li>Установим tmux:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-17-1">&lt;a class="lnlinks" href="#hl-17-1">1&lt;/a>&lt;/span>&lt;span class="cl">pacman -S tmux
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pacman -S tmux
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul></description></item><item><title>MinGW-w64. Приложения Unix под Windows</title><link>https://yamadharma.github.io/ru/post/2023/09/22/mingw-w64-unix-applications-windows/</link><pubDate>Fri, 22 Sep 2023 13:46:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/09/22/mingw-w64-unix-applications-windows/</guid><description>&lt;p>MinGW-w64. Приложения Unix под Windows.&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
@@ -1254,7 +1254,7 @@
 &lt;li>Установка:
 &lt;ul>
 &lt;li>Winget
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-0-1">&lt;a class="lnlinks" href="#hl-0-1">1&lt;/a>&lt;/span>&lt;span class="cl">winget install GlazeWM
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">winget install GlazeWM
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;/li>
@@ -1285,7 +1285,7 @@
 &lt;li>Установка
 &lt;ul>
 &lt;li>Chocolatey (см. &lt;a href="https://yamadharma.github.io/ru/post/2021/01/18/package-manager-windows-chocolatey/">Пакетный менеджер для Windows. Chocolatey&lt;/a>):
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-1-1">&lt;a class="lnlinks" href="#hl-1-1">1&lt;/a>&lt;/span>&lt;span class="cl">choco install workspacer
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install workspacer
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;/li>
@@ -1318,62 +1318,62 @@
 &lt;/ul>
 &lt;/li>
 &lt;li>Файл предназначен для 64-разрядной Windows. Сохраните его с именем &lt;code>autounattend.xml&lt;/code> в корень установочной флэшки.
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-xml" data-lang="xml">&lt;span class="line">&lt;span class="ln" id="hl-0-1">&lt;a class="lnlinks" href="#hl-0-1"> 1&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="cp">&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;utf-8&amp;#34;?&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-2">&lt;a class="lnlinks" href="#hl-0-2"> 2&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="c">&amp;lt;!-- https://www.outsidethebox.ms/19924/ --&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-3">&lt;a class="lnlinks" href="#hl-0-3"> 3&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="nt">&amp;lt;unattend&lt;/span> &lt;span class="na">xmlns=&lt;/span>&lt;span class="s">&amp;#34;urn:schemas-microsoft-com:unattend&amp;#34;&lt;/span>&lt;span class="nt">&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-4">&lt;a class="lnlinks" href="#hl-0-4"> 4&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;settings&lt;/span> &lt;span class="na">pass=&lt;/span>&lt;span class="s">&amp;#34;windowsPE&amp;#34;&lt;/span>&lt;span class="nt">&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-5">&lt;a class="lnlinks" href="#hl-0-5"> 5&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;component&lt;/span> &lt;span class="na">name=&lt;/span>&lt;span class="s">&amp;#34;Microsoft-Windows-International-Core-WinPE&amp;#34;&lt;/span> &lt;span class="na">processorArchitecture=&lt;/span>&lt;span class="s">&amp;#34;amd64&amp;#34;&lt;/span> &lt;span class="na">publicKeyToken=&lt;/span>&lt;span class="s">&amp;#34;31bf3856ad364e35&amp;#34;&lt;/span> &lt;span class="na">language=&lt;/span>&lt;span class="s">&amp;#34;neutral&amp;#34;&lt;/span> &lt;span class="na">versionScope=&lt;/span>&lt;span class="s">&amp;#34;nonSxS&amp;#34;&lt;/span> &lt;span class="na">xmlns:wcm=&lt;/span>&lt;span class="s">&amp;#34;http://schemas.microsoft.com/WMIConfig/2002/State&amp;#34;&lt;/span> &lt;span class="na">xmlns:xsi=&lt;/span>&lt;span class="s">&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34;&lt;/span>&lt;span class="nt">&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-6">&lt;a class="lnlinks" href="#hl-0-6"> 6&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;InputLocale&amp;gt;&lt;/span>en-US; ru-RU&lt;span class="nt">&amp;lt;/InputLocale&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-7">&lt;a class="lnlinks" href="#hl-0-7"> 7&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;SystemLocale&amp;gt;&lt;/span>ru-RU&lt;span class="nt">&amp;lt;/SystemLocale&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-8">&lt;a class="lnlinks" href="#hl-0-8"> 8&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;UILanguage&amp;gt;&lt;/span>ru-RU&lt;span class="nt">&amp;lt;/UILanguage&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-9">&lt;a class="lnlinks" href="#hl-0-9"> 9&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;UserLocale&amp;gt;&lt;/span>ru-RU&lt;span class="nt">&amp;lt;/UserLocale&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-10">&lt;a class="lnlinks" href="#hl-0-10">10&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;/component&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-11">&lt;a class="lnlinks" href="#hl-0-11">11&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;component&lt;/span> &lt;span class="na">name=&lt;/span>&lt;span class="s">&amp;#34;Microsoft-Windows-Setup&amp;#34;&lt;/span> &lt;span class="na">processorArchitecture=&lt;/span>&lt;span class="s">&amp;#34;amd64&amp;#34;&lt;/span> &lt;span class="na">publicKeyToken=&lt;/span>&lt;span class="s">&amp;#34;31bf3856ad364e35&amp;#34;&lt;/span> &lt;span class="na">language=&lt;/span>&lt;span class="s">&amp;#34;neutral&amp;#34;&lt;/span> &lt;span class="na">versionScope=&lt;/span>&lt;span class="s">&amp;#34;nonSxS&amp;#34;&lt;/span> &lt;span class="na">xmlns:wcm=&lt;/span>&lt;span class="s">&amp;#34;http://schemas.microsoft.com/WMIConfig/2002/State&amp;#34;&lt;/span> &lt;span class="na">xmlns:xsi=&lt;/span>&lt;span class="s">&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34;&lt;/span>&lt;span class="nt">&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-12">&lt;a class="lnlinks" href="#hl-0-12">12&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;UserData&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-13">&lt;a class="lnlinks" href="#hl-0-13">13&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="c">&amp;lt;!-- KMS keys https://docs.microsoft.com/windows-server/get-started/kmsclientkeys --&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-14">&lt;a class="lnlinks" href="#hl-0-14">14&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;ProductKey&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-15">&lt;a class="lnlinks" href="#hl-0-15">15&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;Key&amp;gt;&lt;/span>NW6C2-QMPVW-D7KKK-3GKT6-VCFB2&lt;span class="nt">&amp;lt;/Key&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-16">&lt;a class="lnlinks" href="#hl-0-16">16&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;/ProductKey&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-17">&lt;a class="lnlinks" href="#hl-0-17">17&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;AcceptEula&amp;gt;&lt;/span>true&lt;span class="nt">&amp;lt;/AcceptEula&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-18">&lt;a class="lnlinks" href="#hl-0-18">18&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;/UserData&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-19">&lt;a class="lnlinks" href="#hl-0-19">19&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;/component&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-20">&lt;a class="lnlinks" href="#hl-0-20">20&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;/settings&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-21">&lt;a class="lnlinks" href="#hl-0-21">21&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;settings&lt;/span> &lt;span class="na">pass=&lt;/span>&lt;span class="s">&amp;#34;oobeSystem&amp;#34;&lt;/span>&lt;span class="nt">&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-22">&lt;a class="lnlinks" href="#hl-0-22">22&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;component&lt;/span> &lt;span class="na">name=&lt;/span>&lt;span class="s">&amp;#34;Microsoft-Windows-International-Core&amp;#34;&lt;/span> &lt;span class="na">processorArchitecture=&lt;/span>&lt;span class="s">&amp;#34;amd64&amp;#34;&lt;/span> &lt;span class="na">publicKeyToken=&lt;/span>&lt;span class="s">&amp;#34;31bf3856ad364e35&amp;#34;&lt;/span> &lt;span class="na">language=&lt;/span>&lt;span class="s">&amp;#34;neutral&amp;#34;&lt;/span> &lt;span class="na">versionScope=&lt;/span>&lt;span class="s">&amp;#34;nonSxS&amp;#34;&lt;/span> &lt;span class="na">xmlns:wcm=&lt;/span>&lt;span class="s">&amp;#34;http://schemas.microsoft.com/WMIConfig/2002/State&amp;#34;&lt;/span> &lt;span class="na">xmlns:xsi=&lt;/span>&lt;span class="s">&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34;&lt;/span>&lt;span class="nt">&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-23">&lt;a class="lnlinks" href="#hl-0-23">23&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;InputLocale&amp;gt;&lt;/span>en-US; ru-RU&lt;span class="nt">&amp;lt;/InputLocale&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-24">&lt;a class="lnlinks" href="#hl-0-24">24&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;SystemLocale&amp;gt;&lt;/span>ru-RU&lt;span class="nt">&amp;lt;/SystemLocale&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-25">&lt;a class="lnlinks" href="#hl-0-25">25&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;UILanguage&amp;gt;&lt;/span>ru-RU&lt;span class="nt">&amp;lt;/UILanguage&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-26">&lt;a class="lnlinks" href="#hl-0-26">26&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;UserLocale&amp;gt;&lt;/span>ru-RU&lt;span class="nt">&amp;lt;/UserLocale&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-27">&lt;a class="lnlinks" href="#hl-0-27">27&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;/component&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-28">&lt;a class="lnlinks" href="#hl-0-28">28&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;component&lt;/span> &lt;span class="na">name=&lt;/span>&lt;span class="s">&amp;#34;Microsoft-Windows-Shell-Setup&amp;#34;&lt;/span> &lt;span class="na">processorArchitecture=&lt;/span>&lt;span class="s">&amp;#34;amd64&amp;#34;&lt;/span> &lt;span class="na">publicKeyToken=&lt;/span>&lt;span class="s">&amp;#34;31bf3856ad364e35&amp;#34;&lt;/span> &lt;span class="na">language=&lt;/span>&lt;span class="s">&amp;#34;neutral&amp;#34;&lt;/span> &lt;span class="na">versionScope=&lt;/span>&lt;span class="s">&amp;#34;nonSxS&amp;#34;&lt;/span> &lt;span class="na">xmlns:wcm=&lt;/span>&lt;span class="s">&amp;#34;http://schemas.microsoft.com/WMIConfig/2002/State&amp;#34;&lt;/span> &lt;span class="na">xmlns:xsi=&lt;/span>&lt;span class="s">&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34;&lt;/span>&lt;span class="nt">&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-29">&lt;a class="lnlinks" href="#hl-0-29">29&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;OOBE&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-30">&lt;a class="lnlinks" href="#hl-0-30">30&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;HideOnlineAccountScreens&amp;gt;&lt;/span>true&lt;span class="nt">&amp;lt;/HideOnlineAccountScreens&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-31">&lt;a class="lnlinks" href="#hl-0-31">31&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;ProtectYourPC&amp;gt;&lt;/span>3&lt;span class="nt">&amp;lt;/ProtectYourPC&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-32">&lt;a class="lnlinks" href="#hl-0-32">32&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;/OOBE&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-33">&lt;a class="lnlinks" href="#hl-0-33">33&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;UserAccounts&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-34">&lt;a class="lnlinks" href="#hl-0-34">34&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;LocalAccounts&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-35">&lt;a class="lnlinks" href="#hl-0-35">35&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;LocalAccount&lt;/span> &lt;span class="na">wcm:action=&lt;/span>&lt;span class="s">&amp;#34;add&amp;#34;&lt;/span>&lt;span class="nt">&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-36">&lt;a class="lnlinks" href="#hl-0-36">36&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;Group&amp;gt;&lt;/span>Administrators&lt;span class="nt">&amp;lt;/Group&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-37">&lt;a class="lnlinks" href="#hl-0-37">37&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;Name&amp;gt;&lt;/span>Admin&lt;span class="nt">&amp;lt;/Name&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-38">&lt;a class="lnlinks" href="#hl-0-38">38&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="c">&amp;lt;!--&amp;lt;Password&amp;gt;
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-39">&lt;a class="lnlinks" href="#hl-0-39">39&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="c"> &amp;lt;Value&amp;gt;goofy reward replica danger&amp;lt;/Value&amp;gt;
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-40">&lt;a class="lnlinks" href="#hl-0-40">40&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="c"> &amp;lt;PlainText&amp;gt;true&amp;lt;/PlainText&amp;gt;
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-41">&lt;a class="lnlinks" href="#hl-0-41">41&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="c"> &amp;lt;/Password&amp;gt; --&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-42">&lt;a class="lnlinks" href="#hl-0-42">42&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;/LocalAccount&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-43">&lt;a class="lnlinks" href="#hl-0-43">43&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;/LocalAccounts&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-44">&lt;a class="lnlinks" href="#hl-0-44">44&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;/UserAccounts&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-45">&lt;a class="lnlinks" href="#hl-0-45">45&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;AutoLogon&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-46">&lt;a class="lnlinks" href="#hl-0-46">46&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;Password&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-47">&lt;a class="lnlinks" href="#hl-0-47">47&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;Value&amp;gt;&lt;/span>123456&lt;span class="nt">&amp;lt;/Value&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-48">&lt;a class="lnlinks" href="#hl-0-48">48&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;PlainText&amp;gt;&lt;/span>true&lt;span class="nt">&amp;lt;/PlainText&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-49">&lt;a class="lnlinks" href="#hl-0-49">49&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;/Password&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-50">&lt;a class="lnlinks" href="#hl-0-50">50&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;Username&amp;gt;&lt;/span>Admin&lt;span class="nt">&amp;lt;/Username&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-51">&lt;a class="lnlinks" href="#hl-0-51">51&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;LogonCount&amp;gt;&lt;/span>1&lt;span class="nt">&amp;lt;/LogonCount&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-52">&lt;a class="lnlinks" href="#hl-0-52">52&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;Enabled&amp;gt;&lt;/span>true&lt;span class="nt">&amp;lt;/Enabled&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-53">&lt;a class="lnlinks" href="#hl-0-53">53&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;/AutoLogon&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-54">&lt;a class="lnlinks" href="#hl-0-54">54&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;/component&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-55">&lt;a class="lnlinks" href="#hl-0-55">55&lt;/a>&lt;/span>&lt;span class="cl"> &lt;span class="nt">&amp;lt;/settings&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-56">&lt;a class="lnlinks" href="#hl-0-56">56&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="nt">&amp;lt;/unattend&amp;gt;&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-xml" data-lang="xml">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;utf-8&amp;#34;?&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&amp;lt;!-- https://www.outsidethebox.ms/19924/ --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nt">&amp;lt;unattend&lt;/span> &lt;span class="na">xmlns=&lt;/span>&lt;span class="s">&amp;#34;urn:schemas-microsoft-com:unattend&amp;#34;&lt;/span>&lt;span class="nt">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;settings&lt;/span> &lt;span class="na">pass=&lt;/span>&lt;span class="s">&amp;#34;windowsPE&amp;#34;&lt;/span>&lt;span class="nt">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;component&lt;/span> &lt;span class="na">name=&lt;/span>&lt;span class="s">&amp;#34;Microsoft-Windows-International-Core-WinPE&amp;#34;&lt;/span> &lt;span class="na">processorArchitecture=&lt;/span>&lt;span class="s">&amp;#34;amd64&amp;#34;&lt;/span> &lt;span class="na">publicKeyToken=&lt;/span>&lt;span class="s">&amp;#34;31bf3856ad364e35&amp;#34;&lt;/span> &lt;span class="na">language=&lt;/span>&lt;span class="s">&amp;#34;neutral&amp;#34;&lt;/span> &lt;span class="na">versionScope=&lt;/span>&lt;span class="s">&amp;#34;nonSxS&amp;#34;&lt;/span> &lt;span class="na">xmlns:wcm=&lt;/span>&lt;span class="s">&amp;#34;http://schemas.microsoft.com/WMIConfig/2002/State&amp;#34;&lt;/span> &lt;span class="na">xmlns:xsi=&lt;/span>&lt;span class="s">&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34;&lt;/span>&lt;span class="nt">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;InputLocale&amp;gt;&lt;/span>en-US; ru-RU&lt;span class="nt">&amp;lt;/InputLocale&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;SystemLocale&amp;gt;&lt;/span>ru-RU&lt;span class="nt">&amp;lt;/SystemLocale&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;UILanguage&amp;gt;&lt;/span>ru-RU&lt;span class="nt">&amp;lt;/UILanguage&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;UserLocale&amp;gt;&lt;/span>ru-RU&lt;span class="nt">&amp;lt;/UserLocale&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;/component&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;component&lt;/span> &lt;span class="na">name=&lt;/span>&lt;span class="s">&amp;#34;Microsoft-Windows-Setup&amp;#34;&lt;/span> &lt;span class="na">processorArchitecture=&lt;/span>&lt;span class="s">&amp;#34;amd64&amp;#34;&lt;/span> &lt;span class="na">publicKeyToken=&lt;/span>&lt;span class="s">&amp;#34;31bf3856ad364e35&amp;#34;&lt;/span> &lt;span class="na">language=&lt;/span>&lt;span class="s">&amp;#34;neutral&amp;#34;&lt;/span> &lt;span class="na">versionScope=&lt;/span>&lt;span class="s">&amp;#34;nonSxS&amp;#34;&lt;/span> &lt;span class="na">xmlns:wcm=&lt;/span>&lt;span class="s">&amp;#34;http://schemas.microsoft.com/WMIConfig/2002/State&amp;#34;&lt;/span> &lt;span class="na">xmlns:xsi=&lt;/span>&lt;span class="s">&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34;&lt;/span>&lt;span class="nt">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;UserData&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c">&amp;lt;!-- KMS keys https://docs.microsoft.com/windows-server/get-started/kmsclientkeys --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;ProductKey&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;Key&amp;gt;&lt;/span>NW6C2-QMPVW-D7KKK-3GKT6-VCFB2&lt;span class="nt">&amp;lt;/Key&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;/ProductKey&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;AcceptEula&amp;gt;&lt;/span>true&lt;span class="nt">&amp;lt;/AcceptEula&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;/UserData&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;/component&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;/settings&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;settings&lt;/span> &lt;span class="na">pass=&lt;/span>&lt;span class="s">&amp;#34;oobeSystem&amp;#34;&lt;/span>&lt;span class="nt">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;component&lt;/span> &lt;span class="na">name=&lt;/span>&lt;span class="s">&amp;#34;Microsoft-Windows-International-Core&amp;#34;&lt;/span> &lt;span class="na">processorArchitecture=&lt;/span>&lt;span class="s">&amp;#34;amd64&amp;#34;&lt;/span> &lt;span class="na">publicKeyToken=&lt;/span>&lt;span class="s">&amp;#34;31bf3856ad364e35&amp;#34;&lt;/span> &lt;span class="na">language=&lt;/span>&lt;span class="s">&amp;#34;neutral&amp;#34;&lt;/span> &lt;span class="na">versionScope=&lt;/span>&lt;span class="s">&amp;#34;nonSxS&amp;#34;&lt;/span> &lt;span class="na">xmlns:wcm=&lt;/span>&lt;span class="s">&amp;#34;http://schemas.microsoft.com/WMIConfig/2002/State&amp;#34;&lt;/span> &lt;span class="na">xmlns:xsi=&lt;/span>&lt;span class="s">&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34;&lt;/span>&lt;span class="nt">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;InputLocale&amp;gt;&lt;/span>en-US; ru-RU&lt;span class="nt">&amp;lt;/InputLocale&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;SystemLocale&amp;gt;&lt;/span>ru-RU&lt;span class="nt">&amp;lt;/SystemLocale&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;UILanguage&amp;gt;&lt;/span>ru-RU&lt;span class="nt">&amp;lt;/UILanguage&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;UserLocale&amp;gt;&lt;/span>ru-RU&lt;span class="nt">&amp;lt;/UserLocale&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;/component&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;component&lt;/span> &lt;span class="na">name=&lt;/span>&lt;span class="s">&amp;#34;Microsoft-Windows-Shell-Setup&amp;#34;&lt;/span> &lt;span class="na">processorArchitecture=&lt;/span>&lt;span class="s">&amp;#34;amd64&amp;#34;&lt;/span> &lt;span class="na">publicKeyToken=&lt;/span>&lt;span class="s">&amp;#34;31bf3856ad364e35&amp;#34;&lt;/span> &lt;span class="na">language=&lt;/span>&lt;span class="s">&amp;#34;neutral&amp;#34;&lt;/span> &lt;span class="na">versionScope=&lt;/span>&lt;span class="s">&amp;#34;nonSxS&amp;#34;&lt;/span> &lt;span class="na">xmlns:wcm=&lt;/span>&lt;span class="s">&amp;#34;http://schemas.microsoft.com/WMIConfig/2002/State&amp;#34;&lt;/span> &lt;span class="na">xmlns:xsi=&lt;/span>&lt;span class="s">&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34;&lt;/span>&lt;span class="nt">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;OOBE&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;HideOnlineAccountScreens&amp;gt;&lt;/span>true&lt;span class="nt">&amp;lt;/HideOnlineAccountScreens&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;ProtectYourPC&amp;gt;&lt;/span>3&lt;span class="nt">&amp;lt;/ProtectYourPC&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;/OOBE&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;UserAccounts&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;LocalAccounts&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;LocalAccount&lt;/span> &lt;span class="na">wcm:action=&lt;/span>&lt;span class="s">&amp;#34;add&amp;#34;&lt;/span>&lt;span class="nt">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;Group&amp;gt;&lt;/span>Administrators&lt;span class="nt">&amp;lt;/Group&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;Name&amp;gt;&lt;/span>Admin&lt;span class="nt">&amp;lt;/Name&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c">&amp;lt;!--&amp;lt;Password&amp;gt;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"> &amp;lt;Value&amp;gt;goofy reward replica danger&amp;lt;/Value&amp;gt;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"> &amp;lt;PlainText&amp;gt;true&amp;lt;/PlainText&amp;gt;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"> &amp;lt;/Password&amp;gt; --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;/LocalAccount&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;/LocalAccounts&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;/UserAccounts&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;AutoLogon&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;Password&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;Value&amp;gt;&lt;/span>123456&lt;span class="nt">&amp;lt;/Value&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;PlainText&amp;gt;&lt;/span>true&lt;span class="nt">&amp;lt;/PlainText&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;/Password&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;Username&amp;gt;&lt;/span>Admin&lt;span class="nt">&amp;lt;/Username&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;LogonCount&amp;gt;&lt;/span>1&lt;span class="nt">&amp;lt;/LogonCount&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;Enabled&amp;gt;&lt;/span>true&lt;span class="nt">&amp;lt;/Enabled&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;/AutoLogon&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;/component&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;/settings&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nt">&amp;lt;/unattend&amp;gt;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Файл рассчитан на русскую версию ОС.&lt;/li>
 &lt;li>Издание выбирается на основе ключа продукта в файле ответов.&lt;/li>
@@ -1409,16 +1409,16 @@
 &lt;h2 id="установка-ключа-продукта">&lt;span class="section-num">1&lt;/span> Установка ключа продукта&lt;/h2>
 &lt;ul>
 &lt;li>Если вы переключаете компьютер из режима использования узла KMS, ключа MAK или розничной версии Windows в режим клиента KMS, установите соответствующий ключ продукта (GVLK):
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-0-1">&lt;a class="lnlinks" href="#hl-0-1">1&lt;/a>&lt;/span>&lt;span class="cl">slmgr /ipk &amp;lt;product key&amp;gt;
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">slmgr /ipk &amp;lt;product key&amp;gt;
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Указать адрес KMS сервера (если при установке KMS сервер не опубликован в DNS):
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-1-1">&lt;a class="lnlinks" href="#hl-1-1">1&lt;/a>&lt;/span>&lt;span class="cl">slmgr /skms kms-server.winitpro.ru:1688
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">slmgr /skms kms-server.winitpro.ru:1688
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Активировать ОС:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-2-1">&lt;a class="lnlinks" href="#hl-2-1">1&lt;/a>&lt;/span>&lt;span class="cl">slmgr /ato
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">slmgr /ato
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Активировать Office:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-3-1">&lt;a class="lnlinks" href="#hl-3-1">1&lt;/a>&lt;/span>&lt;span class="cl">slmgr /ato &amp;lt;ключ GLVK&amp;gt;
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">slmgr /ato &amp;lt;ключ GLVK&amp;gt;
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h2 id="универсальные-ключи-многократной-установки--gvlk">&lt;span class="section-num">2&lt;/span> Универсальные ключи многократной установки (GVLK)&lt;/h2>
@@ -1714,10 +1714,10 @@
 &lt;ul>
 &lt;li>
 &lt;p>В командной строке (с правами администратора) наберите:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-0-1">&lt;a class="lnlinks" href="#hl-0-1">1&lt;/a>&lt;/span>&lt;span class="cl">w32tm /config /manualpeerlist:pool.ntp.org,0x8 /syncfromflags:MANUAL
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-2">&lt;a class="lnlinks" href="#hl-0-2">2&lt;/a>&lt;/span>&lt;span class="cl">net stop w32time
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-3">&lt;a class="lnlinks" href="#hl-0-3">3&lt;/a>&lt;/span>&lt;span class="cl">net start w32time
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-0-4">&lt;a class="lnlinks" href="#hl-0-4">4&lt;/a>&lt;/span>&lt;span class="cl">w32tm /resync
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">w32tm /config /manualpeerlist:pool.ntp.org,0x8 /syncfromflags:MANUAL
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">net stop w32time
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">net start w32time
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">w32tm /resync
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
 &lt;li>&lt;code>0x08&lt;/code> задаёт режим клиента.&lt;/li>
 &lt;/ul>
@@ -1814,29 +1814,29 @@
 &lt;/ul>
 &lt;/li>
 &lt;li>Для того, чтобы установка происходила без запроса подтверждения, можно сделать следующую настройку:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-0-1">&lt;a class="lnlinks" href="#hl-0-1">1&lt;/a>&lt;/span>&lt;span class="cl">choco feature &lt;span class="nb">enable&lt;/span> -n&lt;span class="o">=&lt;/span>allowGlobalConfirmation
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco feature &lt;span class="nb">enable&lt;/span> -n&lt;span class="o">=&lt;/span>allowGlobalConfirmation
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Настройка автоматического обновления программного обеспечения:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-1-1">&lt;a class="lnlinks" href="#hl-1-1">1&lt;/a>&lt;/span>&lt;span class="cl">choco install choco-upgrade-all-at --params &lt;span class="s2">&amp;#34;&amp;#39;/DAILY:yes /TIME:10:00 /ABORTTIME:18:00&amp;#39;&amp;#34;&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install choco-upgrade-all-at --params &lt;span class="s2">&amp;#34;&amp;#39;/DAILY:yes /TIME:10:00 /ABORTTIME:18:00&amp;#39;&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h2 id="утилиты">&lt;span class="section-num">3&lt;/span> Утилиты&lt;/h2>
 &lt;h3 id="7zip">&lt;span class="section-num">3.1&lt;/span> 7zip&lt;/h3>
 &lt;ul>
 &lt;li>Установим архиватор 7zip:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-2-1">&lt;a class="lnlinks" href="#hl-2-1">1&lt;/a>&lt;/span>&lt;span class="cl">choco install 7zip
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install 7zip
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="ssh-клиент-putty">&lt;span class="section-num">3.2&lt;/span> SSH-клиент PuTTY&lt;/h3>
 &lt;ul>
 &lt;li>Установим PuTTY
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-3-1">&lt;a class="lnlinks" href="#hl-3-1">1&lt;/a>&lt;/span>&lt;span class="cl">choco install putty
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install putty
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="windows-terminal">&lt;span class="section-num">3.3&lt;/span> Windows Terminal&lt;/h3>
 &lt;ul>
 &lt;li>Установим Windows Terminal:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-4-1">&lt;a class="lnlinks" href="#hl-4-1">1&lt;/a>&lt;/span>&lt;span class="cl">choco install microsoft-windows-terminal
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install microsoft-windows-terminal
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h2 id="файловые-менеджеры">&lt;span class="section-num">4&lt;/span> Файловые менеджеры&lt;/h2>
@@ -1844,7 +1844,7 @@
 &lt;ul>
 &lt;li>
 &lt;p>Файловый менеджер Far:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-5-1">&lt;a class="lnlinks" href="#hl-5-1">1&lt;/a>&lt;/span>&lt;span class="cl">choco install far
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install far
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
 &lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
 &lt;iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="allowfullscreen" loading="eager" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/B3VhT_Ynt1Y?autoplay=0&amp;amp;controls=1&amp;amp;end=0&amp;amp;loop=0&amp;amp;mute=0&amp;amp;start=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" title="YouTube video">&lt;/iframe>
@@ -1855,27 +1855,27 @@
 &lt;h3 id="firefox">&lt;span class="section-num">5.1&lt;/span> Firefox&lt;/h3>
 &lt;ul>
 &lt;li>Установим Firefox:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-6-1">&lt;a class="lnlinks" href="#hl-6-1">1&lt;/a>&lt;/span>&lt;span class="cl">choco install firefox
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install firefox
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="google-chrome">&lt;span class="section-num">5.2&lt;/span> Google Chrome&lt;/h3>
 &lt;ul>
 &lt;li>Установим Google Chrome:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-7-1">&lt;a class="lnlinks" href="#hl-7-1">1&lt;/a>&lt;/span>&lt;span class="cl">choco install googlechrome
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install googlechrome
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h2 id="редакторы">&lt;span class="section-num">6&lt;/span> Редакторы&lt;/h2>
 &lt;h3 id="visual-studio-code">&lt;span class="section-num">6.1&lt;/span> Visual Studio Code&lt;/h3>
 &lt;ul>
 &lt;li>Редактор Visual Studio Code:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-8-1">&lt;a class="lnlinks" href="#hl-8-1">1&lt;/a>&lt;/span>&lt;span class="cl">choco install vscode
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install vscode
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h2 id="офисное-программное-обеспечение">&lt;span class="section-num">7&lt;/span> Офисное программное обеспечение&lt;/h2>
 &lt;h3 id="libreoffice">&lt;span class="section-num">7.1&lt;/span> LibreOffice&lt;/h3>
 &lt;ul>
 &lt;li>Установим LibreOffice:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-9-1">&lt;a class="lnlinks" href="#hl-9-1">1&lt;/a>&lt;/span>&lt;span class="cl">choco install libreoffice-fresh
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install libreoffice-fresh
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h2 id="работа-с-pdf">&lt;span class="section-num">8&lt;/span> Работа с pdf&lt;/h2>
@@ -1884,14 +1884,14 @@
 &lt;li>Сайт: &lt;a href="https://xournalpp.github.io/" target="_blank" rel="noopener">https://xournalpp.github.io/&lt;/a>&lt;/li>
 &lt;li>Создание заметок в файлах pdf.&lt;/li>
 &lt;li>Установить с Chocolatey:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-10-1">&lt;a class="lnlinks" href="#hl-10-1">1&lt;/a>&lt;/span>&lt;span class="cl">choco install xournalplusplus
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install xournalplusplus
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h2 id="средства-разработки">&lt;span class="section-num">9&lt;/span> Средства разработки&lt;/h2>
 &lt;h3 id="средство-управления-версиями-git">&lt;span class="section-num">9.1&lt;/span> Средство управления версиями git&lt;/h3>
 &lt;ul>
 &lt;li>Установим средство управления версиями git (см. &lt;a href="https://yamadharma.github.io/ru/post/2020/12/07/git-cvs/">Система контроля версий git&lt;/a>) через пакетный менеджер:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-11-1">&lt;a class="lnlinks" href="#hl-11-1">1&lt;/a>&lt;/span>&lt;span class="cl">choco install git
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install git
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h2 id="научное-программное-обеспечение">&lt;span class="section-num">10&lt;/span> Научное программное обеспечение&lt;/h2>
@@ -1902,7 +1902,7 @@
 &lt;ul>
 &lt;li>
 &lt;p>Установка с помощью менеджера пакетов&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-12-1">&lt;a class="lnlinks" href="#hl-12-1">1&lt;/a>&lt;/span>&lt;span class="cl">choco install pandoc --ia&lt;span class="o">=&lt;/span>&lt;span class="nv">ALLUSERS&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1&lt;/span> -y
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install pandoc --ia&lt;span class="o">=&lt;/span>&lt;span class="nv">ALLUSERS&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1&lt;/span> -y
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
 &lt;li>Для работы с перекрёстными ссылками мы используем пакет &lt;code>pandoc-crossref&lt;/code>.
 &lt;ul>
@@ -1929,7 +1929,7 @@
 &lt;h4 id="работа-с-языком-tex">&lt;span class="section-num">10.1.2&lt;/span> Работа с языком TeX&lt;/h4>
 &lt;ul>
 &lt;li>Для генерации формата &lt;code>pdf&lt;/code> необходимо установить TeX. Будем устанавливать TeX Live:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-13-1">&lt;a class="lnlinks" href="#hl-13-1">1&lt;/a>&lt;/span>&lt;span class="cl">choco install texlive -y
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install texlive -y
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="средства-моделирования">&lt;span class="section-num">10.2&lt;/span> Средства моделирования&lt;/h3>
@@ -1939,7 +1939,7 @@
 &lt;li>Сайт: &lt;a href="https://www.scilab.org/" target="_blank" rel="noopener">https://www.scilab.org/&lt;/a>&lt;/li>
 &lt;li>Отличительной особенностью является наличие реализации (Xcos) среды &lt;em>Symulink&lt;/em>.&lt;/li>
 &lt;li>Установка:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-14-1">&lt;a class="lnlinks" href="#hl-14-1">1&lt;/a>&lt;/span>&lt;span class="cl">choco install scilab
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install scilab
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h4 id="octave">&lt;span class="section-num">10.2.2&lt;/span> Octave&lt;/h4>
@@ -1955,7 +1955,7 @@
 &lt;/li>
 &lt;li>
 &lt;p>Установка:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-15-1">&lt;a class="lnlinks" href="#hl-15-1">1&lt;/a>&lt;/span>&lt;span class="cl">choco install octave
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install octave
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Видео:&lt;/p>
@@ -1969,7 +1969,7 @@
 &lt;li>Открытая реализация языка &lt;em>Modelica&lt;/em>.&lt;/li>
 &lt;li>&lt;a href="https://www.openmodelica.org/" target="_blank" rel="noopener">https://www.openmodelica.org/&lt;/a>&lt;/li>
 &lt;li>Установка:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-16-1">&lt;a class="lnlinks" href="#hl-16-1">1&lt;/a>&lt;/span>&lt;span class="cl">choco install openmodelica -y
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install openmodelica -y
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h4 id="cpn-tools">&lt;span class="section-num">10.2.4&lt;/span> CPN Tools&lt;/h4>
@@ -1977,7 +1977,7 @@
 &lt;li>Работа с раскрашенными сетями Петри.&lt;/li>
 &lt;li>&lt;a href="https://cpntools.org/" target="_blank" rel="noopener">https://cpntools.org/&lt;/a>&lt;/li>
 &lt;li>Установка:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-17-1">&lt;a class="lnlinks" href="#hl-17-1">1&lt;/a>&lt;/span>&lt;span class="cl">choco install cpntools -y
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install cpntools -y
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul></description></item><item><title>Администрирование Windows</title><link>https://yamadharma.github.io/ru/post/2021/05/01/windows-administration/</link><pubDate>Sat, 01 May 2021 16:28:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2021/05/01/windows-administration/</guid><description>&lt;p>Вопросы системного администрирования Windows.&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
@@ -2064,80 +2064,80 @@
 &lt;h2 id="дополнительные-настройки">&lt;span class="section-num">3&lt;/span> Дополнительные настройки&lt;/h2>
 &lt;ul>
 &lt;li>Для того, чтобы установка происходила без запроса подтверждения, можно сделать следующую настройку:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-0-1">&lt;a class="lnlinks" href="#hl-0-1">1&lt;/a>&lt;/span>&lt;span class="cl">choco feature &lt;span class="nb">enable&lt;/span> -n&lt;span class="o">=&lt;/span>allowGlobalConfirmation
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco feature &lt;span class="nb">enable&lt;/span> -n&lt;span class="o">=&lt;/span>allowGlobalConfirmation
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Обратно включить запрос подтверждения можно командой:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-1-1">&lt;a class="lnlinks" href="#hl-1-1">1&lt;/a>&lt;/span>&lt;span class="cl">choco feature disable -n&lt;span class="o">=&lt;/span>allowGlobalConfirmation
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco feature disable -n&lt;span class="o">=&lt;/span>allowGlobalConfirmation
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h2 id="пакеты">&lt;span class="section-num">4&lt;/span> Пакеты&lt;/h2>
 &lt;ul>
 &lt;li>Список пакетов находится на странице &lt;a href="https://chocolatey.org/packages" target="_blank" rel="noopener">https://chocolatey.org/packages&lt;/a>.&lt;/li>
 &lt;li>Список пакетов:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-2-1">&lt;a class="lnlinks" href="#hl-2-1">1&lt;/a>&lt;/span>&lt;span class="cl">choco list
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco list
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h2 id="работа-с-программным-обеспечением">&lt;span class="section-num">5&lt;/span> Работа с программным обеспечением&lt;/h2>
 &lt;h3 id="сервисные-функции">&lt;span class="section-num">5.1&lt;/span> Сервисные функции&lt;/h3>
 &lt;ul>
 &lt;li>Информация по ключам командной строки:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-3-1">&lt;a class="lnlinks" href="#hl-3-1">1&lt;/a>&lt;/span>&lt;span class="cl">choco --help
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco --help
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Список пакетов в репозитории:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-4-1">&lt;a class="lnlinks" href="#hl-4-1">1&lt;/a>&lt;/span>&lt;span class="cl">choco list
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco list
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Список установленных пакетов:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-5-1">&lt;a class="lnlinks" href="#hl-5-1">1&lt;/a>&lt;/span>&lt;span class="cl">choco list --local-only
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco list --local-only
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="установка-пакета">&lt;span class="section-num">5.2&lt;/span> Установка пакета&lt;/h3>
 &lt;ul>
 &lt;li>Для установки пакета нужно выполнить команду:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-6-1">&lt;a class="lnlinks" href="#hl-6-1">1&lt;/a>&lt;/span>&lt;span class="cl">choco install package_name
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install package_name
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Чтобы установить без запроса на подтверждение, следует добавить ключ &lt;code>y&lt;/code>:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-7-1">&lt;a class="lnlinks" href="#hl-7-1">1&lt;/a>&lt;/span>&lt;span class="cl">choco install package_name -y
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install package_name -y
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="удаление-пакета">&lt;span class="section-num">5.3&lt;/span> Удаление пакета&lt;/h3>
 &lt;ul>
 &lt;li>Для удаления пакета нужно выполнить команду:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-8-1">&lt;a class="lnlinks" href="#hl-8-1">1&lt;/a>&lt;/span>&lt;span class="cl">choco uninstall package_name
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco uninstall package_name
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="обновление-пакетов">&lt;span class="section-num">5.4&lt;/span> Обновление пакетов&lt;/h3>
 &lt;ul>
 &lt;li>Для обновления пакета нужно выполнить команду:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-9-1">&lt;a class="lnlinks" href="#hl-9-1">1&lt;/a>&lt;/span>&lt;span class="cl">choco upgrade package_name
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco upgrade package_name
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Для обновления всех установленных пакетов нужно выполнить команду:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-10-1">&lt;a class="lnlinks" href="#hl-10-1">1&lt;/a>&lt;/span>&lt;span class="cl">choco upgrade all -y
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco upgrade all -y
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="автоматическое-обновление-пакетов">&lt;span class="section-num">5.5&lt;/span> Автоматическое обновление пакетов&lt;/h3>
 &lt;ul>
 &lt;li>Для автоматического обновления пакетов используется пакет &lt;code>choco-upgrade-all-at&lt;/code>:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-11-1">&lt;a class="lnlinks" href="#hl-11-1">1&lt;/a>&lt;/span>&lt;span class="cl">choco install choco-upgrade-all-at
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install choco-upgrade-all-at
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Обновление можно выполнить командой:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-12-1">&lt;a class="lnlinks" href="#hl-12-1">1&lt;/a>&lt;/span>&lt;span class="cl">choco-upgrade-all
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco-upgrade-all
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Чтобы задать время обновления, нужно устанавливать с определёнными параметрами:
 &lt;ul>
 &lt;li>если не указывать никаких параметров, &lt;code>choco-upgrade-all-at&lt;/code> по умолчанию будет запускаться ежедневно в 2 часа ночи и прерываться в 4 часа ночи;&lt;/li>
 &lt;li>запуск &lt;code>choco upgrade all -y&lt;/code> ежедневно (по умолчанию) в 23:00 и прерывание в 1:00 ( по умолчанию &lt;code>ABORTTIME&lt;/code> равно +2 часа):
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-13-1">&lt;a class="lnlinks" href="#hl-13-1">1&lt;/a>&lt;/span>&lt;span class="cl">choco install choco-upgrade-all-at --params &lt;span class="s2">&amp;#34;&amp;#39;/TIME:23:00&amp;#39;&amp;#34;&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install choco-upgrade-all-at --params &lt;span class="s2">&amp;#34;&amp;#39;/TIME:23:00&amp;#39;&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>запуск &lt;code>choco upgrade all -y&lt;/code> ежедневно в 4:00 и прерывание в 8:00:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-14-1">&lt;a class="lnlinks" href="#hl-14-1">1&lt;/a>&lt;/span>&lt;span class="cl">choco install choco-upgrade-all-at --params &lt;span class="s2">&amp;#34;&amp;#39;/DAILY:yes /TIME:04:00 /ABORTTIME:08:00&amp;#39;&amp;#34;&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install choco-upgrade-all-at --params &lt;span class="s2">&amp;#34;&amp;#39;/DAILY:yes /TIME:04:00 /ABORTTIME:08:00&amp;#39;&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>запуск &lt;code>choco upgrade all -y&lt;/code> каждое воскресенье в 1:00 и прерывание в 3:00:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-15-1">&lt;a class="lnlinks" href="#hl-15-1">1&lt;/a>&lt;/span>&lt;span class="cl">choco install choco-upgrade-all-at --params &lt;span class="s2">&amp;#34;&amp;#39;/WEEKLY:yes /DAY:SUN /TIME:01:00&amp;#39;&amp;#34;&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install choco-upgrade-all-at --params &lt;span class="s2">&amp;#34;&amp;#39;/WEEKLY:yes /DAY:SUN /TIME:01:00&amp;#39;&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>Параметры можно отредактировать, запустив команду:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-16-1">&lt;a class="lnlinks" href="#hl-16-1">1&lt;/a>&lt;/span>&lt;span class="cl">choco-upgrade-all -EditConfig
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco-upgrade-all -EditConfig
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul></description></item><item><title>Windows 7 beta</title><link>https://yamadharma.github.io/ru/post/2009/01/10/windows-7-beta/</link><pubDate>Sat, 10 Jan 2009 21:08:00 +0000</pubDate><guid>https://yamadharma.github.io/ru/post/2009/01/10/windows-7-beta/</guid><description>&lt;p>
 &lt;figure >

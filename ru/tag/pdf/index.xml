@@ -58,13 +58,13 @@
 &lt;h4 id="варианты-решения">&lt;span class="section-num">2.1.3&lt;/span> Варианты решения&lt;/h4>
 &lt;ul>
 &lt;li>Удалить изображения из файла &lt;code>input_ocr.pdf&lt;/code> с помощью Ghostscript:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-0-1">&lt;a class="lnlinks" href="#hl-0-1">1&lt;/a>&lt;/span>&lt;span class="cl">gs -o &lt;span class="s2">&amp;#34;input_ocr_textonly.pdf&amp;#34;&lt;/span> -sDEVICE&lt;span class="o">=&lt;/span>pdfwrite -dFILTERIMAGE &lt;span class="s2">&amp;#34;input_ocr.pdf&amp;#34;&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">gs -o &lt;span class="s2">&amp;#34;input_ocr_textonly.pdf&amp;#34;&lt;/span> -sDEVICE&lt;span class="o">=&lt;/span>pdfwrite -dFILTERIMAGE &lt;span class="s2">&amp;#34;input_ocr.pdf&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Объединить его с файлом &lt;code>input_image.pdf&lt;/code> с помощью &lt;code>pdftk&lt;/code>:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-1-1">&lt;a class="lnlinks" href="#hl-1-1">1&lt;/a>&lt;/span>&lt;span class="cl">pdftk &lt;span class="s2">&amp;#34;input_ocr_textonly.pdf&amp;#34;&lt;/span> multistamp &lt;span class="s2">&amp;#34;input_image.pdf&amp;#34;&lt;/span> output &lt;span class="s2">&amp;#34;output.pdf&amp;#34;&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pdftk &lt;span class="s2">&amp;#34;input_ocr_textonly.pdf&amp;#34;&lt;/span> multistamp &lt;span class="s2">&amp;#34;input_image.pdf&amp;#34;&lt;/span> output &lt;span class="s2">&amp;#34;output.pdf&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Или объединить его с файлом &lt;code>input_image.pdf&lt;/code> с помощью &lt;code>qpdf&lt;/code>:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-2-1">&lt;a class="lnlinks" href="#hl-2-1">1&lt;/a>&lt;/span>&lt;span class="cl">qpdf --empty --pages &lt;span class="s2">&amp;#34;input_image.pdf&amp;#34;&lt;/span> -- --underlay &lt;span class="s2">&amp;#34;input_ocr_textonly.pdf&amp;#34;&lt;/span> -- &lt;span class="s2">&amp;#34;output.pdf&amp;#34;&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">qpdf --empty --pages &lt;span class="s2">&amp;#34;input_image.pdf&amp;#34;&lt;/span> -- --underlay &lt;span class="s2">&amp;#34;input_ocr_textonly.pdf&amp;#34;&lt;/span> -- &lt;span class="s2">&amp;#34;output.pdf&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h4 id="ресурсы">&lt;span class="section-num">2.1.4&lt;/span> Ресурсы&lt;/h4>
@@ -98,7 +98,7 @@
 &lt;h2 id="установка">&lt;span class="section-num">2&lt;/span> Установка&lt;/h2>
 &lt;ul>
 &lt;li>Устанавливается как python-пакет:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-0-1">&lt;a class="lnlinks" href="#hl-0-1">1&lt;/a>&lt;/span>&lt;span class="cl">pipx install pdf.tocgen
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pipx install pdf.tocgen
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h2 id="рабочий-процесс">&lt;span class="section-num">3&lt;/span> Рабочий процесс&lt;/h2>
@@ -113,8 +113,8 @@
 &lt;/li>
 &lt;li>
 &lt;p>Используем &lt;code>pdfxmeta&lt;/code> для поиска метаданных заголовков и генерации фильтры заголовков с использованием автоматической настройки:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-1-1">&lt;a class="lnlinks" href="#hl-1-1">1&lt;/a>&lt;/span>&lt;span class="cl">pdfxmeta -p &amp;lt;page&amp;gt; -a &lt;span class="m">1&lt;/span> in.pdf &lt;span class="s2">&amp;#34;Section&amp;#34;&lt;/span> &amp;gt;&amp;gt; recipe.toml
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-1-2">&lt;a class="lnlinks" href="#hl-1-2">2&lt;/a>&lt;/span>&lt;span class="cl">pdfxmeta -p &amp;lt;page&amp;gt; -a &lt;span class="m">2&lt;/span> in.pdf &lt;span class="s2">&amp;#34;Subsection&amp;#34;&lt;/span> &amp;gt;&amp;gt; recipe.toml
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pdfxmeta -p &amp;lt;page&amp;gt; -a &lt;span class="m">1&lt;/span> in.pdf &lt;span class="s2">&amp;#34;Section&amp;#34;&lt;/span> &amp;gt;&amp;gt; recipe.toml
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">pdfxmeta -p &amp;lt;page&amp;gt; -a &lt;span class="m">2&lt;/span> in.pdf &lt;span class="s2">&amp;#34;Subsection&amp;#34;&lt;/span> &amp;gt;&amp;gt; recipe.toml
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
 &lt;li>Здесь &lt;code>&amp;lt;page&amp;gt;&lt;/code> есть номер страницы в файле.&lt;/li>
 &lt;/ul>
@@ -124,61 +124,61 @@
 &lt;/li>
 &lt;li>
 &lt;p>Пример файла рецепта будет выглядеть так:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-toml" data-lang="toml">&lt;span class="line">&lt;span class="ln" id="hl-2-1">&lt;a class="lnlinks" href="#hl-2-1"> 1&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="p">[[&lt;/span>&lt;span class="nx">heading&lt;/span>&lt;span class="p">]]&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-2-2">&lt;a class="lnlinks" href="#hl-2-2"> 2&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="nx">level&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="mi">1&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-2-3">&lt;a class="lnlinks" href="#hl-2-3"> 3&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="nx">greedy&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="kc">true&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-2-4">&lt;a class="lnlinks" href="#hl-2-4"> 4&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="nx">font&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">name&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s2">&amp;#34;Times-Bold&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-2-5">&lt;a class="lnlinks" href="#hl-2-5"> 5&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="nx">font&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">size&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="mf">19.92530059814453&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-2-6">&lt;a class="lnlinks" href="#hl-2-6"> 6&lt;/a>&lt;/span>&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-2-7">&lt;a class="lnlinks" href="#hl-2-7"> 7&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="p">[[&lt;/span>&lt;span class="nx">heading&lt;/span>&lt;span class="p">]]&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-2-8">&lt;a class="lnlinks" href="#hl-2-8"> 8&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="nx">level&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="mi">2&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-2-9">&lt;a class="lnlinks" href="#hl-2-9"> 9&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="nx">greedy&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="kc">true&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-2-10">&lt;a class="lnlinks" href="#hl-2-10">10&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="nx">font&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">name&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s2">&amp;#34;Times-Bold&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-2-11">&lt;a class="lnlinks" href="#hl-2-11">11&lt;/a>&lt;/span>&lt;span class="cl">&lt;span class="nx">font&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">size&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="mf">11.9552001953125&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-toml" data-lang="toml">&lt;span class="line">&lt;span class="cl">&lt;span class="p">[[&lt;/span>&lt;span class="nx">heading&lt;/span>&lt;span class="p">]]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nx">level&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nx">greedy&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="kc">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nx">font&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">name&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s2">&amp;#34;Times-Bold&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nx">font&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">size&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="mf">19.92530059814453&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">[[&lt;/span>&lt;span class="nx">heading&lt;/span>&lt;span class="p">]]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nx">level&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="mi">2&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nx">greedy&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="kc">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nx">font&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">name&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s2">&amp;#34;Times-Bold&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nx">font&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">size&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="mf">11.9552001953125&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Передадим рецепт программе &lt;code>pdftocgen&lt;/code> для создания оглавления:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-3-1">&lt;a class="lnlinks" href="#hl-3-1">1&lt;/a>&lt;/span>&lt;span class="cl">pdftocgen in.pdf &amp;lt; recipe.toml
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pdftocgen in.pdf &amp;lt; recipe.toml
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>В результате получим текст оглавления следующего вида:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="ln" id="hl-4-1">&lt;a class="lnlinks" href="#hl-4-1"> 1&lt;/a>&lt;/span>&lt;span class="cl">&amp;#34;Preface&amp;#34; 5
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-2">&lt;a class="lnlinks" href="#hl-4-2"> 2&lt;/a>&lt;/span>&lt;span class="cl"> &amp;#34;Bottom-up Design&amp;#34; 5
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-3">&lt;a class="lnlinks" href="#hl-4-3"> 3&lt;/a>&lt;/span>&lt;span class="cl"> &amp;#34;Plan of the Book&amp;#34; 7
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-4">&lt;a class="lnlinks" href="#hl-4-4"> 4&lt;/a>&lt;/span>&lt;span class="cl"> &amp;#34;Examples&amp;#34; 9
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-5">&lt;a class="lnlinks" href="#hl-4-5"> 5&lt;/a>&lt;/span>&lt;span class="cl"> &amp;#34;Acknowledgements&amp;#34; 9
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-6">&lt;a class="lnlinks" href="#hl-4-6"> 6&lt;/a>&lt;/span>&lt;span class="cl">&amp;#34;Contents&amp;#34; 11
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-7">&lt;a class="lnlinks" href="#hl-4-7"> 7&lt;/a>&lt;/span>&lt;span class="cl">&amp;#34;The Extensible Language&amp;#34; 14
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-8">&lt;a class="lnlinks" href="#hl-4-8"> 8&lt;/a>&lt;/span>&lt;span class="cl"> &amp;#34;1.1 Design by Evolution&amp;#34; 14
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-9">&lt;a class="lnlinks" href="#hl-4-9"> 9&lt;/a>&lt;/span>&lt;span class="cl"> &amp;#34;1.2 Programming Bottom-Up&amp;#34; 16
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-10">&lt;a class="lnlinks" href="#hl-4-10">10&lt;/a>&lt;/span>&lt;span class="cl"> &amp;#34;1.3 Extensible Software&amp;#34; 18
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-11">&lt;a class="lnlinks" href="#hl-4-11">11&lt;/a>&lt;/span>&lt;span class="cl"> &amp;#34;1.4 Extending Lisp&amp;#34; 19
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-12">&lt;a class="lnlinks" href="#hl-4-12">12&lt;/a>&lt;/span>&lt;span class="cl"> &amp;#34;1.5 Why Lisp (or When)&amp;#34; 21
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-13">&lt;a class="lnlinks" href="#hl-4-13">13&lt;/a>&lt;/span>&lt;span class="cl">&amp;#34;Functions&amp;#34; 22
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-14">&lt;a class="lnlinks" href="#hl-4-14">14&lt;/a>&lt;/span>&lt;span class="cl"> &amp;#34;2.1 Functions as Data&amp;#34; 22
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-15">&lt;a class="lnlinks" href="#hl-4-15">15&lt;/a>&lt;/span>&lt;span class="cl"> &amp;#34;2.2 Defining Functions&amp;#34; 23
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-16">&lt;a class="lnlinks" href="#hl-4-16">16&lt;/a>&lt;/span>&lt;span class="cl"> &amp;#34;2.3 Functional Arguments&amp;#34; 26
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-17">&lt;a class="lnlinks" href="#hl-4-17">17&lt;/a>&lt;/span>&lt;span class="cl"> &amp;#34;2.4 Functions as Properties&amp;#34; 28
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-18">&lt;a class="lnlinks" href="#hl-4-18">18&lt;/a>&lt;/span>&lt;span class="cl"> &amp;#34;2.5 Scope&amp;#34; 29
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-19">&lt;a class="lnlinks" href="#hl-4-19">19&lt;/a>&lt;/span>&lt;span class="cl"> &amp;#34;2.6 Closures&amp;#34; 30
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-20">&lt;a class="lnlinks" href="#hl-4-20">20&lt;/a>&lt;/span>&lt;span class="cl"> &amp;#34;2.7 Local Functions&amp;#34; 34
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-21">&lt;a class="lnlinks" href="#hl-4-21">21&lt;/a>&lt;/span>&lt;span class="cl"> &amp;#34;2.8 Tail-Recursion&amp;#34; 35
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-22">&lt;a class="lnlinks" href="#hl-4-22">22&lt;/a>&lt;/span>&lt;span class="cl"> &amp;#34;2.9 Compilation&amp;#34; 37
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-23">&lt;a class="lnlinks" href="#hl-4-23">23&lt;/a>&lt;/span>&lt;span class="cl"> &amp;#34;2.10 Functions from Lists&amp;#34; 40
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-24">&lt;a class="lnlinks" href="#hl-4-24">24&lt;/a>&lt;/span>&lt;span class="cl">&amp;#34;Functional Programming&amp;#34; 41
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-25">&lt;a class="lnlinks" href="#hl-4-25">25&lt;/a>&lt;/span>&lt;span class="cl"> &amp;#34;3.1 Functional Design&amp;#34; 41
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-26">&lt;a class="lnlinks" href="#hl-4-26">26&lt;/a>&lt;/span>&lt;span class="cl"> &amp;#34;3.2 Imperative Outside-In&amp;#34; 46
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-27">&lt;a class="lnlinks" href="#hl-4-27">27&lt;/a>&lt;/span>&lt;span class="cl"> &amp;#34;3.3 Functional Interfaces&amp;#34; 48
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-4-28">&lt;a class="lnlinks" href="#hl-4-28">28&lt;/a>&lt;/span>&lt;span class="cl"> &amp;#34;3.4 Interactive Programming&amp;#34; 50
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">&amp;#34;Preface&amp;#34; 5
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;Bottom-up Design&amp;#34; 5
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;Plan of the Book&amp;#34; 7
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;Examples&amp;#34; 9
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;Acknowledgements&amp;#34; 9
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&amp;#34;Contents&amp;#34; 11
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&amp;#34;The Extensible Language&amp;#34; 14
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;1.1 Design by Evolution&amp;#34; 14
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;1.2 Programming Bottom-Up&amp;#34; 16
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;1.3 Extensible Software&amp;#34; 18
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;1.4 Extending Lisp&amp;#34; 19
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;1.5 Why Lisp (or When)&amp;#34; 21
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&amp;#34;Functions&amp;#34; 22
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;2.1 Functions as Data&amp;#34; 22
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;2.2 Defining Functions&amp;#34; 23
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;2.3 Functional Arguments&amp;#34; 26
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;2.4 Functions as Properties&amp;#34; 28
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;2.5 Scope&amp;#34; 29
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;2.6 Closures&amp;#34; 30
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;2.7 Local Functions&amp;#34; 34
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;2.8 Tail-Recursion&amp;#34; 35
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;2.9 Compilation&amp;#34; 37
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;2.10 Functions from Lists&amp;#34; 40
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&amp;#34;Functional Programming&amp;#34; 41
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;3.1 Functional Design&amp;#34; 41
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;3.2 Imperative Outside-In&amp;#34; 46
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;3.3 Functional Interfaces&amp;#34; 48
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;3.4 Interactive Programming&amp;#34; 50
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Его можно сразу импортировать в файл PDF с помощью &lt;code>pdftocio&lt;/code>:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-5-1">&lt;a class="lnlinks" href="#hl-5-1">1&lt;/a>&lt;/span>&lt;span class="cl">$ pdftocgen in.pdf &amp;lt; recipe.toml &lt;span class="p">|&lt;/span> pdftocio -o out.pdf in.pdf
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">$ pdftocgen in.pdf &amp;lt; recipe.toml &lt;span class="p">|&lt;/span> pdftocio -o out.pdf in.pdf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Можно отредактировать оглавление перед его импортом:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-6-1">&lt;a class="lnlinks" href="#hl-6-1">1&lt;/a>&lt;/span>&lt;span class="cl">pdftocgen in.pdf &amp;lt; recipe.toml &amp;gt; toc
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="ln" id="hl-6-2">&lt;a class="lnlinks" href="#hl-6-2">2&lt;/a>&lt;/span>&lt;span class="cl">pdftocio in.pdf &amp;lt; toc
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pdftocgen in.pdf &amp;lt; recipe.toml &amp;gt; toc
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">pdftocio in.pdf &amp;lt; toc
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h2 id="примеры-использования">&lt;span class="section-num">4&lt;/span> Примеры использования&lt;/h2>
@@ -186,76 +186,76 @@
 &lt;ul>
 &lt;li>
 &lt;p>Отобразить существующее оглавление PDF-файла в stdout:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-7-1">&lt;a class="lnlinks" href="#hl-7-1">1&lt;/a>&lt;/span>&lt;span class="cl">pdftocio doc.pdf
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pdftocio doc.pdf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Записать существующее оглавление PDF-файла в файл с именем toc:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-8-1">&lt;a class="lnlinks" href="#hl-8-1">1&lt;/a>&lt;/span>&lt;span class="cl">pdftocio doc.pdf &amp;gt; toc
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pdftocio doc.pdf &amp;gt; toc
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Записать оглавление из toc-файла в doc.pdf:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-9-1">&lt;a class="lnlinks" href="#hl-9-1">1&lt;/a>&lt;/span>&lt;span class="cl">pdftocio doc.pdf &amp;lt; toc
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pdftocio doc.pdf &amp;lt; toc
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Указать имя выходного PDF-файла:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-10-1">&lt;a class="lnlinks" href="#hl-10-1">1&lt;/a>&lt;/span>&lt;span class="cl">pdftocio -o out.pdf doc.pdf &amp;lt; toc
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pdftocio -o out.pdf doc.pdf &amp;lt; toc
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Скопировать оглавление из doc1.pdf в doc2.pdf:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-11-1">&lt;a class="lnlinks" href="#hl-11-1">1&lt;/a>&lt;/span>&lt;span class="cl">pdftocio -v doc1.pdf &lt;span class="p">|&lt;/span> pdftocio doc2.pdf
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pdftocio -v doc1.pdf &lt;span class="p">|&lt;/span> pdftocio doc2.pdf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
 &lt;li>Флаг &lt;code>-v&lt;/code> помогает сохранить вертикальные позиции заголовков при копировании.&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>
 &lt;p>Вывести оглавление для чтения:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-12-1">&lt;a class="lnlinks" href="#hl-12-1">1&lt;/a>&lt;/span>&lt;span class="cl">pdftocio -H doc.pdf
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pdftocio -H doc.pdf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="pdftocgen">&lt;span class="section-num">4.2&lt;/span> pdftocgen&lt;/h3>
 &lt;ul>
 &lt;li>
 &lt;p>Применить существующий рецепт &lt;code>recipe.toml&lt;/code> к файлу &lt;code>doc.pdf&lt;/code> (результат дублируется в &lt;code>stdout&lt;/code>):&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-13-1">&lt;a class="lnlinks" href="#hl-13-1">1&lt;/a>&lt;/span>&lt;span class="cl">pdftocgen doc.pdf &amp;lt; recipe.toml
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pdftocgen doc.pdf &amp;lt; recipe.toml
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Вывести оглавление в файл с именем &lt;code>toc&lt;/code>:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-14-1">&lt;a class="lnlinks" href="#hl-14-1">1&lt;/a>&lt;/span>&lt;span class="cl">pdftocgen doc.pdf &amp;lt; recipe.toml &amp;gt; toc
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pdftocgen doc.pdf &amp;lt; recipe.toml &amp;gt; toc
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Импортировать созданное оглавление в файл PDF и вывести в doc_out.pdf:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-15-1">&lt;a class="lnlinks" href="#hl-15-1">1&lt;/a>&lt;/span>&lt;span class="cl">pdftocgen doc.pdf &amp;lt; recipe.toml &lt;span class="p">|&lt;/span> pdftocio -o doc_out.pdf doc.pdf
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pdftocgen doc.pdf &amp;lt; recipe.toml &lt;span class="p">|&lt;/span> pdftocio -o doc_out.pdf doc.pdf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Вывести сгенерированное оглавление для чтения:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-16-1">&lt;a class="lnlinks" href="#hl-16-1">1&lt;/a>&lt;/span>&lt;span class="cl">pdftocgen -H doc.pdf &amp;lt; recipe.toml
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pdftocgen -H doc.pdf &amp;lt; recipe.toml
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Если вы хотите включить вертикальное положение на странице для каждого заголовка, используйте флаг &lt;code>-v&lt;/code>:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-17-1">&lt;a class="lnlinks" href="#hl-17-1">1&lt;/a>&lt;/span>&lt;span class="cl">pdftocgen -v doc.pdf &amp;lt; recipe.toml
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pdftocgen -v doc.pdf &amp;lt; recipe.toml
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="pdfxmeta">&lt;span class="section-num">4.3&lt;/span> pdfxmeta&lt;/h3>
 &lt;ul>
 &lt;li>
 &lt;p>Искать слово &lt;code>Anaphoric&lt;/code> во всем PDF:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-18-1">&lt;a class="lnlinks" href="#hl-18-1">1&lt;/a>&lt;/span>&lt;span class="cl">pdfxmeta onlisp.pdf &lt;span class="s2">&amp;#34;Anaphoric&amp;#34;&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pdfxmeta onlisp.pdf &lt;span class="s2">&amp;#34;Anaphoric&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Вывести результат в виде фильтра заголовков с автоматическими настройками:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-19-1">&lt;a class="lnlinks" href="#hl-19-1">1&lt;/a>&lt;/span>&lt;span class="cl">pdfxmeta -a &lt;span class="m">1&lt;/span> onlisp.pdf &lt;span class="s2">&amp;#34;Anaphoric&amp;#34;&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pdfxmeta -a &lt;span class="m">1&lt;/span> onlisp.pdf &lt;span class="s2">&amp;#34;Anaphoric&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Поиск без учета регистра &lt;code>Anaphoric&lt;/code> во всем PDF:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-20-1">&lt;a class="lnlinks" href="#hl-20-1">1&lt;/a>&lt;/span>&lt;span class="cl">pdfxmeta -i onlisp.pdf &lt;span class="s2">&amp;#34;Anaphoric&amp;#34;&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pdfxmeta -i onlisp.pdf &lt;span class="s2">&amp;#34;Anaphoric&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Использование регулярного выражения для поиска без учета регистра &lt;code>Anaphoric&lt;/code> в PDF-файле:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-21-1">&lt;a class="lnlinks" href="#hl-21-1">1&lt;/a>&lt;/span>&lt;span class="cl">pdfxmeta onlisp.pdf &lt;span class="s2">&amp;#34;[Aa]naphoric&amp;#34;&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pdfxmeta onlisp.pdf &lt;span class="s2">&amp;#34;[Aa]naphoric&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Поиск только на странице 203:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-22-1">&lt;a class="lnlinks" href="#hl-22-1">1&lt;/a>&lt;/span>&lt;span class="cl">pdfxmeta -p &lt;span class="m">203&lt;/span> onlisp.pdf &lt;span class="s2">&amp;#34;anaphoric&amp;#34;&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pdfxmeta -p &lt;span class="m">203&lt;/span> onlisp.pdf &lt;span class="s2">&amp;#34;anaphoric&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul></description></item><item><title>Pdf. Оглавление. pdf-toc</title><link>https://yamadharma.github.io/ru/post/2024/06/21/pdf-toc-pdf-toc/</link><pubDate>Fri, 21 Jun 2024 20:20:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2024/06/21/pdf-toc-pdf-toc/</guid><description>&lt;p>Pdf. Оглавление. pdf-toc.&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
@@ -285,19 +285,19 @@
 &lt;h2 id="установка">&lt;span class="section-num">3&lt;/span> Установка&lt;/h2>
 &lt;ul>
 &lt;li>Устанавливается как приложение python:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-0-1">&lt;a class="lnlinks" href="#hl-0-1">1&lt;/a>&lt;/span>&lt;span class="cl">pip --user install pdf-toc
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pip --user install pdf-toc
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h2 id="примеры-применения">&lt;span class="section-num">4&lt;/span> Примеры применения&lt;/h2>
 &lt;ul>
 &lt;li>Показать содержание файла pdf в формате toc:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-1-1">&lt;a class="lnlinks" href="#hl-1-1">1&lt;/a>&lt;/span>&lt;span class="cl">pdf-toc --show-toc toc file.pdf
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pdf-toc --show-toc toc file.pdf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Создайте новый pdf-файл на основе файла &lt;code>file.pdf&lt;/code> и оглавления toc из toc.txt:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-2-1">&lt;a class="lnlinks" href="#hl-2-1">1&lt;/a>&lt;/span>&lt;span class="cl">pdf-toc -t toc.txt -d new-file.pdf file.pdf
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pdf-toc -t toc.txt -d new-file.pdf file.pdf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Заменить оглавление файла &lt;code>file.pdf&lt;/code> на содержание из toc.txt:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-3-1">&lt;a class="lnlinks" href="#hl-3-1">1&lt;/a>&lt;/span>&lt;span class="cl">pdf-toc -m -t toc.txt file.pdf
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pdf-toc -m -t toc.txt file.pdf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul></description></item><item><title>Распознавание pdf. OCRmyPDF</title><link>https://yamadharma.github.io/ru/post/2024/06/07/pdf-ocr-ocrmypdf/</link><pubDate>Fri, 07 Jun 2024 21:07:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2024/06/07/pdf-ocr-ocrmypdf/</guid><description>&lt;p>Распознавание pdf. OCRmyPDF&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
@@ -320,43 +320,43 @@
 &lt;ul>
 &lt;li>
 &lt;p>Список языков для распознавания:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-0-1">&lt;a class="lnlinks" href="#hl-0-1">1&lt;/a>&lt;/span>&lt;span class="cl">tesseract --list-langs
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">tesseract --list-langs
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Преобразовать сканированный файл в файл PDF/A с распознаванием русского и английского языков:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-1-1">&lt;a class="lnlinks" href="#hl-1-1">1&lt;/a>&lt;/span>&lt;span class="cl">ocrmypdf -l rus+eng input.pdf output.pdf
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">ocrmypdf -l rus+eng input.pdf output.pdf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Заменить отсканированный PDF-файл PDF/A-файлом:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-2-1">&lt;a class="lnlinks" href="#hl-2-1">1&lt;/a>&lt;/span>&lt;span class="cl">ocrmypdf input.pdf
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">ocrmypdf input.pdf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Пропустить страницы входного PDF-файла смешанного формата, которые уже содержат текст:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-3-1">&lt;a class="lnlinks" href="#hl-3-1">1&lt;/a>&lt;/span>&lt;span class="cl">ocrmypdf --skip-text input.pdf output.pdf
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">ocrmypdf --skip-text input.pdf output.pdf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Очистите, исправьте перекос и поверните плохо отсканированные страницы:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-4-1">&lt;a class="lnlinks" href="#hl-4-1">1&lt;/a>&lt;/span>&lt;span class="cl">ocrmypdf --clean --deskew --rotate-pages input.pdf output.pdf
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">ocrmypdf --clean --deskew --rotate-pages input.pdf output.pdf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Убрать фон:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-5-1">&lt;a class="lnlinks" href="#hl-5-1">1&lt;/a>&lt;/span>&lt;span class="cl">ocrmypdf --clean --remove-background input.pdf output.pdf
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">ocrmypdf --clean --remove-background input.pdf output.pdf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Разделить сдвоенные страницы:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-6-1">&lt;a class="lnlinks" href="#hl-6-1">1&lt;/a>&lt;/span>&lt;span class="cl">ocrmypdf -l rus+eng --clean --clean-final --unpaper-args &lt;span class="s1">&amp;#39;--layout double&amp;#39;&lt;/span> input.pdf output.pdf
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">ocrmypdf -l rus+eng --clean --clean-final --unpaper-args &lt;span class="s1">&amp;#39;--layout double&amp;#39;&lt;/span> input.pdf output.pdf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Контролируем оптимизацию:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-7-1">&lt;a class="lnlinks" href="#hl-7-1">1&lt;/a>&lt;/span>&lt;span class="cl">ocrmypdf --optimize &lt;span class="m">3&lt;/span> --jbig2-lossy input.pdf output.pdf
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">ocrmypdf --optimize &lt;span class="m">3&lt;/span> --jbig2-lossy input.pdf output.pdf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Распознавание с оптимизацией:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-8-1">&lt;a class="lnlinks" href="#hl-8-1">1&lt;/a>&lt;/span>&lt;span class="cl">ocrmypdf -l rus+eng --optimize &lt;span class="m">3&lt;/span> --jbig2-lossy input.pdf output.pdf
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">ocrmypdf -l rus+eng --optimize &lt;span class="m">3&lt;/span> --jbig2-lossy input.pdf output.pdf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Задать метаданные PDF-файла:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-9-1">&lt;a class="lnlinks" href="#hl-9-1">1&lt;/a>&lt;/span>&lt;span class="cl">ocrmypdf --skip-text --title &lt;span class="s2">&amp;#34;&amp;lt;title&amp;gt;&amp;#34;&lt;/span> --author &lt;span class="s2">&amp;#34;&amp;lt;author&amp;gt;&amp;#34;&lt;/span> --subject &lt;span class="s2">&amp;#34;&amp;lt;subject&amp;gt;&amp;#34;&lt;/span> --keywords &lt;span class="s2">&amp;#34;&amp;lt;keyword; key phrase; ...&amp;gt;&amp;#34;&lt;/span> input_file.pdf output.pdf
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">ocrmypdf --skip-text --title &lt;span class="s2">&amp;#34;&amp;lt;title&amp;gt;&amp;#34;&lt;/span> --author &lt;span class="s2">&amp;#34;&amp;lt;author&amp;gt;&amp;#34;&lt;/span> --subject &lt;span class="s2">&amp;#34;&amp;lt;subject&amp;gt;&amp;#34;&lt;/span> --keywords &lt;span class="s2">&amp;#34;&amp;lt;keyword; key phrase; ...&amp;gt;&amp;#34;&lt;/span> input_file.pdf output.pdf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Не распознавать pdf-файл&lt;/p>
@@ -364,15 +364,15 @@
 &lt;li>При установке параметра &lt;code>--tesseract-timeout 0&lt;/code> OCRmyPDF будет обрабатывать изображения без выполнения OCR.&lt;/li>
 &lt;/ul>
 &lt;!--listend-->
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-10-1">&lt;a class="lnlinks" href="#hl-10-1">1&lt;/a>&lt;/span>&lt;span class="cl">ocrmypdf --tesseract-timeout&lt;span class="o">=&lt;/span>&lt;span class="m">0&lt;/span> --remove-background input.pdf output.pdf
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">ocrmypdf --tesseract-timeout&lt;span class="o">=&lt;/span>&lt;span class="m">0&lt;/span> --remove-background input.pdf output.pdf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Удалить весь распознанный текст из pdf-файла:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-11-1">&lt;a class="lnlinks" href="#hl-11-1">1&lt;/a>&lt;/span>&lt;span class="cl">ocrmypdf --tesseract-timeout &lt;span class="m">0&lt;/span> --optimize &lt;span class="m">3&lt;/span> --force-ocr input.pdf output.pdf
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">ocrmypdf --tesseract-timeout &lt;span class="m">0&lt;/span> --optimize &lt;span class="m">3&lt;/span> --force-ocr input.pdf output.pdf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Оптимизация изображений без выполнения распознавания:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-12-1">&lt;a class="lnlinks" href="#hl-12-1">1&lt;/a>&lt;/span>&lt;span class="cl">ocrmypdf --tesseract-timeout&lt;span class="o">=&lt;/span>&lt;span class="m">0&lt;/span> --optimize &lt;span class="m">3&lt;/span> --skip-text input.pdf output.pdf
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">ocrmypdf --tesseract-timeout&lt;span class="o">=&lt;/span>&lt;span class="m">0&lt;/span> --optimize &lt;span class="m">3&lt;/span> --skip-text input.pdf output.pdf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul></description></item><item><title>Примеры команд для обработки pdf</title><link>https://yamadharma.github.io/ru/post/2024/04/28/examples-pdf-processing-commands/</link><pubDate>Sun, 28 Apr 2024 18:02:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2024/04/28/examples-pdf-processing-commands/</guid><description>&lt;p>Примеры команд для обработки pdf.&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
@@ -544,10 +544,10 @@
 &lt;ul>
 &lt;li>Являются частью mupdf (&lt;a href="https://www.mupdf.com/" target="_blank" rel="noopener">https://www.mupdf.com/&lt;/a>).&lt;/li>
 &lt;li>Разделение по горизонтали:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-0-1">&lt;a class="lnlinks" href="#hl-0-1">1&lt;/a>&lt;/span>&lt;span class="cl">mutool poster -x &lt;span class="m">2&lt;/span> input.pdf output.pdf
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mutool poster -x &lt;span class="m">2&lt;/span> input.pdf output.pdf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Разделение по вертикали:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-1-1">&lt;a class="lnlinks" href="#hl-1-1">1&lt;/a>&lt;/span>&lt;span class="cl">mutool poster -y &lt;span class="m">2&lt;/span> input.pdf output.pdf
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mutool poster -y &lt;span class="m">2&lt;/span> input.pdf output.pdf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h2 id="метаданные">&lt;span class="section-num">9&lt;/span> Метаданные&lt;/h2>
@@ -571,7 +571,7 @@ $ qpdf &amp;ndash;линеаризовать /tmp/temp.pdf input.pdf
 &lt;h4 id="exiftool">&lt;span class="section-num">9.2.1&lt;/span> exiftool&lt;/h4>
 &lt;ul>
 &lt;li>Обновить метаданные:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-2-1">&lt;a class="lnlinks" href="#hl-2-1">1&lt;/a>&lt;/span>&lt;span class="cl">exiftool -Title&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;This is the Title&amp;#34;&lt;/span> -Author&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;Author&amp;#34;&lt;/span> -Subject&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;Subject&amp;#34;&lt;/span> file.pdf
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">exiftool -Title&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;This is the Title&amp;#34;&lt;/span> -Author&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;Author&amp;#34;&lt;/span> -Subject&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;Subject&amp;#34;&lt;/span> file.pdf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>При просмотре в evince тема оказывается в поле ключевых слов метаданных файла PDF.&lt;/li>
 &lt;li>Adobe Acrobat и PDF-XChange показывают правильно.&lt;/li>
@@ -582,11 +582,11 @@ $ qpdf &amp;ndash;линеаризовать /tmp/temp.pdf input.pdf
 &lt;ul>
 &lt;li>
 &lt;p>Скрипт ps2pdf:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-3-1">&lt;a class="lnlinks" href="#hl-3-1">1&lt;/a>&lt;/span>&lt;span class="cl">ps2pdf -dPDFSETTINGS&lt;span class="o">=&lt;/span>/screen in.pdf out.pdf
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">ps2pdf -dPDFSETTINGS&lt;span class="o">=&lt;/span>/screen in.pdf out.pdf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Команда gs:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-4-1">&lt;a class="lnlinks" href="#hl-4-1">1&lt;/a>&lt;/span>&lt;span class="cl">gs -dNOPAUSE -dBATCH -sDEVICE&lt;span class="o">=&lt;/span>pdfwrite -dCompatibilityLevel&lt;span class="o">=&lt;/span>1.4 -dPDFSETTINGS&lt;span class="o">=&lt;/span>/printer -sOutputFile&lt;span class="o">=&lt;/span>out.pdf in.pdf
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">gs -dNOPAUSE -dBATCH -sDEVICE&lt;span class="o">=&lt;/span>pdfwrite -dCompatibilityLevel&lt;span class="o">=&lt;/span>1.4 -dPDFSETTINGS&lt;span class="o">=&lt;/span>/printer -sOutputFile&lt;span class="o">=&lt;/span>out.pdf in.pdf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
 &lt;li>&lt;code>-sDEVICE=pdfwrite&lt;/code> : указывает используемое устройство вывода (&lt;code>pdfwrite&lt;/code> указывает, что результат будет в формате PDF);&lt;/li>
 &lt;li>&lt;code>-dCompatibilityLevel&lt;/code> : устанавливает уровень совместимости для оптимизированного PDF-файла (уровень совместимости &lt;code>1.4&lt;/code> соответствует версии PDF-1.4);&lt;/li>
@@ -611,7 +611,7 @@ $ qpdf &amp;ndash;линеаризовать /tmp/temp.pdf input.pdf
 &lt;ul>
 &lt;li>
 &lt;p>Команда qpdf:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-5-1">&lt;a class="lnlinks" href="#hl-5-1">1&lt;/a>&lt;/span>&lt;span class="cl">qpdf --compress-streams&lt;span class="o">=&lt;/span>y --object-streams&lt;span class="o">=&lt;/span>generate --recompress-flate --optimize-images --linearize document.pdf qpdf_compressed.pdf
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">qpdf --compress-streams&lt;span class="o">=&lt;/span>y --object-streams&lt;span class="o">=&lt;/span>generate --recompress-flate --optimize-images --linearize document.pdf qpdf_compressed.pdf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
 &lt;li>&lt;code>--compress-streams=y&lt;/code> : указывает &lt;code>qpdf&lt;/code> сжимать потоки контента в файле PDF. Потоки контента содержат фактические данные, такие как текст и изображения, в документе PDF;&lt;/li>
 &lt;li>&lt;code>--object-streams=generate&lt;/code> : определяет обработку объектных потоков в файле PDF. Опция генерации указывает qpdf генерировать новые потоки объектов во время процесса оптимизации;&lt;/li>
@@ -627,7 +627,7 @@ $ qpdf &amp;ndash;линеаризовать /tmp/temp.pdf input.pdf
 &lt;/li>
 &lt;li>
 &lt;p>Можно удалить эти метаданные, чтобы уменьшить размер PDF-файла:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-6-1">&lt;a class="lnlinks" href="#hl-6-1">1&lt;/a>&lt;/span>&lt;span class="cl">exiftool -all:all&lt;span class="o">=&lt;/span> document.pdf
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">exiftool -all:all&lt;span class="o">=&lt;/span> document.pdf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
 &lt;li>&lt;code>-all:all=&lt;/code> : указывает имя тега, который нужно изменить.&lt;/li>
 &lt;/ul>
@@ -669,13 +669,13 @@ $ openssl pkcs12 -export -in cert.pem -out cert.pfx
 &lt;h4 id="pdftk">&lt;span class="section-num">14.1.1&lt;/span> pdftk&lt;/h4>
 &lt;ul>
 &lt;li>Удалить все аннотации:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-7-1">&lt;a class="lnlinks" href="#hl-7-1">1&lt;/a>&lt;/span>&lt;span class="cl">pdftk in.pdf output - uncompress &lt;span class="p">|&lt;/span> sed &lt;span class="s1">&amp;#39;/^\/Annots/d&amp;#39;&lt;/span> &lt;span class="p">|&lt;/span> pdftk - output out.pdf compress
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pdftk in.pdf output - uncompress &lt;span class="p">|&lt;/span> sed &lt;span class="s1">&amp;#39;/^\/Annots/d&amp;#39;&lt;/span> &lt;span class="p">|&lt;/span> pdftk - output out.pdf compress
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h4 id="perl-cam-pdf">&lt;span class="section-num">14.1.2&lt;/span> perl-cam-pdf&lt;/h4>
 &lt;ul>
 &lt;li>Удалить все аннотации:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-8-1">&lt;a class="lnlinks" href="#hl-8-1">1&lt;/a>&lt;/span>&lt;span class="cl">rewritepdf.pl -C in.pdf out.pdf
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">rewritepdf.pl -C in.pdf out.pdf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h2 id="добавьте-номера-страниц">&lt;span class="section-num">15&lt;/span> Добавьте номера страниц&lt;/h2>
@@ -732,13 +732,13 @@ pdftk book.pdf update_info_utf8 Metadata.txt выходная книга-с-ме
 &lt;h4 id="pdftk">&lt;span class="section-num">17.1.1&lt;/span> pdftk&lt;/h4>
 &lt;ul>
 &lt;li>Найти все закладки:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-9-1">&lt;a class="lnlinks" href="#hl-9-1">1&lt;/a>&lt;/span>&lt;span class="cl">pdftk file.pdf dump_data_utf8 &lt;span class="p">|&lt;/span> grep &lt;span class="s1">&amp;#39;^Bookmark&amp;#39;&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pdftk file.pdf dump_data_utf8 &lt;span class="p">|&lt;/span> grep &lt;span class="s1">&amp;#39;^Bookmark&amp;#39;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h4 id="qpdf">&lt;span class="section-num">17.1.2&lt;/span> qpdf&lt;/h4>
 &lt;ul>
 &lt;li>Найти все закладки:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-10-1">&lt;a class="lnlinks" href="#hl-10-1">1&lt;/a>&lt;/span>&lt;span class="cl">qpdf --json --json-key&lt;span class="o">=&lt;/span>outlines file.pdf
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">qpdf --json --json-key&lt;span class="o">=&lt;/span>outlines file.pdf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="добавить-закладки">&lt;span class="section-num">17.2&lt;/span> Добавить закладки&lt;/h3>
@@ -817,33 +817,33 @@ pdftk &amp;ldquo;${IN}&amp;rdquo; cat \((non_blank) вывод &amp;ldquo;\){fil
 &lt;h4 id="poppler">&lt;span class="section-num">18.1.1&lt;/span> poppler&lt;/h4>
 &lt;ul>
 &lt;li>Используем команду &lt;code>pdffonts&lt;/code> чтобы узнать, какие шрифты используются в PDF-файле и встроены ли они в него или нет:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-11-1">&lt;a class="lnlinks" href="#hl-11-1">1&lt;/a>&lt;/span>&lt;span class="cl">pdffonts file.pdf
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pdffonts file.pdf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="внедрить-шрифты-в-файл">&lt;span class="section-num">18.2&lt;/span> Внедрить шрифты в файл&lt;/h3>
 &lt;h4 id="ghostscript">&lt;span class="section-num">18.2.1&lt;/span> ghostscript&lt;/h4>
 &lt;ul>
 &lt;li>Перегенерим файл с помощью ghostscript:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-12-1">&lt;a class="lnlinks" href="#hl-12-1">1&lt;/a>&lt;/span>&lt;span class="cl">gs -q -dNOPAUSE -dBATCH -dPDFSETTINGS&lt;span class="o">=&lt;/span>/prepress -sDEVICE&lt;span class="o">=&lt;/span>pdfwrite -dEmbedAllFonts&lt;span class="o">=&lt;/span>&lt;span class="nb">true&lt;/span> -sOutputFile&lt;span class="o">=&lt;/span>&amp;lt;outfile.pdf&amp;gt; &amp;lt;infile.pdf&amp;gt;
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">gs -q -dNOPAUSE -dBATCH -dPDFSETTINGS&lt;span class="o">=&lt;/span>/prepress -sDEVICE&lt;span class="o">=&lt;/span>pdfwrite -dEmbedAllFonts&lt;span class="o">=&lt;/span>&lt;span class="nb">true&lt;/span> -sOutputFile&lt;span class="o">=&lt;/span>&amp;lt;outfile.pdf&amp;gt; &amp;lt;infile.pdf&amp;gt;
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h2 id="восстановить-повреждённый-pdf-файл">&lt;span class="section-num">19&lt;/span> Восстановить повреждённый PDF-файл&lt;/h2>
 &lt;h3 id="ghostscript">&lt;span class="section-num">19.1&lt;/span> ghostscript&lt;/h3>
 &lt;ul>
 &lt;li>Отремонтировать файл:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-13-1">&lt;a class="lnlinks" href="#hl-13-1">1&lt;/a>&lt;/span>&lt;span class="cl">gs -o repaired.pdf -sDEVICE&lt;span class="o">=&lt;/span>pdfwrite -dPDFSETTINGS&lt;span class="o">=&lt;/span>/prepress corrupted.pdf
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">gs -o repaired.pdf -sDEVICE&lt;span class="o">=&lt;/span>pdfwrite -dPDFSETTINGS&lt;span class="o">=&lt;/span>/prepress corrupted.pdf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="poppler">&lt;span class="section-num">19.2&lt;/span> poppler&lt;/h3>
 &lt;ul>
 &lt;li>Отремонтировать файл:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-14-1">&lt;a class="lnlinks" href="#hl-14-1">1&lt;/a>&lt;/span>&lt;span class="cl">pdftocairo -pdf corrupted.pdf repaired.pdf
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pdftocairo -pdf corrupted.pdf repaired.pdf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="mupdf">&lt;span class="section-num">19.3&lt;/span> mupdf&lt;/h3>
 &lt;ul>
 &lt;li>Отремонтировать файл:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-15-1">&lt;a class="lnlinks" href="#hl-15-1">1&lt;/a>&lt;/span>&lt;span class="cl">mutool clean corrupted.pdf repaired.pdf
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mutool clean corrupted.pdf repaired.pdf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h2 id="стандарт-pdf-a">&lt;span class="section-num">20&lt;/span> Стандарт PDF/A&lt;/h2>
@@ -857,14 +857,14 @@ pdftk &amp;ldquo;${IN}&amp;rdquo; cat \((non_blank) вывод &amp;ldquo;\){fil
 &lt;h4 id="ghostscript">&lt;span class="section-num">20.1.1&lt;/span> ghostscript&lt;/h4>
 &lt;ul>
 &lt;li>Конвертация:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-16-1">&lt;a class="lnlinks" href="#hl-16-1">1&lt;/a>&lt;/span>&lt;span class="cl">gs -dPDFA -dBATCH -dNOPAUSE -sColorConversionStrategy&lt;span class="o">=&lt;/span>UseDeviceIndependentColor -sDEVICE&lt;span class="o">=&lt;/span>pdfwrite -dPDFACompatibilityPolicy&lt;span class="o">=&lt;/span>&lt;span class="m">2&lt;/span> -sOutputFile&lt;span class="o">=&lt;/span>document_pdfa.pdf document.pdf
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">gs -dPDFA -dBATCH -dNOPAUSE -sColorConversionStrategy&lt;span class="o">=&lt;/span>UseDeviceIndependentColor -sDEVICE&lt;span class="o">=&lt;/span>pdfwrite -dPDFACompatibilityPolicy&lt;span class="o">=&lt;/span>&lt;span class="m">2&lt;/span> -sOutputFile&lt;span class="o">=&lt;/span>document_pdfa.pdf document.pdf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="проверка-соответствия-pdf-a">&lt;span class="section-num">20.2&lt;/span> Проверка соответствия PDF/A&lt;/h3>
 &lt;h4 id="verapdf">&lt;span class="section-num">20.2.1&lt;/span> verapdf&lt;/h4>
 &lt;ul>
 &lt;li>Проверить соответствие PDF различным вариантам стандарта PDF/A:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="ln" id="hl-17-1">&lt;a class="lnlinks" href="#hl-17-1">1&lt;/a>&lt;/span>&lt;span class="cl">verapdf --flavour 1a --format text document.pdf
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">verapdf --flavour 1a --format text document.pdf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h2 id="оглавление-в-pdf">&lt;span class="section-num">21&lt;/span> Оглавление в PDF&lt;/h2>

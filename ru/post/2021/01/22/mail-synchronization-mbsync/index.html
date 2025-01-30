@@ -1,10 +1,12 @@
-<!doctype html><!-- This site was created with Hugo Blox. https://hugoblox.com --><!-- Last Published: 28 января 2025 г. --><html lang=ru-ru dir=ltr data-wc-theme-default=system><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=generator content="Hugo Blox Builder 0.3.1"><meta name=author content="Дмитрий Сергеевич Кулябов"><meta name=description content="Настройка синхронизации IMAP с помощью mbsync.
+<!doctype html><!-- This site was created with Hugo Blox. https://hugoblox.com --><!-- Last Published: 30 января 2025 г. --><html lang=ru-ru dir=ltr data-wc-theme-default=system><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=generator content="Hugo Blox Builder 0.3.1"><meta name=author content="Дмитрий Сергеевич Кулябов"><meta name=description content="Настройка синхронизации IMAP с помощью mbsync.
 "><link rel=alternate hreflang=ru-ru href=https://yamadharma.github.io/ru/post/2021/01/22/mail-synchronization-mbsync/><link rel=stylesheet href=https://yamadharma.github.io/css/themes/emerald.min.css><link href=https://yamadharma.github.io/dist/wc.min.css rel=stylesheet><script>window.hbb={defaultTheme:document.documentElement.dataset.wcThemeDefault,setDarkTheme:()=>{document.documentElement.classList.add("dark"),document.documentElement.style.colorScheme="dark"},setLightTheme:()=>{document.documentElement.classList.remove("dark"),document.documentElement.style.colorScheme="light"}},console.debug(`Default Hugo Blox Builder theme is ${window.hbb.defaultTheme}`),"wc-color-theme"in localStorage?localStorage.getItem("wc-color-theme")==="dark"?window.hbb.setDarkTheme():window.hbb.setLightTheme():(window.hbb.defaultTheme==="dark"?window.hbb.setDarkTheme():window.hbb.setLightTheme(),window.hbb.defaultTheme==="system"&&(window.matchMedia("(prefers-color-scheme: dark)").matches?window.hbb.setDarkTheme():window.hbb.setLightTheme()))</script><script>document.addEventListener("DOMContentLoaded",function(){let e=document.querySelectorAll("li input[type='checkbox'][disabled]");e.forEach(e=>{e.parentElement.parentElement.classList.add("task-list")});const t=document.querySelectorAll(".task-list li");t.forEach(e=>{let t=Array.from(e.childNodes).filter(e=>e.nodeType===3&&e.textContent.trim().length>1);if(t.length>0){const n=document.createElement("label");t[0].after(n),n.appendChild(e.querySelector("input[type='checkbox']")),n.appendChild(t[0])}})})</script><script async src="https://www.googletagmanager.com/gtag/js?id=UA-162854716-1"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}function trackOutboundLink(e,t){gtag("event","click",{event_category:"outbound",event_label:e,transport_type:"beacon",event_callback:function(){t!=="_blank"&&(document.location=e)}}),console.debug("Outbound link clicked: "+e)}function onClickCallback(e){if(e.target.tagName!=="A"||e.target.host===window.location.host)return;trackOutboundLink(e.target,e.target.getAttribute("target"))}gtag("js",new Date),gtag("config","UA-162854716-1",{anonymize_ip:!0}),gtag("set",{cookie_flags:"SameSite=None;Secure"}),document.addEventListener("click",onClickCallback,!1)</script><link rel=alternate href=https://yamadharma.github.io/ru/post/2021/01/22/mail-synchronization-mbsync/index.xml type=application/rss+xml title="Д. С. Кулябов"><link rel=icon type=image/png href=https://yamadharma.github.io/media/icon_hu10409781601724418176.png><link rel=apple-touch-icon type=image/png href=https://yamadharma.github.io/media/icon_hu16056463462840539100.png><link rel=canonical href=https://yamadharma.github.io/ru/post/2021/01/22/mail-synchronization-mbsync/><meta property="twitter:card" content="summary"><meta property="twitter:site" content="@dskulyabov"><meta property="twitter:creator" content="@dskulyabov"><meta property="og:site_name" content="Д. С. Кулябов"><meta property="og:url" content="https://yamadharma.github.io/ru/post/2021/01/22/mail-synchronization-mbsync/"><meta property="og:title" content="Почта. Синхронизация. mbsync | Д. С. Кулябов"><meta property="og:description" content="Настройка синхронизации IMAP с помощью mbsync."><meta property="og:image" content="https://yamadharma.github.io/media/icon_hu15752663207405015554.png"><meta property="twitter:image" content="https://yamadharma.github.io/media/icon_hu15752663207405015554.png"><meta property="og:locale" content="ru-ru"><meta property="article:published_time" content="2021-01-22T15:10:00+03:00"><meta property="article:modified_time" content="2024-10-19T16:15:00+03:00"><title>Почта. Синхронизация. mbsync | Д. С. Кулябов</title><style>@font-face{font-family:inter var;font-style:normal;font-weight:100 900;font-display:swap;src:url(/dist/font/Inter.var.woff2)format(woff2)}</style><link type=text/css rel=stylesheet href=https://yamadharma.github.io/dist/pagefind/pagefind-ui.be766eb419317a14ec769d216e9779bfe8f3737c80e780f4ba0dafb57a41a482.css integrity="sha256-vnZutBkxehTsdp0hbpd5v+jzc3yA54D0ug2vtXpBpII="><script src=https://yamadharma.github.io/dist/pagefind/pagefind-ui.87693d7c6f2b3b347ce359d0ede762c033419f0a32b22ce508c335a81d841f1b.js integrity="sha256-h2k9fG8rOzR841nQ7ediwDNBnwoysizlCMM1qB2EHxs="></script><script>window.hbb.pagefind={baseUrl:"/"}</script><style>html.dark{--pagefind-ui-primary:#eeeeee;--pagefind-ui-text:#eeeeee;--pagefind-ui-background:#152028;--pagefind-ui-border:#152028;--pagefind-ui-tag:#152028}</style><script>window.addEventListener("DOMContentLoaded",e=>{new PagefindUI({element:"#search",showSubResults:!0,baseUrl:window.hbb.pagefind.baseUrl,bundlePath:window.hbb.pagefind.baseUrl+"pagefind/"})}),document.addEventListener("DOMContentLoaded",()=>{let e=document.getElementById("search"),t=document.getElementById("search_toggle");t&&t.addEventListener("click",()=>{if(e.classList.toggle("hidden"),e.querySelector("input").value="",e.querySelector("input").focus(),!e.classList.contains("hidden")){let t=document.querySelector(".pagefind-ui__search-clear");t&&!t.hasAttribute("listenerOnClick")&&(t.setAttribute("listenerOnClick","true"),t.addEventListener("click",()=>{e.classList.toggle("hidden")}))}})})</script><link type=text/css rel=stylesheet href=https://yamadharma.github.io/dist/lib/katex/katex.min.505d5f829022bb7b4f24dfee0aa1141cd7bba67afe411d1240335f820960b5c3.css integrity="sha256-UF1fgpAiu3tPJN/uCqEUHNe7pnr+QR0SQDNfgglgtcM="><script defer src=https://yamadharma.github.io/dist/lib/katex/katex.min.dc84b296ec3e884de093158f760fd9d45b6c7abe58b5381557f4e138f46a58ae.js integrity="sha256-3ISyluw+iE3gkxWPdg/Z1Ftser5YtTgVV/ThOPRqWK4="></script><script defer src=https://yamadharma.github.io/js/katex-renderer.6579ec9683211cfb952064aedf3a3baea5eeb17a061775b32b70917474637c80.js integrity="sha256-ZXnsloMhHPuVIGSu3zo7rqXusXoGF3WzK3CRdHRjfIA="></script><script defer src=https://yamadharma.github.io/js/hugo-blox-ru.min.70faccce17cb4b107682124c00615778b65c7337729fb54b32a16e742eb48390.js integrity="sha256-cPrMzhfLSxB2ghJMAGFXeLZcczdyn7VLMqFudC60g5A="></script></head><body class="dark:bg-hb-dark dark:text-white page-wrapper" id=top><div id=page-bg></div><div class="page-header sticky top-0 z-30"><header id=site-header class=header><nav class="navbar px-3 flex justify-left"><div class="order-0 h-100"><a class=navbar-brand href=https://yamadharma.github.io/ru/ title="Д. С. Кулябов">Dmitry S. Kulyabov</a></div><input id=nav-toggle type=checkbox class=hidden>
 <label for=nav-toggle class="order-3 cursor-pointer flex items-center lg:hidden text-dark dark:text-white lg:order-1"><svg id="show-button" class="h-6 fill-current block" viewBox="0 0 20 20"><title>Open Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0V0z"/></svg><svg id="hide-button" class="h-6 fill-current hidden" viewBox="0 0 20 20"><title>Close Menu</title><polygon points="11 9 22 9 22 11 11 11 11 22 9 22 9 11 -2 11 -2 9 9 9 9 -2 11 -2" transform="rotate(45 10 10)"/></svg></label><ul id=nav-menu class="navbar-nav order-3 hidden lg:flex w-full pb-6 lg:order-1 lg:w-auto lg:space-x-2 lg:pb-0 xl:space-x-8 justify-left
 mr-auto ml-6"><li class=nav-item><a class=nav-link href=https://yamadharma.github.io/ru/>Обо мне</a></li><li class=nav-item><a class=nav-link href=https://yamadharma.github.io/ru/#news>Блог</a></li><li class=nav-item><a class=nav-link href=https://yamadharma.github.io/ru/#papers>Публикации</a></li><li class=nav-item><a class=nav-link href=https://yamadharma.github.io/ru/experience/>Опыт</a></li><li class=nav-item><a class=nav-link href=https://yamadharma.github.io/ru/projects/>Проекты</a></li><li class=nav-item><a class=nav-link href=https://yamadharma.github.io/ru/teaching/>Преподавание</a></li></ul><div class="order-1 ml-auto flex items-center md:order-2 lg:ml-0"><button aria-label=search class="text-black hover:text-primary inline-block px-3 text-xl dark:text-white" id=search_toggle><svg height="16" width="16" viewBox="0 0 512 512" fill="currentcolor"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8.0 45.3s-32.8 12.5-45.3.0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9.0 208S93.1.0 208 0 416 93.1 416 208zM208 352a144 144 0 100-288 144 144 0 100 288z"/></svg></button><div class="px-3 text-black hover:text-primary-700 dark:text-white dark:hover:text-primary-300
 [&.active]:font-bold [&.active]:text-black/90 dark:[&.active]:text-white"><button class="theme-toggle mt-1" accesskey=t title=appearance><svg id="moon" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="dark:hidden"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="dark:block [&:not(dark)]:hidden"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div></nav></header><div id=search class="hidden p-3"></div></div><div class="page-body my-10"><div class="mx-auto flex max-w-screen-xl"><aside class="hb-sidebar-container max-lg:[transform:translate3d(0,-100%,0)] lg:hidden xl:block"><div class="px-4 pt-4 lg:hidden"></div><div class="hb-scrollbar lg:h-[calc(100vh-var(--navbar-height))]"><ul class="flex flex-col gap-1 lg:hidden"><li class=open><a class="hb-sidebar-custom-link
 text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50" href=https://yamadharma.github.io/ru/post/>Блог
 <span data-hb-sidebar-toggle><svg fill="none" viewBox="0 0 24 24" stroke="currentcolor" class="h-[18px] min-w-[18px] rounded-sm p-0.5 hover:bg-gray-800/5 dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="origin-center transition-transform rtl:-rotate-180"/></svg></span></a><div class="ltr:pr-0 overflow-hidden"><ul class=hb-sidebar-list><li class="flex flex-col"><a class="hb-sidebar-custom-link
+text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50" href=https://yamadharma.github.io/ru/post/2025/01/30/turdakov_2022_trusted-artificial-intelligence_ru/>Турдаков, Д. Ю. et al. (2022) Доверенный искусственный интеллект: вызовы и перспективные решения</a></li><li class="flex flex-col"><a class="hb-sidebar-custom-link
+text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50" href=https://yamadharma.github.io/ru/post/2025/01/29/neovim-configuration-lazyvim/>NeoVim. Конфигурация LazyVim</a></li><li class="flex flex-col"><a class="hb-sidebar-custom-link
 text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50" href=https://yamadharma.github.io/ru/post/2025/01/28/neovim-configuring/>NeoVim. Конфигурирование</a></li><li class="flex flex-col"><a class="hb-sidebar-custom-link
 text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50" href=https://yamadharma.github.io/ru/post/2025/01/28/neovim-editor/>Редактор NeoVim</a></li><li class="flex flex-col"><a class="hb-sidebar-custom-link
 text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50" href=https://yamadharma.github.io/ru/post/2025/01/28/vi-editor-family/>Семейство редакторов vi</a></li><li class="flex flex-col"><a class="hb-sidebar-custom-link
@@ -1650,538 +1652,538 @@ text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hove
     
   </div></nav><article class="w-full break-words flex min-h-[calc(100vh-var(--navbar-height))] min-w-0 justify-center pb-8 pr-[calc(env(safe-area-inset-right)-1.5rem)]"><main class="w-full min-w-0 max-w-6xl px-6 pt-4 md:px-12"><h1 class="mt-2 text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-100">Почта. Синхронизация. mbsync</h1><div class="mt-4 mb-16"><div class="text-gray-500 dark:text-gray-300 text-sm flex items-center flex-wrap gap-y-2"><span class=mr-1>2021-01-22</span>
 <span class=mx-1>·</span>
-<span class=mx-1>11 мин. для прочтения</span></div><div class=mt-3></div></div><div class="prose prose-slate lg:prose-xl dark:prose-invert"><p>Настройка синхронизации IMAP с помощью <em>mbsync</em>.</p><details class="print:hidden xl:hidden"><summary>Содержание</summary><div class=text-sm><nav id=TableOfContents><ul><li><a href=#описание><span class=section-num>1</span> Описание</a></li><li><a href=#установка><span class=section-num>2</span> Установка</a></li><li><a href=#настройка><span class=section-num>3</span> Настройка</a><ul><li><a href=#общие-положения><span class=section-num>3.1</span> Общие положения</a></li><li><a href=#конфигурация-учётных-записей><span class=section-num>3.2</span> Конфигурация учётных записей</a></li><li><a href=#общие-параметры><span class=section-num>3.3</span> Общие параметры</a></li><li><a href=#примеры-конфигурации-для-разных-провайдеров><span class=section-num>3.4</span> Примеры конфигурации для разных провайдеров</a><ul><li><a href=#gmail><span class=section-num>3.4.1</span> Gmail</a></li><li><a href=#apple><span class=section-num>3.4.2</span> Apple</a></li><li><a href=#gmx><span class=section-num>3.4.3</span> GMX</a></li><li><a href=#proton><span class=section-num>3.4.4</span> Proton</a></li><li><a href=#yandex><span class=section-num>3.4.5</span> Yandex</a></li><li><a href=#mail-dot-ru><span class=section-num>3.4.6</span> Mail.ru</a></li><li><a href=#office365><span class=section-num>3.4.7</span> Office365</a></li><li><a href=#yahoo-dot-com><span class=section-num>3.4.8</span> Yahoo.com</a></li></ul></li></ul></li><li><a href=#синхронизация><span class=section-num>4</span> Синхронизация</a><ul><li><a href=#настройка-синхронизации><span class=section-num>4.1</span> Настройка синхронизации</a></li><li><a href=#запуск-из-командной-строки><span class=section-num>4.2</span> Запуск из командной строки</a></li><li><a href=#запуск-по-таймеру><span class=section-num>4.3</span> Запуск по таймеру</a></li></ul></li><li><a href=#поддержка-почтовых-файлов><span class=section-num>5</span> Поддержка почтовых файлов</a><ul><li><a href=#удаление-дубликатов><span class=section-num>5.1</span> Удаление дубликатов</a></li></ul></li><li><a href=#перенос-почтовых-файлов-на-другую-машину><span class=section-num>6</span> Перенос почтовых файлов на другую машину</a></li><li><a href=#технические-моменты><span class=section-num>7</span> Технические моменты</a><ul><li><a href=#имена-почтовых-файлов><span class=section-num>7.1</span> Имена почтовых файлов</a></li></ul></li></ul></nav></div></details><h2 id=описание><span class=section-num>1</span> Описание</h2><ul><li>Домашняя страница: <a href=https://isync.sourceforge.io/ target=_blank rel=noopener>https://isync.sourceforge.io/</a>.</li><li>Репозиторий: <a href=https://sourceforge.net/p/isync/isync/ci/master/tree/ target=_blank rel=noopener>https://sourceforge.net/p/isync/isync/ci/master/tree/</a></li><li><code>isync</code> / <code>mbsync</code> &mdash; программа для синхронизации IMAP и локальных почтовых файлов.</li><li><code>isync</code> &mdash; старое название (для совместимости).</li></ul><h2 id=установка><span class=section-num>2</span> Установка</h2><ul><li>Gentoo<div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=ln id=hl-0-1><a class=lnlinks href=#hl-0-1>1</a></span><span class=cl>emerge isync
-</span></span></code></pre></div></li></ul><h2 id=настройка><span class=section-num>3</span> Настройка</h2><h3 id=общие-положения><span class=section-num>3.1</span> Общие положения</h3><ul><li>Все учётные записи приводятся к единой структуре.</li><li>Папки IMAP унифицируются следующим образом: Inbox, Archive, Sent, Trash, Drafts, Spam.</li><li>В принципе, никто не мешает использовать названия папок самого IMAP-сервера.</li></ul><h3 id=конфигурация-учётных-записей><span class=section-num>3.2</span> Конфигурация учётных записей</h3><ul><li><p>Учётные записи делаем по полному наименованию почты. Я это делаю потому, что у меня есть почтовые ящики с одинаковыми именами в разных почтовых доменах.</p></li><li><p>Создать необходимые каталоги:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=ln id=hl-1-1><a class=lnlinks href=#hl-1-1>1</a></span><span class=cl>mkdir -p ~/Maildir/account@domain
-</span></span></code></pre></div></li><li><p>Можно создать каталоги все скопом из конфигурационного файла <code>~/.config/isyncrc</code>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=ln id=hl-2-1><a class=lnlinks href=#hl-2-1>1</a></span><span class=cl><span class=cp>#!/bin/sh
-</span></span></span><span class=line><span class=ln id=hl-2-2><a class=lnlinks href=#hl-2-2>2</a></span><span class=cl><span class=cp></span>
-</span></span><span class=line><span class=ln id=hl-2-3><a class=lnlinks href=#hl-2-3>3</a></span><span class=cl><span class=nv>MAILDIR</span><span class=o>=</span>~/Maildir
-</span></span><span class=line><span class=ln id=hl-2-4><a class=lnlinks href=#hl-2-4>4</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-2-5><a class=lnlinks href=#hl-2-5>5</a></span><span class=cl><span class=c1>## Make mailbox directories</span>
-</span></span><span class=line><span class=ln id=hl-2-6><a class=lnlinks href=#hl-2-6>6</a></span><span class=cl>grep -e <span class=s2>&#34;^IMAPAccount&#34;</span> ~/.config/isyncrc <span class=p>|</span> cut -d<span class=s2>&#34; &#34;</span> -f2 <span class=p>|</span> xargs -I <span class=o>{}</span> -n <span class=m>1</span> mkdir -p <span class=s2>&#34;</span><span class=si>${</span><span class=nv>MAILDIR</span><span class=si>}</span><span class=s2>/{}&#34;</span>
-</span></span><span class=line><span class=ln id=hl-2-7><a class=lnlinks href=#hl-2-7>7</a></span><span class=cl>mbsync -a
+<span class=mx-1>11 мин. для прочтения</span></div><div class=mt-3></div></div><div class="prose prose-slate lg:prose-xl dark:prose-invert"><p>Настройка синхронизации IMAP с помощью <em>mbsync</em>.</p><details class="print:hidden xl:hidden"><summary>Содержание</summary><div class=text-sm><nav id=TableOfContents><ul><li><a href=#описание><span class=section-num>1</span> Описание</a></li><li><a href=#установка><span class=section-num>2</span> Установка</a></li><li><a href=#настройка><span class=section-num>3</span> Настройка</a><ul><li><a href=#общие-положения><span class=section-num>3.1</span> Общие положения</a></li><li><a href=#конфигурация-учётных-записей><span class=section-num>3.2</span> Конфигурация учётных записей</a></li><li><a href=#общие-параметры><span class=section-num>3.3</span> Общие параметры</a></li><li><a href=#примеры-конфигурации-для-разных-провайдеров><span class=section-num>3.4</span> Примеры конфигурации для разных провайдеров</a><ul><li><a href=#gmail><span class=section-num>3.4.1</span> Gmail</a></li><li><a href=#apple><span class=section-num>3.4.2</span> Apple</a></li><li><a href=#gmx><span class=section-num>3.4.3</span> GMX</a></li><li><a href=#proton><span class=section-num>3.4.4</span> Proton</a></li><li><a href=#yandex><span class=section-num>3.4.5</span> Yandex</a></li><li><a href=#mail-dot-ru><span class=section-num>3.4.6</span> Mail.ru</a></li><li><a href=#office365><span class=section-num>3.4.7</span> Office365</a></li><li><a href=#yahoo-dot-com><span class=section-num>3.4.8</span> Yahoo.com</a></li></ul></li></ul></li><li><a href=#синхронизация><span class=section-num>4</span> Синхронизация</a><ul><li><a href=#настройка-синхронизации><span class=section-num>4.1</span> Настройка синхронизации</a></li><li><a href=#запуск-из-командной-строки><span class=section-num>4.2</span> Запуск из командной строки</a></li><li><a href=#запуск-по-таймеру><span class=section-num>4.3</span> Запуск по таймеру</a></li></ul></li><li><a href=#поддержка-почтовых-файлов><span class=section-num>5</span> Поддержка почтовых файлов</a><ul><li><a href=#удаление-дубликатов><span class=section-num>5.1</span> Удаление дубликатов</a></li></ul></li><li><a href=#перенос-почтовых-файлов-на-другую-машину><span class=section-num>6</span> Перенос почтовых файлов на другую машину</a></li><li><a href=#технические-моменты><span class=section-num>7</span> Технические моменты</a><ul><li><a href=#имена-почтовых-файлов><span class=section-num>7.1</span> Имена почтовых файлов</a></li></ul></li></ul></nav></div></details><h2 id=описание><span class=section-num>1</span> Описание</h2><ul><li>Домашняя страница: <a href=https://isync.sourceforge.io/ target=_blank rel=noopener>https://isync.sourceforge.io/</a>.</li><li>Репозиторий: <a href=https://sourceforge.net/p/isync/isync/ci/master/tree/ target=_blank rel=noopener>https://sourceforge.net/p/isync/isync/ci/master/tree/</a></li><li><code>isync</code> / <code>mbsync</code> &mdash; программа для синхронизации IMAP и локальных почтовых файлов.</li><li><code>isync</code> &mdash; старое название (для совместимости).</li></ul><h2 id=установка><span class=section-num>2</span> Установка</h2><ul><li>Gentoo<div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>emerge isync
+</span></span></code></pre></div></li></ul><h2 id=настройка><span class=section-num>3</span> Настройка</h2><h3 id=общие-положения><span class=section-num>3.1</span> Общие положения</h3><ul><li>Все учётные записи приводятся к единой структуре.</li><li>Папки IMAP унифицируются следующим образом: Inbox, Archive, Sent, Trash, Drafts, Spam.</li><li>В принципе, никто не мешает использовать названия папок самого IMAP-сервера.</li></ul><h3 id=конфигурация-учётных-записей><span class=section-num>3.2</span> Конфигурация учётных записей</h3><ul><li><p>Учётные записи делаем по полному наименованию почты. Я это делаю потому, что у меня есть почтовые ящики с одинаковыми именами в разных почтовых доменах.</p></li><li><p>Создать необходимые каталоги:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>mkdir -p ~/Maildir/account@domain
+</span></span></code></pre></div></li><li><p>Можно создать каталоги все скопом из конфигурационного файла <code>~/.config/isyncrc</code>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=cp>#!/bin/sh
+</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span><span class=line><span class=cl><span class=nv>MAILDIR</span><span class=o>=</span>~/Maildir
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>## Make mailbox directories</span>
+</span></span><span class=line><span class=cl>grep -e <span class=s2>&#34;^IMAPAccount&#34;</span> ~/.config/isyncrc <span class=p>|</span> cut -d<span class=s2>&#34; &#34;</span> -f2 <span class=p>|</span> xargs -I <span class=o>{}</span> -n <span class=m>1</span> mkdir -p <span class=s2>&#34;</span><span class=si>${</span><span class=nv>MAILDIR</span><span class=si>}</span><span class=s2>/{}&#34;</span>
+</span></span><span class=line><span class=cl>mbsync -a
 </span></span></code></pre></div><div class=src-block-caption><span class=src-block-number>&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 1:</span>
-Файл ~/bin/mbsync-mkdir</div></li><li><p>Делаем конфигурационный файл для <em>mbsync</em>. Файл называется <code>~/.config/isyncrc</code>.</p></li><li><p>Чтобы не хранить пароли в конфигурационном файле (оператор <code>Pass</code>) будем использовать хранение пароля, совместимое с <em>emacs</em> (с использованием оператора <code>PassCmd</code>):</p><ul><li><p>в файле <code>~/.authinfo.gpg</code> (см. <a href=https://yamadharma.github.io/ru/post/2021/01/22/mail-password-authentication/>Emacs. Почта. Парольная аутентификация</a>):</p><ul><li>структура команды:<div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=ln id=hl-3-1><a class=lnlinks href=#hl-3-1>1</a></span><span class=cl>PassCmd &#34;gpg -q --for-your-eyes-only --no-tty -d ~/.authinfo.gpg | awk &#39;/machine account@example.com/ {print $6}&#39;&#34;
-</span></span></code></pre></div></li></ul></li><li><p>в менеджере паролей <em>pass</em> (см. <a href=https://yamadharma.github.io/ru/post/2021/04/28/password-manager-pass/>Менеджер паролей pass</a>):</p><ul><li>структура команды:</li></ul><!--listend--><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=ln id=hl-4-1><a class=lnlinks href=#hl-4-1>1</a></span><span class=cl>PassCmd &#34;pass email/example.com/account@example.com&#34;
-</span></span></code></pre></div></li></ul></li><li><p>Начиная с версии <em>mbsync-1.4.1</em> операторы <code>Master</code> и <code>Slave</code> заменены на <code>Far</code> и <code>Near</code>.</p></li></ul><h3 id=общие-параметры><span class=section-num>3.3</span> Общие параметры</h3><ul><li>Установка параметра <code>CopyArrivalDate</code>:<div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=ln id=hl-5-1><a class=lnlinks href=#hl-5-1>1</a></span><span class=cl># By default (CopyArrivalDate no), if you copy an old email from inbox to
-</span></span><span class=line><span class=ln id=hl-5-2><a class=lnlinks href=#hl-5-2>2</a></span><span class=cl># Archive (e.g.) it will get the date of the copy assigned, instead of just
-</span></span><span class=line><span class=ln id=hl-5-3><a class=lnlinks href=#hl-5-3>3</a></span><span class=cl># keeping its original date of arrival! Also see:
-</span></span><span class=line><span class=ln id=hl-5-4><a class=lnlinks href=#hl-5-4>4</a></span><span class=cl># https://rakhim.org/fastmail-setup-with-emacs-mu4e-and-mbsync-on-macos/
-</span></span><span class=line><span class=ln id=hl-5-5><a class=lnlinks href=#hl-5-5>5</a></span><span class=cl># https://wiki.archlinux.org/index.php/Isync#Emails_on_remote_server_have_the_wrong_date
-</span></span><span class=line><span class=ln id=hl-5-6><a class=lnlinks href=#hl-5-6>6</a></span><span class=cl>CopyArrivalDate yes
-</span></span></code></pre></div></li></ul><h3 id=примеры-конфигурации-для-разных-провайдеров><span class=section-num>3.4</span> Примеры конфигурации для разных провайдеров</h3><ul><li>Может потребоваться для разных провайдеров увеличить тайм-аут соединения (по умолчанию равно <code>20</code>):<div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=ln id=hl-6-1><a class=lnlinks href=#hl-6-1>1</a></span><span class=cl># Increase timeout
-</span></span><span class=line><span class=ln id=hl-6-2><a class=lnlinks href=#hl-6-2>2</a></span><span class=cl>Timeout 120
-</span></span></code></pre></div></li><li>Вместо <code>pass</code> можно использовать <code>gopass</code>. При последовательном запуске нескольких <code>pass</code> утилита может не находить ключ <em>pgp</em>.</li><li>Папки IMAP можно получить либо через web-интерфейс, либо в командной строке (см. <a href=https://yamadharma.github.io/ru/post/2024/04/13/imap-queries-command-line/>Запросы по протоколу imap из командной строки</a>)</li></ul><h4 id=gmail><span class=section-num>3.4.1</span> Gmail</h4><ul><li><a href=https://www.google.com/intl/ru/gmail/about/ target=_blank rel=noopener>https://www.google.com/intl/ru/gmail/about/</a></li><li><a href=https://yamadharma.github.io/ru/post/2021/07/06/mail-google-configuring-mail-client/>Почта. Google. Настройка почтового клиента</a></li><li>Из-за структуры тегов Gmail необходимо явно задавать названия почтовых ящиков в директивах <code>Far</code> и <code>Near</code>.</li><li>Синхронизацию папки <code>Отправленные</code> можно отключить. Google сохраняет всю электронную почту в папке <code>Все сообщения</code>. В результате можно получить локальные дубликаты.</li><li>Рекомендуется на сайте Gmail настроить в пункте <code>Настройки > Пересылка и POP/IMAP > Доступ по протоколу IMAP</code> (<code>Settings</code> > <code>Forwarding and POP/IMAP</code> > <code>IMAP Access</code>):<ul><li>отметить <code>Автоматическое стирание включено (немедленно обновлять данные на сервере; по умолчанию)</code> <code>Auto-Expunge on - Immediately update the server. (default)</code>;</li><li><del>отметить <code>Автоматическое стирание выключено (ожидать, пока клиент не обновит данные на сервере)</code> (<code>Turn Auto Expunge Off</code>)</del>;</li><li>отметить <code>Архивировать сообщение (по умолчанию)</code> (<code>Archive message (default)</code>).</li><li><del>отметить <code>Отправить письмо в корзину</code> (<code>Send email to trash</code>)</del>.</li></ul></li><li>При использовании двуфакторной аутентификации (2FA) необходимо использовать <em>пароль приложения</em> (см. <a href=https://yamadharma.github.io/ru/post/2020/12/25/mail-google-connect/>Почта. Подключение к Google</a>).<div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=ln id=hl-7-1><a class=lnlinks href=#hl-7-1> 1</a></span><span class=cl># IMAPAccount (gmail)
-</span></span><span class=line><span class=ln id=hl-7-2><a class=lnlinks href=#hl-7-2> 2</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-7-3><a class=lnlinks href=#hl-7-3> 3</a></span><span class=cl>IMAPAccount account@gmail.com
-</span></span><span class=line><span class=ln id=hl-7-4><a class=lnlinks href=#hl-7-4> 4</a></span><span class=cl>Host imap.gmail.com
-</span></span><span class=line><span class=ln id=hl-7-5><a class=lnlinks href=#hl-7-5> 5</a></span><span class=cl>User account@gmail.com
-</span></span><span class=line><span class=ln id=hl-7-6><a class=lnlinks href=#hl-7-6> 6</a></span><span class=cl># Pass ***************
-</span></span><span class=line><span class=ln id=hl-7-7><a class=lnlinks href=#hl-7-7> 7</a></span><span class=cl>## To store the password in an encrypted file use PassCmd instead of Pass
-</span></span><span class=line><span class=ln id=hl-7-8><a class=lnlinks href=#hl-7-8> 8</a></span><span class=cl># PassCmd &#34;gpg -q --for-your-eyes-only --no-tty -d ~/.authinfo.gpg | awk &#39;/machine account@gmail.com/ {print $6}&#39;&#34;
-</span></span><span class=line><span class=ln id=hl-7-9><a class=lnlinks href=#hl-7-9> 9</a></span><span class=cl># PassCmd &#34;pass email/google.com/account@gmail.com@apppassword&#34;
-</span></span><span class=line><span class=ln id=hl-7-10><a class=lnlinks href=#hl-7-10>10</a></span><span class=cl>PassCmd &#34;pass email/google.com/account@gmail.com&#34;
-</span></span><span class=line><span class=ln id=hl-7-11><a class=lnlinks href=#hl-7-11>11</a></span><span class=cl>Port 993
-</span></span><span class=line><span class=ln id=hl-7-12><a class=lnlinks href=#hl-7-12>12</a></span><span class=cl>TLSType IMAPS
-</span></span><span class=line><span class=ln id=hl-7-13><a class=lnlinks href=#hl-7-13>13</a></span><span class=cl>AuthMechs LOGIN
-</span></span><span class=line><span class=ln id=hl-7-14><a class=lnlinks href=#hl-7-14>14</a></span><span class=cl>TLSVersions +1.2 +1.3
-</span></span><span class=line><span class=ln id=hl-7-15><a class=lnlinks href=#hl-7-15>15</a></span><span class=cl># Increase timeout
-</span></span><span class=line><span class=ln id=hl-7-16><a class=lnlinks href=#hl-7-16>16</a></span><span class=cl>Timeout 120
-</span></span><span class=line><span class=ln id=hl-7-17><a class=lnlinks href=#hl-7-17>17</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-7-18><a class=lnlinks href=#hl-7-18>18</a></span><span class=cl>IMAPStore account@gmail.com-remote
-</span></span><span class=line><span class=ln id=hl-7-19><a class=lnlinks href=#hl-7-19>19</a></span><span class=cl>Account account@gmail.com
-</span></span><span class=line><span class=ln id=hl-7-20><a class=lnlinks href=#hl-7-20>20</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-7-21><a class=lnlinks href=#hl-7-21>21</a></span><span class=cl>MaildirStore account@gmail.com-local
-</span></span><span class=line><span class=ln id=hl-7-22><a class=lnlinks href=#hl-7-22>22</a></span><span class=cl>Path ~/Maildir/account@gmail.com/
-</span></span><span class=line><span class=ln id=hl-7-23><a class=lnlinks href=#hl-7-23>23</a></span><span class=cl>Inbox ~/Maildir/account@gmail.com/Inbox
-</span></span><span class=line><span class=ln id=hl-7-24><a class=lnlinks href=#hl-7-24>24</a></span><span class=cl>SubFolders Verbatim
-</span></span><span class=line><span class=ln id=hl-7-25><a class=lnlinks href=#hl-7-25>25</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-7-26><a class=lnlinks href=#hl-7-26>26</a></span><span class=cl>IMAPStore account@gmail.com-remote
-</span></span><span class=line><span class=ln id=hl-7-27><a class=lnlinks href=#hl-7-27>27</a></span><span class=cl>Account account@gmail.com
-</span></span><span class=line><span class=ln id=hl-7-28><a class=lnlinks href=#hl-7-28>28</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-7-29><a class=lnlinks href=#hl-7-29>29</a></span><span class=cl>Channel account@gmail.com-inbox
-</span></span><span class=line><span class=ln id=hl-7-30><a class=lnlinks href=#hl-7-30>30</a></span><span class=cl>Far :account@gmail.com-remote:&#34;INBOX&#34;
-</span></span><span class=line><span class=ln id=hl-7-31><a class=lnlinks href=#hl-7-31>31</a></span><span class=cl>Near :account@gmail.com-local:&#34;INBOX&#34;
-</span></span><span class=line><span class=ln id=hl-7-32><a class=lnlinks href=#hl-7-32>32</a></span><span class=cl>CopyArrivalDate yes
-</span></span><span class=line><span class=ln id=hl-7-33><a class=lnlinks href=#hl-7-33>33</a></span><span class=cl>Create Both
-</span></span><span class=line><span class=ln id=hl-7-34><a class=lnlinks href=#hl-7-34>34</a></span><span class=cl>Expunge Both
-</span></span><span class=line><span class=ln id=hl-7-35><a class=lnlinks href=#hl-7-35>35</a></span><span class=cl>SyncState *
-</span></span><span class=line><span class=ln id=hl-7-36><a class=lnlinks href=#hl-7-36>36</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-7-37><a class=lnlinks href=#hl-7-37>37</a></span><span class=cl>Channel account@gmail.com-trash
-</span></span><span class=line><span class=ln id=hl-7-38><a class=lnlinks href=#hl-7-38>38</a></span><span class=cl># Far :account@gmail.com-remote:&#34;[Gmail]/Trash&#34;
-</span></span><span class=line><span class=ln id=hl-7-39><a class=lnlinks href=#hl-7-39>39</a></span><span class=cl>Far :account@gmail.com-remote:&#34;[Gmail]/&amp;BBoEPgRABDcEOAQ9BDA-&#34;
-</span></span><span class=line><span class=ln id=hl-7-40><a class=lnlinks href=#hl-7-40>40</a></span><span class=cl>Near :account@gmail.com-local:&#34;Trash&#34;
-</span></span><span class=line><span class=ln id=hl-7-41><a class=lnlinks href=#hl-7-41>41</a></span><span class=cl>CopyArrivalDate yes
-</span></span><span class=line><span class=ln id=hl-7-42><a class=lnlinks href=#hl-7-42>42</a></span><span class=cl>Create Both
-</span></span><span class=line><span class=ln id=hl-7-43><a class=lnlinks href=#hl-7-43>43</a></span><span class=cl>Expunge Both
-</span></span><span class=line><span class=ln id=hl-7-44><a class=lnlinks href=#hl-7-44>44</a></span><span class=cl>SyncState *
-</span></span><span class=line><span class=ln id=hl-7-45><a class=lnlinks href=#hl-7-45>45</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-7-46><a class=lnlinks href=#hl-7-46>46</a></span><span class=cl>Channel account@gmail.com-spam
-</span></span><span class=line><span class=ln id=hl-7-47><a class=lnlinks href=#hl-7-47>47</a></span><span class=cl># Far :account@gmail.com-remote:&#34;[Gmail]/Spam&#34;
-</span></span><span class=line><span class=ln id=hl-7-48><a class=lnlinks href=#hl-7-48>48</a></span><span class=cl>Far :account@gmail.com-remote:&#34;[Gmail]/&amp;BCEEPwQwBDw-&#34;
-</span></span><span class=line><span class=ln id=hl-7-49><a class=lnlinks href=#hl-7-49>49</a></span><span class=cl>Near :account@gmail.com-local:&#34;Spam&#34;
-</span></span><span class=line><span class=ln id=hl-7-50><a class=lnlinks href=#hl-7-50>50</a></span><span class=cl>CopyArrivalDate yes
-</span></span><span class=line><span class=ln id=hl-7-51><a class=lnlinks href=#hl-7-51>51</a></span><span class=cl>Create Both
-</span></span><span class=line><span class=ln id=hl-7-52><a class=lnlinks href=#hl-7-52>52</a></span><span class=cl>Expunge Both
-</span></span><span class=line><span class=ln id=hl-7-53><a class=lnlinks href=#hl-7-53>53</a></span><span class=cl>SyncState *
-</span></span><span class=line><span class=ln id=hl-7-54><a class=lnlinks href=#hl-7-54>54</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-7-55><a class=lnlinks href=#hl-7-55>55</a></span><span class=cl>Channel account@gmail.com-all
-</span></span><span class=line><span class=ln id=hl-7-56><a class=lnlinks href=#hl-7-56>56</a></span><span class=cl># Far :account@gmail.com-remote:&#34;[Gmail]/All Mail&#34;
-</span></span><span class=line><span class=ln id=hl-7-57><a class=lnlinks href=#hl-7-57>57</a></span><span class=cl>Far :account@gmail.com-remote:&#34;[Gmail]/&amp;BBIEQQRP- &amp;BD8EPgRHBEIEMA-&#34;
-</span></span><span class=line><span class=ln id=hl-7-58><a class=lnlinks href=#hl-7-58>58</a></span><span class=cl>Near :account@gmail.com-local:&#34;Archive&#34;
-</span></span><span class=line><span class=ln id=hl-7-59><a class=lnlinks href=#hl-7-59>59</a></span><span class=cl>CopyArrivalDate yes
-</span></span><span class=line><span class=ln id=hl-7-60><a class=lnlinks href=#hl-7-60>60</a></span><span class=cl>Create Both
-</span></span><span class=line><span class=ln id=hl-7-61><a class=lnlinks href=#hl-7-61>61</a></span><span class=cl>Expunge Both
-</span></span><span class=line><span class=ln id=hl-7-62><a class=lnlinks href=#hl-7-62>62</a></span><span class=cl>SyncState *
-</span></span><span class=line><span class=ln id=hl-7-63><a class=lnlinks href=#hl-7-63>63</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-7-64><a class=lnlinks href=#hl-7-64>64</a></span><span class=cl>Channel account@gmail.com-drafts
-</span></span><span class=line><span class=ln id=hl-7-65><a class=lnlinks href=#hl-7-65>65</a></span><span class=cl># Far :account@gmail.com-remote:&#34;[Gmail]/Drafts&#34;
-</span></span><span class=line><span class=ln id=hl-7-66><a class=lnlinks href=#hl-7-66>66</a></span><span class=cl>Far :account@gmail.com-remote:&#34;[Gmail]/&amp;BCcENQRABD0EPgQyBDgEOgQ4-&#34;
-</span></span><span class=line><span class=ln id=hl-7-67><a class=lnlinks href=#hl-7-67>67</a></span><span class=cl>Near :account@gmail.com-local:&#34;Drafts&#34;
-</span></span><span class=line><span class=ln id=hl-7-68><a class=lnlinks href=#hl-7-68>68</a></span><span class=cl>CopyArrivalDate yes
-</span></span><span class=line><span class=ln id=hl-7-69><a class=lnlinks href=#hl-7-69>69</a></span><span class=cl>Create Both
-</span></span><span class=line><span class=ln id=hl-7-70><a class=lnlinks href=#hl-7-70>70</a></span><span class=cl>Expunge Both
-</span></span><span class=line><span class=ln id=hl-7-71><a class=lnlinks href=#hl-7-71>71</a></span><span class=cl>SyncState *
-</span></span><span class=line><span class=ln id=hl-7-72><a class=lnlinks href=#hl-7-72>72</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-7-73><a class=lnlinks href=#hl-7-73>73</a></span><span class=cl>Channel account@gmail.com-sent
-</span></span><span class=line><span class=ln id=hl-7-74><a class=lnlinks href=#hl-7-74>74</a></span><span class=cl># Far :account@gmail.com-remote:&#34;[Gmail]/Sent Mail&#34;
-</span></span><span class=line><span class=ln id=hl-7-75><a class=lnlinks href=#hl-7-75>75</a></span><span class=cl>Far :account@gmail.com-remote:&#34;[Gmail]/&amp;BB4EQgQ,BEAEMAQyBDsENQQ9BD0ESwQ1-&#34;
-</span></span><span class=line><span class=ln id=hl-7-76><a class=lnlinks href=#hl-7-76>76</a></span><span class=cl>Near :account@gmail.com-local:&#34;Sent&#34;
-</span></span><span class=line><span class=ln id=hl-7-77><a class=lnlinks href=#hl-7-77>77</a></span><span class=cl>CopyArrivalDate yes
-</span></span><span class=line><span class=ln id=hl-7-78><a class=lnlinks href=#hl-7-78>78</a></span><span class=cl>Create Both
-</span></span><span class=line><span class=ln id=hl-7-79><a class=lnlinks href=#hl-7-79>79</a></span><span class=cl>Expunge Both
-</span></span><span class=line><span class=ln id=hl-7-80><a class=lnlinks href=#hl-7-80>80</a></span><span class=cl>SyncState *
-</span></span><span class=line><span class=ln id=hl-7-81><a class=lnlinks href=#hl-7-81>81</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-7-82><a class=lnlinks href=#hl-7-82>82</a></span><span class=cl>Group account@gmail.com
-</span></span><span class=line><span class=ln id=hl-7-83><a class=lnlinks href=#hl-7-83>83</a></span><span class=cl>Channel account@gmail.com-inbox
-</span></span><span class=line><span class=ln id=hl-7-84><a class=lnlinks href=#hl-7-84>84</a></span><span class=cl>Channel account@gmail.com-trash
-</span></span><span class=line><span class=ln id=hl-7-85><a class=lnlinks href=#hl-7-85>85</a></span><span class=cl>Channel account@gmail.com-all
-</span></span><span class=line><span class=ln id=hl-7-86><a class=lnlinks href=#hl-7-86>86</a></span><span class=cl>Channel account@gmail.com-spam
-</span></span><span class=line><span class=ln id=hl-7-87><a class=lnlinks href=#hl-7-87>87</a></span><span class=cl>Channel account@gmail.com-drafts
-</span></span><span class=line><span class=ln id=hl-7-88><a class=lnlinks href=#hl-7-88>88</a></span><span class=cl>Channel account@gmail.com-sent
-</span></span></code></pre></div></li></ul><h4 id=apple><span class=section-num>3.4.2</span> Apple</h4><ul><li><a href=https://www.icloud.com/mail target=_blank rel=noopener>https://www.icloud.com/mail</a><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=ln id=hl-8-1><a class=lnlinks href=#hl-8-1> 1</a></span><span class=cl># IMAPAccount (Apple)
-</span></span><span class=line><span class=ln id=hl-8-2><a class=lnlinks href=#hl-8-2> 2</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-8-3><a class=lnlinks href=#hl-8-3> 3</a></span><span class=cl>IMAPAccount account@icloud.com
-</span></span><span class=line><span class=ln id=hl-8-4><a class=lnlinks href=#hl-8-4> 4</a></span><span class=cl>Host imap.mail.me.com
-</span></span><span class=line><span class=ln id=hl-8-5><a class=lnlinks href=#hl-8-5> 5</a></span><span class=cl>PORT 993
-</span></span><span class=line><span class=ln id=hl-8-6><a class=lnlinks href=#hl-8-6> 6</a></span><span class=cl>User account@icloud.com
-</span></span><span class=line><span class=ln id=hl-8-7><a class=lnlinks href=#hl-8-7> 7</a></span><span class=cl>PassCmd &#34;gpg -q --for-your-eyes-only --no-tty -d ~/.authinfo.gpg | awk &#39;/machine account@icloud.com/ {print $6}&#39;&#34;
-</span></span><span class=line><span class=ln id=hl-8-8><a class=lnlinks href=#hl-8-8> 8</a></span><span class=cl>AuthMechs LOGIN
-</span></span><span class=line><span class=ln id=hl-8-9><a class=lnlinks href=#hl-8-9> 9</a></span><span class=cl>TLSType IMAPS
-</span></span><span class=line><span class=ln id=hl-8-10><a class=lnlinks href=#hl-8-10>10</a></span><span class=cl>TLSVersions +1.2 +1.3
-</span></span><span class=line><span class=ln id=hl-8-11><a class=lnlinks href=#hl-8-11>11</a></span><span class=cl># Increase timeout
-</span></span><span class=line><span class=ln id=hl-8-12><a class=lnlinks href=#hl-8-12>12</a></span><span class=cl>Timeout 120
-</span></span><span class=line><span class=ln id=hl-8-13><a class=lnlinks href=#hl-8-13>13</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-8-14><a class=lnlinks href=#hl-8-14>14</a></span><span class=cl>MaildirStore account@icloud.com-local
-</span></span><span class=line><span class=ln id=hl-8-15><a class=lnlinks href=#hl-8-15>15</a></span><span class=cl>Path ~/Maildir/account@icloud.com/
-</span></span><span class=line><span class=ln id=hl-8-16><a class=lnlinks href=#hl-8-16>16</a></span><span class=cl>Inbox ~/Maildir/account@icloud.com/Inbox
-</span></span><span class=line><span class=ln id=hl-8-17><a class=lnlinks href=#hl-8-17>17</a></span><span class=cl>SubFolders Verbatim
-</span></span><span class=line><span class=ln id=hl-8-18><a class=lnlinks href=#hl-8-18>18</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-8-19><a class=lnlinks href=#hl-8-19>19</a></span><span class=cl>IMAPStore account@icloud.com-remote
-</span></span><span class=line><span class=ln id=hl-8-20><a class=lnlinks href=#hl-8-20>20</a></span><span class=cl>Account account@icloud.com
-</span></span><span class=line><span class=ln id=hl-8-21><a class=lnlinks href=#hl-8-21>21</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-8-22><a class=lnlinks href=#hl-8-22>22</a></span><span class=cl>Channel account@icloud.com-all
-</span></span><span class=line><span class=ln id=hl-8-23><a class=lnlinks href=#hl-8-23>23</a></span><span class=cl>Far :account@icloud.com-remote:
-</span></span><span class=line><span class=ln id=hl-8-24><a class=lnlinks href=#hl-8-24>24</a></span><span class=cl>Near :account@icloud.com-local:
-</span></span><span class=line><span class=ln id=hl-8-25><a class=lnlinks href=#hl-8-25>25</a></span><span class=cl># Included mailboxes
-</span></span><span class=line><span class=ln id=hl-8-26><a class=lnlinks href=#hl-8-26>26</a></span><span class=cl>Patterns &#34;INBOX&#34; &#34;Archive&#34; &#34;Trash&#34; &#34;Spam&#34; &#34;Drafts&#34;
-</span></span><span class=line><span class=ln id=hl-8-27><a class=lnlinks href=#hl-8-27>27</a></span><span class=cl>CopyArrivalDate yes
-</span></span><span class=line><span class=ln id=hl-8-28><a class=lnlinks href=#hl-8-28>28</a></span><span class=cl>Create Both
-</span></span><span class=line><span class=ln id=hl-8-29><a class=lnlinks href=#hl-8-29>29</a></span><span class=cl>Expunge Both
-</span></span><span class=line><span class=ln id=hl-8-30><a class=lnlinks href=#hl-8-30>30</a></span><span class=cl>SyncState *
-</span></span><span class=line><span class=ln id=hl-8-31><a class=lnlinks href=#hl-8-31>31</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-8-32><a class=lnlinks href=#hl-8-32>32</a></span><span class=cl>Channel account@icloud.com-sent
-</span></span><span class=line><span class=ln id=hl-8-33><a class=lnlinks href=#hl-8-33>33</a></span><span class=cl>Far :account@icloud.com-remote:&#34;Sent Messages&#34;
-</span></span><span class=line><span class=ln id=hl-8-34><a class=lnlinks href=#hl-8-34>34</a></span><span class=cl>Near :account@icloud.com-local:&#34;Sent&#34;
-</span></span><span class=line><span class=ln id=hl-8-35><a class=lnlinks href=#hl-8-35>35</a></span><span class=cl>CopyArrivalDate yes
-</span></span><span class=line><span class=ln id=hl-8-36><a class=lnlinks href=#hl-8-36>36</a></span><span class=cl>Create Both
-</span></span><span class=line><span class=ln id=hl-8-37><a class=lnlinks href=#hl-8-37>37</a></span><span class=cl>Expunge Both
-</span></span><span class=line><span class=ln id=hl-8-38><a class=lnlinks href=#hl-8-38>38</a></span><span class=cl>SyncState *
-</span></span><span class=line><span class=ln id=hl-8-39><a class=lnlinks href=#hl-8-39>39</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-8-40><a class=lnlinks href=#hl-8-40>40</a></span><span class=cl>Group account@icloud.com
-</span></span><span class=line><span class=ln id=hl-8-41><a class=lnlinks href=#hl-8-41>41</a></span><span class=cl>Channel account@icloud.com-sent
-</span></span><span class=line><span class=ln id=hl-8-42><a class=lnlinks href=#hl-8-42>42</a></span><span class=cl>Channel account@icloud.com-all
-</span></span></code></pre></div></li></ul><h4 id=gmx><span class=section-num>3.4.3</span> GMX</h4><ul><li><a href=https://www.gmx.com/ target=_blank rel=noopener>https://www.gmx.com/</a></li><li><a href=https://www.gmx.net/ target=_blank rel=noopener>https://www.gmx.net/</a><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=ln id=hl-9-1><a class=lnlinks href=#hl-9-1> 1</a></span><span class=cl># IMAPAccount (GMX)
-</span></span><span class=line><span class=ln id=hl-9-2><a class=lnlinks href=#hl-9-2> 2</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-9-3><a class=lnlinks href=#hl-9-3> 3</a></span><span class=cl>IMAPAccount account@gmx.com
-</span></span><span class=line><span class=ln id=hl-9-4><a class=lnlinks href=#hl-9-4> 4</a></span><span class=cl>Host imap.gmx.com
-</span></span><span class=line><span class=ln id=hl-9-5><a class=lnlinks href=#hl-9-5> 5</a></span><span class=cl>User account@gmx.com
-</span></span><span class=line><span class=ln id=hl-9-6><a class=lnlinks href=#hl-9-6> 6</a></span><span class=cl>PassCmd &#34;gpg -q --for-your-eyes-only --no-tty -d ~/.authinfo.gpg | awk &#39;/machine account@gmx.com/ {print $6}&#39;&#34;
-</span></span><span class=line><span class=ln id=hl-9-7><a class=lnlinks href=#hl-9-7> 7</a></span><span class=cl>AuthMechs LOGIN
-</span></span><span class=line><span class=ln id=hl-9-8><a class=lnlinks href=#hl-9-8> 8</a></span><span class=cl>TLSType IMAPS
-</span></span><span class=line><span class=ln id=hl-9-9><a class=lnlinks href=#hl-9-9> 9</a></span><span class=cl>TLSVersions +1.2 +1.3
-</span></span><span class=line><span class=ln id=hl-9-10><a class=lnlinks href=#hl-9-10>10</a></span><span class=cl># Increase timeout
-</span></span><span class=line><span class=ln id=hl-9-11><a class=lnlinks href=#hl-9-11>11</a></span><span class=cl>Timeout 120
-</span></span><span class=line><span class=ln id=hl-9-12><a class=lnlinks href=#hl-9-12>12</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-9-13><a class=lnlinks href=#hl-9-13>13</a></span><span class=cl>MaildirStore account@gmx.com-local
-</span></span><span class=line><span class=ln id=hl-9-14><a class=lnlinks href=#hl-9-14>14</a></span><span class=cl>Path ~/Maildir/account@gmx.com/
-</span></span><span class=line><span class=ln id=hl-9-15><a class=lnlinks href=#hl-9-15>15</a></span><span class=cl>Inbox ~/Maildir/account@gmx.com/Inbox
-</span></span><span class=line><span class=ln id=hl-9-16><a class=lnlinks href=#hl-9-16>16</a></span><span class=cl>SubFolders Verbatim
-</span></span><span class=line><span class=ln id=hl-9-17><a class=lnlinks href=#hl-9-17>17</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-9-18><a class=lnlinks href=#hl-9-18>18</a></span><span class=cl>IMAPStore account@gmx.com-remote
-</span></span><span class=line><span class=ln id=hl-9-19><a class=lnlinks href=#hl-9-19>19</a></span><span class=cl>Account account@gmx.com
-</span></span><span class=line><span class=ln id=hl-9-20><a class=lnlinks href=#hl-9-20>20</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-9-21><a class=lnlinks href=#hl-9-21>21</a></span><span class=cl>Channel account@gmx.com
-</span></span><span class=line><span class=ln id=hl-9-22><a class=lnlinks href=#hl-9-22>22</a></span><span class=cl>Far :account@gmx.com-remote:
-</span></span><span class=line><span class=ln id=hl-9-23><a class=lnlinks href=#hl-9-23>23</a></span><span class=cl>Near :account@gmx.com-local:
-</span></span><span class=line><span class=ln id=hl-9-24><a class=lnlinks href=#hl-9-24>24</a></span><span class=cl>Patterns &#34;INBOX&#34; &#34;Archive&#34; &#34;Trash&#34; &#34;Spam&#34; &#34;Drafts&#34; &#34;Sent&#34;
-</span></span><span class=line><span class=ln id=hl-9-25><a class=lnlinks href=#hl-9-25>25</a></span><span class=cl>CopyArrivalDate yes
-</span></span><span class=line><span class=ln id=hl-9-26><a class=lnlinks href=#hl-9-26>26</a></span><span class=cl>Create Both
-</span></span><span class=line><span class=ln id=hl-9-27><a class=lnlinks href=#hl-9-27>27</a></span><span class=cl>Expunge Both
-</span></span><span class=line><span class=ln id=hl-9-28><a class=lnlinks href=#hl-9-28>28</a></span><span class=cl>SyncState *
-</span></span></code></pre></div></li></ul><h4 id=proton><span class=section-num>3.4.4</span> Proton</h4><ul><li><a href=https://protonmail.com/ target=_blank rel=noopener>https://protonmail.com/</a></li><li>Заблокирован в России.</li><li>Для работы необходимо установить локальное приложение <a href=https://protonmail.com/bridge/ target=_blank rel=noopener>https://protonmail.com/bridge/</a>.<div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=ln id=hl-10-1><a class=lnlinks href=#hl-10-1> 1</a></span><span class=cl># IMAPAccount (Proton)
-</span></span><span class=line><span class=ln id=hl-10-2><a class=lnlinks href=#hl-10-2> 2</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-10-3><a class=lnlinks href=#hl-10-3> 3</a></span><span class=cl>IMAPAccount account@protonmail.com
-</span></span><span class=line><span class=ln id=hl-10-4><a class=lnlinks href=#hl-10-4> 4</a></span><span class=cl>Host 127.0.0.1
-</span></span><span class=line><span class=ln id=hl-10-5><a class=lnlinks href=#hl-10-5> 5</a></span><span class=cl>PORT 1111
-</span></span><span class=line><span class=ln id=hl-10-6><a class=lnlinks href=#hl-10-6> 6</a></span><span class=cl>User account@protonmail.com
-</span></span><span class=line><span class=ln id=hl-10-7><a class=lnlinks href=#hl-10-7> 7</a></span><span class=cl>PassCmd &#34;gpg -q --for-your-eyes-only --no-tty -d ~/.authinfo.gpg | awk &#39;/machine account@protonmail.com/ {print $6}&#39;&#34;
-</span></span><span class=line><span class=ln id=hl-10-8><a class=lnlinks href=#hl-10-8> 8</a></span><span class=cl>AuthMechs LOGIN
-</span></span><span class=line><span class=ln id=hl-10-9><a class=lnlinks href=#hl-10-9> 9</a></span><span class=cl>TLSType STARTTLS
-</span></span><span class=line><span class=ln id=hl-10-10><a class=lnlinks href=#hl-10-10>10</a></span><span class=cl>TLSVersions +1.2 +1.3
-</span></span><span class=line><span class=ln id=hl-10-11><a class=lnlinks href=#hl-10-11>11</a></span><span class=cl># Increase timeout
-</span></span><span class=line><span class=ln id=hl-10-12><a class=lnlinks href=#hl-10-12>12</a></span><span class=cl>Timeout 120
-</span></span><span class=line><span class=ln id=hl-10-13><a class=lnlinks href=#hl-10-13>13</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-10-14><a class=lnlinks href=#hl-10-14>14</a></span><span class=cl>MaildirStore account@protonmail.com-local
-</span></span><span class=line><span class=ln id=hl-10-15><a class=lnlinks href=#hl-10-15>15</a></span><span class=cl>Path ~/Maildir/account@protonmail.com/
-</span></span><span class=line><span class=ln id=hl-10-16><a class=lnlinks href=#hl-10-16>16</a></span><span class=cl>Inbox ~/Maildir/account@protonmail.com/Inbox
-</span></span><span class=line><span class=ln id=hl-10-17><a class=lnlinks href=#hl-10-17>17</a></span><span class=cl>SubFolders Verbatim
-</span></span><span class=line><span class=ln id=hl-10-18><a class=lnlinks href=#hl-10-18>18</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-10-19><a class=lnlinks href=#hl-10-19>19</a></span><span class=cl>IMAPStore account@protonmail.com-remote
-</span></span><span class=line><span class=ln id=hl-10-20><a class=lnlinks href=#hl-10-20>20</a></span><span class=cl>Account account@protonmail.com
-</span></span><span class=line><span class=ln id=hl-10-21><a class=lnlinks href=#hl-10-21>21</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-10-22><a class=lnlinks href=#hl-10-22>22</a></span><span class=cl>Channel account@protonmail.com
-</span></span><span class=line><span class=ln id=hl-10-23><a class=lnlinks href=#hl-10-23>23</a></span><span class=cl>Far :account@protonmail.com-remote:
-</span></span><span class=line><span class=ln id=hl-10-24><a class=lnlinks href=#hl-10-24>24</a></span><span class=cl>Near :account@protonmail.com-local:
-</span></span><span class=line><span class=ln id=hl-10-25><a class=lnlinks href=#hl-10-25>25</a></span><span class=cl>Patterns &#34;INBOX&#34; &#34;Archive&#34; &#34;Trash&#34; &#34;Spam&#34; &#34;Drafts&#34; &#34;Sent&#34;
-</span></span><span class=line><span class=ln id=hl-10-26><a class=lnlinks href=#hl-10-26>26</a></span><span class=cl>CopyArrivalDate yes
-</span></span><span class=line><span class=ln id=hl-10-27><a class=lnlinks href=#hl-10-27>27</a></span><span class=cl>Create Both
-</span></span><span class=line><span class=ln id=hl-10-28><a class=lnlinks href=#hl-10-28>28</a></span><span class=cl>Expunge Both
-</span></span><span class=line><span class=ln id=hl-10-29><a class=lnlinks href=#hl-10-29>29</a></span><span class=cl>SyncState *
-</span></span></code></pre></div></li></ul><h4 id=yandex><span class=section-num>3.4.5</span> Yandex</h4><ul><li><a href=https://yandex.ru/ target=_blank rel=noopener>https://yandex.ru/</a></li><li><a href=https://yamadharma.github.io/ru/post/2021/07/04/mail-yandex-configuring-mail-client/>Почта. Yandex. Настройка почтового клиента</a></li><li>Пароли приложений<ul><li>При подключении паролей приложений обычные пароли использовать не получится. Придётся сгенерить пароль приложения (см. <a href=https://yamadharma.github.io/ru/post/2021/11/01/mail-yandex-application-passwords/>Почта. Yandex. Пароли приложений</a>).</li><li>Для паролей <code>pass</code>:<ul><li>Пароль для приложения почты можно назвать <code>account@yandex.ru@apppassword@mail</code>.</li><li>Пароль для smtp следует именовать как <code>account@yandex.ru@smtp.yandex.ru</code> (это тот же пароль для почтового приложения).</li></ul></li></ul></li><li>Конфигурация:<div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=ln id=hl-11-1><a class=lnlinks href=#hl-11-1> 1</a></span><span class=cl>## IMAPAccount (Yandex)
-</span></span><span class=line><span class=ln id=hl-11-2><a class=lnlinks href=#hl-11-2> 2</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-11-3><a class=lnlinks href=#hl-11-3> 3</a></span><span class=cl>IMAPAccount account@yandex.ru
-</span></span><span class=line><span class=ln id=hl-11-4><a class=lnlinks href=#hl-11-4> 4</a></span><span class=cl>Host imap.yandex.ru
-</span></span><span class=line><span class=ln id=hl-11-5><a class=lnlinks href=#hl-11-5> 5</a></span><span class=cl>User account@yandex.ru
-</span></span><span class=line><span class=ln id=hl-11-6><a class=lnlinks href=#hl-11-6> 6</a></span><span class=cl># Pass ***************
-</span></span><span class=line><span class=ln id=hl-11-7><a class=lnlinks href=#hl-11-7> 7</a></span><span class=cl>## To store the password in an encrypted file use PassCmd instead of Pass
-</span></span><span class=line><span class=ln id=hl-11-8><a class=lnlinks href=#hl-11-8> 8</a></span><span class=cl># PassCmd &#34;gpg -q --for-your-eyes-only --no-tty -d ~/.authinfo.gpg | awk &#39;/machine account@yandex.ru/ {print $6}&#39;&#34;
-</span></span><span class=line><span class=ln id=hl-11-9><a class=lnlinks href=#hl-11-9> 9</a></span><span class=cl># PassCmd &#34;pass email/yandex.ru/account@yandex.ru@apppassword@mail&#34;
-</span></span><span class=line><span class=ln id=hl-11-10><a class=lnlinks href=#hl-11-10>10</a></span><span class=cl>PassCmd &#34;pass email/yandex.ru/account@yandex.ru&#34;
-</span></span><span class=line><span class=ln id=hl-11-11><a class=lnlinks href=#hl-11-11>11</a></span><span class=cl>AuthMechs LOGIN
-</span></span><span class=line><span class=ln id=hl-11-12><a class=lnlinks href=#hl-11-12>12</a></span><span class=cl>TLSType IMAPS
-</span></span><span class=line><span class=ln id=hl-11-13><a class=lnlinks href=#hl-11-13>13</a></span><span class=cl>TLSVersions +1.2 +1.3
-</span></span><span class=line><span class=ln id=hl-11-14><a class=lnlinks href=#hl-11-14>14</a></span><span class=cl># Increase timeout
-</span></span><span class=line><span class=ln id=hl-11-15><a class=lnlinks href=#hl-11-15>15</a></span><span class=cl>Timeout 120
-</span></span><span class=line><span class=ln id=hl-11-16><a class=lnlinks href=#hl-11-16>16</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-11-17><a class=lnlinks href=#hl-11-17>17</a></span><span class=cl>MaildirStore account@yandex.ru-local
-</span></span><span class=line><span class=ln id=hl-11-18><a class=lnlinks href=#hl-11-18>18</a></span><span class=cl>Path ~/Maildir/account@yandex.ru/
-</span></span><span class=line><span class=ln id=hl-11-19><a class=lnlinks href=#hl-11-19>19</a></span><span class=cl>Inbox ~/Maildir/account@yandex.ru/Inbox
-</span></span><span class=line><span class=ln id=hl-11-20><a class=lnlinks href=#hl-11-20>20</a></span><span class=cl>SubFolders Verbatim
-</span></span><span class=line><span class=ln id=hl-11-21><a class=lnlinks href=#hl-11-21>21</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-11-22><a class=lnlinks href=#hl-11-22>22</a></span><span class=cl>IMAPStore account@yandex.ru-remote
-</span></span><span class=line><span class=ln id=hl-11-23><a class=lnlinks href=#hl-11-23>23</a></span><span class=cl>Account account@yandex.ru
-</span></span><span class=line><span class=ln id=hl-11-24><a class=lnlinks href=#hl-11-24>24</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-11-25><a class=lnlinks href=#hl-11-25>25</a></span><span class=cl>Channel account@yandex.ru
-</span></span><span class=line><span class=ln id=hl-11-26><a class=lnlinks href=#hl-11-26>26</a></span><span class=cl>Far :account@yandex.ru-remote:
-</span></span><span class=line><span class=ln id=hl-11-27><a class=lnlinks href=#hl-11-27>27</a></span><span class=cl>Near :account@yandex.ru-local:
-</span></span><span class=line><span class=ln id=hl-11-28><a class=lnlinks href=#hl-11-28>28</a></span><span class=cl>Patterns &#34;INBOX&#34; &#34;Archive&#34; &#34;Trash&#34; &#34;Spam&#34; &#34;Drafts&#34; &#34;Sent&#34;
-</span></span><span class=line><span class=ln id=hl-11-29><a class=lnlinks href=#hl-11-29>29</a></span><span class=cl>CopyArrivalDate yes
-</span></span><span class=line><span class=ln id=hl-11-30><a class=lnlinks href=#hl-11-30>30</a></span><span class=cl>Create Both
-</span></span><span class=line><span class=ln id=hl-11-31><a class=lnlinks href=#hl-11-31>31</a></span><span class=cl>Expunge Both
-</span></span><span class=line><span class=ln id=hl-11-32><a class=lnlinks href=#hl-11-32>32</a></span><span class=cl>SyncState *
-</span></span></code></pre></div></li></ul><h4 id=mail-dot-ru><span class=section-num>3.4.6</span> Mail.ru</h4><ul><li><a href=https://yamadharma.github.io/ru/post/2021/07/04/mail-mail-ru-configuring-mail-client/>Почта. Mail.ru. Настройка почтового клиента</a></li><li>Пароли приложений<ul><li>При подключении паролей приложений обычные пароли использовать не получится. Придётся сгенерить пароль приложения (см. <a href=https://yamadharma.github.io/ru/post/2022/10/27/mail-ru-passwords/>Пароли mail.ru</a>).</li><li>Для паролей <code>pass</code>:<ul><li>Пароль для приложения почты можно назвать <code>account@mail.ru@apppassword@mail</code>.</li><li>Пароль для smtp следует именовать как <code>account@mail.ru@smtp.mail.ru</code> (это тот же пароль для почтового приложения).</li></ul></li></ul></li><li>Конфигурация:<div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=ln id=hl-12-1><a class=lnlinks href=#hl-12-1> 1</a></span><span class=cl>## IMAPAccount (Mail.ru)
-</span></span><span class=line><span class=ln id=hl-12-2><a class=lnlinks href=#hl-12-2> 2</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-12-3><a class=lnlinks href=#hl-12-3> 3</a></span><span class=cl>IMAPAccount account@mail.ru
-</span></span><span class=line><span class=ln id=hl-12-4><a class=lnlinks href=#hl-12-4> 4</a></span><span class=cl>Host imap.mail.ru
-</span></span><span class=line><span class=ln id=hl-12-5><a class=lnlinks href=#hl-12-5> 5</a></span><span class=cl>User account@mail.ru
-</span></span><span class=line><span class=ln id=hl-12-6><a class=lnlinks href=#hl-12-6> 6</a></span><span class=cl># Pass ***************
-</span></span><span class=line><span class=ln id=hl-12-7><a class=lnlinks href=#hl-12-7> 7</a></span><span class=cl>## To store the password in an encrypted file use PassCmd instead of Pass
-</span></span><span class=line><span class=ln id=hl-12-8><a class=lnlinks href=#hl-12-8> 8</a></span><span class=cl># PassCmd &#34;gpg -q --for-your-eyes-only --no-tty -d ~/.authinfo.gpg | awk &#39;/machine account@mail.ru@apppassword@mail/ {print $6}&#39;&#34;
-</span></span><span class=line><span class=ln id=hl-12-9><a class=lnlinks href=#hl-12-9> 9</a></span><span class=cl>PassCmd &#34;pass email/mail.ru/account@mail.ru@apppassword@mail&#34;
-</span></span><span class=line><span class=ln id=hl-12-10><a class=lnlinks href=#hl-12-10>10</a></span><span class=cl>AuthMechs LOGIN
-</span></span><span class=line><span class=ln id=hl-12-11><a class=lnlinks href=#hl-12-11>11</a></span><span class=cl>TLSType IMAPS
-</span></span><span class=line><span class=ln id=hl-12-12><a class=lnlinks href=#hl-12-12>12</a></span><span class=cl>TLSVersions +1.2 +1.3
-</span></span><span class=line><span class=ln id=hl-12-13><a class=lnlinks href=#hl-12-13>13</a></span><span class=cl># Increase timeout
-</span></span><span class=line><span class=ln id=hl-12-14><a class=lnlinks href=#hl-12-14>14</a></span><span class=cl>Timeout 120
-</span></span><span class=line><span class=ln id=hl-12-15><a class=lnlinks href=#hl-12-15>15</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-12-16><a class=lnlinks href=#hl-12-16>16</a></span><span class=cl>MaildirStore account@mail.ru-local
-</span></span><span class=line><span class=ln id=hl-12-17><a class=lnlinks href=#hl-12-17>17</a></span><span class=cl>Path ~/Maildir/account@mail.ru/
-</span></span><span class=line><span class=ln id=hl-12-18><a class=lnlinks href=#hl-12-18>18</a></span><span class=cl>Inbox ~/Maildir/account@mail.ru/Inbox
-</span></span><span class=line><span class=ln id=hl-12-19><a class=lnlinks href=#hl-12-19>19</a></span><span class=cl>SubFolders Verbatim
-</span></span><span class=line><span class=ln id=hl-12-20><a class=lnlinks href=#hl-12-20>20</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-12-21><a class=lnlinks href=#hl-12-21>21</a></span><span class=cl>IMAPStore account@mail.ru-remote
-</span></span><span class=line><span class=ln id=hl-12-22><a class=lnlinks href=#hl-12-22>22</a></span><span class=cl>Account account@mail.ru
-</span></span><span class=line><span class=ln id=hl-12-23><a class=lnlinks href=#hl-12-23>23</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-12-24><a class=lnlinks href=#hl-12-24>24</a></span><span class=cl>Channel account@mail.ru-inbox
-</span></span><span class=line><span class=ln id=hl-12-25><a class=lnlinks href=#hl-12-25>25</a></span><span class=cl>Far :account@mail.ru-remote:&#34;INBOX&#34;
-</span></span><span class=line><span class=ln id=hl-12-26><a class=lnlinks href=#hl-12-26>26</a></span><span class=cl>Near :account@mail.ru-local:&#34;INBOX&#34;
-</span></span><span class=line><span class=ln id=hl-12-27><a class=lnlinks href=#hl-12-27>27</a></span><span class=cl>CopyArrivalDate yes
-</span></span><span class=line><span class=ln id=hl-12-28><a class=lnlinks href=#hl-12-28>28</a></span><span class=cl>Create Both
-</span></span><span class=line><span class=ln id=hl-12-29><a class=lnlinks href=#hl-12-29>29</a></span><span class=cl>Expunge Both
-</span></span><span class=line><span class=ln id=hl-12-30><a class=lnlinks href=#hl-12-30>30</a></span><span class=cl>SyncState *
-</span></span><span class=line><span class=ln id=hl-12-31><a class=lnlinks href=#hl-12-31>31</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-12-32><a class=lnlinks href=#hl-12-32>32</a></span><span class=cl>Channel account@mail.ru-trash
-</span></span><span class=line><span class=ln id=hl-12-33><a class=lnlinks href=#hl-12-33>33</a></span><span class=cl>Far :account@mail.ru-remote:&#34;Корзина&#34;
-</span></span><span class=line><span class=ln id=hl-12-34><a class=lnlinks href=#hl-12-34>34</a></span><span class=cl>Near :account@mail.ru-local:&#34;Trash&#34;
-</span></span><span class=line><span class=ln id=hl-12-35><a class=lnlinks href=#hl-12-35>35</a></span><span class=cl>CopyArrivalDate yes
-</span></span><span class=line><span class=ln id=hl-12-36><a class=lnlinks href=#hl-12-36>36</a></span><span class=cl>Create Both
-</span></span><span class=line><span class=ln id=hl-12-37><a class=lnlinks href=#hl-12-37>37</a></span><span class=cl>Expunge Both
-</span></span><span class=line><span class=ln id=hl-12-38><a class=lnlinks href=#hl-12-38>38</a></span><span class=cl>SyncState *
-</span></span><span class=line><span class=ln id=hl-12-39><a class=lnlinks href=#hl-12-39>39</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-12-40><a class=lnlinks href=#hl-12-40>40</a></span><span class=cl>Channel account@mail.ru-spam
-</span></span><span class=line><span class=ln id=hl-12-41><a class=lnlinks href=#hl-12-41>41</a></span><span class=cl>Far :account@mail.ru-remote:&#34;Спам&#34;
-</span></span><span class=line><span class=ln id=hl-12-42><a class=lnlinks href=#hl-12-42>42</a></span><span class=cl>Near :account@mail.ru-local:&#34;Spam&#34;
-</span></span><span class=line><span class=ln id=hl-12-43><a class=lnlinks href=#hl-12-43>43</a></span><span class=cl>CopyArrivalDate yes
-</span></span><span class=line><span class=ln id=hl-12-44><a class=lnlinks href=#hl-12-44>44</a></span><span class=cl>Create Both
-</span></span><span class=line><span class=ln id=hl-12-45><a class=lnlinks href=#hl-12-45>45</a></span><span class=cl>Expunge Both
-</span></span><span class=line><span class=ln id=hl-12-46><a class=lnlinks href=#hl-12-46>46</a></span><span class=cl>SyncState *
-</span></span><span class=line><span class=ln id=hl-12-47><a class=lnlinks href=#hl-12-47>47</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-12-48><a class=lnlinks href=#hl-12-48>48</a></span><span class=cl>Channel account@mail.ru-drafts
-</span></span><span class=line><span class=ln id=hl-12-49><a class=lnlinks href=#hl-12-49>49</a></span><span class=cl>Far :account@mail.ru-remote:&#34;Черновики&#34;
-</span></span><span class=line><span class=ln id=hl-12-50><a class=lnlinks href=#hl-12-50>50</a></span><span class=cl>Near :account@mail.ru-local:&#34;Drafts&#34;
-</span></span><span class=line><span class=ln id=hl-12-51><a class=lnlinks href=#hl-12-51>51</a></span><span class=cl>CopyArrivalDate yes
-</span></span><span class=line><span class=ln id=hl-12-52><a class=lnlinks href=#hl-12-52>52</a></span><span class=cl>Create Both
-</span></span><span class=line><span class=ln id=hl-12-53><a class=lnlinks href=#hl-12-53>53</a></span><span class=cl>Expunge Both
-</span></span><span class=line><span class=ln id=hl-12-54><a class=lnlinks href=#hl-12-54>54</a></span><span class=cl>SyncState *
-</span></span><span class=line><span class=ln id=hl-12-55><a class=lnlinks href=#hl-12-55>55</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-12-56><a class=lnlinks href=#hl-12-56>56</a></span><span class=cl>Channel account@mail.ru-archive
-</span></span><span class=line><span class=ln id=hl-12-57><a class=lnlinks href=#hl-12-57>57</a></span><span class=cl>Far :account@mail.ru-remote:&#34;Архив&#34;
-</span></span><span class=line><span class=ln id=hl-12-58><a class=lnlinks href=#hl-12-58>58</a></span><span class=cl>Near :account@mail.ru-local:&#34;Archive&#34;
-</span></span><span class=line><span class=ln id=hl-12-59><a class=lnlinks href=#hl-12-59>59</a></span><span class=cl>CopyArrivalDate yes
-</span></span><span class=line><span class=ln id=hl-12-60><a class=lnlinks href=#hl-12-60>60</a></span><span class=cl>Create Both
-</span></span><span class=line><span class=ln id=hl-12-61><a class=lnlinks href=#hl-12-61>61</a></span><span class=cl>Expunge Both
-</span></span><span class=line><span class=ln id=hl-12-62><a class=lnlinks href=#hl-12-62>62</a></span><span class=cl>SyncState *
-</span></span><span class=line><span class=ln id=hl-12-63><a class=lnlinks href=#hl-12-63>63</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-12-64><a class=lnlinks href=#hl-12-64>64</a></span><span class=cl>Channel account@mail.ru-sent
-</span></span><span class=line><span class=ln id=hl-12-65><a class=lnlinks href=#hl-12-65>65</a></span><span class=cl>Far :account@mail.ru-remote:&#34;Отправленные&#34;
-</span></span><span class=line><span class=ln id=hl-12-66><a class=lnlinks href=#hl-12-66>66</a></span><span class=cl>Near :account@mail.ru-local:&#34;Sent&#34;
-</span></span><span class=line><span class=ln id=hl-12-67><a class=lnlinks href=#hl-12-67>67</a></span><span class=cl>CopyArrivalDate yes
-</span></span><span class=line><span class=ln id=hl-12-68><a class=lnlinks href=#hl-12-68>68</a></span><span class=cl>Create Both
-</span></span><span class=line><span class=ln id=hl-12-69><a class=lnlinks href=#hl-12-69>69</a></span><span class=cl>Expunge Both
-</span></span><span class=line><span class=ln id=hl-12-70><a class=lnlinks href=#hl-12-70>70</a></span><span class=cl>SyncState *
-</span></span><span class=line><span class=ln id=hl-12-71><a class=lnlinks href=#hl-12-71>71</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-12-72><a class=lnlinks href=#hl-12-72>72</a></span><span class=cl>Group account@mail.ru
-</span></span><span class=line><span class=ln id=hl-12-73><a class=lnlinks href=#hl-12-73>73</a></span><span class=cl>Channel account@mail.ru-inbox
-</span></span><span class=line><span class=ln id=hl-12-74><a class=lnlinks href=#hl-12-74>74</a></span><span class=cl>Channel account@mail.ru-trash
-</span></span><span class=line><span class=ln id=hl-12-75><a class=lnlinks href=#hl-12-75>75</a></span><span class=cl>Channel account@mail.ru-spam
-</span></span><span class=line><span class=ln id=hl-12-76><a class=lnlinks href=#hl-12-76>76</a></span><span class=cl>Channel account@mail.ru-drafts
-</span></span><span class=line><span class=ln id=hl-12-77><a class=lnlinks href=#hl-12-77>77</a></span><span class=cl>Channel account@mail.ru-archive
-</span></span><span class=line><span class=ln id=hl-12-78><a class=lnlinks href=#hl-12-78>78</a></span><span class=cl>Channel account@mail.ru-sent
-</span></span></code></pre></div></li></ul><h4 id=office365><span class=section-num>3.4.7</span> Office365</h4><ul><li><a href=https://yamadharma.github.io/ru/post/2021/07/04/mail-office365-configuring-mail-client/>Почта. Office365. Настройка почтового клиента</a></li><li>Названия IMAP-ящиков даётся в модифицированной кодировке UTF-7 (см. <a href=https://yamadharma.github.io/ru/post/2021/07/04/mail-imap-folder-encoding/>Почта. Кодировка папок IMAP</a>).</li></ul><!--list-separator--><ol><li><p>Аутентификация <em>LOGIN</em></p><ul><li><p>Конфигурация <em>mbsync</em>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=ln id=hl-13-1><a class=lnlinks href=#hl-13-1> 1</a></span><span class=cl>## IMAPAccount (outlook.office365.com)
-</span></span><span class=line><span class=ln id=hl-13-2><a class=lnlinks href=#hl-13-2> 2</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-13-3><a class=lnlinks href=#hl-13-3> 3</a></span><span class=cl>IMAPAccount account@example.com
-</span></span><span class=line><span class=ln id=hl-13-4><a class=lnlinks href=#hl-13-4> 4</a></span><span class=cl>Host smtp.office365.com
-</span></span><span class=line><span class=ln id=hl-13-5><a class=lnlinks href=#hl-13-5> 5</a></span><span class=cl>User account@example.com
-</span></span><span class=line><span class=ln id=hl-13-6><a class=lnlinks href=#hl-13-6> 6</a></span><span class=cl># Pass ***************
-</span></span><span class=line><span class=ln id=hl-13-7><a class=lnlinks href=#hl-13-7> 7</a></span><span class=cl>## To store the password in an encrypted file use PassCmd instead of Pass
-</span></span><span class=line><span class=ln id=hl-13-8><a class=lnlinks href=#hl-13-8> 8</a></span><span class=cl># PassCmd &#34;gpg -q --for-your-eyes-only --no-tty -d ~/.authinfo.gpg | awk &#39;/machine account@example.com/ {print $6}&#39;&#34;
-</span></span><span class=line><span class=ln id=hl-13-9><a class=lnlinks href=#hl-13-9> 9</a></span><span class=cl>PassCmd &#34;pass email/example.com/account@example.com&#34;
-</span></span><span class=line><span class=ln id=hl-13-10><a class=lnlinks href=#hl-13-10>10</a></span><span class=cl>AuthMechs LOGIN
-</span></span><span class=line><span class=ln id=hl-13-11><a class=lnlinks href=#hl-13-11>11</a></span><span class=cl>TLSType IMAPS
-</span></span><span class=line><span class=ln id=hl-13-12><a class=lnlinks href=#hl-13-12>12</a></span><span class=cl>TLSVersions +1.2 +1.3
-</span></span><span class=line><span class=ln id=hl-13-13><a class=lnlinks href=#hl-13-13>13</a></span><span class=cl># Increase timeout
-</span></span><span class=line><span class=ln id=hl-13-14><a class=lnlinks href=#hl-13-14>14</a></span><span class=cl>Timeout 120
-</span></span><span class=line><span class=ln id=hl-13-15><a class=lnlinks href=#hl-13-15>15</a></span><span class=cl>PipelineDepth 50
-</span></span><span class=line><span class=ln id=hl-13-16><a class=lnlinks href=#hl-13-16>16</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-13-17><a class=lnlinks href=#hl-13-17>17</a></span><span class=cl>MaildirStore account@example.com-local
-</span></span><span class=line><span class=ln id=hl-13-18><a class=lnlinks href=#hl-13-18>18</a></span><span class=cl>Path ~/Maildir/account@example.com/
-</span></span><span class=line><span class=ln id=hl-13-19><a class=lnlinks href=#hl-13-19>19</a></span><span class=cl>Inbox ~/Maildir/account@example.com/Inbox
-</span></span><span class=line><span class=ln id=hl-13-20><a class=lnlinks href=#hl-13-20>20</a></span><span class=cl>SubFolders Verbatim
-</span></span><span class=line><span class=ln id=hl-13-21><a class=lnlinks href=#hl-13-21>21</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-13-22><a class=lnlinks href=#hl-13-22>22</a></span><span class=cl>IMAPStore account@example.com-remote
-</span></span><span class=line><span class=ln id=hl-13-23><a class=lnlinks href=#hl-13-23>23</a></span><span class=cl>Account account@example.com
-</span></span><span class=line><span class=ln id=hl-13-24><a class=lnlinks href=#hl-13-24>24</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-13-25><a class=lnlinks href=#hl-13-25>25</a></span><span class=cl>Channel account@example.com-inbox
-</span></span><span class=line><span class=ln id=hl-13-26><a class=lnlinks href=#hl-13-26>26</a></span><span class=cl>Far :account@example.com-remote:&#34;INBOX&#34;
-</span></span><span class=line><span class=ln id=hl-13-27><a class=lnlinks href=#hl-13-27>27</a></span><span class=cl>Near :account@example.com-local:&#34;INBOX&#34;
-</span></span><span class=line><span class=ln id=hl-13-28><a class=lnlinks href=#hl-13-28>28</a></span><span class=cl>CopyArrivalDate yes
-</span></span><span class=line><span class=ln id=hl-13-29><a class=lnlinks href=#hl-13-29>29</a></span><span class=cl>Create Both
-</span></span><span class=line><span class=ln id=hl-13-30><a class=lnlinks href=#hl-13-30>30</a></span><span class=cl>Expunge Both
-</span></span><span class=line><span class=ln id=hl-13-31><a class=lnlinks href=#hl-13-31>31</a></span><span class=cl>SyncState *
-</span></span><span class=line><span class=ln id=hl-13-32><a class=lnlinks href=#hl-13-32>32</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-13-33><a class=lnlinks href=#hl-13-33>33</a></span><span class=cl>Channel account@example.com-trash
-</span></span><span class=line><span class=ln id=hl-13-34><a class=lnlinks href=#hl-13-34>34</a></span><span class=cl>Far :account@example.com-remote:&#34;&amp;BCMENAQwBDsENQQ9BD0ESwQ1-&#34;
-</span></span><span class=line><span class=ln id=hl-13-35><a class=lnlinks href=#hl-13-35>35</a></span><span class=cl>Near :account@example.com-local:&#34;Trash&#34;
-</span></span><span class=line><span class=ln id=hl-13-36><a class=lnlinks href=#hl-13-36>36</a></span><span class=cl>CopyArrivalDate yes
-</span></span><span class=line><span class=ln id=hl-13-37><a class=lnlinks href=#hl-13-37>37</a></span><span class=cl>Create Both
-</span></span><span class=line><span class=ln id=hl-13-38><a class=lnlinks href=#hl-13-38>38</a></span><span class=cl>Expunge Both
-</span></span><span class=line><span class=ln id=hl-13-39><a class=lnlinks href=#hl-13-39>39</a></span><span class=cl>SyncState *
-</span></span><span class=line><span class=ln id=hl-13-40><a class=lnlinks href=#hl-13-40>40</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-13-41><a class=lnlinks href=#hl-13-41>41</a></span><span class=cl>Channel account@example.com-spam
-</span></span><span class=line><span class=ln id=hl-13-42><a class=lnlinks href=#hl-13-42>42</a></span><span class=cl>Far :account@example.com-remote:&#34;&amp;BB0ENQQ2BDUEOwQwBEIENQQ7BEwEPQQwBE8- &amp;BD8EPgRHBEIEMA-&#34;
-</span></span><span class=line><span class=ln id=hl-13-43><a class=lnlinks href=#hl-13-43>43</a></span><span class=cl>Near :account@example.com-local:&#34;Spam&#34;
-</span></span><span class=line><span class=ln id=hl-13-44><a class=lnlinks href=#hl-13-44>44</a></span><span class=cl>CopyArrivalDate yes
-</span></span><span class=line><span class=ln id=hl-13-45><a class=lnlinks href=#hl-13-45>45</a></span><span class=cl>Create Both
-</span></span><span class=line><span class=ln id=hl-13-46><a class=lnlinks href=#hl-13-46>46</a></span><span class=cl>Expunge Both
-</span></span><span class=line><span class=ln id=hl-13-47><a class=lnlinks href=#hl-13-47>47</a></span><span class=cl>SyncState *
-</span></span><span class=line><span class=ln id=hl-13-48><a class=lnlinks href=#hl-13-48>48</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-13-49><a class=lnlinks href=#hl-13-49>49</a></span><span class=cl>Channel account@example.com-drafts
-</span></span><span class=line><span class=ln id=hl-13-50><a class=lnlinks href=#hl-13-50>50</a></span><span class=cl>Far :account@example.com-remote:&#34;&amp;BCcENQRABD0EPgQyBDgEOgQ4-&#34;
-</span></span><span class=line><span class=ln id=hl-13-51><a class=lnlinks href=#hl-13-51>51</a></span><span class=cl>Near :account@example.com-local:&#34;Drafts&#34;
-</span></span><span class=line><span class=ln id=hl-13-52><a class=lnlinks href=#hl-13-52>52</a></span><span class=cl>CopyArrivalDate yes
-</span></span><span class=line><span class=ln id=hl-13-53><a class=lnlinks href=#hl-13-53>53</a></span><span class=cl>Create Both
-</span></span><span class=line><span class=ln id=hl-13-54><a class=lnlinks href=#hl-13-54>54</a></span><span class=cl>Expunge Both
-</span></span><span class=line><span class=ln id=hl-13-55><a class=lnlinks href=#hl-13-55>55</a></span><span class=cl>SyncState *
-</span></span><span class=line><span class=ln id=hl-13-56><a class=lnlinks href=#hl-13-56>56</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-13-57><a class=lnlinks href=#hl-13-57>57</a></span><span class=cl>Channel account@example.com-archive
-</span></span><span class=line><span class=ln id=hl-13-58><a class=lnlinks href=#hl-13-58>58</a></span><span class=cl>Far :account@example.com-remote:&#34;Archive1&#34;
-</span></span><span class=line><span class=ln id=hl-13-59><a class=lnlinks href=#hl-13-59>59</a></span><span class=cl>Near :account@example.com-local:&#34;Archive&#34;
-</span></span><span class=line><span class=ln id=hl-13-60><a class=lnlinks href=#hl-13-60>60</a></span><span class=cl>CopyArrivalDate yes
-</span></span><span class=line><span class=ln id=hl-13-61><a class=lnlinks href=#hl-13-61>61</a></span><span class=cl>Create Both
-</span></span><span class=line><span class=ln id=hl-13-62><a class=lnlinks href=#hl-13-62>62</a></span><span class=cl>Expunge Both
-</span></span><span class=line><span class=ln id=hl-13-63><a class=lnlinks href=#hl-13-63>63</a></span><span class=cl>SyncState *
-</span></span><span class=line><span class=ln id=hl-13-64><a class=lnlinks href=#hl-13-64>64</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-13-65><a class=lnlinks href=#hl-13-65>65</a></span><span class=cl>Channel account@example.com-sent
-</span></span><span class=line><span class=ln id=hl-13-66><a class=lnlinks href=#hl-13-66>66</a></span><span class=cl>Far :account@example.com-remote:&#34;&amp;BB4EQgQ,BEAEMAQyBDsENQQ9BD0ESwQ1-&#34;
-</span></span><span class=line><span class=ln id=hl-13-67><a class=lnlinks href=#hl-13-67>67</a></span><span class=cl>Near :account@example.com-local:&#34;Sent&#34;
-</span></span><span class=line><span class=ln id=hl-13-68><a class=lnlinks href=#hl-13-68>68</a></span><span class=cl>CopyArrivalDate yes
-</span></span><span class=line><span class=ln id=hl-13-69><a class=lnlinks href=#hl-13-69>69</a></span><span class=cl>Create Both
-</span></span><span class=line><span class=ln id=hl-13-70><a class=lnlinks href=#hl-13-70>70</a></span><span class=cl>Expunge Both
-</span></span><span class=line><span class=ln id=hl-13-71><a class=lnlinks href=#hl-13-71>71</a></span><span class=cl>SyncState *
-</span></span><span class=line><span class=ln id=hl-13-72><a class=lnlinks href=#hl-13-72>72</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-13-73><a class=lnlinks href=#hl-13-73>73</a></span><span class=cl>Group account@example.com
-</span></span><span class=line><span class=ln id=hl-13-74><a class=lnlinks href=#hl-13-74>74</a></span><span class=cl>Channel account@example.com-inbox
-</span></span><span class=line><span class=ln id=hl-13-75><a class=lnlinks href=#hl-13-75>75</a></span><span class=cl>Channel account@example.com-trash
-</span></span><span class=line><span class=ln id=hl-13-76><a class=lnlinks href=#hl-13-76>76</a></span><span class=cl>Channel account@example.com-spam
-</span></span><span class=line><span class=ln id=hl-13-77><a class=lnlinks href=#hl-13-77>77</a></span><span class=cl>Channel account@example.com-drafts
-</span></span><span class=line><span class=ln id=hl-13-78><a class=lnlinks href=#hl-13-78>78</a></span><span class=cl>Channel account@example.com-archive
-</span></span><span class=line><span class=ln id=hl-13-79><a class=lnlinks href=#hl-13-79>79</a></span><span class=cl>Channel account@example.com-sent
-</span></span></code></pre></div></li><li><p>Конфигурация SMTP для Emacs:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-emacs-lisp data-lang=emacs-lisp><span class=line><span class=ln id=hl-14-1><a class=lnlinks href=#hl-14-1>1</a></span><span class=cl><span class=p>(</span><span class=nb>setq</span> <span class=nv>send-mail-function</span>    <span class=ss>&#39;smtpmail-send-it</span>
-</span></span><span class=line><span class=ln id=hl-14-2><a class=lnlinks href=#hl-14-2>2</a></span><span class=cl>      <span class=nv>smtpmail-smtp-server</span>  <span class=s>&#34;example.com&#34;</span>
-</span></span><span class=line><span class=ln id=hl-14-3><a class=lnlinks href=#hl-14-3>3</a></span><span class=cl>      <span class=nv>smtpmail-stream-type</span>  <span class=ss>&#39;starttls</span>
-</span></span><span class=line><span class=ln id=hl-14-4><a class=lnlinks href=#hl-14-4>4</a></span><span class=cl>      <span class=nv>smtpmail-smtp-service</span> <span class=mi>587</span><span class=p>)</span>
-</span></span></code></pre></div><ul><li>Для smtp следует именовать пароль <em>pass</em> как <code>account@example.com@smtp.office365.com</code> (см. <a href=https://yamadharma.github.io/ru/post/2021/04/28/password-manager-pass/>Менеджер паролей pass</a>).</li></ul></li></ul></li></ol><!--list-separator--><ol start=2><li><p>Аутентификация <em>Oauth2</em> с <em>DavMail</em></p><ul><li><p>Аутентификацию <em>oauth2</em> можно настроить с помощью <em>DavMail</em> (см. <a href=https://yamadharma.github.io/ru/post/2022/04/10/davmail/>DavMail</a>).</p></li><li><p>Сначала настройте <em>DavMail</em> аутентификацией <code>O365Interactive</code> или <code>O365Manual</code>, а потом переключите в режим <code>O365Modern</code>.</p></li><li><p>В конфигурации меняется блок аутентификации:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=ln id=hl-15-1><a class=lnlinks href=#hl-15-1> 1</a></span><span class=cl>IMAPAccount account@example.com
-</span></span><span class=line><span class=ln id=hl-15-2><a class=lnlinks href=#hl-15-2> 2</a></span><span class=cl>Host 127.0.0.1
-</span></span><span class=line><span class=ln id=hl-15-3><a class=lnlinks href=#hl-15-3> 3</a></span><span class=cl>Port 1143
-</span></span><span class=line><span class=ln id=hl-15-4><a class=lnlinks href=#hl-15-4> 4</a></span><span class=cl>User account@example.com
-</span></span><span class=line><span class=ln id=hl-15-5><a class=lnlinks href=#hl-15-5> 5</a></span><span class=cl># Pass ***************
-</span></span><span class=line><span class=ln id=hl-15-6><a class=lnlinks href=#hl-15-6> 6</a></span><span class=cl>## To store the password in an encrypted file use PassCmd instead of Pass
-</span></span><span class=line><span class=ln id=hl-15-7><a class=lnlinks href=#hl-15-7> 7</a></span><span class=cl># PassCmd &#34;gpg -q --for-your-eyes-only --no-tty -d ~/.authinfo.gpg | awk &#39;/machine account@example.com/ {print $6}&#39;&#34;
-</span></span><span class=line><span class=ln id=hl-15-8><a class=lnlinks href=#hl-15-8> 8</a></span><span class=cl>PassCmd &#34;pass email/example.com/account@example.com&#34;
-</span></span><span class=line><span class=ln id=hl-15-9><a class=lnlinks href=#hl-15-9> 9</a></span><span class=cl>AuthMechs LOGIN
-</span></span><span class=line><span class=ln id=hl-15-10><a class=lnlinks href=#hl-15-10>10</a></span><span class=cl>TLSType None
-</span></span><span class=line><span class=ln id=hl-15-11><a class=lnlinks href=#hl-15-11>11</a></span><span class=cl>## Increase timeout
-</span></span><span class=line><span class=ln id=hl-15-12><a class=lnlinks href=#hl-15-12>12</a></span><span class=cl>Timeout 120
-</span></span><span class=line><span class=ln id=hl-15-13><a class=lnlinks href=#hl-15-13>13</a></span><span class=cl>PipelineDepth 50
-</span></span></code></pre></div></li><li><p>Конфигурация SMTP для Emacs:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-emacs-lisp data-lang=emacs-lisp><span class=line><span class=ln id=hl-16-1><a class=lnlinks href=#hl-16-1>1</a></span><span class=cl><span class=p>(</span><span class=nb>setq</span> <span class=nv>send-mail-function</span>    <span class=ss>&#39;smtpmail-send-it</span>
-</span></span><span class=line><span class=ln id=hl-16-2><a class=lnlinks href=#hl-16-2>2</a></span><span class=cl>      <span class=nv>smtpmail-smtp-server</span>  <span class=s>&#34;localhost&#34;</span>
-</span></span><span class=line><span class=ln id=hl-16-3><a class=lnlinks href=#hl-16-3>3</a></span><span class=cl>      <span class=nv>smtpmail-stream-type</span>  <span class=ss>&#39;plain</span>
-</span></span><span class=line><span class=ln id=hl-16-4><a class=lnlinks href=#hl-16-4>4</a></span><span class=cl>      <span class=nv>smtpmail-smtp-service</span> <span class=mi>1025</span><span class=p>)</span>
-</span></span></code></pre></div><ul><li>Для smtp следует именовать пароль <em>pass</em> как <code>account@example.com@localhost</code> (см. <a href=https://yamadharma.github.io/ru/post/2021/04/28/password-manager-pass/>Менеджер паролей pass</a>).</li></ul></li></ul></li></ol><h4 id=yahoo-dot-com><span class=section-num>3.4.8</span> Yahoo.com</h4><ul><li><a href=https://yamadharma.github.io/ru/post/2022/04/26/mail-yahoo-com-configuring-mail-client/>Почта. Yahoo.com. Настройка почтового клиента</a></li><li>Конфигурация:<div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=ln id=hl-17-1><a class=lnlinks href=#hl-17-1> 1</a></span><span class=cl>## IMAPAccount (Yahoo.com)
-</span></span><span class=line><span class=ln id=hl-17-2><a class=lnlinks href=#hl-17-2> 2</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-17-3><a class=lnlinks href=#hl-17-3> 3</a></span><span class=cl>IMAPAccount account@yahoo.com
-</span></span><span class=line><span class=ln id=hl-17-4><a class=lnlinks href=#hl-17-4> 4</a></span><span class=cl>Host imap.mail.yahoo.com
-</span></span><span class=line><span class=ln id=hl-17-5><a class=lnlinks href=#hl-17-5> 5</a></span><span class=cl>User account@yahoo.com
-</span></span><span class=line><span class=ln id=hl-17-6><a class=lnlinks href=#hl-17-6> 6</a></span><span class=cl># PassCmd &#34;gpg -q --for-your-eyes-only --no-tty -d ~/.authinfo.gpg | awk &#39;/machine account@yahoo.com/ {print $6}&#39;&#34;
-</span></span><span class=line><span class=ln id=hl-17-7><a class=lnlinks href=#hl-17-7> 7</a></span><span class=cl>PassCmd &#34;gopass email/yahoo.com/account@yahoo.com@apppassword&#34;
-</span></span><span class=line><span class=ln id=hl-17-8><a class=lnlinks href=#hl-17-8> 8</a></span><span class=cl>AuthMechs LOGIN
-</span></span><span class=line><span class=ln id=hl-17-9><a class=lnlinks href=#hl-17-9> 9</a></span><span class=cl>TLSType IMAPS
-</span></span><span class=line><span class=ln id=hl-17-10><a class=lnlinks href=#hl-17-10>10</a></span><span class=cl>TLSVersions +1.2 +1.3
-</span></span><span class=line><span class=ln id=hl-17-11><a class=lnlinks href=#hl-17-11>11</a></span><span class=cl># Increase timeout
-</span></span><span class=line><span class=ln id=hl-17-12><a class=lnlinks href=#hl-17-12>12</a></span><span class=cl>Timeout 120
-</span></span><span class=line><span class=ln id=hl-17-13><a class=lnlinks href=#hl-17-13>13</a></span><span class=cl>PipelineDepth 50
-</span></span><span class=line><span class=ln id=hl-17-14><a class=lnlinks href=#hl-17-14>14</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-17-15><a class=lnlinks href=#hl-17-15>15</a></span><span class=cl>MaildirStore account@yahoo.com-local
-</span></span><span class=line><span class=ln id=hl-17-16><a class=lnlinks href=#hl-17-16>16</a></span><span class=cl>Path ~/Maildir/account@yahoo.com/
-</span></span><span class=line><span class=ln id=hl-17-17><a class=lnlinks href=#hl-17-17>17</a></span><span class=cl>Inbox ~/Maildir/account@yahoo.com/Inbox
-</span></span><span class=line><span class=ln id=hl-17-18><a class=lnlinks href=#hl-17-18>18</a></span><span class=cl>SubFolders Verbatim
-</span></span><span class=line><span class=ln id=hl-17-19><a class=lnlinks href=#hl-17-19>19</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-17-20><a class=lnlinks href=#hl-17-20>20</a></span><span class=cl>IMAPStore account@yahoo.com-remote
-</span></span><span class=line><span class=ln id=hl-17-21><a class=lnlinks href=#hl-17-21>21</a></span><span class=cl>Account account@yahoo.com
-</span></span><span class=line><span class=ln id=hl-17-22><a class=lnlinks href=#hl-17-22>22</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-17-23><a class=lnlinks href=#hl-17-23>23</a></span><span class=cl>Channel account@yahoo.com-inbox
-</span></span><span class=line><span class=ln id=hl-17-24><a class=lnlinks href=#hl-17-24>24</a></span><span class=cl>Far :account@yahoo.com-remote:&#34;INBOX&#34;
-</span></span><span class=line><span class=ln id=hl-17-25><a class=lnlinks href=#hl-17-25>25</a></span><span class=cl>Near :account@yahoo.com-local:&#34;INBOX&#34;
-</span></span><span class=line><span class=ln id=hl-17-26><a class=lnlinks href=#hl-17-26>26</a></span><span class=cl>CopyArrivalDate yes
-</span></span><span class=line><span class=ln id=hl-17-27><a class=lnlinks href=#hl-17-27>27</a></span><span class=cl>Create Both
-</span></span><span class=line><span class=ln id=hl-17-28><a class=lnlinks href=#hl-17-28>28</a></span><span class=cl>Expunge Both
-</span></span><span class=line><span class=ln id=hl-17-29><a class=lnlinks href=#hl-17-29>29</a></span><span class=cl>SyncState *
-</span></span><span class=line><span class=ln id=hl-17-30><a class=lnlinks href=#hl-17-30>30</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-17-31><a class=lnlinks href=#hl-17-31>31</a></span><span class=cl>Channel account@yahoo.com-trash
-</span></span><span class=line><span class=ln id=hl-17-32><a class=lnlinks href=#hl-17-32>32</a></span><span class=cl>Far :account@yahoo.com-remote:&#34;Trash&#34;
-</span></span><span class=line><span class=ln id=hl-17-33><a class=lnlinks href=#hl-17-33>33</a></span><span class=cl>Near :account@yahoo.com-local:&#34;Trash&#34;
-</span></span><span class=line><span class=ln id=hl-17-34><a class=lnlinks href=#hl-17-34>34</a></span><span class=cl>CopyArrivalDate yes
-</span></span><span class=line><span class=ln id=hl-17-35><a class=lnlinks href=#hl-17-35>35</a></span><span class=cl>Create Both
-</span></span><span class=line><span class=ln id=hl-17-36><a class=lnlinks href=#hl-17-36>36</a></span><span class=cl>Expunge Both
-</span></span><span class=line><span class=ln id=hl-17-37><a class=lnlinks href=#hl-17-37>37</a></span><span class=cl>SyncState *
-</span></span><span class=line><span class=ln id=hl-17-38><a class=lnlinks href=#hl-17-38>38</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-17-39><a class=lnlinks href=#hl-17-39>39</a></span><span class=cl>Channel account@yahoo.com-spam
-</span></span><span class=line><span class=ln id=hl-17-40><a class=lnlinks href=#hl-17-40>40</a></span><span class=cl>Far :account@yahoo.com-remote:&#34;Bulk&#34;
-</span></span><span class=line><span class=ln id=hl-17-41><a class=lnlinks href=#hl-17-41>41</a></span><span class=cl>Near :account@yahoo.com-local:&#34;Spam&#34;
-</span></span><span class=line><span class=ln id=hl-17-42><a class=lnlinks href=#hl-17-42>42</a></span><span class=cl>CopyArrivalDate yes
-</span></span><span class=line><span class=ln id=hl-17-43><a class=lnlinks href=#hl-17-43>43</a></span><span class=cl>Create Both
-</span></span><span class=line><span class=ln id=hl-17-44><a class=lnlinks href=#hl-17-44>44</a></span><span class=cl>Expunge Both
-</span></span><span class=line><span class=ln id=hl-17-45><a class=lnlinks href=#hl-17-45>45</a></span><span class=cl>SyncState *
-</span></span><span class=line><span class=ln id=hl-17-46><a class=lnlinks href=#hl-17-46>46</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-17-47><a class=lnlinks href=#hl-17-47>47</a></span><span class=cl>Channel account@yahoo.com-drafts
-</span></span><span class=line><span class=ln id=hl-17-48><a class=lnlinks href=#hl-17-48>48</a></span><span class=cl>Far :account@yahoo.com-remote:&#34;Draft&#34;
-</span></span><span class=line><span class=ln id=hl-17-49><a class=lnlinks href=#hl-17-49>49</a></span><span class=cl>Near :account@yahoo.com-local:&#34;Drafts&#34;
-</span></span><span class=line><span class=ln id=hl-17-50><a class=lnlinks href=#hl-17-50>50</a></span><span class=cl>CopyArrivalDate yes
-</span></span><span class=line><span class=ln id=hl-17-51><a class=lnlinks href=#hl-17-51>51</a></span><span class=cl>Create Both
-</span></span><span class=line><span class=ln id=hl-17-52><a class=lnlinks href=#hl-17-52>52</a></span><span class=cl>Expunge Both
-</span></span><span class=line><span class=ln id=hl-17-53><a class=lnlinks href=#hl-17-53>53</a></span><span class=cl>SyncState *
-</span></span><span class=line><span class=ln id=hl-17-54><a class=lnlinks href=#hl-17-54>54</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-17-55><a class=lnlinks href=#hl-17-55>55</a></span><span class=cl>Channel account@yahoo.com-archive
-</span></span><span class=line><span class=ln id=hl-17-56><a class=lnlinks href=#hl-17-56>56</a></span><span class=cl>Far :account@yahoo.com-remote:&#34;Archive&#34;
-</span></span><span class=line><span class=ln id=hl-17-57><a class=lnlinks href=#hl-17-57>57</a></span><span class=cl>Near :account@yahoo.com-local:&#34;Archive&#34;
-</span></span><span class=line><span class=ln id=hl-17-58><a class=lnlinks href=#hl-17-58>58</a></span><span class=cl>CopyArrivalDate yes
-</span></span><span class=line><span class=ln id=hl-17-59><a class=lnlinks href=#hl-17-59>59</a></span><span class=cl>Create Both
-</span></span><span class=line><span class=ln id=hl-17-60><a class=lnlinks href=#hl-17-60>60</a></span><span class=cl>Expunge Both
-</span></span><span class=line><span class=ln id=hl-17-61><a class=lnlinks href=#hl-17-61>61</a></span><span class=cl>SyncState *
-</span></span><span class=line><span class=ln id=hl-17-62><a class=lnlinks href=#hl-17-62>62</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-17-63><a class=lnlinks href=#hl-17-63>63</a></span><span class=cl>Channel account@yahoo.com-sent
-</span></span><span class=line><span class=ln id=hl-17-64><a class=lnlinks href=#hl-17-64>64</a></span><span class=cl>Far :account@yahoo.com-remote:&#34;Sent&#34;
-</span></span><span class=line><span class=ln id=hl-17-65><a class=lnlinks href=#hl-17-65>65</a></span><span class=cl>Near :account@yahoo.com-local:&#34;Sent&#34;
-</span></span><span class=line><span class=ln id=hl-17-66><a class=lnlinks href=#hl-17-66>66</a></span><span class=cl>CopyArrivalDate yes
-</span></span><span class=line><span class=ln id=hl-17-67><a class=lnlinks href=#hl-17-67>67</a></span><span class=cl>Create Both
-</span></span><span class=line><span class=ln id=hl-17-68><a class=lnlinks href=#hl-17-68>68</a></span><span class=cl>Expunge Both
-</span></span><span class=line><span class=ln id=hl-17-69><a class=lnlinks href=#hl-17-69>69</a></span><span class=cl>SyncState *
-</span></span><span class=line><span class=ln id=hl-17-70><a class=lnlinks href=#hl-17-70>70</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-17-71><a class=lnlinks href=#hl-17-71>71</a></span><span class=cl>Group account@yahoo.com
-</span></span><span class=line><span class=ln id=hl-17-72><a class=lnlinks href=#hl-17-72>72</a></span><span class=cl>Channel account@yahoo.com-inbox
-</span></span><span class=line><span class=ln id=hl-17-73><a class=lnlinks href=#hl-17-73>73</a></span><span class=cl>Channel account@yahoo.com-trash
-</span></span><span class=line><span class=ln id=hl-17-74><a class=lnlinks href=#hl-17-74>74</a></span><span class=cl>Channel account@yahoo.com-spam
-</span></span><span class=line><span class=ln id=hl-17-75><a class=lnlinks href=#hl-17-75>75</a></span><span class=cl>Channel account@yahoo.com-drafts
-</span></span><span class=line><span class=ln id=hl-17-76><a class=lnlinks href=#hl-17-76>76</a></span><span class=cl>Channel account@yahoo.com-archive
-</span></span><span class=line><span class=ln id=hl-17-77><a class=lnlinks href=#hl-17-77>77</a></span><span class=cl>Channel account@yahoo.com-sent
-</span></span></code></pre></div></li></ul><h2 id=синхронизация><span class=section-num>4</span> Синхронизация</h2><h3 id=настройка-синхронизации><span class=section-num>4.1</span> Настройка синхронизации</h3><ul><li>Будем настраивать синхронизацию нескольких учётных записей.</li><li>Для хранения паролей будем использовать аутентификацию, совместимую с emacs (например, файл формата <code>.authinfo</code>) (см. <a href=https://yamadharma.github.io/ru/post/2021/01/22/mail-password-authentication/>Emacs. Почта. Парольная аутентификация</a>).</li></ul><h3 id=запуск-из-командной-строки><span class=section-num>4.2</span> Запуск из командной строки</h3><ul><li><p>Синхронизация конкретной учётной записи:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=ln id=hl-18-1><a class=lnlinks href=#hl-18-1>1</a></span><span class=cl>mbsync &lt;chanel&gt;
-</span></span></code></pre></div></li><li><p>Синхронизация всех учётных записей:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=ln id=hl-19-1><a class=lnlinks href=#hl-19-1>1</a></span><span class=cl>mbsync --all
-</span></span></code></pre></div></li></ul><h3 id=запуск-по-таймеру><span class=section-num>4.3</span> Запуск по таймеру</h3><ul><li><p>Для синхронизации с помощью <code>systemd</code> надо добавить сервис и таймер.</p></li><li><p>После создания этих файлов добавьте <code>mbsync.timer</code> в <code>systemctl</code>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=ln id=hl-20-1><a class=lnlinks href=#hl-20-1>1</a></span><span class=cl>systemctl --user --now <span class=nb>enable</span> mbsync.timer
-</span></span></code></pre></div></li><li><p><code>~/.config/systemd/user/mbsync.service</code>.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=ln id=hl-21-1><a class=lnlinks href=#hl-21-1>1</a></span><span class=cl># ~/.config/systemd/user/mbsync.service
-</span></span><span class=line><span class=ln id=hl-21-2><a class=lnlinks href=#hl-21-2>2</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-21-3><a class=lnlinks href=#hl-21-3>3</a></span><span class=cl>[Unit]
-</span></span><span class=line><span class=ln id=hl-21-4><a class=lnlinks href=#hl-21-4>4</a></span><span class=cl>Description=Mailbox synchronization service
-</span></span><span class=line><span class=ln id=hl-21-5><a class=lnlinks href=#hl-21-5>5</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-21-6><a class=lnlinks href=#hl-21-6>6</a></span><span class=cl>[Service]
-</span></span><span class=line><span class=ln id=hl-21-7><a class=lnlinks href=#hl-21-7>7</a></span><span class=cl>Type=oneshot
-</span></span><span class=line><span class=ln id=hl-21-8><a class=lnlinks href=#hl-21-8>8</a></span><span class=cl>ExecStart=/usr/bin/mbsync -a
-</span></span></code></pre></div></li><li><p><code>~/.config/systemd/user/mbsync.service</code>. Здесь мы после синхронизации запускаем индексирование для <code>mu</code>.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=ln id=hl-22-1><a class=lnlinks href=#hl-22-1>1</a></span><span class=cl># ~/.config/systemd/user/mbsync.service
-</span></span><span class=line><span class=ln id=hl-22-2><a class=lnlinks href=#hl-22-2>2</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-22-3><a class=lnlinks href=#hl-22-3>3</a></span><span class=cl>[Unit]
-</span></span><span class=line><span class=ln id=hl-22-4><a class=lnlinks href=#hl-22-4>4</a></span><span class=cl>Description=Mailbox synchronization service
-</span></span><span class=line><span class=ln id=hl-22-5><a class=lnlinks href=#hl-22-5>5</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-22-6><a class=lnlinks href=#hl-22-6>6</a></span><span class=cl>[Service]
-</span></span><span class=line><span class=ln id=hl-22-7><a class=lnlinks href=#hl-22-7>7</a></span><span class=cl>Type=oneshot
-</span></span><span class=line><span class=ln id=hl-22-8><a class=lnlinks href=#hl-22-8>8</a></span><span class=cl>ExecStart=-/usr/bin/mbsync -a
-</span></span><span class=line><span class=ln id=hl-22-9><a class=lnlinks href=#hl-22-9>9</a></span><span class=cl>ExecStartPost=-/usr/bin/mu index
-</span></span></code></pre></div><ul><li>Знак <code>-</code> перед командой позволяет игнорировать код возврата.</li></ul></li><li><p><code>~/.config/systemd/user/mbsync.timer</code>. Настраиваем запуск <code>mbsync</code> через 2 минуты после загрузки, а затем запускаем каждые 5 минут.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=ln id=hl-23-1><a class=lnlinks href=#hl-23-1> 1</a></span><span class=cl># ~/.config/systemd/user/mbsync.timer
-</span></span><span class=line><span class=ln id=hl-23-2><a class=lnlinks href=#hl-23-2> 2</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-23-3><a class=lnlinks href=#hl-23-3> 3</a></span><span class=cl>[Unit]
-</span></span><span class=line><span class=ln id=hl-23-4><a class=lnlinks href=#hl-23-4> 4</a></span><span class=cl>Description=Mailbox synchronization timer
-</span></span><span class=line><span class=ln id=hl-23-5><a class=lnlinks href=#hl-23-5> 5</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-23-6><a class=lnlinks href=#hl-23-6> 6</a></span><span class=cl>[Timer]
-</span></span><span class=line><span class=ln id=hl-23-7><a class=lnlinks href=#hl-23-7> 7</a></span><span class=cl>OnBootSec=2m
-</span></span><span class=line><span class=ln id=hl-23-8><a class=lnlinks href=#hl-23-8> 8</a></span><span class=cl>OnUnitActiveSec=5m
-</span></span><span class=line><span class=ln id=hl-23-9><a class=lnlinks href=#hl-23-9> 9</a></span><span class=cl>Unit=mbsync.service
-</span></span><span class=line><span class=ln id=hl-23-10><a class=lnlinks href=#hl-23-10>10</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-23-11><a class=lnlinks href=#hl-23-11>11</a></span><span class=cl>[Install]
-</span></span><span class=line><span class=ln id=hl-23-12><a class=lnlinks href=#hl-23-12>12</a></span><span class=cl>WantedBy=timers.target
-</span></span></code></pre></div></li></ul><h2 id=поддержка-почтовых-файлов><span class=section-num>5</span> Поддержка почтовых файлов</h2><h3 id=удаление-дубликатов><span class=section-num>5.1</span> Удаление дубликатов</h3><ul><li>При копировании могут возникать дубликаты сообщений.</li><li>Их можно удалить (см. <a href=https://yamadharma.github.io/ru/post/2021/09/09/removing-duplicate-messages/>Почта. Удаление дубликатов сообщений из локальных почтовых ящиков</a>).</li></ul><h2 id=перенос-почтовых-файлов-на-другую-машину><span class=section-num>6</span> Перенос почтовых файлов на другую машину</h2><ul><li>Имя почтового файла содержит имя хоста. Поэтому просто так синхронизировать почтовую базу между хостами не получится.</li><li>Синхронизация может понадобиться для случая, когда у Вас большие почтовые ящики, а сервер квотирует почтовый трафик.</li><li>Предлагается скопировать текущую базу на другой хост (в качестве первоначальной постовой базы), а потом переименовать файлы почты.<ul><li>Необходимо скопировать данные с <code>host1</code> на <code>host2</code>.</li><li>Проведём проверку переименования:<div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=ln id=hl-24-1><a class=lnlinks href=#hl-24-1>1</a></span><span class=cl><span class=nb>cd</span> ~/Maildir/
-</span></span><span class=line><span class=ln id=hl-24-2><a class=lnlinks href=#hl-24-2>2</a></span><span class=cl>find . -iname <span class=s2>&#34;*host1*&#34;</span> <span class=p>|</span> sed <span class=s1>&#39;p;s:host1:host2:&#39;</span> <span class=p>|</span> xargs -n2 -p mv
-</span></span></code></pre></div></li><li>Проведём переименование, убрав ключ <code>p</code> у <code>xargs</code>:<div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=ln id=hl-25-1><a class=lnlinks href=#hl-25-1>1</a></span><span class=cl><span class=nb>cd</span> ~/Maildir/
-</span></span><span class=line><span class=ln id=hl-25-2><a class=lnlinks href=#hl-25-2>2</a></span><span class=cl>find . -iname <span class=s2>&#34;*host1*&#34;</span> <span class=p>|</span> sed <span class=s1>&#39;p;s:host1:host2:&#39;</span> <span class=p>|</span> xargs -n2 mv
-</span></span></code></pre></div></li></ul></li></ul><h2 id=технические-моменты><span class=section-num>7</span> Технические моменты</h2><h3 id=имена-почтовых-файлов><span class=section-num>7.1</span> Имена почтовых файлов</h3><ul><li>Информация по почтовым файлам хранится либо в каталоге <code>~/.mbsync</code> в файлах вида:<div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=ln id=hl-26-1><a class=lnlinks href=#hl-26-1>1</a></span><span class=cl>&lt;remote account&gt;:&lt;remote!folder&gt;:&lt;<span class=nb>local</span> account&gt;:&lt;local!folder&gt;
-</span></span></code></pre></div></li><li>Либо информация хранится в почтовых папках в файлах <code>.mbsyncstate</code> (параметр <code>SyncState *</code>).</li><li>В файле <code>.uidvalidity</code> хранится последняя отметка времени и идентификатор.</li><li>Файлы сообщений именуются по шаблону:<div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=ln id=hl-27-1><a class=lnlinks href=#hl-27-1>1</a></span><span class=cl>&lt;timestamp&gt;.&lt;PID&gt;_&lt;counter&gt;.&lt;hostname&gt;,U<span class=o>=</span>&lt;increment&gt;:2,&lt;flags&gt;
+Файл ~/bin/mbsync-mkdir</div></li><li><p>Делаем конфигурационный файл для <em>mbsync</em>. Файл называется <code>~/.config/isyncrc</code>.</p></li><li><p>Чтобы не хранить пароли в конфигурационном файле (оператор <code>Pass</code>) будем использовать хранение пароля, совместимое с <em>emacs</em> (с использованием оператора <code>PassCmd</code>):</p><ul><li><p>в файле <code>~/.authinfo.gpg</code> (см. <a href=https://yamadharma.github.io/ru/post/2021/01/22/mail-password-authentication/>Emacs. Почта. Парольная аутентификация</a>):</p><ul><li>структура команды:<div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>PassCmd &#34;gpg -q --for-your-eyes-only --no-tty -d ~/.authinfo.gpg | awk &#39;/machine account@example.com/ {print $6}&#39;&#34;
+</span></span></code></pre></div></li></ul></li><li><p>в менеджере паролей <em>pass</em> (см. <a href=https://yamadharma.github.io/ru/post/2021/04/28/password-manager-pass/>Менеджер паролей pass</a>):</p><ul><li>структура команды:</li></ul><!--listend--><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>PassCmd &#34;pass email/example.com/account@example.com&#34;
+</span></span></code></pre></div></li></ul></li><li><p>Начиная с версии <em>mbsync-1.4.1</em> операторы <code>Master</code> и <code>Slave</code> заменены на <code>Far</code> и <code>Near</code>.</p></li></ul><h3 id=общие-параметры><span class=section-num>3.3</span> Общие параметры</h3><ul><li>Установка параметра <code>CopyArrivalDate</code>:<div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl># By default (CopyArrivalDate no), if you copy an old email from inbox to
+</span></span><span class=line><span class=cl># Archive (e.g.) it will get the date of the copy assigned, instead of just
+</span></span><span class=line><span class=cl># keeping its original date of arrival! Also see:
+</span></span><span class=line><span class=cl># https://rakhim.org/fastmail-setup-with-emacs-mu4e-and-mbsync-on-macos/
+</span></span><span class=line><span class=cl># https://wiki.archlinux.org/index.php/Isync#Emails_on_remote_server_have_the_wrong_date
+</span></span><span class=line><span class=cl>CopyArrivalDate yes
+</span></span></code></pre></div></li></ul><h3 id=примеры-конфигурации-для-разных-провайдеров><span class=section-num>3.4</span> Примеры конфигурации для разных провайдеров</h3><ul><li>Может потребоваться для разных провайдеров увеличить тайм-аут соединения (по умолчанию равно <code>20</code>):<div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl># Increase timeout
+</span></span><span class=line><span class=cl>Timeout 120
+</span></span></code></pre></div></li><li>Вместо <code>pass</code> можно использовать <code>gopass</code>. При последовательном запуске нескольких <code>pass</code> утилита может не находить ключ <em>pgp</em>.</li><li>Папки IMAP можно получить либо через web-интерфейс, либо в командной строке (см. <a href=https://yamadharma.github.io/ru/post/2024/04/13/imap-queries-command-line/>Запросы по протоколу imap из командной строки</a>)</li></ul><h4 id=gmail><span class=section-num>3.4.1</span> Gmail</h4><ul><li><a href=https://www.google.com/intl/ru/gmail/about/ target=_blank rel=noopener>https://www.google.com/intl/ru/gmail/about/</a></li><li><a href=https://yamadharma.github.io/ru/post/2021/07/06/mail-google-configuring-mail-client/>Почта. Google. Настройка почтового клиента</a></li><li>Из-за структуры тегов Gmail необходимо явно задавать названия почтовых ящиков в директивах <code>Far</code> и <code>Near</code>.</li><li>Синхронизацию папки <code>Отправленные</code> можно отключить. Google сохраняет всю электронную почту в папке <code>Все сообщения</code>. В результате можно получить локальные дубликаты.</li><li>Рекомендуется на сайте Gmail настроить в пункте <code>Настройки > Пересылка и POP/IMAP > Доступ по протоколу IMAP</code> (<code>Settings</code> > <code>Forwarding and POP/IMAP</code> > <code>IMAP Access</code>):<ul><li>отметить <code>Автоматическое стирание включено (немедленно обновлять данные на сервере; по умолчанию)</code> <code>Auto-Expunge on - Immediately update the server. (default)</code>;</li><li><del>отметить <code>Автоматическое стирание выключено (ожидать, пока клиент не обновит данные на сервере)</code> (<code>Turn Auto Expunge Off</code>)</del>;</li><li>отметить <code>Архивировать сообщение (по умолчанию)</code> (<code>Archive message (default)</code>).</li><li><del>отметить <code>Отправить письмо в корзину</code> (<code>Send email to trash</code>)</del>.</li></ul></li><li>При использовании двуфакторной аутентификации (2FA) необходимо использовать <em>пароль приложения</em> (см. <a href=https://yamadharma.github.io/ru/post/2020/12/25/mail-google-connect/>Почта. Подключение к Google</a>).<div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl># IMAPAccount (gmail)
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>IMAPAccount account@gmail.com
+</span></span><span class=line><span class=cl>Host imap.gmail.com
+</span></span><span class=line><span class=cl>User account@gmail.com
+</span></span><span class=line><span class=cl># Pass ***************
+</span></span><span class=line><span class=cl>## To store the password in an encrypted file use PassCmd instead of Pass
+</span></span><span class=line><span class=cl># PassCmd &#34;gpg -q --for-your-eyes-only --no-tty -d ~/.authinfo.gpg | awk &#39;/machine account@gmail.com/ {print $6}&#39;&#34;
+</span></span><span class=line><span class=cl># PassCmd &#34;pass email/google.com/account@gmail.com@apppassword&#34;
+</span></span><span class=line><span class=cl>PassCmd &#34;pass email/google.com/account@gmail.com&#34;
+</span></span><span class=line><span class=cl>Port 993
+</span></span><span class=line><span class=cl>TLSType IMAPS
+</span></span><span class=line><span class=cl>AuthMechs LOGIN
+</span></span><span class=line><span class=cl>TLSVersions +1.2 +1.3
+</span></span><span class=line><span class=cl># Increase timeout
+</span></span><span class=line><span class=cl>Timeout 120
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>IMAPStore account@gmail.com-remote
+</span></span><span class=line><span class=cl>Account account@gmail.com
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>MaildirStore account@gmail.com-local
+</span></span><span class=line><span class=cl>Path ~/Maildir/account@gmail.com/
+</span></span><span class=line><span class=cl>Inbox ~/Maildir/account@gmail.com/Inbox
+</span></span><span class=line><span class=cl>SubFolders Verbatim
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>IMAPStore account@gmail.com-remote
+</span></span><span class=line><span class=cl>Account account@gmail.com
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Channel account@gmail.com-inbox
+</span></span><span class=line><span class=cl>Far :account@gmail.com-remote:&#34;INBOX&#34;
+</span></span><span class=line><span class=cl>Near :account@gmail.com-local:&#34;INBOX&#34;
+</span></span><span class=line><span class=cl>CopyArrivalDate yes
+</span></span><span class=line><span class=cl>Create Both
+</span></span><span class=line><span class=cl>Expunge Both
+</span></span><span class=line><span class=cl>SyncState *
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Channel account@gmail.com-trash
+</span></span><span class=line><span class=cl># Far :account@gmail.com-remote:&#34;[Gmail]/Trash&#34;
+</span></span><span class=line><span class=cl>Far :account@gmail.com-remote:&#34;[Gmail]/&amp;BBoEPgRABDcEOAQ9BDA-&#34;
+</span></span><span class=line><span class=cl>Near :account@gmail.com-local:&#34;Trash&#34;
+</span></span><span class=line><span class=cl>CopyArrivalDate yes
+</span></span><span class=line><span class=cl>Create Both
+</span></span><span class=line><span class=cl>Expunge Both
+</span></span><span class=line><span class=cl>SyncState *
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Channel account@gmail.com-spam
+</span></span><span class=line><span class=cl># Far :account@gmail.com-remote:&#34;[Gmail]/Spam&#34;
+</span></span><span class=line><span class=cl>Far :account@gmail.com-remote:&#34;[Gmail]/&amp;BCEEPwQwBDw-&#34;
+</span></span><span class=line><span class=cl>Near :account@gmail.com-local:&#34;Spam&#34;
+</span></span><span class=line><span class=cl>CopyArrivalDate yes
+</span></span><span class=line><span class=cl>Create Both
+</span></span><span class=line><span class=cl>Expunge Both
+</span></span><span class=line><span class=cl>SyncState *
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Channel account@gmail.com-all
+</span></span><span class=line><span class=cl># Far :account@gmail.com-remote:&#34;[Gmail]/All Mail&#34;
+</span></span><span class=line><span class=cl>Far :account@gmail.com-remote:&#34;[Gmail]/&amp;BBIEQQRP- &amp;BD8EPgRHBEIEMA-&#34;
+</span></span><span class=line><span class=cl>Near :account@gmail.com-local:&#34;Archive&#34;
+</span></span><span class=line><span class=cl>CopyArrivalDate yes
+</span></span><span class=line><span class=cl>Create Both
+</span></span><span class=line><span class=cl>Expunge Both
+</span></span><span class=line><span class=cl>SyncState *
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Channel account@gmail.com-drafts
+</span></span><span class=line><span class=cl># Far :account@gmail.com-remote:&#34;[Gmail]/Drafts&#34;
+</span></span><span class=line><span class=cl>Far :account@gmail.com-remote:&#34;[Gmail]/&amp;BCcENQRABD0EPgQyBDgEOgQ4-&#34;
+</span></span><span class=line><span class=cl>Near :account@gmail.com-local:&#34;Drafts&#34;
+</span></span><span class=line><span class=cl>CopyArrivalDate yes
+</span></span><span class=line><span class=cl>Create Both
+</span></span><span class=line><span class=cl>Expunge Both
+</span></span><span class=line><span class=cl>SyncState *
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Channel account@gmail.com-sent
+</span></span><span class=line><span class=cl># Far :account@gmail.com-remote:&#34;[Gmail]/Sent Mail&#34;
+</span></span><span class=line><span class=cl>Far :account@gmail.com-remote:&#34;[Gmail]/&amp;BB4EQgQ,BEAEMAQyBDsENQQ9BD0ESwQ1-&#34;
+</span></span><span class=line><span class=cl>Near :account@gmail.com-local:&#34;Sent&#34;
+</span></span><span class=line><span class=cl>CopyArrivalDate yes
+</span></span><span class=line><span class=cl>Create Both
+</span></span><span class=line><span class=cl>Expunge Both
+</span></span><span class=line><span class=cl>SyncState *
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Group account@gmail.com
+</span></span><span class=line><span class=cl>Channel account@gmail.com-inbox
+</span></span><span class=line><span class=cl>Channel account@gmail.com-trash
+</span></span><span class=line><span class=cl>Channel account@gmail.com-all
+</span></span><span class=line><span class=cl>Channel account@gmail.com-spam
+</span></span><span class=line><span class=cl>Channel account@gmail.com-drafts
+</span></span><span class=line><span class=cl>Channel account@gmail.com-sent
+</span></span></code></pre></div></li></ul><h4 id=apple><span class=section-num>3.4.2</span> Apple</h4><ul><li><a href=https://www.icloud.com/mail target=_blank rel=noopener>https://www.icloud.com/mail</a><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl># IMAPAccount (Apple)
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>IMAPAccount account@icloud.com
+</span></span><span class=line><span class=cl>Host imap.mail.me.com
+</span></span><span class=line><span class=cl>PORT 993
+</span></span><span class=line><span class=cl>User account@icloud.com
+</span></span><span class=line><span class=cl>PassCmd &#34;gpg -q --for-your-eyes-only --no-tty -d ~/.authinfo.gpg | awk &#39;/machine account@icloud.com/ {print $6}&#39;&#34;
+</span></span><span class=line><span class=cl>AuthMechs LOGIN
+</span></span><span class=line><span class=cl>TLSType IMAPS
+</span></span><span class=line><span class=cl>TLSVersions +1.2 +1.3
+</span></span><span class=line><span class=cl># Increase timeout
+</span></span><span class=line><span class=cl>Timeout 120
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>MaildirStore account@icloud.com-local
+</span></span><span class=line><span class=cl>Path ~/Maildir/account@icloud.com/
+</span></span><span class=line><span class=cl>Inbox ~/Maildir/account@icloud.com/Inbox
+</span></span><span class=line><span class=cl>SubFolders Verbatim
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>IMAPStore account@icloud.com-remote
+</span></span><span class=line><span class=cl>Account account@icloud.com
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Channel account@icloud.com-all
+</span></span><span class=line><span class=cl>Far :account@icloud.com-remote:
+</span></span><span class=line><span class=cl>Near :account@icloud.com-local:
+</span></span><span class=line><span class=cl># Included mailboxes
+</span></span><span class=line><span class=cl>Patterns &#34;INBOX&#34; &#34;Archive&#34; &#34;Trash&#34; &#34;Spam&#34; &#34;Drafts&#34;
+</span></span><span class=line><span class=cl>CopyArrivalDate yes
+</span></span><span class=line><span class=cl>Create Both
+</span></span><span class=line><span class=cl>Expunge Both
+</span></span><span class=line><span class=cl>SyncState *
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Channel account@icloud.com-sent
+</span></span><span class=line><span class=cl>Far :account@icloud.com-remote:&#34;Sent Messages&#34;
+</span></span><span class=line><span class=cl>Near :account@icloud.com-local:&#34;Sent&#34;
+</span></span><span class=line><span class=cl>CopyArrivalDate yes
+</span></span><span class=line><span class=cl>Create Both
+</span></span><span class=line><span class=cl>Expunge Both
+</span></span><span class=line><span class=cl>SyncState *
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Group account@icloud.com
+</span></span><span class=line><span class=cl>Channel account@icloud.com-sent
+</span></span><span class=line><span class=cl>Channel account@icloud.com-all
+</span></span></code></pre></div></li></ul><h4 id=gmx><span class=section-num>3.4.3</span> GMX</h4><ul><li><a href=https://www.gmx.com/ target=_blank rel=noopener>https://www.gmx.com/</a></li><li><a href=https://www.gmx.net/ target=_blank rel=noopener>https://www.gmx.net/</a><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl># IMAPAccount (GMX)
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>IMAPAccount account@gmx.com
+</span></span><span class=line><span class=cl>Host imap.gmx.com
+</span></span><span class=line><span class=cl>User account@gmx.com
+</span></span><span class=line><span class=cl>PassCmd &#34;gpg -q --for-your-eyes-only --no-tty -d ~/.authinfo.gpg | awk &#39;/machine account@gmx.com/ {print $6}&#39;&#34;
+</span></span><span class=line><span class=cl>AuthMechs LOGIN
+</span></span><span class=line><span class=cl>TLSType IMAPS
+</span></span><span class=line><span class=cl>TLSVersions +1.2 +1.3
+</span></span><span class=line><span class=cl># Increase timeout
+</span></span><span class=line><span class=cl>Timeout 120
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>MaildirStore account@gmx.com-local
+</span></span><span class=line><span class=cl>Path ~/Maildir/account@gmx.com/
+</span></span><span class=line><span class=cl>Inbox ~/Maildir/account@gmx.com/Inbox
+</span></span><span class=line><span class=cl>SubFolders Verbatim
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>IMAPStore account@gmx.com-remote
+</span></span><span class=line><span class=cl>Account account@gmx.com
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Channel account@gmx.com
+</span></span><span class=line><span class=cl>Far :account@gmx.com-remote:
+</span></span><span class=line><span class=cl>Near :account@gmx.com-local:
+</span></span><span class=line><span class=cl>Patterns &#34;INBOX&#34; &#34;Archive&#34; &#34;Trash&#34; &#34;Spam&#34; &#34;Drafts&#34; &#34;Sent&#34;
+</span></span><span class=line><span class=cl>CopyArrivalDate yes
+</span></span><span class=line><span class=cl>Create Both
+</span></span><span class=line><span class=cl>Expunge Both
+</span></span><span class=line><span class=cl>SyncState *
+</span></span></code></pre></div></li></ul><h4 id=proton><span class=section-num>3.4.4</span> Proton</h4><ul><li><a href=https://protonmail.com/ target=_blank rel=noopener>https://protonmail.com/</a></li><li>Заблокирован в России.</li><li>Для работы необходимо установить локальное приложение <a href=https://protonmail.com/bridge/ target=_blank rel=noopener>https://protonmail.com/bridge/</a>.<div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl># IMAPAccount (Proton)
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>IMAPAccount account@protonmail.com
+</span></span><span class=line><span class=cl>Host 127.0.0.1
+</span></span><span class=line><span class=cl>PORT 1111
+</span></span><span class=line><span class=cl>User account@protonmail.com
+</span></span><span class=line><span class=cl>PassCmd &#34;gpg -q --for-your-eyes-only --no-tty -d ~/.authinfo.gpg | awk &#39;/machine account@protonmail.com/ {print $6}&#39;&#34;
+</span></span><span class=line><span class=cl>AuthMechs LOGIN
+</span></span><span class=line><span class=cl>TLSType STARTTLS
+</span></span><span class=line><span class=cl>TLSVersions +1.2 +1.3
+</span></span><span class=line><span class=cl># Increase timeout
+</span></span><span class=line><span class=cl>Timeout 120
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>MaildirStore account@protonmail.com-local
+</span></span><span class=line><span class=cl>Path ~/Maildir/account@protonmail.com/
+</span></span><span class=line><span class=cl>Inbox ~/Maildir/account@protonmail.com/Inbox
+</span></span><span class=line><span class=cl>SubFolders Verbatim
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>IMAPStore account@protonmail.com-remote
+</span></span><span class=line><span class=cl>Account account@protonmail.com
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Channel account@protonmail.com
+</span></span><span class=line><span class=cl>Far :account@protonmail.com-remote:
+</span></span><span class=line><span class=cl>Near :account@protonmail.com-local:
+</span></span><span class=line><span class=cl>Patterns &#34;INBOX&#34; &#34;Archive&#34; &#34;Trash&#34; &#34;Spam&#34; &#34;Drafts&#34; &#34;Sent&#34;
+</span></span><span class=line><span class=cl>CopyArrivalDate yes
+</span></span><span class=line><span class=cl>Create Both
+</span></span><span class=line><span class=cl>Expunge Both
+</span></span><span class=line><span class=cl>SyncState *
+</span></span></code></pre></div></li></ul><h4 id=yandex><span class=section-num>3.4.5</span> Yandex</h4><ul><li><a href=https://yandex.ru/ target=_blank rel=noopener>https://yandex.ru/</a></li><li><a href=https://yamadharma.github.io/ru/post/2021/07/04/mail-yandex-configuring-mail-client/>Почта. Yandex. Настройка почтового клиента</a></li><li>Пароли приложений<ul><li>При подключении паролей приложений обычные пароли использовать не получится. Придётся сгенерить пароль приложения (см. <a href=https://yamadharma.github.io/ru/post/2021/11/01/mail-yandex-application-passwords/>Почта. Yandex. Пароли приложений</a>).</li><li>Для паролей <code>pass</code>:<ul><li>Пароль для приложения почты можно назвать <code>account@yandex.ru@apppassword@mail</code>.</li><li>Пароль для smtp следует именовать как <code>account@yandex.ru@smtp.yandex.ru</code> (это тот же пароль для почтового приложения).</li></ul></li></ul></li><li>Конфигурация:<div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>## IMAPAccount (Yandex)
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>IMAPAccount account@yandex.ru
+</span></span><span class=line><span class=cl>Host imap.yandex.ru
+</span></span><span class=line><span class=cl>User account@yandex.ru
+</span></span><span class=line><span class=cl># Pass ***************
+</span></span><span class=line><span class=cl>## To store the password in an encrypted file use PassCmd instead of Pass
+</span></span><span class=line><span class=cl># PassCmd &#34;gpg -q --for-your-eyes-only --no-tty -d ~/.authinfo.gpg | awk &#39;/machine account@yandex.ru/ {print $6}&#39;&#34;
+</span></span><span class=line><span class=cl># PassCmd &#34;pass email/yandex.ru/account@yandex.ru@apppassword@mail&#34;
+</span></span><span class=line><span class=cl>PassCmd &#34;pass email/yandex.ru/account@yandex.ru&#34;
+</span></span><span class=line><span class=cl>AuthMechs LOGIN
+</span></span><span class=line><span class=cl>TLSType IMAPS
+</span></span><span class=line><span class=cl>TLSVersions +1.2 +1.3
+</span></span><span class=line><span class=cl># Increase timeout
+</span></span><span class=line><span class=cl>Timeout 120
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>MaildirStore account@yandex.ru-local
+</span></span><span class=line><span class=cl>Path ~/Maildir/account@yandex.ru/
+</span></span><span class=line><span class=cl>Inbox ~/Maildir/account@yandex.ru/Inbox
+</span></span><span class=line><span class=cl>SubFolders Verbatim
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>IMAPStore account@yandex.ru-remote
+</span></span><span class=line><span class=cl>Account account@yandex.ru
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Channel account@yandex.ru
+</span></span><span class=line><span class=cl>Far :account@yandex.ru-remote:
+</span></span><span class=line><span class=cl>Near :account@yandex.ru-local:
+</span></span><span class=line><span class=cl>Patterns &#34;INBOX&#34; &#34;Archive&#34; &#34;Trash&#34; &#34;Spam&#34; &#34;Drafts&#34; &#34;Sent&#34;
+</span></span><span class=line><span class=cl>CopyArrivalDate yes
+</span></span><span class=line><span class=cl>Create Both
+</span></span><span class=line><span class=cl>Expunge Both
+</span></span><span class=line><span class=cl>SyncState *
+</span></span></code></pre></div></li></ul><h4 id=mail-dot-ru><span class=section-num>3.4.6</span> Mail.ru</h4><ul><li><a href=https://yamadharma.github.io/ru/post/2021/07/04/mail-mail-ru-configuring-mail-client/>Почта. Mail.ru. Настройка почтового клиента</a></li><li>Пароли приложений<ul><li>При подключении паролей приложений обычные пароли использовать не получится. Придётся сгенерить пароль приложения (см. <a href=https://yamadharma.github.io/ru/post/2022/10/27/mail-ru-passwords/>Пароли mail.ru</a>).</li><li>Для паролей <code>pass</code>:<ul><li>Пароль для приложения почты можно назвать <code>account@mail.ru@apppassword@mail</code>.</li><li>Пароль для smtp следует именовать как <code>account@mail.ru@smtp.mail.ru</code> (это тот же пароль для почтового приложения).</li></ul></li></ul></li><li>Конфигурация:<div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>## IMAPAccount (Mail.ru)
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>IMAPAccount account@mail.ru
+</span></span><span class=line><span class=cl>Host imap.mail.ru
+</span></span><span class=line><span class=cl>User account@mail.ru
+</span></span><span class=line><span class=cl># Pass ***************
+</span></span><span class=line><span class=cl>## To store the password in an encrypted file use PassCmd instead of Pass
+</span></span><span class=line><span class=cl># PassCmd &#34;gpg -q --for-your-eyes-only --no-tty -d ~/.authinfo.gpg | awk &#39;/machine account@mail.ru@apppassword@mail/ {print $6}&#39;&#34;
+</span></span><span class=line><span class=cl>PassCmd &#34;pass email/mail.ru/account@mail.ru@apppassword@mail&#34;
+</span></span><span class=line><span class=cl>AuthMechs LOGIN
+</span></span><span class=line><span class=cl>TLSType IMAPS
+</span></span><span class=line><span class=cl>TLSVersions +1.2 +1.3
+</span></span><span class=line><span class=cl># Increase timeout
+</span></span><span class=line><span class=cl>Timeout 120
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>MaildirStore account@mail.ru-local
+</span></span><span class=line><span class=cl>Path ~/Maildir/account@mail.ru/
+</span></span><span class=line><span class=cl>Inbox ~/Maildir/account@mail.ru/Inbox
+</span></span><span class=line><span class=cl>SubFolders Verbatim
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>IMAPStore account@mail.ru-remote
+</span></span><span class=line><span class=cl>Account account@mail.ru
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Channel account@mail.ru-inbox
+</span></span><span class=line><span class=cl>Far :account@mail.ru-remote:&#34;INBOX&#34;
+</span></span><span class=line><span class=cl>Near :account@mail.ru-local:&#34;INBOX&#34;
+</span></span><span class=line><span class=cl>CopyArrivalDate yes
+</span></span><span class=line><span class=cl>Create Both
+</span></span><span class=line><span class=cl>Expunge Both
+</span></span><span class=line><span class=cl>SyncState *
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Channel account@mail.ru-trash
+</span></span><span class=line><span class=cl>Far :account@mail.ru-remote:&#34;Корзина&#34;
+</span></span><span class=line><span class=cl>Near :account@mail.ru-local:&#34;Trash&#34;
+</span></span><span class=line><span class=cl>CopyArrivalDate yes
+</span></span><span class=line><span class=cl>Create Both
+</span></span><span class=line><span class=cl>Expunge Both
+</span></span><span class=line><span class=cl>SyncState *
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Channel account@mail.ru-spam
+</span></span><span class=line><span class=cl>Far :account@mail.ru-remote:&#34;Спам&#34;
+</span></span><span class=line><span class=cl>Near :account@mail.ru-local:&#34;Spam&#34;
+</span></span><span class=line><span class=cl>CopyArrivalDate yes
+</span></span><span class=line><span class=cl>Create Both
+</span></span><span class=line><span class=cl>Expunge Both
+</span></span><span class=line><span class=cl>SyncState *
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Channel account@mail.ru-drafts
+</span></span><span class=line><span class=cl>Far :account@mail.ru-remote:&#34;Черновики&#34;
+</span></span><span class=line><span class=cl>Near :account@mail.ru-local:&#34;Drafts&#34;
+</span></span><span class=line><span class=cl>CopyArrivalDate yes
+</span></span><span class=line><span class=cl>Create Both
+</span></span><span class=line><span class=cl>Expunge Both
+</span></span><span class=line><span class=cl>SyncState *
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Channel account@mail.ru-archive
+</span></span><span class=line><span class=cl>Far :account@mail.ru-remote:&#34;Архив&#34;
+</span></span><span class=line><span class=cl>Near :account@mail.ru-local:&#34;Archive&#34;
+</span></span><span class=line><span class=cl>CopyArrivalDate yes
+</span></span><span class=line><span class=cl>Create Both
+</span></span><span class=line><span class=cl>Expunge Both
+</span></span><span class=line><span class=cl>SyncState *
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Channel account@mail.ru-sent
+</span></span><span class=line><span class=cl>Far :account@mail.ru-remote:&#34;Отправленные&#34;
+</span></span><span class=line><span class=cl>Near :account@mail.ru-local:&#34;Sent&#34;
+</span></span><span class=line><span class=cl>CopyArrivalDate yes
+</span></span><span class=line><span class=cl>Create Both
+</span></span><span class=line><span class=cl>Expunge Both
+</span></span><span class=line><span class=cl>SyncState *
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Group account@mail.ru
+</span></span><span class=line><span class=cl>Channel account@mail.ru-inbox
+</span></span><span class=line><span class=cl>Channel account@mail.ru-trash
+</span></span><span class=line><span class=cl>Channel account@mail.ru-spam
+</span></span><span class=line><span class=cl>Channel account@mail.ru-drafts
+</span></span><span class=line><span class=cl>Channel account@mail.ru-archive
+</span></span><span class=line><span class=cl>Channel account@mail.ru-sent
+</span></span></code></pre></div></li></ul><h4 id=office365><span class=section-num>3.4.7</span> Office365</h4><ul><li><a href=https://yamadharma.github.io/ru/post/2021/07/04/mail-office365-configuring-mail-client/>Почта. Office365. Настройка почтового клиента</a></li><li>Названия IMAP-ящиков даётся в модифицированной кодировке UTF-7 (см. <a href=https://yamadharma.github.io/ru/post/2021/07/04/mail-imap-folder-encoding/>Почта. Кодировка папок IMAP</a>).</li></ul><!--list-separator--><ol><li><p>Аутентификация <em>LOGIN</em></p><ul><li><p>Конфигурация <em>mbsync</em>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>## IMAPAccount (outlook.office365.com)
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>IMAPAccount account@example.com
+</span></span><span class=line><span class=cl>Host smtp.office365.com
+</span></span><span class=line><span class=cl>User account@example.com
+</span></span><span class=line><span class=cl># Pass ***************
+</span></span><span class=line><span class=cl>## To store the password in an encrypted file use PassCmd instead of Pass
+</span></span><span class=line><span class=cl># PassCmd &#34;gpg -q --for-your-eyes-only --no-tty -d ~/.authinfo.gpg | awk &#39;/machine account@example.com/ {print $6}&#39;&#34;
+</span></span><span class=line><span class=cl>PassCmd &#34;pass email/example.com/account@example.com&#34;
+</span></span><span class=line><span class=cl>AuthMechs LOGIN
+</span></span><span class=line><span class=cl>TLSType IMAPS
+</span></span><span class=line><span class=cl>TLSVersions +1.2 +1.3
+</span></span><span class=line><span class=cl># Increase timeout
+</span></span><span class=line><span class=cl>Timeout 120
+</span></span><span class=line><span class=cl>PipelineDepth 50
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>MaildirStore account@example.com-local
+</span></span><span class=line><span class=cl>Path ~/Maildir/account@example.com/
+</span></span><span class=line><span class=cl>Inbox ~/Maildir/account@example.com/Inbox
+</span></span><span class=line><span class=cl>SubFolders Verbatim
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>IMAPStore account@example.com-remote
+</span></span><span class=line><span class=cl>Account account@example.com
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Channel account@example.com-inbox
+</span></span><span class=line><span class=cl>Far :account@example.com-remote:&#34;INBOX&#34;
+</span></span><span class=line><span class=cl>Near :account@example.com-local:&#34;INBOX&#34;
+</span></span><span class=line><span class=cl>CopyArrivalDate yes
+</span></span><span class=line><span class=cl>Create Both
+</span></span><span class=line><span class=cl>Expunge Both
+</span></span><span class=line><span class=cl>SyncState *
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Channel account@example.com-trash
+</span></span><span class=line><span class=cl>Far :account@example.com-remote:&#34;&amp;BCMENAQwBDsENQQ9BD0ESwQ1-&#34;
+</span></span><span class=line><span class=cl>Near :account@example.com-local:&#34;Trash&#34;
+</span></span><span class=line><span class=cl>CopyArrivalDate yes
+</span></span><span class=line><span class=cl>Create Both
+</span></span><span class=line><span class=cl>Expunge Both
+</span></span><span class=line><span class=cl>SyncState *
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Channel account@example.com-spam
+</span></span><span class=line><span class=cl>Far :account@example.com-remote:&#34;&amp;BB0ENQQ2BDUEOwQwBEIENQQ7BEwEPQQwBE8- &amp;BD8EPgRHBEIEMA-&#34;
+</span></span><span class=line><span class=cl>Near :account@example.com-local:&#34;Spam&#34;
+</span></span><span class=line><span class=cl>CopyArrivalDate yes
+</span></span><span class=line><span class=cl>Create Both
+</span></span><span class=line><span class=cl>Expunge Both
+</span></span><span class=line><span class=cl>SyncState *
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Channel account@example.com-drafts
+</span></span><span class=line><span class=cl>Far :account@example.com-remote:&#34;&amp;BCcENQRABD0EPgQyBDgEOgQ4-&#34;
+</span></span><span class=line><span class=cl>Near :account@example.com-local:&#34;Drafts&#34;
+</span></span><span class=line><span class=cl>CopyArrivalDate yes
+</span></span><span class=line><span class=cl>Create Both
+</span></span><span class=line><span class=cl>Expunge Both
+</span></span><span class=line><span class=cl>SyncState *
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Channel account@example.com-archive
+</span></span><span class=line><span class=cl>Far :account@example.com-remote:&#34;Archive1&#34;
+</span></span><span class=line><span class=cl>Near :account@example.com-local:&#34;Archive&#34;
+</span></span><span class=line><span class=cl>CopyArrivalDate yes
+</span></span><span class=line><span class=cl>Create Both
+</span></span><span class=line><span class=cl>Expunge Both
+</span></span><span class=line><span class=cl>SyncState *
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Channel account@example.com-sent
+</span></span><span class=line><span class=cl>Far :account@example.com-remote:&#34;&amp;BB4EQgQ,BEAEMAQyBDsENQQ9BD0ESwQ1-&#34;
+</span></span><span class=line><span class=cl>Near :account@example.com-local:&#34;Sent&#34;
+</span></span><span class=line><span class=cl>CopyArrivalDate yes
+</span></span><span class=line><span class=cl>Create Both
+</span></span><span class=line><span class=cl>Expunge Both
+</span></span><span class=line><span class=cl>SyncState *
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Group account@example.com
+</span></span><span class=line><span class=cl>Channel account@example.com-inbox
+</span></span><span class=line><span class=cl>Channel account@example.com-trash
+</span></span><span class=line><span class=cl>Channel account@example.com-spam
+</span></span><span class=line><span class=cl>Channel account@example.com-drafts
+</span></span><span class=line><span class=cl>Channel account@example.com-archive
+</span></span><span class=line><span class=cl>Channel account@example.com-sent
+</span></span></code></pre></div></li><li><p>Конфигурация SMTP для Emacs:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-emacs-lisp data-lang=emacs-lisp><span class=line><span class=cl><span class=p>(</span><span class=nb>setq</span> <span class=nv>send-mail-function</span>    <span class=ss>&#39;smtpmail-send-it</span>
+</span></span><span class=line><span class=cl>      <span class=nv>smtpmail-smtp-server</span>  <span class=s>&#34;example.com&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=nv>smtpmail-stream-type</span>  <span class=ss>&#39;starttls</span>
+</span></span><span class=line><span class=cl>      <span class=nv>smtpmail-smtp-service</span> <span class=mi>587</span><span class=p>)</span>
+</span></span></code></pre></div><ul><li>Для smtp следует именовать пароль <em>pass</em> как <code>account@example.com@smtp.office365.com</code> (см. <a href=https://yamadharma.github.io/ru/post/2021/04/28/password-manager-pass/>Менеджер паролей pass</a>).</li></ul></li></ul></li></ol><!--list-separator--><ol start=2><li><p>Аутентификация <em>Oauth2</em> с <em>DavMail</em></p><ul><li><p>Аутентификацию <em>oauth2</em> можно настроить с помощью <em>DavMail</em> (см. <a href=https://yamadharma.github.io/ru/post/2022/04/10/davmail/>DavMail</a>).</p></li><li><p>Сначала настройте <em>DavMail</em> аутентификацией <code>O365Interactive</code> или <code>O365Manual</code>, а потом переключите в режим <code>O365Modern</code>.</p></li><li><p>В конфигурации меняется блок аутентификации:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>IMAPAccount account@example.com
+</span></span><span class=line><span class=cl>Host 127.0.0.1
+</span></span><span class=line><span class=cl>Port 1143
+</span></span><span class=line><span class=cl>User account@example.com
+</span></span><span class=line><span class=cl># Pass ***************
+</span></span><span class=line><span class=cl>## To store the password in an encrypted file use PassCmd instead of Pass
+</span></span><span class=line><span class=cl># PassCmd &#34;gpg -q --for-your-eyes-only --no-tty -d ~/.authinfo.gpg | awk &#39;/machine account@example.com/ {print $6}&#39;&#34;
+</span></span><span class=line><span class=cl>PassCmd &#34;pass email/example.com/account@example.com&#34;
+</span></span><span class=line><span class=cl>AuthMechs LOGIN
+</span></span><span class=line><span class=cl>TLSType None
+</span></span><span class=line><span class=cl>## Increase timeout
+</span></span><span class=line><span class=cl>Timeout 120
+</span></span><span class=line><span class=cl>PipelineDepth 50
+</span></span></code></pre></div></li><li><p>Конфигурация SMTP для Emacs:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-emacs-lisp data-lang=emacs-lisp><span class=line><span class=cl><span class=p>(</span><span class=nb>setq</span> <span class=nv>send-mail-function</span>    <span class=ss>&#39;smtpmail-send-it</span>
+</span></span><span class=line><span class=cl>      <span class=nv>smtpmail-smtp-server</span>  <span class=s>&#34;localhost&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=nv>smtpmail-stream-type</span>  <span class=ss>&#39;plain</span>
+</span></span><span class=line><span class=cl>      <span class=nv>smtpmail-smtp-service</span> <span class=mi>1025</span><span class=p>)</span>
+</span></span></code></pre></div><ul><li>Для smtp следует именовать пароль <em>pass</em> как <code>account@example.com@localhost</code> (см. <a href=https://yamadharma.github.io/ru/post/2021/04/28/password-manager-pass/>Менеджер паролей pass</a>).</li></ul></li></ul></li></ol><h4 id=yahoo-dot-com><span class=section-num>3.4.8</span> Yahoo.com</h4><ul><li><a href=https://yamadharma.github.io/ru/post/2022/04/26/mail-yahoo-com-configuring-mail-client/>Почта. Yahoo.com. Настройка почтового клиента</a></li><li>Конфигурация:<div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>## IMAPAccount (Yahoo.com)
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>IMAPAccount account@yahoo.com
+</span></span><span class=line><span class=cl>Host imap.mail.yahoo.com
+</span></span><span class=line><span class=cl>User account@yahoo.com
+</span></span><span class=line><span class=cl># PassCmd &#34;gpg -q --for-your-eyes-only --no-tty -d ~/.authinfo.gpg | awk &#39;/machine account@yahoo.com/ {print $6}&#39;&#34;
+</span></span><span class=line><span class=cl>PassCmd &#34;gopass email/yahoo.com/account@yahoo.com@apppassword&#34;
+</span></span><span class=line><span class=cl>AuthMechs LOGIN
+</span></span><span class=line><span class=cl>TLSType IMAPS
+</span></span><span class=line><span class=cl>TLSVersions +1.2 +1.3
+</span></span><span class=line><span class=cl># Increase timeout
+</span></span><span class=line><span class=cl>Timeout 120
+</span></span><span class=line><span class=cl>PipelineDepth 50
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>MaildirStore account@yahoo.com-local
+</span></span><span class=line><span class=cl>Path ~/Maildir/account@yahoo.com/
+</span></span><span class=line><span class=cl>Inbox ~/Maildir/account@yahoo.com/Inbox
+</span></span><span class=line><span class=cl>SubFolders Verbatim
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>IMAPStore account@yahoo.com-remote
+</span></span><span class=line><span class=cl>Account account@yahoo.com
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Channel account@yahoo.com-inbox
+</span></span><span class=line><span class=cl>Far :account@yahoo.com-remote:&#34;INBOX&#34;
+</span></span><span class=line><span class=cl>Near :account@yahoo.com-local:&#34;INBOX&#34;
+</span></span><span class=line><span class=cl>CopyArrivalDate yes
+</span></span><span class=line><span class=cl>Create Both
+</span></span><span class=line><span class=cl>Expunge Both
+</span></span><span class=line><span class=cl>SyncState *
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Channel account@yahoo.com-trash
+</span></span><span class=line><span class=cl>Far :account@yahoo.com-remote:&#34;Trash&#34;
+</span></span><span class=line><span class=cl>Near :account@yahoo.com-local:&#34;Trash&#34;
+</span></span><span class=line><span class=cl>CopyArrivalDate yes
+</span></span><span class=line><span class=cl>Create Both
+</span></span><span class=line><span class=cl>Expunge Both
+</span></span><span class=line><span class=cl>SyncState *
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Channel account@yahoo.com-spam
+</span></span><span class=line><span class=cl>Far :account@yahoo.com-remote:&#34;Bulk&#34;
+</span></span><span class=line><span class=cl>Near :account@yahoo.com-local:&#34;Spam&#34;
+</span></span><span class=line><span class=cl>CopyArrivalDate yes
+</span></span><span class=line><span class=cl>Create Both
+</span></span><span class=line><span class=cl>Expunge Both
+</span></span><span class=line><span class=cl>SyncState *
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Channel account@yahoo.com-drafts
+</span></span><span class=line><span class=cl>Far :account@yahoo.com-remote:&#34;Draft&#34;
+</span></span><span class=line><span class=cl>Near :account@yahoo.com-local:&#34;Drafts&#34;
+</span></span><span class=line><span class=cl>CopyArrivalDate yes
+</span></span><span class=line><span class=cl>Create Both
+</span></span><span class=line><span class=cl>Expunge Both
+</span></span><span class=line><span class=cl>SyncState *
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Channel account@yahoo.com-archive
+</span></span><span class=line><span class=cl>Far :account@yahoo.com-remote:&#34;Archive&#34;
+</span></span><span class=line><span class=cl>Near :account@yahoo.com-local:&#34;Archive&#34;
+</span></span><span class=line><span class=cl>CopyArrivalDate yes
+</span></span><span class=line><span class=cl>Create Both
+</span></span><span class=line><span class=cl>Expunge Both
+</span></span><span class=line><span class=cl>SyncState *
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Channel account@yahoo.com-sent
+</span></span><span class=line><span class=cl>Far :account@yahoo.com-remote:&#34;Sent&#34;
+</span></span><span class=line><span class=cl>Near :account@yahoo.com-local:&#34;Sent&#34;
+</span></span><span class=line><span class=cl>CopyArrivalDate yes
+</span></span><span class=line><span class=cl>Create Both
+</span></span><span class=line><span class=cl>Expunge Both
+</span></span><span class=line><span class=cl>SyncState *
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Group account@yahoo.com
+</span></span><span class=line><span class=cl>Channel account@yahoo.com-inbox
+</span></span><span class=line><span class=cl>Channel account@yahoo.com-trash
+</span></span><span class=line><span class=cl>Channel account@yahoo.com-spam
+</span></span><span class=line><span class=cl>Channel account@yahoo.com-drafts
+</span></span><span class=line><span class=cl>Channel account@yahoo.com-archive
+</span></span><span class=line><span class=cl>Channel account@yahoo.com-sent
+</span></span></code></pre></div></li></ul><h2 id=синхронизация><span class=section-num>4</span> Синхронизация</h2><h3 id=настройка-синхронизации><span class=section-num>4.1</span> Настройка синхронизации</h3><ul><li>Будем настраивать синхронизацию нескольких учётных записей.</li><li>Для хранения паролей будем использовать аутентификацию, совместимую с emacs (например, файл формата <code>.authinfo</code>) (см. <a href=https://yamadharma.github.io/ru/post/2021/01/22/mail-password-authentication/>Emacs. Почта. Парольная аутентификация</a>).</li></ul><h3 id=запуск-из-командной-строки><span class=section-num>4.2</span> Запуск из командной строки</h3><ul><li><p>Синхронизация конкретной учётной записи:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>mbsync &lt;chanel&gt;
+</span></span></code></pre></div></li><li><p>Синхронизация всех учётных записей:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>mbsync --all
+</span></span></code></pre></div></li></ul><h3 id=запуск-по-таймеру><span class=section-num>4.3</span> Запуск по таймеру</h3><ul><li><p>Для синхронизации с помощью <code>systemd</code> надо добавить сервис и таймер.</p></li><li><p>После создания этих файлов добавьте <code>mbsync.timer</code> в <code>systemctl</code>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>systemctl --user --now <span class=nb>enable</span> mbsync.timer
+</span></span></code></pre></div></li><li><p><code>~/.config/systemd/user/mbsync.service</code>.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl># ~/.config/systemd/user/mbsync.service
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>[Unit]
+</span></span><span class=line><span class=cl>Description=Mailbox synchronization service
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>[Service]
+</span></span><span class=line><span class=cl>Type=oneshot
+</span></span><span class=line><span class=cl>ExecStart=/usr/bin/mbsync -a
+</span></span></code></pre></div></li><li><p><code>~/.config/systemd/user/mbsync.service</code>. Здесь мы после синхронизации запускаем индексирование для <code>mu</code>.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl># ~/.config/systemd/user/mbsync.service
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>[Unit]
+</span></span><span class=line><span class=cl>Description=Mailbox synchronization service
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>[Service]
+</span></span><span class=line><span class=cl>Type=oneshot
+</span></span><span class=line><span class=cl>ExecStart=-/usr/bin/mbsync -a
+</span></span><span class=line><span class=cl>ExecStartPost=-/usr/bin/mu index
+</span></span></code></pre></div><ul><li>Знак <code>-</code> перед командой позволяет игнорировать код возврата.</li></ul></li><li><p><code>~/.config/systemd/user/mbsync.timer</code>. Настраиваем запуск <code>mbsync</code> через 2 минуты после загрузки, а затем запускаем каждые 5 минут.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl># ~/.config/systemd/user/mbsync.timer
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>[Unit]
+</span></span><span class=line><span class=cl>Description=Mailbox synchronization timer
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>[Timer]
+</span></span><span class=line><span class=cl>OnBootSec=2m
+</span></span><span class=line><span class=cl>OnUnitActiveSec=5m
+</span></span><span class=line><span class=cl>Unit=mbsync.service
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>[Install]
+</span></span><span class=line><span class=cl>WantedBy=timers.target
+</span></span></code></pre></div></li></ul><h2 id=поддержка-почтовых-файлов><span class=section-num>5</span> Поддержка почтовых файлов</h2><h3 id=удаление-дубликатов><span class=section-num>5.1</span> Удаление дубликатов</h3><ul><li>При копировании могут возникать дубликаты сообщений.</li><li>Их можно удалить (см. <a href=https://yamadharma.github.io/ru/post/2021/09/09/removing-duplicate-messages/>Почта. Удаление дубликатов сообщений из локальных почтовых ящиков</a>).</li></ul><h2 id=перенос-почтовых-файлов-на-другую-машину><span class=section-num>6</span> Перенос почтовых файлов на другую машину</h2><ul><li>Имя почтового файла содержит имя хоста. Поэтому просто так синхронизировать почтовую базу между хостами не получится.</li><li>Синхронизация может понадобиться для случая, когда у Вас большие почтовые ящики, а сервер квотирует почтовый трафик.</li><li>Предлагается скопировать текущую базу на другой хост (в качестве первоначальной постовой базы), а потом переименовать файлы почты.<ul><li>Необходимо скопировать данные с <code>host1</code> на <code>host2</code>.</li><li>Проведём проверку переименования:<div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=nb>cd</span> ~/Maildir/
+</span></span><span class=line><span class=cl>find . -iname <span class=s2>&#34;*host1*&#34;</span> <span class=p>|</span> sed <span class=s1>&#39;p;s:host1:host2:&#39;</span> <span class=p>|</span> xargs -n2 -p mv
+</span></span></code></pre></div></li><li>Проведём переименование, убрав ключ <code>p</code> у <code>xargs</code>:<div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=nb>cd</span> ~/Maildir/
+</span></span><span class=line><span class=cl>find . -iname <span class=s2>&#34;*host1*&#34;</span> <span class=p>|</span> sed <span class=s1>&#39;p;s:host1:host2:&#39;</span> <span class=p>|</span> xargs -n2 mv
+</span></span></code></pre></div></li></ul></li></ul><h2 id=технические-моменты><span class=section-num>7</span> Технические моменты</h2><h3 id=имена-почтовых-файлов><span class=section-num>7.1</span> Имена почтовых файлов</h3><ul><li>Информация по почтовым файлам хранится либо в каталоге <code>~/.mbsync</code> в файлах вида:<div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>&lt;remote account&gt;:&lt;remote!folder&gt;:&lt;<span class=nb>local</span> account&gt;:&lt;local!folder&gt;
+</span></span></code></pre></div></li><li>Либо информация хранится в почтовых папках в файлах <code>.mbsyncstate</code> (параметр <code>SyncState *</code>).</li><li>В файле <code>.uidvalidity</code> хранится последняя отметка времени и идентификатор.</li><li>Файлы сообщений именуются по шаблону:<div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>&lt;timestamp&gt;.&lt;PID&gt;_&lt;counter&gt;.&lt;hostname&gt;,U<span class=o>=</span>&lt;increment&gt;:2,&lt;flags&gt;
 </span></span></code></pre></div></li></ul></div><time class="mt-12 mb-8 block text-xs text-gray-500 ltr:text-right rtl:text-left dark:text-gray-400" datetime=2024-10-19T16:15:00.000Z><span>Обновлено</span>
 2024-10-19</time><div class="container mx-auto prose prose-slate lg:prose-xl dark:prose-invert mt-5"><div class="max-w-prose print:hidden"><div class="flex justify-center"><a class="no-underline bg-primary-100 hover:bg-primary-300 text-primary-800 text-xs font-medium mr-2 px-2.5 py-0.5 lg:px-5 lg:py-2 rounded dark:bg-primary-900 dark:hover:bg-primary-700 dark:text-primary-300" href=https://yamadharma.github.io/ru/tag/sysadmin/>Sysadmin</a></div><section class="flex flex-row flex-wrap justify-center pt-4 text-xl"><a target=_blank rel=noopener class="m-1 rounded-md bg-neutral-300 p-1.5 text-neutral-700 hover:bg-primary-500 hover:text-neutral-300 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-primary-400 dark:hover:text-neutral-800" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fyamadharma.github.io%2Fru%2Fpost%2F2021%2F01%2F22%2Fmail-synchronization-mbsync%2F&amp;text=%D0%9F%D0%BE%D1%87%D1%82%D0%B0.+%D0%A1%D0%B8%D0%BD%D1%85%D1%80%D0%BE%D0%BD%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D1%8F.+mbsync" title=X aria-label=X id=share-link-x><svg style="height:1em" viewBox="0 0 512 512"><path fill="currentcolor" d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg>
 </a><a target=_blank rel=noopener class="m-1 rounded-md bg-neutral-300 p-1.5 text-neutral-700 hover:bg-primary-500 hover:text-neutral-300 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-primary-400 dark:hover:text-neutral-800" href="https://www.facebook.com/sharer.php?u=https%3A%2F%2Fyamadharma.github.io%2Fru%2Fpost%2F2021%2F01%2F22%2Fmail-synchronization-mbsync%2F&amp;t=%D0%9F%D0%BE%D1%87%D1%82%D0%B0.+%D0%A1%D0%B8%D0%BD%D1%85%D1%80%D0%BE%D0%BD%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D1%8F.+mbsync" title=Facebook aria-label=Facebook id=share-link-facebook><svg style="height:1em" viewBox="0 0 24 24"><path fill="currentcolor" d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55.0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"/></svg>

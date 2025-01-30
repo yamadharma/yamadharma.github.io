@@ -1,10 +1,12 @@
-<!doctype html><!-- This site was created with Hugo Blox. https://hugoblox.com --><!-- Last Published: 28 января 2025 г. --><html lang=ru-ru dir=ltr data-wc-theme-default=system><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=generator content="Hugo Blox Builder 0.3.1"><meta name=author content="Дмитрий Сергеевич Кулябов"><meta name=description content="Wayland. Панель Waybar
+<!doctype html><!-- This site was created with Hugo Blox. https://hugoblox.com --><!-- Last Published: 30 января 2025 г. --><html lang=ru-ru dir=ltr data-wc-theme-default=system><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=generator content="Hugo Blox Builder 0.3.1"><meta name=author content="Дмитрий Сергеевич Кулябов"><meta name=description content="Wayland. Панель Waybar
 "><link rel=alternate hreflang=ru-ru href=https://yamadharma.github.io/ru/post/2024/11/21/wayland-waybar/><link rel=stylesheet href=https://yamadharma.github.io/css/themes/emerald.min.css><link href=https://yamadharma.github.io/dist/wc.min.css rel=stylesheet><script>window.hbb={defaultTheme:document.documentElement.dataset.wcThemeDefault,setDarkTheme:()=>{document.documentElement.classList.add("dark"),document.documentElement.style.colorScheme="dark"},setLightTheme:()=>{document.documentElement.classList.remove("dark"),document.documentElement.style.colorScheme="light"}},console.debug(`Default Hugo Blox Builder theme is ${window.hbb.defaultTheme}`),"wc-color-theme"in localStorage?localStorage.getItem("wc-color-theme")==="dark"?window.hbb.setDarkTheme():window.hbb.setLightTheme():(window.hbb.defaultTheme==="dark"?window.hbb.setDarkTheme():window.hbb.setLightTheme(),window.hbb.defaultTheme==="system"&&(window.matchMedia("(prefers-color-scheme: dark)").matches?window.hbb.setDarkTheme():window.hbb.setLightTheme()))</script><script>document.addEventListener("DOMContentLoaded",function(){let e=document.querySelectorAll("li input[type='checkbox'][disabled]");e.forEach(e=>{e.parentElement.parentElement.classList.add("task-list")});const t=document.querySelectorAll(".task-list li");t.forEach(e=>{let t=Array.from(e.childNodes).filter(e=>e.nodeType===3&&e.textContent.trim().length>1);if(t.length>0){const n=document.createElement("label");t[0].after(n),n.appendChild(e.querySelector("input[type='checkbox']")),n.appendChild(t[0])}})})</script><script async src="https://www.googletagmanager.com/gtag/js?id=UA-162854716-1"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}function trackOutboundLink(e,t){gtag("event","click",{event_category:"outbound",event_label:e,transport_type:"beacon",event_callback:function(){t!=="_blank"&&(document.location=e)}}),console.debug("Outbound link clicked: "+e)}function onClickCallback(e){if(e.target.tagName!=="A"||e.target.host===window.location.host)return;trackOutboundLink(e.target,e.target.getAttribute("target"))}gtag("js",new Date),gtag("config","UA-162854716-1",{anonymize_ip:!0}),gtag("set",{cookie_flags:"SameSite=None;Secure"}),document.addEventListener("click",onClickCallback,!1)</script><link rel=alternate href=https://yamadharma.github.io/ru/post/2024/11/21/wayland-waybar/index.xml type=application/rss+xml title="Д. С. Кулябов"><link rel=icon type=image/png href=https://yamadharma.github.io/media/icon_hu10409781601724418176.png><link rel=apple-touch-icon type=image/png href=https://yamadharma.github.io/media/icon_hu16056463462840539100.png><link rel=canonical href=https://yamadharma.github.io/ru/post/2024/11/21/wayland-waybar/><meta property="twitter:card" content="summary"><meta property="twitter:site" content="@dskulyabov"><meta property="twitter:creator" content="@dskulyabov"><meta property="og:site_name" content="Д. С. Кулябов"><meta property="og:url" content="https://yamadharma.github.io/ru/post/2024/11/21/wayland-waybar/"><meta property="og:title" content="Wayland. Панель Waybar | Д. С. Кулябов"><meta property="og:description" content="Wayland. Панель Waybar"><meta property="og:image" content="https://yamadharma.github.io/media/icon_hu15752663207405015554.png"><meta property="twitter:image" content="https://yamadharma.github.io/media/icon_hu15752663207405015554.png"><meta property="og:locale" content="ru-ru"><meta property="article:published_time" content="2024-11-21T15:11:00+03:00"><meta property="article:modified_time" content="2024-12-17T21:04:00+03:00"><title>Wayland. Панель Waybar | Д. С. Кулябов</title><style>@font-face{font-family:inter var;font-style:normal;font-weight:100 900;font-display:swap;src:url(/dist/font/Inter.var.woff2)format(woff2)}</style><link type=text/css rel=stylesheet href=https://yamadharma.github.io/dist/pagefind/pagefind-ui.be766eb419317a14ec769d216e9779bfe8f3737c80e780f4ba0dafb57a41a482.css integrity="sha256-vnZutBkxehTsdp0hbpd5v+jzc3yA54D0ug2vtXpBpII="><script src=https://yamadharma.github.io/dist/pagefind/pagefind-ui.87693d7c6f2b3b347ce359d0ede762c033419f0a32b22ce508c335a81d841f1b.js integrity="sha256-h2k9fG8rOzR841nQ7ediwDNBnwoysizlCMM1qB2EHxs="></script><script>window.hbb.pagefind={baseUrl:"/"}</script><style>html.dark{--pagefind-ui-primary:#eeeeee;--pagefind-ui-text:#eeeeee;--pagefind-ui-background:#152028;--pagefind-ui-border:#152028;--pagefind-ui-tag:#152028}</style><script>window.addEventListener("DOMContentLoaded",e=>{new PagefindUI({element:"#search",showSubResults:!0,baseUrl:window.hbb.pagefind.baseUrl,bundlePath:window.hbb.pagefind.baseUrl+"pagefind/"})}),document.addEventListener("DOMContentLoaded",()=>{let e=document.getElementById("search"),t=document.getElementById("search_toggle");t&&t.addEventListener("click",()=>{if(e.classList.toggle("hidden"),e.querySelector("input").value="",e.querySelector("input").focus(),!e.classList.contains("hidden")){let t=document.querySelector(".pagefind-ui__search-clear");t&&!t.hasAttribute("listenerOnClick")&&(t.setAttribute("listenerOnClick","true"),t.addEventListener("click",()=>{e.classList.toggle("hidden")}))}})})</script><link type=text/css rel=stylesheet href=https://yamadharma.github.io/dist/lib/katex/katex.min.505d5f829022bb7b4f24dfee0aa1141cd7bba67afe411d1240335f820960b5c3.css integrity="sha256-UF1fgpAiu3tPJN/uCqEUHNe7pnr+QR0SQDNfgglgtcM="><script defer src=https://yamadharma.github.io/dist/lib/katex/katex.min.dc84b296ec3e884de093158f760fd9d45b6c7abe58b5381557f4e138f46a58ae.js integrity="sha256-3ISyluw+iE3gkxWPdg/Z1Ftser5YtTgVV/ThOPRqWK4="></script><script defer src=https://yamadharma.github.io/js/katex-renderer.6579ec9683211cfb952064aedf3a3baea5eeb17a061775b32b70917474637c80.js integrity="sha256-ZXnsloMhHPuVIGSu3zo7rqXusXoGF3WzK3CRdHRjfIA="></script><script defer src=https://yamadharma.github.io/js/hugo-blox-ru.min.70faccce17cb4b107682124c00615778b65c7337729fb54b32a16e742eb48390.js integrity="sha256-cPrMzhfLSxB2ghJMAGFXeLZcczdyn7VLMqFudC60g5A="></script></head><body class="dark:bg-hb-dark dark:text-white page-wrapper" id=top><div id=page-bg></div><div class="page-header sticky top-0 z-30"><header id=site-header class=header><nav class="navbar px-3 flex justify-left"><div class="order-0 h-100"><a class=navbar-brand href=https://yamadharma.github.io/ru/ title="Д. С. Кулябов">Dmitry S. Kulyabov</a></div><input id=nav-toggle type=checkbox class=hidden>
 <label for=nav-toggle class="order-3 cursor-pointer flex items-center lg:hidden text-dark dark:text-white lg:order-1"><svg id="show-button" class="h-6 fill-current block" viewBox="0 0 20 20"><title>Open Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0V0z"/></svg><svg id="hide-button" class="h-6 fill-current hidden" viewBox="0 0 20 20"><title>Close Menu</title><polygon points="11 9 22 9 22 11 11 11 11 22 9 22 9 11 -2 11 -2 9 9 9 9 -2 11 -2" transform="rotate(45 10 10)"/></svg></label><ul id=nav-menu class="navbar-nav order-3 hidden lg:flex w-full pb-6 lg:order-1 lg:w-auto lg:space-x-2 lg:pb-0 xl:space-x-8 justify-left
 mr-auto ml-6"><li class=nav-item><a class=nav-link href=https://yamadharma.github.io/ru/>Обо мне</a></li><li class=nav-item><a class=nav-link href=https://yamadharma.github.io/ru/#news>Блог</a></li><li class=nav-item><a class=nav-link href=https://yamadharma.github.io/ru/#papers>Публикации</a></li><li class=nav-item><a class=nav-link href=https://yamadharma.github.io/ru/experience/>Опыт</a></li><li class=nav-item><a class=nav-link href=https://yamadharma.github.io/ru/projects/>Проекты</a></li><li class=nav-item><a class=nav-link href=https://yamadharma.github.io/ru/teaching/>Преподавание</a></li></ul><div class="order-1 ml-auto flex items-center md:order-2 lg:ml-0"><button aria-label=search class="text-black hover:text-primary inline-block px-3 text-xl dark:text-white" id=search_toggle><svg height="16" width="16" viewBox="0 0 512 512" fill="currentcolor"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8.0 45.3s-32.8 12.5-45.3.0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9.0 208S93.1.0 208 0 416 93.1 416 208zM208 352a144 144 0 100-288 144 144 0 100 288z"/></svg></button><div class="px-3 text-black hover:text-primary-700 dark:text-white dark:hover:text-primary-300
 [&.active]:font-bold [&.active]:text-black/90 dark:[&.active]:text-white"><button class="theme-toggle mt-1" accesskey=t title=appearance><svg id="moon" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="dark:hidden"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="dark:block [&:not(dark)]:hidden"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div></nav></header><div id=search class="hidden p-3"></div></div><div class="page-body my-10"><div class="mx-auto flex max-w-screen-xl"><aside class="hb-sidebar-container max-lg:[transform:translate3d(0,-100%,0)] lg:hidden xl:block"><div class="px-4 pt-4 lg:hidden"></div><div class="hb-scrollbar lg:h-[calc(100vh-var(--navbar-height))]"><ul class="flex flex-col gap-1 lg:hidden"><li class=open><a class="hb-sidebar-custom-link
 text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50" href=https://yamadharma.github.io/ru/post/>Блог
 <span data-hb-sidebar-toggle><svg fill="none" viewBox="0 0 24 24" stroke="currentcolor" class="h-[18px] min-w-[18px] rounded-sm p-0.5 hover:bg-gray-800/5 dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="origin-center transition-transform rtl:-rotate-180"/></svg></span></a><div class="ltr:pr-0 overflow-hidden"><ul class=hb-sidebar-list><li class="flex flex-col"><a class="hb-sidebar-custom-link
+text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50" href=https://yamadharma.github.io/ru/post/2025/01/30/turdakov_2022_trusted-artificial-intelligence_ru/>Турдаков, Д. Ю. et al. (2022) Доверенный искусственный интеллект: вызовы и перспективные решения</a></li><li class="flex flex-col"><a class="hb-sidebar-custom-link
+text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50" href=https://yamadharma.github.io/ru/post/2025/01/29/neovim-configuration-lazyvim/>NeoVim. Конфигурация LazyVim</a></li><li class="flex flex-col"><a class="hb-sidebar-custom-link
 text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50" href=https://yamadharma.github.io/ru/post/2025/01/28/neovim-configuring/>NeoVim. Конфигурирование</a></li><li class="flex flex-col"><a class="hb-sidebar-custom-link
 text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50" href=https://yamadharma.github.io/ru/post/2025/01/28/neovim-editor/>Редактор NeoVim</a></li><li class="flex flex-col"><a class="hb-sidebar-custom-link
 text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50" href=https://yamadharma.github.io/ru/post/2025/01/28/vi-editor-family/>Семейство редакторов vi</a></li><li class="flex flex-col"><a class="hb-sidebar-custom-link
@@ -1650,540 +1652,540 @@ text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hove
     
   </div></nav><article class="w-full break-words flex min-h-[calc(100vh-var(--navbar-height))] min-w-0 justify-center pb-8 pr-[calc(env(safe-area-inset-right)-1.5rem)]"><main class="w-full min-w-0 max-w-6xl px-6 pt-4 md:px-12"><h1 class="mt-2 text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-100">Wayland. Панель Waybar</h1><div class="mt-4 mb-16"><div class="text-gray-500 dark:text-gray-300 text-sm flex items-center flex-wrap gap-y-2"><span class=mr-1>2024-11-21</span>
 <span class=mx-1>·</span>
-<span class=mx-1>9 мин. для прочтения</span></div><div class=mt-3></div></div><div class="prose prose-slate lg:prose-xl dark:prose-invert"><p>Wayland. Панель Waybar</p><details class="print:hidden xl:hidden"><summary>Содержание</summary><div class=text-sm><nav id=TableOfContents><ul><li><a href=#общая-информация><span class=section-num>1</span> Общая информация</a></li><li><a href=#конфигурация><span class=section-num>2</span> Конфигурация</a><ul><li><a href=#общая-информация><span class=section-num>2.1</span> Общая информация</a></li><li><a href=#файл-конфигурации><span class=section-num>2.2</span> Файл конфигурации</a><ul><li><a href=#начало><span class=section-num>2.2.1</span> Начало</a></li><li><a href=#общие-настройки><span class=section-num>2.2.2</span> Общие настройки</a></li><li><a href=#расположение-модулей><span class=section-num>2.2.3</span> Расположение модулей</a></li><li><a href=#конфигурация-модулей><span class=section-num>2.2.4</span> Конфигурация модулей</a></li><li><a href=#конец><span class=section-num>2.2.5</span> Конец</a></li></ul></li></ul></li><li><a href=#стили><span class=section-num>3</span> Стили</a><ul><li><a href=#общая-информация><span class=section-num>3.1</span> Общая информация</a></li><li><a href=#стилевой-файл><span class=section-num>3.2</span> Стилевой файл</a></li></ul></li><li><a href=#вспомогательные-файлы><span class=section-num>4</span> Вспомогательные файлы</a><ul><li><a href=#перезапуск-waybar><span class=section-num>4.1</span> Перезапуск Waybar</a></li><li><a href=#меню-выключения-компьютера><span class=section-num>4.2</span> Меню выключения компьютера</a></li></ul></li></ul></nav></div></details><h2 id=общая-информация><span class=section-num>1</span> Общая информация</h2><ul><li>Репозиторий: <a href=https://github.com/Alexays/Waybar target=_blank rel=noopener>https://github.com/Alexays/Waybar</a></li><li>Wiki: <a href=https://github.com/Alexays/Waybar/wiki target=_blank rel=noopener>https://github.com/Alexays/Waybar/wiki</a></li></ul><h2 id=конфигурация><span class=section-num>2</span> Конфигурация</h2><h3 id=общая-информация><span class=section-num>2.1</span> Общая информация</h3><ul><li>Wiki: <a href=https://github.com/Alexays/Waybar/wiki/Configuration target=_blank rel=noopener>https://github.com/Alexays/Waybar/wiki/Configuration</a></li><li>Конфигурация использует формат файла JSONC и называется <code>config</code> или <code>config.jsonc</code>.</li><li>Каталоги для этого файла:<ul><li><code>$XDG_CONFIG_HOME/waybar/</code></li><li><code>~/.config/waybar/</code></li><li><code>~/waybar/</code></li><li><code>/etc/xdg/waybar/</code></li><li><code>SYSCONFDIR/xdg/waybar</code> (если <code>SYSCONFDIR</code> установленный во время сборки, отличается от <code>/etc</code>, например <code>/usr/local/etc</code> в системах BSD).</li></ul></li></ul><h3 id=файл-конфигурации><span class=section-num>2.2</span> Файл конфигурации</h3><h4 id=начало><span class=section-num>2.2.1</span> Начало</h4><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=ln id=hl-0-1><a class=lnlinks href=#hl-0-1>1</a></span><span class=cl>// vim:ft=json -*- mode: js-json -*-
-</span></span><span class=line><span class=ln id=hl-0-2><a class=lnlinks href=#hl-0-2>2</a></span><span class=cl>{
+<span class=mx-1>7 мин. для прочтения</span></div><div class=mt-3></div></div><div class="prose prose-slate lg:prose-xl dark:prose-invert"><p>Wayland. Панель Waybar</p><details class="print:hidden xl:hidden"><summary>Содержание</summary><div class=text-sm><nav id=TableOfContents><ul><li><a href=#общая-информация><span class=section-num>1</span> Общая информация</a></li><li><a href=#конфигурация><span class=section-num>2</span> Конфигурация</a><ul><li><a href=#общая-информация><span class=section-num>2.1</span> Общая информация</a></li><li><a href=#файл-конфигурации><span class=section-num>2.2</span> Файл конфигурации</a><ul><li><a href=#начало><span class=section-num>2.2.1</span> Начало</a></li><li><a href=#общие-настройки><span class=section-num>2.2.2</span> Общие настройки</a></li><li><a href=#расположение-модулей><span class=section-num>2.2.3</span> Расположение модулей</a></li><li><a href=#конфигурация-модулей><span class=section-num>2.2.4</span> Конфигурация модулей</a></li><li><a href=#конец><span class=section-num>2.2.5</span> Конец</a></li></ul></li></ul></li><li><a href=#стили><span class=section-num>3</span> Стили</a><ul><li><a href=#общая-информация><span class=section-num>3.1</span> Общая информация</a></li><li><a href=#стилевой-файл><span class=section-num>3.2</span> Стилевой файл</a></li></ul></li><li><a href=#вспомогательные-файлы><span class=section-num>4</span> Вспомогательные файлы</a><ul><li><a href=#перезапуск-waybar><span class=section-num>4.1</span> Перезапуск Waybar</a></li><li><a href=#меню-выключения-компьютера><span class=section-num>4.2</span> Меню выключения компьютера</a></li></ul></li></ul></nav></div></details><h2 id=общая-информация><span class=section-num>1</span> Общая информация</h2><ul><li>Репозиторий: <a href=https://github.com/Alexays/Waybar target=_blank rel=noopener>https://github.com/Alexays/Waybar</a></li><li>Wiki: <a href=https://github.com/Alexays/Waybar/wiki target=_blank rel=noopener>https://github.com/Alexays/Waybar/wiki</a></li></ul><h2 id=конфигурация><span class=section-num>2</span> Конфигурация</h2><h3 id=общая-информация><span class=section-num>2.1</span> Общая информация</h3><ul><li>Wiki: <a href=https://github.com/Alexays/Waybar/wiki/Configuration target=_blank rel=noopener>https://github.com/Alexays/Waybar/wiki/Configuration</a></li><li>Конфигурация использует формат файла JSONC и называется <code>config</code> или <code>config.jsonc</code>.</li><li>Каталоги для этого файла:<ul><li><code>$XDG_CONFIG_HOME/waybar/</code></li><li><code>~/.config/waybar/</code></li><li><code>~/waybar/</code></li><li><code>/etc/xdg/waybar/</code></li><li><code>SYSCONFDIR/xdg/waybar</code> (если <code>SYSCONFDIR</code> установленный во время сборки, отличается от <code>/etc</code>, например <code>/usr/local/etc</code> в системах BSD).</li></ul></li></ul><h3 id=файл-конфигурации><span class=section-num>2.2</span> Файл конфигурации</h3><h4 id=начало><span class=section-num>2.2.1</span> Начало</h4><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>// vim:ft=json -*- mode: js-json -*-
+</span></span><span class=line><span class=cl>{
 </span></span></code></pre></div><div class=src-block-caption><span class=src-block-number>&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 1:</span>
-config</div><h4 id=общие-настройки><span class=section-num>2.2.2</span> Общие настройки</h4><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=ln id=hl-1-1><a class=lnlinks href=#hl-1-1>1</a></span><span class=cl>// General
-</span></span><span class=line><span class=ln id=hl-1-2><a class=lnlinks href=#hl-1-2>2</a></span><span class=cl>&#34;layer&#34;: &#34;top&#34;,
-</span></span><span class=line><span class=ln id=hl-1-3><a class=lnlinks href=#hl-1-3>3</a></span><span class=cl>// Waybar position (top|bottom|left|right)
-</span></span><span class=line><span class=ln id=hl-1-4><a class=lnlinks href=#hl-1-4>4</a></span><span class=cl>&#34;position&#34;: &#34;top&#34;,
-</span></span><span class=line><span class=ln id=hl-1-5><a class=lnlinks href=#hl-1-5>5</a></span><span class=cl>// Waybar height (to be removed for auto height)
-</span></span><span class=line><span class=ln id=hl-1-6><a class=lnlinks href=#hl-1-6>6</a></span><span class=cl>&#34;height&#34;: 30,
-</span></span><span class=line><span class=ln id=hl-1-7><a class=lnlinks href=#hl-1-7>7</a></span><span class=cl>// Gaps between modules (4px)
-</span></span><span class=line><span class=ln id=hl-1-8><a class=lnlinks href=#hl-1-8>8</a></span><span class=cl>&#34;spacing&#34;: 4,
+config</div><h4 id=общие-настройки><span class=section-num>2.2.2</span> Общие настройки</h4><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>// General
+</span></span><span class=line><span class=cl>&#34;layer&#34;: &#34;top&#34;,
+</span></span><span class=line><span class=cl>// Waybar position (top|bottom|left|right)
+</span></span><span class=line><span class=cl>&#34;position&#34;: &#34;top&#34;,
+</span></span><span class=line><span class=cl>// Waybar height (to be removed for auto height)
+</span></span><span class=line><span class=cl>&#34;height&#34;: 30,
+</span></span><span class=line><span class=cl>// Gaps between modules (4px)
+</span></span><span class=line><span class=cl>&#34;spacing&#34;: 4,
 </span></span></code></pre></div><div class=src-block-caption><span class=src-block-number>&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 2:</span>
-config</div><h4 id=расположение-модулей><span class=section-num>2.2.3</span> Расположение модулей</h4><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=ln id=hl-2-1><a class=lnlinks href=#hl-2-1> 1</a></span><span class=cl>// Modules
-</span></span><span class=line><span class=ln id=hl-2-2><a class=lnlinks href=#hl-2-2> 2</a></span><span class=cl>&#34;modules-left&#34;: [
-</span></span><span class=line><span class=ln id=hl-2-3><a class=lnlinks href=#hl-2-3> 3</a></span><span class=cl>    &#34;sway/workspaces&#34;,
-</span></span><span class=line><span class=ln id=hl-2-4><a class=lnlinks href=#hl-2-4> 4</a></span><span class=cl>    &#34;custom/scratchpad&#34;,
-</span></span><span class=line><span class=ln id=hl-2-5><a class=lnlinks href=#hl-2-5> 5</a></span><span class=cl>],
-</span></span><span class=line><span class=ln id=hl-2-6><a class=lnlinks href=#hl-2-6> 6</a></span><span class=cl>&#34;modules-center&#34;: [
-</span></span><span class=line><span class=ln id=hl-2-7><a class=lnlinks href=#hl-2-7> 7</a></span><span class=cl>    &#34;sway/mode&#34;,
-</span></span><span class=line><span class=ln id=hl-2-8><a class=lnlinks href=#hl-2-8> 8</a></span><span class=cl>    &#34;custom/weather&#34;,
-</span></span><span class=line><span class=ln id=hl-2-9><a class=lnlinks href=#hl-2-9> 9</a></span><span class=cl>    &#34;custom/clipboard&#34;,
-</span></span><span class=line><span class=ln id=hl-2-10><a class=lnlinks href=#hl-2-10>10</a></span><span class=cl>    &#34;idle_inhibitor&#34;,
-</span></span><span class=line><span class=ln id=hl-2-11><a class=lnlinks href=#hl-2-11>11</a></span><span class=cl>],
-</span></span><span class=line><span class=ln id=hl-2-12><a class=lnlinks href=#hl-2-12>12</a></span><span class=cl>&#34;modules-right&#34;: [
-</span></span><span class=line><span class=ln id=hl-2-13><a class=lnlinks href=#hl-2-13>13</a></span><span class=cl>    &#34;memory&#34;,
-</span></span><span class=line><span class=ln id=hl-2-14><a class=lnlinks href=#hl-2-14>14</a></span><span class=cl>    &#34;cpu&#34;,
-</span></span><span class=line><span class=ln id=hl-2-15><a class=lnlinks href=#hl-2-15>15</a></span><span class=cl>    &#34;temperature&#34;,
-</span></span><span class=line><span class=ln id=hl-2-16><a class=lnlinks href=#hl-2-16>16</a></span><span class=cl>    &#34;battery&#34;,
-</span></span><span class=line><span class=ln id=hl-2-17><a class=lnlinks href=#hl-2-17>17</a></span><span class=cl>    &#34;battery#bat1&#34;,
-</span></span><span class=line><span class=ln id=hl-2-18><a class=lnlinks href=#hl-2-18>18</a></span><span class=cl>    &#34;network&#34;,
-</span></span><span class=line><span class=ln id=hl-2-19><a class=lnlinks href=#hl-2-19>19</a></span><span class=cl>    &#34;backlight&#34;,
-</span></span><span class=line><span class=ln id=hl-2-20><a class=lnlinks href=#hl-2-20>20</a></span><span class=cl>    &#34;wireplumber&#34;,
-</span></span><span class=line><span class=ln id=hl-2-21><a class=lnlinks href=#hl-2-21>21</a></span><span class=cl>    &#34;clock&#34;,
-</span></span><span class=line><span class=ln id=hl-2-22><a class=lnlinks href=#hl-2-22>22</a></span><span class=cl>    &#34;sway/language&#34;,
-</span></span><span class=line><span class=ln id=hl-2-23><a class=lnlinks href=#hl-2-23>23</a></span><span class=cl>    &#34;keyboard-state&#34;,
-</span></span><span class=line><span class=ln id=hl-2-24><a class=lnlinks href=#hl-2-24>24</a></span><span class=cl>    &#34;tray&#34;,
-</span></span><span class=line><span class=ln id=hl-2-25><a class=lnlinks href=#hl-2-25>25</a></span><span class=cl>    &#34;custom/power&#34;,
-</span></span><span class=line><span class=ln id=hl-2-26><a class=lnlinks href=#hl-2-26>26</a></span><span class=cl>],
+config</div><h4 id=расположение-модулей><span class=section-num>2.2.3</span> Расположение модулей</h4><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>// Modules
+</span></span><span class=line><span class=cl>&#34;modules-left&#34;: [
+</span></span><span class=line><span class=cl>    &#34;sway/workspaces&#34;,
+</span></span><span class=line><span class=cl>    &#34;custom/scratchpad&#34;,
+</span></span><span class=line><span class=cl>],
+</span></span><span class=line><span class=cl>&#34;modules-center&#34;: [
+</span></span><span class=line><span class=cl>    &#34;sway/mode&#34;,
+</span></span><span class=line><span class=cl>    &#34;custom/weather&#34;,
+</span></span><span class=line><span class=cl>    &#34;custom/clipboard&#34;,
+</span></span><span class=line><span class=cl>    &#34;idle_inhibitor&#34;,
+</span></span><span class=line><span class=cl>],
+</span></span><span class=line><span class=cl>&#34;modules-right&#34;: [
+</span></span><span class=line><span class=cl>    &#34;memory&#34;,
+</span></span><span class=line><span class=cl>    &#34;cpu&#34;,
+</span></span><span class=line><span class=cl>    &#34;temperature&#34;,
+</span></span><span class=line><span class=cl>    &#34;battery&#34;,
+</span></span><span class=line><span class=cl>    &#34;battery#bat1&#34;,
+</span></span><span class=line><span class=cl>    &#34;network&#34;,
+</span></span><span class=line><span class=cl>    &#34;backlight&#34;,
+</span></span><span class=line><span class=cl>    &#34;wireplumber&#34;,
+</span></span><span class=line><span class=cl>    &#34;clock&#34;,
+</span></span><span class=line><span class=cl>    &#34;sway/language&#34;,
+</span></span><span class=line><span class=cl>    &#34;keyboard-state&#34;,
+</span></span><span class=line><span class=cl>    &#34;tray&#34;,
+</span></span><span class=line><span class=cl>    &#34;custom/power&#34;,
+</span></span><span class=line><span class=cl>],
 </span></span></code></pre></div><div class=src-block-caption><span class=src-block-number>&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 3:</span>
-config</div><h4 id=конфигурация-модулей><span class=section-num>2.2.4</span> Конфигурация модулей</h4><!--list-separator--><ol><li><p>Информационные модули</p><!--list-separator--><ol><li><p>Память</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=ln id=hl-3-1><a class=lnlinks href=#hl-3-1>1</a></span><span class=cl><span class=o>//</span> <span class=n>Memory</span>
-</span></span><span class=line><span class=ln id=hl-3-2><a class=lnlinks href=#hl-3-2>2</a></span><span class=cl><span class=s2>&#34;memory&#34;</span><span class=p>:</span> <span class=p>{</span>
-</span></span><span class=line><span class=ln id=hl-3-3><a class=lnlinks href=#hl-3-3>3</a></span><span class=cl>    <span class=s2>&#34;interval&#34;</span><span class=p>:</span> <span class=mi>30</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-3-4><a class=lnlinks href=#hl-3-4>4</a></span><span class=cl>    <span class=s2>&#34;format&#34;</span><span class=p>:</span> <span class=s2>&#34; {used:0.1f}G/{total:0.1f}G {}%&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-3-5><a class=lnlinks href=#hl-3-5>5</a></span><span class=cl>    <span class=s2>&#34;tooltip&#34;</span><span class=p>:</span> <span class=bp>true</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-3-6><a class=lnlinks href=#hl-3-6>6</a></span><span class=cl>    <span class=s2>&#34;tooltip-format&#34;</span><span class=p>:</span> <span class=s2>&#34;Free {avail:0.1f}G&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-3-7><a class=lnlinks href=#hl-3-7>7</a></span><span class=cl><span class=p>},</span>
+config</div><h4 id=конфигурация-модулей><span class=section-num>2.2.4</span> Конфигурация модулей</h4><!--list-separator--><ol><li><p>Информационные модули</p><!--list-separator--><ol><li><p>Память</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=cl><span class=o>//</span> <span class=n>Memory</span>
+</span></span><span class=line><span class=cl><span class=s2>&#34;memory&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;interval&#34;</span><span class=p>:</span> <span class=mi>30</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;format&#34;</span><span class=p>:</span> <span class=s2>&#34; {used:0.1f}G/{total:0.1f}G {}%&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;tooltip&#34;</span><span class=p>:</span> <span class=bp>true</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;tooltip-format&#34;</span><span class=p>:</span> <span class=s2>&#34;Free {avail:0.1f}G&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl><span class=p>},</span>
 </span></span></code></pre></div><div class=src-block-caption><span class=src-block-number>&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 4:</span>
-config</div></li></ol><!--list-separator--><ol start=2><li><p>Процессор</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=ln id=hl-4-1><a class=lnlinks href=#hl-4-1>1</a></span><span class=cl>// Cpu
-</span></span><span class=line><span class=ln id=hl-4-2><a class=lnlinks href=#hl-4-2>2</a></span><span class=cl>&#34;cpu&#34;: {
-</span></span><span class=line><span class=ln id=hl-4-3><a class=lnlinks href=#hl-4-3>3</a></span><span class=cl>    &#34;interval&#34;: 10,
-</span></span><span class=line><span class=ln id=hl-4-4><a class=lnlinks href=#hl-4-4>4</a></span><span class=cl>    &#34;format&#34;: &#34; {usage}% {icon}&#34;,
-</span></span><span class=line><span class=ln id=hl-4-5><a class=lnlinks href=#hl-4-5>5</a></span><span class=cl>    &#34;max-length&#34;: 10,
-</span></span><span class=line><span class=ln id=hl-4-6><a class=lnlinks href=#hl-4-6>6</a></span><span class=cl>    &#34;format-icons&#34;: [&#34;▁&#34;, &#34;▂&#34;, &#34;▃&#34;, &#34;▄&#34;, &#34;▅&#34;, &#34;▆&#34;, &#34;▇&#34;, &#34;█&#34;],
-</span></span><span class=line><span class=ln id=hl-4-7><a class=lnlinks href=#hl-4-7>7</a></span><span class=cl>},
+config</div></li></ol><!--list-separator--><ol start=2><li><p>Процессор</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>// Cpu
+</span></span><span class=line><span class=cl>&#34;cpu&#34;: {
+</span></span><span class=line><span class=cl>    &#34;interval&#34;: 10,
+</span></span><span class=line><span class=cl>    &#34;format&#34;: &#34; {usage}% {icon}&#34;,
+</span></span><span class=line><span class=cl>    &#34;max-length&#34;: 10,
+</span></span><span class=line><span class=cl>    &#34;format-icons&#34;: [&#34;▁&#34;, &#34;▂&#34;, &#34;▃&#34;, &#34;▄&#34;, &#34;▅&#34;, &#34;▆&#34;, &#34;▇&#34;, &#34;█&#34;],
+</span></span><span class=line><span class=cl>},
 </span></span></code></pre></div><div class=src-block-caption><span class=src-block-number>&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 5:</span>
-config</div></li></ol><!--list-separator--><ol start=3><li><p>Батарея</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=ln id=hl-5-1><a class=lnlinks href=#hl-5-1> 1</a></span><span class=cl>// Battery
-</span></span><span class=line><span class=ln id=hl-5-2><a class=lnlinks href=#hl-5-2> 2</a></span><span class=cl>&#34;battery&#34;: {
-</span></span><span class=line><span class=ln id=hl-5-3><a class=lnlinks href=#hl-5-3> 3</a></span><span class=cl>    &#34;bat&#34;: &#34;BAT0&#34;,
-</span></span><span class=line><span class=ln id=hl-5-4><a class=lnlinks href=#hl-5-4> 4</a></span><span class=cl>    &#34;states&#34;: {
-</span></span><span class=line><span class=ln id=hl-5-5><a class=lnlinks href=#hl-5-5> 5</a></span><span class=cl>      &#34;full&#34;: 100,
-</span></span><span class=line><span class=ln id=hl-5-6><a class=lnlinks href=#hl-5-6> 6</a></span><span class=cl>      &#34;good&#34;: 95,
-</span></span><span class=line><span class=ln id=hl-5-7><a class=lnlinks href=#hl-5-7> 7</a></span><span class=cl>      &#34;warning&#34;: 30,
-</span></span><span class=line><span class=ln id=hl-5-8><a class=lnlinks href=#hl-5-8> 8</a></span><span class=cl>      &#34;critical&#34;: 15
-</span></span><span class=line><span class=ln id=hl-5-9><a class=lnlinks href=#hl-5-9> 9</a></span><span class=cl>    },
-</span></span><span class=line><span class=ln id=hl-5-10><a class=lnlinks href=#hl-5-10>10</a></span><span class=cl>    &#34;format&#34;: &#34;{icon}  {capacity}% ({time})&#34;,
-</span></span><span class=line><span class=ln id=hl-5-11><a class=lnlinks href=#hl-5-11>11</a></span><span class=cl>    &#34;format-charging&#34;: &#34; {icon}  {capacity}% ({time})&#34;,
-</span></span><span class=line><span class=ln id=hl-5-12><a class=lnlinks href=#hl-5-12>12</a></span><span class=cl>    &#34;format-full&#34;: &#34; {icon}  Full&#34;,
-</span></span><span class=line><span class=ln id=hl-5-13><a class=lnlinks href=#hl-5-13>13</a></span><span class=cl>    &#34;format-time&#34;: &#34;{H}h{M}m&#34;,
-</span></span><span class=line><span class=ln id=hl-5-14><a class=lnlinks href=#hl-5-14>14</a></span><span class=cl>    &#34;interval&#34;: 30,
-</span></span><span class=line><span class=ln id=hl-5-15><a class=lnlinks href=#hl-5-15>15</a></span><span class=cl>    &#34;on-click&#34;: &#34;gnome-power-statistics&#34;,
-</span></span><span class=line><span class=ln id=hl-5-16><a class=lnlinks href=#hl-5-16>16</a></span><span class=cl>    &#34;format-icons&#34;: [
-</span></span><span class=line><span class=ln id=hl-5-17><a class=lnlinks href=#hl-5-17>17</a></span><span class=cl>      &#34; &#34;,
-</span></span><span class=line><span class=ln id=hl-5-18><a class=lnlinks href=#hl-5-18>18</a></span><span class=cl>      &#34; &#34;,
-</span></span><span class=line><span class=ln id=hl-5-19><a class=lnlinks href=#hl-5-19>19</a></span><span class=cl>      &#34; &#34;,
-</span></span><span class=line><span class=ln id=hl-5-20><a class=lnlinks href=#hl-5-20>20</a></span><span class=cl>      &#34; &#34;,
-</span></span><span class=line><span class=ln id=hl-5-21><a class=lnlinks href=#hl-5-21>21</a></span><span class=cl>      &#34; &#34;
-</span></span><span class=line><span class=ln id=hl-5-22><a class=lnlinks href=#hl-5-22>22</a></span><span class=cl>    ]
-</span></span><span class=line><span class=ln id=hl-5-23><a class=lnlinks href=#hl-5-23>23</a></span><span class=cl>},
+config</div></li></ol><!--list-separator--><ol start=3><li><p>Батарея</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>// Battery
+</span></span><span class=line><span class=cl>&#34;battery&#34;: {
+</span></span><span class=line><span class=cl>    &#34;bat&#34;: &#34;BAT0&#34;,
+</span></span><span class=line><span class=cl>    &#34;states&#34;: {
+</span></span><span class=line><span class=cl>      &#34;full&#34;: 100,
+</span></span><span class=line><span class=cl>      &#34;good&#34;: 95,
+</span></span><span class=line><span class=cl>      &#34;warning&#34;: 30,
+</span></span><span class=line><span class=cl>      &#34;critical&#34;: 15
+</span></span><span class=line><span class=cl>    },
+</span></span><span class=line><span class=cl>    &#34;format&#34;: &#34;{icon}  {capacity}% ({time})&#34;,
+</span></span><span class=line><span class=cl>    &#34;format-charging&#34;: &#34; {icon}  {capacity}% ({time})&#34;,
+</span></span><span class=line><span class=cl>    &#34;format-full&#34;: &#34; {icon}  Full&#34;,
+</span></span><span class=line><span class=cl>    &#34;format-time&#34;: &#34;{H}h{M}m&#34;,
+</span></span><span class=line><span class=cl>    &#34;interval&#34;: 30,
+</span></span><span class=line><span class=cl>    &#34;on-click&#34;: &#34;gnome-power-statistics&#34;,
+</span></span><span class=line><span class=cl>    &#34;format-icons&#34;: [
+</span></span><span class=line><span class=cl>      &#34; &#34;,
+</span></span><span class=line><span class=cl>      &#34; &#34;,
+</span></span><span class=line><span class=cl>      &#34; &#34;,
+</span></span><span class=line><span class=cl>      &#34; &#34;,
+</span></span><span class=line><span class=cl>      &#34; &#34;
+</span></span><span class=line><span class=cl>    ]
+</span></span><span class=line><span class=cl>},
 </span></span></code></pre></div><div class=src-block-caption><span class=src-block-number>&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 6:</span>
-config</div></li></ol><!--list-separator--><ol start=4><li><p>Температура подсистем</p><ul><li>Задаётся для температурных зон <code>/sys/class/thermal/</code> или для показаний сенсоров <code>/sys/class/hwmon/hwmon*/temp*_input</code>.</li><li>Просмотреть все типы температурных зон:<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=ln id=hl-6-1><a class=lnlinks href=#hl-6-1>1</a></span><span class=cl><span class=k>for</span> i in /sys/class/thermal/thermal_zone*<span class=p>;</span> <span class=k>do</span> <span class=nb>echo</span> <span class=s2>&#34;</span><span class=nv>$i</span><span class=s2>: </span><span class=k>$(</span>&lt;<span class=nv>$i</span>/type<span class=k>)</span><span class=s2>&#34;</span><span class=p>;</span> <span class=k>done</span>
-</span></span></code></pre></div></li><li>Если нет тепловой зоны, можно использовать сенсоры (<code>sensors</code>), чтобы найти предпочтительный источник температуры:<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=ln id=hl-7-1><a class=lnlinks href=#hl-7-1>1</a></span><span class=cl><span class=k>for</span> i in /sys/class/hwmon/hwmon*/temp*_input<span class=p>;</span> <span class=k>do</span> <span class=nb>echo</span> <span class=s2>&#34;</span><span class=k>$(</span>&lt;<span class=k>$(</span>dirname <span class=nv>$i</span><span class=k>)</span>/name<span class=k>)</span><span class=s2>: </span><span class=k>$(</span>cat <span class=si>${</span><span class=nv>i</span><span class=p>%_*</span><span class=si>}</span>_label 2&gt;/dev/null <span class=o>||</span> <span class=nb>echo</span> <span class=k>$(</span>basename <span class=si>${</span><span class=nv>i</span><span class=p>%_*</span><span class=si>}</span><span class=k>))</span><span class=s2> </span><span class=k>$(</span>readlink -f <span class=nv>$i</span><span class=k>)</span><span class=s2>&#34;</span><span class=p>;</span> <span class=k>done</span>
-</span></span></code></pre></div></li><li>Сама конфигурация выглядит следующим образом:</li></ul><!--listend--><div class=highlight><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=ln id=hl-8-1><a class=lnlinks href=#hl-8-1> 1</a></span><span class=cl><span class=o>//</span> <span class=n>Themperature</span>
-</span></span><span class=line><span class=ln id=hl-8-2><a class=lnlinks href=#hl-8-2> 2</a></span><span class=cl><span class=s2>&#34;temperature&#34;</span><span class=p>:</span> <span class=p>{</span>
-</span></span><span class=line><span class=ln id=hl-8-3><a class=lnlinks href=#hl-8-3> 3</a></span><span class=cl>    <span class=s2>&#34;critical-threshold&#34;</span><span class=p>:</span> <span class=mi>80</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-8-4><a class=lnlinks href=#hl-8-4> 4</a></span><span class=cl>    <span class=s2>&#34;interval&#34;</span><span class=p>:</span> <span class=mi>5</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-8-5><a class=lnlinks href=#hl-8-5> 5</a></span><span class=cl>    <span class=s2>&#34;thermal-zone&#34;</span><span class=p>:</span> <span class=mi>1</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-8-6><a class=lnlinks href=#hl-8-6> 6</a></span><span class=cl>    <span class=s2>&#34;format&#34;</span><span class=p>:</span> <span class=s2>&#34;{icon} {temperatureC}°C&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-8-7><a class=lnlinks href=#hl-8-7> 7</a></span><span class=cl>    <span class=s2>&#34;format-icons&#34;</span><span class=p>:</span> <span class=p>[</span>
-</span></span><span class=line><span class=ln id=hl-8-8><a class=lnlinks href=#hl-8-8> 8</a></span><span class=cl>        <span class=s2>&#34;&#34;</span><span class=p>,</span> <span class=o>//</span> <span class=n>Icon</span><span class=p>:</span> <span class=n>temperature</span><span class=o>-</span><span class=n>empty</span>
-</span></span><span class=line><span class=ln id=hl-8-9><a class=lnlinks href=#hl-8-9> 9</a></span><span class=cl>        <span class=s2>&#34;&#34;</span><span class=p>,</span> <span class=o>//</span> <span class=n>Icon</span><span class=p>:</span> <span class=n>temperature</span><span class=o>-</span><span class=n>quarter</span>
-</span></span><span class=line><span class=ln id=hl-8-10><a class=lnlinks href=#hl-8-10>10</a></span><span class=cl>        <span class=s2>&#34;&#34;</span><span class=p>,</span> <span class=o>//</span> <span class=n>Icon</span><span class=p>:</span> <span class=n>temperature</span><span class=o>-</span><span class=n>half</span>
-</span></span><span class=line><span class=ln id=hl-8-11><a class=lnlinks href=#hl-8-11>11</a></span><span class=cl>        <span class=s2>&#34;&#34;</span><span class=p>,</span> <span class=o>//</span> <span class=n>Icon</span><span class=p>:</span> <span class=n>temperature</span><span class=o>-</span><span class=n>three</span><span class=o>-</span><span class=n>quarters</span>
-</span></span><span class=line><span class=ln id=hl-8-12><a class=lnlinks href=#hl-8-12>12</a></span><span class=cl>        <span class=s2>&#34;&#34;</span>  <span class=o>//</span> <span class=n>Icon</span><span class=p>:</span> <span class=n>temperature</span><span class=o>-</span><span class=n>full</span>
-</span></span><span class=line><span class=ln id=hl-8-13><a class=lnlinks href=#hl-8-13>13</a></span><span class=cl>    <span class=p>],</span>
-</span></span><span class=line><span class=ln id=hl-8-14><a class=lnlinks href=#hl-8-14>14</a></span><span class=cl>    <span class=s2>&#34;tooltip&#34;</span><span class=p>:</span> <span class=bp>true</span>
-</span></span><span class=line><span class=ln id=hl-8-15><a class=lnlinks href=#hl-8-15>15</a></span><span class=cl><span class=p>},</span>
+config</div></li></ol><!--list-separator--><ol start=4><li><p>Температура подсистем</p><ul><li>Задаётся для температурных зон <code>/sys/class/thermal/</code> или для показаний сенсоров <code>/sys/class/hwmon/hwmon*/temp*_input</code>.</li><li>Просмотреть все типы температурных зон:<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=k>for</span> i in /sys/class/thermal/thermal_zone*<span class=p>;</span> <span class=k>do</span> <span class=nb>echo</span> <span class=s2>&#34;</span><span class=nv>$i</span><span class=s2>: </span><span class=k>$(</span>&lt;<span class=nv>$i</span>/type<span class=k>)</span><span class=s2>&#34;</span><span class=p>;</span> <span class=k>done</span>
+</span></span></code></pre></div></li><li>Если нет тепловой зоны, можно использовать сенсоры (<code>sensors</code>), чтобы найти предпочтительный источник температуры:<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=k>for</span> i in /sys/class/hwmon/hwmon*/temp*_input<span class=p>;</span> <span class=k>do</span> <span class=nb>echo</span> <span class=s2>&#34;</span><span class=k>$(</span>&lt;<span class=k>$(</span>dirname <span class=nv>$i</span><span class=k>)</span>/name<span class=k>)</span><span class=s2>: </span><span class=k>$(</span>cat <span class=si>${</span><span class=nv>i</span><span class=p>%_*</span><span class=si>}</span>_label 2&gt;/dev/null <span class=o>||</span> <span class=nb>echo</span> <span class=k>$(</span>basename <span class=si>${</span><span class=nv>i</span><span class=p>%_*</span><span class=si>}</span><span class=k>))</span><span class=s2> </span><span class=k>$(</span>readlink -f <span class=nv>$i</span><span class=k>)</span><span class=s2>&#34;</span><span class=p>;</span> <span class=k>done</span>
+</span></span></code></pre></div></li><li>Сама конфигурация выглядит следующим образом:</li></ul><!--listend--><div class=highlight><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=cl><span class=o>//</span> <span class=n>Themperature</span>
+</span></span><span class=line><span class=cl><span class=s2>&#34;temperature&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;critical-threshold&#34;</span><span class=p>:</span> <span class=mi>80</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;interval&#34;</span><span class=p>:</span> <span class=mi>5</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;thermal-zone&#34;</span><span class=p>:</span> <span class=mi>1</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;format&#34;</span><span class=p>:</span> <span class=s2>&#34;{icon} {temperatureC}°C&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;format-icons&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;&#34;</span><span class=p>,</span> <span class=o>//</span> <span class=n>Icon</span><span class=p>:</span> <span class=n>temperature</span><span class=o>-</span><span class=n>empty</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;&#34;</span><span class=p>,</span> <span class=o>//</span> <span class=n>Icon</span><span class=p>:</span> <span class=n>temperature</span><span class=o>-</span><span class=n>quarter</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;&#34;</span><span class=p>,</span> <span class=o>//</span> <span class=n>Icon</span><span class=p>:</span> <span class=n>temperature</span><span class=o>-</span><span class=n>half</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;&#34;</span><span class=p>,</span> <span class=o>//</span> <span class=n>Icon</span><span class=p>:</span> <span class=n>temperature</span><span class=o>-</span><span class=n>three</span><span class=o>-</span><span class=n>quarters</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;&#34;</span>  <span class=o>//</span> <span class=n>Icon</span><span class=p>:</span> <span class=n>temperature</span><span class=o>-</span><span class=n>full</span>
+</span></span><span class=line><span class=cl>    <span class=p>],</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;tooltip&#34;</span><span class=p>:</span> <span class=bp>true</span>
+</span></span><span class=line><span class=cl><span class=p>},</span>
 </span></span></code></pre></div><div class=src-block-caption><span class=src-block-number>&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 7:</span>
-config</div></li></ol><!--list-separator--><ol start=5><li><p>Отображение времени</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=ln id=hl-9-1><a class=lnlinks href=#hl-9-1> 1</a></span><span class=cl><span class=o>//</span> <span class=n>Clock</span>
-</span></span><span class=line><span class=ln id=hl-9-2><a class=lnlinks href=#hl-9-2> 2</a></span><span class=cl><span class=s2>&#34;clock&#34;</span><span class=p>:</span> <span class=p>{</span>
-</span></span><span class=line><span class=ln id=hl-9-3><a class=lnlinks href=#hl-9-3> 3</a></span><span class=cl>    <span class=s2>&#34;format&#34;</span><span class=p>:</span> <span class=s2>&#34; {:%H:%M  </span><span class=si>%F</span><span class=s2>, %a} &#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-9-4><a class=lnlinks href=#hl-9-4> 4</a></span><span class=cl>    <span class=s2>&#34;format-alt&#34;</span><span class=p>:</span> <span class=s2>&#34; {:%A, %B </span><span class=si>%d</span><span class=s2>, %Y (%R)}&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-9-5><a class=lnlinks href=#hl-9-5> 5</a></span><span class=cl>    <span class=s2>&#34;tooltip-format&#34;</span><span class=p>:</span> <span class=s2>&#34;&lt;tt&gt;&lt;small&gt;{calendar}&lt;/small&gt;&lt;/tt&gt;&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-9-6><a class=lnlinks href=#hl-9-6> 6</a></span><span class=cl>    <span class=s2>&#34;calendar&#34;</span><span class=p>:</span> <span class=p>{</span>
-</span></span><span class=line><span class=ln id=hl-9-7><a class=lnlinks href=#hl-9-7> 7</a></span><span class=cl>        <span class=s2>&#34;mode&#34;</span>          <span class=p>:</span> <span class=s2>&#34;year&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-9-8><a class=lnlinks href=#hl-9-8> 8</a></span><span class=cl>        <span class=s2>&#34;mode-mon-col&#34;</span>  <span class=p>:</span> <span class=mi>3</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-9-9><a class=lnlinks href=#hl-9-9> 9</a></span><span class=cl>        <span class=s2>&#34;weeks-pos&#34;</span>     <span class=p>:</span> <span class=s2>&#34;right&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-9-10><a class=lnlinks href=#hl-9-10>10</a></span><span class=cl>        <span class=s2>&#34;on-scroll&#34;</span>     <span class=p>:</span> <span class=mi>1</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-9-11><a class=lnlinks href=#hl-9-11>11</a></span><span class=cl>        <span class=s2>&#34;format&#34;</span><span class=p>:</span> <span class=p>{</span>
-</span></span><span class=line><span class=ln id=hl-9-12><a class=lnlinks href=#hl-9-12>12</a></span><span class=cl>            <span class=s2>&#34;months&#34;</span><span class=p>:</span>     <span class=s2>&#34;&lt;span color=&#39;#ffead3&#39;&gt;&lt;b&gt;{}&lt;/b&gt;&lt;/span&gt;&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-9-13><a class=lnlinks href=#hl-9-13>13</a></span><span class=cl>            <span class=s2>&#34;days&#34;</span><span class=p>:</span>       <span class=s2>&#34;&lt;span color=&#39;#ecc6d9&#39;&gt;&lt;b&gt;{}&lt;/b&gt;&lt;/span&gt;&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-9-14><a class=lnlinks href=#hl-9-14>14</a></span><span class=cl>            <span class=s2>&#34;weeks&#34;</span><span class=p>:</span>      <span class=s2>&#34;&lt;span color=&#39;#99ffdd&#39;&gt;&lt;b&gt;W{}&lt;/b&gt;&lt;/span&gt;&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-9-15><a class=lnlinks href=#hl-9-15>15</a></span><span class=cl>            <span class=s2>&#34;weekdays&#34;</span><span class=p>:</span>   <span class=s2>&#34;&lt;span color=&#39;#ffcc66&#39;&gt;&lt;b&gt;{}&lt;/b&gt;&lt;/span&gt;&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-9-16><a class=lnlinks href=#hl-9-16>16</a></span><span class=cl>            <span class=s2>&#34;today&#34;</span><span class=p>:</span>      <span class=s2>&#34;&lt;span color=&#39;#ff6699&#39;&gt;&lt;b&gt;&lt;u&gt;{}&lt;/u&gt;&lt;/b&gt;&lt;/span&gt;&#34;</span>
-</span></span><span class=line><span class=ln id=hl-9-17><a class=lnlinks href=#hl-9-17>17</a></span><span class=cl>        <span class=p>}</span>
-</span></span><span class=line><span class=ln id=hl-9-18><a class=lnlinks href=#hl-9-18>18</a></span><span class=cl>    <span class=p>},</span>
-</span></span><span class=line><span class=ln id=hl-9-19><a class=lnlinks href=#hl-9-19>19</a></span><span class=cl>    <span class=s2>&#34;actions&#34;</span><span class=p>:</span>  <span class=p>{</span>
-</span></span><span class=line><span class=ln id=hl-9-20><a class=lnlinks href=#hl-9-20>20</a></span><span class=cl>        <span class=s2>&#34;on-click-right&#34;</span><span class=p>:</span> <span class=s2>&#34;mode&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-9-21><a class=lnlinks href=#hl-9-21>21</a></span><span class=cl>        <span class=s2>&#34;on-scroll-up&#34;</span><span class=p>:</span> <span class=s2>&#34;tz_up&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-9-22><a class=lnlinks href=#hl-9-22>22</a></span><span class=cl>        <span class=s2>&#34;on-scroll-down&#34;</span><span class=p>:</span> <span class=s2>&#34;tz_down&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-9-23><a class=lnlinks href=#hl-9-23>23</a></span><span class=cl>        <span class=s2>&#34;on-scroll-up&#34;</span><span class=p>:</span> <span class=s2>&#34;shift_up&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-9-24><a class=lnlinks href=#hl-9-24>24</a></span><span class=cl>        <span class=s2>&#34;on-scroll-down&#34;</span><span class=p>:</span> <span class=s2>&#34;shift_down&#34;</span>
-</span></span><span class=line><span class=ln id=hl-9-25><a class=lnlinks href=#hl-9-25>25</a></span><span class=cl>    <span class=p>}</span>
-</span></span><span class=line><span class=ln id=hl-9-26><a class=lnlinks href=#hl-9-26>26</a></span><span class=cl><span class=p>},</span>
+config</div></li></ol><!--list-separator--><ol start=5><li><p>Отображение времени</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=cl><span class=o>//</span> <span class=n>Clock</span>
+</span></span><span class=line><span class=cl><span class=s2>&#34;clock&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;format&#34;</span><span class=p>:</span> <span class=s2>&#34; {:%H:%M  </span><span class=si>%F</span><span class=s2>, %a} &#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;format-alt&#34;</span><span class=p>:</span> <span class=s2>&#34; {:%A, %B </span><span class=si>%d</span><span class=s2>, %Y (%R)}&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;tooltip-format&#34;</span><span class=p>:</span> <span class=s2>&#34;&lt;tt&gt;&lt;small&gt;{calendar}&lt;/small&gt;&lt;/tt&gt;&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;calendar&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;mode&#34;</span>          <span class=p>:</span> <span class=s2>&#34;year&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;mode-mon-col&#34;</span>  <span class=p>:</span> <span class=mi>3</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;weeks-pos&#34;</span>     <span class=p>:</span> <span class=s2>&#34;right&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;on-scroll&#34;</span>     <span class=p>:</span> <span class=mi>1</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;format&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=s2>&#34;months&#34;</span><span class=p>:</span>     <span class=s2>&#34;&lt;span color=&#39;#ffead3&#39;&gt;&lt;b&gt;{}&lt;/b&gt;&lt;/span&gt;&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>            <span class=s2>&#34;days&#34;</span><span class=p>:</span>       <span class=s2>&#34;&lt;span color=&#39;#ecc6d9&#39;&gt;&lt;b&gt;{}&lt;/b&gt;&lt;/span&gt;&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>            <span class=s2>&#34;weeks&#34;</span><span class=p>:</span>      <span class=s2>&#34;&lt;span color=&#39;#99ffdd&#39;&gt;&lt;b&gt;W{}&lt;/b&gt;&lt;/span&gt;&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>            <span class=s2>&#34;weekdays&#34;</span><span class=p>:</span>   <span class=s2>&#34;&lt;span color=&#39;#ffcc66&#39;&gt;&lt;b&gt;{}&lt;/b&gt;&lt;/span&gt;&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>            <span class=s2>&#34;today&#34;</span><span class=p>:</span>      <span class=s2>&#34;&lt;span color=&#39;#ff6699&#39;&gt;&lt;b&gt;&lt;u&gt;{}&lt;/u&gt;&lt;/b&gt;&lt;/span&gt;&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;actions&#34;</span><span class=p>:</span>  <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;on-click-right&#34;</span><span class=p>:</span> <span class=s2>&#34;mode&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;on-scroll-up&#34;</span><span class=p>:</span> <span class=s2>&#34;tz_up&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;on-scroll-down&#34;</span><span class=p>:</span> <span class=s2>&#34;tz_down&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;on-scroll-up&#34;</span><span class=p>:</span> <span class=s2>&#34;shift_up&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;on-scroll-down&#34;</span><span class=p>:</span> <span class=s2>&#34;shift_down&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>},</span>
 </span></span></code></pre></div><div class=src-block-caption><span class=src-block-number>&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 8:</span>
-config</div></li></ol><!--list-separator--><ol start=6><li><p>Состояние клавиатуры</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=ln id=hl-10-1><a class=lnlinks href=#hl-10-1> 1</a></span><span class=cl>// Keyboard
-</span></span><span class=line><span class=ln id=hl-10-2><a class=lnlinks href=#hl-10-2> 2</a></span><span class=cl>&#34;keyboard-state&#34;: {
-</span></span><span class=line><span class=ln id=hl-10-3><a class=lnlinks href=#hl-10-3> 3</a></span><span class=cl>    &#34;numlock&#34;: true,
-</span></span><span class=line><span class=ln id=hl-10-4><a class=lnlinks href=#hl-10-4> 4</a></span><span class=cl>    &#34;capslock&#34;: true,
-</span></span><span class=line><span class=ln id=hl-10-5><a class=lnlinks href=#hl-10-5> 5</a></span><span class=cl>    &#34;format&#34;: &#34; {name} {icon}&#34;,
-</span></span><span class=line><span class=ln id=hl-10-6><a class=lnlinks href=#hl-10-6> 6</a></span><span class=cl>    &#34;format-icons&#34;: {
-</span></span><span class=line><span class=ln id=hl-10-7><a class=lnlinks href=#hl-10-7> 7</a></span><span class=cl>        &#34;locked&#34;: &#34; &#34;,
-</span></span><span class=line><span class=ln id=hl-10-8><a class=lnlinks href=#hl-10-8> 8</a></span><span class=cl>        &#34;unlocked&#34;: &#34; &#34;
-</span></span><span class=line><span class=ln id=hl-10-9><a class=lnlinks href=#hl-10-9> 9</a></span><span class=cl>    }
-</span></span><span class=line><span class=ln id=hl-10-10><a class=lnlinks href=#hl-10-10>10</a></span><span class=cl>},
+config</div></li></ol><!--list-separator--><ol start=6><li><p>Состояние клавиатуры</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>// Keyboard
+</span></span><span class=line><span class=cl>&#34;keyboard-state&#34;: {
+</span></span><span class=line><span class=cl>    &#34;numlock&#34;: true,
+</span></span><span class=line><span class=cl>    &#34;capslock&#34;: true,
+</span></span><span class=line><span class=cl>    &#34;format&#34;: &#34; {name} {icon}&#34;,
+</span></span><span class=line><span class=cl>    &#34;format-icons&#34;: {
+</span></span><span class=line><span class=cl>        &#34;locked&#34;: &#34; &#34;,
+</span></span><span class=line><span class=cl>        &#34;unlocked&#34;: &#34; &#34;
+</span></span><span class=line><span class=cl>    }
+</span></span><span class=line><span class=cl>},
 </span></span></code></pre></div><div class=src-block-caption><span class=src-block-number>&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 9:</span>
-config</div></li></ol><!--list-separator--><ol start=7><li><p>Сеть</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=ln id=hl-11-1><a class=lnlinks href=#hl-11-1> 1</a></span><span class=cl><span class=o>//</span> <span class=n>Network</span>
-</span></span><span class=line><span class=ln id=hl-11-2><a class=lnlinks href=#hl-11-2> 2</a></span><span class=cl><span class=s2>&#34;network&#34;</span><span class=p>:</span> <span class=p>{</span>
-</span></span><span class=line><span class=ln id=hl-11-3><a class=lnlinks href=#hl-11-3> 3</a></span><span class=cl>    <span class=s2>&#34;format&#34;</span><span class=p>:</span> <span class=s2>&#34;{ifname}&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-11-4><a class=lnlinks href=#hl-11-4> 4</a></span><span class=cl>    <span class=s2>&#34;format-wifi&#34;</span><span class=p>:</span> <span class=s2>&#34; {essid}&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-11-5><a class=lnlinks href=#hl-11-5> 5</a></span><span class=cl>    <span class=s2>&#34;format-ethernet&#34;</span><span class=p>:</span> <span class=s2>&#34; {ifname}&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-11-6><a class=lnlinks href=#hl-11-6> 6</a></span><span class=cl>    <span class=s2>&#34;format-disconnected&#34;</span><span class=p>:</span> <span class=s2>&#34;&#34;</span><span class=p>,</span> <span class=o>//</span><span class=n>An</span> <span class=n>empty</span> <span class=n>format</span> <span class=n>will</span> <span class=n>hide</span> <span class=n>the</span> <span class=n>module</span><span class=o>.</span>
-</span></span><span class=line><span class=ln id=hl-11-7><a class=lnlinks href=#hl-11-7> 7</a></span><span class=cl>    <span class=s2>&#34;tooltip-format&#34;</span><span class=p>:</span> <span class=s2>&#34;{ipaddr}/{cidr} via {gwaddr}&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-11-8><a class=lnlinks href=#hl-11-8> 8</a></span><span class=cl>    <span class=s2>&#34;tooltip-format-wifi&#34;</span><span class=p>:</span> <span class=s2>&#34; {essid} ({signalStrength}%)&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-11-9><a class=lnlinks href=#hl-11-9> 9</a></span><span class=cl>    <span class=s2>&#34;tooltip-format-ethernet&#34;</span><span class=p>:</span> <span class=s2>&#34;󰩠 {ipaddr}/{cidr} via {gwaddr}&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-11-10><a class=lnlinks href=#hl-11-10>10</a></span><span class=cl>    <span class=s2>&#34;tooltip-format-disconnected&#34;</span><span class=p>:</span> <span class=s2>&#34;󰲛 Disconnected&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-11-11><a class=lnlinks href=#hl-11-11>11</a></span><span class=cl>    <span class=s2>&#34;max-length&#34;</span><span class=p>:</span> <span class=mi>50</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-11-12><a class=lnlinks href=#hl-11-12>12</a></span><span class=cl>    <span class=s2>&#34;on-click&#34;</span><span class=p>:</span> <span class=s2>&#34;nm-connection-editor&#34;</span>
-</span></span><span class=line><span class=ln id=hl-11-13><a class=lnlinks href=#hl-11-13>13</a></span><span class=cl><span class=p>},</span>
+config</div></li></ol><!--list-separator--><ol start=7><li><p>Сеть</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=cl><span class=o>//</span> <span class=n>Network</span>
+</span></span><span class=line><span class=cl><span class=s2>&#34;network&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;format&#34;</span><span class=p>:</span> <span class=s2>&#34;{ifname}&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;format-wifi&#34;</span><span class=p>:</span> <span class=s2>&#34; {essid}&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;format-ethernet&#34;</span><span class=p>:</span> <span class=s2>&#34; {ifname}&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;format-disconnected&#34;</span><span class=p>:</span> <span class=s2>&#34;&#34;</span><span class=p>,</span> <span class=o>//</span><span class=n>An</span> <span class=n>empty</span> <span class=n>format</span> <span class=n>will</span> <span class=n>hide</span> <span class=n>the</span> <span class=n>module</span><span class=o>.</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;tooltip-format&#34;</span><span class=p>:</span> <span class=s2>&#34;{ipaddr}/{cidr} via {gwaddr}&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;tooltip-format-wifi&#34;</span><span class=p>:</span> <span class=s2>&#34; {essid} ({signalStrength}%)&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;tooltip-format-ethernet&#34;</span><span class=p>:</span> <span class=s2>&#34;󰩠 {ipaddr}/{cidr} via {gwaddr}&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;tooltip-format-disconnected&#34;</span><span class=p>:</span> <span class=s2>&#34;󰲛 Disconnected&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;max-length&#34;</span><span class=p>:</span> <span class=mi>50</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;on-click&#34;</span><span class=p>:</span> <span class=s2>&#34;nm-connection-editor&#34;</span>
+</span></span><span class=line><span class=cl><span class=p>},</span>
 </span></span></code></pre></div><div class=src-block-caption><span class=src-block-number>&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 10:</span>
-config</div></li></ol></li></ol><!--list-separator--><ol start=2><li><p>Управляемые модули</p><!--list-separator--><ol><li><p>Звук</p><!--list-separator--><ol><li><p>Pulseaudio</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=ln id=hl-12-1><a class=lnlinks href=#hl-12-1> 1</a></span><span class=cl>// Sound (pulseaudio)
-</span></span><span class=line><span class=ln id=hl-12-2><a class=lnlinks href=#hl-12-2> 2</a></span><span class=cl>&#34;pulseaudio&#34;: {
-</span></span><span class=line><span class=ln id=hl-12-3><a class=lnlinks href=#hl-12-3> 3</a></span><span class=cl>    &#34;format&#34;: &#34;{icon} {volume}% {format_source}&#34;,
-</span></span><span class=line><span class=ln id=hl-12-4><a class=lnlinks href=#hl-12-4> 4</a></span><span class=cl>    &#34;format-bluetooth&#34;: &#34;{icon}  {volume}% {format_source}&#34;,
-</span></span><span class=line><span class=ln id=hl-12-5><a class=lnlinks href=#hl-12-5> 5</a></span><span class=cl>    &#34;format-bluetooth-muted&#34;: &#34;󰝟  {format_source}&#34;,
-</span></span><span class=line><span class=ln id=hl-12-6><a class=lnlinks href=#hl-12-6> 6</a></span><span class=cl>    &#34;format-muted&#34;: &#34;󰝟 {format_source}&#34;,
-</span></span><span class=line><span class=ln id=hl-12-7><a class=lnlinks href=#hl-12-7> 7</a></span><span class=cl>    &#34;format-source&#34;: &#34; {volume}%&#34;,
-</span></span><span class=line><span class=ln id=hl-12-8><a class=lnlinks href=#hl-12-8> 8</a></span><span class=cl>    &#34;format-source-muted&#34;: &#34; &#34;,
-</span></span><span class=line><span class=ln id=hl-12-9><a class=lnlinks href=#hl-12-9> 9</a></span><span class=cl>    &#34;format-icons&#34;: {
-</span></span><span class=line><span class=ln id=hl-12-10><a class=lnlinks href=#hl-12-10>10</a></span><span class=cl>        &#34;headphone&#34;: &#34; &#34;,
-</span></span><span class=line><span class=ln id=hl-12-11><a class=lnlinks href=#hl-12-11>11</a></span><span class=cl>        &#34;hands-free&#34;: &#34; &#34;,
-</span></span><span class=line><span class=ln id=hl-12-12><a class=lnlinks href=#hl-12-12>12</a></span><span class=cl>        &#34;headset&#34;: &#34;󰋎 &#34;,
-</span></span><span class=line><span class=ln id=hl-12-13><a class=lnlinks href=#hl-12-13>13</a></span><span class=cl>        &#34;phone&#34;: &#34; &#34;,
-</span></span><span class=line><span class=ln id=hl-12-14><a class=lnlinks href=#hl-12-14>14</a></span><span class=cl>        &#34;portable&#34;: &#34; &#34;,
-</span></span><span class=line><span class=ln id=hl-12-15><a class=lnlinks href=#hl-12-15>15</a></span><span class=cl>        &#34;car&#34;: &#34; &#34;,
-</span></span><span class=line><span class=ln id=hl-12-16><a class=lnlinks href=#hl-12-16>16</a></span><span class=cl>        &#34;default&#34;: [
-</span></span><span class=line><span class=ln id=hl-12-17><a class=lnlinks href=#hl-12-17>17</a></span><span class=cl>            &#34;&#34;,
-</span></span><span class=line><span class=ln id=hl-12-18><a class=lnlinks href=#hl-12-18>18</a></span><span class=cl>            &#34; &#34;,
-</span></span><span class=line><span class=ln id=hl-12-19><a class=lnlinks href=#hl-12-19>19</a></span><span class=cl>            &#34; &#34;
-</span></span><span class=line><span class=ln id=hl-12-20><a class=lnlinks href=#hl-12-20>20</a></span><span class=cl>        ]
-</span></span><span class=line><span class=ln id=hl-12-21><a class=lnlinks href=#hl-12-21>21</a></span><span class=cl>    },
-</span></span><span class=line><span class=ln id=hl-12-22><a class=lnlinks href=#hl-12-22>22</a></span><span class=cl>    &#34;scroll-step&#34;: 5,
-</span></span><span class=line><span class=ln id=hl-12-23><a class=lnlinks href=#hl-12-23>23</a></span><span class=cl>    &#34;on-click&#34;: &#34;pavucontrol&#34;,
-</span></span><span class=line><span class=ln id=hl-12-24><a class=lnlinks href=#hl-12-24>24</a></span><span class=cl>    &#34;on-click-right&#34;: &#34;blueman-manager&#34;
-</span></span><span class=line><span class=ln id=hl-12-25><a class=lnlinks href=#hl-12-25>25</a></span><span class=cl>},
+config</div></li></ol></li></ol><!--list-separator--><ol start=2><li><p>Управляемые модули</p><!--list-separator--><ol><li><p>Звук</p><!--list-separator--><ol><li><p>Pulseaudio</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>// Sound (pulseaudio)
+</span></span><span class=line><span class=cl>&#34;pulseaudio&#34;: {
+</span></span><span class=line><span class=cl>    &#34;format&#34;: &#34;{icon} {volume}% {format_source}&#34;,
+</span></span><span class=line><span class=cl>    &#34;format-bluetooth&#34;: &#34;{icon}  {volume}% {format_source}&#34;,
+</span></span><span class=line><span class=cl>    &#34;format-bluetooth-muted&#34;: &#34;󰝟  {format_source}&#34;,
+</span></span><span class=line><span class=cl>    &#34;format-muted&#34;: &#34;󰝟 {format_source}&#34;,
+</span></span><span class=line><span class=cl>    &#34;format-source&#34;: &#34; {volume}%&#34;,
+</span></span><span class=line><span class=cl>    &#34;format-source-muted&#34;: &#34; &#34;,
+</span></span><span class=line><span class=cl>    &#34;format-icons&#34;: {
+</span></span><span class=line><span class=cl>        &#34;headphone&#34;: &#34; &#34;,
+</span></span><span class=line><span class=cl>        &#34;hands-free&#34;: &#34; &#34;,
+</span></span><span class=line><span class=cl>        &#34;headset&#34;: &#34;󰋎 &#34;,
+</span></span><span class=line><span class=cl>        &#34;phone&#34;: &#34; &#34;,
+</span></span><span class=line><span class=cl>        &#34;portable&#34;: &#34; &#34;,
+</span></span><span class=line><span class=cl>        &#34;car&#34;: &#34; &#34;,
+</span></span><span class=line><span class=cl>        &#34;default&#34;: [
+</span></span><span class=line><span class=cl>            &#34;&#34;,
+</span></span><span class=line><span class=cl>            &#34; &#34;,
+</span></span><span class=line><span class=cl>            &#34; &#34;
+</span></span><span class=line><span class=cl>        ]
+</span></span><span class=line><span class=cl>    },
+</span></span><span class=line><span class=cl>    &#34;scroll-step&#34;: 5,
+</span></span><span class=line><span class=cl>    &#34;on-click&#34;: &#34;pavucontrol&#34;,
+</span></span><span class=line><span class=cl>    &#34;on-click-right&#34;: &#34;blueman-manager&#34;
+</span></span><span class=line><span class=cl>},
 </span></span></code></pre></div><div class=src-block-caption><span class=src-block-number>&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 11:</span>
-config</div></li></ol><!--list-separator--><ol start=2><li><p>Pipewire</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=ln id=hl-13-1><a class=lnlinks href=#hl-13-1> 1</a></span><span class=cl>// Sound (pipewire)
-</span></span><span class=line><span class=ln id=hl-13-2><a class=lnlinks href=#hl-13-2> 2</a></span><span class=cl>&#34;wireplumber&#34;: {
-</span></span><span class=line><span class=ln id=hl-13-3><a class=lnlinks href=#hl-13-3> 3</a></span><span class=cl>    &#34;format&#34;: &#34;{icon}{volume}%&#34;,
-</span></span><span class=line><span class=ln id=hl-13-4><a class=lnlinks href=#hl-13-4> 4</a></span><span class=cl>    &#34;format-muted&#34;: &#34; &#34;,
-</span></span><span class=line><span class=ln id=hl-13-5><a class=lnlinks href=#hl-13-5> 5</a></span><span class=cl>    // &#34;on-click&#34;: &#34;helvum&#34;,
-</span></span><span class=line><span class=ln id=hl-13-6><a class=lnlinks href=#hl-13-6> 6</a></span><span class=cl>    &#34;on-click&#34;: &#34;pavucontrol&#34;,
-</span></span><span class=line><span class=ln id=hl-13-7><a class=lnlinks href=#hl-13-7> 7</a></span><span class=cl>    &#34;on-click-middle&#34;: &#34;wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle&#34;,
-</span></span><span class=line><span class=ln id=hl-13-8><a class=lnlinks href=#hl-13-8> 8</a></span><span class=cl>    &#34;format-icons&#34;: [&#34;&#34;, &#34; &#34;, &#34; &#34;],
-</span></span><span class=line><span class=ln id=hl-13-9><a class=lnlinks href=#hl-13-9> 9</a></span><span class=cl>    &#34;max-volume&#34;: 200,
-</span></span><span class=line><span class=ln id=hl-13-10><a class=lnlinks href=#hl-13-10>10</a></span><span class=cl>    // &#34;scroll-step&#34;: 0.2,
-</span></span><span class=line><span class=ln id=hl-13-11><a class=lnlinks href=#hl-13-11>11</a></span><span class=cl>},
+config</div></li></ol><!--list-separator--><ol start=2><li><p>Pipewire</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>// Sound (pipewire)
+</span></span><span class=line><span class=cl>&#34;wireplumber&#34;: {
+</span></span><span class=line><span class=cl>    &#34;format&#34;: &#34;{icon}{volume}%&#34;,
+</span></span><span class=line><span class=cl>    &#34;format-muted&#34;: &#34; &#34;,
+</span></span><span class=line><span class=cl>    // &#34;on-click&#34;: &#34;helvum&#34;,
+</span></span><span class=line><span class=cl>    &#34;on-click&#34;: &#34;pavucontrol&#34;,
+</span></span><span class=line><span class=cl>    &#34;on-click-middle&#34;: &#34;wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle&#34;,
+</span></span><span class=line><span class=cl>    &#34;format-icons&#34;: [&#34;&#34;, &#34; &#34;, &#34; &#34;],
+</span></span><span class=line><span class=cl>    &#34;max-volume&#34;: 200,
+</span></span><span class=line><span class=cl>    // &#34;scroll-step&#34;: 0.2,
+</span></span><span class=line><span class=cl>},
 </span></span></code></pre></div><div class=src-block-caption><span class=src-block-number>&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 12:</span>
-config</div></li></ol></li></ol><!--list-separator--><ol start=2><li><p>Трей</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=ln id=hl-14-1><a class=lnlinks href=#hl-14-1>1</a></span><span class=cl>// Tray
-</span></span><span class=line><span class=ln id=hl-14-2><a class=lnlinks href=#hl-14-2>2</a></span><span class=cl>&#34;tray&#34;: {
-</span></span><span class=line><span class=ln id=hl-14-3><a class=lnlinks href=#hl-14-3>3</a></span><span class=cl>    &#34;icon-size&#34;: 20,
-</span></span><span class=line><span class=ln id=hl-14-4><a class=lnlinks href=#hl-14-4>4</a></span><span class=cl>    &#34;spacing&#34;: 10
-</span></span><span class=line><span class=ln id=hl-14-5><a class=lnlinks href=#hl-14-5>5</a></span><span class=cl>},
+config</div></li></ol></li></ol><!--list-separator--><ol start=2><li><p>Трей</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>// Tray
+</span></span><span class=line><span class=cl>&#34;tray&#34;: {
+</span></span><span class=line><span class=cl>    &#34;icon-size&#34;: 20,
+</span></span><span class=line><span class=cl>    &#34;spacing&#34;: 10
+</span></span><span class=line><span class=cl>},
 </span></span></code></pre></div><div class=src-block-caption><span class=src-block-number>&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 13:</span>
-config</div></li></ol><!--list-separator--><ol start=3><li><p>Отключение засыпания экрана</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=ln id=hl-15-1><a class=lnlinks href=#hl-15-1>1</a></span><span class=cl>// Idle inhibitor
-</span></span><span class=line><span class=ln id=hl-15-2><a class=lnlinks href=#hl-15-2>2</a></span><span class=cl>&#34;idle_inhibitor&#34;: {
-</span></span><span class=line><span class=ln id=hl-15-3><a class=lnlinks href=#hl-15-3>3</a></span><span class=cl>    &#34;format&#34;: &#34;{icon}&#34;,
-</span></span><span class=line><span class=ln id=hl-15-4><a class=lnlinks href=#hl-15-4>4</a></span><span class=cl>    &#34;format-icons&#34;: {
-</span></span><span class=line><span class=ln id=hl-15-5><a class=lnlinks href=#hl-15-5>5</a></span><span class=cl>      &#34;activated&#34;: &#34;  &#34;,
-</span></span><span class=line><span class=ln id=hl-15-6><a class=lnlinks href=#hl-15-6>6</a></span><span class=cl>      &#34;deactivated&#34;: &#34;  &#34;
-</span></span><span class=line><span class=ln id=hl-15-7><a class=lnlinks href=#hl-15-7>7</a></span><span class=cl>    }
-</span></span><span class=line><span class=ln id=hl-15-8><a class=lnlinks href=#hl-15-8>8</a></span><span class=cl>},
+config</div></li></ol><!--list-separator--><ol start=3><li><p>Отключение засыпания экрана</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>// Idle inhibitor
+</span></span><span class=line><span class=cl>&#34;idle_inhibitor&#34;: {
+</span></span><span class=line><span class=cl>    &#34;format&#34;: &#34;{icon}&#34;,
+</span></span><span class=line><span class=cl>    &#34;format-icons&#34;: {
+</span></span><span class=line><span class=cl>      &#34;activated&#34;: &#34;  &#34;,
+</span></span><span class=line><span class=cl>      &#34;deactivated&#34;: &#34;  &#34;
+</span></span><span class=line><span class=cl>    }
+</span></span><span class=line><span class=cl>},
 </span></span></code></pre></div><div class=src-block-caption><span class=src-block-number>&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 14:</span>
-config</div></li></ol><!--list-separator--><ol start=4><li><p>Подсветка экрана</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=ln id=hl-16-1><a class=lnlinks href=#hl-16-1>1</a></span><span class=cl>&#34;backlight&#34;: {
-</span></span><span class=line><span class=ln id=hl-16-2><a class=lnlinks href=#hl-16-2>2</a></span><span class=cl>    &#34;device&#34;: &#34;intel_backlight&#34;,
-</span></span><span class=line><span class=ln id=hl-16-3><a class=lnlinks href=#hl-16-3>3</a></span><span class=cl>    &#34;format&#34;: &#34;{icon} {percent}% &#34;,
-</span></span><span class=line><span class=ln id=hl-16-4><a class=lnlinks href=#hl-16-4>4</a></span><span class=cl>    &#34;format-icons&#34;: [&#34; &#34;, &#34; &#34;],
-</span></span><span class=line><span class=ln id=hl-16-5><a class=lnlinks href=#hl-16-5>5</a></span><span class=cl>},
+config</div></li></ol><!--list-separator--><ol start=4><li><p>Подсветка экрана</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>&#34;backlight&#34;: {
+</span></span><span class=line><span class=cl>    &#34;device&#34;: &#34;intel_backlight&#34;,
+</span></span><span class=line><span class=cl>    &#34;format&#34;: &#34;{icon} {percent}% &#34;,
+</span></span><span class=line><span class=cl>    &#34;format-icons&#34;: [&#34; &#34;, &#34; &#34;],
+</span></span><span class=line><span class=cl>},
 </span></span></code></pre></div><div class=src-block-caption><span class=src-block-number>&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 15:</span>
-config</div></li></ol></li></ol><!--list-separator--><ol start=3><li><p>Модули <em>Sway</em></p><!--list-separator--><ol><li><p>Окна <em>Sway</em></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=ln id=hl-17-1><a class=lnlinks href=#hl-17-1>1</a></span><span class=cl>&#34;sway/window&#34;: {
-</span></span><span class=line><span class=ln id=hl-17-2><a class=lnlinks href=#hl-17-2>2</a></span><span class=cl>    &#34;format&#34;: &#34;{}&#34;,
-</span></span><span class=line><span class=ln id=hl-17-3><a class=lnlinks href=#hl-17-3>3</a></span><span class=cl>    &#34;max-length&#34;: 40
-</span></span><span class=line><span class=ln id=hl-17-4><a class=lnlinks href=#hl-17-4>4</a></span><span class=cl>},
+config</div></li></ol></li></ol><!--list-separator--><ol start=3><li><p>Модули <em>Sway</em></p><!--list-separator--><ol><li><p>Окна <em>Sway</em></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>&#34;sway/window&#34;: {
+</span></span><span class=line><span class=cl>    &#34;format&#34;: &#34;{}&#34;,
+</span></span><span class=line><span class=cl>    &#34;max-length&#34;: 40
+</span></span><span class=line><span class=cl>},
 </span></span></code></pre></div><div class=src-block-caption><span class=src-block-number>&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 16:</span>
-config</div></li></ol><!--list-separator--><ol start=2><li><p>Режим <em>Sway</em></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=ln id=hl-18-1><a class=lnlinks href=#hl-18-1>1</a></span><span class=cl>&#34;sway/mode&#34;: {
-</span></span><span class=line><span class=ln id=hl-18-2><a class=lnlinks href=#hl-18-2>2</a></span><span class=cl>    &#34;format&#34;: &#34;  {}&#34;,
-</span></span><span class=line><span class=ln id=hl-18-3><a class=lnlinks href=#hl-18-3>3</a></span><span class=cl>    &#34;max-length&#34;: 50
-</span></span><span class=line><span class=ln id=hl-18-4><a class=lnlinks href=#hl-18-4>4</a></span><span class=cl>},
+config</div></li></ol><!--list-separator--><ol start=2><li><p>Режим <em>Sway</em></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>&#34;sway/mode&#34;: {
+</span></span><span class=line><span class=cl>    &#34;format&#34;: &#34;  {}&#34;,
+</span></span><span class=line><span class=cl>    &#34;max-length&#34;: 50
+</span></span><span class=line><span class=cl>},
 </span></span></code></pre></div><div class=src-block-caption><span class=src-block-number>&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 17:</span>
-config</div></li></ol><!--list-separator--><ol start=3><li><p>Рабочие столы <em>Sway</em></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=ln id=hl-19-1><a class=lnlinks href=#hl-19-1>1</a></span><span class=cl>&#34;sway/workspaces&#34;: {
-</span></span><span class=line><span class=ln id=hl-19-2><a class=lnlinks href=#hl-19-2>2</a></span><span class=cl>    &#34;disable-scroll&#34;: false,
-</span></span><span class=line><span class=ln id=hl-19-3><a class=lnlinks href=#hl-19-3>3</a></span><span class=cl>    &#34;disable-scroll-wraparound&#34;: true,
-</span></span><span class=line><span class=ln id=hl-19-4><a class=lnlinks href=#hl-19-4>4</a></span><span class=cl>    &#34;all-outputs&#34;: true,
-</span></span><span class=line><span class=ln id=hl-19-5><a class=lnlinks href=#hl-19-5>5</a></span><span class=cl>    &#34;format&#34;: &#34;{index}:{name}&#34;,
-</span></span><span class=line><span class=ln id=hl-19-6><a class=lnlinks href=#hl-19-6>6</a></span><span class=cl>},
+config</div></li></ol><!--list-separator--><ol start=3><li><p>Рабочие столы <em>Sway</em></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>&#34;sway/workspaces&#34;: {
+</span></span><span class=line><span class=cl>    &#34;disable-scroll&#34;: false,
+</span></span><span class=line><span class=cl>    &#34;disable-scroll-wraparound&#34;: true,
+</span></span><span class=line><span class=cl>    &#34;all-outputs&#34;: true,
+</span></span><span class=line><span class=cl>    &#34;format&#34;: &#34;{index}:{name}&#34;,
+</span></span><span class=line><span class=cl>},
 </span></span></code></pre></div><div class=src-block-caption><span class=src-block-number>&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 18:</span>
-config</div></li></ol><!--list-separator--><ol start=4><li><p>Переключатель языка <em>Sway</em></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=ln id=hl-20-1><a class=lnlinks href=#hl-20-1>1</a></span><span class=cl>&#34;sway/language&#34;: {
-</span></span><span class=line><span class=ln id=hl-20-2><a class=lnlinks href=#hl-20-2>2</a></span><span class=cl>    &#34;format&#34;: &#34; {short} &#34;,
-</span></span><span class=line><span class=ln id=hl-20-3><a class=lnlinks href=#hl-20-3>3</a></span><span class=cl>    &#34;on-click&#34;: &#34;swaymsg input type:keyboard xkb_switch_layout next&#34;,
-</span></span><span class=line><span class=ln id=hl-20-4><a class=lnlinks href=#hl-20-4>4</a></span><span class=cl>},
+config</div></li></ol><!--list-separator--><ol start=4><li><p>Переключатель языка <em>Sway</em></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>&#34;sway/language&#34;: {
+</span></span><span class=line><span class=cl>    &#34;format&#34;: &#34; {short} &#34;,
+</span></span><span class=line><span class=cl>    &#34;on-click&#34;: &#34;swaymsg input type:keyboard xkb_switch_layout next&#34;,
+</span></span><span class=line><span class=cl>},
 </span></span></code></pre></div><div class=src-block-caption><span class=src-block-number>&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 19:</span>
-config</div></li></ol></li></ol><!--list-separator--><ol start=4><li><p>Самописные модули</p><!--list-separator--><ol><li><p>Погода</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=ln id=hl-21-1><a class=lnlinks href=#hl-21-1> 1</a></span><span class=cl><span class=o>//</span> <span class=n>Weather</span>
-</span></span><span class=line><span class=ln id=hl-21-2><a class=lnlinks href=#hl-21-2> 2</a></span><span class=cl><span class=s2>&#34;custom/weather&#34;</span><span class=p>:</span> <span class=p>{</span>
-</span></span><span class=line><span class=ln id=hl-21-3><a class=lnlinks href=#hl-21-3> 3</a></span><span class=cl>    <span class=s2>&#34;format&#34;</span><span class=p>:</span> <span class=s2>&#34;{icon}{} &#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-21-4><a class=lnlinks href=#hl-21-4> 4</a></span><span class=cl>    <span class=s2>&#34;tooltip&#34;</span><span class=p>:</span> <span class=bp>true</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-21-5><a class=lnlinks href=#hl-21-5> 5</a></span><span class=cl>    <span class=s2>&#34;interval&#34;</span><span class=p>:</span> <span class=mi>3600</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-21-6><a class=lnlinks href=#hl-21-6> 6</a></span><span class=cl>    <span class=o>//</span> <span class=n>accepts</span> <span class=o>-</span><span class=n>c</span><span class=o>/--</span><span class=n>city</span> <span class=o>&lt;</span><span class=n>city</span><span class=o>&gt;</span> <span class=o>-</span><span class=n>t</span><span class=o>/--</span><span class=n>temperature</span> <span class=o>&lt;</span><span class=n>C</span><span class=o>/</span><span class=n>F</span><span class=o>&gt;</span> <span class=o>-</span><span class=n>d</span><span class=o>/--</span><span class=n>distance</span> <span class=o>&lt;</span><span class=n>km</span><span class=o>/</span><span class=n>miles</span><span class=o>&gt;</span>
-</span></span><span class=line><span class=ln id=hl-21-7><a class=lnlinks href=#hl-21-7> 7</a></span><span class=cl>    <span class=s2>&#34;exec&#34;</span><span class=p>:</span> <span class=s2>&#34;~/.config/sway/scripts/weather.py&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-21-8><a class=lnlinks href=#hl-21-8> 8</a></span><span class=cl>    <span class=s2>&#34;return-type&#34;</span><span class=p>:</span> <span class=s2>&#34;json&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-21-9><a class=lnlinks href=#hl-21-9> 9</a></span><span class=cl>    <span class=s2>&#34;format-icons&#34;</span><span class=p>:</span> <span class=p>{</span>
-</span></span><span class=line><span class=ln id=hl-21-10><a class=lnlinks href=#hl-21-10>10</a></span><span class=cl>        <span class=s2>&#34;Unknown&#34;</span><span class=p>:</span> <span class=s2>&#34; &#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-21-11><a class=lnlinks href=#hl-21-11>11</a></span><span class=cl>        <span class=s2>&#34;Cloudy&#34;</span><span class=p>:</span> <span class=s2>&#34;󰖐 &#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-21-12><a class=lnlinks href=#hl-21-12>12</a></span><span class=cl>        <span class=s2>&#34;Fog&#34;</span><span class=p>:</span> <span class=s2>&#34; &#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-21-13><a class=lnlinks href=#hl-21-13>13</a></span><span class=cl>        <span class=s2>&#34;HeavyRain&#34;</span><span class=p>:</span> <span class=s2>&#34; &#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-21-14><a class=lnlinks href=#hl-21-14>14</a></span><span class=cl>        <span class=s2>&#34;HeavyShowers&#34;</span><span class=p>:</span> <span class=s2>&#34; &#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-21-15><a class=lnlinks href=#hl-21-15>15</a></span><span class=cl>        <span class=s2>&#34;HeavySnow&#34;</span><span class=p>:</span> <span class=s2>&#34; &#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-21-16><a class=lnlinks href=#hl-21-16>16</a></span><span class=cl>        <span class=s2>&#34;HeavySnowShowers&#34;</span><span class=p>:</span> <span class=s2>&#34;󰜗 &#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-21-17><a class=lnlinks href=#hl-21-17>17</a></span><span class=cl>        <span class=s2>&#34;LightRain&#34;</span><span class=p>:</span> <span class=s2>&#34; &#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-21-18><a class=lnlinks href=#hl-21-18>18</a></span><span class=cl>        <span class=s2>&#34;LightShowers&#34;</span><span class=p>:</span> <span class=s2>&#34; &#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-21-19><a class=lnlinks href=#hl-21-19>19</a></span><span class=cl>        <span class=s2>&#34;LightSleet&#34;</span><span class=p>:</span> <span class=s2>&#34; &#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-21-20><a class=lnlinks href=#hl-21-20>20</a></span><span class=cl>        <span class=s2>&#34;LightSleetShowers&#34;</span><span class=p>:</span> <span class=s2>&#34; &#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-21-21><a class=lnlinks href=#hl-21-21>21</a></span><span class=cl>        <span class=s2>&#34;LightSnow&#34;</span><span class=p>:</span> <span class=s2>&#34; &#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-21-22><a class=lnlinks href=#hl-21-22>22</a></span><span class=cl>        <span class=s2>&#34;LightSnowShowers&#34;</span><span class=p>:</span> <span class=s2>&#34;󰙿 &#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-21-23><a class=lnlinks href=#hl-21-23>23</a></span><span class=cl>        <span class=s2>&#34;PartlyCloudy&#34;</span><span class=p>:</span> <span class=s2>&#34; &#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-21-24><a class=lnlinks href=#hl-21-24>24</a></span><span class=cl>        <span class=s2>&#34;Sunny&#34;</span><span class=p>:</span> <span class=s2>&#34; &#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-21-25><a class=lnlinks href=#hl-21-25>25</a></span><span class=cl>        <span class=s2>&#34;ThunderyHeavyRain&#34;</span><span class=p>:</span> <span class=s2>&#34;󰙾 &#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-21-26><a class=lnlinks href=#hl-21-26>26</a></span><span class=cl>        <span class=s2>&#34;ThunderyShowers&#34;</span><span class=p>:</span> <span class=s2>&#34; &#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-21-27><a class=lnlinks href=#hl-21-27>27</a></span><span class=cl>        <span class=s2>&#34;ThunderySnowShowers&#34;</span><span class=p>:</span> <span class=s2>&#34; &#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-21-28><a class=lnlinks href=#hl-21-28>28</a></span><span class=cl>        <span class=s2>&#34;VeryCloudy&#34;</span><span class=p>:</span> <span class=s2>&#34; &#34;</span>
-</span></span><span class=line><span class=ln id=hl-21-29><a class=lnlinks href=#hl-21-29>29</a></span><span class=cl>    <span class=p>}</span>
-</span></span><span class=line><span class=ln id=hl-21-30><a class=lnlinks href=#hl-21-30>30</a></span><span class=cl><span class=p>},</span>
+config</div></li></ol></li></ol><!--list-separator--><ol start=4><li><p>Самописные модули</p><!--list-separator--><ol><li><p>Погода</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=cl><span class=o>//</span> <span class=n>Weather</span>
+</span></span><span class=line><span class=cl><span class=s2>&#34;custom/weather&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;format&#34;</span><span class=p>:</span> <span class=s2>&#34;{icon}{} &#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;tooltip&#34;</span><span class=p>:</span> <span class=bp>true</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;interval&#34;</span><span class=p>:</span> <span class=mi>3600</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=o>//</span> <span class=n>accepts</span> <span class=o>-</span><span class=n>c</span><span class=o>/--</span><span class=n>city</span> <span class=o>&lt;</span><span class=n>city</span><span class=o>&gt;</span> <span class=o>-</span><span class=n>t</span><span class=o>/--</span><span class=n>temperature</span> <span class=o>&lt;</span><span class=n>C</span><span class=o>/</span><span class=n>F</span><span class=o>&gt;</span> <span class=o>-</span><span class=n>d</span><span class=o>/--</span><span class=n>distance</span> <span class=o>&lt;</span><span class=n>km</span><span class=o>/</span><span class=n>miles</span><span class=o>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;exec&#34;</span><span class=p>:</span> <span class=s2>&#34;~/.config/sway/scripts/weather.py&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;return-type&#34;</span><span class=p>:</span> <span class=s2>&#34;json&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;format-icons&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;Unknown&#34;</span><span class=p>:</span> <span class=s2>&#34; &#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;Cloudy&#34;</span><span class=p>:</span> <span class=s2>&#34;󰖐 &#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;Fog&#34;</span><span class=p>:</span> <span class=s2>&#34; &#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;HeavyRain&#34;</span><span class=p>:</span> <span class=s2>&#34; &#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;HeavyShowers&#34;</span><span class=p>:</span> <span class=s2>&#34; &#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;HeavySnow&#34;</span><span class=p>:</span> <span class=s2>&#34; &#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;HeavySnowShowers&#34;</span><span class=p>:</span> <span class=s2>&#34;󰜗 &#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;LightRain&#34;</span><span class=p>:</span> <span class=s2>&#34; &#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;LightShowers&#34;</span><span class=p>:</span> <span class=s2>&#34; &#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;LightSleet&#34;</span><span class=p>:</span> <span class=s2>&#34; &#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;LightSleetShowers&#34;</span><span class=p>:</span> <span class=s2>&#34; &#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;LightSnow&#34;</span><span class=p>:</span> <span class=s2>&#34; &#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;LightSnowShowers&#34;</span><span class=p>:</span> <span class=s2>&#34;󰙿 &#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;PartlyCloudy&#34;</span><span class=p>:</span> <span class=s2>&#34; &#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;Sunny&#34;</span><span class=p>:</span> <span class=s2>&#34; &#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;ThunderyHeavyRain&#34;</span><span class=p>:</span> <span class=s2>&#34;󰙾 &#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;ThunderyShowers&#34;</span><span class=p>:</span> <span class=s2>&#34; &#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;ThunderySnowShowers&#34;</span><span class=p>:</span> <span class=s2>&#34; &#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;VeryCloudy&#34;</span><span class=p>:</span> <span class=s2>&#34; &#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>},</span>
 </span></span></code></pre></div><div class=src-block-caption><span class=src-block-number>&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 20:</span>
-config</div></li></ol><!--list-separator--><ol start=2><li><p>Скратчпад</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=ln id=hl-22-1><a class=lnlinks href=#hl-22-1> 1</a></span><span class=cl><span class=o>//</span> <span class=n>Scratchpad</span>
-</span></span><span class=line><span class=ln id=hl-22-2><a class=lnlinks href=#hl-22-2> 2</a></span><span class=cl><span class=s2>&#34;custom/scratchpad&#34;</span><span class=p>:</span> <span class=p>{</span>
-</span></span><span class=line><span class=ln id=hl-22-3><a class=lnlinks href=#hl-22-3> 3</a></span><span class=cl>    <span class=s2>&#34;interval&#34;</span><span class=p>:</span> <span class=s2>&#34;once&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-22-4><a class=lnlinks href=#hl-22-4> 4</a></span><span class=cl>    <span class=s2>&#34;escape&#34;</span><span class=p>:</span> <span class=bp>true</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-22-5><a class=lnlinks href=#hl-22-5> 5</a></span><span class=cl>    <span class=s2>&#34;return-type&#34;</span><span class=p>:</span> <span class=s2>&#34;json&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-22-6><a class=lnlinks href=#hl-22-6> 6</a></span><span class=cl>    <span class=s2>&#34;format&#34;</span><span class=p>:</span> <span class=s2>&#34;{icon}&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-22-7><a class=lnlinks href=#hl-22-7> 7</a></span><span class=cl>    <span class=s2>&#34;format-icons&#34;</span><span class=p>:</span> <span class=p>{</span>
-</span></span><span class=line><span class=ln id=hl-22-8><a class=lnlinks href=#hl-22-8> 8</a></span><span class=cl>        <span class=s2>&#34;one&#34;</span><span class=p>:</span> <span class=s2>&#34;󰖯 &#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-22-9><a class=lnlinks href=#hl-22-9> 9</a></span><span class=cl>        <span class=s2>&#34;many&#34;</span><span class=p>:</span> <span class=s2>&#34;󰖲 &#34;</span>
-</span></span><span class=line><span class=ln id=hl-22-10><a class=lnlinks href=#hl-22-10>10</a></span><span class=cl>    <span class=p>},</span>
-</span></span><span class=line><span class=ln id=hl-22-11><a class=lnlinks href=#hl-22-11>11</a></span><span class=cl>    <span class=s2>&#34;exec&#34;</span><span class=p>:</span> <span class=s2>&#34;/bin/sh ~/.config/sway/scripts/scratchpad.sh&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-22-12><a class=lnlinks href=#hl-22-12>12</a></span><span class=cl>    <span class=s2>&#34;on-click&#34;</span><span class=p>:</span> <span class=s2>&#34;swaymsg &#39;scratchpad show&#39;&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-22-13><a class=lnlinks href=#hl-22-13>13</a></span><span class=cl>    <span class=s2>&#34;signal&#34;</span><span class=p>:</span> <span class=mi>7</span>
-</span></span><span class=line><span class=ln id=hl-22-14><a class=lnlinks href=#hl-22-14>14</a></span><span class=cl><span class=p>},</span>
+config</div></li></ol><!--list-separator--><ol start=2><li><p>Скратчпад</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=cl><span class=o>//</span> <span class=n>Scratchpad</span>
+</span></span><span class=line><span class=cl><span class=s2>&#34;custom/scratchpad&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;interval&#34;</span><span class=p>:</span> <span class=s2>&#34;once&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;escape&#34;</span><span class=p>:</span> <span class=bp>true</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;return-type&#34;</span><span class=p>:</span> <span class=s2>&#34;json&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;format&#34;</span><span class=p>:</span> <span class=s2>&#34;{icon}&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;format-icons&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;one&#34;</span><span class=p>:</span> <span class=s2>&#34;󰖯 &#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;many&#34;</span><span class=p>:</span> <span class=s2>&#34;󰖲 &#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;exec&#34;</span><span class=p>:</span> <span class=s2>&#34;/bin/sh ~/.config/sway/scripts/scratchpad.sh&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;on-click&#34;</span><span class=p>:</span> <span class=s2>&#34;swaymsg &#39;scratchpad show&#39;&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;signal&#34;</span><span class=p>:</span> <span class=mi>7</span>
+</span></span><span class=line><span class=cl><span class=p>},</span>
 </span></span></code></pre></div><div class=src-block-caption><span class=src-block-number>&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 21:</span>
-config</div></li></ol><!--list-separator--><ol start=3><li><p>Отключение машины</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=ln id=hl-23-1><a class=lnlinks href=#hl-23-1> 1</a></span><span class=cl><span class=s2>&#34;custom/power&#34;</span><span class=p>:</span> <span class=p>{</span>
-</span></span><span class=line><span class=ln id=hl-23-2><a class=lnlinks href=#hl-23-2> 2</a></span><span class=cl>    <span class=s2>&#34;format&#34;</span> <span class=p>:</span> <span class=s2>&#34;⏻ &#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-23-3><a class=lnlinks href=#hl-23-3> 3</a></span><span class=cl>    <span class=s2>&#34;tooltip&#34;</span><span class=p>:</span> <span class=bp>false</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-23-4><a class=lnlinks href=#hl-23-4> 4</a></span><span class=cl>    <span class=s2>&#34;menu&#34;</span><span class=p>:</span> <span class=s2>&#34;on-click&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-23-5><a class=lnlinks href=#hl-23-5> 5</a></span><span class=cl>    <span class=s2>&#34;menu-file&#34;</span><span class=p>:</span> <span class=s2>&#34;$HOME/.config/waybar/power_menu.xml&#34;</span><span class=p>,</span> <span class=o>//</span> <span class=n>Menu</span> <span class=n>file</span> <span class=ow>in</span> <span class=n>resources</span> <span class=n>folder</span>
-</span></span><span class=line><span class=ln id=hl-23-6><a class=lnlinks href=#hl-23-6> 6</a></span><span class=cl>    <span class=s2>&#34;menu-actions&#34;</span><span class=p>:</span> <span class=p>{</span>
-</span></span><span class=line><span class=ln id=hl-23-7><a class=lnlinks href=#hl-23-7> 7</a></span><span class=cl>      <span class=s2>&#34;shutdown&#34;</span><span class=p>:</span> <span class=s2>&#34;shutdown&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-23-8><a class=lnlinks href=#hl-23-8> 8</a></span><span class=cl>      <span class=s2>&#34;reboot&#34;</span><span class=p>:</span> <span class=s2>&#34;reboot&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-23-9><a class=lnlinks href=#hl-23-9> 9</a></span><span class=cl>      <span class=s2>&#34;suspend&#34;</span><span class=p>:</span> <span class=s2>&#34;systemctl suspend&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-23-10><a class=lnlinks href=#hl-23-10>10</a></span><span class=cl>      <span class=s2>&#34;hibernate&#34;</span><span class=p>:</span> <span class=s2>&#34;systemctl hibernate&#34;</span>
-</span></span><span class=line><span class=ln id=hl-23-11><a class=lnlinks href=#hl-23-11>11</a></span><span class=cl>    <span class=p>}</span>
-</span></span><span class=line><span class=ln id=hl-23-12><a class=lnlinks href=#hl-23-12>12</a></span><span class=cl><span class=p>},</span>
+config</div></li></ol><!--list-separator--><ol start=3><li><p>Отключение машины</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=cl><span class=s2>&#34;custom/power&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;format&#34;</span> <span class=p>:</span> <span class=s2>&#34;⏻ &#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;tooltip&#34;</span><span class=p>:</span> <span class=bp>false</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;menu&#34;</span><span class=p>:</span> <span class=s2>&#34;on-click&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;menu-file&#34;</span><span class=p>:</span> <span class=s2>&#34;$HOME/.config/waybar/power_menu.xml&#34;</span><span class=p>,</span> <span class=o>//</span> <span class=n>Menu</span> <span class=n>file</span> <span class=ow>in</span> <span class=n>resources</span> <span class=n>folder</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;menu-actions&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=s2>&#34;shutdown&#34;</span><span class=p>:</span> <span class=s2>&#34;shutdown&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=s2>&#34;reboot&#34;</span><span class=p>:</span> <span class=s2>&#34;reboot&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=s2>&#34;suspend&#34;</span><span class=p>:</span> <span class=s2>&#34;systemctl suspend&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=s2>&#34;hibernate&#34;</span><span class=p>:</span> <span class=s2>&#34;systemctl hibernate&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>},</span>
 </span></span></code></pre></div><div class=src-block-caption><span class=src-block-number>&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 22:</span>
-config</div></li></ol><!--list-separator--><ol start=4><li><p>Буфер обмена</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=ln id=hl-24-1><a class=lnlinks href=#hl-24-1> 1</a></span><span class=cl><span class=o>//</span> <span class=n>Clipboard</span>
-</span></span><span class=line><span class=ln id=hl-24-2><a class=lnlinks href=#hl-24-2> 2</a></span><span class=cl><span class=s2>&#34;custom/clipboard&#34;</span><span class=p>:</span> <span class=p>{</span>
-</span></span><span class=line><span class=ln id=hl-24-3><a class=lnlinks href=#hl-24-3> 3</a></span><span class=cl>    <span class=s2>&#34;format&#34;</span><span class=p>:</span> <span class=s2>&#34; &#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-24-4><a class=lnlinks href=#hl-24-4> 4</a></span><span class=cl>    <span class=s2>&#34;interval&#34;</span><span class=p>:</span> <span class=s2>&#34;once&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-24-5><a class=lnlinks href=#hl-24-5> 5</a></span><span class=cl>    <span class=s2>&#34;return-type&#34;</span><span class=p>:</span> <span class=s2>&#34;json&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-24-6><a class=lnlinks href=#hl-24-6> 6</a></span><span class=cl>    <span class=s2>&#34;on-click&#34;</span><span class=p>:</span> <span class=s2>&#34;swaymsg -q exec &#39;$clipboard&#39;; pkill -RTMIN+9 waybar&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-24-7><a class=lnlinks href=#hl-24-7> 7</a></span><span class=cl>    <span class=s2>&#34;on-click-right&#34;</span><span class=p>:</span> <span class=s2>&#34;swaymsg -q exec &#39;$clipboard-del&#39;; pkill -RTMIN+9 waybar&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-24-8><a class=lnlinks href=#hl-24-8> 8</a></span><span class=cl>    <span class=s2>&#34;on-click-middle&#34;</span><span class=p>:</span> <span class=s2>&#34;swaymsg -q exec &#39;$clipboard-del-all&#39;&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-24-9><a class=lnlinks href=#hl-24-9> 9</a></span><span class=cl>    <span class=s2>&#34;exec&#34;</span><span class=p>:</span> <span class=s2>&#34;printf &#39;{</span><span class=se>\&#34;</span><span class=s2>tooltip</span><span class=se>\&#34;</span><span class=s2>:</span><span class=se>\&#34;</span><span class=si>%s</span><span class=se>\&#34;</span><span class=s2>}&#39; $(cliphist list | wc -l)&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-24-10><a class=lnlinks href=#hl-24-10>10</a></span><span class=cl>    <span class=s2>&#34;exec-if&#34;</span><span class=p>:</span> <span class=s2>&#34;[ -x </span><span class=se>\&#34;</span><span class=s2>$(command -v cliphist)</span><span class=se>\&#34;</span><span class=s2> ] &amp;&amp; [ $(cliphist list | wc -l) -gt 0 ]&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=ln id=hl-24-11><a class=lnlinks href=#hl-24-11>11</a></span><span class=cl>    <span class=s2>&#34;signal&#34;</span><span class=p>:</span> <span class=mi>9</span>
-</span></span><span class=line><span class=ln id=hl-24-12><a class=lnlinks href=#hl-24-12>12</a></span><span class=cl><span class=p>},</span>
+config</div></li></ol><!--list-separator--><ol start=4><li><p>Буфер обмена</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=cl><span class=o>//</span> <span class=n>Clipboard</span>
+</span></span><span class=line><span class=cl><span class=s2>&#34;custom/clipboard&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;format&#34;</span><span class=p>:</span> <span class=s2>&#34; &#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;interval&#34;</span><span class=p>:</span> <span class=s2>&#34;once&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;return-type&#34;</span><span class=p>:</span> <span class=s2>&#34;json&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;on-click&#34;</span><span class=p>:</span> <span class=s2>&#34;swaymsg -q exec &#39;$clipboard&#39;; pkill -RTMIN+9 waybar&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;on-click-right&#34;</span><span class=p>:</span> <span class=s2>&#34;swaymsg -q exec &#39;$clipboard-del&#39;; pkill -RTMIN+9 waybar&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;on-click-middle&#34;</span><span class=p>:</span> <span class=s2>&#34;swaymsg -q exec &#39;$clipboard-del-all&#39;&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;exec&#34;</span><span class=p>:</span> <span class=s2>&#34;printf &#39;{</span><span class=se>\&#34;</span><span class=s2>tooltip</span><span class=se>\&#34;</span><span class=s2>:</span><span class=se>\&#34;</span><span class=si>%s</span><span class=se>\&#34;</span><span class=s2>}&#39; $(cliphist list | wc -l)&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;exec-if&#34;</span><span class=p>:</span> <span class=s2>&#34;[ -x </span><span class=se>\&#34;</span><span class=s2>$(command -v cliphist)</span><span class=se>\&#34;</span><span class=s2> ] &amp;&amp; [ $(cliphist list | wc -l) -gt 0 ]&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;signal&#34;</span><span class=p>:</span> <span class=mi>9</span>
+</span></span><span class=line><span class=cl><span class=p>},</span>
 </span></span></code></pre></div><div class=src-block-caption><span class=src-block-number>&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 23:</span>
-config</div></li></ol></li></ol><h4 id=конец><span class=section-num>2.2.5</span> Конец</h4><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=ln id=hl-25-1><a class=lnlinks href=#hl-25-1>1</a></span><span class=cl>}
+config</div></li></ol></li></ol><h4 id=конец><span class=section-num>2.2.5</span> Конец</h4><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>}
 </span></span></code></pre></div><div class=src-block-caption><span class=src-block-number>&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 24:</span>
-config</div><h2 id=стили><span class=section-num>3</span> Стили</h2><h3 id=общая-информация><span class=section-num>3.1</span> Общая информация</h3><ul><li>Wiki: <a href=https://github.com/Alexays/Waybar/wiki/Styling target=_blank rel=noopener>https://github.com/Alexays/Waybar/wiki/Styling</a></li><li>Стилизация выполняется с использованием формата файла CSS и файла с именем <code>style.css</code>.</li><li>Можно также использовать <code>style-light.css</code> и <code>style-dark.css</code> соответственно, чтобы следовать системной теме.</li><li>Каталоги для этого файла:<ul><li><code>~/.config/waybar/</code>;</li><li><code>~/waybar/</code>;</li><li><code>/etc/xdg/waybar/</code>.</li></ul></li><li>Можно указывать не конкретные цвета, а цвета из GTK-темы (<a href=https://gitlab.gnome.org/GNOME/gtk/-/blob/gtk-3-24/gtk/theme/Adwaita/_colors-public.scss target=_blank rel=noopener>https://gitlab.gnome.org/GNOME/gtk/-/blob/gtk-3-24/gtk/theme/Adwaita/_colors-public.scss</a>).</li></ul><h3 id=стилевой-файл><span class=section-num>3.2</span> Стилевой файл</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-css data-lang=css><span class=line><span class=ln id=hl-26-1><a class=lnlinks href=#hl-26-1>  1</a></span><span class=cl><span class=c>/* Waybar configuration */</span>
-</span></span><span class=line><span class=ln id=hl-26-2><a class=lnlinks href=#hl-26-2>  2</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-26-3><a class=lnlinks href=#hl-26-3>  3</a></span><span class=cl><span class=c>/* Keyframes */</span>
-</span></span><span class=line><span class=ln id=hl-26-4><a class=lnlinks href=#hl-26-4>  4</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-26-5><a class=lnlinks href=#hl-26-5>  5</a></span><span class=cl><span class=p>@</span><span class=k>keyframes</span> <span class=nt>blink-warning</span> <span class=p>{</span>
-</span></span><span class=line><span class=ln id=hl-26-6><a class=lnlinks href=#hl-26-6>  6</a></span><span class=cl>    <span class=nt>70</span><span class=o>%</span> <span class=p>{</span>
-</span></span><span class=line><span class=ln id=hl-26-7><a class=lnlinks href=#hl-26-7>  7</a></span><span class=cl>      <span class=k>color</span><span class=p>:</span> <span class=kc>white</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-8><a class=lnlinks href=#hl-26-8>  8</a></span><span class=cl>    <span class=p>}</span>
-</span></span><span class=line><span class=ln id=hl-26-9><a class=lnlinks href=#hl-26-9>  9</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-26-10><a class=lnlinks href=#hl-26-10> 10</a></span><span class=cl>    <span class=nt>to</span> <span class=p>{</span>
-</span></span><span class=line><span class=ln id=hl-26-11><a class=lnlinks href=#hl-26-11> 11</a></span><span class=cl>      <span class=k>color</span><span class=p>:</span> <span class=kc>white</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-12><a class=lnlinks href=#hl-26-12> 12</a></span><span class=cl>      <span class=k>background-color</span><span class=p>:</span> <span class=kc>orange</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-13><a class=lnlinks href=#hl-26-13> 13</a></span><span class=cl>    <span class=p>}</span>
-</span></span><span class=line><span class=ln id=hl-26-14><a class=lnlinks href=#hl-26-14> 14</a></span><span class=cl><span class=p>}</span>
-</span></span><span class=line><span class=ln id=hl-26-15><a class=lnlinks href=#hl-26-15> 15</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-26-16><a class=lnlinks href=#hl-26-16> 16</a></span><span class=cl><span class=p>@</span><span class=k>keyframes</span> <span class=nt>blink-critical</span> <span class=p>{</span>
-</span></span><span class=line><span class=ln id=hl-26-17><a class=lnlinks href=#hl-26-17> 17</a></span><span class=cl>    <span class=nt>70</span><span class=o>%</span> <span class=p>{</span>
-</span></span><span class=line><span class=ln id=hl-26-18><a class=lnlinks href=#hl-26-18> 18</a></span><span class=cl>      <span class=k>color</span><span class=p>:</span> <span class=kc>white</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-19><a class=lnlinks href=#hl-26-19> 19</a></span><span class=cl>    <span class=p>}</span>
-</span></span><span class=line><span class=ln id=hl-26-20><a class=lnlinks href=#hl-26-20> 20</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-26-21><a class=lnlinks href=#hl-26-21> 21</a></span><span class=cl>    <span class=nt>to</span> <span class=p>{</span>
-</span></span><span class=line><span class=ln id=hl-26-22><a class=lnlinks href=#hl-26-22> 22</a></span><span class=cl>      <span class=k>color</span><span class=p>:</span> <span class=kc>white</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-23><a class=lnlinks href=#hl-26-23> 23</a></span><span class=cl>      <span class=k>background-color</span><span class=p>:</span> <span class=kc>red</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-24><a class=lnlinks href=#hl-26-24> 24</a></span><span class=cl>    <span class=p>}</span>
-</span></span><span class=line><span class=ln id=hl-26-25><a class=lnlinks href=#hl-26-25> 25</a></span><span class=cl><span class=p>}</span>
-</span></span><span class=line><span class=ln id=hl-26-26><a class=lnlinks href=#hl-26-26> 26</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-26-27><a class=lnlinks href=#hl-26-27> 27</a></span><span class=cl><span class=c>/* Base styles */</span>
-</span></span><span class=line><span class=ln id=hl-26-28><a class=lnlinks href=#hl-26-28> 28</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-26-29><a class=lnlinks href=#hl-26-29> 29</a></span><span class=cl><span class=c>/* Reset all styles */</span>
-</span></span><span class=line><span class=ln id=hl-26-30><a class=lnlinks href=#hl-26-30> 30</a></span><span class=cl><span class=o>*</span> <span class=p>{</span>
-</span></span><span class=line><span class=ln id=hl-26-31><a class=lnlinks href=#hl-26-31> 31</a></span><span class=cl>    <span class=k>border</span><span class=p>:</span> <span class=kc>none</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-32><a class=lnlinks href=#hl-26-32> 32</a></span><span class=cl>    <span class=k>border-radius</span><span class=p>:</span> <span class=mi>0</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-33><a class=lnlinks href=#hl-26-33> 33</a></span><span class=cl>    <span class=k>min-height</span><span class=p>:</span> <span class=mi>0</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-34><a class=lnlinks href=#hl-26-34> 34</a></span><span class=cl>    <span class=k>margin</span><span class=p>:</span> <span class=mi>0</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-35><a class=lnlinks href=#hl-26-35> 35</a></span><span class=cl>    <span class=k>padding</span><span class=p>:</span> <span class=mi>0</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-36><a class=lnlinks href=#hl-26-36> 36</a></span><span class=cl>    <span class=k>font-family</span><span class=p>:</span> <span class=s2>&#34;Iosevka Nerd Font Propo&#34;</span><span class=p>,</span> <span class=s2>&#34;Font Awesome 6 Free&#34;</span><span class=p>,</span> <span class=s2>&#34;Font Awesome 6 Brands&#34;</span><span class=p>,</span> <span class=kc>sans-serif</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-37><a class=lnlinks href=#hl-26-37> 37</a></span><span class=cl>    <span class=k>font-size</span><span class=p>:</span> <span class=mi>14</span><span class=kt>px</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-38><a class=lnlinks href=#hl-26-38> 38</a></span><span class=cl><span class=p>}</span>
-</span></span><span class=line><span class=ln id=hl-26-39><a class=lnlinks href=#hl-26-39> 39</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-26-40><a class=lnlinks href=#hl-26-40> 40</a></span><span class=cl><span class=c>/* The whole bar */</span>
-</span></span><span class=line><span class=ln id=hl-26-41><a class=lnlinks href=#hl-26-41> 41</a></span><span class=cl><span class=nt>window</span><span class=p>#</span><span class=nn>waybar</span> <span class=p>{</span>
-</span></span><span class=line><span class=ln id=hl-26-42><a class=lnlinks href=#hl-26-42> 42</a></span><span class=cl>    <span class=c>/* background: @theme_fg_color; */</span>
-</span></span><span class=line><span class=ln id=hl-26-43><a class=lnlinks href=#hl-26-43> 43</a></span><span class=cl>    <span class=k>background</span><span class=p>:</span> <span class=o>@</span><span class=n>theme_base_color</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-44><a class=lnlinks href=#hl-26-44> 44</a></span><span class=cl>    <span class=c>/* background: #323232; */</span>
-</span></span><span class=line><span class=ln id=hl-26-45><a class=lnlinks href=#hl-26-45> 45</a></span><span class=cl>    <span class=k>border-bottom</span><span class=p>:</span> <span class=mi>1</span><span class=kt>px</span> <span class=kc>solid</span> <span class=o>@</span><span class=n>unfocused_borders</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-46><a class=lnlinks href=#hl-26-46> 46</a></span><span class=cl>    <span class=k>color</span><span class=p>:</span> <span class=o>@</span><span class=n>theme_text_color</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-47><a class=lnlinks href=#hl-26-47> 47</a></span><span class=cl>    <span class=c>/* color: black; */</span>
-</span></span><span class=line><span class=ln id=hl-26-48><a class=lnlinks href=#hl-26-48> 48</a></span><span class=cl>    <span class=c>/* color: white; */</span>
-</span></span><span class=line><span class=ln id=hl-26-49><a class=lnlinks href=#hl-26-49> 49</a></span><span class=cl><span class=p>}</span>
-</span></span><span class=line><span class=ln id=hl-26-50><a class=lnlinks href=#hl-26-50> 50</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-26-51><a class=lnlinks href=#hl-26-51> 51</a></span><span class=cl><span class=c>/* Each module */</span>
-</span></span><span class=line><span class=ln id=hl-26-52><a class=lnlinks href=#hl-26-52> 52</a></span><span class=cl><span class=p>#</span><span class=nn>battery</span><span class=o>,</span>
-</span></span><span class=line><span class=ln id=hl-26-53><a class=lnlinks href=#hl-26-53> 53</a></span><span class=cl><span class=p>#</span><span class=nn>clock</span><span class=o>,</span>
-</span></span><span class=line><span class=ln id=hl-26-54><a class=lnlinks href=#hl-26-54> 54</a></span><span class=cl><span class=p>#</span><span class=nn>cpu</span><span class=o>,</span>
-</span></span><span class=line><span class=ln id=hl-26-55><a class=lnlinks href=#hl-26-55> 55</a></span><span class=cl><span class=p>#</span><span class=nn>custom-keyboard-layout</span><span class=o>,</span>
-</span></span><span class=line><span class=ln id=hl-26-56><a class=lnlinks href=#hl-26-56> 56</a></span><span class=cl><span class=p>#</span><span class=nn>memory</span><span class=o>,</span>
-</span></span><span class=line><span class=ln id=hl-26-57><a class=lnlinks href=#hl-26-57> 57</a></span><span class=cl><span class=p>#</span><span class=nn>mode</span><span class=o>,</span>
-</span></span><span class=line><span class=ln id=hl-26-58><a class=lnlinks href=#hl-26-58> 58</a></span><span class=cl><span class=p>#</span><span class=nn>network</span><span class=o>,</span>
-</span></span><span class=line><span class=ln id=hl-26-59><a class=lnlinks href=#hl-26-59> 59</a></span><span class=cl><span class=p>#</span><span class=nn>pulseaudio</span><span class=o>,</span>
-</span></span><span class=line><span class=ln id=hl-26-60><a class=lnlinks href=#hl-26-60> 60</a></span><span class=cl><span class=p>#</span><span class=nn>temperature</span><span class=o>,</span>
-</span></span><span class=line><span class=ln id=hl-26-61><a class=lnlinks href=#hl-26-61> 61</a></span><span class=cl><span class=p>#</span><span class=nn>tray</span> <span class=p>{</span>
-</span></span><span class=line><span class=ln id=hl-26-62><a class=lnlinks href=#hl-26-62> 62</a></span><span class=cl>    <span class=k>padding-left</span><span class=p>:</span> <span class=mi>4</span><span class=kt>px</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-63><a class=lnlinks href=#hl-26-63> 63</a></span><span class=cl>    <span class=k>padding-right</span><span class=p>:</span> <span class=mi>4</span><span class=kt>px</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-64><a class=lnlinks href=#hl-26-64> 64</a></span><span class=cl><span class=p>}</span>
-</span></span><span class=line><span class=ln id=hl-26-65><a class=lnlinks href=#hl-26-65> 65</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-26-66><a class=lnlinks href=#hl-26-66> 66</a></span><span class=cl><span class=c>/* -----------------------------------------------------------------------------
-</span></span></span><span class=line><span class=ln id=hl-26-67><a class=lnlinks href=#hl-26-67> 67</a></span><span class=cl><span class=c> * Module styles
-</span></span></span><span class=line><span class=ln id=hl-26-68><a class=lnlinks href=#hl-26-68> 68</a></span><span class=cl><span class=c> * -------------------------------------------------------------------------- */</span>
-</span></span><span class=line><span class=ln id=hl-26-69><a class=lnlinks href=#hl-26-69> 69</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-26-70><a class=lnlinks href=#hl-26-70> 70</a></span><span class=cl><span class=p>#</span><span class=nn>battery</span> <span class=p>{</span>
-</span></span><span class=line><span class=ln id=hl-26-71><a class=lnlinks href=#hl-26-71> 71</a></span><span class=cl>    <span class=k>animation-timing-function</span><span class=p>:</span> <span class=kc>linear</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-72><a class=lnlinks href=#hl-26-72> 72</a></span><span class=cl>    <span class=k>animation-iteration-count</span><span class=p>:</span> <span class=kc>infinite</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-73><a class=lnlinks href=#hl-26-73> 73</a></span><span class=cl>    <span class=k>animation-direction</span><span class=p>:</span> <span class=kc>alternate</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-74><a class=lnlinks href=#hl-26-74> 74</a></span><span class=cl><span class=p>}</span>
-</span></span><span class=line><span class=ln id=hl-26-75><a class=lnlinks href=#hl-26-75> 75</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-26-76><a class=lnlinks href=#hl-26-76> 76</a></span><span class=cl><span class=p>#</span><span class=nn>battery</span><span class=p>.</span><span class=nc>warning</span> <span class=p>{</span>
-</span></span><span class=line><span class=ln id=hl-26-77><a class=lnlinks href=#hl-26-77> 77</a></span><span class=cl>    <span class=k>color</span><span class=p>:</span> <span class=kc>orange</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-78><a class=lnlinks href=#hl-26-78> 78</a></span><span class=cl><span class=p>}</span>
-</span></span><span class=line><span class=ln id=hl-26-79><a class=lnlinks href=#hl-26-79> 79</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-26-80><a class=lnlinks href=#hl-26-80> 80</a></span><span class=cl><span class=p>#</span><span class=nn>battery</span><span class=p>.</span><span class=nc>critical</span> <span class=p>{</span>
-</span></span><span class=line><span class=ln id=hl-26-81><a class=lnlinks href=#hl-26-81> 81</a></span><span class=cl>    <span class=k>color</span><span class=p>:</span> <span class=kc>red</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-82><a class=lnlinks href=#hl-26-82> 82</a></span><span class=cl><span class=p>}</span>
-</span></span><span class=line><span class=ln id=hl-26-83><a class=lnlinks href=#hl-26-83> 83</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-26-84><a class=lnlinks href=#hl-26-84> 84</a></span><span class=cl><span class=p>#</span><span class=nn>battery</span><span class=p>.</span><span class=nc>warning</span><span class=p>.</span><span class=nc>discharging</span> <span class=p>{</span>
-</span></span><span class=line><span class=ln id=hl-26-85><a class=lnlinks href=#hl-26-85> 85</a></span><span class=cl>    <span class=k>animation-name</span><span class=p>:</span> <span class=kc>blink</span><span class=o>-</span><span class=n>warning</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-86><a class=lnlinks href=#hl-26-86> 86</a></span><span class=cl>    <span class=k>animation-duration</span><span class=p>:</span> <span class=mi>3</span><span class=kt>s</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-87><a class=lnlinks href=#hl-26-87> 87</a></span><span class=cl><span class=p>}</span>
-</span></span><span class=line><span class=ln id=hl-26-88><a class=lnlinks href=#hl-26-88> 88</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-26-89><a class=lnlinks href=#hl-26-89> 89</a></span><span class=cl><span class=p>#</span><span class=nn>battery</span><span class=p>.</span><span class=nc>critical</span><span class=p>.</span><span class=nc>discharging</span> <span class=p>{</span>
-</span></span><span class=line><span class=ln id=hl-26-90><a class=lnlinks href=#hl-26-90> 90</a></span><span class=cl>    <span class=k>animation-name</span><span class=p>:</span> <span class=kc>blink</span><span class=o>-</span><span class=n>critical</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-91><a class=lnlinks href=#hl-26-91> 91</a></span><span class=cl>    <span class=k>animation-duration</span><span class=p>:</span> <span class=mi>2</span><span class=kt>s</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-92><a class=lnlinks href=#hl-26-92> 92</a></span><span class=cl><span class=p>}</span>
-</span></span><span class=line><span class=ln id=hl-26-93><a class=lnlinks href=#hl-26-93> 93</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-26-94><a class=lnlinks href=#hl-26-94> 94</a></span><span class=cl><span class=p>#</span><span class=nn>clock</span> <span class=p>{</span>
-</span></span><span class=line><span class=ln id=hl-26-95><a class=lnlinks href=#hl-26-95> 95</a></span><span class=cl>    <span class=k>font-weight</span><span class=p>:</span> <span class=kc>bold</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-96><a class=lnlinks href=#hl-26-96> 96</a></span><span class=cl><span class=p>}</span>
-</span></span><span class=line><span class=ln id=hl-26-97><a class=lnlinks href=#hl-26-97> 97</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-26-98><a class=lnlinks href=#hl-26-98> 98</a></span><span class=cl><span class=p>#</span><span class=nn>cpu</span> <span class=p>{</span>
-</span></span><span class=line><span class=ln id=hl-26-99><a class=lnlinks href=#hl-26-99> 99</a></span><span class=cl>  <span class=c>/* No styles */</span>
-</span></span><span class=line><span class=ln id=hl-26-100><a class=lnlinks href=#hl-26-100>100</a></span><span class=cl><span class=p>}</span>
-</span></span><span class=line><span class=ln id=hl-26-101><a class=lnlinks href=#hl-26-101>101</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-26-102><a class=lnlinks href=#hl-26-102>102</a></span><span class=cl><span class=p>#</span><span class=nn>cpu</span><span class=p>.</span><span class=nc>warning</span> <span class=p>{</span>
-</span></span><span class=line><span class=ln id=hl-26-103><a class=lnlinks href=#hl-26-103>103</a></span><span class=cl>    <span class=k>color</span><span class=p>:</span> <span class=kc>orange</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-104><a class=lnlinks href=#hl-26-104>104</a></span><span class=cl><span class=p>}</span>
-</span></span><span class=line><span class=ln id=hl-26-105><a class=lnlinks href=#hl-26-105>105</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-26-106><a class=lnlinks href=#hl-26-106>106</a></span><span class=cl><span class=p>#</span><span class=nn>cpu</span><span class=p>.</span><span class=nc>critical</span> <span class=p>{</span>
-</span></span><span class=line><span class=ln id=hl-26-107><a class=lnlinks href=#hl-26-107>107</a></span><span class=cl>    <span class=k>color</span><span class=p>:</span> <span class=kc>red</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-108><a class=lnlinks href=#hl-26-108>108</a></span><span class=cl><span class=p>}</span>
-</span></span><span class=line><span class=ln id=hl-26-109><a class=lnlinks href=#hl-26-109>109</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-26-110><a class=lnlinks href=#hl-26-110>110</a></span><span class=cl><span class=p>#</span><span class=nn>memory</span> <span class=p>{</span>
-</span></span><span class=line><span class=ln id=hl-26-111><a class=lnlinks href=#hl-26-111>111</a></span><span class=cl>    <span class=k>animation-timing-function</span><span class=p>:</span> <span class=kc>linear</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-112><a class=lnlinks href=#hl-26-112>112</a></span><span class=cl>    <span class=k>animation-iteration-count</span><span class=p>:</span> <span class=kc>infinite</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-113><a class=lnlinks href=#hl-26-113>113</a></span><span class=cl>    <span class=k>animation-direction</span><span class=p>:</span> <span class=kc>alternate</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-114><a class=lnlinks href=#hl-26-114>114</a></span><span class=cl><span class=p>}</span>
-</span></span><span class=line><span class=ln id=hl-26-115><a class=lnlinks href=#hl-26-115>115</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-26-116><a class=lnlinks href=#hl-26-116>116</a></span><span class=cl><span class=p>#</span><span class=nn>memory</span><span class=p>.</span><span class=nc>warning</span> <span class=p>{</span>
-</span></span><span class=line><span class=ln id=hl-26-117><a class=lnlinks href=#hl-26-117>117</a></span><span class=cl>    <span class=k>color</span><span class=p>:</span> <span class=kc>orange</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-118><a class=lnlinks href=#hl-26-118>118</a></span><span class=cl><span class=p>}</span>
-</span></span><span class=line><span class=ln id=hl-26-119><a class=lnlinks href=#hl-26-119>119</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-26-120><a class=lnlinks href=#hl-26-120>120</a></span><span class=cl><span class=p>#</span><span class=nn>memory</span><span class=p>.</span><span class=nc>critical</span> <span class=p>{</span>
-</span></span><span class=line><span class=ln id=hl-26-121><a class=lnlinks href=#hl-26-121>121</a></span><span class=cl>    <span class=k>color</span><span class=p>:</span> <span class=kc>red</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-122><a class=lnlinks href=#hl-26-122>122</a></span><span class=cl>    <span class=k>animation-name</span><span class=p>:</span> <span class=kc>blink</span><span class=o>-</span><span class=n>critical</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-123><a class=lnlinks href=#hl-26-123>123</a></span><span class=cl>    <span class=k>animation-duration</span><span class=p>:</span> <span class=mi>2</span><span class=kt>s</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-124><a class=lnlinks href=#hl-26-124>124</a></span><span class=cl><span class=p>}</span>
-</span></span><span class=line><span class=ln id=hl-26-125><a class=lnlinks href=#hl-26-125>125</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-26-126><a class=lnlinks href=#hl-26-126>126</a></span><span class=cl><span class=p>#</span><span class=nn>mode</span> <span class=p>{</span>
-</span></span><span class=line><span class=ln id=hl-26-127><a class=lnlinks href=#hl-26-127>127</a></span><span class=cl>    <span class=k>background</span><span class=p>:</span> <span class=mh>#64727D</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-128><a class=lnlinks href=#hl-26-128>128</a></span><span class=cl>    <span class=k>border-top</span><span class=p>:</span> <span class=mi>2</span><span class=kt>px</span> <span class=kc>solid</span> <span class=kc>white</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-129><a class=lnlinks href=#hl-26-129>129</a></span><span class=cl>    <span class=c>/* To compensate for the top border and still have vertical centering */</span>
-</span></span><span class=line><span class=ln id=hl-26-130><a class=lnlinks href=#hl-26-130>130</a></span><span class=cl>    <span class=k>padding-bottom</span><span class=p>:</span> <span class=mi>2</span><span class=kt>px</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-131><a class=lnlinks href=#hl-26-131>131</a></span><span class=cl><span class=p>}</span>
-</span></span><span class=line><span class=ln id=hl-26-132><a class=lnlinks href=#hl-26-132>132</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-26-133><a class=lnlinks href=#hl-26-133>133</a></span><span class=cl><span class=p>#</span><span class=nn>network</span> <span class=p>{</span>
-</span></span><span class=line><span class=ln id=hl-26-134><a class=lnlinks href=#hl-26-134>134</a></span><span class=cl>    <span class=c>/* No styles */</span>
-</span></span><span class=line><span class=ln id=hl-26-135><a class=lnlinks href=#hl-26-135>135</a></span><span class=cl><span class=p>}</span>
-</span></span><span class=line><span class=ln id=hl-26-136><a class=lnlinks href=#hl-26-136>136</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-26-137><a class=lnlinks href=#hl-26-137>137</a></span><span class=cl><span class=p>#</span><span class=nn>network</span><span class=p>.</span><span class=nc>disconnected</span> <span class=p>{</span>
-</span></span><span class=line><span class=ln id=hl-26-138><a class=lnlinks href=#hl-26-138>138</a></span><span class=cl>    <span class=k>color</span><span class=p>:</span> <span class=kc>orange</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-139><a class=lnlinks href=#hl-26-139>139</a></span><span class=cl><span class=p>}</span>
-</span></span><span class=line><span class=ln id=hl-26-140><a class=lnlinks href=#hl-26-140>140</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-26-141><a class=lnlinks href=#hl-26-141>141</a></span><span class=cl><span class=p>#</span><span class=nn>pulseaudio</span> <span class=p>{</span>
-</span></span><span class=line><span class=ln id=hl-26-142><a class=lnlinks href=#hl-26-142>142</a></span><span class=cl>    <span class=c>/* No styles */</span>
-</span></span><span class=line><span class=ln id=hl-26-143><a class=lnlinks href=#hl-26-143>143</a></span><span class=cl><span class=p>}</span>
-</span></span><span class=line><span class=ln id=hl-26-144><a class=lnlinks href=#hl-26-144>144</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-26-145><a class=lnlinks href=#hl-26-145>145</a></span><span class=cl><span class=p>#</span><span class=nn>pulseaudio</span><span class=p>.</span><span class=nc>muted</span> <span class=p>{</span>
-</span></span><span class=line><span class=ln id=hl-26-146><a class=lnlinks href=#hl-26-146>146</a></span><span class=cl>    <span class=c>/* No styles */</span>
-</span></span><span class=line><span class=ln id=hl-26-147><a class=lnlinks href=#hl-26-147>147</a></span><span class=cl><span class=p>}</span>
-</span></span><span class=line><span class=ln id=hl-26-148><a class=lnlinks href=#hl-26-148>148</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-26-149><a class=lnlinks href=#hl-26-149>149</a></span><span class=cl><span class=p>#</span><span class=nn>custom-spotify</span> <span class=p>{</span>
-</span></span><span class=line><span class=ln id=hl-26-150><a class=lnlinks href=#hl-26-150>150</a></span><span class=cl>    <span class=k>color</span><span class=p>:</span> <span class=nb>rgb</span><span class=p>(</span><span class=mi>102</span><span class=p>,</span> <span class=mi>220</span><span class=p>,</span> <span class=mi>105</span><span class=p>);</span>
-</span></span><span class=line><span class=ln id=hl-26-151><a class=lnlinks href=#hl-26-151>151</a></span><span class=cl><span class=p>}</span>
-</span></span><span class=line><span class=ln id=hl-26-152><a class=lnlinks href=#hl-26-152>152</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-26-153><a class=lnlinks href=#hl-26-153>153</a></span><span class=cl><span class=p>#</span><span class=nn>temperature</span> <span class=p>{</span>
-</span></span><span class=line><span class=ln id=hl-26-154><a class=lnlinks href=#hl-26-154>154</a></span><span class=cl>    <span class=c>/* No styles */</span>
-</span></span><span class=line><span class=ln id=hl-26-155><a class=lnlinks href=#hl-26-155>155</a></span><span class=cl><span class=p>}</span>
-</span></span><span class=line><span class=ln id=hl-26-156><a class=lnlinks href=#hl-26-156>156</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-26-157><a class=lnlinks href=#hl-26-157>157</a></span><span class=cl><span class=p>#</span><span class=nn>temperature</span><span class=p>.</span><span class=nc>critical</span> <span class=p>{</span>
-</span></span><span class=line><span class=ln id=hl-26-158><a class=lnlinks href=#hl-26-158>158</a></span><span class=cl>    <span class=k>color</span><span class=p>:</span> <span class=kc>red</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-159><a class=lnlinks href=#hl-26-159>159</a></span><span class=cl><span class=p>}</span>
-</span></span><span class=line><span class=ln id=hl-26-160><a class=lnlinks href=#hl-26-160>160</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-26-161><a class=lnlinks href=#hl-26-161>161</a></span><span class=cl><span class=p>#</span><span class=nn>tray</span> <span class=p>{</span>
-</span></span><span class=line><span class=ln id=hl-26-162><a class=lnlinks href=#hl-26-162>162</a></span><span class=cl>    <span class=c>/* No styles */</span>
-</span></span><span class=line><span class=ln id=hl-26-163><a class=lnlinks href=#hl-26-163>163</a></span><span class=cl><span class=p>}</span>
-</span></span><span class=line><span class=ln id=hl-26-164><a class=lnlinks href=#hl-26-164>164</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-26-165><a class=lnlinks href=#hl-26-165>165</a></span><span class=cl><span class=p>#</span><span class=nn>window</span> <span class=p>{</span>
-</span></span><span class=line><span class=ln id=hl-26-166><a class=lnlinks href=#hl-26-166>166</a></span><span class=cl>    <span class=k>font-weight</span><span class=p>:</span> <span class=kc>bold</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-167><a class=lnlinks href=#hl-26-167>167</a></span><span class=cl><span class=p>}</span>
-</span></span><span class=line><span class=ln id=hl-26-168><a class=lnlinks href=#hl-26-168>168</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-26-169><a class=lnlinks href=#hl-26-169>169</a></span><span class=cl><span class=p>#</span><span class=nn>workspaces</span> <span class=nt>button</span> <span class=p>{</span>
-</span></span><span class=line><span class=ln id=hl-26-170><a class=lnlinks href=#hl-26-170>170</a></span><span class=cl>    <span class=k>border-top</span><span class=p>:</span> <span class=mi>2</span><span class=kt>px</span> <span class=kc>solid</span> <span class=kc>transparent</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-171><a class=lnlinks href=#hl-26-171>171</a></span><span class=cl>    <span class=c>/* To compensate for the top border and still have vertical centering */</span>
-</span></span><span class=line><span class=ln id=hl-26-172><a class=lnlinks href=#hl-26-172>172</a></span><span class=cl>    <span class=k>padding-bottom</span><span class=p>:</span> <span class=mi>2</span><span class=kt>px</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-173><a class=lnlinks href=#hl-26-173>173</a></span><span class=cl>    <span class=k>padding-left</span><span class=p>:</span> <span class=mi>10</span><span class=kt>px</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-174><a class=lnlinks href=#hl-26-174>174</a></span><span class=cl>    <span class=k>padding-right</span><span class=p>:</span> <span class=mi>10</span><span class=kt>px</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-175><a class=lnlinks href=#hl-26-175>175</a></span><span class=cl>    <span class=k>color</span><span class=p>:</span> <span class=mh>#888888</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-176><a class=lnlinks href=#hl-26-176>176</a></span><span class=cl><span class=p>}</span>
-</span></span><span class=line><span class=ln id=hl-26-177><a class=lnlinks href=#hl-26-177>177</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-26-178><a class=lnlinks href=#hl-26-178>178</a></span><span class=cl><span class=p>#</span><span class=nn>workspaces</span> <span class=nt>button</span><span class=p>.</span><span class=nc>focused</span> <span class=p>{</span>
-</span></span><span class=line><span class=ln id=hl-26-179><a class=lnlinks href=#hl-26-179>179</a></span><span class=cl>    <span class=k>border-color</span><span class=p>:</span> <span class=mh>#4c7899</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-180><a class=lnlinks href=#hl-26-180>180</a></span><span class=cl>    <span class=k>color</span><span class=p>:</span> <span class=kc>white</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-181><a class=lnlinks href=#hl-26-181>181</a></span><span class=cl>    <span class=k>background-color</span><span class=p>:</span> <span class=mh>#285577</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-182><a class=lnlinks href=#hl-26-182>182</a></span><span class=cl><span class=p>}</span>
-</span></span><span class=line><span class=ln id=hl-26-183><a class=lnlinks href=#hl-26-183>183</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-26-184><a class=lnlinks href=#hl-26-184>184</a></span><span class=cl><span class=p>#</span><span class=nn>workspaces</span> <span class=nt>button</span><span class=p>.</span><span class=nc>urgent</span> <span class=p>{</span>
-</span></span><span class=line><span class=ln id=hl-26-185><a class=lnlinks href=#hl-26-185>185</a></span><span class=cl>    <span class=k>border-color</span><span class=p>:</span> <span class=mh>#c9545d</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-186><a class=lnlinks href=#hl-26-186>186</a></span><span class=cl>    <span class=k>color</span><span class=p>:</span> <span class=mh>#c9545d</span><span class=p>;</span>
-</span></span><span class=line><span class=ln id=hl-26-187><a class=lnlinks href=#hl-26-187>187</a></span><span class=cl><span class=p>}</span>
+config</div><h2 id=стили><span class=section-num>3</span> Стили</h2><h3 id=общая-информация><span class=section-num>3.1</span> Общая информация</h3><ul><li>Wiki: <a href=https://github.com/Alexays/Waybar/wiki/Styling target=_blank rel=noopener>https://github.com/Alexays/Waybar/wiki/Styling</a></li><li>Стилизация выполняется с использованием формата файла CSS и файла с именем <code>style.css</code>.</li><li>Можно также использовать <code>style-light.css</code> и <code>style-dark.css</code> соответственно, чтобы следовать системной теме.</li><li>Каталоги для этого файла:<ul><li><code>~/.config/waybar/</code>;</li><li><code>~/waybar/</code>;</li><li><code>/etc/xdg/waybar/</code>.</li></ul></li><li>Можно указывать не конкретные цвета, а цвета из GTK-темы (<a href=https://gitlab.gnome.org/GNOME/gtk/-/blob/gtk-3-24/gtk/theme/Adwaita/_colors-public.scss target=_blank rel=noopener>https://gitlab.gnome.org/GNOME/gtk/-/blob/gtk-3-24/gtk/theme/Adwaita/_colors-public.scss</a>).</li></ul><h3 id=стилевой-файл><span class=section-num>3.2</span> Стилевой файл</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-css data-lang=css><span class=line><span class=cl><span class=c>/* Waybar configuration */</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c>/* Keyframes */</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>@</span><span class=k>keyframes</span> <span class=nt>blink-warning</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>70</span><span class=o>%</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=k>color</span><span class=p>:</span> <span class=kc>white</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nt>to</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=k>color</span><span class=p>:</span> <span class=kc>white</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>      <span class=k>background-color</span><span class=p>:</span> <span class=kc>orange</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>@</span><span class=k>keyframes</span> <span class=nt>blink-critical</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>70</span><span class=o>%</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=k>color</span><span class=p>:</span> <span class=kc>white</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nt>to</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=k>color</span><span class=p>:</span> <span class=kc>white</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>      <span class=k>background-color</span><span class=p>:</span> <span class=kc>red</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c>/* Base styles */</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c>/* Reset all styles */</span>
+</span></span><span class=line><span class=cl><span class=o>*</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>border</span><span class=p>:</span> <span class=kc>none</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>border-radius</span><span class=p>:</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>min-height</span><span class=p>:</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>margin</span><span class=p>:</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>padding</span><span class=p>:</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>font-family</span><span class=p>:</span> <span class=s2>&#34;Iosevka Nerd Font Propo&#34;</span><span class=p>,</span> <span class=s2>&#34;Font Awesome 6 Free&#34;</span><span class=p>,</span> <span class=s2>&#34;Font Awesome 6 Brands&#34;</span><span class=p>,</span> <span class=kc>sans-serif</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>font-size</span><span class=p>:</span> <span class=mi>14</span><span class=kt>px</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c>/* The whole bar */</span>
+</span></span><span class=line><span class=cl><span class=nt>window</span><span class=p>#</span><span class=nn>waybar</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=c>/* background: @theme_fg_color; */</span>
+</span></span><span class=line><span class=cl>    <span class=k>background</span><span class=p>:</span> <span class=o>@</span><span class=n>theme_base_color</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c>/* background: #323232; */</span>
+</span></span><span class=line><span class=cl>    <span class=k>border-bottom</span><span class=p>:</span> <span class=mi>1</span><span class=kt>px</span> <span class=kc>solid</span> <span class=o>@</span><span class=n>unfocused_borders</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>color</span><span class=p>:</span> <span class=o>@</span><span class=n>theme_text_color</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c>/* color: black; */</span>
+</span></span><span class=line><span class=cl>    <span class=c>/* color: white; */</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c>/* Each module */</span>
+</span></span><span class=line><span class=cl><span class=p>#</span><span class=nn>battery</span><span class=o>,</span>
+</span></span><span class=line><span class=cl><span class=p>#</span><span class=nn>clock</span><span class=o>,</span>
+</span></span><span class=line><span class=cl><span class=p>#</span><span class=nn>cpu</span><span class=o>,</span>
+</span></span><span class=line><span class=cl><span class=p>#</span><span class=nn>custom-keyboard-layout</span><span class=o>,</span>
+</span></span><span class=line><span class=cl><span class=p>#</span><span class=nn>memory</span><span class=o>,</span>
+</span></span><span class=line><span class=cl><span class=p>#</span><span class=nn>mode</span><span class=o>,</span>
+</span></span><span class=line><span class=cl><span class=p>#</span><span class=nn>network</span><span class=o>,</span>
+</span></span><span class=line><span class=cl><span class=p>#</span><span class=nn>pulseaudio</span><span class=o>,</span>
+</span></span><span class=line><span class=cl><span class=p>#</span><span class=nn>temperature</span><span class=o>,</span>
+</span></span><span class=line><span class=cl><span class=p>#</span><span class=nn>tray</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>padding-left</span><span class=p>:</span> <span class=mi>4</span><span class=kt>px</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>padding-right</span><span class=p>:</span> <span class=mi>4</span><span class=kt>px</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c>/* -----------------------------------------------------------------------------
+</span></span></span><span class=line><span class=cl><span class=c> * Module styles
+</span></span></span><span class=line><span class=cl><span class=c> * -------------------------------------------------------------------------- */</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>#</span><span class=nn>battery</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>animation-timing-function</span><span class=p>:</span> <span class=kc>linear</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>animation-iteration-count</span><span class=p>:</span> <span class=kc>infinite</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>animation-direction</span><span class=p>:</span> <span class=kc>alternate</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>#</span><span class=nn>battery</span><span class=p>.</span><span class=nc>warning</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>color</span><span class=p>:</span> <span class=kc>orange</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>#</span><span class=nn>battery</span><span class=p>.</span><span class=nc>critical</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>color</span><span class=p>:</span> <span class=kc>red</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>#</span><span class=nn>battery</span><span class=p>.</span><span class=nc>warning</span><span class=p>.</span><span class=nc>discharging</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>animation-name</span><span class=p>:</span> <span class=kc>blink</span><span class=o>-</span><span class=n>warning</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>animation-duration</span><span class=p>:</span> <span class=mi>3</span><span class=kt>s</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>#</span><span class=nn>battery</span><span class=p>.</span><span class=nc>critical</span><span class=p>.</span><span class=nc>discharging</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>animation-name</span><span class=p>:</span> <span class=kc>blink</span><span class=o>-</span><span class=n>critical</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>animation-duration</span><span class=p>:</span> <span class=mi>2</span><span class=kt>s</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>#</span><span class=nn>clock</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>font-weight</span><span class=p>:</span> <span class=kc>bold</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>#</span><span class=nn>cpu</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=c>/* No styles */</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>#</span><span class=nn>cpu</span><span class=p>.</span><span class=nc>warning</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>color</span><span class=p>:</span> <span class=kc>orange</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>#</span><span class=nn>cpu</span><span class=p>.</span><span class=nc>critical</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>color</span><span class=p>:</span> <span class=kc>red</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>#</span><span class=nn>memory</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>animation-timing-function</span><span class=p>:</span> <span class=kc>linear</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>animation-iteration-count</span><span class=p>:</span> <span class=kc>infinite</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>animation-direction</span><span class=p>:</span> <span class=kc>alternate</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>#</span><span class=nn>memory</span><span class=p>.</span><span class=nc>warning</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>color</span><span class=p>:</span> <span class=kc>orange</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>#</span><span class=nn>memory</span><span class=p>.</span><span class=nc>critical</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>color</span><span class=p>:</span> <span class=kc>red</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>animation-name</span><span class=p>:</span> <span class=kc>blink</span><span class=o>-</span><span class=n>critical</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>animation-duration</span><span class=p>:</span> <span class=mi>2</span><span class=kt>s</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>#</span><span class=nn>mode</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>background</span><span class=p>:</span> <span class=mh>#64727D</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>border-top</span><span class=p>:</span> <span class=mi>2</span><span class=kt>px</span> <span class=kc>solid</span> <span class=kc>white</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c>/* To compensate for the top border and still have vertical centering */</span>
+</span></span><span class=line><span class=cl>    <span class=k>padding-bottom</span><span class=p>:</span> <span class=mi>2</span><span class=kt>px</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>#</span><span class=nn>network</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=c>/* No styles */</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>#</span><span class=nn>network</span><span class=p>.</span><span class=nc>disconnected</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>color</span><span class=p>:</span> <span class=kc>orange</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>#</span><span class=nn>pulseaudio</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=c>/* No styles */</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>#</span><span class=nn>pulseaudio</span><span class=p>.</span><span class=nc>muted</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=c>/* No styles */</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>#</span><span class=nn>custom-spotify</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>color</span><span class=p>:</span> <span class=nb>rgb</span><span class=p>(</span><span class=mi>102</span><span class=p>,</span> <span class=mi>220</span><span class=p>,</span> <span class=mi>105</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>#</span><span class=nn>temperature</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=c>/* No styles */</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>#</span><span class=nn>temperature</span><span class=p>.</span><span class=nc>critical</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>color</span><span class=p>:</span> <span class=kc>red</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>#</span><span class=nn>tray</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=c>/* No styles */</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>#</span><span class=nn>window</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>font-weight</span><span class=p>:</span> <span class=kc>bold</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>#</span><span class=nn>workspaces</span> <span class=nt>button</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>border-top</span><span class=p>:</span> <span class=mi>2</span><span class=kt>px</span> <span class=kc>solid</span> <span class=kc>transparent</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c>/* To compensate for the top border and still have vertical centering */</span>
+</span></span><span class=line><span class=cl>    <span class=k>padding-bottom</span><span class=p>:</span> <span class=mi>2</span><span class=kt>px</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>padding-left</span><span class=p>:</span> <span class=mi>10</span><span class=kt>px</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>padding-right</span><span class=p>:</span> <span class=mi>10</span><span class=kt>px</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>color</span><span class=p>:</span> <span class=mh>#888888</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>#</span><span class=nn>workspaces</span> <span class=nt>button</span><span class=p>.</span><span class=nc>focused</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>border-color</span><span class=p>:</span> <span class=mh>#4c7899</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>color</span><span class=p>:</span> <span class=kc>white</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>background-color</span><span class=p>:</span> <span class=mh>#285577</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>#</span><span class=nn>workspaces</span> <span class=nt>button</span><span class=p>.</span><span class=nc>urgent</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>border-color</span><span class=p>:</span> <span class=mh>#c9545d</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>color</span><span class=p>:</span> <span class=mh>#c9545d</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
 </span></span></code></pre></div><div class=src-block-caption><span class=src-block-number>&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 25:</span>
-style.css</div><h2 id=вспомогательные-файлы><span class=section-num>4</span> Вспомогательные файлы</h2><h3 id=перезапуск-waybar><span class=section-num>4.1</span> Перезапуск Waybar</h3><ul><li>Для перезапуска можно использовать скрипт:<div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=ln id=hl-27-1><a class=lnlinks href=#hl-27-1> 1</a></span><span class=cl><span class=cp>#!/usr/bin/env bash
-</span></span></span><span class=line><span class=ln id=hl-27-2><a class=lnlinks href=#hl-27-2> 2</a></span><span class=cl><span class=cp></span>
-</span></span><span class=line><span class=ln id=hl-27-3><a class=lnlinks href=#hl-27-3> 3</a></span><span class=cl>run_waybar<span class=o>()</span> <span class=o>{</span>
-</span></span><span class=line><span class=ln id=hl-27-4><a class=lnlinks href=#hl-27-4> 4</a></span><span class=cl>    waybar
-</span></span><span class=line><span class=ln id=hl-27-5><a class=lnlinks href=#hl-27-5> 5</a></span><span class=cl><span class=o>}</span>
-</span></span><span class=line><span class=ln id=hl-27-6><a class=lnlinks href=#hl-27-6> 6</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-27-7><a class=lnlinks href=#hl-27-7> 7</a></span><span class=cl>restart_waybar<span class=o>()</span> <span class=o>{</span>
-</span></span><span class=line><span class=ln id=hl-27-8><a class=lnlinks href=#hl-27-8> 8</a></span><span class=cl>    <span class=nv>pid</span><span class=o>=</span><span class=k>$(</span>pgrep waybar<span class=k>)</span>
-</span></span><span class=line><span class=ln id=hl-27-9><a class=lnlinks href=#hl-27-9> 9</a></span><span class=cl>    <span class=o>[[</span> ! -z <span class=nv>$pid</span> <span class=o>]]</span> <span class=o>&amp;&amp;</span> <span class=nb>kill</span> <span class=nv>$pid</span>
-</span></span><span class=line><span class=ln id=hl-27-10><a class=lnlinks href=#hl-27-10>10</a></span><span class=cl>    run_waybar
-</span></span><span class=line><span class=ln id=hl-27-11><a class=lnlinks href=#hl-27-11>11</a></span><span class=cl><span class=o>}</span>
-</span></span><span class=line><span class=ln id=hl-27-12><a class=lnlinks href=#hl-27-12>12</a></span><span class=cl>
-</span></span><span class=line><span class=ln id=hl-27-13><a class=lnlinks href=#hl-27-13>13</a></span><span class=cl>restart_waybar
+style.css</div><h2 id=вспомогательные-файлы><span class=section-num>4</span> Вспомогательные файлы</h2><h3 id=перезапуск-waybar><span class=section-num>4.1</span> Перезапуск Waybar</h3><ul><li>Для перезапуска можно использовать скрипт:<div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=cp>#!/usr/bin/env bash
+</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span><span class=line><span class=cl>run_waybar<span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>    waybar
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>restart_waybar<span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>    <span class=nv>pid</span><span class=o>=</span><span class=k>$(</span>pgrep waybar<span class=k>)</span>
+</span></span><span class=line><span class=cl>    <span class=o>[[</span> ! -z <span class=nv>$pid</span> <span class=o>]]</span> <span class=o>&amp;&amp;</span> <span class=nb>kill</span> <span class=nv>$pid</span>
+</span></span><span class=line><span class=cl>    run_waybar
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>restart_waybar
 </span></span></code></pre></div><div class=src-block-caption><span class=src-block-number>&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 26:</span>
-waybar.sh</div></li></ul><h3 id=меню-выключения-компьютера><span class=section-num>4.2</span> Меню выключения компьютера</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=ln id=hl-28-1><a class=lnlinks href=#hl-28-1> 1</a></span><span class=cl><span class=cp>&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
-</span></span><span class=line><span class=ln id=hl-28-2><a class=lnlinks href=#hl-28-2> 2</a></span><span class=cl><span class=nt>&lt;interface&gt;</span>
-</span></span><span class=line><span class=ln id=hl-28-3><a class=lnlinks href=#hl-28-3> 3</a></span><span class=cl>  <span class=nt>&lt;object</span> <span class=na>class=</span><span class=s>&#34;GtkMenu&#34;</span> <span class=na>id=</span><span class=s>&#34;menu&#34;</span><span class=nt>&gt;</span>
-</span></span><span class=line><span class=ln id=hl-28-4><a class=lnlinks href=#hl-28-4> 4</a></span><span class=cl>    <span class=nt>&lt;child&gt;</span>
-</span></span><span class=line><span class=ln id=hl-28-5><a class=lnlinks href=#hl-28-5> 5</a></span><span class=cl>      <span class=nt>&lt;object</span> <span class=na>class=</span><span class=s>&#34;GtkMenuItem&#34;</span> <span class=na>id=</span><span class=s>&#34;suspend&#34;</span><span class=nt>&gt;</span>
-</span></span><span class=line><span class=ln id=hl-28-6><a class=lnlinks href=#hl-28-6> 6</a></span><span class=cl>        <span class=nt>&lt;property</span> <span class=na>name=</span><span class=s>&#34;label&#34;</span><span class=nt>&gt;</span>Suspend<span class=nt>&lt;/property&gt;</span>
-</span></span><span class=line><span class=ln id=hl-28-7><a class=lnlinks href=#hl-28-7> 7</a></span><span class=cl>      <span class=nt>&lt;/object&gt;</span>
-</span></span><span class=line><span class=ln id=hl-28-8><a class=lnlinks href=#hl-28-8> 8</a></span><span class=cl>    <span class=nt>&lt;/child&gt;</span>
-</span></span><span class=line><span class=ln id=hl-28-9><a class=lnlinks href=#hl-28-9> 9</a></span><span class=cl>    <span class=nt>&lt;child&gt;</span>
-</span></span><span class=line><span class=ln id=hl-28-10><a class=lnlinks href=#hl-28-10>10</a></span><span class=cl>      <span class=nt>&lt;object</span> <span class=na>class=</span><span class=s>&#34;GtkMenuItem&#34;</span> <span class=na>id=</span><span class=s>&#34;hibernate&#34;</span><span class=nt>&gt;</span>
-</span></span><span class=line><span class=ln id=hl-28-11><a class=lnlinks href=#hl-28-11>11</a></span><span class=cl>        <span class=nt>&lt;property</span> <span class=na>name=</span><span class=s>&#34;label&#34;</span><span class=nt>&gt;</span>Hibernate<span class=nt>&lt;/property&gt;</span>
-</span></span><span class=line><span class=ln id=hl-28-12><a class=lnlinks href=#hl-28-12>12</a></span><span class=cl>      <span class=nt>&lt;/object&gt;</span>
-</span></span><span class=line><span class=ln id=hl-28-13><a class=lnlinks href=#hl-28-13>13</a></span><span class=cl>    <span class=nt>&lt;/child&gt;</span>
-</span></span><span class=line><span class=ln id=hl-28-14><a class=lnlinks href=#hl-28-14>14</a></span><span class=cl>    <span class=nt>&lt;child&gt;</span>
-</span></span><span class=line><span class=ln id=hl-28-15><a class=lnlinks href=#hl-28-15>15</a></span><span class=cl>      <span class=nt>&lt;object</span> <span class=na>class=</span><span class=s>&#34;GtkMenuItem&#34;</span> <span class=na>id=</span><span class=s>&#34;shutdown&#34;</span><span class=nt>&gt;</span>
-</span></span><span class=line><span class=ln id=hl-28-16><a class=lnlinks href=#hl-28-16>16</a></span><span class=cl>        <span class=nt>&lt;property</span> <span class=na>name=</span><span class=s>&#34;label&#34;</span><span class=nt>&gt;</span>Shutdown<span class=nt>&lt;/property&gt;</span>
-</span></span><span class=line><span class=ln id=hl-28-17><a class=lnlinks href=#hl-28-17>17</a></span><span class=cl>      <span class=nt>&lt;/object&gt;</span>
-</span></span><span class=line><span class=ln id=hl-28-18><a class=lnlinks href=#hl-28-18>18</a></span><span class=cl>    <span class=nt>&lt;/child&gt;</span>
-</span></span><span class=line><span class=ln id=hl-28-19><a class=lnlinks href=#hl-28-19>19</a></span><span class=cl>    <span class=nt>&lt;child&gt;</span>
-</span></span><span class=line><span class=ln id=hl-28-20><a class=lnlinks href=#hl-28-20>20</a></span><span class=cl>      <span class=nt>&lt;object</span> <span class=na>class=</span><span class=s>&#34;GtkSeparatorMenuItem&#34;</span> <span class=na>id=</span><span class=s>&#34;delimiter1&#34;</span><span class=nt>/&gt;</span>
-</span></span><span class=line><span class=ln id=hl-28-21><a class=lnlinks href=#hl-28-21>21</a></span><span class=cl>    <span class=nt>&lt;/child&gt;</span>
-</span></span><span class=line><span class=ln id=hl-28-22><a class=lnlinks href=#hl-28-22>22</a></span><span class=cl>    <span class=nt>&lt;child&gt;</span>
-</span></span><span class=line><span class=ln id=hl-28-23><a class=lnlinks href=#hl-28-23>23</a></span><span class=cl>      <span class=nt>&lt;object</span> <span class=na>class=</span><span class=s>&#34;GtkMenuItem&#34;</span> <span class=na>id=</span><span class=s>&#34;reboot&#34;</span><span class=nt>&gt;</span>
-</span></span><span class=line><span class=ln id=hl-28-24><a class=lnlinks href=#hl-28-24>24</a></span><span class=cl>        <span class=nt>&lt;property</span> <span class=na>name=</span><span class=s>&#34;label&#34;</span><span class=nt>&gt;</span>Reboot<span class=nt>&lt;/property&gt;</span>
-</span></span><span class=line><span class=ln id=hl-28-25><a class=lnlinks href=#hl-28-25>25</a></span><span class=cl>      <span class=nt>&lt;/object&gt;</span>
-</span></span><span class=line><span class=ln id=hl-28-26><a class=lnlinks href=#hl-28-26>26</a></span><span class=cl>    <span class=nt>&lt;/child&gt;</span>
-</span></span><span class=line><span class=ln id=hl-28-27><a class=lnlinks href=#hl-28-27>27</a></span><span class=cl>  <span class=nt>&lt;/object&gt;</span>
-</span></span><span class=line><span class=ln id=hl-28-28><a class=lnlinks href=#hl-28-28>28</a></span><span class=cl><span class=nt>&lt;/interface&gt;</span>
+waybar.sh</div></li></ul><h3 id=меню-выключения-компьютера><span class=section-num>4.2</span> Меню выключения компьютера</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=cp>&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;interface&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&lt;object</span> <span class=na>class=</span><span class=s>&#34;GtkMenu&#34;</span> <span class=na>id=</span><span class=s>&#34;menu&#34;</span><span class=nt>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;child&gt;</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&lt;object</span> <span class=na>class=</span><span class=s>&#34;GtkMenuItem&#34;</span> <span class=na>id=</span><span class=s>&#34;suspend&#34;</span><span class=nt>&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;property</span> <span class=na>name=</span><span class=s>&#34;label&#34;</span><span class=nt>&gt;</span>Suspend<span class=nt>&lt;/property&gt;</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&lt;/object&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/child&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;child&gt;</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&lt;object</span> <span class=na>class=</span><span class=s>&#34;GtkMenuItem&#34;</span> <span class=na>id=</span><span class=s>&#34;hibernate&#34;</span><span class=nt>&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;property</span> <span class=na>name=</span><span class=s>&#34;label&#34;</span><span class=nt>&gt;</span>Hibernate<span class=nt>&lt;/property&gt;</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&lt;/object&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/child&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;child&gt;</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&lt;object</span> <span class=na>class=</span><span class=s>&#34;GtkMenuItem&#34;</span> <span class=na>id=</span><span class=s>&#34;shutdown&#34;</span><span class=nt>&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;property</span> <span class=na>name=</span><span class=s>&#34;label&#34;</span><span class=nt>&gt;</span>Shutdown<span class=nt>&lt;/property&gt;</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&lt;/object&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/child&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;child&gt;</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&lt;object</span> <span class=na>class=</span><span class=s>&#34;GtkSeparatorMenuItem&#34;</span> <span class=na>id=</span><span class=s>&#34;delimiter1&#34;</span><span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/child&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;child&gt;</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&lt;object</span> <span class=na>class=</span><span class=s>&#34;GtkMenuItem&#34;</span> <span class=na>id=</span><span class=s>&#34;reboot&#34;</span><span class=nt>&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;property</span> <span class=na>name=</span><span class=s>&#34;label&#34;</span><span class=nt>&gt;</span>Reboot<span class=nt>&lt;/property&gt;</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&lt;/object&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/child&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&lt;/object&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/interface&gt;</span>
 </span></span></code></pre></div><div class=src-block-caption><span class=src-block-number>&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 27:</span>
 power_menu.xml</div></div><time class="mt-12 mb-8 block text-xs text-gray-500 ltr:text-right rtl:text-left dark:text-gray-400" datetime=2024-12-17T21:04:00.000Z><span>Обновлено</span>
 2024-12-17</time><div class="container mx-auto prose prose-slate lg:prose-xl dark:prose-invert mt-5"><div class="max-w-prose print:hidden"><div class="flex justify-center"><a class="no-underline bg-primary-100 hover:bg-primary-300 text-primary-800 text-xs font-medium mr-2 px-2.5 py-0.5 lg:px-5 lg:py-2 rounded dark:bg-primary-900 dark:hover:bg-primary-700 dark:text-primary-300" href=https://yamadharma.github.io/ru/tag/wayland/>Wayland</a>

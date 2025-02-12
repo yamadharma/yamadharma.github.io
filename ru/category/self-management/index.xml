@@ -1,4 +1,301 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Self-Management | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/category/self-management/</link><atom:link href="https://yamadharma.github.io/ru/category/self-management/index.xml" rel="self" type="application/rss+xml"/><description>Self-Management</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>ru-ru</language><copyright>© 2025 Dmitry S. Kulyabov</copyright><lastBuildDate>Thu, 16 Jan 2025 17:30:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu15752663207405015554.png</url><title>Self-Management</title><link>https://yamadharma.github.io/ru/category/self-management/</link></image><item><title>Emacs. Метод pomodoro</title><link>https://yamadharma.github.io/ru/post/2025/01/16/emacs-pomodoro-method/</link><pubDate>Thu, 16 Jan 2025 17:30:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2025/01/16/emacs-pomodoro-method/</guid><description>&lt;p>Emacs. Реализации метода pomodoro (см. &lt;a href="https://yamadharma.github.io/ru/post/2022/12/18/pomodoro/">Метод pomodoro&lt;/a>).&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Self-Management | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/category/self-management/</link><atom:link href="https://yamadharma.github.io/ru/category/self-management/index.xml" rel="self" type="application/rss+xml"/><description>Self-Management</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>ru-ru</language><copyright>© 2025 Dmitry S. Kulyabov</copyright><lastBuildDate>Sat, 08 Feb 2025 17:30:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu_c0ee34e0b47a9b95.png</url><title>Self-Management</title><link>https://yamadharma.github.io/ru/category/self-management/</link></image><item><title>Emacs. Пакет pomm</title><link>https://yamadharma.github.io/ru/post/2025/02/08/emacs-pomm/</link><pubDate>Sat, 08 Feb 2025 17:30:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2025/02/08/emacs-pomm/</guid><description>&lt;p>Emacs. Пакет pomm.&lt;/p>
+&lt;details class="print:hidden xl:hidden" >
+&lt;summary>Содержание&lt;/summary>
+&lt;div class="text-sm">
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#использование">&lt;span class="section-num">2&lt;/span> Использование&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#оповещения">&lt;span class="section-num">3&lt;/span> Оповещения&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#звуки">&lt;span class="section-num">4&lt;/span> Звуки&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#интерфейс-к-polybar">&lt;span class="section-num">5&lt;/span> Интерфейс к polybar&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#расположение-файла-состояния">&lt;span class="section-num">6&lt;/span> Расположение файла состояния&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#история-в-формате-csv">&lt;span class="section-num">7&lt;/span> История в формате csv&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#использование-с-org-clock">&lt;span class="section-num">8&lt;/span> Использование с &lt;code>org-clock&lt;/code>&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/div>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>Страница: &lt;a href="https://sqrtminusone.xyz/packages/pomm/" target="_blank" rel="noopener">https://sqrtminusone.xyz/packages/pomm/&lt;/a>&lt;/li>
+&lt;li>Репозиторий: &lt;a href="https://github.com/SqrtMinusOne/pomm.el" target="_blank" rel="noopener">https://github.com/SqrtMinusOne/pomm.el&lt;/a>&lt;/li>
+&lt;li>Реализация техник &lt;em>Pomodoro&lt;/em> (см. &lt;a href="https://yamadharma.github.io/ru/post/2022/12/18/pomodoro/">Метод pomodoro&lt;/a>) и &lt;em>Third Time&lt;/em>.&lt;/li>
+&lt;li>Управление на основе transient (см. &lt;a href="https://yamadharma.github.io/ru/post/2024/10/26/emacs-transient/">Emacs. Пакет transient&lt;/a>).&lt;/li>
+&lt;/ul>
+&lt;h2 id="использование">&lt;span class="section-num">2&lt;/span> Использование&lt;/h2>
+&lt;ul>
+&lt;li>Запустите &lt;code>M-x pomm&lt;/code>.&lt;/li>
+&lt;li>Откроется transient-буфер.&lt;/li>
+&lt;li>Таймер может иметь 3 состояния.
+&lt;ul>
+&lt;li>Выключенный.
+&lt;ul>
+&lt;li>Можно запустить с &lt;code>s&lt;/code> или &lt;code>M-x pomm-start&lt;/code>.&lt;/li>
+&lt;li>Запустится таймер.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>На паузе.
+&lt;ul>
+&lt;li>Можно продолжить с &lt;code>s&lt;/code> или &lt;code>M-x pomm-start&lt;/code>.&lt;/li>
+&lt;li>Можно полностью остановить с &lt;code>S&lt;/code> или &lt;code>M-x pomm-stop&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Работает.
+&lt;ul>
+&lt;li>Можно поставить на паузу с &lt;code>p&lt;/code> или &lt;code>M-x pomm-pause&lt;/code>.&lt;/li>
+&lt;li>Можно остановить с &lt;code>S&lt;/code> или &lt;code>M-x pomm-stop&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Состояние таймера может быть сброшено с &lt;code>R&lt;/code> или &lt;code>M-x pomm-reset&lt;/code>.&lt;/li>
+&lt;li>&lt;code>U&lt;/code> обновляет transient-буфер.&lt;/li>
+&lt;li>С &lt;code>r&lt;/code> или &lt;code>M-x pomm-set-context&lt;/code> можно установить текущий контекст, то есть описание задачи, над которой вы в настоящее время работаете.&lt;/li>
+&lt;li>Это описание будет отображаться в истории и в файле CSV.&lt;/li>
+&lt;li>&lt;code>M-x pomm-start-with-context&lt;/code> запрашивает контекст, а затем запускает таймер.&lt;/li>
+&lt;/ul>
+&lt;h2 id="оповещения">&lt;span class="section-num">3&lt;/span> Оповещения&lt;/h2>
+&lt;ul>
+&lt;li>Пакет отправляет оповещения через &lt;code>alert.el&lt;/code>&lt;/li>
+&lt;li>Стиль оповещения по умолчанию - простой &lt;code>message&lt;/code>, но если вы хотите графическое уведомление, установите &lt;code>alert-default-style&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nb">setq&lt;/span> &lt;span class="nv">alert-default-style&lt;/span> &lt;span class="ss">&amp;#39;libnotify&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="звуки">&lt;span class="section-num">4&lt;/span> Звуки&lt;/h2>
+&lt;ul>
+&lt;li>По умолчанию звуки отключены.&lt;/li>
+&lt;li>Установите &lt;code>pomm-audio-enabled&lt;/code> в &lt;code>t&lt;/code> для включения.&lt;/li>
+&lt;li>Установите &lt;code>pomm-audio-tick-enabled&lt;/code> в &lt;code>t&lt;/code>, если вы хотите тикающий звук во время работы.&lt;/li>
+&lt;/ul>
+&lt;h2 id="интерфейс-к-polybar">&lt;span class="section-num">5&lt;/span> Интерфейс к polybar&lt;/h2>
+&lt;ul>
+&lt;li>Для отображения состояния Pomodoro в чем-то типа polybar:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nv">add-hook&lt;/span> &lt;span class="ss">&amp;#39;pomm-on-tick-hook&lt;/span> &lt;span class="ss">&amp;#39;pomm-update-mode-line-string&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nv">add-hook&lt;/span> &lt;span class="ss">&amp;#39;pomm-on-status-changed-hook&lt;/span> &lt;span class="ss">&amp;#39;pomm-update-mode-line-string&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Для получения информации создайте сценарий:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="k">if&lt;/span> ps -e &lt;span class="p">|&lt;/span> grep emacs &amp;gt;&amp;gt; /dev/null
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">then&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> emacsclient --eval &lt;span class="s2">&amp;#34;(if (boundp &amp;#39;pomm-current-mode-line-string) pomm-current-mode-line-string \&amp;#34;\&amp;#34;) &amp;#34;&lt;/span> &lt;span class="p">|&lt;/span> xargs &lt;span class="nb">echo&lt;/span> -e
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">fi&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Добавьте определение модуля polybar:&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[module/pomm]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">type = custom/script
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exec = /home/pavel/bin/polybar/pomm.sh
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">interval = 1
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="расположение-файла-состояния">&lt;span class="section-num">6&lt;/span> Расположение файла состояния&lt;/h2>
+&lt;ul>
+&lt;li>Чтобы сохранить состояние между сеансами emacs, пакет хранит своё состояние в следующих файлах:&lt;/li>
+&lt;li>&lt;code>pomm-state-file-location&lt;/code>, &lt;code>.emacs.d/pomm&lt;/code> по умолчанию.&lt;/li>
+&lt;li>&lt;code>pomm-third-time-state-file-location&lt;/code>, &lt;code>/.emacs.d/pomm-third-time&lt;/code> по умолчанию.&lt;/li>
+&lt;/ul>
+&lt;h2 id="история-в-формате-csv">&lt;span class="section-num">7&lt;/span> История в формате csv&lt;/h2>
+&lt;ul>
+&lt;li>Если вы установите переменную &lt;code>pomm-csv-history-file&lt;/code>, пакет будет регистрировать свою историю в формате CSV.&lt;/li>
+&lt;li>Файл для техники Pomodoro имеет следующие столбцы:
+&lt;ul>
+&lt;li>&lt;code>timestamp&lt;/code>&lt;/li>
+&lt;li>&lt;code>status&lt;/code> ( &lt;code>stopped&lt;/code>, &lt;code>paused&lt;/code> или &lt;code>running&lt;/code>)&lt;/li>
+&lt;li>&lt;code>kind&lt;/code> ( &lt;code>work&lt;/code>, &lt;code>short-break&lt;/code>, &lt;code>long-break&lt;/code> или &lt;code>nil&lt;/code> )&lt;/li>
+&lt;li>&lt;code>iteration&lt;/code>&lt;/li>
+&lt;li>&lt;code>context&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Чтобы настроить временную метку, установите переменную &lt;code>pomm-csv-history-file-timestamp-format&lt;/code>.&lt;/li>
+&lt;li>Например, для традиционных &lt;code>YYYY-MM-DD HH:mm:ss&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nb">setq&lt;/span> &lt;span class="nv">pomm-csv-history-file-timestamp-format&lt;/span> &lt;span class="s">&amp;#34;%F %T&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Формат такой же, как и в &lt;code>format-time-string&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h2 id="использование-с-org-clock">&lt;span class="section-num">8&lt;/span> Использование с &lt;code>org-clock&lt;/code>&lt;/h2>
+&lt;ul>
+&lt;li>Пакет можно интегрировать с org-mode:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nv">add-hook&lt;/span> &lt;span class="ss">&amp;#39;pomm-on-status-changed-hook&lt;/span> &lt;span class="nf">#&amp;#39;&lt;/span>&lt;span class="nv">pomm--sync-org-clock&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nv">add-hook&lt;/span> &lt;span class="ss">&amp;#39;pomm-third-time-on-status-changed-hook&lt;/span> &lt;span class="nf">#&amp;#39;&lt;/span>&lt;span class="nv">pomm-third-time--sync-org-clock&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Запустите таймер &lt;code>pomm&lt;/code> и &lt;code>org-clock-in&lt;/code>, в любом порядке.&lt;/li>
+&lt;li>Пакет вызовет &lt;code>org-clock-out&lt;/code>, когда начнётся перерыв.&lt;/li>
+&lt;li>Пакет вызовет &lt;code>org-clock-in-last&lt;/code>, когда перерыв закончится.&lt;/li>
+&lt;li>Если установить параметр &lt;code>pomm-org-clock-in-immediately&lt;/code> в &lt;code>nil&lt;/code>, то вызов &lt;code>org-clock-in-last&lt;/code> откладывается до тех пор, пока не поступит какая-либо команда от пользователя (через &lt;code>post-command-hook&lt;/code>).
+&lt;ul>
+&lt;li>Это добавлено для того, чтобы при опоздании с перерыва таймер не запускался бы без пользователя.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul></description></item><item><title>Нумерация Folgezettel</title><link>https://yamadharma.github.io/ru/post/2025/02/08/folgezettel-numbering/</link><pubDate>Sat, 08 Feb 2025 16:16:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2025/02/08/folgezettel-numbering/</guid><description>&lt;p>Нумерация Folgezettel.&lt;/p>
+&lt;details class="print:hidden xl:hidden" >
+&lt;summary>Содержание&lt;/summary>
+&lt;div class="text-sm">
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#принципы">&lt;span class="section-num">2&lt;/span> Принципы&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/div>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>Folgezettel буквально переводится как &lt;em>следующая заметка&lt;/em>.&lt;/li>
+&lt;li>Часто трактуется как &lt;em>последовательность заметок&lt;/em>.&lt;/li>
+&lt;li>Представляет из себя цепочки карточек.&lt;/li>
+&lt;/ul>
+&lt;h2 id="принципы">&lt;span class="section-num">2&lt;/span> Принципы&lt;/h2>
+&lt;ul>
+&lt;li>Описывает ветвление заметок.&lt;/li>
+&lt;li>Задаётся в виде цифр и букв.&lt;/li>
+&lt;li>Категории отделяются друг от друга каким-либо символом:
+&lt;ul>
+&lt;li>&lt;code>/&lt;/code> : знак дроби;&lt;/li>
+&lt;li>&lt;code>,&lt;/code> : запятая;&lt;/li>
+&lt;li>&lt;code>.&lt;/code> : точка.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul></description></item><item><title>Каталогизатор книг Calibre</title><link>https://yamadharma.github.io/ru/post/2025/02/04/calibre-book-cataloger/</link><pubDate>Tue, 04 Feb 2025 19:09:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2025/02/04/calibre-book-cataloger/</guid><description>&lt;p>Каталогизатор книг Calibre.&lt;/p>
+&lt;details class="print:hidden xl:hidden" >
+&lt;summary>Содержание&lt;/summary>
+&lt;div class="text-sm">
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#особенности">&lt;span class="section-num">2&lt;/span> Особенности&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#дополнения">&lt;span class="section-num">3&lt;/span> Дополнения&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#calibre-web">&lt;span class="section-num">3.1&lt;/span> Calibre-web&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#calibre2opds">&lt;span class="section-num">3.2&lt;/span> calibre2opds&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#calibre2opds-for-nextcloud">&lt;span class="section-num">3.3&lt;/span> Calibre2OPDS for Nextcloud&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#интерфейс-emacs">&lt;span class="section-num">4&lt;/span> Интерфейс Emacs&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#calibredb-dot-el">&lt;span class="section-num">4.1&lt;/span> calibredb.el&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#calibre-dot-el">&lt;span class="section-num">4.2&lt;/span> calibre.el&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#calibre-mode-dot-el">&lt;span class="section-num">4.3&lt;/span> calibre-mode.el&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/div>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>Сайт: &lt;a href="https://calibre-ebook.com/" target="_blank" rel="noopener">https://calibre-ebook.com/&lt;/a>&lt;/li>
+&lt;li>Репозиторий: &lt;a href="https://github.com/kovidgoyal/calibre" target="_blank" rel="noopener">https://github.com/kovidgoyal/calibre&lt;/a>&lt;/li>
+&lt;li>Операционные системы: GNU/Linux, Windows, macOS, BSD.&lt;/li>
+&lt;/ul>
+&lt;h2 id="особенности">&lt;span class="section-num">2&lt;/span> Особенности&lt;/h2>
+&lt;ul>
+&lt;li>Не поддерживается формат базы пользователя. При импорте книг, все файлы будут скопированы в каталог с базой (автор отказывается менять это решение).&lt;/li>
+&lt;li>Не поддерживаются внешние конвертеры.&lt;/li>
+&lt;/ul>
+&lt;h2 id="дополнения">&lt;span class="section-num">3&lt;/span> Дополнения&lt;/h2>
+&lt;h3 id="calibre-web">&lt;span class="section-num">3.1&lt;/span> Calibre-web&lt;/h3>
+&lt;ul>
+&lt;li>Репозиторий: &lt;a href="https://github.com/janeczku/calibre-web" target="_blank" rel="noopener">https://github.com/janeczku/calibre-web&lt;/a>&lt;/li>
+&lt;li>Веб-приложение для просмотра, чтения и загрузки электронных книг, используя базу данных Calibre.&lt;/li>
+&lt;/ul>
+&lt;h3 id="calibre2opds">&lt;span class="section-num">3.2&lt;/span> calibre2opds&lt;/h3>
+&lt;ul>
+&lt;li>Репозиторий: &lt;a href="https://github.com/calibre2opds/calibre2opds" target="_blank" rel="noopener">https://github.com/calibre2opds/calibre2opds&lt;/a>&lt;/li>
+&lt;li>Java приложение, которое создает web-сайт из вашей Calibre библиотеки.&lt;/li>
+&lt;/ul>
+&lt;h3 id="calibre2opds-for-nextcloud">&lt;span class="section-num">3.3&lt;/span> Calibre2OPDS for Nextcloud&lt;/h3>
+&lt;ul>
+&lt;li>Репозиторий: &lt;a href="https://gitlab.com/oldnomad/calibre_opds" target="_blank" rel="noopener">https://gitlab.com/oldnomad/calibre_opds&lt;/a>&lt;/li>
+&lt;li>Предоставляет доступ к Calibre-библиотеке, размещённой в Nextcloud через OPDS.&lt;/li>
+&lt;/ul>
+&lt;h2 id="интерфейс-emacs">&lt;span class="section-num">4&lt;/span> Интерфейс Emacs&lt;/h2>
+&lt;ul>
+&lt;li>Информация:
+&lt;ul>
+&lt;li>&lt;a href="https://dindi.garjola.net/calibredb-view.html" target="_blank" rel="noopener">https://dindi.garjola.net/calibredb-view.html&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="calibredb-dot-el">&lt;span class="section-num">4.1&lt;/span> calibredb.el&lt;/h3>
+&lt;ul>
+&lt;li>Emacs-клиент для Calibre.&lt;/li>
+&lt;li>Репозиторий: &lt;a href="https://github.com/chenyanming/calibredb.el" target="_blank" rel="noopener">https://github.com/chenyanming/calibredb.el&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="calibre-dot-el">&lt;span class="section-num">4.2&lt;/span> calibre.el&lt;/h3>
+&lt;ul>
+&lt;li>Emacs-клиент для Calibre.&lt;/li>
+&lt;li>Репозиторий: &lt;a href="https://git.disroot.org/kjartanoli/calibre.el" target="_blank" rel="noopener">https://git.disroot.org/kjartanoli/calibre.el&lt;/a>&lt;/li>
+&lt;li>ELPA: &lt;a href="https://elpa.gnu.org/packages/calibre.html" target="_blank" rel="noopener">https://elpa.gnu.org/packages/calibre.html&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="calibre-mode-dot-el">&lt;span class="section-num">4.3&lt;/span> calibre-mode.el&lt;/h3>
+&lt;ul>
+&lt;li>Поиск по Calibre.&lt;/li>
+&lt;li>Репозиторий: &lt;a href="https://github.com/whacked/calibre-query.el" target="_blank" rel="noopener">https://github.com/whacked/calibre-query.el&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>Каталогизация книг</title><link>https://yamadharma.github.io/ru/post/2025/02/04/cataloging-books/</link><pubDate>Tue, 04 Feb 2025 19:00:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2025/02/04/cataloging-books/</guid><description>&lt;p>Каталогизация книг.&lt;/p>
+&lt;details class="print:hidden xl:hidden" >
+&lt;summary>Содержание&lt;/summary>
+&lt;div class="text-sm">
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#программное-обеспечение">&lt;span class="section-num">1&lt;/span> Программное обеспечение&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#calibre">&lt;span class="section-num">1.1&lt;/span> Calibre&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#myrulib">&lt;span class="section-num">1.2&lt;/span> MyRuLib&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#mylibrary">&lt;span class="section-num">1.3&lt;/span> MyLibrary&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#liber">&lt;span class="section-num">1.4&lt;/span> Liber&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#libro-finito">&lt;span class="section-num">1.5&lt;/span> libro-finito&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#на-основе-emacs">&lt;span class="section-num">1.6&lt;/span> На основе Emacs&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#org-books">&lt;span class="section-num">1.6.1&lt;/span> org-books&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#finito-dot-el">&lt;span class="section-num">1.6.2&lt;/span> finito.el&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/div>
+&lt;/details>
+&lt;h2 id="программное-обеспечение">&lt;span class="section-num">1&lt;/span> Программное обеспечение&lt;/h2>
+&lt;h3 id="calibre">&lt;span class="section-num">1.1&lt;/span> Calibre&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2025/02/04/calibre-book-cataloger/">Каталогизатор книг Calibre&lt;/a>&lt;/li>
+&lt;li>Операционные системы: GNU/Linux, Windows, macOS, BSD.&lt;/li>
+&lt;li>При импорте книг, все файлы будут скопированы в каталог с базой (автор отказывается менять это решение).&lt;/li>
+&lt;/ul>
+&lt;h3 id="myrulib">&lt;span class="section-num">1.2&lt;/span> MyRuLib&lt;/h3>
+&lt;ul>
+&lt;li>Сайт: &lt;a href="http://myrulib.lintest.ru/" target="_blank" rel="noopener">http://myrulib.lintest.ru/&lt;/a>&lt;/li>
+&lt;li>Репозиторий: &lt;a href="https://github.com/lintest/myrulib/" target="_blank" rel="noopener">https://github.com/lintest/myrulib/&lt;/a>&lt;/li>
+&lt;li>Операционные системы: GNU/Linux, Windows, macOS.&lt;/li>
+&lt;li>Проблемы со сборкой с современными библиотека.&lt;/li>
+&lt;li>Может использоваться как клиент для работы с библиотеками Либрусек, Флибуста и Library Genesis.&lt;/li>
+&lt;/ul>
+&lt;h3 id="mylibrary">&lt;span class="section-num">1.3&lt;/span> MyLibrary&lt;/h3>
+&lt;ul>
+&lt;li>Репозиторий: &lt;a href="https://github.com/ProfessorNavigator/mylibrary" target="_blank" rel="noopener">https://github.com/ProfessorNavigator/mylibrary&lt;/a>&lt;/li>
+&lt;li>Операционные системы: GNU/Linux, Windows.&lt;/li>
+&lt;/ul>
+&lt;h3 id="liber">&lt;span class="section-num">1.4&lt;/span> Liber&lt;/h3>
+&lt;ul>
+&lt;li>Репозиторий: &lt;a href="https://git.autistici.org/ale/liber" target="_blank" rel="noopener">https://git.autistici.org/ale/liber&lt;/a>&lt;/li>
+&lt;li>Программное обеспечение для управления коллекцией электронных книг.&lt;/li>
+&lt;li>Поддерживает форматы EPUB, MOBI и PDF.&lt;/li>
+&lt;/ul>
+&lt;h3 id="libro-finito">&lt;span class="section-num">1.5&lt;/span> libro-finito&lt;/h3>
+&lt;ul>
+&lt;li>Репозиторий: &lt;a href="https://github.com/laurencewarne/libro-finito" target="_blank" rel="noopener">https://github.com/laurencewarne/libro-finito&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="на-основе-emacs">&lt;span class="section-num">1.6&lt;/span> На основе Emacs&lt;/h3>
+&lt;h4 id="org-books">&lt;span class="section-num">1.6.1&lt;/span> org-books&lt;/h4>
+&lt;ul>
+&lt;li>Скорее список чтения, чем каталогизатор.&lt;/li>
+&lt;li>Репозиторий (старый): &lt;a href="https://github.com/lepisma/org-books" target="_blank" rel="noopener">https://github.com/lepisma/org-books&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h4 id="finito-dot-el">&lt;span class="section-num">1.6.2&lt;/span> finito.el&lt;/h4>
+&lt;ul>
+&lt;li>Репозиторий: &lt;a href="https://github.com/LaurenceWarne/finito.el" target="_blank" rel="noopener">https://github.com/LaurenceWarne/finito.el&lt;/a>&lt;/li>
+&lt;li>Клиент для libro-finito&lt;/li>
+&lt;/ul></description></item><item><title>Emacs. Метод pomodoro</title><link>https://yamadharma.github.io/ru/post/2025/01/16/emacs-pomodoro-method/</link><pubDate>Thu, 16 Jan 2025 17:30:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2025/01/16/emacs-pomodoro-method/</guid><description>&lt;p>Emacs. Реализации метода pomodoro (см. &lt;a href="https://yamadharma.github.io/ru/post/2022/12/18/pomodoro/">Метод pomodoro&lt;/a>).&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
 &lt;summary>Содержание&lt;/summary>
 &lt;div class="text-sm">
@@ -28,6 +325,7 @@
 &lt;/ul>
 &lt;h2 id="pomm">&lt;span class="section-num">3&lt;/span> pomm&lt;/h2>
 &lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2025/02/08/emacs-pomm/">Emacs. Пакет pomm&lt;/a>&lt;/li>
 &lt;li>Страница: &lt;a href="https://sqrtminusone.xyz/packages/pomm/" target="_blank" rel="noopener">https://sqrtminusone.xyz/packages/pomm/&lt;/a>&lt;/li>
 &lt;li>Репозиторий: &lt;a href="https://github.com/SqrtMinusOne/pomm.el" target="_blank" rel="noopener">https://github.com/SqrtMinusOne/pomm.el&lt;/a>&lt;/li>
 &lt;li>Реализация техник &lt;em>Pomodoro&lt;/em> и &lt;em>Third Time&lt;/em>.&lt;/li>
@@ -75,6 +373,12 @@
 &lt;li>&lt;a href="#очистка-компонентов-имени-файла">&lt;span class="section-num">3.1&lt;/span> Очистка компонентов имени файла&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
+&lt;li>&lt;a href="#поддержка-цепочек-заметок">&lt;span class="section-num">4&lt;/span> Поддержка цепочек заметок&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#числовая-схема-секвенирования">&lt;span class="section-num">4.1&lt;/span> Числовая схема секвенирования&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#буквенно-цифровая-схема-секвенирования">&lt;span class="section-num">4.2&lt;/span> Буквенно-цифровая схема секвенирования&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
 &lt;/ul>
 &lt;/nav>
 &lt;/div>
@@ -107,7 +411,13 @@
 &lt;ul>
 &lt;li>Не имеют чётко определённой цели.&lt;/li>
 &lt;li>Определяется пользователем.&lt;/li>
-&lt;li>Одним из вариантов использования является их использование для установления последовательные отношения между файлами (например, 1, 1a, 1b, 1b1, 1b2, …).&lt;/li>
+&lt;li>Варианты заполнения:
+&lt;ul>
+&lt;li>Разделение видео на части : &lt;code>part1&lt;/code> и &lt;code>part2&lt;/code>.&lt;/li>
+&lt;li>Приоритет : &lt;code>a&lt;/code>, &lt;code>b&lt;/code>, &lt;code>c&lt;/code>.&lt;/li>
+&lt;li>Для установления последовательные отношения между файлами (например, 1, 1a, 1b, 1b1, 1b2, …).&lt;/li>
+&lt;/ul>
+&lt;/li>
 &lt;li>Подписи &amp;mdash; это дополнительное расширение схемы именования файлов Denote.&lt;/li>
 &lt;li>Их можно добавлять во вновь создаваемые файлы по требованию с помощью команды &lt;code>denote-signature&lt;/code> или изменив значение пользовательской опции &lt;code>denote-prompts&lt;/code>.&lt;/li>
 &lt;/ul>
@@ -214,7 +524,32 @@
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
-&lt;p>ы&lt;/p></description></item><item><title>Emacs. Пакет denote</title><link>https://yamadharma.github.io/ru/post/2025/01/03/emacs-denote/</link><pubDate>Fri, 03 Jan 2025 16:56:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2025/01/03/emacs-denote/</guid><description>&lt;p>Emacs. Пакет denote.&lt;/p>
+&lt;p>ы&lt;/p>
+&lt;h2 id="поддержка-цепочек-заметок">&lt;span class="section-num">4&lt;/span> Поддержка цепочек заметок&lt;/h2>
+&lt;ul>
+&lt;li>Denote может поддерживать концепцию Folgezettel (см. &lt;a href="https://yamadharma.github.io/ru/post/2025/02/08/folgezettel-numbering/">Нумерация Folgezettel&lt;/a>).&lt;/li>
+&lt;li>Поддержка осуществляется расширением &lt;code>denote-sequence.el&lt;/code>.&lt;/li>
+&lt;li>Используется необязательная компонента имени файла &lt;code>SIGNATURE&lt;/code>.&lt;/li>
+&lt;li>Специализированный вариант использования &lt;code>SIGNATURE&lt;/code> &amp;mdash; определить иерархические отношения между файлами.&lt;/li>
+&lt;li>Предлагается разделать элементы знаком равно: &lt;code>=&lt;/code>.&lt;/li>
+&lt;li>Например, примечание с &lt;code>SIGNATURE&lt;/code> &lt;code>1=1&lt;/code> является первым дочерним примечанием к &lt;code>1&lt;/code> и сестринским примечаним к &lt;code>1=2&lt;/code>.&lt;/li>
+&lt;li>Пользовательская опция &lt;code>denote-sequence-scheme&lt;/code> позволяет выбрать либо числовую (&lt;code>numeric&lt;/code>) схему вида &lt;code>1=1=2&lt;/code> или буквенно-цифровую (&lt;code>alphanumeric&lt;/code>) схему вида &lt;code>1a2&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h3 id="числовая-схема-секвенирования">&lt;span class="section-num">4.1&lt;/span> Числовая схема секвенирования&lt;/h3>
+&lt;ul>
+&lt;li>Числовая последовательность состоит только из чисел.&lt;/li>
+&lt;li>Поля разделены знаком равно.&lt;/li>
+&lt;li>Таким образом, последовательность &lt;code>1=1=2&lt;/code> состоит из трёх уровней глубины.&lt;/li>
+&lt;li>Для более глубоких последовательностей числовая схема станет длиннее.&lt;/li>
+&lt;li>Плюс состоит в том, что можно использовать большие числа, такие как &lt;code>1=100=2=50&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h3 id="буквенно-цифровая-схема-секвенирования">&lt;span class="section-num">4.2&lt;/span> Буквенно-цифровая схема секвенирования&lt;/h3>
+&lt;ul>
+&lt;li>Буквенно-цифровая последовательность объединяет цифры и буквы, которые чередуются.&lt;/li>
+&lt;li>Например, последовательность &lt;code>1a2&lt;/code> имеет три уровня глубины.&lt;/li>
+&lt;li>Эта схема компактнее.&lt;/li>
+&lt;li>Может труднее восприниматься, например &lt;code>1zzzv2zx&lt;/code> соответствует числовой схеме &lt;code>1=100=2=50&lt;/code> (число 26 - z, 27 - это za, 52 zz и так далее).&lt;/li>
+&lt;/ul></description></item><item><title>Emacs. Пакет denote</title><link>https://yamadharma.github.io/ru/post/2025/01/03/emacs-denote/</link><pubDate>Fri, 03 Jan 2025 16:56:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2025/01/03/emacs-denote/</guid><description>&lt;p>Emacs. Пакет denote.&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
 &lt;summary>Содержание&lt;/summary>
 &lt;div class="text-sm">
@@ -1189,8 +1524,10 @@
 &lt;/ul>
 &lt;h3 id="denote">&lt;span class="section-num">3.4&lt;/span> denote&lt;/h3>
 &lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2025/01/03/emacs-denote/">Emacs. Пакет denote&lt;/a>&lt;/li>
 &lt;li>Репозиторий: &lt;a href="https://github.com/protesilaos/denote" target="_blank" rel="noopener">https://github.com/protesilaos/denote&lt;/a>&lt;/li>
 &lt;li>Большое внимание уделяется схеме именования файлов.&lt;/li>
+&lt;li>Поддерживает реализацию цепочек заметок (Folgezettel, см. &lt;a href="https://yamadharma.github.io/ru/post/2025/02/08/folgezettel-numbering/">Нумерация Folgezettel&lt;/a>) (см. &lt;a href="https://yamadharma.github.io/ru/post/2025/01/03/denote-naming-convention/">Denote. Соглашение об именовании&lt;/a>)&lt;/li>
 &lt;/ul>
 &lt;h3 id="howm">&lt;span class="section-num">3.5&lt;/span> howm&lt;/h3>
 &lt;ul>
@@ -3619,6 +3956,7 @@ alt="Рис. 1.: Источник: http://phdcomics.com/comics/archive.php?comic
 &lt;h2 id="принципы-zettelkasten">&lt;span class="section-num">3&lt;/span> Принципы Zettelkasten&lt;/h2>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/07/05/zettelkasten-principles/">Принципы Zettelkasten&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2025/02/08/folgezettel-numbering/">Нумерация Folgezettel&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/06/01/evergreen-notes/">Вечнозелёные заметки&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;h2 id="ресурсы">&lt;span class="section-num">4&lt;/span> Ресурсы&lt;/h2>
@@ -3664,6 +4002,7 @@ alt="Рис. 1.: Источник: http://phdcomics.com/comics/archive.php?comic
 &lt;li>&lt;code>science_history&lt;/code>: &lt;a href="https://yamadharma.github.io/ru/post/2023/08/20/books-science-history/">Книги. История науки&lt;/a>&lt;/li>
 &lt;li>&lt;code>science_people&lt;/code>&lt;sup id="fnref:2">&lt;a href="#fn:2" class="footnote-ref" role="doc-noteref">2&lt;/a>&lt;/sup>: &lt;a href="https://yamadharma.github.io/ru/post/2021/02/20/books-science-people/">Книги. Люди науки&lt;/a>&lt;/li>
 &lt;li>&lt;code>science_philosophy&lt;/code>: &lt;a href="https://yamadharma.github.io/ru/post/2021/01/06/books-science-philosophy/">Книги. Философия науки&lt;/a>&lt;/li>
+&lt;li>&lt;code>science_writing&lt;/code> : &lt;a href="https://yamadharma.github.io/ru/post/2025/02/04/books-science-writing/">Книги. Научное письмо&lt;/a>&lt;/li>
 &lt;li>&lt;code>sysadmin&lt;/code>: &lt;a href="https://yamadharma.github.io/ru/post/2024/01/24/books-sysadmin/">Книги. Системное администрирование&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>

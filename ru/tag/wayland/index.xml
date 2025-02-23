@@ -1,4 +1,53 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Wayland | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/wayland/</link><atom:link href="https://yamadharma.github.io/ru/tag/wayland/index.xml" rel="self" type="application/rss+xml"/><description>Wayland</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>ru-ru</language><copyright>© 2025 Dmitry S. Kulyabov</copyright><lastBuildDate>Sun, 01 Dec 2024 18:57:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu_c0ee34e0b47a9b95.png</url><title>Wayland</title><link>https://yamadharma.github.io/ru/tag/wayland/</link></image><item><title>Менеджер паролей pass. Tessen</title><link>https://yamadharma.github.io/ru/post/2024/12/01/password-manager-pass-tessen/</link><pubDate>Sun, 01 Dec 2024 18:57:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2024/12/01/password-manager-pass-tessen/</guid><description>&lt;p>Менеджер паролей pass. Tessen.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Wayland | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/wayland/</link><atom:link href="https://yamadharma.github.io/ru/tag/wayland/index.xml" rel="self" type="application/rss+xml"/><description>Wayland</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>ru-ru</language><copyright>© 2025 Dmitry S. Kulyabov</copyright><lastBuildDate>Fri, 21 Feb 2025 20:45:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu_c0ee34e0b47a9b95.png</url><title>Wayland</title><link>https://yamadharma.github.io/ru/tag/wayland/</link></image><item><title>Wayland. Удалённый доступ. VNC</title><link>https://yamadharma.github.io/ru/post/2025/02/21/wayland-remote-desktop-vnc/</link><pubDate>Fri, 21 Feb 2025 20:45:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2025/02/21/wayland-remote-desktop-vnc/</guid><description>&lt;p>Wayland. Удалённый доступ. VNC.&lt;/p>
+&lt;details class="print:hidden xl:hidden" >
+&lt;summary>Содержание&lt;/summary>
+&lt;div class="text-sm">
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#wayvnc">&lt;span class="section-num">1&lt;/span> wayvnc&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#установка">&lt;span class="section-num">1.1&lt;/span> Установка&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#запуск">&lt;span class="section-num">1.2&lt;/span> Запуск&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#управление-сокетом">&lt;span class="section-num">1.3&lt;/span> Управление сокетом&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#подключение">&lt;span class="section-num">2&lt;/span> Подключение&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/div>
+&lt;/details>
+&lt;h2 id="wayvnc">&lt;span class="section-num">1&lt;/span> wayvnc&lt;/h2>
+&lt;ul>
+&lt;li>Сервер VNC для композиторов на основе wlroots.&lt;/li>
+&lt;li>Репозиторий: &lt;a href="https://github.com/any1/wayvnc" target="_blank" rel="noopener">https://github.com/any1/wayvnc&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="установка">&lt;span class="section-num">1.1&lt;/span> Установка&lt;/h3>
+&lt;ul>
+&lt;li>Gentoo:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge gui-apps/wayvnc
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="запуск">&lt;span class="section-num">1.2&lt;/span> Запуск&lt;/h3>
+&lt;ul>
+&lt;li>Сервер принимает по умолчанию подключения только от localhost.&lt;/li>
+&lt;li>Чтобы принимать подключения через любой интерфейс, установите в командной строке адрес на &lt;code>0.0.0.0&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">wayvnc 0.0.0.0
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Чтобы подключиться к существующей сессии не из-под ней (например, из-под ssh), необходимо экспортировать переменную &lt;code>WAYLAND_DISPLAY&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">WAYLAND_DISPLAY&lt;/span>&lt;span class="o">=&lt;/span>wayland-1&lt;span class="p">;&lt;/span> wayvnc 0.0.0.0
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="управление-сокетом">&lt;span class="section-num">1.3&lt;/span> Управление сокетом&lt;/h3>
+&lt;ul>
+&lt;li>Для управления во время выполнения, Wayvnc открывает unix-сокет &lt;code>$XDG_RUNTIME_DIR/wayvncctl&lt;/code> (или &lt;code>/tmp/wayvncctl-$UID&lt;/code>).&lt;/li>
+&lt;li>Можно подключаться и обмениваться сообщениеми в формате JSON.&lt;/li>
+&lt;li>Используется утилита &lt;code>wayvncctl&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h2 id="подключение">&lt;span class="section-num">2&lt;/span> Подключение&lt;/h2>
+&lt;ul>
+&lt;li>Для подключения можно использовать любой клиент.&lt;/li>
+&lt;li>Я использую Remmina.&lt;/li>
+&lt;/ul></description></item><item><title>Менеджер паролей pass. Tessen</title><link>https://yamadharma.github.io/ru/post/2024/12/01/password-manager-pass-tessen/</link><pubDate>Sun, 01 Dec 2024 18:57:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2024/12/01/password-manager-pass-tessen/</guid><description>&lt;p>Менеджер паролей pass. Tessen.&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
 &lt;summary>Содержание&lt;/summary>
 &lt;div class="text-sm">
@@ -2562,6 +2611,7 @@ fuzzel/fuzzel.ini
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/10/11/wayland-applications/">Wayland. Аналоги приложений&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2024/09/01/wayland-remote-desktop-waypipe/">Wayland. Удалённый доступ. Waypipe&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2025/02/21/wayland-remote-desktop-vnc/">Wayland. Удалённый доступ. VNC&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;h2 id="ресурсы">&lt;span class="section-num">3&lt;/span> Ресурсы&lt;/h2>
 &lt;ul>

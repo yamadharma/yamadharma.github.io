@@ -1,4 +1,206 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Windows | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/windows/</link><atom:link href="https://yamadharma.github.io/ru/tag/windows/index.xml" rel="self" type="application/rss+xml"/><description>Windows</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>ru-ru</language><copyright>© 2025 Dmitry S. Kulyabov</copyright><lastBuildDate>Tue, 22 Oct 2024 14:08:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu_c0ee34e0b47a9b95.png</url><title>Windows</title><link>https://yamadharma.github.io/ru/tag/windows/</link></image><item><title>Установочный образ Windows</title><link>https://yamadharma.github.io/ru/post/2024/10/22/windows-installation-image/</link><pubDate>Tue, 22 Oct 2024 14:08:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2024/10/22/windows-installation-image/</guid><description>&lt;p>Установочный образ Windows.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Windows | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/windows/</link><atom:link href="https://yamadharma.github.io/ru/tag/windows/index.xml" rel="self" type="application/rss+xml"/><description>Windows</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>ru-ru</language><copyright>© 2025 Dmitry S. Kulyabov</copyright><lastBuildDate>Sat, 22 Feb 2025 19:20:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu_c0ee34e0b47a9b95.png</url><title>Windows</title><link>https://yamadharma.github.io/ru/tag/windows/</link></image><item><title>Proxmox. Установка Windows</title><link>https://yamadharma.github.io/ru/post/2025/02/22/proxmox-windows-install/</link><pubDate>Sat, 22 Feb 2025 19:20:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2025/02/22/proxmox-windows-install/</guid><description>&lt;p>Proxmox. Установка Windows.&lt;/p>
+&lt;details class="print:hidden xl:hidden" >
+&lt;summary>Содержание&lt;/summary>
+&lt;div class="text-sm">
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#подготовка">&lt;span class="section-num">2&lt;/span> Подготовка&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#установка">&lt;span class="section-num">3&lt;/span> Установка&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#скрипт-установки">&lt;span class="section-num">4&lt;/span> Скрипт установки&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/div>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>Устанавливается виртуальная машина Windows на kvm (см. &lt;a href="https://yamadharma.github.io/ru/post/2024/05/29/windows-install-kvm/">Windows. Установка в kvm&lt;/a>)&lt;/li>
+&lt;li>В качестве реализации управления виртуальными машинами используется Proxmox (см. &lt;a href="https://yamadharma.github.io/ru/post/2024/06/04/linux-proxmox-distribution/">Linux. Дистрибутив Proxmox&lt;/a>)&lt;/li>
+&lt;li>Информация:
+&lt;ul>
+&lt;li>&lt;a href="https://pve.proxmox.com/wiki/Windows_2022_guest_best_practices" target="_blank" rel="noopener">https://pve.proxmox.com/wiki/Windows_2022_guest_best_practices&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://pve.proxmox.com/wiki/Windows_10_guest_best_practices" target="_blank" rel="noopener">https://pve.proxmox.com/wiki/Windows_10_guest_best_practices&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://pve.proxmox.com/wiki/Windows_VirtIO_Drivers" target="_blank" rel="noopener">https://pve.proxmox.com/wiki/Windows_VirtIO_Drivers&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="подготовка">&lt;span class="section-num">2&lt;/span> Подготовка&lt;/h2>
+&lt;ul>
+&lt;li>Скачаем драйвера для qemu:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">wget https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/latest-virtio/virtio-win.iso -O /var/lib/vz/template/iso/virtio-win.iso
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Необходимо подключить также образ Windows.&lt;/li>
+&lt;li>Его можно подключить через nfs, а можно загрузить в &lt;code>/var/lib/vz/template/iso&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h2 id="установка">&lt;span class="section-num">3&lt;/span> Установка&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>Создадим виртуальную машину:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">qm create &lt;span class="m">200&lt;/span> --name pdc2 --memory &lt;span class="m">16000&lt;/span> --cores &lt;span class="m">4&lt;/span> --sockets &lt;span class="m">1&lt;/span> --net0 virtio,bridge&lt;span class="o">=&lt;/span>vmbr1,firewall&lt;span class="o">=&lt;/span>1,mtu&lt;span class="o">=&lt;/span>1,tag&lt;span class="o">=&lt;/span>&lt;span class="m">180&lt;/span> --agent &lt;span class="nv">enabled&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>&lt;code>tag&lt;/code> задаёт используемый vlan.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Установим тип операционной системы.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Можно выбрать из списка: wxp, w2k, w2k3, w2k8, wvista, win7, win8, win10, win11.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">qm &lt;span class="nb">set&lt;/span> &lt;span class="m">200&lt;/span> --ostype win10
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Подключим QEMU Guest Agent (см. &lt;a href="https://yamadharma.github.io/ru/post/2024/09/05/kvm-qemu-guest-agent/">KVM. QEMU Guest Agent&lt;/a>):&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">qm &lt;span class="nb">set&lt;/span> &lt;span class="m">200&lt;/span> --agent &lt;span class="nv">enabled&lt;/span>&lt;span class="o">=&lt;/span>1,fstrim_cloned_disks&lt;span class="o">=&lt;/span>&lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Создадим диск (160GB):&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pvesm alloc local-lvm &lt;span class="m">200&lt;/span> vm-200-disk-0 160G
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Зададим драйвер диска:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">qm &lt;span class="nb">set&lt;/span> &lt;span class="m">200&lt;/span> --scsihw virtio-scsi-single
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Подключим диск:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">qm &lt;span class="nb">set&lt;/span> &lt;span class="m">200&lt;/span> --virtio0 local-lvm:vm-200-disk-0
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Подключим CDROM:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">qm &lt;span class="nb">set&lt;/span> &lt;span class="m">200&lt;/span> --ide2 local:iso/windows-server-2019.iso,media&lt;span class="o">=&lt;/span>cdrom
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Подключим диск с драйверами VirtIO:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">qm &lt;span class="nb">set&lt;/span> &lt;span class="m">200&lt;/span> --ide3 local:iso/virtio-win.iso,media&lt;span class="o">=&lt;/span>cdrom
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Зададим порядок загрузки (CD-ROM, затем диск)&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">qm &lt;span class="nb">set&lt;/span> &lt;span class="m">200&lt;/span> --boot c --bootdisk virtio0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">qm &lt;span class="nb">set&lt;/span> &lt;span class="m">200&lt;/span> --boot &lt;span class="nv">order&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;ide2;ide3;virtio0&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Зададим тип CPU:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">qm &lt;span class="nb">set&lt;/span> &lt;span class="m">200&lt;/span> --cpu &lt;span class="nv">cputype&lt;/span>&lt;span class="o">=&lt;/span>host
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Подключим для мышки:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">qm &lt;span class="nb">set&lt;/span> &lt;span class="m">200&lt;/span> --tablet &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="скрипт-установки">&lt;span class="section-num">4&lt;/span> Скрипт установки&lt;/h2>
+&lt;ul>
+&lt;li>Все действия по установке можно собрать в виде скрипта (нужно править):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#!/bin/bash
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Configuration variables&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">NODE&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;pve&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">VMID&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;200&amp;#34;&lt;/span> &lt;span class="c1"># Change this to your desired VM ID&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">VM_NAME&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;win11-test&amp;#34;&lt;/span> &lt;span class="c1"># Change this to your desired VM name&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">VM_MEMORY&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;4096&amp;#34;&lt;/span> &lt;span class="c1"># Memory in MB&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">VM_CORES&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;2&amp;#34;&lt;/span> &lt;span class="c1"># Number of CPU cores&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">VM_SOCKET&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;1&amp;#34;&lt;/span> &lt;span class="c1"># Number of CPU sockets&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">STORAGE&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;local-lvm&amp;#34;&lt;/span> &lt;span class="c1"># Storage location&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">DISK_SIZE&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;160G&amp;#34;&lt;/span> &lt;span class="c1"># Disk size&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">ISO_STORAGE&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;/mnt/pve/nfs/template/iso&amp;#34;&lt;/span> &lt;span class="c1"># Storage location for ISOs&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">WIN_ISO&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;Win11_23H2_x64v2_auto.iso&amp;#34;&lt;/span> &lt;span class="c1"># Windows ISO filename&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">VIRTIO_ISO&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;virtio-win.iso&amp;#34;&lt;/span> &lt;span class="c1"># VirtIO drivers ISO filename&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">OS_TYPE&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;win10&amp;#34;&lt;/span> &lt;span class="c1"># Options: wxp, w2k, w2k3, w2k8, wvista, win7, win8, win10, win11&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Function to check if VM ID already exists&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">check_vmid&lt;span class="o">()&lt;/span> &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> qm status &lt;span class="nv">$VMID&lt;/span> &lt;span class="p">&amp;amp;&lt;/span>&amp;gt;/dev/null&lt;span class="p">;&lt;/span> &lt;span class="k">then&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;Error: VM ID &lt;/span>&lt;span class="nv">$VMID&lt;/span>&lt;span class="s2"> already exists&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">exit&lt;/span> &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">fi&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Function to check storage availability&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">check_storage&lt;span class="o">()&lt;/span> &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> ! pvesm status &lt;span class="p">|&lt;/span> grep -q &lt;span class="s2">&amp;#34;^&lt;/span>&lt;span class="nv">$STORAGE&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="k">then&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;Error: Storage &amp;#39;&lt;/span>&lt;span class="nv">$STORAGE&lt;/span>&lt;span class="s2">&amp;#39; not found&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">exit&lt;/span> &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">fi&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Function to check ISO files&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">check_isos&lt;span class="o">()&lt;/span> &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="o">[&lt;/span> ! -f &lt;span class="s2">&amp;#34;/mnt/pve/nfs/template/iso/&lt;/span>&lt;span class="nv">$WIN_ISO&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="o">]&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="k">then&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;Warning: Windows ISO not found at /var/lib/vz/template/iso/&lt;/span>&lt;span class="nv">$WIN_ISO&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">fi&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="o">[&lt;/span> ! -f &lt;span class="s2">&amp;#34;/mnt/pve/nfs/template/iso/&lt;/span>&lt;span class="nv">$VIRTIO_ISO&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="o">]&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="k">then&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;Warning: VirtIO ISO not found at /var/lib/vz/template/iso/&lt;/span>&lt;span class="nv">$VIRTIO_ISO&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">fi&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Run checks&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">check_vmid
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">check_storage
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">check_isos
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Create and add main disk using VirtIO Block&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;Creating disk with size &lt;/span>&lt;span class="nv">$DISK_SIZE&lt;/span>&lt;span class="s2">...&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">pvesm alloc &lt;span class="nv">$STORAGE&lt;/span> &lt;span class="nv">$VMID&lt;/span> vm-&lt;span class="nv">$VMID&lt;/span>-disk-2 &lt;span class="nv">$DISK_SIZE&lt;/span> &lt;span class="o">||&lt;/span> &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;Error: Failed to create disk&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> qm destroy &lt;span class="nv">$VMID&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">exit&lt;/span> &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Create VM&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;Creating VM with ID &lt;/span>&lt;span class="nv">$VMID&lt;/span>&lt;span class="s2">...&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">qm create &lt;span class="nv">$VMID&lt;/span> --name &lt;span class="nv">$VM_NAME&lt;/span> --memory &lt;span class="nv">$VM_MEMORY&lt;/span> --cores &lt;span class="nv">$VM_CORES&lt;/span> --sockets &lt;span class="nv">$VM_SOCKET&lt;/span> --net0 virtio,bridge&lt;span class="o">=&lt;/span>vmbr0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">qm &lt;span class="nb">set&lt;/span> &lt;span class="nv">$VMID&lt;/span> --ostype &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$OS_TYPE&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">qm &lt;span class="nb">set&lt;/span> &lt;span class="nv">$VMID&lt;/span> --virtio0 &lt;span class="nv">$STORAGE&lt;/span>:vm-&lt;span class="nv">$VMID&lt;/span>-disk-2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Add Windows installation media&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">qm &lt;span class="nb">set&lt;/span> &lt;span class="nv">$VMID&lt;/span> --ide2 nfs:iso/&lt;span class="nv">$WIN_ISO&lt;/span>,media&lt;span class="o">=&lt;/span>cdrom
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Add VirtIO drivers&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">qm &lt;span class="nb">set&lt;/span> &lt;span class="nv">$VMID&lt;/span> --ide3 nfs:iso/&lt;span class="nv">$VIRTIO_ISO&lt;/span>,media&lt;span class="o">=&lt;/span>cdrom
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Configure boot order (CD-ROM first, then disk)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#qm set $VMID --boot c --bootdisk virtio0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#qm set $VMID --boot order=&amp;#39;ide2;ide3;virtio0&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Enable QEMU Guest Agent&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">qm &lt;span class="nb">set&lt;/span> &lt;span class="nv">$VMID&lt;/span> --agent &lt;span class="nv">enabled&lt;/span>&lt;span class="o">=&lt;/span>1,fstrim_cloned_disks&lt;span class="o">=&lt;/span>&lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#create TPM&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">pvesm alloc local-lvm &lt;span class="m">1022&lt;/span> vm-1022-disk-1.raw 4M
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#create EFI Disk&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">pvesm alloc local-lvm &lt;span class="m">1022&lt;/span> vm-1022-disk-0.qcow2 4M
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Add TPM support (required for Windows 11)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;Configuring Windows 11 specific settings (TPM, UEFI)...&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">qm &lt;span class="nb">set&lt;/span> &lt;span class="nv">$VMID&lt;/span> --tpmstate0 local-lvm:vm-1022-disk-1.raw,size&lt;span class="o">=&lt;/span>4M,version&lt;span class="o">=&lt;/span>v2.0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">qm &lt;span class="nb">set&lt;/span> &lt;span class="nv">$VMID&lt;/span> --machine q35
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">qm &lt;span class="nb">set&lt;/span> &lt;span class="nv">$VMID&lt;/span> --bios ovmf
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">qm &lt;span class="nb">set&lt;/span> &lt;span class="m">1022&lt;/span> --efidisk0 local-lvm:vm-1022-disk-0.qcow2,size&lt;span class="o">=&lt;/span>528K,efitype&lt;span class="o">=&lt;/span>4m,pre-enrolled-keys&lt;span class="o">=&lt;/span>&lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Configure boot order (CD-ROM first, then disk)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">qm &lt;span class="nb">set&lt;/span> &lt;span class="nv">$VMID&lt;/span> --boot c --bootdisk virtio0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">qm &lt;span class="nb">set&lt;/span> &lt;span class="nv">$VMID&lt;/span> --boot &lt;span class="nv">order&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;ide2;ide3;virtio0&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Configure CPU type for better performance&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">qm &lt;span class="nb">set&lt;/span> &lt;span class="m">1022&lt;/span> --cpu &lt;span class="nv">cputype&lt;/span>&lt;span class="o">=&lt;/span>host
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Add tablet device for better mouse handling&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">qm &lt;span class="nb">set&lt;/span> &lt;span class="m">1022&lt;/span> --tablet &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;VM &lt;/span>&lt;span class="nv">$VMID&lt;/span>&lt;span class="s2"> created successfully. Before starting the VM, ensure:&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;1. Windows ISO (&lt;/span>&lt;span class="nv">$WIN_ISO&lt;/span>&lt;span class="s2">) is present in &lt;/span>&lt;span class="nv">$ISO_STORAGE&lt;/span>&lt;span class="s2">:iso/&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;2. VirtIO drivers ISO (&lt;/span>&lt;span class="nv">$VIRTIO_ISO&lt;/span>&lt;span class="s2">) is present in &lt;/span>&lt;span class="nv">$ISO_STORAGE&lt;/span>&lt;span class="s2">:iso/&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;During Windows installation, when prompted for drivers, browse the VirtIO ISO (IDE3) and select:&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;- For storage: /viostor/w10/amd64/&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;To download the latest VirtIO drivers:&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;wget https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/latest-virtio/virtio-win.iso -O /var/lib/vz/template/iso/virtio-win.iso&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;To start the VM:&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;qm start &lt;/span>&lt;span class="nv">$VMID&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul></description></item><item><title>Установочный образ Windows</title><link>https://yamadharma.github.io/ru/post/2024/10/22/windows-installation-image/</link><pubDate>Tue, 22 Oct 2024 14:08:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2024/10/22/windows-installation-image/</guid><description>&lt;p>Установочный образ Windows.&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
 &lt;summary>Содержание&lt;/summary>
 &lt;div class="text-sm">

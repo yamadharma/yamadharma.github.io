@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Sysadmin | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/sysadmin/</link><atom:link href="https://yamadharma.github.io/ru/tag/sysadmin/index.xml" rel="self" type="application/rss+xml"/><description>Sysadmin</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>ru-ru</language><copyright>© 2025 Dmitry S. Kulyabov</copyright><lastBuildDate>Wed, 05 Feb 2025 18:32:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu_c0ee34e0b47a9b95.png</url><title>Sysadmin</title><link>https://yamadharma.github.io/ru/tag/sysadmin/</link></image><item><title>Администрирование сетевых подсистем</title><link>https://yamadharma.github.io/ru/teaching/net-os-admin/</link><pubDate>Thu, 19 Oct 2023 17:19:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/teaching/net-os-admin/</guid><description>&lt;p>Курс Администрирование сетевых подсистем.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Sysadmin | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/sysadmin/</link><atom:link href="https://yamadharma.github.io/ru/tag/sysadmin/index.xml" rel="self" type="application/rss+xml"/><description>Sysadmin</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>ru-ru</language><copyright>© 2025 Dmitry S. Kulyabov</copyright><lastBuildDate>Fri, 21 Feb 2025 20:45:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu_c0ee34e0b47a9b95.png</url><title>Sysadmin</title><link>https://yamadharma.github.io/ru/tag/sysadmin/</link></image><item><title>Администрирование сетевых подсистем</title><link>https://yamadharma.github.io/ru/teaching/net-os-admin/</link><pubDate>Thu, 19 Oct 2023 17:19:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/teaching/net-os-admin/</guid><description>&lt;p>Курс Администрирование сетевых подсистем.&lt;/p>
 &lt;ul class="list-unstyled">
 &lt;li>
 &lt;h5>&lt;a href="https://yamadharma.github.io/ru/teaching/net-os-admin/lab/">Лабораторные работы&lt;/a>&lt;/h5>
@@ -229,6 +229,291 @@ width="720" height="405" allow="autoplay; encrypted-media; fullscreen; picture-i
 &lt;li>Во время настройки студент записывает выполняемые операции в виде кода.&lt;/li>
 &lt;li>Созданный код помещается в отчёт по лабораторной работе.&lt;/li>
 &lt;li>После создания кода студент уничтожает существующие виртуальные машины и пересоздаёт их на основе созданного кода.&lt;/li>
+&lt;/ul></description></item><item><title>Wayland. Удалённый доступ. VNC</title><link>https://yamadharma.github.io/ru/post/2025/02/21/wayland-remote-desktop-vnc/</link><pubDate>Fri, 21 Feb 2025 20:45:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2025/02/21/wayland-remote-desktop-vnc/</guid><description>&lt;p>Wayland. Удалённый доступ. VNC.&lt;/p>
+&lt;details class="print:hidden xl:hidden" >
+&lt;summary>Содержание&lt;/summary>
+&lt;div class="text-sm">
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#wayvnc">&lt;span class="section-num">1&lt;/span> wayvnc&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#установка">&lt;span class="section-num">1.1&lt;/span> Установка&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#запуск">&lt;span class="section-num">1.2&lt;/span> Запуск&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#управление-сокетом">&lt;span class="section-num">1.3&lt;/span> Управление сокетом&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#подключение">&lt;span class="section-num">2&lt;/span> Подключение&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/div>
+&lt;/details>
+&lt;h2 id="wayvnc">&lt;span class="section-num">1&lt;/span> wayvnc&lt;/h2>
+&lt;ul>
+&lt;li>Сервер VNC для композиторов на основе wlroots.&lt;/li>
+&lt;li>Репозиторий: &lt;a href="https://github.com/any1/wayvnc" target="_blank" rel="noopener">https://github.com/any1/wayvnc&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="установка">&lt;span class="section-num">1.1&lt;/span> Установка&lt;/h3>
+&lt;ul>
+&lt;li>Gentoo:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge gui-apps/wayvnc
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="запуск">&lt;span class="section-num">1.2&lt;/span> Запуск&lt;/h3>
+&lt;ul>
+&lt;li>Сервер принимает по умолчанию подключения только от localhost.&lt;/li>
+&lt;li>Чтобы принимать подключения через любой интерфейс, установите в командной строке адрес на &lt;code>0.0.0.0&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">wayvnc 0.0.0.0
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Чтобы подключиться к существующей сессии не из-под ней (например, из-под ssh), необходимо экспортировать переменную &lt;code>WAYLAND_DISPLAY&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">WAYLAND_DISPLAY&lt;/span>&lt;span class="o">=&lt;/span>wayland-1&lt;span class="p">;&lt;/span> wayvnc 0.0.0.0
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="управление-сокетом">&lt;span class="section-num">1.3&lt;/span> Управление сокетом&lt;/h3>
+&lt;ul>
+&lt;li>Для управления во время выполнения, Wayvnc открывает unix-сокет &lt;code>$XDG_RUNTIME_DIR/wayvncctl&lt;/code> (или &lt;code>/tmp/wayvncctl-$UID&lt;/code>).&lt;/li>
+&lt;li>Можно подключаться и обмениваться сообщениеми в формате JSON.&lt;/li>
+&lt;li>Используется утилита &lt;code>wayvncctl&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h2 id="подключение">&lt;span class="section-num">2&lt;/span> Подключение&lt;/h2>
+&lt;ul>
+&lt;li>Для подключения можно использовать любой клиент.&lt;/li>
+&lt;li>Я использую Remmina.&lt;/li>
+&lt;/ul></description></item><item><title>OBS Studio</title><link>https://yamadharma.github.io/ru/post/2025/02/20/obs-studio/</link><pubDate>Thu, 20 Feb 2025 11:38:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2025/02/20/obs-studio/</guid><description>&lt;p>OBS Studio.&lt;/p>
+&lt;details class="print:hidden xl:hidden" >
+&lt;summary>Содержание&lt;/summary>
+&lt;div class="text-sm">
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#сценарии-применения">&lt;span class="section-num">2&lt;/span> Сценарии применения&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#плагины">&lt;span class="section-num">3&lt;/span> Плагины&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#работа-с-фоном">&lt;span class="section-num">3.1&lt;/span> Работа с фоном&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#obs-backgroundremoval">&lt;span class="section-num">3.1.1&lt;/span> obs-backgroundremoval&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#obs-composite-blur">&lt;span class="section-num">3.1.2&lt;/span> obs-composite-blur&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#стриминг">&lt;span class="section-num">3.2&lt;/span> Стриминг&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#obs-multi-rtmp">&lt;span class="section-num">3.2.1&lt;/span> obs-multi-rtmp&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/div>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;h2 id="сценарии-применения">&lt;span class="section-num">2&lt;/span> Сценарии применения&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2025/02/16/obs-studio-streaming/">OBS Studio. Стриминг&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="плагины">&lt;span class="section-num">3&lt;/span> Плагины&lt;/h2>
+&lt;h3 id="работа-с-фоном">&lt;span class="section-num">3.1&lt;/span> Работа с фоном&lt;/h3>
+&lt;h4 id="obs-backgroundremoval">&lt;span class="section-num">3.1.1&lt;/span> obs-backgroundremoval&lt;/h4>
+&lt;ul>
+&lt;li>Репозиторий: &lt;a href="https://github.com/locaal-ai/obs-backgroundremoval" target="_blank" rel="noopener">https://github.com/locaal-ai/obs-backgroundremoval&lt;/a>&lt;/li>
+&lt;li>Устранение фона (без хромакея).&lt;/li>
+&lt;li>Установка
+&lt;ul>
+&lt;li>Gentoo (оверлей &lt;code>supertux88&lt;/code>):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge media-plugins/obs-backgroundremoval
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="obs-composite-blur">&lt;span class="section-num">3.1.2&lt;/span> obs-composite-blur&lt;/h4>
+&lt;ul>
+&lt;li>Добавление размытия.&lt;/li>
+&lt;li>Репозиторий: &lt;a href="https://github.com/FiniteSingularity/obs-composite-blur" target="_blank" rel="noopener">https://github.com/FiniteSingularity/obs-composite-blur&lt;/a>&lt;/li>
+&lt;li>Установка
+&lt;ul>
+&lt;li>Gentoo
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge media-plugins/obs-composite-blur
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="стриминг">&lt;span class="section-num">3.2&lt;/span> Стриминг&lt;/h3>
+&lt;h4 id="obs-multi-rtmp">&lt;span class="section-num">3.2.1&lt;/span> obs-multi-rtmp&lt;/h4>
+&lt;ul>
+&lt;li>Репозиторий: &lt;a href="https://github.com/sorayuki/obs-multi-rtmp" target="_blank" rel="noopener">https://github.com/sorayuki/obs-multi-rtmp&lt;/a>&lt;/li>
+&lt;li>Плагин позволяет одновременно стримить на несколько платформ без использования сторонних сервисов рестриминга.&lt;/li>
+&lt;li>Возможности:
+&lt;ul>
+&lt;li>Запуск трансляций на несколько RTMP-серверов (зависит от скорости интернет-соединения).&lt;/li>
+&lt;li>Возможность индивидуальная настройки для каждого потока (выбор кодировщика, разрешения, частоты кадров, битрейт и прочее).&lt;/li>
+&lt;li>Синхронизация запуска трансляции на несколько платформ по нажатию на одну кнопку.&lt;/li>
+&lt;li>Выбор аудиодорожек для каждого потока.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Установка
+&lt;ul>
+&lt;li>Gentoo (оверлей &lt;code>guru&lt;/code>, см. &lt;a href="https://yamadharma.github.io/ru/post/2023/10/01/gentoo-additional-repositories/">Gentoo. Дополнительные репозитории&lt;/a>):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge media-video/obs-multi-rtmp
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul></description></item><item><title>Fish. Полезные плагины</title><link>https://yamadharma.github.io/ru/post/2025/02/14/fish-useful-plugins/</link><pubDate>Fri, 14 Feb 2025 21:29:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2025/02/14/fish-useful-plugins/</guid><description>&lt;p>Fish. Полезные плагины.&lt;/p>
+&lt;details class="print:hidden xl:hidden" >
+&lt;summary>Содержание&lt;/summary>
+&lt;div class="text-sm">
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#поддержка-git-flow">&lt;span class="section-num">2&lt;/span> Поддержка git flow&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#plugin-git-flow">&lt;span class="section-num">2.1&lt;/span> plugin-git-flow&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#git-flow-completion">&lt;span class="section-num">2.2&lt;/span> git-flow-completion&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#замена-ls-на-lsd">&lt;span class="section-num">3&lt;/span> Замена ls на lsd&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#fish-plugin-lsd">&lt;span class="section-num">3.1&lt;/span> fish-plugin-lsd&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#задание-алиаса">&lt;span class="section-num">3.2&lt;/span> Задание алиаса&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#поддержка-fzf">&lt;span class="section-num">4&lt;/span> Поддержка fzf&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#поддержка-командного-режима-virtualbox">&lt;span class="section-num">5&lt;/span> Поддержка командного режима VirtualBox&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/div>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>Для установки можно использовать Fisher (см. &lt;a href="https://yamadharma.github.io/ru/post/2025/02/14/fish-plugin-manager-fisher/">Fish. Менеджер плагинов Fisher&lt;/a>).&lt;/li>
+&lt;/ul>
+&lt;h2 id="поддержка-git-flow">&lt;span class="section-num">2&lt;/span> Поддержка git flow&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/04/18/gitflow-workflow/">Рабочий процесс Gitflow&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="plugin-git-flow">&lt;span class="section-num">2.1&lt;/span> plugin-git-flow&lt;/h3>
+&lt;ul>
+&lt;li>Репозиторий: &lt;a href="https://github.com/oh-my-fish/plugin-git-flow" target="_blank" rel="noopener">https://github.com/oh-my-fish/plugin-git-flow&lt;/a>&lt;/li>
+&lt;li>Поддержка завершения для git flow.&lt;/li>
+&lt;li>Установка (fisher):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">fisher install oh-my-fish/plugin-git-flow
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>У меня работал с ошибками.&lt;/li>
+&lt;/ul>
+&lt;h3 id="git-flow-completion">&lt;span class="section-num">2.2&lt;/span> git-flow-completion&lt;/h3>
+&lt;ul>
+&lt;li>Репозиторий: &lt;a href="https://github.com/bobthecow/git-flow-completion" target="_blank" rel="noopener">https://github.com/bobthecow/git-flow-completion&lt;/a>&lt;/li>
+&lt;li>Поддержка bash, zsh, fish.&lt;/li>
+&lt;li>Установка:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">wget https://raw.githubusercontent.com/bobthecow/git-flow-completion/refs/heads/master/git.fish -O ~/.config/fish/completions/git.fish
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="замена-ls-на-lsd">&lt;span class="section-num">3&lt;/span> Замена ls на lsd&lt;/h2>
+&lt;h3 id="fish-plugin-lsd">&lt;span class="section-num">3.1&lt;/span> fish-plugin-lsd&lt;/h3>
+&lt;ul>
+&lt;li>Отображает содержание каталога с помощью &lt;code>lsd&lt;/code> после перехода в него с помощью &lt;code>cd&lt;/code>.&lt;/li>
+&lt;li>Репозиторий: &lt;a href="https://github.com/tacomilkshake/fish-plugin-lsd" target="_blank" rel="noopener">https://github.com/tacomilkshake/fish-plugin-lsd&lt;/a>&lt;/li>
+&lt;li>Установка (fisher):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">fisher install jamiesteven/fish-plugin-lsd
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="задание-алиаса">&lt;span class="section-num">3.2&lt;/span> Задание алиаса&lt;/h3>
+&lt;ul>
+&lt;li>Задайте алиас:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">alias&lt;/span> --save &lt;span class="nv">ls&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;lsd&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Это создаст файл &lt;code>~/.config/fish/functions/ls.fish&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fish" data-lang="fish">&lt;span class="line">&lt;span class="cl">&lt;span class="nf">unction&lt;/span> ls &lt;span class="na">--wraps&lt;/span>&lt;span class="o">=&lt;/span>lsd &lt;span class="na">--description&lt;/span> &lt;span class="s1">&amp;#39;alias ls=lsd&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">lsd&lt;/span> &lt;span class="nv">$argv&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">end&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="поддержка-fzf">&lt;span class="section-num">4&lt;/span> Поддержка fzf&lt;/h2>
+&lt;ul>
+&lt;li>Репозиторий: &lt;a href="https://github.com/PatrickF1/fzf.fish" target="_blank" rel="noopener">https://github.com/PatrickF1/fzf.fish&lt;/a>&lt;/li>
+&lt;li>Установка пререквизитов:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge app-shells/fish
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">emerge app-shells/fzf
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">emerge sys-apps/bat
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">emerge sys-apps/fd
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Установка (системный пакет, репозиторий &lt;code>guru&lt;/code>, см. &lt;a href="https://yamadharma.github.io/ru/post/2023/10/01/gentoo-additional-repositories/">Gentoo. Дополнительные репозитории&lt;/a>):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">fisher install PatrickF1/fzf.fish
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Установка (fisher):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">fisher install PatrickF1/fzf.fish
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="поддержка-командного-режима-virtualbox">&lt;span class="section-num">5&lt;/span> Поддержка командного режима VirtualBox&lt;/h2>
+&lt;ul>
+&lt;li>Репозиторий: &lt;a href="https://github.com/jduchateau/fish-virtualbox-completions?tab=readme-ov-file" target="_blank" rel="noopener">https://github.com/jduchateau/fish-virtualbox-completions?tab=readme-ov-file&lt;/a>&lt;/li>
+&lt;li>Установка (fisher):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">fisher install jduchateau/fish-virtualbox-completions
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul></description></item><item><title>Fish. Менеджер плагинов Fisher</title><link>https://yamadharma.github.io/ru/post/2025/02/14/fish-plugin-manager-fisher/</link><pubDate>Fri, 14 Feb 2025 21:10:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2025/02/14/fish-plugin-manager-fisher/</guid><description>&lt;p>Fish. Менеджер плагинов Fisher.&lt;/p>
+&lt;details class="print:hidden xl:hidden" >
+&lt;summary>Содержание&lt;/summary>
+&lt;div class="text-sm">
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#установка">&lt;span class="section-num">2&lt;/span> Установка&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#работа-с-плагинами">&lt;span class="section-num">3&lt;/span> Работа с плагинами&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#установка-плагина">&lt;span class="section-num">3.1&lt;/span> Установка плагина&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#список-плагинов">&lt;span class="section-num">3.2&lt;/span> Список плагинов&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#обновление-плагинов">&lt;span class="section-num">3.3&lt;/span> Обновление плагинов&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#удаление-плагина">&lt;span class="section-num">3.4&lt;/span> Удаление плагина&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/div>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>Менеджер плагинов.&lt;/li>
+&lt;li>Репозиторий: &lt;a href="https://github.com/jorgebucaran/fisher" target="_blank" rel="noopener">https://github.com/jorgebucaran/fisher&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="установка">&lt;span class="section-num">2&lt;/span> Установка&lt;/h2>
+&lt;ul>
+&lt;li>Установить Fisher:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">curl -sL https://git.io/fisher &lt;span class="p">|&lt;/span> &lt;span class="nb">source&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> fisher install jorgebucaran/fisher
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Фактически добавляются файлы:
+&lt;ul>
+&lt;li>&lt;code>~/.config/fish/functions/fisher.fish&lt;/code>&lt;/li>
+&lt;li>&lt;code>~/.config/fish/completions/fisher.fish&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="работа-с-плагинами">&lt;span class="section-num">3&lt;/span> Работа с плагинами&lt;/h2>
+&lt;h3 id="установка-плагина">&lt;span class="section-num">3.1&lt;/span> Установка плагина&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>Установка плагина из репозитория GitHub:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">fisher install &amp;lt;user_name&amp;gt;/&amp;lt;repo_name&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Установка плагина из локального каталога:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">fisher install ~/path/to/plugin
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="список-плагинов">&lt;span class="section-num">3.2&lt;/span> Список плагинов&lt;/h3>
+&lt;ul>
+&lt;li>Просмотр списка установленных плагинов:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">fisher list
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="обновление-плагинов">&lt;span class="section-num">3.3&lt;/span> Обновление плагинов&lt;/h3>
+&lt;ul>
+&lt;li>Обновление установленного плагина:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">fisher update &amp;lt;user_name&amp;gt;/&amp;lt;repo_name&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="удаление-плагина">&lt;span class="section-num">3.4&lt;/span> Удаление плагина&lt;/h3>
+&lt;ul>
+&lt;li>Удаления установленного плагина:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">fisher remove &amp;lt;user_name&amp;gt;/&amp;lt;repo_name&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul></description></item><item><title>Настройка vpn-клиента Континент АП</title><link>https://yamadharma.github.io/ru/post/2025/02/05/configuring-continent-ap-vpn-client/</link><pubDate>Wed, 05 Feb 2025 18:32:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2025/02/05/configuring-continent-ap-vpn-client/</guid><description>&lt;p>Настройка vpn-клиента Континент АП (Ztn Client).&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
 &lt;summary>Содержание&lt;/summary>
@@ -940,6 +1225,14 @@ width="720" height="405" allow="autoplay; encrypted-media; fullscreen; picture-i
 &lt;li>&lt;a href="#веб-интерфейс">&lt;span class="section-num">5.2&lt;/span> Веб-интерфейс&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
+&lt;li>&lt;a href="#менеджеры-плагинов">&lt;span class="section-num">6&lt;/span> Менеджеры плагинов&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#oh-my-fish">&lt;span class="section-num">6.1&lt;/span> Oh My Fish&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#fisher">&lt;span class="section-num">6.2&lt;/span> Fisher&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#fundle">&lt;span class="section-num">6.3&lt;/span> Fundle&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#ресурсы">&lt;span class="section-num">7&lt;/span> Ресурсы&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/nav>
 &lt;/div>
@@ -1041,6 +1334,30 @@ width="720" height="405" allow="autoplay; encrypted-media; fullscreen; picture-i
 &lt;li>Цвета терминала fish, строка приглашения, функции, переменные, история, привязки и сокращения могут быть настроены через интерактивный веб-интерфейс:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">fish_config
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="менеджеры-плагинов">&lt;span class="section-num">6&lt;/span> Менеджеры плагинов&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2025/02/14/fish-useful-plugins/">Fish. Полезные плагины&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="oh-my-fish">&lt;span class="section-num">6.1&lt;/span> Oh My Fish&lt;/h3>
+&lt;ul>
+&lt;li>Фреймворк расширения Fish.&lt;/li>
+&lt;li>Репозиторий: &lt;a href="https://github.com/oh-my-fish/oh-my-fish" target="_blank" rel="noopener">https://github.com/oh-my-fish/oh-my-fish&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="fisher">&lt;span class="section-num">6.2&lt;/span> Fisher&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2025/02/14/fish-plugin-manager-fisher/">Fish. Менеджер плагинов Fisher&lt;/a>&lt;/li>
+&lt;li>Менеджер плагинов.&lt;/li>
+&lt;li>Репозиторий: &lt;a href="https://github.com/jorgebucaran/fisher" target="_blank" rel="noopener">https://github.com/jorgebucaran/fisher&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="fundle">&lt;span class="section-num">6.3&lt;/span> Fundle&lt;/h3>
+&lt;ul>
+&lt;li>Менеджер пакетов для Fish.&lt;/li>
+&lt;li>Репозиторий: &lt;a href="https://github.com/danhper/fundle" target="_blank" rel="noopener">https://github.com/danhper/fundle&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="ресурсы">&lt;span class="section-num">7&lt;/span> Ресурсы&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://github.com/jorgebucaran/awsm.fish" target="_blank" rel="noopener">https://github.com/jorgebucaran/awsm.fish&lt;/a>&lt;/li>
 &lt;/ul></description></item><item><title>Командные оболочки Unix</title><link>https://yamadharma.github.io/ru/post/2025/01/01/unix-shells/</link><pubDate>Wed, 01 Jan 2025 16:06:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2025/01/01/unix-shells/</guid><description>&lt;p>Командные оболочки Unix.&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
 &lt;summary>Содержание&lt;/summary>
@@ -1110,7 +1427,7 @@ width="720" height="405" allow="autoplay; encrypted-media; fullscreen; picture-i
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> -bios /usr/share/edk2-ovmf/OVMF_CODE.fd &lt;span class="se">\
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> -enable-kvm -machine q35 -device intel-iommu &lt;span class="se">\
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> -device virtio-balloon &lt;span class="se">\
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> -chardev qemu-vdagent,id&lt;span class="o">=&lt;/span>vdagent0,name&lt;span class="o">=&lt;/span>vdagent,clipboard&lt;span class="o">=&lt;/span>on &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> -chardev qemu-vdagent,id&lt;span class="o">=&lt;/span>vdagent0,name&lt;span class="o">=&lt;/span>vdagent,clipboard&lt;span class="o">=&lt;/span>on,mouse&lt;span class="o">=&lt;/span>off &lt;span class="se">\
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> -display default,show-cursor&lt;span class="o">=&lt;/span>on &lt;span class="se">\
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> -vga none -device virtio-gpu-pci
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
@@ -5931,6 +6248,14 @@ width="720" height="405" allow="autoplay; encrypted-media; fullscreen; picture-i
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="fedora">&lt;span class="section-num">2.2&lt;/span> Fedora&lt;/h3>
+&lt;ul>
+&lt;li>Установим gpg:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge app-crypt/gnupg
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Установим приложение для ввода пароля:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge app-crypt/pinentry
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
 &lt;h2 id="структура">&lt;span class="section-num">3&lt;/span> Структура&lt;/h2>
 &lt;h3 id="сокеты">&lt;span class="section-num">3.1&lt;/span> Сокеты&lt;/h3>
 &lt;ul>
@@ -5952,7 +6277,8 @@ width="720" height="405" allow="autoplay; encrypted-media; fullscreen; picture-i
 &lt;ul>
 &lt;li>Установите переменные окружения (в &lt;code>~/.bashrc&lt;/code>):
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">unset&lt;/span> SSH_AGENT_PID
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">if&lt;/span> &lt;span class="o">[&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">gnupg_SSH_AUTH_SOCK_by&lt;/span>&lt;span class="k">:-&lt;/span>&lt;span class="nv">0&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> -ne &lt;span class="nv">$$&lt;/span> &lt;span class="o">]&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="k">then&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">if&lt;/span> &lt;span class="o">[&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">gnupg_SSH_AUTH_SOCK_by&lt;/span>&lt;span class="k">:-&lt;/span>&lt;span class="nv">0&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> -ne &lt;span class="nv">$$&lt;/span> &lt;span class="o">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">then&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">export&lt;/span> &lt;span class="nv">SSH_AUTH_SOCK&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>gpgconf --list-dirs agent-ssh-socket&lt;span class="k">)&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">fi&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
@@ -6024,10 +6350,12 @@ width="720" height="405" allow="autoplay; encrypted-media; fullscreen; picture-i
 &lt;/ul>
 &lt;/li>
 &lt;li>Чтобы запустить агент автоматически и убедиться, что только один &lt;code>ssh-agent&lt;/code> процесс выполняется одновременно, добавьте следующее в &lt;code>~/.bashrc&lt;/code>:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="k">if&lt;/span> ! pgrep -u &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$USER&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> ssh-agent &amp;gt; /dev/null&lt;span class="p">;&lt;/span> &lt;span class="k">then&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="k">if&lt;/span> ! pgrep -u &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$USER&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> ssh-agent &amp;gt; /dev/null
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">then&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ssh-agent -t 1h &amp;gt; &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$XDG_RUNTIME_DIR&lt;/span>&lt;span class="s2">/ssh-agent.env&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">fi&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">if&lt;/span> &lt;span class="o">[[&lt;/span> ! -f &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$SSH_AUTH_SOCK&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="o">]]&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="k">then&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">if&lt;/span> &lt;span class="o">[[&lt;/span> ! -f &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$SSH_AUTH_SOCK&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="o">]]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">then&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">source&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$XDG_RUNTIME_DIR&lt;/span>&lt;span class="s2">/ssh-agent.env&amp;#34;&lt;/span> &amp;gt;/dev/null
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">fi&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
@@ -8285,6 +8613,7 @@ fuzzel/fuzzel.ini
 &lt;li>&lt;a href="#proxmox-ve-processor-microcode">&lt;span class="section-num">2.2&lt;/span> Proxmox VE Processor Microcode&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#proxmox-ve-cpu-scaling-governor">&lt;span class="section-num">2.3&lt;/span> Proxmox VE CPU Scaling Governor&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#proxmox-ve-kernel-clean">&lt;span class="section-num">2.4&lt;/span> Proxmox VE Kernel Clean&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#proxmox-update-repositories">&lt;span class="section-num">2.5&lt;/span> Proxmox Update Repositories&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
@@ -8295,7 +8624,7 @@ fuzzel/fuzzel.ini
 &lt;ul>
 &lt;li>Proxmox VE Helper-Scripts&lt;/li>
 &lt;li>Сайт: &lt;a href="https://helper-scripts.com/" target="_blank" rel="noopener">https://helper-scripts.com/&lt;/a>&lt;/li>
-&lt;li>Репозиторий: &lt;a href="https://github.com/tteck/Proxmox" target="_blank" rel="noopener">https://github.com/tteck/Proxmox&lt;/a>&lt;/li>
+&lt;li>Репозиторий: &lt;a href="https://github.com/community-scripts/ProxmoxVE" target="_blank" rel="noopener">https://github.com/community-scripts/ProxmoxVE&lt;/a>&lt;/li>
 &lt;li>Сборник скриптов для Proxmov VE.&lt;/li>
 &lt;/ul>
 &lt;h2 id="настройка-сервера">&lt;span class="section-num">2&lt;/span> Настройка сервера&lt;/h2>
@@ -8307,25 +8636,31 @@ fuzzel/fuzzel.ini
 &lt;li>Добавление тестового репозитория.&lt;/li>
 &lt;li>Отключение подписки nag.&lt;/li>
 &lt;li>Обновление Proxmox VE.
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">bash -c &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>wget -qLO - https://github.com/tteck/Proxmox/raw/main/misc/post-pve-install.sh&lt;span class="k">)&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">bash -c &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/misc/post-pve-install.sh&lt;span class="k">)&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="proxmox-ve-processor-microcode">&lt;span class="section-num">2.2&lt;/span> Proxmox VE Processor Microcode&lt;/h3>
 &lt;ul>
 &lt;li>Добавление пакета для загрузки микрокода процессора:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">bash -c &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>wget -qLO - https://github.com/tteck/Proxmox/raw/main/misc/microcode.sh&lt;span class="k">)&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">bash -c &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/misc/microcode.sh&lt;span class="k">)&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="proxmox-ve-cpu-scaling-governor">&lt;span class="section-num">2.3&lt;/span> Proxmox VE CPU Scaling Governor&lt;/h3>
 &lt;ul>
 &lt;li>Частота CPU регулируется в зависимости от рабочей нагрузки.
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">bash -c &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>wget -qLO - https://github.com/tteck/Proxmox/raw/main/misc/scaling-governor.sh&lt;span class="k">)&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">bash -c &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/misc/scaling-governor.sh&lt;span class="k">)&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="proxmox-ve-kernel-clean">&lt;span class="section-num">2.4&lt;/span> Proxmox VE Kernel Clean&lt;/h3>
 &lt;ul>
 &lt;li>Удаление неиспользуемых образов ядра.
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">bash -c &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>wget -qLO - https://github.com/tteck/Proxmox/raw/main/misc/kernel-clean.sh&lt;span class="k">)&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">bash -c &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/misc/kernel-clean.sh&lt;span class="k">)&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="proxmox-update-repositories">&lt;span class="section-num">2.5&lt;/span> Proxmox Update Repositories&lt;/h3>
+&lt;ul>
+&lt;li>Переписать ссылки в контейнерах LXC для нового репозиторий скриптов:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">bash -c &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/misc/update-repo.sh&lt;span class="k">)&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul></description></item><item><title>Linux. Установка Proxmox VE</title><link>https://yamadharma.github.io/ru/post/2024/06/04/proxmox-ve-install/</link><pubDate>Tue, 04 Jun 2024 11:23:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2024/06/04/proxmox-ve-install/</guid><description>&lt;p>Установка Proxmox VE.&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
@@ -8338,13 +8673,15 @@ fuzzel/fuzzel.ini
 &lt;ul>
 &lt;li>&lt;a href="#стандартная-установка">&lt;span class="section-num">2.1&lt;/span> Стандартная установка&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#web-интерфейс">&lt;span class="section-num">2.2&lt;/span> Web-интерфейс&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#выбор-файловой-системы">&lt;span class="section-num">2.3&lt;/span> Выбор файловой системы&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>&lt;a href="#настройка-после-установки">&lt;span class="section-num">3&lt;/span> Настройка после установки&lt;/a>
 &lt;ul>
 &lt;li>&lt;a href="#повышение-комфорта-работы">&lt;span class="section-num">3.1&lt;/span> Повышение комфорта работы&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#скрипты-для-тьюнинга--см-dot-proxmox-dot-вспомогательные-скрипты-20240604133400-proxmox-вспомогательные-скрипты-dot-md">&lt;span class="section-num">3.2&lt;/span> Скрипты для тьюнинга (см. &lt;a href="https://yamadharma.github.io/ru/post/2024/06/04/proxmox-helper-scripts/">Proxmox. Вспомогательные скрипты&lt;/a>)&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#безопасность">&lt;span class="section-num">3.3&lt;/span> Безопасность&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#скрипты-для-тьюнинга--см-dot-proxmox-dot-вспомогательные-скрипты--dot-dot-notes-public-20240604133400-proxmox-вспомогательные-скрипты-dot-md">&lt;span class="section-num">3.2&lt;/span> Скрипты для тьюнинга (см. &lt;a href="https://yamadharma.github.io/ru/post/2024/06/04/proxmox-helper-scripts/">Proxmox. Вспомогательные скрипты&lt;/a>)&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#обновление">&lt;span class="section-num">3.3&lt;/span> Обновление&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#безопасность">&lt;span class="section-num">3.4&lt;/span> Безопасность&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>&lt;a href="#настройка-сети-с-vlan">&lt;span class="section-num">4&lt;/span> Настройка сети с VLAN&lt;/a>&lt;/li>
@@ -8371,6 +8708,14 @@ fuzzel/fuzzel.ini
 &lt;/div>
 &lt;/li>
 &lt;/ul>
+&lt;h3 id="выбор-файловой-системы">&lt;span class="section-num">2.3&lt;/span> Выбор файловой системы&lt;/h3>
+&lt;ul>
+&lt;li>Если у вас железный RAID, то выбирайте ext4 или xfs (наверное, лучше).&lt;/li>
+&lt;li>Поверх этих систем будет установлен LVM.&lt;/li>
+&lt;li>Если у вас несколько дисков и вы желаете сделать софтовый RAID, то выбирайте RAID на ZFS.&lt;/li>
+&lt;li>Построение RAID на основе mdadm дистрибутив не поддерживает.&lt;/li>
+&lt;li>Учтите, что при соединении в кластер машин с LVM и ZFS вам придётся переконфигурировать локальное хранилище &lt;code>local-lvm&lt;/code> вручную.&lt;/li>
+&lt;/ul>
 &lt;h2 id="настройка-после-установки">&lt;span class="section-num">3&lt;/span> Настройка после установки&lt;/h2>
 &lt;h3 id="повышение-комфорта-работы">&lt;span class="section-num">3.1&lt;/span> Повышение комфорта работы&lt;/h3>
 &lt;ul>
@@ -8393,18 +8738,26 @@ fuzzel/fuzzel.ini
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">apt -y install kitty-terminfo kitty-shell-integration
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
-&lt;h3 id="скрипты-для-тьюнинга--см-dot-proxmox-dot-вспомогательные-скрипты-20240604133400-proxmox-вспомогательные-скрипты-dot-md">&lt;span class="section-num">3.2&lt;/span> Скрипты для тьюнинга (см. &lt;a href="https://yamadharma.github.io/ru/post/2024/06/04/proxmox-helper-scripts/">Proxmox. Вспомогательные скрипты&lt;/a>)&lt;/h3>
+&lt;h3 id="скрипты-для-тьюнинга--см-dot-proxmox-dot-вспомогательные-скрипты--dot-dot-notes-public-20240604133400-proxmox-вспомогательные-скрипты-dot-md">&lt;span class="section-num">3.2&lt;/span> Скрипты для тьюнинга (см. &lt;a href="https://yamadharma.github.io/ru/post/2024/06/04/proxmox-helper-scripts/">Proxmox. Вспомогательные скрипты&lt;/a>)&lt;/h3>
 &lt;ul>
 &lt;li>
 &lt;p>Proxmox VE Post Install&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">bash -c &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>wget -qLO - https://github.com/tteck/Proxmox/raw/main/misc/post-pve-install.sh&lt;span class="k">)&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">bash -c &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/misc/post-pve-install.sh&lt;span class="k">)&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Proxmox VE Processor Microcode&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">bash -c &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>wget -qLO - https://github.com/tteck/Proxmox/raw/main/misc/microcode.sh&lt;span class="k">)&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">apt -y install iucode-tool
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bash -c &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/misc/microcode.sh&lt;span class="k">)&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
-&lt;h3 id="безопасность">&lt;span class="section-num">3.3&lt;/span> Безопасность&lt;/h3>
+&lt;h3 id="обновление">&lt;span class="section-num">3.3&lt;/span> Обновление&lt;/h3>
+&lt;ul>
+&lt;li>Обновите систему:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">apt update
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">apt -y upgrade
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="безопасность">&lt;span class="section-num">3.4&lt;/span> Безопасность&lt;/h3>
 &lt;ul>
 &lt;li>Установите и настройте fail2ban (см. &lt;a href="https://yamadharma.github.io/ru/post/2023/10/30/fail2ban-basic-settings/">fail2ban. Основные настройки&lt;/a>):
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">apt install fail2ban
@@ -8479,6 +8832,7 @@ fuzzel/fuzzel.ini
 &lt;h2 id="установка-виртуальных-машин">&lt;span class="section-num">4&lt;/span> Установка виртуальных машин&lt;/h2>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2025/01/27/proxmox-installing-openvpn-lxc/">Proxmox. Установка OpenVPN в LXC&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2025/02/22/proxmox-windows-install/">Proxmox. Установка Windows&lt;/a>&lt;/li>
 &lt;/ul></description></item><item><title>Скачать фотографии с google photo</title><link>https://yamadharma.github.io/ru/post/2024/06/01/google-photo-download/</link><pubDate>Sat, 01 Jun 2024 16:42:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2024/06/01/google-photo-download/</guid><description>&lt;p>Скачать фотографии с google photo.&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
 &lt;summary>Содержание&lt;/summary>
@@ -9208,6 +9562,7 @@ fuzzel/fuzzel.ini
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">x11&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">misc&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">virtualgl&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">clang&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">mold&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">app&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">text&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">texlive&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">core&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">dev&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">db&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">sqlite&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sys&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">fs&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">duperemove&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="конфигурация-специальных-окружений">&lt;span class="section-num">4.3&lt;/span> Конфигурация специальных окружений&lt;/h3>
@@ -20671,6 +21026,7 @@ width="720" height="405" allow="autoplay; encrypted-media; fullscreen; picture-i
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/10/11/wayland-applications/">Wayland. Аналоги приложений&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2024/09/01/wayland-remote-desktop-waypipe/">Wayland. Удалённый доступ. Waypipe&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2025/02/21/wayland-remote-desktop-vnc/">Wayland. Удалённый доступ. VNC&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;h2 id="ресурсы">&lt;span class="section-num">3&lt;/span> Ресурсы&lt;/h2>
 &lt;ul>
@@ -25509,7 +25865,7 @@ Configuration mode
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2024/07/06/gentoo-post-installation/">Gentoo. Постустановка&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2024/05/16/gentoo-compiling-clang/">Gentoo. Компиляция системы clang&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2024/11/02/gentoo-ebuild-rust/">Gentoo. Создание ebuild для Rust&lt;/a>&lt;/li>
-&lt;/ul></description></item><item><title>Сервера на Донской</title><link>https://yamadharma.github.io/ru/post/2022/09/15/servers-donskaya/</link><pubDate>Thu, 15 Sep 2022 20:19:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/09/15/servers-donskaya/</guid><description>&lt;p>Сервера на Донской.&lt;/p>
+&lt;/ul></description></item><item><title>Серверы на Донской</title><link>https://yamadharma.github.io/ru/post/2022/09/15/servers-donskaya/</link><pubDate>Thu, 15 Sep 2022 20:19:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/09/15/servers-donskaya/</guid><description>&lt;p>Сервера на Донской.&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
 &lt;summary>Содержание&lt;/summary>
 &lt;div class="text-sm">
@@ -27007,7 +27363,8 @@ Configuration mode
 &lt;li>Rolling релизы:
 &lt;ul>
 &lt;li>&lt;a href="https://vyos.net/get/?dir=rolling/current/amd64" target="_blank" rel="noopener">https://vyos.net/get/?dir=rolling/current/amd64&lt;/a>;&lt;/li>
-&lt;li>&lt;a href="https://community.vyos.net/get/" target="_blank" rel="noopener">https://community.vyos.net/get/&lt;/a>.&lt;/li>
+&lt;li>&lt;a href="https://community.vyos.net/get/" target="_blank" rel="noopener">https://community.vyos.net/get/&lt;/a>;&lt;/li>
+&lt;li>&lt;a href="https://vyos.net/get/stream/" target="_blank" rel="noopener">https://vyos.net/get/stream/&lt;/a>.&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>Блокируются российский ip-адреса.&lt;/li>
@@ -30952,10 +31309,11 @@ width="720" height="405" allow="autoplay; encrypted-media; fullscreen; picture-i
 &lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;li>&lt;a href="#использование">&lt;span class="section-num">3&lt;/span> Использование&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#ошибки-при-эксплуатации">&lt;span class="section-num">4&lt;/span> Ошибки при эксплуатации&lt;/a>
+&lt;li>&lt;a href="#установка-из-ova-файла">&lt;span class="section-num">3&lt;/span> Установка из OVA-файла&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#использование">&lt;span class="section-num">4&lt;/span> Использование&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#ошибки-при-эксплуатации">&lt;span class="section-num">5&lt;/span> Ошибки при эксплуатации&lt;/a>
 &lt;ul>
-&lt;li>&lt;a href="#macos">&lt;span class="section-num">4.1&lt;/span> MacOS&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#macos">&lt;span class="section-num">5.1&lt;/span> MacOS&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
@@ -31015,12 +31373,27 @@ width="720" height="405" allow="autoplay; encrypted-media; fullscreen; picture-i
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">VBoxManage setproperty machinefolder default
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
-&lt;h2 id="использование">&lt;span class="section-num">3&lt;/span> Использование&lt;/h2>
+&lt;h2 id="установка-из-ova-файла">&lt;span class="section-num">3&lt;/span> Установка из OVA-файла&lt;/h2>
+&lt;ul>
+&lt;li>Файл OVA &amp;mdash; это полный архив со всей информацией для создания виртуальной машины VirtualBox.&lt;/li>
+&lt;li>Можно развернуть следующим образом:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vboxmanage import test.ova
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Это создаст виртуальную машину в вашем местоположении для виртуальных машин по умолчанию, с теми же настройками, что и исходная виртуальная машина.&lt;/li>
+&lt;li>Вы можете изменить настройки, используя параметр &lt;code>--vsys&lt;/code>.&lt;/li>
+&lt;li>Например, измените имя виртуальной машины:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vboxmanage import test.ova --vsys &lt;span class="m">0&lt;/span> --vmname &amp;lt;vm-name&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Далее запустите виртуальную машину:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vboxmanage startvm &amp;lt;vm-name&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="использование">&lt;span class="section-num">4&lt;/span> Использование&lt;/h2>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2024/02/15/virtualbox-headless/">VirtualBox. Использование без монитора&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;h2 id="ошибки-при-эксплуатации">&lt;span class="section-num">4&lt;/span> Ошибки при эксплуатации&lt;/h2>
-&lt;h3 id="macos">&lt;span class="section-num">4.1&lt;/span> MacOS&lt;/h3>
+&lt;h2 id="ошибки-при-эксплуатации">&lt;span class="section-num">5&lt;/span> Ошибки при эксплуатации&lt;/h2>
+&lt;h3 id="macos">&lt;span class="section-num">5.1&lt;/span> MacOS&lt;/h3>
 &lt;ul>
 &lt;li>Начиная с версии MacOS 10.13 требуется ряд новых полномочий для программного обеспечения.&lt;/li>
 &lt;li>После установки кнопка с запросом разрешений находится в панели &amp;ldquo;Системные настройки&amp;rdquo;, раздел &amp;ldquo;Безопасность и конфиденциальность&amp;rdquo;.&lt;/li>
@@ -36691,6 +37064,8 @@ width="720" height="405" allow="autoplay; encrypted-media; fullscreen; picture-i
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/07/23/video-kdenlive/">Видео. KDEnlive&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/10/21/video-processing-command-line/">Обработка видео. Командная строка&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/03/09/download-youtube/">Закачка с youtube&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2025/02/20/obs-studio/">OBS Studio&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2025/02/16/obs-studio-streaming/">OBS Studio. Стриминг&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;h3 id="офисные-программы">&lt;span class="section-num">10.6&lt;/span> Офисные программы&lt;/h3>
 &lt;ul>

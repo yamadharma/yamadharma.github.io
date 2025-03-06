@@ -55,12 +55,26 @@
 &lt;nav id="TableOfContents">
 &lt;ul>
 &lt;li>&lt;a href="#первичная-настройка-параметров-git">&lt;span class="section-num">1&lt;/span> Первичная настройка параметров git&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#учёт-переносов-строк">&lt;span class="section-num">2&lt;/span> Учёт переносов строк&lt;/a>
+&lt;li>&lt;a href="#верификация-коммитов">&lt;span class="section-num">2&lt;/span> Верификация коммитов&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#учёт-переносов-строк">&lt;span class="section-num">3&lt;/span> Учёт переносов строк&lt;/a>
 &lt;ul>
-&lt;li>&lt;a href="#параметр-autocrlf">&lt;span class="section-num">2.1&lt;/span> Параметр &lt;code>autocrlf&lt;/code>&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#параметр-safecrlf">&lt;span class="section-num">2.2&lt;/span> Параметр &lt;code>safecrlf&lt;/code>&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#параметр-autocrlf">&lt;span class="section-num">3.1&lt;/span> Параметр &lt;code>autocrlf&lt;/code>&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#параметр-safecrlf">&lt;span class="section-num">3.2&lt;/span> Параметр &lt;code>safecrlf&lt;/code>&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
+&lt;li>&lt;a href="#перечисление-веток">&lt;span class="section-num">4&lt;/span> Перечисление веток&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#перечисление-тегов">&lt;span class="section-num">5&lt;/span> Перечисление тегов&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#отображение-git-diff">&lt;span class="section-num">6&lt;/span> Отображение git diff&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#настройка-git-push">&lt;span class="section-num">7&lt;/span> Настройка git push&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#улучшенная-выборка">&lt;span class="section-num">8&lt;/span> Улучшенная выборка&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#предложения-автозамены">&lt;span class="section-num">9&lt;/span> Предложения автозамены&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#коммиты-с-указанием-разности">&lt;span class="section-num">10&lt;/span> Коммиты с указанием разности&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#повторное-использование-ранее-записанных-разрешений-конфликтов">&lt;span class="section-num">11&lt;/span> Повторное использование ранее записанных разрешений конфликтов&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#глобальный-файл-ignore">&lt;span class="section-num">12&lt;/span> Глобальный файл ignore&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#аккуратное-перебазирование">&lt;span class="section-num">13&lt;/span> Аккуратное перебазирование&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#улучшенная-обработка-конфликтов-при-слиянии">&lt;span class="section-num">14&lt;/span> Улучшенная обработка конфликтов при слиянии&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#настройки-git-pull">&lt;span class="section-num">15&lt;/span> Настройки git pull&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#использование-fsmonitor">&lt;span class="section-num">16&lt;/span> ИСпользование fsmonitor&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/nav>
 &lt;/div>
@@ -74,15 +88,15 @@
 &lt;li>Настроим utf-8 в выводе сообщений git:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global core.quotepath &lt;span class="nb">false&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
-&lt;li>Настройте верификацию и подписание коммитов git (см. &lt;a href="https://yamadharma.github.io/ru/post/2024/08/22/verifying-git-commits/">Подпись коммитов git&lt;/a>).&lt;/li>
 &lt;li>Зададим имя начальной ветки (будем называть её &lt;code>master&lt;/code>):
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global init.defaultBranch master
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
-&lt;li>Зададим опцию для автоматического задания удалённой ветки:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global push.autoSetupRemote &lt;span class="nb">true&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
-&lt;h2 id="учёт-переносов-строк">&lt;span class="section-num">2&lt;/span> Учёт переносов строк&lt;/h2>
+&lt;h2 id="верификация-коммитов">&lt;span class="section-num">2&lt;/span> Верификация коммитов&lt;/h2>
+&lt;ul>
+&lt;li>Настройте верификацию и подписание коммитов git (см. &lt;a href="https://yamadharma.github.io/ru/post/2024/08/22/verifying-git-commits/">Подпись коммитов git&lt;/a>).&lt;/li>
+&lt;/ul>
+&lt;h2 id="учёт-переносов-строк">&lt;span class="section-num">3&lt;/span> Учёт переносов строк&lt;/h2>
 &lt;ul>
 &lt;li>В разных операционных системах приняты разные символы для перевода строк:
 &lt;ul>
@@ -95,7 +109,7 @@
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git ls-files --eol
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
-&lt;h3 id="параметр-autocrlf">&lt;span class="section-num">2.1&lt;/span> Параметр &lt;code>autocrlf&lt;/code>&lt;/h3>
+&lt;h3 id="параметр-autocrlf">&lt;span class="section-num">3.1&lt;/span> Параметр &lt;code>autocrlf&lt;/code>&lt;/h3>
 &lt;ul>
 &lt;li>
 &lt;p>Настройка &lt;code>core.autocrlf&lt;/code> предназначена для того, чтобы в главном репозитории все переводы строк текстовых файлах были одинаковы.&lt;/p>
@@ -174,7 +188,7 @@
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
-&lt;h3 id="параметр-safecrlf">&lt;span class="section-num">2.2&lt;/span> Параметр &lt;code>safecrlf&lt;/code>&lt;/h3>
+&lt;h3 id="параметр-safecrlf">&lt;span class="section-num">3.2&lt;/span> Параметр &lt;code>safecrlf&lt;/code>&lt;/h3>
 &lt;ul>
 &lt;li>Настройка &lt;code>core.safecrlf&lt;/code> предназначена для проверки, является ли окончаний строк обратимым для текущей настройки &lt;code>core.autocrlf&lt;/code>.
 &lt;ul>
@@ -184,6 +198,140 @@
 &lt;/li>
 &lt;li>Установка параметра:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global core.safecrlf warn
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="перечисление-веток">&lt;span class="section-num">4&lt;/span> Перечисление веток&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>Настроим, чтобы перечисление веток git по умолчанию не упорядочивалось по алфавиту.&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>branch.sort&lt;/code> : сортирует список не по алфавиту, а по свежести дат коммитов;&lt;/li>
+&lt;li>&lt;code>column.ui&lt;/code> : выстраивает имена веток в формате столбцов так, чтобы на экране было видно больше такой информации.&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global column.ui auto
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git config --global branch.sort -committerdate
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="перечисление-тегов">&lt;span class="section-num">5&lt;/span> Перечисление тегов&lt;/h2>
+&lt;ul>
+&lt;li>При перечислении тегов командой &lt;code>git tag&lt;/code> сортировка провидится в алфавитном порядке.&lt;/li>
+&lt;li>Но метки обычно имеют вид набора цифр (номер версии).&lt;/li>
+&lt;li>Настроим сортировку по номеру версии:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global tag.sort version:refname
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="отображение-git-diff">&lt;span class="section-num">6&lt;/span> Отображение git diff&lt;/h2>
+&lt;ul>
+&lt;li>Для команды &lt;code>git diff&lt;/code>.&lt;/li>
+&lt;li>По умолчанию &lt;em>git&lt;/em> использует для вычисления разности коммитов алгоритм Майерса.&lt;/li>
+&lt;li>В базовой комплектации &lt;em>git&lt;/em> встроено 4 алгоритма вычисления разности: myers, minimal, patience, histogram (инкрементная усовершенствованная версия patience).&lt;/li>
+&lt;li>Установим по умолчанию алгоритм histogram:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global diff.algorithm histogram
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>При включённой опции &lt;code>colorMoved&lt;/code> перемещение кода будет отображаться разными цветами, в зависимости от того, были какие-то строки добавлены или удалены.
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global diff.colorMoved plain
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Опция &lt;code>diff.renames&lt;/code> позволяет выявить, был ли файл переименован
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global diff.renames &lt;span class="nb">true&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Опция &lt;code>diff.mnemonicPrefix&lt;/code> заменяет префиксы (обычно &lt;code>a/&lt;/code> и &lt;code>b/&lt;/code>) на информацию о том, откуда пришло различие: &lt;code>i/&lt;/code> (индекс), &lt;code>w/&lt;/code> (рабочий каталог), или &lt;code>c/&lt;/code> (коммит).
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global diff.mnemonicPrefix &lt;span class="nb">true&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="настройка-git-push">&lt;span class="section-num">7&lt;/span> Настройка git push&lt;/h2>
+&lt;ul>
+&lt;li>Опция &lt;code>push.default simple&lt;/code> установлена по умолчанию, начиная с &lt;em>git&lt;/em> 2.0.&lt;/li>
+&lt;li>Умолчание &lt;code>simple&lt;/code> осуществляет отправку в текущую ветку и в одноимённую ветку на удалённой машине.
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global push.default simple
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Если удалённая ветка не существует, а отслеживание веток не настроено, то вы получите ошибку.&lt;/li>
+&lt;li>Опция &lt;code>push.autoSetupRemote&lt;/code> служит для автоматического задания удалённой ветки:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global push.autoSetupRemote &lt;span class="nb">true&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Настройка &lt;code>push.followTags&lt;/code> запушит все теги, имеющиеся у вас на локальной машине, но отсутствующие на сервере.&lt;/li>
+&lt;li>Если вы создаёте теги на локальной машине, то активируйте эту настройку:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global push.followTags &lt;span class="nb">true&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="улучшенная-выборка">&lt;span class="section-num">8&lt;/span> Улучшенная выборка&lt;/h2>
+&lt;ul>
+&lt;li>Не стоит держать на локальной машине историю копий веток и тегов, которые когда-то были на сервере, а теперь там отсутствуют:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global fetch.prune &lt;span class="nb">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git config --global fetch.pruneTags &lt;span class="nb">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git config --global fetch.all &lt;span class="nb">true&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="предложения-автозамены">&lt;span class="section-num">9&lt;/span> Предложения автозамены&lt;/h2>
+&lt;ul>
+&lt;li>После ввода команды, которой не существует, следует запрос, что пользователь имел в виду.&lt;/li>
+&lt;li>Это поведение можно изменять с помощью параметра &lt;code>help.autocorrect&lt;/code>:
+&lt;ul>
+&lt;li>&lt;code>0&lt;/code> (по умолчанию): показать предложенную команду.&lt;/li>
+&lt;li>положительное число: выполнить предложенную команду через указанное количество децисекунд (0,1 секунды);&lt;/li>
+&lt;li>&lt;code>immediate&lt;/code>: выполнить предложенную команду немедленно;&lt;/li>
+&lt;li>&lt;code>prompt&lt;/code>: показать предложение и запросить подтверждение на выполнение команды;&lt;/li>
+&lt;li>&lt;code>never&lt;/code>: не выполнять и не показывать предложенную команду.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Вариант &lt;code>prompt&lt;/code> представляется вполне разумным:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global help.autocorrect prompt
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="коммиты-с-указанием-разности">&lt;span class="section-num">10&lt;/span> Коммиты с указанием разности&lt;/h2>
+&lt;ul>
+&lt;li>По умолчанию &lt;code>git commit&lt;/code> выдаёт только список изменившихся файлов.&lt;/li>
+&lt;li>Если установить &lt;code>commit.verbose&lt;/code> в значение &lt;code>true&lt;/code>, то будет представлен весь вывод &lt;code>diff&lt;/code>:&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global commit.verbose &lt;span class="nb">true&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="повторное-использование-ранее-записанных-разрешений-конфликтов">&lt;span class="section-num">11&lt;/span> Повторное использование ранее записанных разрешений конфликтов&lt;/h2>
+&lt;ul>
+&lt;li>Настройка работает только при применении &lt;code>rebase&lt;/code>.&lt;/li>
+&lt;li>Пригодится, когда регулярно возникают конфликты.&lt;/li>
+&lt;li>Опция &lt;code>enabled&lt;/code> гарантирует, что система будет записывать состояния «до» и «после» конфликтов при перебазировании.&lt;/li>
+&lt;li>После этого &lt;code>autoupdate&lt;/code> будет автоматически раз за разом применять проверенные способы разрешения конфликтов.
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global rerere.enabled &lt;span class="nb">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git config --global rerere.autoupdate &lt;span class="nb">true&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="глобальный-файл-ignore">&lt;span class="section-num">12&lt;/span> Глобальный файл ignore&lt;/h2>
+&lt;ul>
+&lt;li>Вы можете создать локальный файл &lt;code>.gitignore&lt;/code>.&lt;/li>
+&lt;li>Настройка &lt;code>core.excludesfile&lt;/code> позволяет задать собственный глобальный файл для игнорирования:&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">touch ~/.config/git/ignore
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git config --global core.excludesfile ~/.config/git/ignore
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Примеры файлов игнорирования можно взять в &lt;a href="https://github.com/github/gitignore" target="_blank" rel="noopener">https://github.com/github/gitignore&lt;/a>.&lt;/li>
+&lt;/ul>
+&lt;h2 id="аккуратное-перебазирование">&lt;span class="section-num">13&lt;/span> Аккуратное перебазирование&lt;/h2>
+&lt;ul>
+&lt;li>Опция организует в виде ветки стопку ссылок и гарантирует, что при перебазировании ветки эти ссылки также будут правильно перемещены:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global rebase.autoSquash &lt;span class="nb">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git config --global rebase.autoStash &lt;span class="nb">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git config --global rebase.updateRefs &lt;span class="nb">true&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="улучшенная-обработка-конфликтов-при-слиянии">&lt;span class="section-num">14&lt;/span> Улучшенная обработка конфликтов при слиянии&lt;/h2>
+&lt;ul>
+&lt;li>Для обработки конфликтов будем использовать алгоритм &lt;code>zdiff3&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global merge.conflictstyle zdiff3
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="настройки-git-pull">&lt;span class="section-num">15&lt;/span> Настройки git pull&lt;/h2>
+&lt;ul>
+&lt;li>Можно установить &lt;code>rebase&lt;/code> по умолчаниию:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global pull.rebase &lt;span class="nb">true&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="использование-fsmonitor">&lt;span class="section-num">16&lt;/span> ИСпользование fsmonitor&lt;/h2>
+&lt;ul>
+&lt;li>Можно запускаться процесс для мониторинга файловой системы (по одному на каждый репозиторий), который будет отслеживать изменения в файлах и обновлять кэш.&lt;/li>
+&lt;li>На больших репозиториях можно ускорить операции (например, &lt;code>git status&lt;/code>):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global core.fsmonitor &lt;span class="nb">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git config --global core.untrackedCache &lt;span class="nb">true&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul></description></item><item><title>Расширение git lfs</title><link>https://yamadharma.github.io/ru/post/2023/11/13/git-lfs/</link><pubDate>Mon, 13 Nov 2023 11:52:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/11/13/git-lfs/</guid><description>&lt;p>Расширение для хранения больших бинарных файлов на git.&lt;/p>
 &lt;details class="print:hidden xl:hidden" >

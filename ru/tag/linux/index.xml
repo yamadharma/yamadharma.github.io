@@ -2589,6 +2589,7 @@ config.d/80-pass.conf
 &lt;li>&lt;a href="#proxmox-ve-cpu-scaling-governor">&lt;span class="section-num">2.3&lt;/span> Proxmox VE CPU Scaling Governor&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#proxmox-ve-kernel-clean">&lt;span class="section-num">2.4&lt;/span> Proxmox VE Kernel Clean&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#proxmox-update-repositories">&lt;span class="section-num">2.5&lt;/span> Proxmox Update Repositories&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#proxmox-backup-server-post-install">&lt;span class="section-num">2.6&lt;/span> Proxmox Backup Server Post Install&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
@@ -2598,7 +2599,7 @@ config.d/80-pass.conf
 &lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
 &lt;ul>
 &lt;li>Proxmox VE Helper-Scripts&lt;/li>
-&lt;li>Сайт: &lt;a href="https://helper-scripts.com/" target="_blank" rel="noopener">https://helper-scripts.com/&lt;/a>&lt;/li>
+&lt;li>Сайт: &lt;a href="https://community-scripts.github.io/ProxmoxVE/" target="_blank" rel="noopener">https://community-scripts.github.io/ProxmoxVE/&lt;/a>&lt;/li>
 &lt;li>Репозиторий: &lt;a href="https://github.com/community-scripts/ProxmoxVE" target="_blank" rel="noopener">https://github.com/community-scripts/ProxmoxVE&lt;/a>&lt;/li>
 &lt;li>Сборник скриптов для Proxmov VE.&lt;/li>
 &lt;/ul>
@@ -2637,6 +2638,16 @@ config.d/80-pass.conf
 &lt;li>Переписать ссылки в контейнерах LXC для нового репозиторий скриптов:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">bash -c &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/misc/update-repo.sh&lt;span class="k">)&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="proxmox-backup-server-post-install">&lt;span class="section-num">2.6&lt;/span> Proxmox Backup Server Post Install&lt;/h3>
+&lt;ul>
+&lt;li>Отключение Enterprise Repo.&lt;/li>
+&lt;li>Добавление или исправление источников PVE.&lt;/li>
+&lt;li>Включение No-Subscription Repo.&lt;/li>
+&lt;li>Добавление тестового репозитория.&lt;/li>
+&lt;li>Отключение подписки nag.
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">bash -c &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/misc/post-pbs-install.sh&lt;span class="k">)&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul></description></item><item><title>Linux. Установка Proxmox VE</title><link>https://yamadharma.github.io/ru/post/2024/06/04/proxmox-ve-install/</link><pubDate>Tue, 04 Jun 2024 11:23:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2024/06/04/proxmox-ve-install/</guid><description>&lt;p>Установка Proxmox VE.&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
 &lt;summary>Содержание&lt;/summary>
@@ -2660,6 +2671,12 @@ config.d/80-pass.conf
 &lt;/ul>
 &lt;/li>
 &lt;li>&lt;a href="#настройка-сети-с-vlan">&lt;span class="section-num">4&lt;/span> Настройка сети с VLAN&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#дисковая-подсистема">&lt;span class="section-num">5&lt;/span> Дисковая подсистема&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#local-lvm">&lt;span class="section-num">5.1&lt;/span> local-lvm&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#создание-дополнительного-раздел-на-lvm-thin">&lt;span class="section-num">5.2&lt;/span> Создание дополнительного раздел на lvm-thin&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
 &lt;/ul>
 &lt;/nav>
 &lt;/div>
@@ -2685,7 +2702,7 @@ config.d/80-pass.conf
 &lt;/ul>
 &lt;h3 id="выбор-файловой-системы">&lt;span class="section-num">2.3&lt;/span> Выбор файловой системы&lt;/h3>
 &lt;ul>
-&lt;li>Если у вас железный RAID, то выбирайте ext4 или xfs (наверное, лучше).&lt;/li>
+&lt;li>Если у вас железный RAID, то выбирайте ext4 или xfs (наверное, лучше, но может посыпаться без ИБП).&lt;/li>
 &lt;li>Поверх этих систем будет установлен LVM.&lt;/li>
 &lt;li>Если у вас несколько дисков и вы желаете сделать софтовый RAID, то выбирайте RAID на ZFS.&lt;/li>
 &lt;li>Построение RAID на основе mdadm дистрибутив не поддерживает.&lt;/li>
@@ -2762,6 +2779,38 @@ config.d/80-pass.conf
 &lt;li>Для создания VLAN для самого сервера создаём &lt;em>OVSIntPort&lt;/em>.&lt;/li>
 &lt;li>После настроек нажимаем &lt;em>Apply Configuration&lt;/em> в графическом интерфейсе.&lt;/li>
 &lt;li>Виртуальные машины прикрепляем на созданный мост, настройках сети устанавливаем нужный &lt;em>VLAN Tag&lt;/em>.&lt;/li>
+&lt;/ul>
+&lt;h2 id="дисковая-подсистема">&lt;span class="section-num">5&lt;/span> Дисковая подсистема&lt;/h2>
+&lt;h3 id="local-lvm">&lt;span class="section-num">5.1&lt;/span> local-lvm&lt;/h3>
+&lt;ul>
+&lt;li>Установщик выделяет два логических раздела: &lt;code>local&lt;/code> и &lt;code>local-lvm&lt;/code>.&lt;/li>
+&lt;li>На разделе &lt;code>local-lvm&lt;/code> можно выделить дополнительный раздел.&lt;/li>
+&lt;/ul>
+&lt;h3 id="создание-дополнительного-раздел-на-lvm-thin">&lt;span class="section-num">5.2&lt;/span> Создание дополнительного раздел на lvm-thin&lt;/h3>
+&lt;ul>
+&lt;li>Смотрим уже существующие VG:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vgs
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Смотрим существующие LV:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">lvs
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Видим, что раздел &lt;code>data&lt;/code> является lvm-thin (атрибут &lt;code>t&lt;/code>).&lt;/li>
+&lt;li>Создаём на нем раздел:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">lvcreate -V100G -T pve/data -n newdisk
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Проверяем:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">lvs
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Форматируем раздел:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mkfs.ext4 /dev/pve/newdisk
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Можно подмонтировать:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mkdir /mnt/newdisk
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mount /dev/pve/newdisk /mnt/newdisk
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Можно по необходимости удалить раздел:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vlmremove /dev/pve/newdisk
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul></description></item><item><title>Linux. Дистрибутив Proxmox</title><link>https://yamadharma.github.io/ru/post/2024/06/04/linux-proxmox-distribution/</link><pubDate>Tue, 04 Jun 2024 10:45:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2024/06/04/linux-proxmox-distribution/</guid><description>&lt;p>Дистрибутив Proxmox.&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
 &lt;summary>Содержание&lt;/summary>
@@ -2776,6 +2825,7 @@ config.d/80-pass.conf
 &lt;/li>
 &lt;li>&lt;a href="#дистрибутивы-для-установки">&lt;span class="section-num">3&lt;/span> Дистрибутивы для установки&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#установка-виртуальных-машин">&lt;span class="section-num">4&lt;/span> Установка виртуальных машин&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#дополнительный-функционал">&lt;span class="section-num">5&lt;/span> Дополнительный функционал&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/nav>
 &lt;/div>
@@ -2808,6 +2858,10 @@ config.d/80-pass.conf
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2025/01/27/proxmox-installing-openvpn-lxc/">Proxmox. Установка OpenVPN в LXC&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2025/02/22/proxmox-windows-install/">Proxmox. Установка Windows&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="дополнительный-функционал">&lt;span class="section-num">5&lt;/span> Дополнительный функционал&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2025/03/04/proxmox-backup-server/">Proxmox Backup Server&lt;/a>&lt;/li>
 &lt;/ul></description></item><item><title>Скачать фотографии с google photo</title><link>https://yamadharma.github.io/ru/post/2024/06/01/google-photo-download/</link><pubDate>Sat, 01 Jun 2024 16:42:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2024/06/01/google-photo-download/</guid><description>&lt;p>Скачать фотографии с google photo.&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
 &lt;summary>Содержание&lt;/summary>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Sysadmin | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/sysadmin/</link><atom:link href="https://yamadharma.github.io/ru/tag/sysadmin/index.xml" rel="self" type="application/rss+xml"/><description>Sysadmin</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>ru-ru</language><copyright>© 2025 Dmitry S. Kulyabov</copyright><lastBuildDate>Thu, 27 Feb 2025 15:56:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu_c0ee34e0b47a9b95.png</url><title>Sysadmin</title><link>https://yamadharma.github.io/ru/tag/sysadmin/</link></image><item><title>Администрирование сетевых подсистем</title><link>https://yamadharma.github.io/ru/teaching/net-os-admin/</link><pubDate>Thu, 19 Oct 2023 17:19:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/teaching/net-os-admin/</guid><description>&lt;p>Курс Администрирование сетевых подсистем.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Sysadmin | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/sysadmin/</link><atom:link href="https://yamadharma.github.io/ru/tag/sysadmin/index.xml" rel="self" type="application/rss+xml"/><description>Sysadmin</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>ru-ru</language><copyright>© 2025 Dmitry S. Kulyabov</copyright><lastBuildDate>Tue, 04 Mar 2025 14:02:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu_c0ee34e0b47a9b95.png</url><title>Sysadmin</title><link>https://yamadharma.github.io/ru/tag/sysadmin/</link></image><item><title>Администрирование сетевых подсистем</title><link>https://yamadharma.github.io/ru/teaching/net-os-admin/</link><pubDate>Thu, 19 Oct 2023 17:19:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/teaching/net-os-admin/</guid><description>&lt;p>Курс Администрирование сетевых подсистем.&lt;/p>
 &lt;ul class="list-unstyled">
 &lt;li>
 &lt;h5>&lt;a href="https://yamadharma.github.io/ru/teaching/net-os-admin/lab/">Лабораторные работы&lt;/a>&lt;/h5>
@@ -229,6 +229,274 @@ width="720" height="405" allow="autoplay; encrypted-media; fullscreen; picture-i
 &lt;li>Во время настройки студент записывает выполняемые операции в виде кода.&lt;/li>
 &lt;li>Созданный код помещается в отчёт по лабораторной работе.&lt;/li>
 &lt;li>После создания кода студент уничтожает существующие виртуальные машины и пересоздаёт их на основе созданного кода.&lt;/li>
+&lt;/ul></description></item><item><title>Proxmox Backup Server</title><link>https://yamadharma.github.io/ru/post/2025/03/04/proxmox-backup-server/</link><pubDate>Tue, 04 Mar 2025 14:02:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2025/03/04/proxmox-backup-server/</guid><description>&lt;p>Proxmox Backup Server.&lt;/p>
+&lt;details class="print:hidden xl:hidden" >
+&lt;summary>Содержание&lt;/summary>
+&lt;div class="text-sm">
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#требования">&lt;span class="section-num">1.1&lt;/span> Требования&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#установка">&lt;span class="section-num">2&lt;/span> Установка&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#отдельный-пакет">&lt;span class="section-num">2.1&lt;/span> Отдельный пакет&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#контейнер-lxc">&lt;span class="section-num">2.2&lt;/span> Контейнер LXC&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#виртуальная-машина">&lt;span class="section-num">2.3&lt;/span> Виртуальная машина&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#настройка-после-установки">&lt;span class="section-num">3&lt;/span> Настройка после установки&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#повышение-комфорта-работы">&lt;span class="section-num">3.1&lt;/span> Повышение комфорта работы&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#скрипты-для-тьюнинга--см-dot-proxmox-dot-вспомогательные-скрипты--dot-dot-notes-public-20240604133400-proxmox-вспомогательные-скрипты-dot-md">&lt;span class="section-num">3.2&lt;/span> Скрипты для тьюнинга (см. &lt;a href="https://yamadharma.github.io/ru/post/2024/06/04/proxmox-helper-scripts/">Proxmox. Вспомогательные скрипты&lt;/a>)&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#обновление">&lt;span class="section-num">3.3&lt;/span> Обновление&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#безопасность">&lt;span class="section-num">3.4&lt;/span> Безопасность&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#подключение">&lt;span class="section-num">4&lt;/span> Подключение&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#веб-интерфейс">&lt;span class="section-num">4.1&lt;/span> Веб-интерфейс&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#хранилище">&lt;span class="section-num">5&lt;/span> Хранилище&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#хранилище-данных">&lt;span class="section-num">5.1&lt;/span> Хранилище данных&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#добавление-диска">&lt;span class="section-num">5.1.1&lt;/span> Добавление диска&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#создание-хранилища-данных">&lt;span class="section-num">5.1.2&lt;/span> Создание хранилища данных&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#управление-хранилищами-данных">&lt;span class="section-num">5.1.3&lt;/span> Управление хранилищами данных&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/div>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>Сайт: &lt;a href="https://www.proxmox.com" target="_blank" rel="noopener">https://www.proxmox.com&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="требования">&lt;span class="section-num">1.1&lt;/span> Требования&lt;/h3>
+&lt;ul>
+&lt;li>Минимальные требования к серверу (предназначены только для тестирования):
+&lt;ul>
+&lt;li>CPU: 64bit (x86-64 или AMD64), 2+ Ядра&lt;/li>
+&lt;li>ОЗУ: 2 ГБ&lt;/li>
+&lt;li>Диск: от 8 ГБ&lt;/li>
+&lt;li>Сеть: 1 интерфейс&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Рекомендуемые требования к серверу:
+&lt;ul>
+&lt;li>CPU: 64bit, 4 Ядра&lt;/li>
+&lt;li>ОЗУ: 4 ГБ (+1 ГБ на каждый ТБ дискового пространства)&lt;/li>
+&lt;li>Диск: от 32 ГБ + резервное хранилище&lt;/li>
+&lt;li>Сеть: 1 интерфейс + резервирование&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="установка">&lt;span class="section-num">2&lt;/span> Установка&lt;/h2>
+&lt;h3 id="отдельный-пакет">&lt;span class="section-num">2.1&lt;/span> Отдельный пакет&lt;/h3>
+&lt;ul>
+&lt;li>Установие сервер PBS:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">apt-get install proxmox-backup-server
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Запустите и добавьте в автозагрузку Proxmox Backup API Proxy Server:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">systemctl &lt;span class="nb">enable&lt;/span> --now proxmox-backup-proxy.service
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Служба &lt;code>proxmox-backup-proxy&lt;/code> предоставляет API Proxmox Backup Server через TCP-порт 8007 с использованием HTTPS. Операции, требующие дополнительных разрешений, перенаправляются в локальную службу &lt;code>proxmox-backup&lt;/code>.&lt;/li>
+&lt;li>Служба &lt;code>proxmox-backup&lt;/code> предоставляет API управления Proxmox Backup Server по адресу 127.0.0.1:82. Она имеет разрешение на выполнение всех привилегированных операций.&lt;/li>
+&lt;li>Установите клиент PBS:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">apt-get install proxmox-backup-client
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="контейнер-lxc">&lt;span class="section-num">2.2&lt;/span> Контейнер LXC&lt;/h3>
+&lt;ul>
+&lt;li>Запустите в консоли Proxmox VE:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">bash -c &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/proxmox-backup-server.sh&lt;span class="k">)&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="виртуальная-машина">&lt;span class="section-num">2.3&lt;/span> Виртуальная машина&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>Создадим виртуальную машину:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">qm create &lt;span class="m">150&lt;/span> --name pbs --memory &lt;span class="m">16000&lt;/span> --cores &lt;span class="m">4&lt;/span> --sockets &lt;span class="m">1&lt;/span> --net0 virtio,bridge&lt;span class="o">=&lt;/span>vmbr1,firewall&lt;span class="o">=&lt;/span>1,mtu&lt;span class="o">=&lt;/span>1,tag&lt;span class="o">=&lt;/span>&lt;span class="m">12&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>&lt;code>tag&lt;/code> задаёт используемый vlan.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Подключим QEMU Guest Agent (см. &lt;a href="https://yamadharma.github.io/ru/post/2024/09/05/kvm-qemu-guest-agent/">KVM. QEMU Guest Agent&lt;/a>):&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">qm &lt;span class="nb">set&lt;/span> &lt;span class="m">150&lt;/span> --agent &lt;span class="nv">enabled&lt;/span>&lt;span class="o">=&lt;/span>1,fstrim_cloned_disks&lt;span class="o">=&lt;/span>&lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Создадим диск (80GB):&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pvesm alloc local-lvm &lt;span class="m">150&lt;/span> vm-150-disk-0 80G
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Зададим драйвер диска:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">qm &lt;span class="nb">set&lt;/span> &lt;span class="m">150&lt;/span> --scsihw virtio-scsi-single
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Подключим диск:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">qm &lt;span class="nb">set&lt;/span> &lt;span class="m">150&lt;/span> --virtio0 local-lvm:vm-150-disk-0
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Подключим CDROM:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">qm &lt;span class="nb">set&lt;/span> &lt;span class="m">150&lt;/span> --ide2 local:iso/proxmox-backup-server_3.3-1.iso,media&lt;span class="o">=&lt;/span>cdrom
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Зададим порядок загрузки (CD-ROM, затем диск)&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">qm &lt;span class="nb">set&lt;/span> &lt;span class="m">150&lt;/span> --boot c --bootdisk virtio0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">qm &lt;span class="nb">set&lt;/span> &lt;span class="m">150&lt;/span> --boot &lt;span class="nv">order&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;ide2;virtio0&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Зададим тип CPU:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">qm &lt;span class="nb">set&lt;/span> &lt;span class="m">150&lt;/span> --cpu &lt;span class="nv">cputype&lt;/span>&lt;span class="o">=&lt;/span>host
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Подключим для мышки:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">qm &lt;span class="nb">set&lt;/span> &lt;span class="m">150&lt;/span> --tablet &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Запустите виртуальную машину и установите систему.&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="настройка-после-установки">&lt;span class="section-num">3&lt;/span> Настройка после установки&lt;/h2>
+&lt;h3 id="повышение-комфорта-работы">&lt;span class="section-num">3.1&lt;/span> Повышение комфорта работы&lt;/h3>
+&lt;ul>
+&lt;li>Обновите список програм:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">apt update
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Программы для удобства работы в консоли:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">apt -y install tmux mc
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Программы мониторинга:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">apt -y install htop lsof
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Утилита для ssh:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">apt -y install mosh
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Удобство работы с bash:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">apt -y install bash-completion
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Разные утилиты:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">apt -y install p7zip-full git
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Для удалённой работы с kitty:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">apt -y install kitty-terminfo kitty-shell-integration
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Установите qemu-guest-agent:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">apt -y install qemu-guest-agent
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Запустите qemu-guest-agent:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">systemctl &lt;span class="nb">enable&lt;/span> --now qemu-guest-agent
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="скрипты-для-тьюнинга--см-dot-proxmox-dot-вспомогательные-скрипты--dot-dot-notes-public-20240604133400-proxmox-вспомогательные-скрипты-dot-md">&lt;span class="section-num">3.2&lt;/span> Скрипты для тьюнинга (см. &lt;a href="https://yamadharma.github.io/ru/post/2024/06/04/proxmox-helper-scripts/">Proxmox. Вспомогательные скрипты&lt;/a>)&lt;/h3>
+&lt;ul>
+&lt;li>Proxmox Backup Server Post Install
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">bash -c &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/misc/post-pbs-install.sh&lt;span class="k">)&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="обновление">&lt;span class="section-num">3.3&lt;/span> Обновление&lt;/h3>
+&lt;ul>
+&lt;li>Обновите систему:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">apt update
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">apt -y upgrade
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="безопасность">&lt;span class="section-num">3.4&lt;/span> Безопасность&lt;/h3>
+&lt;ul>
+&lt;li>Установите и настройте fail2ban (см. &lt;a href="https://yamadharma.github.io/ru/post/2023/10/30/fail2ban-basic-settings/">fail2ban. Основные настройки&lt;/a>):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">apt install fail2ban
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>После настройки запустите его:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">systemctl &lt;span class="nb">enable&lt;/span> --now fail2ban
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="подключение">&lt;span class="section-num">4&lt;/span> Подключение&lt;/h2>
+&lt;h3 id="веб-интерфейс">&lt;span class="section-num">4.1&lt;/span> Веб-интерфейс&lt;/h3>
+&lt;ul>
+&lt;li>PBS предлагает интегрированный веб-интерфейс для управления сервером.&lt;/li>
+&lt;li>Веб-интерфейс PBS доступен по адресу &amp;lt;https://&amp;lt;ip-адрес|имя&amp;gt;:8007&amp;gt;.&lt;/li>
+&lt;li>Потребуется пройти аутентификацию (логин по умолчанию: root, пароль указывается в процессе установки).&lt;/li>
+&lt;/ul>
+&lt;h2 id="хранилище">&lt;span class="section-num">5&lt;/span> Хранилище&lt;/h2>
+&lt;h3 id="хранилище-данных">&lt;span class="section-num">5.1&lt;/span> Хранилище данных&lt;/h3>
+&lt;ul>
+&lt;li>Хранилище данных &amp;mdash; это место, где хранятся резервные копии.&lt;/li>
+&lt;li>Текущая реализация PBS использует каталог внутри стандартной файловой системы (ext4, xfs или zfs) для хранения данных резервного копирования.&lt;/li>
+&lt;li>Информация о конфигурации для хранилищ данных хранится в файле &lt;code>/etc/proxmox-backup/datastore.cfg&lt;/code>.&lt;/li>
+&lt;li>Необходимо настроить как минимум одно хранилище данных.&lt;/li>
+&lt;/ul>
+&lt;h4 id="добавление-диска">&lt;span class="section-num">5.1.1&lt;/span> Добавление диска&lt;/h4>
+&lt;ul>
+&lt;li>Если установка выполнялась как виртуальная машина, добавим диск в Proxmox VE:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pvesm alloc local-lvm &lt;span class="m">150&lt;/span> vm-150-disk-1 2000G
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Подключим диск:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">qm &lt;span class="nb">set&lt;/span> &lt;span class="m">150&lt;/span> --virtio1 local-lvm:vm-150-disk-1
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h4 id="создание-хранилища-данных">&lt;span class="section-num">5.1.2&lt;/span> Создание хранилища данных&lt;/h4>
+&lt;ul>
+&lt;li>
+&lt;p>Увидеть диски, подключенные к системе, можно в веб-интерфейсе «Управление» → «Хранилище/Диски».&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Просмотр списка дисков в командной строке:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">proxmox-backup-manager disk list
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Для создания хранилища в веб-интерфейсе, необходимо нажать кнопку «Добавить хранилище данных» в боковом меню в разделе «Хранилище данных». В открывшемся окне необходимо указать:&lt;/p>
+&lt;ul>
+&lt;li>«Имя» — название хранилища данных;&lt;/li>
+&lt;li>«Путь к каталогу хранилища» — путь к каталогу, в котором будет создано хранилище данных;&lt;/li>
+&lt;li>«Расписание сборщика мусора» — частота, с которой запускается сборка мусора;&lt;/li>
+&lt;li>«Расписание удаления» — частота, с которой происходит удаление ранее созданных резервных копий;&lt;/li>
+&lt;li>«Параметры удаления» — количество резервных копий, которые необходимо хранить.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Создадим хранилище:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">proxmox-backup-manager disk fs create store1 --disk vdb --filesystem ext4 --add-datastore &lt;span class="nb">true&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Хранилище данных будет создано по адресу &lt;code>/mnt/datastore/store1&lt;/code>.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>После создания хранилища данных по умолчанию появляется следующая структура каталогов:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># ls -arilh /mnt/datastore/store1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">итого 1,1M
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">665243&lt;/span> -rw-r--r-- &lt;span class="m">1&lt;/span> backup backup &lt;span class="m">0&lt;/span> мар &lt;span class="m">31&lt;/span> 14:05 .lock
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">665242&lt;/span> drwxr-x--- &lt;span class="m">1&lt;/span> backup backup 1,1M мар &lt;span class="m">31&lt;/span> 14:05 .chunks
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">665240&lt;/span> drwxr-xr-x &lt;span class="m">3&lt;/span> root root 4,0K мар &lt;span class="m">31&lt;/span> 13:56 ..
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">665241&lt;/span> drwxr-xr-x &lt;span class="m">3&lt;/span> backup backup 4,0K мар &lt;span class="m">31&lt;/span> 14:05
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>&lt;code>.lock&lt;/code> &amp;mdash; пустой файл, используемый для блокировки процесса;&lt;/li>
+&lt;li>каталог &lt;code>.chunks&lt;/code> содержит подкаталоги, с именами от 0000 до ffff. В этих каталогах будут храниться фрагментированные данные, после выполнения операции резервного копирования.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="управление-хранилищами-данных">&lt;span class="section-num">5.1.3&lt;/span> Управление хранилищами данных&lt;/h4>
+&lt;ul>
+&lt;li>Вывести список существующих хранилищ данных:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">proxmox-backup-manager datastore list
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Изменить расписание сборки мусора и вывести свойства хранилища данных:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">proxmox-backup-manager datastore update store2 --gc-schedule &lt;span class="s1">&amp;#39;Tue 04:27&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Просмотреть информацию:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">proxmox-backup-manager datastore show store1
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Удалить хранилище данных:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">proxmox-backup-manager datastore remove store1
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Данная команда удалит только конфигурацию хранилища данных, данные из базового каталога удалены не будут.&lt;/li>
 &lt;/ul></description></item><item><title>Fish. Плагин PatrickF1/fzf.fish</title><link>https://yamadharma.github.io/ru/post/2025/02/27/fish-plugins-patrickf1-fzf-fish/</link><pubDate>Thu, 27 Feb 2025 15:56:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2025/02/27/fish-plugins-patrickf1-fzf-fish/</guid><description>&lt;p>Fish. Плагин PatrickF1/fzf.fish.&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
 &lt;summary>Содержание&lt;/summary>
@@ -2073,6 +2341,9 @@ width="720" height="405" allow="autoplay; encrypted-media; fullscreen; picture-i
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">interval&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">1m&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">timeout&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">3s&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Запуск будет выполняться следующим образом:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">podman compose --file wallabag-sqlite.yaml up --detach
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ol>
@@ -2080,6 +2351,19 @@ width="720" height="405" allow="autoplay; encrypted-media; fullscreen; picture-i
 &lt;/ol>
 &lt;!--list-separator-->
 &lt;ol start="4">
+&lt;li>
+&lt;p>Обновление&lt;/p>
+&lt;ul>
+&lt;li>Обновление контейнера:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">podman pull wallabag/wallabag
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">podman stop wallabag
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">podman compose --file wallabag-sqlite.yaml up --detach
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;!--list-separator-->
+&lt;ol start="5">
 &lt;li>
 &lt;p>Nginx&lt;/p>
 &lt;ul>
@@ -2117,7 +2401,7 @@ width="720" height="405" allow="autoplay; encrypted-media; fullscreen; picture-i
 &lt;/li>
 &lt;/ol>
 &lt;!--list-separator-->
-&lt;ol start="5">
+&lt;ol start="6">
 &lt;li>
 &lt;p>Скрипт systemd&lt;/p>
 &lt;ul>
@@ -2147,7 +2431,7 @@ width="720" height="405" allow="autoplay; encrypted-media; fullscreen; picture-i
 &lt;/li>
 &lt;/ol>
 &lt;!--list-separator-->
-&lt;ol start="6">
+&lt;ol start="7">
 &lt;li>
 &lt;p>Импорт Omnivore&lt;/p>
 &lt;ul>
@@ -3623,6 +3907,9 @@ pomm.sh
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Обновите список пакетов:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">opkg update
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Обновите пакеты:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">opkg upgrade
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="программное-обеспечение">&lt;span class="section-num">5.2&lt;/span> Программное обеспечение&lt;/h3>
@@ -8774,6 +9061,7 @@ fuzzel/fuzzel.ini
 &lt;li>&lt;a href="#proxmox-ve-cpu-scaling-governor">&lt;span class="section-num">2.3&lt;/span> Proxmox VE CPU Scaling Governor&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#proxmox-ve-kernel-clean">&lt;span class="section-num">2.4&lt;/span> Proxmox VE Kernel Clean&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#proxmox-update-repositories">&lt;span class="section-num">2.5&lt;/span> Proxmox Update Repositories&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#proxmox-backup-server-post-install">&lt;span class="section-num">2.6&lt;/span> Proxmox Backup Server Post Install&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
@@ -8783,7 +9071,7 @@ fuzzel/fuzzel.ini
 &lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
 &lt;ul>
 &lt;li>Proxmox VE Helper-Scripts&lt;/li>
-&lt;li>Сайт: &lt;a href="https://helper-scripts.com/" target="_blank" rel="noopener">https://helper-scripts.com/&lt;/a>&lt;/li>
+&lt;li>Сайт: &lt;a href="https://community-scripts.github.io/ProxmoxVE/" target="_blank" rel="noopener">https://community-scripts.github.io/ProxmoxVE/&lt;/a>&lt;/li>
 &lt;li>Репозиторий: &lt;a href="https://github.com/community-scripts/ProxmoxVE" target="_blank" rel="noopener">https://github.com/community-scripts/ProxmoxVE&lt;/a>&lt;/li>
 &lt;li>Сборник скриптов для Proxmov VE.&lt;/li>
 &lt;/ul>
@@ -8822,6 +9110,16 @@ fuzzel/fuzzel.ini
 &lt;li>Переписать ссылки в контейнерах LXC для нового репозиторий скриптов:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">bash -c &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/misc/update-repo.sh&lt;span class="k">)&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="proxmox-backup-server-post-install">&lt;span class="section-num">2.6&lt;/span> Proxmox Backup Server Post Install&lt;/h3>
+&lt;ul>
+&lt;li>Отключение Enterprise Repo.&lt;/li>
+&lt;li>Добавление или исправление источников PVE.&lt;/li>
+&lt;li>Включение No-Subscription Repo.&lt;/li>
+&lt;li>Добавление тестового репозитория.&lt;/li>
+&lt;li>Отключение подписки nag.
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">bash -c &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/misc/post-pbs-install.sh&lt;span class="k">)&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul></description></item><item><title>Linux. Установка Proxmox VE</title><link>https://yamadharma.github.io/ru/post/2024/06/04/proxmox-ve-install/</link><pubDate>Tue, 04 Jun 2024 11:23:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2024/06/04/proxmox-ve-install/</guid><description>&lt;p>Установка Proxmox VE.&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
 &lt;summary>Содержание&lt;/summary>
@@ -8845,6 +9143,12 @@ fuzzel/fuzzel.ini
 &lt;/ul>
 &lt;/li>
 &lt;li>&lt;a href="#настройка-сети-с-vlan">&lt;span class="section-num">4&lt;/span> Настройка сети с VLAN&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#дисковая-подсистема">&lt;span class="section-num">5&lt;/span> Дисковая подсистема&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#local-lvm">&lt;span class="section-num">5.1&lt;/span> local-lvm&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#создание-дополнительного-раздел-на-lvm-thin">&lt;span class="section-num">5.2&lt;/span> Создание дополнительного раздел на lvm-thin&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
 &lt;/ul>
 &lt;/nav>
 &lt;/div>
@@ -8870,7 +9174,7 @@ fuzzel/fuzzel.ini
 &lt;/ul>
 &lt;h3 id="выбор-файловой-системы">&lt;span class="section-num">2.3&lt;/span> Выбор файловой системы&lt;/h3>
 &lt;ul>
-&lt;li>Если у вас железный RAID, то выбирайте ext4 или xfs (наверное, лучше).&lt;/li>
+&lt;li>Если у вас железный RAID, то выбирайте ext4 или xfs (наверное, лучше, но может посыпаться без ИБП).&lt;/li>
 &lt;li>Поверх этих систем будет установлен LVM.&lt;/li>
 &lt;li>Если у вас несколько дисков и вы желаете сделать софтовый RAID, то выбирайте RAID на ZFS.&lt;/li>
 &lt;li>Построение RAID на основе mdadm дистрибутив не поддерживает.&lt;/li>
@@ -8947,6 +9251,38 @@ fuzzel/fuzzel.ini
 &lt;li>Для создания VLAN для самого сервера создаём &lt;em>OVSIntPort&lt;/em>.&lt;/li>
 &lt;li>После настроек нажимаем &lt;em>Apply Configuration&lt;/em> в графическом интерфейсе.&lt;/li>
 &lt;li>Виртуальные машины прикрепляем на созданный мост, настройках сети устанавливаем нужный &lt;em>VLAN Tag&lt;/em>.&lt;/li>
+&lt;/ul>
+&lt;h2 id="дисковая-подсистема">&lt;span class="section-num">5&lt;/span> Дисковая подсистема&lt;/h2>
+&lt;h3 id="local-lvm">&lt;span class="section-num">5.1&lt;/span> local-lvm&lt;/h3>
+&lt;ul>
+&lt;li>Установщик выделяет два логических раздела: &lt;code>local&lt;/code> и &lt;code>local-lvm&lt;/code>.&lt;/li>
+&lt;li>На разделе &lt;code>local-lvm&lt;/code> можно выделить дополнительный раздел.&lt;/li>
+&lt;/ul>
+&lt;h3 id="создание-дополнительного-раздел-на-lvm-thin">&lt;span class="section-num">5.2&lt;/span> Создание дополнительного раздел на lvm-thin&lt;/h3>
+&lt;ul>
+&lt;li>Смотрим уже существующие VG:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vgs
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Смотрим существующие LV:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">lvs
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Видим, что раздел &lt;code>data&lt;/code> является lvm-thin (атрибут &lt;code>t&lt;/code>).&lt;/li>
+&lt;li>Создаём на нем раздел:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">lvcreate -V100G -T pve/data -n newdisk
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Проверяем:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">lvs
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Форматируем раздел:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mkfs.ext4 /dev/pve/newdisk
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Можно подмонтировать:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mkdir /mnt/newdisk
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mount /dev/pve/newdisk /mnt/newdisk
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Можно по необходимости удалить раздел:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vlmremove /dev/pve/newdisk
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul></description></item><item><title>Linux. Дистрибутив Proxmox</title><link>https://yamadharma.github.io/ru/post/2024/06/04/linux-proxmox-distribution/</link><pubDate>Tue, 04 Jun 2024 10:45:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2024/06/04/linux-proxmox-distribution/</guid><description>&lt;p>Дистрибутив Proxmox.&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
 &lt;summary>Содержание&lt;/summary>
@@ -8961,6 +9297,7 @@ fuzzel/fuzzel.ini
 &lt;/li>
 &lt;li>&lt;a href="#дистрибутивы-для-установки">&lt;span class="section-num">3&lt;/span> Дистрибутивы для установки&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#установка-виртуальных-машин">&lt;span class="section-num">4&lt;/span> Установка виртуальных машин&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#дополнительный-функционал">&lt;span class="section-num">5&lt;/span> Дополнительный функционал&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/nav>
 &lt;/div>
@@ -8993,6 +9330,10 @@ fuzzel/fuzzel.ini
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2025/01/27/proxmox-installing-openvpn-lxc/">Proxmox. Установка OpenVPN в LXC&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2025/02/22/proxmox-windows-install/">Proxmox. Установка Windows&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="дополнительный-функционал">&lt;span class="section-num">5&lt;/span> Дополнительный функционал&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2025/03/04/proxmox-backup-server/">Proxmox Backup Server&lt;/a>&lt;/li>
 &lt;/ul></description></item><item><title>Скачать фотографии с google photo</title><link>https://yamadharma.github.io/ru/post/2024/06/01/google-photo-download/</link><pubDate>Sat, 01 Jun 2024 16:42:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2024/06/01/google-photo-download/</guid><description>&lt;p>Скачать фотографии с google photo.&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
 &lt;summary>Содержание&lt;/summary>
@@ -9280,6 +9621,8 @@ fuzzel/fuzzel.ini
 &lt;li>&lt;a href="#пререквизиты">&lt;span class="section-num">1&lt;/span> Пререквизиты&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#установка-windows">&lt;span class="section-num">2&lt;/span> Установка Windows&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#после-установки">&lt;span class="section-num">3&lt;/span> После установки&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#общая-папка">&lt;span class="section-num">4&lt;/span> Общая папка&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#буфер-обмена">&lt;span class="section-num">5&lt;/span> Буфер обмена&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/nav>
 &lt;/div>
@@ -9296,6 +9639,9 @@ fuzzel/fuzzel.ini
 &lt;li>&lt;a href="https://github.com/virtio-win/virtio-win-pkg-scripts/blob/master/README.md" target="_blank" rel="noopener">https://github.com/virtio-win/virtio-win-pkg-scripts/blob/master/README.md&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
+&lt;li>Скачаем драйвера для qemu:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">wget https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/latest-virtio/virtio-win.iso
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Проще всего использовать образ iso-диска и подмонтировать его как второй cdrom.&lt;/li>
 &lt;/ul>
 &lt;h2 id="установка-windows">&lt;span class="section-num">2&lt;/span> Установка Windows&lt;/h2>
@@ -9318,6 +9664,55 @@ fuzzel/fuzzel.ini
 &lt;/li>
 &lt;li>Установите сертификат RedHat с CD-диска.&lt;/li>
 &lt;li>Установите драйвера Virtio.&lt;/li>
+&lt;/ul>
+&lt;h2 id="общая-папка">&lt;span class="section-num">4&lt;/span> Общая папка&lt;/h2>
+&lt;ul>
+&lt;li>Будем использовать встроенный метод создания общей папки с помощью &lt;em>virt-manager&lt;/em>.&lt;/li>
+&lt;li>Нажмите на значок с надписью &lt;em>Показать виртуальное оборудование&lt;/em> (&lt;em>Show virtual hardware details&lt;/em>) на панели инструментов.&lt;/li>
+&lt;li>Нажмите &lt;em>Память&lt;/em> (&lt;em>Memory&lt;/em>) на левой панели.
+&lt;ul>
+&lt;li>Проверьте, что выбрана опция &lt;em>Включить общую память&lt;/em> (&lt;em>Enable shared memory&lt;/em>).&lt;/li>
+&lt;li>Нажмите &lt;em>Применить&lt;/em>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Внизу нажмите &lt;em>Добавить оборудование&lt;/em> (&lt;em>Add hardware&lt;/em>).
+&lt;ul>
+&lt;li>Выберите &lt;em>Файловая система&lt;/em> (&lt;em>File system&lt;/em>) на левой панели в окне добавления нового оборудования.&lt;/li>
+&lt;li>Затем выберите &lt;em>Driver=virtiofs&lt;/em> на вкладке Подробности.&lt;/li>
+&lt;li>Нажмите на &lt;em>browse &amp;gt; browse local&lt;/em> и выберите путь к хосту из вашей системы Linux.&lt;/li>
+&lt;li>В целевом пути укажите любое имя.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Установите в системе Windows WinFSP (FUSE для Windows).
+&lt;ul>
+&lt;li>Можно скачать с сайта &lt;a href="https://github.com/winfsp/winfsp/releases/" target="_blank" rel="noopener">https://github.com/winfsp/winfsp/releases/&lt;/a>.&lt;/li>
+&lt;li>Можно установить с Chocolatey (см. &lt;a href="https://yamadharma.github.io/ru/post/2021/01/18/package-manager-windows-chocolatey/">Пакетный менеджер для Windows. Chocolatey&lt;/a>):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install winsfp
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Установите &lt;code>virtio-win-guest-tools.exe&lt;/code>.
+&lt;ul>
+&lt;li>Возьмите из комплекта &lt;code>virtio-win.iso&lt;/code> или скачайте напрямую из &lt;a href="https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/" target="_blank" rel="noopener">https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/&lt;/a>.&lt;/li>
+&lt;li>После завершения установки перезагрузите виртуальную машину Windows.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Откройте меню &amp;ldquo;Пуск&amp;rdquo; и найдите &amp;ldquo;Службы&amp;rdquo;.
+&lt;ul>
+&lt;li>Найдите службу &lt;em>Служба VirtIO-FS&lt;/em> (&lt;em>VirtIO-Sevice-FS&lt;/em>).&lt;/li>
+&lt;li>Щелкните правой кнопкой мыши и нажмите &amp;ldquo;Запустить&amp;rdquo;, чтобы запустить службу.&lt;/li>
+&lt;li>Можно запустить из командной строки:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sc start VirtioFsSvc
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Установите её на автозапуск (VirtIO-Sevice-FS &amp;gt; Properties &amp;gt; Startup type &amp;gt; Manual to Automatic).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>После запуска службы откройте Проводник, и вы должны увидеть метку монтирования, которую вы создали в первом шаге выше, и которая должна быть отображена как диск &lt;code>Z:&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h2 id="буфер-обмена">&lt;span class="section-num">5&lt;/span> Буфер обмена&lt;/h2>
+&lt;ul>
+&lt;li>Проверьте, что есть Канал (spice) типа &lt;code>spicevmc&lt;/code>.&lt;/li>
+&lt;li>Установите в Windows &lt;em>SPICE Guest Tools&lt;/em> : &lt;a href="https://www.spice-space.org/download/windows/spice-guest-tools/spice-guest-tools-latest.exe" target="_blank" rel="noopener">https://www.spice-space.org/download/windows/spice-guest-tools/spice-guest-tools-latest.exe&lt;/a>.&lt;/li>
 &lt;/ul></description></item><item><title>Syncthing. Командная строка</title><link>https://yamadharma.github.io/ru/post/2024/05/29/syncthing-cli/</link><pubDate>Wed, 29 May 2024 15:35:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2024/05/29/syncthing-cli/</guid><description>&lt;p>Настройка Syncthing из командной строки.&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
 &lt;summary>Содержание&lt;/summary>
@@ -12918,12 +13313,26 @@ fuzzel/fuzzel.ini
 &lt;nav id="TableOfContents">
 &lt;ul>
 &lt;li>&lt;a href="#первичная-настройка-параметров-git">&lt;span class="section-num">1&lt;/span> Первичная настройка параметров git&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#учёт-переносов-строк">&lt;span class="section-num">2&lt;/span> Учёт переносов строк&lt;/a>
+&lt;li>&lt;a href="#верификация-коммитов">&lt;span class="section-num">2&lt;/span> Верификация коммитов&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#учёт-переносов-строк">&lt;span class="section-num">3&lt;/span> Учёт переносов строк&lt;/a>
 &lt;ul>
-&lt;li>&lt;a href="#параметр-autocrlf">&lt;span class="section-num">2.1&lt;/span> Параметр &lt;code>autocrlf&lt;/code>&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#параметр-safecrlf">&lt;span class="section-num">2.2&lt;/span> Параметр &lt;code>safecrlf&lt;/code>&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#параметр-autocrlf">&lt;span class="section-num">3.1&lt;/span> Параметр &lt;code>autocrlf&lt;/code>&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#параметр-safecrlf">&lt;span class="section-num">3.2&lt;/span> Параметр &lt;code>safecrlf&lt;/code>&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
+&lt;li>&lt;a href="#перечисление-веток">&lt;span class="section-num">4&lt;/span> Перечисление веток&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#перечисление-тегов">&lt;span class="section-num">5&lt;/span> Перечисление тегов&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#отображение-git-diff">&lt;span class="section-num">6&lt;/span> Отображение git diff&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#настройка-git-push">&lt;span class="section-num">7&lt;/span> Настройка git push&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#улучшенная-выборка">&lt;span class="section-num">8&lt;/span> Улучшенная выборка&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#предложения-автозамены">&lt;span class="section-num">9&lt;/span> Предложения автозамены&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#коммиты-с-указанием-разности">&lt;span class="section-num">10&lt;/span> Коммиты с указанием разности&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#повторное-использование-ранее-записанных-разрешений-конфликтов">&lt;span class="section-num">11&lt;/span> Повторное использование ранее записанных разрешений конфликтов&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#глобальный-файл-ignore">&lt;span class="section-num">12&lt;/span> Глобальный файл ignore&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#аккуратное-перебазирование">&lt;span class="section-num">13&lt;/span> Аккуратное перебазирование&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#улучшенная-обработка-конфликтов-при-слиянии">&lt;span class="section-num">14&lt;/span> Улучшенная обработка конфликтов при слиянии&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#настройки-git-pull">&lt;span class="section-num">15&lt;/span> Настройки git pull&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#использование-fsmonitor">&lt;span class="section-num">16&lt;/span> ИСпользование fsmonitor&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/nav>
 &lt;/div>
@@ -12937,15 +13346,15 @@ fuzzel/fuzzel.ini
 &lt;li>Настроим utf-8 в выводе сообщений git:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global core.quotepath &lt;span class="nb">false&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
-&lt;li>Настройте верификацию и подписание коммитов git (см. &lt;a href="https://yamadharma.github.io/ru/post/2024/08/22/verifying-git-commits/">Подпись коммитов git&lt;/a>).&lt;/li>
 &lt;li>Зададим имя начальной ветки (будем называть её &lt;code>master&lt;/code>):
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global init.defaultBranch master
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
-&lt;li>Зададим опцию для автоматического задания удалённой ветки:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global push.autoSetupRemote &lt;span class="nb">true&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
-&lt;h2 id="учёт-переносов-строк">&lt;span class="section-num">2&lt;/span> Учёт переносов строк&lt;/h2>
+&lt;h2 id="верификация-коммитов">&lt;span class="section-num">2&lt;/span> Верификация коммитов&lt;/h2>
+&lt;ul>
+&lt;li>Настройте верификацию и подписание коммитов git (см. &lt;a href="https://yamadharma.github.io/ru/post/2024/08/22/verifying-git-commits/">Подпись коммитов git&lt;/a>).&lt;/li>
+&lt;/ul>
+&lt;h2 id="учёт-переносов-строк">&lt;span class="section-num">3&lt;/span> Учёт переносов строк&lt;/h2>
 &lt;ul>
 &lt;li>В разных операционных системах приняты разные символы для перевода строк:
 &lt;ul>
@@ -12958,7 +13367,7 @@ fuzzel/fuzzel.ini
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git ls-files --eol
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
-&lt;h3 id="параметр-autocrlf">&lt;span class="section-num">2.1&lt;/span> Параметр &lt;code>autocrlf&lt;/code>&lt;/h3>
+&lt;h3 id="параметр-autocrlf">&lt;span class="section-num">3.1&lt;/span> Параметр &lt;code>autocrlf&lt;/code>&lt;/h3>
 &lt;ul>
 &lt;li>
 &lt;p>Настройка &lt;code>core.autocrlf&lt;/code> предназначена для того, чтобы в главном репозитории все переводы строк текстовых файлах были одинаковы.&lt;/p>
@@ -13037,7 +13446,7 @@ fuzzel/fuzzel.ini
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
-&lt;h3 id="параметр-safecrlf">&lt;span class="section-num">2.2&lt;/span> Параметр &lt;code>safecrlf&lt;/code>&lt;/h3>
+&lt;h3 id="параметр-safecrlf">&lt;span class="section-num">3.2&lt;/span> Параметр &lt;code>safecrlf&lt;/code>&lt;/h3>
 &lt;ul>
 &lt;li>Настройка &lt;code>core.safecrlf&lt;/code> предназначена для проверки, является ли окончаний строк обратимым для текущей настройки &lt;code>core.autocrlf&lt;/code>.
 &lt;ul>
@@ -13047,6 +13456,140 @@ fuzzel/fuzzel.ini
 &lt;/li>
 &lt;li>Установка параметра:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global core.safecrlf warn
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="перечисление-веток">&lt;span class="section-num">4&lt;/span> Перечисление веток&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>Настроим, чтобы перечисление веток git по умолчанию не упорядочивалось по алфавиту.&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>branch.sort&lt;/code> : сортирует список не по алфавиту, а по свежести дат коммитов;&lt;/li>
+&lt;li>&lt;code>column.ui&lt;/code> : выстраивает имена веток в формате столбцов так, чтобы на экране было видно больше такой информации.&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global column.ui auto
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git config --global branch.sort -committerdate
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="перечисление-тегов">&lt;span class="section-num">5&lt;/span> Перечисление тегов&lt;/h2>
+&lt;ul>
+&lt;li>При перечислении тегов командой &lt;code>git tag&lt;/code> сортировка провидится в алфавитном порядке.&lt;/li>
+&lt;li>Но метки обычно имеют вид набора цифр (номер версии).&lt;/li>
+&lt;li>Настроим сортировку по номеру версии:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global tag.sort version:refname
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="отображение-git-diff">&lt;span class="section-num">6&lt;/span> Отображение git diff&lt;/h2>
+&lt;ul>
+&lt;li>Для команды &lt;code>git diff&lt;/code>.&lt;/li>
+&lt;li>По умолчанию &lt;em>git&lt;/em> использует для вычисления разности коммитов алгоритм Майерса.&lt;/li>
+&lt;li>В базовой комплектации &lt;em>git&lt;/em> встроено 4 алгоритма вычисления разности: myers, minimal, patience, histogram (инкрементная усовершенствованная версия patience).&lt;/li>
+&lt;li>Установим по умолчанию алгоритм histogram:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global diff.algorithm histogram
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>При включённой опции &lt;code>colorMoved&lt;/code> перемещение кода будет отображаться разными цветами, в зависимости от того, были какие-то строки добавлены или удалены.
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global diff.colorMoved plain
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Опция &lt;code>diff.renames&lt;/code> позволяет выявить, был ли файл переименован
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global diff.renames &lt;span class="nb">true&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Опция &lt;code>diff.mnemonicPrefix&lt;/code> заменяет префиксы (обычно &lt;code>a/&lt;/code> и &lt;code>b/&lt;/code>) на информацию о том, откуда пришло различие: &lt;code>i/&lt;/code> (индекс), &lt;code>w/&lt;/code> (рабочий каталог), или &lt;code>c/&lt;/code> (коммит).
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global diff.mnemonicPrefix &lt;span class="nb">true&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="настройка-git-push">&lt;span class="section-num">7&lt;/span> Настройка git push&lt;/h2>
+&lt;ul>
+&lt;li>Опция &lt;code>push.default simple&lt;/code> установлена по умолчанию, начиная с &lt;em>git&lt;/em> 2.0.&lt;/li>
+&lt;li>Умолчание &lt;code>simple&lt;/code> осуществляет отправку в текущую ветку и в одноимённую ветку на удалённой машине.
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global push.default simple
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Если удалённая ветка не существует, а отслеживание веток не настроено, то вы получите ошибку.&lt;/li>
+&lt;li>Опция &lt;code>push.autoSetupRemote&lt;/code> служит для автоматического задания удалённой ветки:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global push.autoSetupRemote &lt;span class="nb">true&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Настройка &lt;code>push.followTags&lt;/code> запушит все теги, имеющиеся у вас на локальной машине, но отсутствующие на сервере.&lt;/li>
+&lt;li>Если вы создаёте теги на локальной машине, то активируйте эту настройку:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global push.followTags &lt;span class="nb">true&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="улучшенная-выборка">&lt;span class="section-num">8&lt;/span> Улучшенная выборка&lt;/h2>
+&lt;ul>
+&lt;li>Не стоит держать на локальной машине историю копий веток и тегов, которые когда-то были на сервере, а теперь там отсутствуют:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global fetch.prune &lt;span class="nb">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git config --global fetch.pruneTags &lt;span class="nb">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git config --global fetch.all &lt;span class="nb">true&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="предложения-автозамены">&lt;span class="section-num">9&lt;/span> Предложения автозамены&lt;/h2>
+&lt;ul>
+&lt;li>После ввода команды, которой не существует, следует запрос, что пользователь имел в виду.&lt;/li>
+&lt;li>Это поведение можно изменять с помощью параметра &lt;code>help.autocorrect&lt;/code>:
+&lt;ul>
+&lt;li>&lt;code>0&lt;/code> (по умолчанию): показать предложенную команду.&lt;/li>
+&lt;li>положительное число: выполнить предложенную команду через указанное количество децисекунд (0,1 секунды);&lt;/li>
+&lt;li>&lt;code>immediate&lt;/code>: выполнить предложенную команду немедленно;&lt;/li>
+&lt;li>&lt;code>prompt&lt;/code>: показать предложение и запросить подтверждение на выполнение команды;&lt;/li>
+&lt;li>&lt;code>never&lt;/code>: не выполнять и не показывать предложенную команду.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Вариант &lt;code>prompt&lt;/code> представляется вполне разумным:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global help.autocorrect prompt
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="коммиты-с-указанием-разности">&lt;span class="section-num">10&lt;/span> Коммиты с указанием разности&lt;/h2>
+&lt;ul>
+&lt;li>По умолчанию &lt;code>git commit&lt;/code> выдаёт только список изменившихся файлов.&lt;/li>
+&lt;li>Если установить &lt;code>commit.verbose&lt;/code> в значение &lt;code>true&lt;/code>, то будет представлен весь вывод &lt;code>diff&lt;/code>:&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global commit.verbose &lt;span class="nb">true&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="повторное-использование-ранее-записанных-разрешений-конфликтов">&lt;span class="section-num">11&lt;/span> Повторное использование ранее записанных разрешений конфликтов&lt;/h2>
+&lt;ul>
+&lt;li>Настройка работает только при применении &lt;code>rebase&lt;/code>.&lt;/li>
+&lt;li>Пригодится, когда регулярно возникают конфликты.&lt;/li>
+&lt;li>Опция &lt;code>enabled&lt;/code> гарантирует, что система будет записывать состояния «до» и «после» конфликтов при перебазировании.&lt;/li>
+&lt;li>После этого &lt;code>autoupdate&lt;/code> будет автоматически раз за разом применять проверенные способы разрешения конфликтов.
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global rerere.enabled &lt;span class="nb">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git config --global rerere.autoupdate &lt;span class="nb">true&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="глобальный-файл-ignore">&lt;span class="section-num">12&lt;/span> Глобальный файл ignore&lt;/h2>
+&lt;ul>
+&lt;li>Вы можете создать локальный файл &lt;code>.gitignore&lt;/code>.&lt;/li>
+&lt;li>Настройка &lt;code>core.excludesfile&lt;/code> позволяет задать собственный глобальный файл для игнорирования:&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">touch ~/.config/git/ignore
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git config --global core.excludesfile ~/.config/git/ignore
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Примеры файлов игнорирования можно взять в &lt;a href="https://github.com/github/gitignore" target="_blank" rel="noopener">https://github.com/github/gitignore&lt;/a>.&lt;/li>
+&lt;/ul>
+&lt;h2 id="аккуратное-перебазирование">&lt;span class="section-num">13&lt;/span> Аккуратное перебазирование&lt;/h2>
+&lt;ul>
+&lt;li>Опция организует в виде ветки стопку ссылок и гарантирует, что при перебазировании ветки эти ссылки также будут правильно перемещены:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global rebase.autoSquash &lt;span class="nb">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git config --global rebase.autoStash &lt;span class="nb">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git config --global rebase.updateRefs &lt;span class="nb">true&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="улучшенная-обработка-конфликтов-при-слиянии">&lt;span class="section-num">14&lt;/span> Улучшенная обработка конфликтов при слиянии&lt;/h2>
+&lt;ul>
+&lt;li>Для обработки конфликтов будем использовать алгоритм &lt;code>zdiff3&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global merge.conflictstyle zdiff3
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="настройки-git-pull">&lt;span class="section-num">15&lt;/span> Настройки git pull&lt;/h2>
+&lt;ul>
+&lt;li>Можно установить &lt;code>rebase&lt;/code> по умолчаниию:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global pull.rebase &lt;span class="nb">true&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="использование-fsmonitor">&lt;span class="section-num">16&lt;/span> ИСпользование fsmonitor&lt;/h2>
+&lt;ul>
+&lt;li>Можно запускаться процесс для мониторинга файловой системы (по одному на каждый репозиторий), который будет отслеживать изменения в файлах и обновлять кэш.&lt;/li>
+&lt;li>На больших репозиториях можно ускорить операции (например, &lt;code>git status&lt;/code>):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global core.fsmonitor &lt;span class="nb">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git config --global core.untrackedCache &lt;span class="nb">true&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul></description></item><item><title>Эмулятор терминала kitty</title><link>https://yamadharma.github.io/ru/post/2024/03/16/kitty-terminal-emulator/</link><pubDate>Sat, 16 Mar 2024 17:07:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2024/03/16/kitty-terminal-emulator/</guid><description>&lt;p>Эмулятор терминала kitty.&lt;/p>
 &lt;details class="print:hidden xl:hidden" >

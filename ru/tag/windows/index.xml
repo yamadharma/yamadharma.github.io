@@ -608,15 +608,21 @@
 &lt;ul>
 &lt;li>&lt;a href="#пререквизиты">&lt;span class="section-num">1&lt;/span> Пререквизиты&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#установка-windows">&lt;span class="section-num">2&lt;/span> Установка Windows&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#после-установки">&lt;span class="section-num">3&lt;/span> После установки&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#общая-папка">&lt;span class="section-num">4&lt;/span> Общая папка&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#буфер-обмена">&lt;span class="section-num">5&lt;/span> Буфер обмена&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#использование-virt-install">&lt;span class="section-num">3&lt;/span> Использование virt-install&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#после-установки">&lt;span class="section-num">4&lt;/span> После установки&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#общая-папка">&lt;span class="section-num">5&lt;/span> Общая папка&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#буфер-обмена">&lt;span class="section-num">6&lt;/span> Буфер обмена&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/nav>
 &lt;/div>
 &lt;/details>
 &lt;h2 id="пререквизиты">&lt;span class="section-num">1&lt;/span> Пререквизиты&lt;/h2>
 &lt;ul>
+&lt;li>Необходимо иметь установленный libvirt (см. &lt;a href="https://yamadharma.github.io/ru/post/2024/11/26/virtualization-libvirt/">Виртуализация. Libvirt&lt;/a>).&lt;/li>
+&lt;li>Можно устанавливать с помощью какого-либо графического интерфейса управления qemu, например с помощью virt-manager:&lt;/li>
+&lt;li>Gentoo:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge app-emulation/virt-manager
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Рекомендуется использовать драйвера Virtio для Windows.&lt;/li>
 &lt;li>Работа через устройства Virtio осуществляется быстрее, чем через эмуляцию SCSI и т.д.&lt;/li>
 &lt;li>Gentoo:
@@ -634,26 +640,87 @@
 &lt;/ul>
 &lt;h2 id="установка-windows">&lt;span class="section-num">2&lt;/span> Установка Windows&lt;/h2>
 &lt;ul>
-&lt;li>Можно устанавливать с помощью какого-либо графического интерфейса управления qemu, например с помощью virt-manager:&lt;/li>
-&lt;li>Gentoo:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge app-emulation/virt-manager
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>При установке следует выбрать пункт о дополнительной конфигурации перед установкой.&lt;/li>
 &lt;li>На этом этапе следует добавить второй виртуальный cdrom с драйверами virtio-win.&lt;/li>
 &lt;li>У жёсткого диска установите шину VirtIO.&lt;/li>
+&lt;li>В разделе &lt;em>Обзор&lt;/em> убедитесь, что для чипсета выбрано значение Q35, а для прошивки &amp;mdash; UEFI.&lt;/li>
+&lt;li>Для запуска Windows 11 под QEMU KVM необходимы Secureboot и TPM, в файле конфигураций это выглядит так:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-xml" data-lang="xml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">&amp;lt;os&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;type&lt;/span> &lt;span class="na">arch=&lt;/span>&lt;span class="s">&amp;#34;x86_64&amp;#34;&lt;/span> &lt;span class="na">machine=&lt;/span>&lt;span class="s">&amp;#34;q35&amp;#34;&lt;/span>&lt;span class="nt">&amp;gt;&lt;/span>hvm&lt;span class="nt">&amp;lt;/type&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;loader&lt;/span> &lt;span class="na">readonly=&lt;/span>&lt;span class="s">&amp;#34;yes&amp;#34;&lt;/span> &lt;span class="na">type=&lt;/span>&lt;span class="s">&amp;#34;pflash&amp;#34;&lt;/span>&lt;span class="nt">&amp;gt;&lt;/span>/usr/share/edk2/ovmf/OVMF_CODE.secboot.fd&lt;span class="nt">&amp;lt;/loader&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;nvram&lt;/span> &lt;span class="na">template=&lt;/span>&lt;span class="s">&amp;#34;/usr/share/edk2/ovmf/OVMF_VARS.secboot.fd&amp;#34;&lt;/span>&lt;span class="nt">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;boot&lt;/span> &lt;span class="na">dev=&lt;/span>&lt;span class="s">&amp;#34;hd&amp;#34;&lt;/span>&lt;span class="nt">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nt">&amp;lt;/os&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nt">&amp;lt;tpm&lt;/span> &lt;span class="na">model=&lt;/span>&lt;span class="s">&amp;#34;tpm-tis&amp;#34;&lt;/span>&lt;span class="nt">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;backend&lt;/span> &lt;span class="na">type=&lt;/span>&lt;span class="s">&amp;#34;emulator&amp;#34;&lt;/span> &lt;span class="na">version=&lt;/span>&lt;span class="s">&amp;#34;2.0&amp;#34;&lt;/span>&lt;span class="nt">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nt">&amp;lt;/tpm&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
-&lt;h2 id="после-установки">&lt;span class="section-num">3&lt;/span> После установки&lt;/h2>
+&lt;h2 id="использование-virt-install">&lt;span class="section-num">3&lt;/span> Использование virt-install&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>Конфигурацию можно создать с помощью virt-install:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">virt-install &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> --connect qemu:///system &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> --disk /var/lib/libvirt/images/Win11_24H2_Russian_x64.iso,device&lt;span class="o">=&lt;/span>cdrom &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> --disk /var/lib/libvirt/images/virtio-win.iso,device&lt;span class="o">=&lt;/span>cdrom &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> --disk &lt;span class="nv">pool&lt;/span>&lt;span class="o">=&lt;/span>default,size&lt;span class="o">=&lt;/span>120,bus&lt;span class="o">=&lt;/span>virtio,format&lt;span class="o">=&lt;/span>qcow2 &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> --name windows11 &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> --os-variant&lt;span class="o">=&lt;/span>win11 &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> --machine q35 &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> --ram &lt;span class="m">4096&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> --memballoon driver.iommu&lt;span class="o">=&lt;/span>on &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> --vcpus&lt;span class="o">=&lt;/span>&lt;span class="m">2&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> --network &lt;span class="nv">network&lt;/span>&lt;span class="o">=&lt;/span>default,model&lt;span class="o">=&lt;/span>virtio &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> --graphics spice &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> --channel spicevmc &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> --hvm &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> --virt-type&lt;span class="o">=&lt;/span>kvm &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> --features &lt;span class="nv">kvm_hidden&lt;/span>&lt;span class="o">=&lt;/span>on,smm&lt;span class="o">=&lt;/span>on &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> --tpm backend.type&lt;span class="o">=&lt;/span>emulator,backend.version&lt;span class="o">=&lt;/span>2.0,model&lt;span class="o">=&lt;/span>tpm-tis &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> --boot uefi &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> --check &lt;span class="nv">path_in_use&lt;/span>&lt;span class="o">=&lt;/span>off &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> --boot cdrom,hd,menu&lt;span class="o">=&lt;/span>on
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>&lt;code>--name windows11&lt;/code> : название виртуальной машины;&lt;/li>
+&lt;li>&lt;code>--os-type=win11&lt;/code> : тип ОС;&lt;/li>
+&lt;li>&lt;code>--cdrom /var/lib/libvirt/images/Win11_24H2_Russian_x64.iso&lt;/code> : путь к ISO-образу установочного диска ОС;&lt;/li>
+&lt;li>&lt;code>--graphics spice&lt;/code> : графическая консоль;&lt;/li>
+&lt;li>&lt;code>--disk pool=default,size=160,bus=virtio,format=qcow2&lt;/code> : хранилище;
+&lt;ul>
+&lt;li>образ виртуальной машины будет создана в пространстве хранения объёмом 160 ГБ, которое автоматически выделяется из пула хранилищ default;&lt;/li>
+&lt;li>образ диска для этой виртуальной машины будет создан в формате qcow2;&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;code>--ram 4096&lt;/code> : объём оперативной памяти;&lt;/li>
+&lt;li>&lt;code>--vcpus=2&lt;/code> : количество процессоров;&lt;/li>
+&lt;li>&lt;code>--network network=default&lt;/code> : виртуальная сеть default;&lt;/li>
+&lt;li>&lt;code>--hvm&lt;/code> : полностью виртуализированная система;&lt;/li>
+&lt;li>&lt;code>--virt-type=kvm&lt;/code> : использовать модуль ядра KVM, который задействует аппаратные возможности виртуализации процессора.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>В качестве видео-интерфейса ставим QXL.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>После установки драйверов следует перевести в Virtio.&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="после-установки">&lt;span class="section-num">4&lt;/span> После установки&lt;/h2>
 &lt;ul>
 &lt;li>Поменяйте в настройках типы устройств:
 &lt;ul>
 &lt;li>сетевую карту на Virtio;&lt;/li>
-&lt;li>видео: QXL.&lt;/li>
+&lt;li>видео на Virtio.&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>Установите сертификат RedHat с CD-диска.&lt;/li>
 &lt;li>Установите драйвера Virtio.&lt;/li>
 &lt;/ul>
-&lt;h2 id="общая-папка">&lt;span class="section-num">4&lt;/span> Общая папка&lt;/h2>
+&lt;h2 id="общая-папка">&lt;span class="section-num">5&lt;/span> Общая папка&lt;/h2>
 &lt;ul>
 &lt;li>Будем использовать встроенный метод создания общей папки с помощью &lt;em>virt-manager&lt;/em>.&lt;/li>
 &lt;li>Нажмите на значок с надписью &lt;em>Показать виртуальное оборудование&lt;/em> (&lt;em>Show virtual hardware details&lt;/em>) на панели инструментов.&lt;/li>
@@ -675,7 +742,7 @@
 &lt;ul>
 &lt;li>Можно скачать с сайта &lt;a href="https://github.com/winfsp/winfsp/releases/" target="_blank" rel="noopener">https://github.com/winfsp/winfsp/releases/&lt;/a>.&lt;/li>
 &lt;li>Можно установить с Chocolatey (см. &lt;a href="https://yamadharma.github.io/ru/post/2021/01/18/package-manager-windows-chocolatey/">Пакетный менеджер для Windows. Chocolatey&lt;/a>):
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install winsfp
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install winfsp
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;/li>
@@ -697,10 +764,14 @@
 &lt;/li>
 &lt;li>После запуска службы откройте Проводник, и вы должны увидеть метку монтирования, которую вы создали в первом шаге выше, и которая должна быть отображена как диск &lt;code>Z:&lt;/code>.&lt;/li>
 &lt;/ul>
-&lt;h2 id="буфер-обмена">&lt;span class="section-num">5&lt;/span> Буфер обмена&lt;/h2>
+&lt;h2 id="буфер-обмена">&lt;span class="section-num">6&lt;/span> Буфер обмена&lt;/h2>
 &lt;ul>
+&lt;li>Должно работать само после установки драйверов virtio.&lt;/li>
 &lt;li>Проверьте, что есть Канал (spice) типа &lt;code>spicevmc&lt;/code>.&lt;/li>
 &lt;li>Установите в Windows &lt;em>SPICE Guest Tools&lt;/em> : &lt;a href="https://www.spice-space.org/download/windows/spice-guest-tools/spice-guest-tools-latest.exe" target="_blank" rel="noopener">https://www.spice-space.org/download/windows/spice-guest-tools/spice-guest-tools-latest.exe&lt;/a>.&lt;/li>
+&lt;li>Можно установить с помощью Chocolatey:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install spice-agent
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul></description></item><item><title>Установка Windows с жёсткого диска</title><link>https://yamadharma.github.io/ru/post/2023/10/23/install-windows-hard-drive/</link><pubDate>Mon, 23 Oct 2023 15:51:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/10/23/install-windows-hard-drive/</guid><description>&lt;p>Установка Windows с жёсткого диска.&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
 &lt;summary>Содержание&lt;/summary>

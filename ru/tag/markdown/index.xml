@@ -1455,7 +1455,12 @@ display math:&lt;/li>
 &lt;nav id="TableOfContents">
 &lt;ul>
 &lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#установка">&lt;span class="section-num">2&lt;/span> Установка&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#установка">&lt;span class="section-num">2&lt;/span> Установка&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#gentoo">&lt;span class="section-num">2.1&lt;/span> Gentoo&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#linux">&lt;span class="section-num">2.2&lt;/span> Linux&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
 &lt;li>&lt;a href="#общий-алгоритм-работы">&lt;span class="section-num">3&lt;/span> Общий алгоритм работы&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#использование">&lt;span class="section-num">4&lt;/span> Использование&lt;/a>&lt;/li>
 &lt;/ul>
@@ -1477,9 +1482,41 @@ display math:&lt;/li>
 &lt;/li>
 &lt;/ul>
 &lt;h2 id="установка">&lt;span class="section-num">2&lt;/span> Установка&lt;/h2>
+&lt;h3 id="gentoo">&lt;span class="section-num">2.1&lt;/span> Gentoo&lt;/h3>
 &lt;ul>
 &lt;li>Gentoo, репозиторий karma (см. &lt;a href="https://yamadharma.github.io/ru/post/2024/05/25/gentoo-karma-repository/">Gentoo. Репозиторий karma&lt;/a>):
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge quarto
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="linux">&lt;span class="section-num">2.2&lt;/span> Linux&lt;/h3>
+&lt;ul>
+&lt;li>Установка с помощью скрипта:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#!/bin/bash
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">## Система&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">TARGET&lt;/span>&lt;span class="o">=&lt;/span>/opt
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">TARGET_BIN&lt;/span>&lt;span class="o">=&lt;/span>/usr/local/bin
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">## Домашний каталог&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># TARGET=~/opt&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># TARGET_BIN=~/.local/bin&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">## Получить тег&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">TAG&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>basename &lt;span class="k">$(&lt;/span>curl -sL -o /dev/null -w %&lt;span class="o">{&lt;/span>url_effective&lt;span class="o">}&lt;/span> https://github.com/quarto-dev/quarto-cli/releases/latest&lt;span class="k">)&lt;/span>&lt;span class="sb">`&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">TAG&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">TAG&lt;/span>&lt;span class="p">/v/&lt;/span>&lt;span class="si">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">## Скачать&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> /tmp
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wget https://github.com/quarto-dev/quarto-cli/releases/download/v&lt;span class="si">${&lt;/span>&lt;span class="nv">TAG&lt;/span>&lt;span class="si">}&lt;/span>/quarto-&lt;span class="si">${&lt;/span>&lt;span class="nv">TAG&lt;/span>&lt;span class="si">}&lt;/span>-linux-amd64.tar.gz
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">## Распаковать&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mkdir -p &lt;span class="si">${&lt;/span>&lt;span class="nv">TARGET&lt;/span>&lt;span class="si">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">tar -C &lt;span class="si">${&lt;/span>&lt;span class="nv">TARGET&lt;/span>&lt;span class="si">}&lt;/span> -xvzf /tmp/quarto-&lt;span class="si">${&lt;/span>&lt;span class="nv">TAG&lt;/span>&lt;span class="si">}&lt;/span>-linux-amd64.tar.gz
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mv &lt;span class="si">${&lt;/span>&lt;span class="nv">TARGET&lt;/span>&lt;span class="si">}&lt;/span>/quarto-&lt;span class="si">${&lt;/span>&lt;span class="nv">TAG&lt;/span>&lt;span class="si">}&lt;/span> &lt;span class="si">${&lt;/span>&lt;span class="nv">TARGET&lt;/span>&lt;span class="si">}&lt;/span>/quarto
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">## Симлинк на исполняемый файл&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mkdir -p &lt;span class="si">${&lt;/span>&lt;span class="nv">TARGET_BIN&lt;/span>&lt;span class="si">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ln -s &lt;span class="si">${&lt;/span>&lt;span class="nv">TARGET&lt;/span>&lt;span class="si">}&lt;/span>/quarto/bin/quarto &lt;span class="si">${&lt;/span>&lt;span class="nv">TARGET_BIN&lt;/span>&lt;span class="si">}&lt;/span>/quarto
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h2 id="общий-алгоритм-работы">&lt;span class="section-num">3&lt;/span> Общий алгоритм работы&lt;/h2>

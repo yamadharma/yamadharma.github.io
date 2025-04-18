@@ -1,4 +1,109 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Modeling | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/modeling/</link><atom:link href="https://yamadharma.github.io/ru/tag/modeling/index.xml" rel="self" type="application/rss+xml"/><description>Modeling</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>ru-ru</language><copyright>© 2025 Dmitry S. Kulyabov</copyright><lastBuildDate>Thu, 27 Feb 2025 12:38:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu_c0ee34e0b47a9b95.png</url><title>Modeling</title><link>https://yamadharma.github.io/ru/tag/modeling/</link></image><item><title>Программный комплекс</title><link>https://yamadharma.github.io/ru/post/2025/02/27/program-complex/</link><pubDate>Thu, 27 Feb 2025 12:38:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2025/02/27/program-complex/</guid><description>&lt;p>Программный комплекс.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Modeling | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/modeling/</link><atom:link href="https://yamadharma.github.io/ru/tag/modeling/index.xml" rel="self" type="application/rss+xml"/><description>Modeling</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>ru-ru</language><copyright>© 2025 Dmitry S. Kulyabov</copyright><lastBuildDate>Sun, 13 Apr 2025 15:12:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu_c0ee34e0b47a9b95.png</url><title>Modeling</title><link>https://yamadharma.github.io/ru/tag/modeling/</link></image><item><title>GNS3 на Qemu</title><link>https://yamadharma.github.io/ru/post/2025/04/13/gns3-qemu/</link><pubDate>Sun, 13 Apr 2025 15:12:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2025/04/13/gns3-qemu/</guid><description>&lt;p>GNS3 на Qemu&lt;/p>
+&lt;details class="print:hidden xl:hidden" >
+&lt;summary>Содержание&lt;/summary>
+&lt;div class="text-sm">
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#подготовка">&lt;span class="section-num">1&lt;/span> Подготовка&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#запуск">&lt;span class="section-num">2&lt;/span> Запуск&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#конфигурация-gns3">&lt;span class="section-num">3&lt;/span> Конфигурация GNS3&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#проблемы">&lt;span class="section-num">4&lt;/span> Проблемы&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#элемент-nat">&lt;span class="section-num">4.1&lt;/span> Элемент NAT&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/div>
+&lt;/details>
+&lt;h2 id="подготовка">&lt;span class="section-num">1&lt;/span> Подготовка&lt;/h2>
+&lt;ul>
+&lt;li>Скачайте образ виртуальной машины GNS3:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">GNS3_VERSION&lt;/span>&lt;span class="o">=&lt;/span>3.0.4&lt;span class="p">;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>wget https://github.com/GNS3/gns3-gui/releases/download/v&lt;span class="si">${&lt;/span>&lt;span class="nv">GNS3_VERSION&lt;/span>&lt;span class="si">}&lt;/span>/GNS3.VM.KVM.&lt;span class="si">${&lt;/span>&lt;span class="nv">GNS3_VERSION&lt;/span>&lt;span class="si">}&lt;/span>.zip&lt;span class="p">;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>unzip GNS3.VM.KVM.&lt;span class="si">${&lt;/span>&lt;span class="nv">GNS3_VERSION&lt;/span>&lt;span class="si">}&lt;/span>.zip&lt;span class="p">;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>rm GNS3.VM.KVM.&lt;span class="si">${&lt;/span>&lt;span class="nv">GNS3_VERSION&lt;/span>&lt;span class="si">}&lt;/span>.zip
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="запуск">&lt;span class="section-num">2&lt;/span> Запуск&lt;/h2>
+&lt;ul>
+&lt;li>В комплекте идёт скрипт для запуска.&lt;/li>
+&lt;li>Часть, ответственная за запуск виртуальной машины:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">qemu-system-x86_64 -name &lt;span class="s2">&amp;#34;GNS3 VM&amp;#34;&lt;/span> -m 2048M -cpu host -enable-kvm -machine &lt;span class="nv">smm&lt;/span>&lt;span class="o">=&lt;/span>off -boot &lt;span class="nv">order&lt;/span>&lt;span class="o">=&lt;/span>c &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>-drive &lt;span class="nv">file&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;GNS3 VM-disk001.qcow2&amp;#34;&lt;/span>,if&lt;span class="o">=&lt;/span>virtio,index&lt;span class="o">=&lt;/span>0,media&lt;span class="o">=&lt;/span>disk &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>-drive &lt;span class="nv">file&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;GNS3 VM-disk002.qcow2&amp;#34;&lt;/span>,if&lt;span class="o">=&lt;/span>virtio,index&lt;span class="o">=&lt;/span>1,media&lt;span class="o">=&lt;/span>disk &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>-device virtio-net-pci,netdev&lt;span class="o">=&lt;/span>nic0 -netdev tap,id&lt;span class="o">=&lt;/span>nic0,ifname&lt;span class="o">=&lt;/span>tap-gns3vm,script&lt;span class="o">=&lt;/span>no,downscript&lt;span class="o">=&lt;/span>no
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Параметры:
+&lt;ul>
+&lt;li>&lt;code>-name&lt;/code> : имя виртуальной машины;&lt;/li>
+&lt;li>&lt;code>-drive&lt;/code> : - путь к образу диска;&lt;/li>
+&lt;li>&lt;code>-m&lt;/code> : объём оперативной памяти.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Рекомендуется изменить объём оперативной памяти для машины (например, 8G):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">-m 8196M
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Можно добавить ещё количество ядер (например, 2 ядра):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">-smp &lt;span class="m">2&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Запустите скрипт &lt;code>start-gns3vm.sh&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">./start-gns3vm.sh
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Пропингуйте адрес машины.&lt;/li>
+&lt;li>Если не пингуется, то перегрузите виртуальную машину.&lt;/li>
+&lt;/ul>
+&lt;h2 id="конфигурация-gns3">&lt;span class="section-num">3&lt;/span> Конфигурация GNS3&lt;/h2>
+&lt;ul>
+&lt;li>При конфигурации используйте опцию &lt;em>Connect to remote controller&lt;/em>.&lt;/li>
+&lt;li>Настройте адрес виртуальной машины на основе информационной заставки виртуальной машины (пример):
+&lt;ul>
+&lt;li>Host: 192.168.122.76&lt;/li>
+&lt;li>Port: 80 TCP&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="проблемы">&lt;span class="section-num">4&lt;/span> Проблемы&lt;/h2>
+&lt;h3 id="элемент-nat">&lt;span class="section-num">4.1&lt;/span> Элемент NAT&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>При попытке добавить элемент NAT получаем ошибку:&lt;/p>
+&lt;blockquote>
+&lt;p>Error while creating node from template: NAT interface virbr0 is missing, please install libvirt&lt;/p>&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>Так и не разобрался.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Вместо NAT использовал Cloud.&lt;/p>
+&lt;/li>
+&lt;/ul></description></item><item><title>Книги. Моделирование</title><link>https://yamadharma.github.io/ru/post/2025/04/11/books-modeling/</link><pubDate>Fri, 11 Apr 2025 09:17:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2025/04/11/books-modeling/</guid><description>&lt;p>Книги. Моделирование.&lt;/p>
+&lt;details class="print:hidden xl:hidden" >
+&lt;summary>Содержание&lt;/summary>
+&lt;div class="text-sm">
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#темы">&lt;span class="section-num">1&lt;/span> Темы&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#статистическое-моделирование">&lt;span class="section-num">1.1&lt;/span> Статистическое моделирование&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#библиография">&lt;span class="section-num">2&lt;/span> Библиография&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#литература">Литература&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/div>
+&lt;/details>
+&lt;h2 id="темы">&lt;span class="section-num">1&lt;/span> Темы&lt;/h2>
+&lt;h3 id="статистическое-моделирование">&lt;span class="section-num">1.1&lt;/span> Статистическое моделирование&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2025/04/10/taleb_mvbook_incerto_ru/">Талеб, Н. Н. (2001) Incerto&lt;/a> [&lt;a href="#citeproc_bib_item_1">1&lt;/a>]&lt;/li>
+&lt;/ul>
+&lt;h2 id="библиография">&lt;span class="section-num">2&lt;/span> Библиография&lt;/h2>
+&lt;h2 id="литература">Литература&lt;/h2>
+&lt;div class="csl-bib-body">
+&lt;div class="csl-entry">&lt;a id="citeproc_bib_item_1">&lt;/a>1. Талеб, Н.Н. Incerto / Н.Н. Талеб. – 2001.&lt;/div>
+&lt;/div></description></item><item><title>Программный комплекс</title><link>https://yamadharma.github.io/ru/post/2025/02/27/program-complex/</link><pubDate>Thu, 27 Feb 2025 12:38:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2025/02/27/program-complex/</guid><description>&lt;p>Программный комплекс.&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
 &lt;summary>Содержание&lt;/summary>
 &lt;div class="text-sm">
@@ -776,27 +881,42 @@
 &lt;p>In the computer experiments we were surprised to see that the points of approximate solutions found by reversible schemes for classical oscillators line up into curves. Elliptic oscillators correspond to the special case, when the points of not only exact but also approximate solutions lie on elliptic curves.&lt;/p>
 &lt;p>The discrete and continuous theories of elliptic oscillators are described by the same formulas: the quadrature describes the transition from initial to final data, the motion is periodic, it is described by meromorphic functions, and so on. The whole difference lies in the fact that in the discrete theory the birational transformation describing the transition from the old position of the system to the new one is continued to the Cremona transformation.&lt;/p>
 &lt;h4 id="видео">&lt;span class="section-num">1.1.3&lt;/span> Видео&lt;/h4>
-&lt;div class="book-tabs">
-&lt;input type="radio" class="toggle" name="tabs-1" id="tabs-1-0" checked="checked" />
-&lt;label for="tabs-1-0">&lt;/label>
-&lt;div class="book-tabs-content markdown-inner">
+&lt;link rel="stylesheet" href="https://yamadharma.github.io/css/flick/jquery-ui.min.2145606a4147a5c2562a0afa9e996323dcbd14469acf347b81292370e967b906.css" integrity="sha256-IUVgakFHpcJWKgr6npljI9y9FEaazzR7gSkjcOlnuQY=">
+&lt;script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js">
+&lt;/script>
+&lt;script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js">
+&lt;/script>
+&lt;script>
+$(function() {
+$( "#tabs, #tabs1, #tabs2, #tabs3, #tabs4, #tabs5, #tabs6, #tabs7, #tabs8" ).tabs();
+});
+&lt;/script>
+&lt;div id = "tabs">
+&lt;ul>
+&lt;li>&lt;a href = "#tab-1">
+&lt;/a>&lt;/li>
+&lt;li>&lt;a href = "#tab-2">
+&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;div id ="tab-0">
 &lt;div class="embed video-player">
 &lt;iframe class="rutube-player" type="text/html"
-width="720" height="405"
+width="647" height="364"
 src="https://rutube.ru/play/embed/921d5f760c90c81546a0e75ce7ba9c32"
 webkitAllowFullScreen mozallowfullscreen allowFullScreen
 allow="clipboard-write" frameborder="0">
 &lt;/iframe>
 &lt;/div>
 &lt;/div>
-&lt;input type="radio" class="toggle" name="tabs-1" id="tabs-1-1" />
-&lt;label for="tabs-1-1">&lt;/label>
-&lt;div class="book-tabs-content markdown-inner">
+&lt;div id ="tab-1">
 &lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
 &lt;iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="allowfullscreen" loading="eager" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/mbAhllYpPJk?autoplay=0&amp;amp;controls=1&amp;amp;end=0&amp;amp;loop=0&amp;amp;mute=0&amp;amp;start=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" title="YouTube video">&lt;/iframe>
 &lt;/div>
 &lt;/div>
+&lt;div id ="tab-2">
 &lt;/div>
+&lt;/div>
+tabe widget
 &lt;h3 id="ковалёв-и-dot-а-dot-получение-оценок-и-построение-предельных-характеристик-для-некоторых-систем-массового-обслуживания-с-особенностями">&lt;span class="org-todo done DONE">DONE&lt;/span> &lt;span class="section-num">1.2&lt;/span> &lt;span class="timestamp-wrapper">&lt;span class="timestamp">[2023-10-12 Чт] &lt;/span>&lt;/span> Ковалёв И. А. &lt;em>Получение оценок и построение предельных характеристик для некоторых систем массового обслуживания с особенностями&lt;/em>&lt;/h3>
 &lt;h4 id="докладчик">&lt;span class="section-num">1.2.1&lt;/span> Докладчик&lt;/h4>
 &lt;ul>
@@ -822,27 +942,42 @@ allow="clipboard-write" frameborder="0">
 &lt;/ul>
 &lt;p>We present a report on the results of the dissertation work for the degree of Candidate of Sciences. The work is devoted to the study of a number of new queuing systems with features using a method based on the concept of the logarithmic norm. The report shows obtaining estimates of the rate of convergence to the limiting characteristics, stability estimates. In addition, the report provides examples of the application of the developed algorithms and programs using numerical methods to construct the limiting characteristics of the corresponding processes.&lt;/p>
 &lt;h4 id="видео">&lt;span class="section-num">1.2.3&lt;/span> Видео&lt;/h4>
-&lt;div class="book-tabs">
-&lt;input type="radio" class="toggle" name="tabs-2" id="tabs-2-0" checked="checked" />
-&lt;label for="tabs-2-0">&lt;/label>
-&lt;div class="book-tabs-content markdown-inner">
+&lt;link rel="stylesheet" href="https://yamadharma.github.io/css/flick/jquery-ui.min.2145606a4147a5c2562a0afa9e996323dcbd14469acf347b81292370e967b906.css" integrity="sha256-IUVgakFHpcJWKgr6npljI9y9FEaazzR7gSkjcOlnuQY=">
+&lt;script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js">
+&lt;/script>
+&lt;script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js">
+&lt;/script>
+&lt;script>
+$(function() {
+$( "#tabs, #tabs1, #tabs2, #tabs3, #tabs4, #tabs5, #tabs6, #tabs7, #tabs8" ).tabs();
+});
+&lt;/script>
+&lt;div id = "tabs">
+&lt;ul>
+&lt;li>&lt;a href = "#tab-1">
+&lt;/a>&lt;/li>
+&lt;li>&lt;a href = "#tab-2">
+&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;div id ="tab-0">
 &lt;div class="embed video-player">
 &lt;iframe class="rutube-player" type="text/html"
-width="720" height="405"
+width="647" height="364"
 src="https://rutube.ru/play/embed/ae187afb4347f8940232fe501d598c72"
 webkitAllowFullScreen mozallowfullscreen allowFullScreen
 allow="clipboard-write" frameborder="0">
 &lt;/iframe>
 &lt;/div>
 &lt;/div>
-&lt;input type="radio" class="toggle" name="tabs-2" id="tabs-2-1" />
-&lt;label for="tabs-2-1">&lt;/label>
-&lt;div class="book-tabs-content markdown-inner">
+&lt;div id ="tab-1">
 &lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
 &lt;iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="allowfullscreen" loading="eager" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/XJoEPhl_uo8?autoplay=0&amp;amp;controls=1&amp;amp;end=0&amp;amp;loop=0&amp;amp;mute=0&amp;amp;start=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" title="YouTube video">&lt;/iframe>
 &lt;/div>
 &lt;/div>
+&lt;div id ="tab-2">
 &lt;/div>
+&lt;/div>
+tabe widget
 &lt;h3 id="э-dot-л-dot-андре-а-dot-н-dot-цирулев-вычисление-функций-операторов-в-базисе-паули">&lt;span class="org-todo done DONE">DONE&lt;/span> &lt;span class="section-num">1.3&lt;/span> &lt;span class="timestamp-wrapper">&lt;span class="timestamp">&amp;lt;2023-10-25 Ср&amp;gt; &lt;/span>&lt;/span> Э.Л. Андре, А.Н. Цирулев &lt;em>Вычисление функций операторов в базисе Паули&lt;/em>&lt;/h3>
 &lt;h4 id="докладчик">&lt;span class="section-num">1.3.1&lt;/span> Докладчик&lt;/h4>
 &lt;ul>
@@ -867,27 +1002,42 @@ allow="clipboard-write" frameborder="0">
 &lt;/ul>
 &lt;p>We propose new algorithms for analytical (symbolic) and high precision numerical calculations of the functions of Hermitian operators in a finite dimensional Hilbert space. Both these methods are based on the representation of operators in the Pauli basis; they do not obey a high universality, but are very useful in quantum computations and in studying the models of condensed matter physics. The analytical method is suitable for Hamiltonians that can be decomposed into a sum of partial Hamiltonians, which, in general, are not purely Pauli operators, but satisfy some (anti)commutation relations. In the numerical method we use the Cauchy integral formula, in which the complexity of computing operator resolvents fast decreases with decreasing the number of Pauli operators.&lt;/p>
 &lt;h4 id="видео">&lt;span class="section-num">1.3.3&lt;/span> Видео&lt;/h4>
-&lt;div class="book-tabs">
-&lt;input type="radio" class="toggle" name="tabs-3" id="tabs-3-0" checked="checked" />
-&lt;label for="tabs-3-0">&lt;/label>
-&lt;div class="book-tabs-content markdown-inner">
+&lt;link rel="stylesheet" href="https://yamadharma.github.io/css/flick/jquery-ui.min.2145606a4147a5c2562a0afa9e996323dcbd14469acf347b81292370e967b906.css" integrity="sha256-IUVgakFHpcJWKgr6npljI9y9FEaazzR7gSkjcOlnuQY=">
+&lt;script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js">
+&lt;/script>
+&lt;script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js">
+&lt;/script>
+&lt;script>
+$(function() {
+$( "#tabs, #tabs1, #tabs2, #tabs3, #tabs4, #tabs5, #tabs6, #tabs7, #tabs8" ).tabs();
+});
+&lt;/script>
+&lt;div id = "tabs">
+&lt;ul>
+&lt;li>&lt;a href = "#tab-1">
+&lt;/a>&lt;/li>
+&lt;li>&lt;a href = "#tab-2">
+&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;div id ="tab-0">
 &lt;div class="embed video-player">
 &lt;iframe class="rutube-player" type="text/html"
-width="720" height="405"
+width="647" height="364"
 src="https://rutube.ru/play/embed/f4b45d29d84a489d7b1b17fa37e585f5"
 webkitAllowFullScreen mozallowfullscreen allowFullScreen
 allow="clipboard-write" frameborder="0">
 &lt;/iframe>
 &lt;/div>
 &lt;/div>
-&lt;input type="radio" class="toggle" name="tabs-3" id="tabs-3-1" />
-&lt;label for="tabs-3-1">&lt;/label>
-&lt;div class="book-tabs-content markdown-inner">
+&lt;div id ="tab-1">
 &lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
 &lt;iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="allowfullscreen" loading="eager" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/KBcaWRrHMmQ?autoplay=0&amp;amp;controls=1&amp;amp;end=0&amp;amp;loop=0&amp;amp;mute=0&amp;amp;start=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" title="YouTube video">&lt;/iframe>
 &lt;/div>
 &lt;/div>
+&lt;div id ="tab-2">
 &lt;/div>
+&lt;/div>
+tabe widget
 &lt;h3 id="григорян-о-dot-а-dot-моделирование-эволюции-охлаждения-нейтронных-звезд">&lt;span class="org-todo done DONE">DONE&lt;/span> &lt;span class="section-num">1.4&lt;/span> &lt;span class="timestamp-wrapper">&lt;span class="timestamp">&amp;lt;2023-11-23 Чт&amp;gt; &lt;/span>&lt;/span> Григорян О. А. &lt;em>Моделирование эволюции охлаждения нейтронных звезд&lt;/em>&lt;/h3>
 &lt;h4 id="докладчик">&lt;span class="section-num">1.4.1&lt;/span> Докладчик&lt;/h4>
 &lt;ul>
@@ -913,27 +1063,42 @@ allow="clipboard-write" frameborder="0">
 &lt;/ul>
 &lt;p>Neutron stars, as relativistic objects, are described by the equations of general relativity. Therefore, for modeling their thermal evolution, it is necessary to use the equation of state of superdense nuclear matter and its composition, as well as modifications of the heat transfer equation for relativistic cases. The primary cooling factors of neutron stars are neutrino emissions during equilibrium beta processes in the hot stellar environment: in the hadronic matter of the inner shell and the possible quark matter in the star&amp;rsquo;s core. An essential role in the cooling evolution is played by the superconducting state of stellar matter at such high densities. Another important aspect is the ability to determine sets of model parameters under which the surface temperature modeling of stars will satisfy known contemporary observational data on the temperature and age of tens of objects. We have developed a software package that models the cooling evolution of neutron stars for various models of nuclear matter, taking into account modifications of neutrino emission mechanisms, superconducting states, and crust properties. The program accounts for the possibility of hyperons, quarks, twin stars and dark matter existing within the star. Parallel computing algorithms are also implemented in the software. A method is proposed for extracting model-dependent probabilities of possible values of the masses of observed objects based on the results of the cooling evolution. All these results can be used to validate nuclear matter models under extreme conditions.&lt;/p>
 &lt;h4 id="видео">&lt;span class="section-num">1.4.3&lt;/span> Видео&lt;/h4>
-&lt;div class="book-tabs">
-&lt;input type="radio" class="toggle" name="tabs-4" id="tabs-4-0" checked="checked" />
-&lt;label for="tabs-4-0">&lt;/label>
-&lt;div class="book-tabs-content markdown-inner">
+&lt;link rel="stylesheet" href="https://yamadharma.github.io/css/flick/jquery-ui.min.2145606a4147a5c2562a0afa9e996323dcbd14469acf347b81292370e967b906.css" integrity="sha256-IUVgakFHpcJWKgr6npljI9y9FEaazzR7gSkjcOlnuQY=">
+&lt;script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js">
+&lt;/script>
+&lt;script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js">
+&lt;/script>
+&lt;script>
+$(function() {
+$( "#tabs, #tabs1, #tabs2, #tabs3, #tabs4, #tabs5, #tabs6, #tabs7, #tabs8" ).tabs();
+});
+&lt;/script>
+&lt;div id = "tabs">
+&lt;ul>
+&lt;li>&lt;a href = "#tab-1">
+&lt;/a>&lt;/li>
+&lt;li>&lt;a href = "#tab-2">
+&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;div id ="tab-0">
 &lt;div class="embed video-player">
 &lt;iframe class="rutube-player" type="text/html"
-width="720" height="405"
+width="647" height="364"
 src="https://rutube.ru/play/embed/5b7c8b3c43855f8c96b0ce54375a3857"
 webkitAllowFullScreen mozallowfullscreen allowFullScreen
 allow="clipboard-write" frameborder="0">
 &lt;/iframe>
 &lt;/div>
 &lt;/div>
-&lt;input type="radio" class="toggle" name="tabs-4" id="tabs-4-1" />
-&lt;label for="tabs-4-1">&lt;/label>
-&lt;div class="book-tabs-content markdown-inner">
+&lt;div id ="tab-1">
 &lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
 &lt;iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="allowfullscreen" loading="eager" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/uG9lpJjKHQA?autoplay=0&amp;amp;controls=1&amp;amp;end=0&amp;amp;loop=0&amp;amp;mute=0&amp;amp;start=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" title="YouTube video">&lt;/iframe>
 &lt;/div>
 &lt;/div>
+&lt;div id ="tab-2">
 &lt;/div>
+&lt;/div>
+tabe widget
 &lt;h3 id="цапко-е-dot-д-dot-эффективные-стратегии-для-численного-решения-сингулярно-возмущенных-обыкновенных-дифференциальных-уравнений">&lt;span class="org-todo done DONE">DONE&lt;/span> &lt;span class="section-num">1.5&lt;/span> &lt;span class="timestamp-wrapper">&lt;span class="timestamp">&amp;lt;2023-12-07 Чт&amp;gt; &lt;/span>&lt;/span> Цапко Е. Д. &lt;em>Эффективные стратегии для численного решения сингулярно возмущенных обыкновенных дифференциальных уравнений&lt;/em>&lt;/h3>
 &lt;h4 id="докладчик">&lt;span class="section-num">1.5.1&lt;/span> Докладчик&lt;/h4>
 &lt;ul>
@@ -976,27 +1141,42 @@ allow="clipboard-write" frameborder="0">
 &lt;li>Kuznetsov E. B., Leonov S. S., Tsapko E. D. Estimating the Domain of Absolute Stability of a Numerical Scheme Based on the Method of Solution Continuation with Respect to a Parameter for Solving Stiff Initial Value Problems // Computational Mathematics and Mathematical Physics, 2023, Vol. 63, No. 4, pp. 528–541. (WoS, Scopus, RSCI, VAK)&lt;/li>
 &lt;/ol>
 &lt;h4 id="видео">&lt;span class="section-num">1.5.3&lt;/span> Видео&lt;/h4>
-&lt;div class="book-tabs">
-&lt;input type="radio" class="toggle" name="tabs-5" id="tabs-5-0" checked="checked" />
-&lt;label for="tabs-5-0">&lt;/label>
-&lt;div class="book-tabs-content markdown-inner">
+&lt;link rel="stylesheet" href="https://yamadharma.github.io/css/flick/jquery-ui.min.2145606a4147a5c2562a0afa9e996323dcbd14469acf347b81292370e967b906.css" integrity="sha256-IUVgakFHpcJWKgr6npljI9y9FEaazzR7gSkjcOlnuQY=">
+&lt;script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js">
+&lt;/script>
+&lt;script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js">
+&lt;/script>
+&lt;script>
+$(function() {
+$( "#tabs, #tabs1, #tabs2, #tabs3, #tabs4, #tabs5, #tabs6, #tabs7, #tabs8" ).tabs();
+});
+&lt;/script>
+&lt;div id = "tabs">
+&lt;ul>
+&lt;li>&lt;a href = "#tab-1">
+&lt;/a>&lt;/li>
+&lt;li>&lt;a href = "#tab-2">
+&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;div id ="tab-0">
 &lt;div class="embed video-player">
 &lt;iframe class="rutube-player" type="text/html"
-width="720" height="405"
+width="647" height="364"
 src="https://rutube.ru/play/embed/e2efc6d6bd3b096729421e9abe4e14d4"
 webkitAllowFullScreen mozallowfullscreen allowFullScreen
 allow="clipboard-write" frameborder="0">
 &lt;/iframe>
 &lt;/div>
 &lt;/div>
-&lt;input type="radio" class="toggle" name="tabs-5" id="tabs-5-1" />
-&lt;label for="tabs-5-1">&lt;/label>
-&lt;div class="book-tabs-content markdown-inner">
+&lt;div id ="tab-1">
 &lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
 &lt;iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="allowfullscreen" loading="eager" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/kjJ6bYxfWdg?autoplay=0&amp;amp;controls=1&amp;amp;end=0&amp;amp;loop=0&amp;amp;mute=0&amp;amp;start=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" title="YouTube video">&lt;/iframe>
 &lt;/div>
 &lt;/div>
+&lt;div id ="tab-2">
 &lt;/div>
+&lt;/div>
+tabe widget
 &lt;h3 id="айриян-а-dot-конструкции-кварк-адронного-фазового-перехода-и-байесовский-анализа-моделей-уравнения-состояния-на-основе-данных-многоканальной-астрономии">&lt;span class="org-todo done DONE">DONE&lt;/span> &lt;span class="section-num">1.6&lt;/span> &lt;span class="timestamp-wrapper">&lt;span class="timestamp">&amp;lt;2023-12-21 Чт&amp;gt; &lt;/span>&lt;/span> Айриян А. &lt;em>Конструкции кварк-адронного фазового перехода и байесовский анализа моделей уравнения состояния на основе данных многоканальной астрономии&lt;/em>&lt;/h3>
 &lt;h4 id="докладчик">&lt;span class="section-num">1.6.1&lt;/span> Докладчик&lt;/h4>
 &lt;ul>
@@ -1038,27 +1218,42 @@ allow="clipboard-write" frameborder="0">
 &lt;p>This talk will present different approaches to two distinct scenarios of possible phase transitions. Validation of equation of state models and phase transition constructions is based on the consistency of the results with known observational data on compact stars. One of the validation methods is Bayesian Inference, which is a powerful statistical tool for analysis when data are rare and uncertain, especially in estimating equation of state models using multi-messenger astronomy data. The main goal of such an analysis is to establish a quantitative measure of various physical models of stellar matter, for the study of physical parameters within realistic models of the equation of state.&lt;/p>
 &lt;p>The talk aims to provide a comprehensive discussion of the details associated with the construction of phase transitions and the application of Bayesian Inference to the study of stellar nuclear matter.&lt;/p>
 &lt;h4 id="видео">&lt;span class="section-num">1.6.3&lt;/span> Видео&lt;/h4>
-&lt;div class="book-tabs">
-&lt;input type="radio" class="toggle" name="tabs-6" id="tabs-6-0" checked="checked" />
-&lt;label for="tabs-6-0">&lt;/label>
-&lt;div class="book-tabs-content markdown-inner">
+&lt;link rel="stylesheet" href="https://yamadharma.github.io/css/flick/jquery-ui.min.2145606a4147a5c2562a0afa9e996323dcbd14469acf347b81292370e967b906.css" integrity="sha256-IUVgakFHpcJWKgr6npljI9y9FEaazzR7gSkjcOlnuQY=">
+&lt;script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js">
+&lt;/script>
+&lt;script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js">
+&lt;/script>
+&lt;script>
+$(function() {
+$( "#tabs, #tabs1, #tabs2, #tabs3, #tabs4, #tabs5, #tabs6, #tabs7, #tabs8" ).tabs();
+});
+&lt;/script>
+&lt;div id = "tabs">
+&lt;ul>
+&lt;li>&lt;a href = "#tab-1">
+&lt;/a>&lt;/li>
+&lt;li>&lt;a href = "#tab-2">
+&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;div id ="tab-0">
 &lt;div class="embed video-player">
 &lt;iframe class="rutube-player" type="text/html"
-width="720" height="405"
+width="647" height="364"
 src="https://rutube.ru/play/embed/543ef9c5f544b6eabd5c41cadab26b4f"
 webkitAllowFullScreen mozallowfullscreen allowFullScreen
 allow="clipboard-write" frameborder="0">
 &lt;/iframe>
 &lt;/div>
 &lt;/div>
-&lt;input type="radio" class="toggle" name="tabs-6" id="tabs-6-1" />
-&lt;label for="tabs-6-1">&lt;/label>
-&lt;div class="book-tabs-content markdown-inner">
+&lt;div id ="tab-1">
 &lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
 &lt;iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="allowfullscreen" loading="eager" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/Kkxl26aOhn4?autoplay=0&amp;amp;controls=1&amp;amp;end=0&amp;amp;loop=0&amp;amp;mute=0&amp;amp;start=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" title="YouTube video">&lt;/iframe>
 &lt;/div>
 &lt;/div>
+&lt;div id ="tab-2">
 &lt;/div>
+&lt;/div>
+tabe widget
 &lt;h2 id="семинар-математическое-моделирование-2024">&lt;span class="section-num">2&lt;/span> Семинар Математическое моделирование, 2024&lt;/h2>
 &lt;h3 id="ловецкий-к-dot-п-dot-методы-решения-оду-основанные-на-чебышевской-интерполяции">&lt;span class="org-todo done DONE">DONE&lt;/span> &lt;span class="section-num">2.1&lt;/span> &lt;span class="timestamp-wrapper">&lt;span class="timestamp">[2024-01-31 Ср] &lt;/span>&lt;/span> Ловецкий К. П. &lt;em>Методы решения ОДУ, основанные на чебышевской интерполяции&lt;/em>&lt;/h3>
 &lt;h4 id="докладчик">&lt;span class="section-num">2.1.1&lt;/span> Докладчик&lt;/h4>
@@ -1093,27 +1288,42 @@ allow="clipboard-write" frameborder="0">
 &lt;p>The report discusses the method of Chebyshev polynomial interpolation in a basis of Chebyshev polynomials of the 1st kind. The focus is on the interpolation method on the Gauss-Lobatto grid. The use of discrete orthogonality of Chebyshev polynomials allows one to calculate the coefficients of spectral decomposition with minimal costs, reducing the solution procedure to a system of linear equations with a diagonal positive definite matrix.
 This approach of almost optimal approximation, together with the method of integrating factors and the use of spectral integration matrices, led to the creation of multi-stage methods for solving various problems. Examples are given of solving the “Cauchy problem” with setting initial/final or intermediate conditions for first- and second-order ODEs, methods for calculating definite integrals, and a method for integrating rapidly oscillating functions.&lt;/p>
 &lt;h4 id="видео">&lt;span class="section-num">2.1.3&lt;/span> Видео&lt;/h4>
-&lt;div class="book-tabs">
-&lt;input type="radio" class="toggle" name="tabs-7" id="tabs-7-0" checked="checked" />
-&lt;label for="tabs-7-0">&lt;/label>
-&lt;div class="book-tabs-content markdown-inner">
+&lt;link rel="stylesheet" href="https://yamadharma.github.io/css/flick/jquery-ui.min.2145606a4147a5c2562a0afa9e996323dcbd14469acf347b81292370e967b906.css" integrity="sha256-IUVgakFHpcJWKgr6npljI9y9FEaazzR7gSkjcOlnuQY=">
+&lt;script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js">
+&lt;/script>
+&lt;script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js">
+&lt;/script>
+&lt;script>
+$(function() {
+$( "#tabs, #tabs1, #tabs2, #tabs3, #tabs4, #tabs5, #tabs6, #tabs7, #tabs8" ).tabs();
+});
+&lt;/script>
+&lt;div id = "tabs">
+&lt;ul>
+&lt;li>&lt;a href = "#tab-1">
+&lt;/a>&lt;/li>
+&lt;li>&lt;a href = "#tab-2">
+&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;div id ="tab-0">
 &lt;div class="embed video-player">
 &lt;iframe class="rutube-player" type="text/html"
-width="720" height="405"
+width="647" height="364"
 src="https://rutube.ru/play/embed/5ac8901d39746d86cd4a2170671ecbf6"
 webkitAllowFullScreen mozallowfullscreen allowFullScreen
 allow="clipboard-write" frameborder="0">
 &lt;/iframe>
 &lt;/div>
 &lt;/div>
-&lt;input type="radio" class="toggle" name="tabs-7" id="tabs-7-1" />
-&lt;label for="tabs-7-1">&lt;/label>
-&lt;div class="book-tabs-content markdown-inner">
+&lt;div id ="tab-1">
 &lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
 &lt;iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="allowfullscreen" loading="eager" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/J_Tag6W2ioE?autoplay=0&amp;amp;controls=1&amp;amp;end=0&amp;amp;loop=0&amp;amp;mute=0&amp;amp;start=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" title="YouTube video">&lt;/iframe>
 &lt;/div>
 &lt;/div>
+&lt;div id ="tab-2">
 &lt;/div>
+&lt;/div>
+tabe widget
 &lt;h3 id="чинь-ф-dot-т-dot-вариационный-подход-к-дискретизации-по-времени-уравнений-биркгофа-для-бесконечномерных-систем">&lt;span class="org-todo done DONE">DONE&lt;/span> &lt;span class="section-num">2.2&lt;/span> &lt;span class="timestamp-wrapper">&lt;span class="timestamp">[2024-02-14 Ср] &lt;/span>&lt;/span> Чинь Ф. Т. &lt;em>Вариационный подход к дискретизации по времени уравнений Биркгофа для бесконечномерных систем&lt;/em>&lt;/h3>
 &lt;h4 id="докладчик">&lt;span class="section-num">2.2.1&lt;/span> Докладчик&lt;/h4>
 &lt;ul>
@@ -1146,27 +1356,42 @@ allow="clipboard-write" frameborder="0">
 &lt;/ul>
 &lt;p>Difference methods are widely used for the numerical solution of problems in mechanics and physics. When constructing discrete analogs, it is important to preserve the basic properties of the original differential problem. The main goal of this work is to discretize a system of equations \(C(x,t,u)u_{t} + E\left( x,t,u_{\alpha} \right) = 0\) based on its functional &amp;mdash; the Hamiltonian action. Necessary and sufficient conditions for potentiality with respect to a given bilinear form are obtained. The Hamiltonian action for this system is constructed and its representation in the form of Birkhoff equations for infinite-dimensional systems is obtained. By approximating the constructed functional with its discrete analog, a discrete-time analog of Birkhoff equations is obtained based on the variational principle. Theoretical results are illustrated by the example of a wave equation with axial symmetry.&lt;/p>
 &lt;h4 id="видео">&lt;span class="section-num">2.2.3&lt;/span> Видео&lt;/h4>
-&lt;div class="book-tabs">
-&lt;input type="radio" class="toggle" name="tabs-8" id="tabs-8-0" checked="checked" />
-&lt;label for="tabs-8-0">&lt;/label>
-&lt;div class="book-tabs-content markdown-inner">
+&lt;link rel="stylesheet" href="https://yamadharma.github.io/css/flick/jquery-ui.min.2145606a4147a5c2562a0afa9e996323dcbd14469acf347b81292370e967b906.css" integrity="sha256-IUVgakFHpcJWKgr6npljI9y9FEaazzR7gSkjcOlnuQY=">
+&lt;script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js">
+&lt;/script>
+&lt;script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js">
+&lt;/script>
+&lt;script>
+$(function() {
+$( "#tabs, #tabs1, #tabs2, #tabs3, #tabs4, #tabs5, #tabs6, #tabs7, #tabs8" ).tabs();
+});
+&lt;/script>
+&lt;div id = "tabs">
+&lt;ul>
+&lt;li>&lt;a href = "#tab-1">
+&lt;/a>&lt;/li>
+&lt;li>&lt;a href = "#tab-2">
+&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;div id ="tab-0">
 &lt;div class="embed video-player">
 &lt;iframe class="rutube-player" type="text/html"
-width="720" height="405"
+width="647" height="364"
 src="https://rutube.ru/play/embed/3b811b6363ae73b6876c06934625cb3d"
 webkitAllowFullScreen mozallowfullscreen allowFullScreen
 allow="clipboard-write" frameborder="0">
 &lt;/iframe>
 &lt;/div>
 &lt;/div>
-&lt;input type="radio" class="toggle" name="tabs-8" id="tabs-8-1" />
-&lt;label for="tabs-8-1">&lt;/label>
-&lt;div class="book-tabs-content markdown-inner">
+&lt;div id ="tab-1">
 &lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
 &lt;iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="allowfullscreen" loading="eager" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/SK-do3WY4W8?autoplay=0&amp;amp;controls=1&amp;amp;end=0&amp;amp;loop=0&amp;amp;mute=0&amp;amp;start=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" title="YouTube video">&lt;/iframe>
 &lt;/div>
 &lt;/div>
+&lt;div id ="tab-2">
 &lt;/div>
+&lt;/div>
+tabe widget
 &lt;h3 id="орлов-ю-dot-н-dot-линейное-квантование-динамических-систем-и-принцип-соответствия">&lt;span class="org-todo done DONE">DONE&lt;/span> &lt;span class="section-num">2.3&lt;/span> &lt;span class="timestamp-wrapper">&lt;span class="timestamp">[2024-03-26 Вт] &lt;/span>&lt;/span> Орлов Ю. Н. - Линейное квантование динамических систем и принцип соответствия&lt;/h3>
 &lt;h4 id="докладчик">&lt;span class="section-num">2.3.1&lt;/span> Докладчик&lt;/h4>
 &lt;ul>
@@ -1190,27 +1415,42 @@ allow="clipboard-write" frameborder="0">
 &lt;/ul>
 &lt;p>The equation of the evolution of the Wigner function for arbitrary non-degenerate Hamiltonian systems will be obtained and its dependence on the quantization rule will be shown. The correspondence between classical and quantum statistics will be discussed: is it possible to construct the other from one of them using some transformation in a suitable space. An algorithm for approximate calculation of dynamics and statistics using finite-fold approximations according to Chernov&amp;rsquo;s theorem on the convergence of a certain iterative process to a semigroup will also be considered.&lt;/p>
 &lt;h4 id="видео">&lt;span class="section-num">2.3.3&lt;/span> Видео&lt;/h4>
-&lt;div class="book-tabs">
-&lt;input type="radio" class="toggle" name="tabs-9" id="tabs-9-0" checked="checked" />
-&lt;label for="tabs-9-0">&lt;/label>
-&lt;div class="book-tabs-content markdown-inner">
+&lt;link rel="stylesheet" href="https://yamadharma.github.io/css/flick/jquery-ui.min.2145606a4147a5c2562a0afa9e996323dcbd14469acf347b81292370e967b906.css" integrity="sha256-IUVgakFHpcJWKgr6npljI9y9FEaazzR7gSkjcOlnuQY=">
+&lt;script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js">
+&lt;/script>
+&lt;script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js">
+&lt;/script>
+&lt;script>
+$(function() {
+$( "#tabs, #tabs1, #tabs2, #tabs3, #tabs4, #tabs5, #tabs6, #tabs7, #tabs8" ).tabs();
+});
+&lt;/script>
+&lt;div id = "tabs">
+&lt;ul>
+&lt;li>&lt;a href = "#tab-1">
+&lt;/a>&lt;/li>
+&lt;li>&lt;a href = "#tab-2">
+&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;div id ="tab-0">
 &lt;div class="embed video-player">
 &lt;iframe class="rutube-player" type="text/html"
-width="720" height="405"
+width="647" height="364"
 src="https://rutube.ru/play/embed/f427b5e9205e620a5ed374e6eb3bbfe7"
 webkitAllowFullScreen mozallowfullscreen allowFullScreen
 allow="clipboard-write" frameborder="0">
 &lt;/iframe>
 &lt;/div>
 &lt;/div>
-&lt;input type="radio" class="toggle" name="tabs-9" id="tabs-9-1" />
-&lt;label for="tabs-9-1">&lt;/label>
-&lt;div class="book-tabs-content markdown-inner">
+&lt;div id ="tab-1">
 &lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
 &lt;iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="allowfullscreen" loading="eager" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/LsM56c3LIIE?autoplay=0&amp;amp;controls=1&amp;amp;end=0&amp;amp;loop=0&amp;amp;mute=0&amp;amp;start=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" title="YouTube video">&lt;/iframe>
 &lt;/div>
 &lt;/div>
+&lt;div id ="tab-2">
 &lt;/div>
+&lt;/div>
+tabe widget
 &lt;h3 id="белов-а-dot-а-dot-разностные-схемы-с-экспоненциальной-сходимостью">&lt;span class="org-todo done DONE">DONE&lt;/span> &lt;span class="section-num">2.4&lt;/span> &lt;span class="timestamp-wrapper">&lt;span class="timestamp">&amp;lt;2024-05-08 Ср&amp;gt; &lt;/span>&lt;/span> Белов А. А. - Разностные схемы с экспоненциальной сходимостью&lt;/h3>
 &lt;h4 id="докладчик">&lt;span class="section-num">2.4.1&lt;/span> Докладчик&lt;/h4>
 &lt;ul>
@@ -1243,27 +1483,42 @@ allow="clipboard-write" frameborder="0">
 &lt;p>We propose a fundamentally new class of difference methods with exponential rather than power-law convergence. When the grid step is halved, the number of correct decimal digits in the solution approximately doubles. Such convergence is dramatically faster than the traditional power-law one. The typical accuracy gain ranges from 2-3 orders of magnitude for poorly conditioned tasks to 10 orders of magnitude for well-conditioned ones.&lt;/p>
 &lt;p>The proposed approach is based on the representation of the desired function, its derivatives and primitive by the Cauchy integrals along a closed contour on the complex plane. The grid quadrature of trapezoids is written for these integrals. Due to the periodicity of the integrand, such a quadrature converges exponentially. The same is true for difference schemes based on it. The described approach is implemented for the most important classes of mathematical physics problems. Among them are boundary value problems and eigenvalue problems for ODEs, Cauchy problems for ODE systems, boundary value problems for elliptic equations, initial boundary value problems for parabolic and hyperbolic equations.&lt;/p>
 &lt;h4 id="видео">&lt;span class="section-num">2.4.3&lt;/span> Видео&lt;/h4>
-&lt;div class="book-tabs">
-&lt;input type="radio" class="toggle" name="tabs-10" id="tabs-10-0" checked="checked" />
-&lt;label for="tabs-10-0">&lt;/label>
-&lt;div class="book-tabs-content markdown-inner">
+&lt;link rel="stylesheet" href="https://yamadharma.github.io/css/flick/jquery-ui.min.2145606a4147a5c2562a0afa9e996323dcbd14469acf347b81292370e967b906.css" integrity="sha256-IUVgakFHpcJWKgr6npljI9y9FEaazzR7gSkjcOlnuQY=">
+&lt;script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js">
+&lt;/script>
+&lt;script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js">
+&lt;/script>
+&lt;script>
+$(function() {
+$( "#tabs, #tabs1, #tabs2, #tabs3, #tabs4, #tabs5, #tabs6, #tabs7, #tabs8" ).tabs();
+});
+&lt;/script>
+&lt;div id = "tabs">
+&lt;ul>
+&lt;li>&lt;a href = "#tab-1">
+&lt;/a>&lt;/li>
+&lt;li>&lt;a href = "#tab-2">
+&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;div id ="tab-0">
 &lt;div class="embed video-player">
 &lt;iframe class="rutube-player" type="text/html"
-width="720" height="405"
+width="647" height="364"
 src="https://rutube.ru/play/embed/5c653f50e67a9086dcca973687c0f8ad"
 webkitAllowFullScreen mozallowfullscreen allowFullScreen
 allow="clipboard-write" frameborder="0">
 &lt;/iframe>
 &lt;/div>
 &lt;/div>
-&lt;input type="radio" class="toggle" name="tabs-10" id="tabs-10-1" />
-&lt;label for="tabs-10-1">&lt;/label>
-&lt;div class="book-tabs-content markdown-inner">
+&lt;div id ="tab-1">
 &lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
 &lt;iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="allowfullscreen" loading="eager" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/dXFp0ZMGJdc?autoplay=0&amp;amp;controls=1&amp;amp;end=0&amp;amp;loop=0&amp;amp;mute=0&amp;amp;start=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" title="YouTube video">&lt;/iframe>
 &lt;/div>
 &lt;/div>
+&lt;div id ="tab-2">
 &lt;/div>
+&lt;/div>
+tabe widget
 &lt;h3 id="сытова-с-dot-н-dot-моделирование-нелинейной-динамики-электромагнитного-излучения">&lt;span class="org-todo done DONE">DONE&lt;/span> &lt;span class="section-num">2.5&lt;/span> &lt;span class="timestamp-wrapper">&lt;span class="timestamp">&amp;lt;2024-07-05 Пт&amp;gt; &lt;/span>&lt;/span> Сытова С. Н. - Моделирование нелинейной динамики электромагнитного излучения&lt;/h3>
 &lt;h4 id="докладчик">&lt;span class="section-num">2.5.1&lt;/span> Докладчик&lt;/h4>
 &lt;ul>
@@ -1305,27 +1560,42 @@ allow="clipboard-write" frameborder="0">
 &lt;p>It is clear that the solution of the stated problems can only be carried out using numerical methods, since it is impossible to obtain solutions to such systems of equations analytically. Such modeling can facilitate and simplify full-fledged, expensive physical experiments, as well as clarify the initial phenomenological models of physical processes, verify and systematize the results of experimental studies.
 The report presents formulated generalized systems of equations that describe various variants of VFEL, difference schemes proposed for solving these systems, and a computer code VOLC (Volume Code) for express-simulation of VFEL operation. The simulation of processes of generation and amplification of electromagnetic radiation in various geometries and types of VFEL in the spectral range from X-ray to millimeter and a wide range of parameters confirmed all the basic physical laws and operating principles of VFEL. It is shown that for efficient generation there is an optimal set of system parameters, and by changing the parameters it is possible to obtain significantly larger values ​​of electromagnetic field amplitudes and fundamentally different operating modes. For the first time, it was shown that the VFEL is a dynamic chaotic system. Its spatio-temporal and phase dynamics were studied, and various dynamic operating modes with their complex transformation were modeled.&lt;/p>
 &lt;h4 id="видео">&lt;span class="section-num">2.5.3&lt;/span> Видео&lt;/h4>
-&lt;div class="book-tabs">
-&lt;input type="radio" class="toggle" name="tabs-11" id="tabs-11-0" checked="checked" />
-&lt;label for="tabs-11-0">&lt;/label>
-&lt;div class="book-tabs-content markdown-inner">
+&lt;link rel="stylesheet" href="https://yamadharma.github.io/css/flick/jquery-ui.min.2145606a4147a5c2562a0afa9e996323dcbd14469acf347b81292370e967b906.css" integrity="sha256-IUVgakFHpcJWKgr6npljI9y9FEaazzR7gSkjcOlnuQY=">
+&lt;script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js">
+&lt;/script>
+&lt;script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js">
+&lt;/script>
+&lt;script>
+$(function() {
+$( "#tabs, #tabs1, #tabs2, #tabs3, #tabs4, #tabs5, #tabs6, #tabs7, #tabs8" ).tabs();
+});
+&lt;/script>
+&lt;div id = "tabs">
+&lt;ul>
+&lt;li>&lt;a href = "#tab-1">
+&lt;/a>&lt;/li>
+&lt;li>&lt;a href = "#tab-2">
+&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;div id ="tab-0">
 &lt;div class="embed video-player">
 &lt;iframe class="rutube-player" type="text/html"
-width="720" height="405"
+width="647" height="364"
 src="https://rutube.ru/play/embed/04838a2f4133ab500bed7a3a7f1a494d"
 webkitAllowFullScreen mozallowfullscreen allowFullScreen
 allow="clipboard-write" frameborder="0">
 &lt;/iframe>
 &lt;/div>
 &lt;/div>
-&lt;input type="radio" class="toggle" name="tabs-11" id="tabs-11-1" />
-&lt;label for="tabs-11-1">&lt;/label>
-&lt;div class="book-tabs-content markdown-inner">
+&lt;div id ="tab-1">
 &lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
 &lt;iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="allowfullscreen" loading="eager" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/LSehypfgofY?autoplay=0&amp;amp;controls=1&amp;amp;end=0&amp;amp;loop=0&amp;amp;mute=0&amp;amp;start=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" title="YouTube video">&lt;/iframe>
 &lt;/div>
 &lt;/div>
-&lt;/div></description></item><item><title>Симулятор трафика Simulation of Urban MObility (SUMO)</title><link>https://yamadharma.github.io/ru/post/2023/03/25/simulation-urban-mobility-sumo/</link><pubDate>Sat, 25 Mar 2023 19:53:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/03/25/simulation-urban-mobility-sumo/</guid><description>&lt;p>Симулятор трафика Simulation of Urban MObility (SUMO).&lt;/p>
+&lt;div id ="tab-2">
+&lt;/div>
+&lt;/div>
+tabe widget</description></item><item><title>Симулятор трафика Simulation of Urban MObility (SUMO)</title><link>https://yamadharma.github.io/ru/post/2023/03/25/simulation-urban-mobility-sumo/</link><pubDate>Sat, 25 Mar 2023 19:53:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/03/25/simulation-urban-mobility-sumo/</guid><description>&lt;p>Симулятор трафика Simulation of Urban MObility (SUMO).&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
 &lt;summary>Содержание&lt;/summary>
 &lt;div class="text-sm">
@@ -1770,27 +2040,42 @@ allow="clipboard-write" frameborder="0">
 &lt;li>Не следует устанавливать сохранение для образов &lt;em>Qemu&lt;/em> в &lt;em>GNS3&lt;/em>.&lt;/li>
 &lt;/ul>
 &lt;h4 id="видео-установка-arista-veos-на-gns3">&lt;span class="section-num">3.1.2&lt;/span> Видео: Установка Arista vEOS на GNS3&lt;/h4>
-&lt;div class="book-tabs">
-&lt;input type="radio" class="toggle" name="tabs-1" id="tabs-1-0" checked="checked" />
-&lt;label for="tabs-1-0">&lt;/label>
-&lt;div class="book-tabs-content markdown-inner">
+&lt;link rel="stylesheet" href="https://yamadharma.github.io/css/flick/jquery-ui.min.2145606a4147a5c2562a0afa9e996323dcbd14469acf347b81292370e967b906.css" integrity="sha256-IUVgakFHpcJWKgr6npljI9y9FEaazzR7gSkjcOlnuQY=">
+&lt;script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js">
+&lt;/script>
+&lt;script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js">
+&lt;/script>
+&lt;script>
+$(function() {
+$( "#tabs, #tabs1, #tabs2, #tabs3, #tabs4, #tabs5, #tabs6, #tabs7, #tabs8" ).tabs();
+});
+&lt;/script>
+&lt;div id = "tabs">
+&lt;ul>
+&lt;li>&lt;a href = "#tab-1">
+&lt;/a>&lt;/li>
+&lt;li>&lt;a href = "#tab-2">
+&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;div id ="tab-0">
 &lt;div class="embed video-player">
 &lt;iframe class="rutube-player" type="text/html"
-width="720" height="405"
+width="647" height="364"
 src="https://rutube.ru/play/embed/b793370d31c54e74d18e7c6a1aff51e2"
 webkitAllowFullScreen mozallowfullscreen allowFullScreen
 allow="clipboard-write" frameborder="0">
 &lt;/iframe>
 &lt;/div>
 &lt;/div>
-&lt;input type="radio" class="toggle" name="tabs-1" id="tabs-1-1" />
-&lt;label for="tabs-1-1">&lt;/label>
-&lt;div class="book-tabs-content markdown-inner">
+&lt;div id ="tab-1">
 &lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
 &lt;iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="allowfullscreen" loading="eager" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/jWBFlSdN8Lc?autoplay=0&amp;amp;controls=1&amp;amp;end=0&amp;amp;loop=0&amp;amp;mute=0&amp;amp;start=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" title="YouTube video">&lt;/iframe>
 &lt;/div>
 &lt;/div>
+&lt;div id ="tab-2">
 &lt;/div>
+&lt;/div>
+tabe widget
 &lt;h3 id="arista-ceos">&lt;span class="section-num">3.2&lt;/span> Arista cEOS&lt;/h3>
 &lt;ul>
 &lt;li>Виртуализация: docker.&lt;/li>
@@ -1844,27 +2129,42 @@ allow="clipboard-write" frameborder="0">
 &lt;/li>
 &lt;/ol>
 &lt;h4 id="видео-установка-arista-ceos-на-gns3">&lt;span class="section-num">3.2.2&lt;/span> Видео: Установка Arista cEOS на GNS3&lt;/h4>
-&lt;div class="book-tabs">
-&lt;input type="radio" class="toggle" name="tabs-2" id="tabs-2-0" checked="checked" />
-&lt;label for="tabs-2-0">&lt;/label>
-&lt;div class="book-tabs-content markdown-inner">
+&lt;link rel="stylesheet" href="https://yamadharma.github.io/css/flick/jquery-ui.min.2145606a4147a5c2562a0afa9e996323dcbd14469acf347b81292370e967b906.css" integrity="sha256-IUVgakFHpcJWKgr6npljI9y9FEaazzR7gSkjcOlnuQY=">
+&lt;script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js">
+&lt;/script>
+&lt;script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js">
+&lt;/script>
+&lt;script>
+$(function() {
+$( "#tabs, #tabs1, #tabs2, #tabs3, #tabs4, #tabs5, #tabs6, #tabs7, #tabs8" ).tabs();
+});
+&lt;/script>
+&lt;div id = "tabs">
+&lt;ul>
+&lt;li>&lt;a href = "#tab-1">
+&lt;/a>&lt;/li>
+&lt;li>&lt;a href = "#tab-2">
+&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;div id ="tab-0">
 &lt;div class="embed video-player">
 &lt;iframe class="rutube-player" type="text/html"
-width="720" height="405"
+width="647" height="364"
 src="https://rutube.ru/play/embed/b970b6b886687d7a4cf5429b9251b09e"
 webkitAllowFullScreen mozallowfullscreen allowFullScreen
 allow="clipboard-write" frameborder="0">
 &lt;/iframe>
 &lt;/div>
 &lt;/div>
-&lt;input type="radio" class="toggle" name="tabs-2" id="tabs-2-1" />
-&lt;label for="tabs-2-1">&lt;/label>
-&lt;div class="book-tabs-content markdown-inner">
+&lt;div id ="tab-1">
 &lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
 &lt;iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="allowfullscreen" loading="eager" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/X3Rd-mSZPQk?autoplay=0&amp;amp;controls=1&amp;amp;end=0&amp;amp;loop=0&amp;amp;mute=0&amp;amp;start=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" title="YouTube video">&lt;/iframe>
 &lt;/div>
 &lt;/div>
-&lt;/div></description></item><item><title>Исследования. Суррогатное моделирование</title><link>https://yamadharma.github.io/ru/post/2022/06/20/research-surrogate-modeling/</link><pubDate>Mon, 20 Jun 2022 15:48:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/06/20/research-surrogate-modeling/</guid><description>&lt;p>Научно-исследовательская деятельность по статистическому и суррогатному моделированию.&lt;/p>
+&lt;div id ="tab-2">
+&lt;/div>
+&lt;/div>
+tabe widget</description></item><item><title>Исследования. Суррогатное моделирование</title><link>https://yamadharma.github.io/ru/post/2022/06/20/research-surrogate-modeling/</link><pubDate>Mon, 20 Jun 2022 15:48:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/06/20/research-surrogate-modeling/</guid><description>&lt;p>Научно-исследовательская деятельность по статистическому и суррогатному моделированию.&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
 &lt;summary>Содержание&lt;/summary>
 &lt;div class="text-sm">

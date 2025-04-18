@@ -1,0 +1,742 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Redhat | Д. С. Кулябов</title><link>http://localhost:1313/ru/tag/redhat/</link><atom:link href="http://localhost:1313/ru/tag/redhat/index.xml" rel="self" type="application/rss+xml"/><description>Redhat</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>ru-ru</language><copyright>© 2025 Dmitry S. Kulyabov</copyright><lastBuildDate>Sun, 20 Aug 2023 19:00:00 +0300</lastBuildDate><image><url>http://localhost:1313/media/icon_hu_c0ee34e0b47a9b95.png</url><title>Redhat</title><link>http://localhost:1313/ru/tag/redhat/</link></image><item><title>Использование vagrant. Установка Rocky Linux</title><link>http://localhost:1313/ru/post/2023/08/20/using-vagrant-install-rocky-linux/</link><pubDate>Sun, 20 Aug 2023 19:00:00 +0300</pubDate><guid>http://localhost:1313/ru/post/2023/08/20/using-vagrant-install-rocky-linux/</guid><description>&lt;p>Установка Rocky Linux из репозитория образов Vagrant.&lt;/p>
+&lt;details class="print:hidden xl:hidden" >
+&lt;summary>Содержание&lt;/summary>
+&lt;div class="text-sm">
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#установка-для-virtualbox">&lt;span class="section-num">2&lt;/span> Установка для Virtualbox&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#скачивание-файла">&lt;span class="section-num">2.1&lt;/span> Скачивание файла&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#установка-дополнения-для-vagrant">&lt;span class="section-num">2.2&lt;/span> Установка дополнения для Vagrant&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#vagrantfile">&lt;span class="section-num">2.3&lt;/span> Vagrantfile&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#подключение-образа">&lt;span class="section-num">2.4&lt;/span> Подключение образа&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#образ-virtualbox">&lt;span class="section-num">2.5&lt;/span> Образ Virtualbox&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#подключитесь-к-системе">&lt;span class="section-num">2.6&lt;/span> Подключитесь к системе&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#обновление-системы">&lt;span class="section-num">2.7&lt;/span> Обновление системы&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#перезагрузка-виртуальной-машины">&lt;span class="section-num">2.8&lt;/span> Перезагрузка виртуальной машины&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#выключение-виртуальной-машины">&lt;span class="section-num">2.9&lt;/span> Выключение виртуальной машины&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#видео">&lt;span class="section-num">2.10&lt;/span> Видео&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/div>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>Будем использовать официальные образы RockyLinux: &lt;a href="https://app.vagrantup.com/rockylinux" target="_blank" rel="noopener">https://app.vagrantup.com/rockylinux&lt;/a>&lt;/li>
+&lt;li>Для определённости выберем следующую версию: &lt;a href="https://app.vagrantup.com/rockylinux/boxes/9/versions/3.0.0" target="_blank" rel="noopener">https://app.vagrantup.com/rockylinux/boxes/9/versions/3.0.0&lt;/a>&lt;/li>
+&lt;li>Название образа: &lt;code>rockylinux/9&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h2 id="установка-для-virtualbox">&lt;span class="section-num">2&lt;/span> Установка для Virtualbox&lt;/h2>
+&lt;h3 id="скачивание-файла">&lt;span class="section-num">2.1&lt;/span> Скачивание файла&lt;/h3>
+&lt;ul>
+&lt;li>Поскольку в России блокируется автоматическая скачка файла, то необходимо скачать его вручную (скачивается, поскольку этот ссылка на сайт Rocky Linux):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">wget https://app.vagrantup.com/rockylinux/boxes/9/versions/3.0.0/providers/virtualbox.box
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Можно скачать и со страницы &lt;a href="https://app.vagrantup.com/rockylinux/boxes/9" target="_blank" rel="noopener">https://app.vagrantup.com/rockylinux/boxes/9&lt;/a> непосредственно.&lt;/li>
+&lt;li>Можно скачать с сайта Rocky Linux: &lt;a href="https://dl.rockylinux.org/pub/rocky/9.3/images/x86_64/" target="_blank" rel="noopener">https://dl.rockylinux.org/pub/rocky/9.3/images/x86_64/&lt;/a>.&lt;/li>
+&lt;/ul>
+&lt;h3 id="установка-дополнения-для-vagrant">&lt;span class="section-num">2.2&lt;/span> Установка дополнения для Vagrant&lt;/h3>
+&lt;ul>
+&lt;li>Дополнение автоматически устанавливает гостевые дополнения VirtualBox хоста в гостевой системе.&lt;/li>
+&lt;li>Установим дополнение, явно указав зеркало для загрузки:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vagrant plugin install --plugin-clean-sources --plugin-source https://rubygems.org vagrant-vbguest
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="vagrantfile">&lt;span class="section-num">2.3&lt;/span> Vagrantfile&lt;/h3>
+&lt;ul>
+&lt;li>Создадим заготовку файла Vagrantfile:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vagrant init rockylinux/9 --box-version 3.0.0
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="подключение-образа">&lt;span class="section-num">2.4&lt;/span> Подключение образа&lt;/h3>
+&lt;ul>
+&lt;li>Подключим скачанный файл образа:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vagrant box add rockylinux/9 virtualbox.box
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="образ-virtualbox">&lt;span class="section-num">2.5&lt;/span> Образ Virtualbox&lt;/h3>
+&lt;ul>
+&lt;li>Создадим образ Virtualbox и запустим его:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vagrant up
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="подключитесь-к-системе">&lt;span class="section-num">2.6&lt;/span> Подключитесь к системе&lt;/h3>
+&lt;ul>
+&lt;li>Войдём в консоль системы по ssh:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vagrant ssh
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="обновление-системы">&lt;span class="section-num">2.7&lt;/span> Обновление системы&lt;/h3>
+&lt;ul>
+&lt;li>Перейдём под учётную запись &lt;code>root&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">su -
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Пароль учётной записи &lt;code>root&lt;/code>: &lt;code>vagrant&lt;/code>.&lt;/li>
+&lt;li>Обновим установленную систему:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf update
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Установим дополнительное программное обеспечение:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf install tmux
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="перезагрузка-виртуальной-машины">&lt;span class="section-num">2.8&lt;/span> Перезагрузка виртуальной машины&lt;/h3>
+&lt;ul>
+&lt;li>Выйдем из оболочки машины:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">logout&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">logout&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Перезагрузим виртуальную машину:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vagrant reload
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="выключение-виртуальной-машины">&lt;span class="section-num">2.9&lt;/span> Выключение виртуальной машины&lt;/h3>
+&lt;ul>
+&lt;li>После работы выключите виртуальную машину:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vagrant halt
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="видео">&lt;span class="section-num">2.10&lt;/span> Видео&lt;/h3>
+&lt;link rel = "stylesheet"
+href = "https://code.jquery.com/ui/1.14.1/themes/smoothness/jquery-ui.css">
+&lt;link rel = "stylesheet"
+href = "https://code.jquery.com/ui/1.14.1/themes/smoothness/jquery-ui.css">
+&lt;script type = "text/javascript"
+src = "https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js">
+&lt;/script>
+&lt;script type = "text/javascript"
+src = "https://ajax.googleapis.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js">
+&lt;/script>
+&lt;script>
+$(function() {
+$( "#tabs, #tabs1, #tabs2, #tabs3, #tabs4, #tabs5, #tabs6, #tabs7, #tabs8" ).tabs();
+});
+&lt;/script>
+&lt;div id = "tabs">
+&lt;ul>
+&lt;li>&lt;a href = "#tab-1">
+&lt;/a>&lt;/li>
+&lt;li>&lt;a href = "#tab-2">
+&lt;/a>&lt;/li>
+&lt;li>&lt;a href = "#tab-3">
+&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;div id ="tab-0">
+&lt;div class="embed video-player">
+&lt;iframe class="rutube-player" type="text/html"
+width="647" height="364"
+src="https://rutube.ru/play/embed/7ef1a4fdb0db4b4fd2edcad6bbf46f65"
+webkitAllowFullScreen mozallowfullscreen allowFullScreen
+allow="clipboard-write" frameborder="0">
+&lt;/iframe>
+&lt;/div>
+&lt;/div>
+&lt;div id ="tab-1">
+&lt;div class="embed video-player">
+&lt;iframe class="vkvideo-player" type="text/html"
+src="https://vkvideo.ru/video_ext.php?oid=606414976&amp;id=456239563&amp;hd=2"
+width="647" height="364" allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;" frameborder="0" allowfullscreen>
+&lt;/iframe>
+&lt;/div>
+&lt;/div>
+&lt;div id ="tab-2">
+&lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+&lt;iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="allowfullscreen" loading="eager" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/vTkYacxvhoc?autoplay=0&amp;amp;controls=1&amp;amp;end=0&amp;amp;loop=0&amp;amp;mute=0&amp;amp;start=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" title="YouTube video">&lt;/iframe>
+&lt;/div>
+&lt;/div>
+&lt;div id ="tab-3">
+&lt;/div>
+&lt;/div>
+tabe widget</description></item><item><title>Автообновление систем на базе деривативов RedHat</title><link>http://localhost:1313/ru/post/2022/09/25/redhat-based-systems-auto-update/</link><pubDate>Sun, 25 Sep 2022 09:42:00 +0300</pubDate><guid>http://localhost:1313/ru/post/2022/09/25/redhat-based-systems-auto-update/</guid><description>&lt;p>Простое автоматическое обновление на уровне хоста.&lt;/p>
+&lt;details class="print:hidden xl:hidden" >
+&lt;summary>Содержание&lt;/summary>
+&lt;div class="text-sm">
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#прагматика">&lt;span class="section-num">1&lt;/span> Прагматика&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">2&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#установка-программного-обеспечения">&lt;span class="section-num">3&lt;/span> Установка программного обеспечения&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#использование-программного-обеспечения">&lt;span class="section-num">4&lt;/span> Использование программного обеспечения&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/div>
+&lt;/details>
+&lt;h2 id="прагматика">&lt;span class="section-num">1&lt;/span> Прагматика&lt;/h2>
+&lt;ul>
+&lt;li>Основное преимущество автоматизации обновлений заключается в том, что машины, скорее всего, будут обновляться быстрее, чаще и более равномерно, чем если бы обновления выполнялись вручную.&lt;/li>
+&lt;li>Хотя необходимо быть осторожным с любым решением для автоматического обновления, его стоит рассмотреть, по крайней мере, для некоторых ситуаций.&lt;/li>
+&lt;li>Если машина является критическим сервером, для которого нельзя допускать незапланированного простоя службы на машине, то автоматические обновления использовать не следует. В противном случае можно использовать их.&lt;/li>
+&lt;li>Причины использования автоматических обновлений.
+&lt;ul>
+&lt;li>Вы вряд ли будете применять обновления вручную по каким-либо причинам.&lt;/li>
+&lt;li>Машина не критична, допустимы случайные незапланированные простои.&lt;/li>
+&lt;li>Вы можете жить без удаленного доступа к машине, пока не сможете добраться до ее физического местоположения для решения проблем.&lt;/li>
+&lt;li>У вас нет незаменимых данных на машине или надлежащих резервных копий таких данных.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="общая-информация">&lt;span class="section-num">2&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>Документация: &lt;a href="https://dnf.readthedocs.io/en/latest/automatic.html" target="_blank" rel="noopener">https://dnf.readthedocs.io/en/latest/automatic.html&lt;/a>&lt;/li>
+&lt;li>Используются таймеры:
+&lt;ul>
+&lt;li>&lt;code>dnf-automatic.timer&lt;/code> : общий таймер, операции настраиваются в файле конфигурации;&lt;/li>
+&lt;li>&lt;code>dnf-automatic-notifyonly.timer&lt;/code> : уведомление о наличии обновлений;&lt;/li>
+&lt;li>&lt;code>dnf-automatic-download.timer&lt;/code> : загрузка обновлений;&lt;/li>
+&lt;li>&lt;code>dnf-automatic-install.timer&lt;/code> : установка обновлений.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Этим таймерам соответствуют сервисы.&lt;/li>
+&lt;li>Конфигурационный файл: &lt;code>/etc/dnf/automatic.conf&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h2 id="установка-программного-обеспечения">&lt;span class="section-num">3&lt;/span> Установка программного обеспечения&lt;/h2>
+&lt;ul>
+&lt;li>Установим пакет:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf install dnf-automatic
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="использование-программного-обеспечения">&lt;span class="section-num">4&lt;/span> Использование программного обеспечения&lt;/h2>
+&lt;ul>
+&lt;li>Зададим необходимую конфигурацию в файле &lt;code>/etc/dnf/automatic.conf&lt;/code>.&lt;/li>
+&lt;li>Например, для автоматической установки обновлений зададим:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="n">download_updates&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">yes&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">apply_updates&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">yes&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Запустим общий таймер:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">systemctl &lt;span class="nb">enable&lt;/span> --now dnf-automatic.timer
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Проверить работу таймера можно так:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">systemctl list-timers *dnf-* --all
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul></description></item><item><title>Rocky Linux. Установка сервера</title><link>http://localhost:1313/ru/post/2022/08/12/rockylinux-server-installation/</link><pubDate>Fri, 12 Aug 2022 13:57:00 +0300</pubDate><guid>http://localhost:1313/ru/post/2022/08/12/rockylinux-server-installation/</guid><description>&lt;p>Установка базисного сервера на Rocky Linux.&lt;/p>
+&lt;details class="print:hidden xl:hidden" >
+&lt;summary>Содержание&lt;/summary>
+&lt;div class="text-sm">
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#дополнительные-стандартные-репозитории">&lt;span class="section-num">1.1&lt;/span> Дополнительные стандартные репозитории&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#репозитории-сообщества">&lt;span class="section-num">1.2&lt;/span> Репозитории сообщества&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#установка-образа">&lt;span class="section-num">2&lt;/span> Установка образа&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#после-установки">&lt;span class="section-num">3&lt;/span> После установки&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#обновления">&lt;span class="section-num">3.1&lt;/span> Обновления&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#установка-локализации">&lt;span class="section-num">3.2&lt;/span> Установка локализации&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#дополнительные-репозитории">&lt;span class="section-num">3.3&lt;/span> Дополнительные репозитории&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#установка-часового-пояса">&lt;span class="section-num">3.4&lt;/span> Установка часового пояса&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#синхронизация-времени">&lt;span class="section-num">3.5&lt;/span> Синхронизация времени&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#разрешение-имён">&lt;span class="section-num">3.6&lt;/span> Разрешение имён&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#systemd-resolved">&lt;span class="section-num">3.6.1&lt;/span> systemd-resolved&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#повышение-комфорта-работы">&lt;span class="section-num">3.7&lt;/span> Повышение комфорта работы&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#отключение-графического-интерфейса">&lt;span class="section-num">3.8&lt;/span> Отключение графического интерфейса&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#безопасность">&lt;span class="section-num">3.9&lt;/span> Безопасность&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#fail2ban">&lt;span class="section-num">3.9.1&lt;/span> Fail2ban&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#администрирование">&lt;span class="section-num">3.10&lt;/span> Администрирование&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#автоматическое-обновление">&lt;span class="section-num">3.10.1&lt;/span> Автоматическое обновление&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#установка-дополнительного-программного-обеспечения">&lt;span class="section-num">4&lt;/span> Установка дополнительного программного обеспечения&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#утилиты">&lt;span class="section-num">4.1&lt;/span> Утилиты&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#rsync">&lt;span class="section-num">4.1.1&lt;/span> rsync&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#безопасность">&lt;span class="section-num">4.2&lt;/span> Безопасность&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#работа-с-let-s-encrypt">&lt;span class="section-num">4.2.1&lt;/span> Работа с Let&amp;rsquo;s Encrypt&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#синхронизация-времени">&lt;span class="section-num">4.3&lt;/span> Синхронизация времени&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#systemd-timesyncd">&lt;span class="section-num">4.3.1&lt;/span> systemd-timesyncd&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#сервер-сетевого-времени">&lt;span class="section-num">4.3.2&lt;/span> Сервер сетевого времени&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#вариации-на-тему-стека-lamp--linux-apache-mysql-php">&lt;span class="section-num">4.4&lt;/span> Вариации на тему стека LAMP (Linux, Apache, MySQL, PHP)&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#apache">&lt;span class="section-num">4.4.1&lt;/span> Apache&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#php">&lt;span class="section-num">4.4.2&lt;/span> PHP&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#mysql">&lt;span class="section-num">4.4.3&lt;/span> Mysql&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#администрирование">&lt;span class="section-num">4.5&lt;/span> Администрирование&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#резервное-копирование">&lt;span class="section-num">4.5.1&lt;/span> Резервное копирование&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#файловые-системы">&lt;span class="section-num">4.6&lt;/span> Файловые системы&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#glusterfs">&lt;span class="section-num">4.6.1&lt;/span> GlusterFS&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#dns-сервера">&lt;span class="section-num">4.7&lt;/span> DNS сервера&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#контроль-версий">&lt;span class="section-num">4.8&lt;/span> Контроль версий&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#git">&lt;span class="section-num">4.8.1&lt;/span> git&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#cvs">&lt;span class="section-num">4.8.2&lt;/span> cvs&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#средства-разработки">&lt;span class="section-num">4.9&lt;/span> Средства разработки&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#виртуализация-и-контейнеры">&lt;span class="section-num">4.10&lt;/span> Виртуализация и контейнеры&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/div>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>Rocky Linux &amp;mdash; сборка RedHat Linux, пришедший на смену Centos (см. &lt;a href="http://localhost:1313/ru/post/2021/05/25/replacing-centos/">Замена Centos&lt;/a>).&lt;/li>
+&lt;li>Сайт: &lt;a href="https://rockylinux.org/" target="_blank" rel="noopener">https://rockylinux.org/&lt;/a>.&lt;/li>
+&lt;li>Образы:
+&lt;ul>
+&lt;li>&lt;a href="https://rockylinux.org/download" target="_blank" rel="noopener">https://rockylinux.org/download&lt;/a>;&lt;/li>
+&lt;li>&lt;a href="http://dl.rockylinux.org/vault/rocky/" target="_blank" rel="noopener">http://dl.rockylinux.org/vault/rocky/&lt;/a>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="дополнительные-стандартные-репозитории">&lt;span class="section-num">1.1&lt;/span> Дополнительные стандартные репозитории&lt;/h3>
+&lt;div class="table-caption">
+&lt;span class="table-number">&amp;#1058;&amp;#1072;&amp;#1073;&amp;#1083;&amp;#1080;&amp;#1094;&amp;#1072; 1:&lt;/span>
+Стандартные дополнительные репозитории
+&lt;/div>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Repository&lt;/th>
+&lt;th>Rocky 8&lt;/th>
+&lt;th>Rocky 9&lt;/th>
+&lt;th>Включён&lt;/th>
+&lt;th>Примечание&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Extras&lt;/td>
+&lt;td>Yes&lt;/td>
+&lt;td>Yes&lt;/td>
+&lt;td>Yes&lt;/td>
+&lt;td>Дополнительные функции, не нарушающие совместимость исходного кода&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Plus&lt;/td>
+&lt;td>Yes&lt;/td>
+&lt;td>Yes&lt;/td>
+&lt;td>No&lt;/td>
+&lt;td>Либо заменяет стандартный компонент, либо под одну архитектуру&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>RT (real time)&lt;/td>
+&lt;td>Yes&lt;/td>
+&lt;td>Yes&lt;/td>
+&lt;td>No&lt;/td>
+&lt;td>Пакеты для&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>NFV&lt;/td>
+&lt;td>Yes&lt;/td>
+&lt;td>TBD&lt;/td>
+&lt;td>No&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>SAP / SAP HANA&lt;/td>
+&lt;td>No&lt;/td>
+&lt;td>TBD&lt;/td>
+&lt;td>No&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Devel / devel&lt;/td>
+&lt;td>Yes&lt;/td>
+&lt;td>Yes&lt;/td>
+&lt;td>No&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3 id="репозитории-сообщества">&lt;span class="section-num">1.2&lt;/span> Репозитории сообщества&lt;/h3>
+&lt;ul>
+&lt;li>Дополнительные пакеты для Enterprise Linux (EPEL):
+&lt;ul>
+&lt;li>документация: &lt;a href="http://fedoraproject.org/wiki/EPEL" target="_blank" rel="noopener">http://fedoraproject.org/wiki/EPEL&lt;/a>;&lt;/li>
+&lt;li>наиболее часто используемй репозиторий;&lt;/li>
+&lt;li>сборки пакетов Fedora для каждого поддерживаемого корпоративного Linux;&lt;/li>
+&lt;li>пакеты не заменяют базовые;&lt;/li>
+&lt;li>установка:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf config-manager --set-enabled crb
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">dnf install epel-release
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Репозиторий Community Enterprise Linux (ELRepo):
+&lt;ul>
+&lt;li>фокусируется на более новых ядрах и пакетах драйверов kmod для улучшения поддержки оборудования;&lt;/li>
+&lt;li>репозитории ядра должны быть включены для его использования;&lt;/li>
+&lt;li>установка:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf install elrepo-release
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>RPM Fusion:
+&lt;ul>
+&lt;li>программное обеспечение, которое Fedora Project или Red Hat не хотят поставлять в Enterprise Linux и Fedora;&lt;/li>
+&lt;li>базовые пакеты не заменяются;&lt;/li>
+&lt;li>установка:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf install rpmfusion-free-release
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Репозиторий Remi:
+&lt;ul>
+&lt;li>сайт: &lt;a href="http://rpms.remirepo.net/" target="_blank" rel="noopener">http://rpms.remirepo.net/&lt;/a>;&lt;/li>
+&lt;li>поддерживает большую коллекцию RPM, включая, среди прочего, последние версии PHP;&lt;/li>
+&lt;li>это коллекция репозиториев;&lt;/li>
+&lt;li>документация: &lt;a href="http://blog.remirepo.net/pages/English-FAQ" target="_blank" rel="noopener">http://blog.remirepo.net/pages/English-FAQ&lt;/a>;&lt;/li>
+&lt;li>может конфликтовать с другими сторонними репозиториями.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>GhettoForge:
+&lt;ul>
+&lt;li>документация: &lt;a href="http://ghettoforge.org/index.php/Usage" target="_blank" rel="noopener">http://ghettoforge.org/index.php/Usage&lt;/a>;&lt;/li>
+&lt;li>пакеты, которых нет в других сторонних репозиториях;&lt;/li>
+&lt;li>пакеты, перезаписывающие базу, будут в репозитории &lt;code>gf-plus&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="установка-образа">&lt;span class="section-num">2&lt;/span> Установка образа&lt;/h2>
+&lt;h2 id="после-установки">&lt;span class="section-num">3&lt;/span> После установки&lt;/h2>
+&lt;ul>
+&lt;li>Здесь даны общие шаги для большей части серверов.&lt;/li>
+&lt;/ul>
+&lt;h3 id="обновления">&lt;span class="section-num">3.1&lt;/span> Обновления&lt;/h3>
+&lt;ul>
+&lt;li>Обновить все пакеты
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf -y update
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="установка-локализации">&lt;span class="section-num">3.2&lt;/span> Установка локализации&lt;/h3>
+&lt;ul>
+&lt;li>Проверьте текущую локализацию:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">localectl status
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Посмотрите доступные локализации:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">localectl list-locales
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Если нет необходимой, установите её:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf -y install glibc-langpack-ru
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Установите нужную локализацию:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">localectl set-locale ru_RU.UTF-8
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Проверьте текущую локализацию:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">localectl status
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="дополнительные-репозитории">&lt;span class="section-num">3.3&lt;/span> Дополнительные репозитории&lt;/h3>
+&lt;ul>
+&lt;li>Установим &lt;em>EPEL&lt;/em>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf config-manager --set-enabled crb
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">dnf -y install epel-release
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="установка-часового-пояса">&lt;span class="section-num">3.4&lt;/span> Установка часового пояса&lt;/h3>
+&lt;ul>
+&lt;li>Просмотрите список всех часовых поясов:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">timedatectl list-timezones
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Установите часовой пояс (например, UTC):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">timedatectl set-timezone Etc/UTC
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="синхронизация-времени">&lt;span class="section-num">3.5&lt;/span> Синхронизация времени&lt;/h3>
+&lt;ul>
+&lt;li>Запустите демон:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">systemctl &lt;span class="nb">enable&lt;/span> --now chronyd
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Проверьте работу демона &lt;code>chronyd&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">chronyc -a tracking
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Включите сетевую синхронизацию времени:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">timedatectl set-ntp &lt;span class="nb">true&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Проверьте, работает ли он:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">timedatectl status
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="разрешение-имён">&lt;span class="section-num">3.6&lt;/span> Разрешение имён&lt;/h3>
+&lt;h4 id="systemd-resolved">&lt;span class="section-num">3.6.1&lt;/span> systemd-resolved&lt;/h4>
+&lt;ul>
+&lt;li>Можно установить кеширующий локальный name-server &lt;code>systemd-resolved&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf -y install systemd-resolved
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Файл настройки: &lt;code>/etc/systemd/resolved.conf&lt;/code>.&lt;/li>
+&lt;li>Можно в нём ничего не менять.&lt;/li>
+&lt;li>Запустим службу:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">systemctl &lt;span class="nb">enable&lt;/span> --now systemd-resolved.service
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Установите резольвер:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">ln -snf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Проверить работу можно командой:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">resolvectl
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="повышение-комфорта-работы">&lt;span class="section-num">3.7&lt;/span> Повышение комфорта работы&lt;/h3>
+&lt;ul>
+&lt;li>Программы для удобства работы в консоли:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf -y install tmux perl-DateTime-HiRes mc kitty-terminfo
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Программы мониторинга:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf -y install htop lsof
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Утилита для ssh:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf -y install mosh
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Удобство работы с bash:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf -y install bash-completion bash-color-prompt
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Разные утилиты:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf -y install wget git tar zstd p7zip
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="отключение-графического-интерфейса">&lt;span class="section-num">3.8&lt;/span> Отключение графического интерфейса&lt;/h3>
+&lt;ul>
+&lt;li>Посмотрите, в каком режиме загружается сервер:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">systemctl get-default
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Если результатом является &lt;code>graphical.target&lt;/code>, то отключите загрузку графического интерфейса.&lt;/li>
+&lt;li>Переключите на загрузку в терминальном многопользовательском режиме:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">systemctl set-default multi-user.target
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="безопасность">&lt;span class="section-num">3.9&lt;/span> Безопасность&lt;/h3>
+&lt;h4 id="fail2ban">&lt;span class="section-num">3.9.1&lt;/span> Fail2ban&lt;/h4>
+&lt;ul>
+&lt;li>
+&lt;p>Защита от атак:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf -y install fail2ban
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Следует сконфигурировать (см. &lt;a href="http://localhost:1313/ru/post/2023/10/30/fail2ban-basic-settings/">fail2ban. Основные настройки&lt;/a>) и запустить:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">systemctl &lt;span class="nb">enable&lt;/span> --now fail2ban.service
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Проверьте работу:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">tail -f /var/log/fail2ban.log
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="администрирование">&lt;span class="section-num">3.10&lt;/span> Администрирование&lt;/h3>
+&lt;h4 id="автоматическое-обновление">&lt;span class="section-num">3.10.1&lt;/span> Автоматическое обновление&lt;/h4>
+&lt;ul>
+&lt;li>При необходимости можно использовать автоматическое обновление (см. &lt;a href="http://localhost:1313/ru/post/2022/09/25/redhat-based-systems-auto-update/">Автообновление систем на базе деривативов RedHat&lt;/a>).&lt;/li>
+&lt;li>Установка программного обеспечения:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf -y install dnf-automatic
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Задаёте необходимую конфигурацию в файле &lt;code>/etc/dnf/automatic.conf&lt;/code>.&lt;/li>
+&lt;li>Запустите таймер:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">systemctl &lt;span class="nb">enable&lt;/span> --now dnf-automatic.timer
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="установка-дополнительного-программного-обеспечения">&lt;span class="section-num">4&lt;/span> Установка дополнительного программного обеспечения&lt;/h2>
+&lt;ul>
+&lt;li>Описываются дополнительные пакеты для специализированных серверов.&lt;/li>
+&lt;/ul>
+&lt;h3 id="утилиты">&lt;span class="section-num">4.1&lt;/span> Утилиты&lt;/h3>
+&lt;h4 id="rsync">&lt;span class="section-num">4.1.1&lt;/span> rsync&lt;/h4>
+&lt;ul>
+&lt;li>Установим rsync:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf install rsync
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="безопасность">&lt;span class="section-num">4.2&lt;/span> Безопасность&lt;/h3>
+&lt;h4 id="работа-с-let-s-encrypt">&lt;span class="section-num">4.2.1&lt;/span> Работа с Let&amp;rsquo;s Encrypt&lt;/h4>
+&lt;ul>
+&lt;li>Установим certbot:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf install certbot
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Установим модуль под Apache:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf install python3-certbot-apache
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Если используется Nginx, установим модуль под Nginx:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">install certbot python3-certbot-nginx
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="синхронизация-времени">&lt;span class="section-num">4.3&lt;/span> Синхронизация времени&lt;/h3>
+&lt;h4 id="systemd-timesyncd">&lt;span class="section-num">4.3.1&lt;/span> systemd-timesyncd&lt;/h4>
+&lt;ul>
+&lt;li>Можно использовать альтернативный метод синхронизации времени из пакета systemd.&lt;/li>
+&lt;li>Установите демон синхронизации:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf install systemd-timesyncd
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Запустите демон:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">systemctl &lt;span class="nb">enable&lt;/span> --now systemd-timesyncd
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Включите сетевую синхронизацию времени:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">timedatectl set-ntp &lt;span class="nb">true&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Проверьте, работает ли он:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">timedatectl status
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Подробная информация:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">timedatectl timesync-status
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h4 id="сервер-сетевого-времени">&lt;span class="section-num">4.3.2&lt;/span> Сервер сетевого времени&lt;/h4>
+&lt;ul>
+&lt;li>
+&lt;p>В файле &lt;code>/etc/chrony.conf&lt;/code> Разрешите подключение клиентов из локальной сети:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">allow 192.168.0.0/16
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Запустите сервер сетевого времени:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">systemctl &lt;span class="nb">enable&lt;/span> --now chronyd
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Проверьте пулы NTP:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">chronyc sources
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Проверьте состояние синхронизации NTP:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">chronyc tracking
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Чтобы принимать входящие запросы клиентов, разрешите службу NTP через брандмауэр:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">firewall-cmd --permanent --add-service&lt;span class="o">=&lt;/span>ntp
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Перезапустите брандмауэр:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">firewall-cmd --reload
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="вариации-на-тему-стека-lamp--linux-apache-mysql-php">&lt;span class="section-num">4.4&lt;/span> Вариации на тему стека LAMP (Linux, Apache, MySQL, PHP)&lt;/h3>
+&lt;ul>
+&lt;li>Устанавливается, если необходимо поддерживать приложение на PHP.&lt;/li>
+&lt;li>Обычно используются базы данных Mysql или Postgresql.&lt;/li>
+&lt;/ul>
+&lt;h4 id="apache">&lt;span class="section-num">4.4.1&lt;/span> Apache&lt;/h4>
+&lt;ul>
+&lt;li>Установка Apache:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf install httpd
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Установка поддержки HTTPS:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf install mod_ssl
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h4 id="php">&lt;span class="section-num">4.4.2&lt;/span> PHP&lt;/h4>
+&lt;ul>
+&lt;li>Определим, какие версии php возможно установить:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sudo dnf module list php
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Установим php-8.2:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sudo dnf module reset php
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo dnf module &lt;span class="nb">enable&lt;/span> php:8.2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">dnf install php
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo dnf -y update
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h4 id="mysql">&lt;span class="section-num">4.4.3&lt;/span> Mysql&lt;/h4>
+&lt;ul>
+&lt;li>Установим &lt;em>mariadb&lt;/em>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf install mariadb
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">dnf install mariadb-server
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Установим модуль для php:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf install php-mysqlnd
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="администрирование">&lt;span class="section-num">4.5&lt;/span> Администрирование&lt;/h3>
+&lt;h4 id="резервное-копирование">&lt;span class="section-num">4.5.1&lt;/span> Резервное копирование&lt;/h4>
+&lt;ul>
+&lt;li>Для резервного копирования используется &lt;em>restic&lt;/em>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf install restic
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="файловые-системы">&lt;span class="section-num">4.6&lt;/span> Файловые системы&lt;/h3>
+&lt;h4 id="glusterfs">&lt;span class="section-num">4.6.1&lt;/span> GlusterFS&lt;/h4>
+&lt;ul>
+&lt;li>Установите пакет для последнего релиза GlusterFS (см. &lt;a href="https://wiki.centos.org/SpecialInterestGroup/Storage" target="_blank" rel="noopener">https://wiki.centos.org/SpecialInterestGroup/Storage&lt;/a>):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf install centos-release-gluster
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Установка клиента GlusterFS:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf install glusterfs
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">dnf install glusterfs-fuse
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="dns-сервера">&lt;span class="section-num">4.7&lt;/span> DNS сервера&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="http://localhost:1313/ru/post/2023/05/23/dns-powerdns-recursor/">DNS. PowerDNS Recursor&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://localhost:1313/ru/post/2023/09/19/dns-bind/">DNS. Bind&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="контроль-версий">&lt;span class="section-num">4.8&lt;/span> Контроль версий&lt;/h3>
+&lt;h4 id="git">&lt;span class="section-num">4.8.1&lt;/span> git&lt;/h4>
+&lt;ul>
+&lt;li>Установите &lt;code>git&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf -y install git
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h4 id="cvs">&lt;span class="section-num">4.8.2&lt;/span> cvs&lt;/h4>
+&lt;ul>
+&lt;li>Установите &lt;code>cvs&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf -y install cvs
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="средства-разработки">&lt;span class="section-num">4.9&lt;/span> Средства разработки&lt;/h3>
+&lt;ul>
+&lt;li>Установим группу средств разработки:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf -y group install &lt;span class="s2">&amp;#34;Development Tools&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="виртуализация-и-контейнеры">&lt;span class="section-num">4.10&lt;/span> Виртуализация и контейнеры&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="http://localhost:1313/ru/post/2024/12/04/containers-podman/">Контейнеры. podman&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>CentOS 8. Изменение адресов репозиториев</title><link>http://localhost:1313/ru/post/2022/02/10/centos8-changing-repository-addresses/</link><pubDate>Thu, 10 Feb 2022 14:39:00 +0300</pubDate><guid>http://localhost:1313/ru/post/2022/02/10/centos8-changing-repository-addresses/</guid><description>&lt;p>С 31 января 2022 года установка пакетов или обновление репозиториев в CentOS8 выдаёт ошибку.&lt;/p>
+&lt;details class="print:hidden xl:hidden" >
+&lt;summary>Содержание&lt;/summary>
+&lt;div class="text-sm">
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#ошибка">&lt;span class="section-num">1&lt;/span> Ошибка&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#причины">&lt;span class="section-num">2&lt;/span> Причины&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#устранение">&lt;span class="section-num">3&lt;/span> Устранение&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/div>
+&lt;/details>
+&lt;h2 id="ошибка">&lt;span class="section-num">1&lt;/span> Ошибка&lt;/h2>
+&lt;ul>
+&lt;li>При работе с репозиториями в CentOS 8 появилась ошибка:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">Error: Failed to download metadata &lt;span class="k">for&lt;/span> repo &lt;span class="s1">&amp;#39;repo_name&amp;#39;&lt;/span>: Cannot prepare internal mirrorlist: No URLs in mirrorlist
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="причины">&lt;span class="section-num">2&lt;/span> Причины&lt;/h2>
+&lt;ul>
+&lt;li>31 января 2022 года удалены все пакеты для &lt;em>CentOS8&lt;/em> с официальных зеркал.&lt;/li>
+&lt;li>Вызвано прекращением поддержки &lt;em>CentOS8&lt;/em> (см. &lt;a href="http://localhost:1313/ru/post/2021/05/25/replacing-centos/">Замена Centos&lt;/a>).&lt;/li>
+&lt;li>Теперь они перенесены на &lt;a href="https://vault.centos.org" target="_blank" rel="noopener">https://vault.centos.org&lt;/a>.&lt;/li>
+&lt;/ul>
+&lt;h2 id="устранение">&lt;span class="section-num">3&lt;/span> Устранение&lt;/h2>
+&lt;ul>
+&lt;li>Следует обновить файлы описания репозиториев в &lt;code>/etc/yum.repos.d&lt;/code>.&lt;/li>
+&lt;li>Следует использовать &lt;code>vault.centos.org&lt;/code> вместо &lt;code>mirror.centos.org&lt;/code>.&lt;/li>
+&lt;li>Предлагается выполнить следующие команды:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sudo sed -i -e &lt;span class="s2">&amp;#34;s|mirrorlist=|#mirrorlist=|g&amp;#34;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>-e &lt;span class="s2">&amp;#34;s|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g&amp;#34;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>-e &lt;span class="s2">&amp;#34;s|\$contentdir|centos|g&amp;#34;&lt;/span> /etc/yum.repos.d/CentOS-*
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul></description></item></channel></rss>

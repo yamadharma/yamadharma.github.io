@@ -477,7 +477,7 @@
 &lt;ul>
 &lt;li>
 &lt;p>Установите wsl:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">wsl --install
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">wsl --install ubuntu
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
 &lt;li>включает дополнительные компоненты WSL и платформы виртуальных машин;&lt;/li>
 &lt;li>скачивает и устанавливает последнюю версию ядра Linux;&lt;/li>
@@ -609,9 +609,11 @@
 &lt;li>&lt;a href="#пререквизиты">&lt;span class="section-num">1&lt;/span> Пререквизиты&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#установка-windows">&lt;span class="section-num">2&lt;/span> Установка Windows&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#использование-virt-install">&lt;span class="section-num">3&lt;/span> Использование virt-install&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#после-установки">&lt;span class="section-num">4&lt;/span> После установки&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#общая-папка">&lt;span class="section-num">5&lt;/span> Общая папка&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#буфер-обмена">&lt;span class="section-num">6&lt;/span> Буфер обмена&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#установка">&lt;span class="section-num">4&lt;/span> Установка&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#после-установки">&lt;span class="section-num">5&lt;/span> После установки&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#общая-папка">&lt;span class="section-num">6&lt;/span> Общая папка&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#буфер-обмена">&lt;span class="section-num">7&lt;/span> Буфер обмена&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#видео">&lt;span class="section-num">8&lt;/span> Видео&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/nav>
 &lt;/div>
@@ -634,7 +636,8 @@
 &lt;/ul>
 &lt;/li>
 &lt;li>Скачаем драйвера для qemu:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">wget https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/latest-virtio/virtio-win.iso
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> /var/lib/libvirt/images
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wget https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/latest-virtio/virtio-win.iso
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Проще всего использовать образ iso-диска и подмонтировать его как второй cdrom.&lt;/li>
 &lt;/ul>
@@ -665,7 +668,7 @@
 &lt;p>Конфигурацию можно создать с помощью virt-install:&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">virt-install &lt;span class="se">\
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> --connect qemu:///system &lt;span class="se">\
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> --disk /var/lib/libvirt/images/Win11_24H2_Russian_x64.iso,device&lt;span class="o">=&lt;/span>cdrom &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> --disk /var/lib/libvirt/images/win11.iso,device&lt;span class="o">=&lt;/span>cdrom &lt;span class="se">\
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> --disk /var/lib/libvirt/images/virtio-win.iso,device&lt;span class="o">=&lt;/span>cdrom &lt;span class="se">\
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> --disk &lt;span class="nv">pool&lt;/span>&lt;span class="o">=&lt;/span>default,size&lt;span class="o">=&lt;/span>120,bus&lt;span class="o">=&lt;/span>virtio,format&lt;span class="o">=&lt;/span>qcow2 &lt;span class="se">\
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> --name windows11 &lt;span class="se">\
@@ -687,7 +690,7 @@
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
 &lt;li>&lt;code>--name windows11&lt;/code> : название виртуальной машины;&lt;/li>
 &lt;li>&lt;code>--os-type=win11&lt;/code> : тип ОС;&lt;/li>
-&lt;li>&lt;code>--cdrom /var/lib/libvirt/images/Win11_24H2_Russian_x64.iso&lt;/code> : путь к ISO-образу установочного диска ОС;&lt;/li>
+&lt;li>&lt;code>--cdrom /var/lib/libvirt/images/win11.iso&lt;/code> : путь к ISO-образу установочного диска ОС;&lt;/li>
 &lt;li>&lt;code>--graphics spice&lt;/code> : графическая консоль;&lt;/li>
 &lt;li>&lt;code>--disk pool=default,size=160,bus=virtio,format=qcow2&lt;/code> : хранилище;
 &lt;ul>
@@ -704,23 +707,40 @@
 &lt;/li>
 &lt;li>
 &lt;p>В качестве видео-интерфейса ставим QXL.&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>После установки драйверов следует перевести в Virtio.&lt;/p>
-&lt;/li>
-&lt;/ul>
-&lt;h2 id="после-установки">&lt;span class="section-num">4&lt;/span> После установки&lt;/h2>
 &lt;ul>
-&lt;li>Поменяйте в настройках типы устройств:
-&lt;ul>
-&lt;li>сетевую карту на Virtio;&lt;/li>
-&lt;li>видео на Virtio.&lt;/li>
+&lt;li>После установки драйверов следует перевести в Virtio.&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;li>Установите сертификат RedHat с CD-диска.&lt;/li>
-&lt;li>Установите драйвера Virtio.&lt;/li>
 &lt;/ul>
-&lt;h2 id="общая-папка">&lt;span class="section-num">5&lt;/span> Общая папка&lt;/h2>
+&lt;h2 id="установка">&lt;span class="section-num">4&lt;/span> Установка&lt;/h2>
+&lt;ul>
+&lt;li>Вначале Windows не видит диск.&lt;/li>
+&lt;li>Необходимо установить драйвер диска из папки &lt;code>e:\amd64\w11&lt;/code>.&lt;/li>
+&lt;li>Далее, для подключения к сети потребуется установить драйвер.&lt;/li>
+&lt;li>Для этого выберите весь диск с драйверами &lt;code>e:\&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h2 id="после-установки">&lt;span class="section-num">5&lt;/span> После установки&lt;/h2>
+&lt;ul>
+&lt;li>Для загрузки используйте &lt;code>virt-manager&lt;/code>.&lt;/li>
+&lt;li>Установите сертификат RedHat с CD-диска:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">e:&lt;span class="se">\c&lt;/span>ert&lt;span class="se">\V&lt;/span>irtio_Win_Red_Hat_CA.cer
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>После загрузки установите необходимые драйвера Virtio:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">e:&lt;span class="se">\w&lt;/span>irtio-win-gt-x64.msi
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Установите гостевые утилиты:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">e:&lt;span class="se">\v&lt;/span>irtio-win-guest-tools.exe
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Отмонтируйте установочный диск Windows.&lt;/li>
+&lt;li>Поменяйте в настройках virt-manager типы устройств:
+&lt;ul>
+&lt;li>видео на Virtio + 3D;&lt;/li>
+&lt;li>в разделе Spice добавьте OpenGL.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Возможно, следует отключить масштабирование экрана в меню (Вид -&amp;gt; Масштабирование экрана -&amp;gt; Никогда) (чтобы шрифты не смазывались).&lt;/li>
+&lt;/ul>
+&lt;h2 id="общая-папка">&lt;span class="section-num">6&lt;/span> Общая папка&lt;/h2>
 &lt;ul>
 &lt;li>Будем использовать встроенный метод создания общей папки с помощью &lt;em>virt-manager&lt;/em>.&lt;/li>
 &lt;li>Нажмите на значок с надписью &lt;em>Показать виртуальное оборудование&lt;/em> (&lt;em>Show virtual hardware details&lt;/em>) на панели инструментов.&lt;/li>
@@ -734,19 +754,19 @@
 &lt;ul>
 &lt;li>Выберите &lt;em>Файловая система&lt;/em> (&lt;em>File system&lt;/em>) на левой панели в окне добавления нового оборудования.&lt;/li>
 &lt;li>Затем выберите &lt;em>Driver=virtiofs&lt;/em> на вкладке Подробности.&lt;/li>
-&lt;li>Нажмите на &lt;em>browse &amp;gt; browse local&lt;/em> и выберите путь к хосту из вашей системы Linux.&lt;/li>
-&lt;li>В целевом пути укажите любое имя.&lt;/li>
+&lt;li>Нажмите на &lt;em>browse &amp;gt; browse local&lt;/em> и выберите путь к хосту из вашей системы Linux, например &lt;code>/home&lt;/code>.&lt;/li>
+&lt;li>В целевом пути укажите любое имя, например &lt;code>home&lt;/code>.&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>Установите в системе Windows WinFSP (FUSE для Windows).
 &lt;ul>
 &lt;li>Можно скачать с сайта &lt;a href="https://github.com/winfsp/winfsp/releases/" target="_blank" rel="noopener">https://github.com/winfsp/winfsp/releases/&lt;/a>.&lt;/li>
 &lt;li>Можно установить с Chocolatey (см. &lt;a href="https://yamadharma.github.io/ru/post/2021/01/18/package-manager-windows-chocolatey/">Пакетный менеджер для Windows. Chocolatey&lt;/a>):
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install winfsp
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install winfsp -y
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;li>Установите &lt;code>virtio-win-guest-tools.exe&lt;/code>.
+&lt;li>Установите &lt;code>virtio-win-guest-tools.exe&lt;/code> (уже установили).
 &lt;ul>
 &lt;li>Возьмите из комплекта &lt;code>virtio-win.iso&lt;/code> или скачайте напрямую из &lt;a href="https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/" target="_blank" rel="noopener">https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/&lt;/a>.&lt;/li>
 &lt;li>После завершения установки перезагрузите виртуальную машину Windows.&lt;/li>
@@ -764,15 +784,82 @@
 &lt;/li>
 &lt;li>После запуска службы откройте Проводник, и вы должны увидеть метку монтирования, которую вы создали в первом шаге выше, и которая должна быть отображена как диск &lt;code>Z:&lt;/code>.&lt;/li>
 &lt;/ul>
-&lt;h2 id="буфер-обмена">&lt;span class="section-num">6&lt;/span> Буфер обмена&lt;/h2>
+&lt;h2 id="буфер-обмена">&lt;span class="section-num">7&lt;/span> Буфер обмена&lt;/h2>
 &lt;ul>
 &lt;li>Должно работать само после установки драйверов virtio.&lt;/li>
 &lt;li>Проверьте, что есть Канал (spice) типа &lt;code>spicevmc&lt;/code>.&lt;/li>
-&lt;li>Установите в Windows &lt;em>SPICE Guest Tools&lt;/em> : &lt;a href="https://www.spice-space.org/download/windows/spice-guest-tools/spice-guest-tools-latest.exe" target="_blank" rel="noopener">https://www.spice-space.org/download/windows/spice-guest-tools/spice-guest-tools-latest.exe&lt;/a>.&lt;/li>
+&lt;li>Установите в Windows &lt;em>SPICE Guest Tools&lt;/em> (возможно установить из следующих источников):
+&lt;ul>
+&lt;li>установите &lt;code>virtio-win-guest-tools.exe&lt;/code> (уже установили).&lt;/li>
+&lt;li>&lt;a href="https://www.spice-space.org/download/windows/spice-guest-tools/spice-guest-tools-latest.exe" target="_blank" rel="noopener">https://www.spice-space.org/download/windows/spice-guest-tools/spice-guest-tools-latest.exe&lt;/a>.&lt;/li>
 &lt;li>Можно установить с помощью Chocolatey:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install spice-agent
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
-&lt;/ul></description></item><item><title>Установка Windows с жёсткого диска</title><link>https://yamadharma.github.io/ru/post/2023/10/23/install-windows-hard-drive/</link><pubDate>Mon, 23 Oct 2023 15:51:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/10/23/install-windows-hard-drive/</guid><description>&lt;p>Установка Windows с жёсткого диска.&lt;/p>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="видео">&lt;span class="section-num">8&lt;/span> Видео&lt;/h2>
+&lt;link rel="stylesheet" href="https://yamadharma.github.io/css/flick/jquery-ui.min.2145606a4147a5c2562a0afa9e996323dcbd14469acf347b81292370e967b906.css" integrity="sha256-IUVgakFHpcJWKgr6npljI9y9FEaazzR7gSkjcOlnuQY=">
+&lt;script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js">
+&lt;/script>
+&lt;script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js">
+&lt;/script>
+&lt;script>
+$(function() {
+$( "#tabs, #tabs1, #tabs2, #tabs3, #tabs4, #tabs5, #tabs6, #tabs7, #tabs8" ).tabs();
+});
+&lt;/script>
+&lt;div id = "tabs">
+&lt;ul>
+&lt;li>&lt;a href = "#tab-1">
+RuTube
+&lt;/a>&lt;/li>
+&lt;li>&lt;a href = "#tab-2">
+Платформа
+&lt;/a>&lt;/li>
+&lt;li>&lt;a href = "#tab-3">
+VKvideo
+&lt;/a>&lt;/li>
+&lt;li>&lt;a href = "#tab-4">
+Youtube
+&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;div id ="tab-0">
+&lt;/div>
+&lt;div id ="tab-1">
+&lt;div class="embed video-player">
+&lt;iframe class="rutube-player" type="text/html"
+width="647" height="364"
+src="https://rutube.ru/play/embed/46f95eeb6c0c8e5bbf51b2fe0851e76d"
+webkitAllowFullScreen mozallowfullscreen allowFullScreen
+allow="clipboard-write" frameborder="0">
+&lt;/iframe>
+&lt;/div>
+&lt;/div>
+&lt;div id ="tab-2">
+&lt;div class="embed video-player">
+&lt;iframe class="plvideo-player" type="text/html"
+width="647" height="364"
+src="https://plvideo.ru/embed/coo_ngzPjq8D"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+&lt;/iframe>
+&lt;/div>
+&lt;/div>
+&lt;div id ="tab-3">
+&lt;div class="embed video-player">
+&lt;iframe class="vkvideo-player" type="text/html"
+src="https://vkvideo.ru/video_ext.php?oid=-230024722&amp;id=456239026&amp;hd=2"
+width="647" height="364" allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;" frameborder="0" allowfullscreen>
+&lt;/iframe>
+&lt;/div>
+&lt;/div>
+&lt;div id ="tab-4">
+&lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+&lt;iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="allowfullscreen" loading="eager" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/pZla1y1aPhI?autoplay=0&amp;amp;controls=1&amp;amp;end=0&amp;amp;loop=0&amp;amp;mute=0&amp;amp;start=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" title="YouTube video">&lt;/iframe>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+Установка Windows на KVM</description></item><item><title>Установка Windows с жёсткого диска</title><link>https://yamadharma.github.io/ru/post/2023/10/23/install-windows-hard-drive/</link><pubDate>Mon, 23 Oct 2023 15:51:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/10/23/install-windows-hard-drive/</guid><description>&lt;p>Установка Windows с жёсткого диска.&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
 &lt;summary>Содержание&lt;/summary>
 &lt;div class="text-sm">
@@ -1332,7 +1419,7 @@
 &lt;h2 id="установка">&lt;span class="section-num">2&lt;/span> Установка&lt;/h2>
 &lt;ul>
 &lt;li>Установка с помощью Chocolatey (см. &lt;a href="https://yamadharma.github.io/ru/post/2021/01/18/package-manager-windows-chocolatey/">Пакетный менеджер для Windows. Chocolatey&lt;/a>):
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install msys2
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install msys2 -y
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Далее, возможно, придётся перелогиниться или перегрузиться.&lt;/li>
 &lt;li>Запустите &lt;code>msys2&lt;/code> (через ярлык или через поиск).&lt;/li>

@@ -1,0 +1,1370 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Cisco | Д. С. Кулябов</title><link>http://localhost:1313/ru/tag/cisco/</link><atom:link href="http://localhost:1313/ru/tag/cisco/index.xml" rel="self" type="application/rss+xml"/><description>Cisco</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>ru-ru</language><copyright>© 2025 Dmitry S. Kulyabov</copyright><lastBuildDate>Wed, 03 Jul 2024 12:00:00 +0300</lastBuildDate><image><url>http://localhost:1313/media/icon_hu_c0ee34e0b47a9b95.png</url><title>Cisco</title><link>http://localhost:1313/ru/tag/cisco/</link></image><item><title>Перепрошивка точки доступа Cisco Aironet</title><link>http://localhost:1313/ru/post/2024/07/03/flashing-cisco-aironet/</link><pubDate>Wed, 03 Jul 2024 12:00:00 +0300</pubDate><guid>http://localhost:1313/ru/post/2024/07/03/flashing-cisco-aironet/</guid><description>&lt;p>Перепрошивка точки доступа Cisco Aironet.&lt;/p>
+&lt;details class="print:hidden xl:hidden" >
+&lt;summary>Содержание&lt;/summary>
+&lt;div class="text-sm">
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#версии-образа-системы">&lt;span class="section-num">1.1&lt;/span> Версии образа системы&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#отличия-прошивок">&lt;span class="section-num">1.2&lt;/span> Отличия прошивок&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#подготовка-к-обновлению-программного-обеспечения">&lt;span class="section-num">2&lt;/span> Подготовка к обновлению программного обеспечения&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#сброс-настроек">&lt;span class="section-num">2.1&lt;/span> Сброс настроек&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#перевод-из-облегчённого-режима-в-автономный">&lt;span class="section-num">3&lt;/span> Перевод из облегчённого режима в автономный&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#перевод-из-автономного-режима-в-облегчённый">&lt;span class="section-num">4&lt;/span> Перевод из автономного режима в облегчённый&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/div>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>Точки доступа Cisco могут работать в двух режимах:
+&lt;ul>
+&lt;li>Autonomous AP IOS Software;
+&lt;ul>
+&lt;li>автономная точка доступа;&lt;/li>
+&lt;li>управляется самостоятельно по http/https или telnet/ssh.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Lightweight AP IOS Software:
+&lt;ul>
+&lt;li>точка доступа управляется с WLC с контроллера беспроводной сети Cisco (см. &lt;a href="http://localhost:1313/ru/post/2023/03/03/cisco-wlc/">Контроллер Cisco WLC&lt;/a>).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="версии-образа-системы">&lt;span class="section-num">1.1&lt;/span> Версии образа системы&lt;/h3>
+&lt;ul>
+&lt;li>Выясните версию IOS:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">show version
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>В имени файла закодированы параметры образа:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-text" data-lang="text">&lt;span class="line">&lt;span class="cl">&amp;lt;модель_точки&amp;gt;-&amp;lt;функции&amp;gt;-tar.&amp;lt;версия&amp;gt;.tar
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>В поле функция указан вариант образа:
+&lt;ul>
+&lt;li>легковесная точка доступа:
+&lt;ul>
+&lt;li>&lt;code>k9w8&lt;/code>;&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>автономная точка доступа:
+&lt;ul>
+&lt;li>&lt;code>k9w7&lt;/code>;&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>облегченный образ для восстановления:
+&lt;ul>
+&lt;li>&lt;code>rcvk9w8&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="отличия-прошивок">&lt;span class="section-num">1.2&lt;/span> Отличия прошивок&lt;/h3>
+&lt;ul>
+&lt;li>У легковесной прошивки:
+&lt;ul>
+&lt;li>нет режима &lt;code>configure terminal&lt;/code>;&lt;/li>
+&lt;li>нет команды &lt;code>archive&lt;/code> для обновления прошивки.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="подготовка-к-обновлению-программного-обеспечения">&lt;span class="section-num">2&lt;/span> Подготовка к обновлению программного обеспечения&lt;/h2>
+&lt;h3 id="сброс-настроек">&lt;span class="section-num">2.1&lt;/span> Сброс настроек&lt;/h3>
+&lt;ul>
+&lt;li>Зажимаем на точке доступа кнопку &lt;code>Mode&lt;/code>, включаем питание.&lt;/li>
+&lt;li>Удерживаем кнопку нажатой ~ 30с, пока светодиод на точке не загорится красным.&lt;/li>
+&lt;li>Отпускаем кнопку, светодиод мигает зелёным.&lt;/li>
+&lt;li>Учётные данные по умолчанию:
+&lt;ul>
+&lt;li>логин: &lt;code>cisco&lt;/code>;&lt;/li>
+&lt;li>пароль: &lt;code>Cisco&lt;/code>;&lt;/li>
+&lt;li>enable: &lt;code>Cisco&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="перевод-из-облегчённого-режима-в-автономный">&lt;span class="section-num">3&lt;/span> Перевод из облегчённого режима в автономный&lt;/h2>
+&lt;ul>
+&lt;li>Подключиться к точке доступа по консольному кабелю.&lt;/li>
+&lt;li>Войдите в режим конфигурации:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">debug capwap console cli
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Обновим прошивку:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">archive tar /xtract tftp://10.10.1.4/ap1g1-k9w7-tar.153-3.JK.tar flash:
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Удалим старую прошивку:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">del /force /recursive flash:/ap1g1-k9w8-mx.153-3.JK
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Перезагружаем точку доступа:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">reload
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="перевод-из-автономного-режима-в-облегчённый">&lt;span class="section-num">4&lt;/span> Перевод из автономного режима в облегчённый&lt;/h2>
+&lt;ul>
+&lt;li>Подключиться к точке доступа по консольному кабелю.&lt;/li>
+&lt;li>Войдите в режим конфигурации:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">configure terminal
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Обновим прошивку:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">archive tar /xtract tftp://10.10.1.4/ap3g2-rcvk9w8-tar.153-3.JF11.tar flash:
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Удалим старую прошивку:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">del /force /recursive flash:/ap3g2-rcvk9w7-tar.153-3.JF11.tar
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Перезагружаем точку доступа:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">reload
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul></description></item><item><title>Контроллер Cisco WLC. Обновление программного обеспечения</title><link>http://localhost:1313/ru/post/2023/10/01/cisco-wlc-firmware-upgrade/</link><pubDate>Sun, 01 Oct 2023 19:37:00 +0300</pubDate><guid>http://localhost:1313/ru/post/2023/10/01/cisco-wlc-firmware-upgrade/</guid><description>&lt;p>Контроллер Cisco WLC. Обновление программного обеспечения.&lt;/p>
+&lt;details class="print:hidden xl:hidden" >
+&lt;summary>Содержание&lt;/summary>
+&lt;div class="text-sm">
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#процедура-обновления-из-интерфейса-командной-строки">&lt;span class="section-num">2&lt;/span> Процедура обновления из интерфейса командной строки&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#подготовка">&lt;span class="section-num">2.1&lt;/span> Подготовка&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#задание-параметров-загрузки-образа">&lt;span class="section-num">2.2&lt;/span> Задание параметров загрузки образа&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#скачивание-образа">&lt;span class="section-num">2.3&lt;/span> Скачивание образа&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#предварительная-загрузка-образа-обновления-cisco-wlc-на-точки-доступа">&lt;span class="section-num">2.4&lt;/span> Предварительная загрузка образа обновления Cisco WLC на точки доступа&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#перезагрузка">&lt;span class="section-num">2.5&lt;/span> Перезагрузка&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#выбор-образа-для-загрузки">&lt;span class="section-num">2.6&lt;/span> Выбор образа для загрузки&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#проблемы">&lt;span class="section-num">3&lt;/span> Проблемы&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#cisco-aironet-1700">&lt;span class="section-num">3.1&lt;/span> Cisco Aironet 1700&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/div>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>Не отключайте контроллер или любую точку доступа в процессе обновления.&lt;/li>
+&lt;li>В противном случае можно повредить образ программного обеспечения.&lt;/li>
+&lt;li>Обновление контроллера с большим числом точек доступа может занять около 30 минут в зависимости от размера сети.&lt;/li>
+&lt;li>В это время точки доступа должны оставаться подключёнными к сети питания и не должен выполняться сброс контроллера.&lt;/li>
+&lt;li>Программное обеспечение контроллера представляет собой файл размером порядка 100 мегабайт с именем формата &lt;code>AIR-CTYYYY-K9-X-X-XX.aes&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h2 id="процедура-обновления-из-интерфейса-командной-строки">&lt;span class="section-num">2&lt;/span> Процедура обновления из интерфейса командной строки&lt;/h2>
+&lt;h3 id="подготовка">&lt;span class="section-num">2.1&lt;/span> Подготовка&lt;/h3>
+&lt;ul>
+&lt;li>Убедитесь в доступности TFTP-сервера из контроллера и в нахождении файла обновления в корневом каталоге TFTP-сервера.&lt;/li>
+&lt;li>Лучше всего выполнять данную процедуру через порт консоли, но можно также использовать протокол SSH или Telnet для подключения к IP-адресу управления контроллера.&lt;/li>
+&lt;li>Использование протокола SSH или Telnet приводит к потере соединения с контроллером во время процесса перезагрузки, выполняемого после загрузки образа.&lt;/li>
+&lt;li>Проверьте текущую версию программного обеспечения, используемого в контроллере:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">show sysinfo
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="задание-параметров-загрузки-образа">&lt;span class="section-num">2.2&lt;/span> Задание параметров загрузки образа&lt;/h3>
+&lt;ul>
+&lt;li>Задайте режим передачи файлов:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">transfer download mode tftp
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Задайте IP-адрес TFTP-сервера:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">transfer download serverip &amp;lt;IP-адрес TFTP-сервера&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Задайте путь к каталогу на TFTP-сервере, в котором находится программное обеспечение операционной системы контроллера:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">transfer download path &lt;span class="s1">&amp;#39;&amp;lt;путь TFTP-сервера&amp;gt;&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Задать имя файла образа:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">transfer download filename &amp;lt;имя файла&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="скачивание-образа">&lt;span class="section-num">2.3&lt;/span> Скачивание образа&lt;/h3>
+&lt;ul>
+&lt;li>Инициировать процесс обновления:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">transfer download start
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="предварительная-загрузка-образа-обновления-cisco-wlc-на-точки-доступа">&lt;span class="section-num">2.4&lt;/span> Предварительная загрузка образа обновления Cisco WLC на точки доступа&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>Необязательно.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Предварительная загрузка нового образ на точки доступа для сокращения времени простоя:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">config ap image predownload primary all
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Эта команда сообщает контроллеру загрузить образ на все ваши точки доступа.&lt;/li>
+&lt;li>Этот процесс занимает несколько минут на каждой точке доступа.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Отслеживание прогресса:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">show ap image all
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Указать точкам доступа, чтобы они установили этот образ в качестве основного образа для использования при следующей перезагрузке:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">config ap image swap all
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Убедитесь, что новое изображение теперь установлено в качестве основного:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">show ap image all
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="перезагрузка">&lt;span class="section-num">2.5&lt;/span> Перезагрузка&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>После завершения обновления перезагрузите контроллер, чтобы новое программное обеспечение вступило в силу:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">reset system in HH:MM:SS image no-swap reset-aps save-config
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>&lt;code>image no-swap&lt;/code> сообщает контроллерам и точкам доступа о необходимости перезагрузки с использованием текущего образа, установленного в качестве основного, который является новым образом.&lt;/li>
+&lt;li>&lt;code>reset-aps&lt;/code> указывает точкам доступа перезагрузиться одновременно с контроллерами, а не ждать, пока контроллеры вернутся и поймут, что им необходимо перезагрузить. Это сократит время простоя.&lt;/li>
+&lt;li>&lt;code>save-config&lt;/code> указывает контроллерам сохранить текущую конфигурацию в загрузочную конфигурацию перед перезагрузкой, гарантируя, что все ожидающие изменения будут записаны до перезагрузки.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="выбор-образа-для-загрузки">&lt;span class="section-num">2.6&lt;/span> Выбор образа для загрузки&lt;/h3>
+&lt;ul>
+&lt;li>По умолчанию на контроллере WLC поддерживаются два образа: основной и резервный образы.&lt;/li>
+&lt;li>Основной образ &amp;mdash; это активный образ, используемый контроллером WLC.&lt;/li>
+&lt;li>Резервный образ используется в качестве резервной копии активного образа.&lt;/li>
+&lt;li>При обновлении контроллера WLC с помощью нового образа контроллер WLC автоматически копирует новый образ поверх резервного образа.&lt;/li>
+&lt;li>Просмотреть сведения об активном образе, используемом контроллером в данный момент (основной образ):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">show boot
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Выбрать какой образ будет активным (используемым контроллером WLC при загрузке):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">config boot &amp;lt;primary/backup&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Чтобы контроллер WLC использовал новый активный образ, необходимо сохранить и перезагрузить его конфигурацию.&lt;/li>
+&lt;/ul>
+&lt;h2 id="проблемы">&lt;span class="section-num">3&lt;/span> Проблемы&lt;/h2>
+&lt;h3 id="cisco-aironet-1700">&lt;span class="section-num">3.1&lt;/span> Cisco Aironet 1700&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>Меняли прошивку WLC c 8.0.115 на 8.3.150.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>После обновления точки доступа не скачивали образ.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Писали, что не поддерживают и прочую ерунду.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Нашли в сети следующее:&lt;/p>
+&lt;blockquote>
+&lt;p>Disable Network Time Protocol (NTP) on the WLC and manually set the WLC date/time to a date before December 2, 2022. The Cisco IOS AP will then be able to download and validate the image, install the new image, and join the controller. Once the AP has joined the controller, NTP can be re-enabled on the controller to assume the correct date and time.&lt;/p>&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>Отключили NTP.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Откатили даты назад.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Точки доступа стали загружать образ.&lt;/p>
+&lt;/li>
+&lt;/ul></description></item><item><title>Сопоставление команд Cisco и Huawei</title><link>http://localhost:1313/ru/post/2023/04/04/cisco-huawei-commands/</link><pubDate>Tue, 04 Apr 2023 15:26:00 +0300</pubDate><guid>http://localhost:1313/ru/post/2023/04/04/cisco-huawei-commands/</guid><description>&lt;p>Команды Cisco и Huawei.&lt;/p>
+&lt;details class="print:hidden xl:hidden" >
+&lt;summary>Содержание&lt;/summary>
+&lt;div class="text-sm">
+&lt;nav id="TableOfContents">&lt;/nav>
+&lt;/div>
+&lt;/details>
+&lt;div class="table-caption">
+&lt;span class="table-number">&amp;#1058;&amp;#1072;&amp;#1073;&amp;#1083;&amp;#1080;&amp;#1094;&amp;#1072; 1:&lt;/span>
+Exec mode
+&lt;/div>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Cisco exec mode&lt;/th>
+&lt;th>Huawei user view&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>clear&lt;/td>
+&lt;td>reset&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>clear access-list counters&lt;/td>
+&lt;td>reset acl counter all&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>clear counters&lt;/td>
+&lt;td>reset counters interface&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>clear interface&lt;/td>
+&lt;td>reset counters interface&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>configure terminal&lt;/td>
+&lt;td>system-view&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>copy running-config startup-config&lt;/td>
+&lt;td>save&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>debug / no debug&lt;/td>
+&lt;td>debugging / undo debugging&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>disable&lt;/td>
+&lt;td>super 0&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>enable&lt;/td>
+&lt;td>super&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>erase&lt;/td>
+&lt;td>delete&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>exit&lt;/td>
+&lt;td>quit&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>more nvram:startup-config&lt;/td>
+&lt;td>display saved-configuration&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>no&lt;/td>
+&lt;td>undo&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>reload&lt;/td>
+&lt;td>reboot&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>show&lt;/td>
+&lt;td>display&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>show clock&lt;/td>
+&lt;td>display clock&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>show flash&lt;/td>
+&lt;td>dir flash:&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>show history-command&lt;/td>
+&lt;td>display history-command&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>show interfaces&lt;/td>
+&lt;td>display interface&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>show ip bgp&lt;/td>
+&lt;td>display bgp routing-table&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>show ip interface&lt;/td>
+&lt;td>display ip interface&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>show ip route&lt;/td>
+&lt;td>display ip routing-table&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>show logging&lt;/td>
+&lt;td>display logbuffer&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>show running-config&lt;/td>
+&lt;td>display current-configuration&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>show snmp&lt;/td>
+&lt;td>display snmp-agent statistics&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>show startup-config&lt;/td>
+&lt;td>display saved-configuration&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>show tech-support&lt;/td>
+&lt;td>display diagnostic-information&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>show users&lt;/td>
+&lt;td>display users&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>show version&lt;/td>
+&lt;td>display version&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>terminal length 0&lt;/td>
+&lt;td>screen-length 0 temporary&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>traceroute&lt;/td>
+&lt;td>tracert&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>write erase&lt;/td>
+&lt;td>reset saved-configuration&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>write memory&lt;/td>
+&lt;td>save&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>write terminal&lt;/td>
+&lt;td>display current-configuration&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;div class="table-caption">
+&lt;span class="table-number">&amp;#1058;&amp;#1072;&amp;#1073;&amp;#1083;&amp;#1080;&amp;#1094;&amp;#1072; 2:&lt;/span>
+Configuration mode
+&lt;/div>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Cisco configuration mode&lt;/th>
+&lt;th>Huawei system view&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>end&lt;/td>
+&lt;td>return&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>snmp-server&lt;/td>
+&lt;td>snmp-agent&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>hostname&lt;/td>
+&lt;td>sysname&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>router bgp&lt;/td>
+&lt;td>bgp&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>router ospf&lt;/td>
+&lt;td>ospf&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>router rip&lt;/td>
+&lt;td>rip&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>shutdown / no shutdown&lt;/td>
+&lt;td>shutdown / undo shutdown&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table></description></item><item><title>Контроллер Cisco WLC</title><link>http://localhost:1313/ru/post/2023/03/03/cisco-wlc/</link><pubDate>Fri, 03 Mar 2023 15:14:00 +0300</pubDate><guid>http://localhost:1313/ru/post/2023/03/03/cisco-wlc/</guid><description>&lt;p>Контроллер Cisco WLC.&lt;/p>
+&lt;details class="print:hidden xl:hidden" >
+&lt;summary>Содержание&lt;/summary>
+&lt;div class="text-sm">
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#полезные-команды">&lt;span class="section-num">2&lt;/span> Полезные команды&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#настройка-wlan">&lt;span class="section-num">3&lt;/span> Настройка WLAN&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#обновление">&lt;span class="section-num">4&lt;/span> Обновление&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/div>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>WLC (wireless lan controller) контроллер точек WiFi от Cisco.&lt;/li>
+&lt;li>Контроллер нужен для централизованного управления большими беспроводными сетями, построенными на базе не настраиваемых индивидуально точек доступа.&lt;/li>
+&lt;li>Точки доступа регистрируются на контроллере, получают с него настройки, управляются им, и предоставляют беспроводной доступ Wi-Fi абонентам.&lt;/li>
+&lt;li>Практически все модели точек доступа Cisco выпускаются как в автономном варианте (независимое управление через CLI или GUI), так и в унифицированном (лимитированный CLI и управление с контроллера по протоколу CAPWAP).&lt;/li>
+&lt;li>Контроллер представляет собой программно-аппаратную платформу взаимодействия с точками доступа, и проводной сетью.&lt;/li>
+&lt;li>Есть виртуальный контроллер в виде образа виртуальной машины под VMware ESXi (ovf-файл).&lt;/li>
+&lt;/ul>
+&lt;h2 id="полезные-команды">&lt;span class="section-num">2&lt;/span> Полезные команды&lt;/h2>
+&lt;ul>
+&lt;li>Настроить IP-адрес точке доступа:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">config ap static-ip &lt;span class="nb">enable&lt;/span> AP-NAME IP-ADDRESS MASK GATEWAY
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Настроить учётные данные точки доступа для Telnet/SSH:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">config ap telnet &lt;span class="nb">enable&lt;/span> AP-NAME
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">config ap ssh &lt;span class="nb">enable&lt;/span> AP-NAME
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">config ap mgmtuser add username USERNAME password PASSWORD enablesecret ENABLE-PASSWORD AP-NAME
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Изменить режим точки доступа:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">config ap mode MODE AP-NAME
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Настроить имя группы на точке доступа&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">config ap group-name GROUP-NAME AP-NAME
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>
+&lt;p>Настроить flexconnect native vlan на точке доступа:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">config ap flexconnect vlan native VLAN-ID AP-NAME
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Проверить идентификатор vlan интерфейса:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">show interface summary
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Проверить идентификатор wlan интерфейса:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">show wlan summary
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Сопоставить идентификатор vlan с wlan на точке доступа:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">config ap flexconnect vlan wlan WLAN-ID VLAN-ID AP-NAME
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Настроить wlan и сопоставление wlan-интерфейса в группе точек доступа:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">config wlan apgroup interface-mapping add GROUP-NAME WLAN-ID INTERFACE-NAME
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Понизить точку доступа до автономной с WLC:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">config ap tftp-downgrade TFTP-IP-ADDRESS FILENAME AP-NAME
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Посмотреть cdp на точке доступа:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">show ap cdp neighbors detail AP-NAME
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Отключить подключение беспроводных клиентов к сети (добавление клиентов в список исключений):&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">config exclusionlist add MAC-ADDRESS DESCRIPTION
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Включить светодиод точки доступа:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">config ap led-state &lt;span class="nb">enable&lt;/span> AP_NAME
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Отключить светодиод точки доступа:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">config ap led-state disable AP_NAME
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Перезагрузить точку доступа:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">config ap reset AP_NAME
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Применить фильтр для фильтрации результатов:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">grep include &lt;span class="s2">&amp;#34;pattern&amp;#34;&lt;/span> &lt;span class="s2">&amp;#34;commands&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Примеры:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">grep include &lt;span class="s2">&amp;#34;AP Serial Number&amp;#34;&lt;/span> &lt;span class="s2">&amp;#34;show ap config general AP-NAME&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">grep include &lt;span class="s2">&amp;#34;MAC Address&amp;#34;&lt;/span> &lt;span class="s2">&amp;#34;show ap config general AP-NAME”
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s2">grep include &amp;#34;&lt;/span>IP Address&lt;span class="s2">&amp;#34; &amp;#34;&lt;/span>show ap config general AP-NAME&lt;span class="s2">&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="настройка-wlan">&lt;span class="section-num">3&lt;/span> Настройка WLAN&lt;/h2>
+&lt;ul>
+&lt;li>Каждая беспроводная сеть идентифицируется уникальным именем (SSID).&lt;/li>
+&lt;li>Каждая сеть может иметь свой, независимый набор параметров авторизации, шифрования, QoS, дополнительных свойств.&lt;/li>
+&lt;li>Каждая точка доступа может обслуживать (анонсировать) до 16 беспроводных сетей.&lt;/li>
+&lt;li>Контроллер (в зависимости от модели) может обслуживать до 512 сетей и до сотен точек доступа.&lt;/li>
+&lt;li>Просмотр настроенных WLAN:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">show wlan summary
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Для создания новой сети необходимо задать базовые параметры:
+&lt;ul>
+&lt;li>&lt;em>Тип сети&lt;/em>: WLAN (беспроводная). Контроллер может также работать как Captive Portal для проводной сети (Guest LAN).&lt;/li>
+&lt;li>&lt;em>Имя профиля (profile-name)&lt;/em>: произвольное слово, обычно соответствует имени сети, применяется при использовании систем управления WCS/NCS.&lt;/li>
+&lt;li>&lt;em>Имя сети (SSID)&lt;/em>: то, как ваша сеть будет видна клиентским компьютерам.&lt;/li>
+&lt;li>&lt;em>Идентификатор (порядковый номер)&lt;/em>: по умолчанию ваши точки доступа будут анонсировать сети с номерами &amp;lt;=16.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Создадим новую сеть:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">config wlan create wlan-id profile-name ssid
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Следует задать параметры сети.
+&lt;ul>
+&lt;li>&lt;em>enable&lt;/em> включает, &lt;em>disable&lt;/em> выключает обслуживание сети точками доступа.&lt;/li>
+&lt;li>&lt;em>Security policy&lt;/em> оповещает вас о текущем наборе политик безопасности сети, которые настраиваются далее&lt;/li>
+&lt;li>Radio policy позволяет выбрать, в каком диапазоне частот (2.4, 5 ГГц) и скоростей (до 11, до 54 мбит/с) будет работать сеть. Возможны комбинации вариантов. Высокие скорости (802.11n) — тема отдельной статьи. Естественно, ваши точки должны поддерживать выбранные диапазоны.&lt;/li>
+&lt;li>&lt;em>interface&lt;/em> определяет, на какой проводной сетевой интерфейс (VLAN) контроллера по умолчанию будут терминироваться подключения беспроводных клиентов.
+&lt;ul>
+&lt;li>Можно создать несколько динамических интерфейсов, каждый со своим VLAN ID, и распределять ваших пользователей по ним в зависимости от того, к какой сети они подключились.&lt;/li>
+&lt;li>&lt;em>Multicast VLAN&lt;/em> определяет, куда в случае нескольких групп интерфейсов будет идти мультикаст трафик.&lt;/li>
+&lt;li>&lt;em>Broadcast SSID&lt;/em> определяет, будет ли имя сети отражаться в beacon (анонсах) пакетов, периодически рассылаемых точкой доступа. Иначе это называется «открытая/закрытая сеть».&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Подключение сети к интерфейсу:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">config wlan interface &amp;lt;wlan-id&amp;gt; &amp;lt;interface-name&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">config wlan broadcast-ssid &lt;span class="nb">enable&lt;/span> &amp;lt;wlan_id&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Безопасность беспроводной сети строится из трех компонентов:
+&lt;ul>
+&lt;li>авторизация;&lt;/li>
+&lt;li>шифрования;&lt;/li>
+&lt;li>веб-политика (опционально), позволяет заворачивать клиентскую HTTP-сессию на встроенный или внешний веб-сервер и запрашивать подтверждение/логин-пароль через форму.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Доступные параметры безопасности 2го уровня:
+&lt;ul>
+&lt;li>&lt;em>None&lt;/em>: авторизация и шифрование трафика не применяются;&lt;/li>
+&lt;li>&lt;em>WPA+WPA2&lt;/em>: позволяет выбрать политику WPA, WPA2 (либо обе), тип шифрования TKIP, AES (либо оба). Данные параметры просто анонсируются клиентам в beacon пакетах.
+&lt;ul>
+&lt;li>Оптимальным будет использование WPA2/AES.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Нужно, как будет образовываться ключ для шифрования:
+&lt;ul>
+&lt;li>&lt;em>802.1X&lt;/em>: индивидуальный ключ для каждого клиента будет генерироваться RADIUS-сервером в момент авторизации; также называется WPA(2) Enterprise;&lt;/li>
+&lt;li>&lt;em>CCKM&lt;/em>: используется собственный механизм Cisco генерации ключей, подходит только для Cisco Wi-Fi телефонов;&lt;/li>
+&lt;li>&lt;em>PSK&lt;/em>: общий (pre-shared) ключ, пароль на сеть, именуемую в таком случае WPA(2) Personal;&lt;/li>
+&lt;li>&lt;em>802.1x+CCKM&lt;/em>: гибрид CCKM и RADIUS-ключа (для Cisco-телефонов);&lt;/li>
+&lt;li>&lt;em>802.1X&lt;/em>: индивидуальный ключ для каждого клиента будет генерироваться RADIUS-сервером в момент авторизации (это WEP-ключ, протокол шифрования радиоканала &amp;mdash; WEP, пользоваться не рекомендуется);&lt;/li>
+&lt;li>&lt;em>Static WEP&lt;/em>: статический WEP-ключ;&lt;/li>
+&lt;li>&lt;em>Static WEP+802.1X&lt;/em>: гибрид двух предыдущих;&lt;/li>
+&lt;li>&lt;em>CKIP&lt;/em>: проприетарный аналог WEP для Cisco телефонов.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>В реальности необходимо делать выбор между:
+&lt;ul>
+&lt;li>отсутствием шифрования/авторизации (гостевой доступ);&lt;/li>
+&lt;li>WPA2 (AES) PSK (WPA2 Personal) для доступа в сеть по общему паролю;&lt;/li>
+&lt;li>WPA2 (AES) + 802.1X (WPA2 Enterprise) для доступа в сеть через авторизацию на RADIUS-сервере.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Настроим параметры безопасности на интерфейсе:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">config wlan security wpa akm 802.1x disable &amp;lt;wlan_id&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">config wlan security wpa akm psk &lt;span class="nb">enable&lt;/span> &amp;lt;wlan_id&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">config wlan security wpa akm psk set-key ascii &amp;lt;password&amp;gt; &amp;lt;wlan_id&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Подключим радио-интерфейсы:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">config wlan radio &amp;lt;wlan_id&amp;gt; all
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Активируем интерфейс:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">config wlan &lt;span class="nb">enable&lt;/span> &amp;lt;wlan_id&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Сети добавляются автоматически в группу точек доступа &lt;code>default-group&lt;/code>.&lt;/li>
+&lt;li>Если существуют другие группы точек доступа, то следует сеть добавить к ней:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">config wlan apgroup interface-mapping add &amp;lt;apgroup-name&amp;gt; &amp;lt;wlan-id&amp;gt; &amp;lt;interface-name&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="обновление">&lt;span class="section-num">4&lt;/span> Обновление&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="http://localhost:1313/ru/post/2023/10/01/cisco-wlc-firmware-upgrade/">Контроллер Cisco WLC. Обновление программного обеспечения&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>Начальная конфигурация коммутатора Cisco</title><link>http://localhost:1313/ru/post/2022/11/15/initial-cisco-switch-configuration/</link><pubDate>Tue, 15 Nov 2022 14:51:00 +0300</pubDate><guid>http://localhost:1313/ru/post/2022/11/15/initial-cisco-switch-configuration/</guid><description>&lt;p>Начальная конфигурация коммутатора Cisco Catalist.&lt;/p>
+&lt;details class="print:hidden xl:hidden" >
+&lt;summary>Содержание&lt;/summary>
+&lt;div class="text-sm">
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#подготовка">&lt;span class="section-num">1&lt;/span> Подготовка&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#базовая-конфигурация">&lt;span class="section-num">2&lt;/span> Базовая конфигурация&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#включение">&lt;span class="section-num">2.1&lt;/span> Включение&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#переход-в-привилегированный-режим">&lt;span class="section-num">2.2&lt;/span> Переход в привилегированный режим&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#переход-в-режим-конфигурации">&lt;span class="section-num">2.3&lt;/span> Переход в режим конфигурации&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#шифрование-паролей">&lt;span class="section-num">2.4&lt;/span> Шифрование паролей&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#административный-доступ">&lt;span class="section-num">2.5&lt;/span> Административный доступ&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#настройка-нового-режима-аутентификации">&lt;span class="section-num">2.6&lt;/span> Настройка нового режима аутентификации&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#административный-пользователь">&lt;span class="section-num">2.7&lt;/span> Административный пользователь&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#удалённый-доступ">&lt;span class="section-num">2.8&lt;/span> Удалённый доступ&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#зададим-имя-устройства">&lt;span class="section-num">2.9&lt;/span> Зададим имя устройства&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#настройка-ssh">&lt;span class="section-num">2.10&lt;/span> Настройка ssh&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#поднимем-интерфейсы">&lt;span class="section-num">2.11&lt;/span> Поднимем интерфейсы&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#сетевые-настройки">&lt;span class="section-num">2.12&lt;/span> Сетевые настройки&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#настройка-vtp">&lt;span class="section-num">2.13&lt;/span> Настройка vtp&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#настройка-lldp">&lt;span class="section-num">2.14&lt;/span> Настройка lldp&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#безопасность">&lt;span class="section-num">2.15&lt;/span> Безопасность&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#настройка-других-портов">&lt;span class="section-num">2.16&lt;/span> Настройка других портов&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#сохранение-конфигурации">&lt;span class="section-num">2.17&lt;/span> Сохранение конфигурации&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#добавление-в-dns">&lt;span class="section-num">3&lt;/span> Добавление в DNS&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#nsupdate">&lt;span class="section-num">3.1&lt;/span> nsupdate&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#подключение-к-системе-мониторинга">&lt;span class="section-num">4&lt;/span> Подключение к системе мониторинга&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#подключение-к-observium">&lt;span class="section-num">4.1&lt;/span> Подключение к Observium&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#подключение-к-librenms">&lt;span class="section-num">4.2&lt;/span> Подключение к Librenms&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/div>
+&lt;/details>
+&lt;h2 id="подготовка">&lt;span class="section-num">1&lt;/span> Подготовка&lt;/h2>
+&lt;ul>
+&lt;li>На Linux для конфигурации используется Minicom.&lt;/li>
+&lt;li>Запускайте по пользователем &lt;code>root&lt;/code>.&lt;/li>
+&lt;li>Для первоначальной конфигурации задайте ключ &lt;code>-s&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">minicom -s
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Выставите параметры Скорость/Четность/Биты (Bps/Par/Bits) = 9600 8N1.&lt;/li>
+&lt;li>Укажите последовательный порт:
+&lt;ul>
+&lt;li>последовательный порт: &lt;code>/dev/ttyS[0-3]&lt;/code>;&lt;/li>
+&lt;li>порт USB: &lt;code>/dev/ttyUSB0&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Итоговая конфигурация:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-text" data-lang="text">&lt;span class="line">&lt;span class="cl">A - Последовательный порт : /dev/ttyUSB0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">B - Размещение lock-файла : /var/lock
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">C - Программа при выходе :
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">D - Программа при запуске :
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">E - Скорость/Чётность/Биты : 9600 8N1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">F - Аппаратное управление потоком : Да
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">G - Программное управление потоком : Нет
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>После изменений в меню выбрать &amp;ldquo;Сохранить настройки как dfl&amp;rdquo; или под своим именем.&lt;/li>
+&lt;/ul>
+&lt;h2 id="базовая-конфигурация">&lt;span class="section-num">2&lt;/span> Базовая конфигурация&lt;/h2>
+&lt;h3 id="включение">&lt;span class="section-num">2.1&lt;/span> Включение&lt;/h3>
+&lt;ul>
+&lt;li>При первом включении, после долгой загрузки коммутатор выдает предложение запустить диалог стартовой конфигурации:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-text" data-lang="text">&lt;span class="line">&lt;span class="cl">Would you like to enter the initial configuration dialog? [yes/no]:
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Следует отказаться и выполнить конфигурацию вручную, поэтому отвечаем &lt;code>no&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h3 id="переход-в-привилегированный-режим">&lt;span class="section-num">2.2&lt;/span> Переход в привилегированный режим&lt;/h3>
+&lt;ul>
+&lt;li>Получаем приглашение &lt;code>Switch&amp;gt;&lt;/code>.&lt;/li>
+&lt;li>Переходим в привилегированный режим командой &lt;code>enable&lt;/code>.&lt;/li>
+&lt;li>Приглашение меняется на &lt;code>#&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">Switch&amp;gt;enable
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Switch#
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="переход-в-режим-конфигурации">&lt;span class="section-num">2.3&lt;/span> Переход в режим конфигурации&lt;/h3>
+&lt;ul>
+&lt;li>Перейдём в режим конфигурации коммутатора:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">Switch#configure terminal
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="шифрование-паролей">&lt;span class="section-num">2.4&lt;/span> Шифрование паролей&lt;/h3>
+&lt;ul>
+&lt;li>Установим шифрование паролей, хранящиеся в устройстве в открытом виде:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">Switch&lt;span class="o">(&lt;/span>config&lt;span class="o">)&lt;/span>&lt;span class="c1">#service password-encryption&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="административный-доступ">&lt;span class="section-num">2.5&lt;/span> Административный доступ&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>Зададим пароль на &lt;em>enable&lt;/em>:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">Switch&lt;span class="o">(&lt;/span>config&lt;span class="o">)&lt;/span>&lt;span class="c1">#enable secret &amp;lt;пароль&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>&lt;code>secret&lt;/code> : указывает на то, что пароль будет храниться в зашифрованном виде&lt;sup id="fnref:1">&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref">1&lt;/a>&lt;/sup>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>После оператора &lt;code>secret&lt;/code> можно задать представление пароля:&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>0&lt;/code> : незашифрованный текстовый пароль; используется по умолчанию, поэтому не обязателен;&lt;/li>
+&lt;li>&lt;code>4&lt;/code> : используется хеш SHA-256; считается устаревшим;&lt;/li>
+&lt;li>&lt;code>5&lt;/code> : используется хеш MD5;&lt;/li>
+&lt;li>&lt;code>8&lt;/code> : используется хеш SHA-256;&lt;/li>
+&lt;li>&lt;code>9&lt;/code> : используется алгоритм &lt;code>scrypt&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="настройка-нового-режима-аутентификации">&lt;span class="section-num">2.6&lt;/span> Настройка нового режима аутентификации&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>Настроим режим &lt;em>aaa&lt;/em> (authentication, authorization, accounting):&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">Switch&lt;span class="o">(&lt;/span>config&lt;span class="o">)&lt;/span>&lt;span class="c1">#aaa new-model&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Switch&lt;span class="o">(&lt;/span>config&lt;span class="o">)&lt;/span>&lt;span class="c1">#aaa authentication login default local&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Настроим подключение по консоли:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">Switch&lt;span class="o">(&lt;/span>config&lt;span class="o">)&lt;/span>&lt;span class="c1">#line console 0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Switch&lt;span class="o">(&lt;/span>config-line&lt;span class="o">)&lt;/span>&lt;span class="c1">#login authentication default&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Switch&lt;span class="o">(&lt;/span>config-line&lt;span class="o">)&lt;/span>&lt;span class="c1">#no password&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Switch&lt;span class="o">(&lt;/span>config-line&lt;span class="o">)&lt;/span>&lt;span class="c1">#exit&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Консоль настроена на использование локальной базы данных имён пользователей и паролей.&lt;/li>
+&lt;li>&lt;code>no password&lt;/code> : удалить старую модель паролей.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="административный-пользователь">&lt;span class="section-num">2.7&lt;/span> Административный пользователь&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>Зададим пользователя admin и пароль для него:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">Switch&lt;span class="o">(&lt;/span>config&lt;span class="o">)&lt;/span>&lt;span class="c1">#username admin privilege 1 secret &amp;lt;пароль&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>&lt;code>privelege&lt;/code> : уровень привилегий для данного пользователя от 0 до 15 (15 самый высокий);&lt;/li>
+&lt;li>&lt;code>secret&lt;/code> : пароль будет храниться в зашифрованном виде.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="удалённый-доступ">&lt;span class="section-num">2.8&lt;/span> Удалённый доступ&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>Не во всех поставках IOS есть поддержка &lt;em>ssh&lt;/em>. Поэтому приходится использовать &lt;em>telnet&lt;/em>.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Настроим порядок аутентификации по &lt;em>telnet&lt;/em>.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Настроим подключение по терминальным линиям.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">Switch&lt;span class="o">(&lt;/span>config&lt;span class="o">)&lt;/span>&lt;span class="c1">#line vty 0 4&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Switch&lt;span class="o">(&lt;/span>config-line&lt;span class="o">)&lt;/span>&lt;span class="c1">#login authentication default&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Switch&lt;span class="o">(&lt;/span>config-line&lt;span class="o">)&lt;/span>&lt;span class="c1">#transport input telnet&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Switch&lt;span class="o">(&lt;/span>config-line&lt;span class="o">)&lt;/span>&lt;span class="c1">#no password&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Switch&lt;span class="o">(&lt;/span>config-line&lt;span class="o">)&lt;/span>&lt;span class="c1">#exit&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Switch&lt;span class="o">(&lt;/span>config&lt;span class="o">)&lt;/span>&lt;span class="c1">#line vty 5 15&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Switch&lt;span class="o">(&lt;/span>config-line&lt;span class="o">)&lt;/span>&lt;span class="c1">#login authentication default&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Switch&lt;span class="o">(&lt;/span>config-line&lt;span class="o">)&lt;/span>&lt;span class="c1">#transport input telnet&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Switch&lt;span class="o">(&lt;/span>config-line&lt;span class="o">)&lt;/span>&lt;span class="c1">#no password&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Switch&lt;span class="o">(&lt;/span>config-line&lt;span class="o">)&lt;/span>&lt;span class="c1">#exit&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Терминальные линии, включая telnet, настроены на использование одной и той же локальной базы данных имён пользователей и паролей.&lt;/li>
+&lt;li>&lt;code>no password&lt;/code> : удалить старую модель паролей.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="зададим-имя-устройства">&lt;span class="section-num">2.9&lt;/span> Зададим имя устройства&lt;/h3>
+&lt;ul>
+&lt;li>Имя устройства имеет вид: sw-&amp;lt;помещение&amp;gt;-&amp;lt;номер устройства&amp;gt;, например &lt;code>sw-103-1&lt;/code>.&lt;/li>
+&lt;li>Зададим имя устройства:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">Switch&lt;span class="o">(&lt;/span>config&lt;span class="o">)&lt;/span>&lt;span class="c1">#hostname sw-103-1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sw-103-1&lt;span class="o">(&lt;/span>config&lt;span class="o">)&lt;/span>&lt;span class="c1">#ip domain-name example.com&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="настройка-ssh">&lt;span class="section-num">2.10&lt;/span> Настройка ssh&lt;/h3>
+&lt;ul>
+&lt;li>Если устройство поддерживает ssh, то стоит его настроить.&lt;/li>
+&lt;li>Создадим ключ (необходимо, чтобы было настроено имя домена):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sw-103-1&lt;span class="o">(&lt;/span>config&lt;span class="o">)&lt;/span>&lt;span class="c1">#crypto key generate rsa modulus 2048&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Задаёт версию протокола для ssh:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sw-103-1&lt;span class="o">(&lt;/span>config&lt;span class="o">)&lt;/span>&lt;span class="c1">#ip ssh version 2&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Указываем время таймаута до автоматического закрытия SSH сессии в 60 минут:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sw-103-1&lt;span class="o">(&lt;/span>config&lt;span class="o">)&lt;/span>&lt;span class="c1">#ip ssh time-out 60&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Сбрасываем подключение после 3 неверных паролей:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sw-103-1&lt;span class="o">(&lt;/span>config&lt;span class="o">)&lt;/span>&lt;span class="c1">#ip ssh authentication-retries 3&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Задаём протокол для подключения:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sw-103-1&lt;span class="o">(&lt;/span>config&lt;span class="o">)&lt;/span>&lt;span class="c1">#line vty 0 4&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sw-103-1&lt;span class="o">(&lt;/span>config-line&lt;span class="o">)&lt;/span>&lt;span class="c1">#transport input ssh&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Можно также оставить и telnet:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sw-103-1&lt;span class="o">(&lt;/span>config&lt;span class="o">)&lt;/span>&lt;span class="c1">#line vty 0 4&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sw-103-1&lt;span class="o">(&lt;/span>config-line&lt;span class="o">)&lt;/span>&lt;span class="c1">#transport input all&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="поднимем-интерфейсы">&lt;span class="section-num">2.11&lt;/span> Поднимем интерфейсы&lt;/h3>
+&lt;ul>
+&lt;li>Сделаем последний порт транковым:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sw-103-1&lt;span class="o">(&lt;/span>config&lt;span class="o">)&lt;/span>&lt;span class="c1">#interface gigabitEthernet1/0/48&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sw-103-1&lt;span class="o">(&lt;/span>config-if-range&lt;span class="o">)&lt;/span>&lt;span class="c1">#switchport mode trunk&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sw-103-1&lt;span class="o">(&lt;/span>config-if-range&lt;span class="o">)&lt;/span>&lt;span class="c1">#exit&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="сетевые-настройки">&lt;span class="section-num">2.12&lt;/span> Сетевые настройки&lt;/h3>
+&lt;ul>
+&lt;li>Зададим адрес 192.168.0.1/24, шлюз 192.168.0.254:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sw-103-1&lt;span class="o">(&lt;/span>config&lt;span class="o">)&lt;/span>&lt;span class="c1">#interface vlan1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sw-103-1&lt;span class="o">(&lt;/span>config-if&lt;span class="o">)&lt;/span>&lt;span class="c1">#no shutdown&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sw-103-1&lt;span class="o">(&lt;/span>config-if&lt;span class="o">)&lt;/span>&lt;span class="c1">#ip address 192.168.0.1 255.255.255.0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sw-103-1&lt;span class="o">(&lt;/span>config-if&lt;span class="o">)&lt;/span>&lt;span class="c1">#exit&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sw-103-1&lt;span class="o">(&lt;/span>config&lt;span class="o">)&lt;/span>&lt;span class="c1">#ip default-gateway 192.168.0.254&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Настроим клиента DNS:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sw-103-1&lt;span class="o">(&lt;/span>config&lt;span class="o">)&lt;/span>&lt;span class="c1">#ip name-server 192.168.0.254&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Настроим NTP:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sw-103-1&lt;span class="o">(&lt;/span>config&lt;span class="o">)&lt;/span>&lt;span class="c1">#ntp server pool.ntp.org&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Проверим статус синхронизации:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sw-103-1#sh ntp status
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="настройка-vtp">&lt;span class="section-num">2.13&lt;/span> Настройка vtp&lt;/h3>
+&lt;ul>
+&lt;li>Настройте vtp:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sw-103-1&lt;span class="o">(&lt;/span>config&lt;span class="o">)&lt;/span>&lt;span class="c1">#vtp mode client&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Проверьте статус vtp:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sw-103-1#sh vtp status
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="настройка-lldp">&lt;span class="section-num">2.14&lt;/span> Настройка lldp&lt;/h3>
+&lt;ul>
+&lt;li>Если в сети присутствует не только оборудование Cisco, то есть смысл подключить поддержку протокола lldp:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sw-103-1&lt;span class="o">(&lt;/span>config&lt;span class="o">)&lt;/span>&lt;span class="c1">#lldp run&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="безопасность">&lt;span class="section-num">2.15&lt;/span> Безопасность&lt;/h3>
+&lt;ul>
+&lt;li>Отключим сервер http:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sw-103-1&lt;span class="o">(&lt;/span>config&lt;span class="o">)&lt;/span>&lt;span class="c1">#no ip http server&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sw-103-1&lt;span class="o">(&lt;/span>config&lt;span class="o">)&lt;/span>&lt;span class="c1">#no ip http secure-server&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="настройка-других-портов">&lt;span class="section-num">2.16&lt;/span> Настройка других портов&lt;/h3>
+&lt;ul>
+&lt;li>Настроим другие порты для подключения клиентских устройств:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sw-103-1&lt;span class="o">(&lt;/span>config&lt;span class="o">)&lt;/span>&lt;span class="c1">#interface range GigabitEthernet1/0/1 - 46&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sw-103-1&lt;span class="o">(&lt;/span>config-if-range&lt;span class="o">)&lt;/span>&lt;span class="c1">#switchport mode access&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sw-103-1&lt;span class="o">(&lt;/span>config-if-range&lt;span class="o">)&lt;/span>&lt;span class="c1">#switchport access vlan 100&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sw-103-1&lt;span class="o">(&lt;/span>config-if-range&lt;span class="o">)&lt;/span>&lt;span class="c1">#exit&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="сохранение-конфигурации">&lt;span class="section-num">2.17&lt;/span> Сохранение конфигурации&lt;/h3>
+&lt;ul>
+&lt;li>Сохраните конфигурацию:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sw-103-1#write mem
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="добавление-в-dns">&lt;span class="section-num">3&lt;/span> Добавление в DNS&lt;/h2>
+&lt;ul>
+&lt;li>Необходимо добавить коммутатор в DNS.&lt;/li>
+&lt;/ul>
+&lt;h3 id="nsupdate">&lt;span class="section-num">3.1&lt;/span> nsupdate&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="http://localhost:1313/ru/post/2023/10/28/nsupdate-dynamic-dns-editor/">nsupdate: динамический редактор зон DNS&lt;/a>&lt;/li>
+&lt;li>Добавьте адрес коммутатора в DNS:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> -e &lt;span class="s2">&amp;#34;update add sw-103-1.example.com 86400 a 192.168.0.1\nshow\nsend&amp;#34;&lt;/span> &lt;span class="p">|&lt;/span> nsupdate -v -k /etc/named/keys/example.com.key
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="подключение-к-системе-мониторинга">&lt;span class="section-num">4&lt;/span> Подключение к системе мониторинга&lt;/h2>
+&lt;ul>
+&lt;li>Настройте доступ к SNMP.&lt;/li>
+&lt;li>Пусть сервер мониторинга имеет адрес: 192.168.0.5.&lt;/li>
+&lt;li>Имя коммьюнити для чтения: rocom.
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sw-103-1&lt;span class="o">(&lt;/span>config&lt;span class="o">)&lt;/span>&lt;span class="c1">#access-list 90 permit 192.168.0.5&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sw-103-1&lt;span class="o">(&lt;/span>config&lt;span class="o">)&lt;/span>&lt;span class="c1">#snmp-server community rocom RO 90&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Добавьте коммутатор в свой DNS.&lt;/li>
+&lt;/ul>
+&lt;h3 id="подключение-к-observium">&lt;span class="section-num">4.1&lt;/span> Подключение к Observium&lt;/h3>
+&lt;ul>
+&lt;li>Подключитесь к Observium.&lt;/li>
+&lt;li>Добавьте коммутатор в список наблюдения в Observium:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="o">[&lt;/span>root@observium ~&lt;span class="o">]&lt;/span>&lt;span class="c1"># /opt/observium/add_device.php sw-103-1 rocom&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">[&lt;/span>root@observium ~&lt;span class="o">]&lt;/span>&lt;span class="c1"># /opt/observium/discovery.php -h sw-103-1; /opt/observium/poller.php -h sw-103-1&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="подключение-к-librenms">&lt;span class="section-num">4.2&lt;/span> Подключение к Librenms&lt;/h3>
+&lt;ul>
+&lt;li>Подключитесь к Librenms (см. &lt;a href="http://localhost:1313/ru/post/2023/03/20/librenms-monitoring-system/">Система мониторинга LibreNMS&lt;/a>).&lt;/li>
+&lt;li>Добавьте коммутатор в список наблюдения в Librenms:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sudo -u librenms /usr/local/bin/lnms device:add sw-103-1 -c rocom
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo -u librenms /usr/local/bin/lnms device:poll sw-103-1
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Если есть в базе данное устройство, но под другим именем, то можно его переименовать:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sudo -u librenms /usr/local/bin/lnms device:rename &amp;lt;old hostname&amp;gt; &amp;lt;new hostname&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;div class="footnotes" role="doc-endnotes">
+&lt;hr>
+&lt;ol>
+&lt;li id="fn:1">
+&lt;p>Установка пароля может быть выполнена двумя командами &lt;code>password&lt;/code> и &lt;code>secret&lt;/code>. В первом случае пароль хранится в конфигурационном файле в открытом виде, а во втором в зашифрованном. Если использовалась команда &lt;code>password&lt;/code>, необходимо зашифровать пароли, хранящиеся в устройстве в открытом виде с помощью команды &lt;code>service password-encryption&lt;/code> в режиме глобальной конфигурации.&amp;#160;&lt;a href="#fnref:1" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;/div></description></item><item><title>Работа без учётной записи в Cisco Packet Tracer</title><link>http://localhost:1313/ru/post/2022/05/07/cisco-packet-tracer-accountless/</link><pubDate>Sat, 07 May 2022 15:39:00 +0300</pubDate><guid>http://localhost:1313/ru/post/2022/05/07/cisco-packet-tracer-accountless/</guid><description>&lt;p>В начале марта 2022 года Cisco заблокировало учётные записи пользователей из России и доступ с ip-адресов России.&lt;/p>
+&lt;details class="print:hidden xl:hidden" >
+&lt;summary>Содержание&lt;/summary>
+&lt;div class="text-sm">
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#установка-патча-на-packet-tracer">&lt;span class="section-num">2&lt;/span> Установка патча на Packet Tracer&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#видео-установка-патча-на-packet-tracer--windows">&lt;span class="section-num">2.1&lt;/span> Видео: Установка патча на Packet Tracer (Windows)&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#запуск-packet-tracer-без-сети">&lt;span class="section-num">3&lt;/span> Запуск Packet Tracer без сети&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#linux">&lt;span class="section-num">3.1&lt;/span> Linux&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#программа-firejail">&lt;span class="section-num">3.1.1&lt;/span> Программа &lt;em>firejail&lt;/em>&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#запуск-packet-tracer-без-сети-на-linux">&lt;span class="section-num">3.1.2&lt;/span> Запуск Packet Tracer без сети на Linux&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#windows">&lt;span class="section-num">3.2&lt;/span> Windows&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#блокировка-доступа-в-интернет">&lt;span class="section-num">3.2.1&lt;/span> Блокировка доступа в интернет&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#запуск-packet-tracer-без-сети-на-windows">&lt;span class="section-num">3.2.2&lt;/span> Запуск Packet Tracer без сети на Windows&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/div>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>Начиная с версии PacketTracer7 для работы требуется наличие учётной записи в Network Academy: &lt;a href="https://www.netacad.com/" target="_blank" rel="noopener">https://www.netacad.com/&lt;/a> или &lt;a href="https://skillsforall.com/" target="_blank" rel="noopener">https://skillsforall.com/&lt;/a>.&lt;/li>
+&lt;li>В начале марта 2022 года Cisco заблокировало учётные записи пользователей из России и доступ с ip-адресов России.&lt;/li>
+&lt;/ul>
+&lt;h2 id="установка-патча-на-packet-tracer">&lt;span class="section-num">2&lt;/span> Установка патча на Packet Tracer&lt;/h2>
+&lt;ul>
+&lt;li>Можно установить патч, отключающий проверку учётной записи при запуске PacketTracer.&lt;/li>
+&lt;li>Один из вариантов находится по адресу &lt;a href="https://rutracker.org/forum/viewtopic.php?t=6103761" target="_blank" rel="noopener">https://rutracker.org/forum/viewtopic.php?t=6103761&lt;/a>.&lt;/li>
+&lt;li>Патч копируется в каталог с программой и запускается от имени администратора.&lt;/li>
+&lt;li>Перед этим следует отключить (временно) антивирус.&lt;/li>
+&lt;/ul>
+&lt;h3 id="видео-установка-патча-на-packet-tracer--windows">&lt;span class="section-num">2.1&lt;/span> Видео: Установка патча на Packet Tracer (Windows)&lt;/h3>
+&lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+&lt;iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="allowfullscreen" loading="eager" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/JVmEkkMFI_g?autoplay=0&amp;amp;controls=1&amp;amp;end=0&amp;amp;loop=0&amp;amp;mute=0&amp;amp;start=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" title="YouTube video">&lt;/iframe>
+&lt;/div>
+&lt;h2 id="запуск-packet-tracer-без-сети">&lt;span class="section-num">3&lt;/span> Запуск Packet Tracer без сети&lt;/h2>
+&lt;ul>
+&lt;li>При запуске Packet Tracer на компьютере без доступа к сети учётная запись не проверяется.&lt;/li>
+&lt;/ul>
+&lt;h3 id="linux">&lt;span class="section-num">3.1&lt;/span> Linux&lt;/h3>
+&lt;h4 id="программа-firejail">&lt;span class="section-num">3.1.1&lt;/span> Программа &lt;em>firejail&lt;/em>&lt;/h4>
+&lt;!--list-separator-->
+&lt;ol>
+&lt;li>
+&lt;p>Общая информация&lt;/p>
+&lt;ul>
+&lt;li>Ограничивает среду выполнения ненадёжных приложений с помощью &lt;em>пространств имён Linux&lt;/em> и &lt;em>seccomp-bpf&lt;/em>.&lt;/li>
+&lt;li>Сайт: &lt;a href="https://firejail.wordpress.com/" target="_blank" rel="noopener">https://firejail.wordpress.com/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;!--list-separator-->
+&lt;ol start="2">
+&lt;li>
+&lt;p>Установка&lt;/p>
+&lt;ul>
+&lt;li>Gentoo
+&lt;ul>
+&lt;li>Стандартная версия
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge sys-apps/firejail
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Версия с долговременной поддержкой
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge sys-apps/firejail-lts
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;!--list-separator-->
+&lt;ol start="3">
+&lt;li>
+&lt;p>Запуск Packet Tracer&lt;/p>
+&lt;ul>
+&lt;li>Запускаем с отключённой сетью:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">firejail --net&lt;span class="o">=&lt;/span>none --noprofile packettracer
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;h4 id="запуск-packet-tracer-без-сети-на-linux">&lt;span class="section-num">3.1.2&lt;/span> Запуск Packet Tracer без сети на Linux&lt;/h4>
+&lt;link rel = "stylesheet"
+href = "https://code.jquery.com/ui/1.14.1/themes/smoothness/jquery-ui.css">
+&lt;link rel = "stylesheet"
+href = "https://code.jquery.com/ui/1.14.1/themes/smoothness/jquery-ui.css">
+&lt;script type = "text/javascript"
+src = "https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js">
+&lt;/script>
+&lt;script type = "text/javascript"
+src = "https://ajax.googleapis.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js">
+&lt;/script>
+&lt;script>
+$(function() {
+$( "#tabs, #tabs1, #tabs2, #tabs3, #tabs4, #tabs5, #tabs6, #tabs7, #tabs8" ).tabs();
+});
+&lt;/script>
+&lt;div id = "tabs">
+&lt;ul>
+&lt;li>&lt;a href = "#tab-1">
+&lt;/a>&lt;/li>
+&lt;li>&lt;a href = "#tab-2">
+&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;div id ="tab-0">
+&lt;div class="embed video-player">
+&lt;iframe class="rutube-player" type="text/html"
+width="647" height="364"
+src="https://rutube.ru/play/embed/d20632ba64ccef923c3295da9fe19a7d"
+webkitAllowFullScreen mozallowfullscreen allowFullScreen
+allow="clipboard-write" frameborder="0">
+&lt;/iframe>
+&lt;/div>
+&lt;/div>
+&lt;div id ="tab-1">
+&lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+&lt;iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="allowfullscreen" loading="eager" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/OvfE3MsH-Jo?autoplay=0&amp;amp;controls=1&amp;amp;end=0&amp;amp;loop=0&amp;amp;mute=0&amp;amp;start=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" title="YouTube video">&lt;/iframe>
+&lt;/div>
+&lt;/div>
+&lt;div id ="tab-2">
+&lt;/div>
+&lt;/div>
+tabe widget
+&lt;h3 id="windows">&lt;span class="section-num">3.2&lt;/span> Windows&lt;/h3>
+&lt;h4 id="блокировка-доступа-в-интернет">&lt;span class="section-num">3.2.1&lt;/span> Блокировка доступа в интернет&lt;/h4>
+&lt;ul>
+&lt;li>Откройте &lt;em>Панель управления&lt;/em>.&lt;/li>
+&lt;li>Откройте пункт &lt;em>Брандмауэр Защитника Windows&lt;/em> или просто &lt;em>Брандмауэр Windows&lt;/em>.&lt;/li>
+&lt;li>В открывшемся окне нажмите &lt;em>Дополнительные параметры&lt;/em>.&lt;/li>
+&lt;li>Откроется окно брандмауэра в режиме повышенной безопасности.&lt;/li>
+&lt;li>Выберите &lt;em>Правило для исходящего подключения&lt;/em>, а потом &amp;mdash; &lt;em>Создать правило&lt;/em>.&lt;/li>
+&lt;li>Выберите &lt;em>Для программы&lt;/em> и нажмите &lt;em>Далее&lt;/em>.&lt;/li>
+&lt;li>Укажите путь к исполняемому файлу программы, которой нужно запретить доступ в Интернет.&lt;/li>
+&lt;li>В следующем окне оставьте отмеченным пункт /Блокировать подключение.&lt;/li>
+&lt;li>В следующем окне отметьте, для каких сетей выполнять блокировку. Если для любых &amp;mdash; оставьте отмеченными все пункты.&lt;/li>
+&lt;li>Укажите понятное для вас имя правила и нажмите &lt;em>Готово&lt;/em>.&lt;/li>
+&lt;/ul>
+&lt;h4 id="запуск-packet-tracer-без-сети-на-windows">&lt;span class="section-num">3.2.2&lt;/span> Запуск Packet Tracer без сети на Windows&lt;/h4>
+&lt;link rel = "stylesheet"
+href = "https://code.jquery.com/ui/1.14.1/themes/smoothness/jquery-ui.css">
+&lt;link rel = "stylesheet"
+href = "https://code.jquery.com/ui/1.14.1/themes/smoothness/jquery-ui.css">
+&lt;script type = "text/javascript"
+src = "https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js">
+&lt;/script>
+&lt;script type = "text/javascript"
+src = "https://ajax.googleapis.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js">
+&lt;/script>
+&lt;script>
+$(function() {
+$( "#tabs, #tabs1, #tabs2, #tabs3, #tabs4, #tabs5, #tabs6, #tabs7, #tabs8" ).tabs();
+});
+&lt;/script>
+&lt;div id = "tabs">
+&lt;ul>
+&lt;li>&lt;a href = "#tab-1">
+&lt;/a>&lt;/li>
+&lt;li>&lt;a href = "#tab-2">
+&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;div id ="tab-0">
+&lt;div class="embed video-player">
+&lt;iframe class="rutube-player" type="text/html"
+width="647" height="364"
+src="https://rutube.ru/play/embed/220a90487801dbf81e5016f6c1d213be"
+webkitAllowFullScreen mozallowfullscreen allowFullScreen
+allow="clipboard-write" frameborder="0">
+&lt;/iframe>
+&lt;/div>
+&lt;/div>
+&lt;div id ="tab-1">
+&lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+&lt;iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="allowfullscreen" loading="eager" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/DMkFAMDjLIo?autoplay=0&amp;amp;controls=1&amp;amp;end=0&amp;amp;loop=0&amp;amp;mute=0&amp;amp;start=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" title="YouTube video">&lt;/iframe>
+&lt;/div>
+&lt;/div>
+&lt;div id ="tab-2">
+&lt;/div>
+&lt;/div>
+tabe widget</description></item><item><title>Сброс пароля на коммутаторах Catalyst</title><link>http://localhost:1313/ru/post/2021/10/06/password-reset-catalyst-switches/</link><pubDate>Wed, 06 Oct 2021 11:36:00 +0300</pubDate><guid>http://localhost:1313/ru/post/2021/10/06/password-reset-catalyst-switches/</guid><description>&lt;p>Сброс пароля на коммутаторах Catalyst серий 2900, 2950, 2960, 3500, 3550.&lt;/p>
+&lt;details class="print:hidden xl:hidden" >
+&lt;summary>Содержание&lt;/summary>
+&lt;div class="text-sm">
+&lt;nav id="TableOfContents">&lt;/nav>
+&lt;/div>
+&lt;/details>
+&lt;ul>
+&lt;li>При нажатой кнопке выбора режима (mode) вставить шнур питания (не отпускать кнопку, до тех пор, пока индикатор над портом 1, не будет гореть, как минимум 2 секунды).&lt;/li>
+&lt;li>Ввести команду:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">flash_init
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Ввести команду:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">load_helper
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Переименовать файл &lt;code>config.text&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">rename flash:config.text flash:config.old
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Продолжить процесс загрузки:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">boot
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Отказаться от входа в режим настройки (набрать &lt;code>no&lt;/code>).&lt;/li>
+&lt;li>Перейти в пользовательский режим: (&lt;code>Enter&lt;/code>).&lt;/li>
+&lt;li>Перейти в привилегированный режим:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">enable&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Вернуть имя ранее переименованному файлу:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">rename flash:config.old flash:config.text
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Загрузить в running-config конфигурационный файл:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">copy startup run
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Перейти в конфигурационный режим:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">conf t
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Изменить пароль:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">enable&lt;/span> password &amp;lt;пароль&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Выйти из режима настройки (&lt;code>Ctrl+Z&lt;/code>).&lt;/li>
+&lt;li>Сохранить конфигурацию:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">write memory
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul></description></item><item><title>Программное средство Cisco Packet Tracer</title><link>http://localhost:1313/ru/post/2021/08/18/cisco-packet-tracer-software/</link><pubDate>Wed, 18 Aug 2021 20:39:00 +0300</pubDate><guid>http://localhost:1313/ru/post/2021/08/18/cisco-packet-tracer-software/</guid><description>&lt;ul>
+&lt;li>Симулятор сети &lt;em>Cisco Packet Tracer&lt;/em>, выпускаемый фирмой Cisco Systems.&lt;/li>
+&lt;li>Позволяет делать работоспособные модели сети, настраивать (командами Cisco IOS) маршрутизаторы и коммутаторы, взаимодействовать между несколькими пользователями (через облако).&lt;/li>
+&lt;/ul>
+&lt;details class="print:hidden xl:hidden" >
+&lt;summary>Содержание&lt;/summary>
+&lt;div class="text-sm">
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#регистрация-в-сетевой-академии-cisco">&lt;span class="section-num">2&lt;/span> Регистрация в Сетевой академии Cisco&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#видео">&lt;span class="section-num">2.1&lt;/span> Видео&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#работа-без-учётной-записи">&lt;span class="section-num">3&lt;/span> Работа без учётной записи&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/div>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>Разработчик: Cisco Systems&lt;/li>
+&lt;li>Сайт: &lt;a href="https://www.netacad.com/courses/packet-tracer" target="_blank" rel="noopener">https://www.netacad.com/courses/packet-tracer&lt;/a>&lt;/li>
+&lt;li>Доступность: Cisco Packet Tracer доступен бесплатно для участников Программы Сетевой Академии Cisco.&lt;/li>
+&lt;li>Ссылки для скачки (не официальные):
+&lt;ul>
+&lt;li>&lt;a href="https://www.computernetworkingnotes.com/ccna-study-guide/download-packet-tracer-for-windows-and-linux.html" target="_blank" rel="noopener">https://www.computernetworkingnotes.com/ccna-study-guide/download-packet-tracer-for-windows-and-linux.html&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="регистрация-в-сетевой-академии-cisco">&lt;span class="section-num">2&lt;/span> Регистрация в Сетевой академии Cisco&lt;/h2>
+&lt;h3 id="видео">&lt;span class="section-num">2.1&lt;/span> Видео&lt;/h3>
+&lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+&lt;iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="allowfullscreen" loading="eager" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/M6NwfZ60_RQ?autoplay=0&amp;amp;controls=1&amp;amp;end=0&amp;amp;loop=0&amp;amp;mute=0&amp;amp;start=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" title="YouTube video">&lt;/iframe>
+&lt;/div>
+&lt;h2 id="работа-без-учётной-записи">&lt;span class="section-num">3&lt;/span> Работа без учётной записи&lt;/h2>
+&lt;ul>
+&lt;li>Начиная с версии PacketTracer7 для работы требуется наличие учётной записи в Network Academy: &lt;a href="https://www.netacad.com/" target="_blank" rel="noopener">https://www.netacad.com/&lt;/a> или &lt;a href="https://skillsforall.com/" target="_blank" rel="noopener">https://skillsforall.com/&lt;/a>.&lt;/li>
+&lt;li>В начале марта 2022 года Cisco заблокировало учётные записи пользователей из России и доступ с ip-адресов России.&lt;/li>
+&lt;li>&lt;a href="http://localhost:1313/ru/post/2022/05/07/cisco-packet-tracer-accountless/">Работа без учётной записи в Cisco Packet Tracer&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>Администрирование Cisco</title><link>http://localhost:1313/ru/post/2021/06/16/cisco-administration/</link><pubDate>Wed, 16 Jun 2021 12:38:00 +0300</pubDate><guid>http://localhost:1313/ru/post/2021/06/16/cisco-administration/</guid><description>&lt;p>Администрирование сетей и оборудования Cisco.&lt;/p>
+&lt;details class="print:hidden xl:hidden" >
+&lt;summary>Содержание&lt;/summary>
+&lt;div class="text-sm">
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#настройка">&lt;span class="section-num">1&lt;/span> Настройка&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#обслуживание">&lt;span class="section-num">2&lt;/span> Обслуживание&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/div>
+&lt;/details>
+&lt;h2 id="настройка">&lt;span class="section-num">1&lt;/span> Настройка&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="http://localhost:1313/ru/post/2021/06/16/cisco-storm-control/">Cisco. Защита от широковещательного шторма&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://localhost:1313/ru/post/2022/11/15/initial-cisco-switch-configuration/">Начальная конфигурация коммутатора Cisco&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://localhost:1313/ru/post/2023/03/03/cisco-wlc/">Контроллер Cisco WLC&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://localhost:1313/ru/post/2023/04/04/cisco-huawei-commands/">Сопоставление команд Cisco и Huawei&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="обслуживание">&lt;span class="section-num">2&lt;/span> Обслуживание&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="http://localhost:1313/ru/post/2021/10/06/password-reset-catalyst-switches/">Сброс пароля на коммутаторах Catalyst&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://localhost:1313/ru/post/2024/07/03/flashing-cisco-aironet/">Перепрошивка точки доступа Cisco Aironet&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>Cisco. Защита от широковещательного шторма</title><link>http://localhost:1313/ru/post/2021/06/16/cisco-storm-control/</link><pubDate>Wed, 16 Jun 2021 11:48:00 +0300</pubDate><guid>http://localhost:1313/ru/post/2021/06/16/cisco-storm-control/</guid><description>&lt;p>Для борьбы с широковещательным штормом в сетевых устройствах Cisco используется параметр &lt;code>storm-control&lt;/code>.&lt;/p>
+&lt;details class="print:hidden xl:hidden" >
+&lt;summary>Содержание&lt;/summary>
+&lt;div class="text-sm">
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#описание">&lt;span class="section-num">1&lt;/span> Описание&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#настройка">&lt;span class="section-num">2&lt;/span> Настройка&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#задание-порогов-срабатывания">&lt;span class="section-num">2.1&lt;/span> Задание порогов срабатывания&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#однопороговый-вариант">&lt;span class="section-num">2.1.1&lt;/span> Однопороговый вариант&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#двупороговый-вариант">&lt;span class="section-num">2.1.2&lt;/span> Двупороговый вариант&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#реакция-на-шторм">&lt;span class="section-num">2.2&lt;/span> Реакция на шторм&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#восстановление-портов">&lt;span class="section-num">2.3&lt;/span> Восстановление портов&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#обнаружение-петель">&lt;span class="section-num">2.4&lt;/span> Обнаружение петель&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#настройка-на-все-порты-сразу">&lt;span class="section-num">2.5&lt;/span> Настройка на все порты сразу&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#проверка-работы">&lt;span class="section-num">3&lt;/span> Проверка работы&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/div>
+&lt;/details>
+&lt;h2 id="описание">&lt;span class="section-num">1&lt;/span> Описание&lt;/h2>
+&lt;ul>
+&lt;li>Параметр &lt;code>storm-control&lt;/code> задаёт количество бродкастов в секунду.&lt;/li>
+&lt;li>Всё, что свыше этого значения, отбрасывается.&lt;/li>
+&lt;li>Порт при этом продолжает работать для пересылки всего остального трафика.&lt;/li>
+&lt;li>В случае высокого значения &lt;code>storm-contorol&lt;/code> можно получить перегрузку ЦПУ коммутатора, в случае низкого значения можно иметь проблемы с работой DHCP и ARP.&lt;/li>
+&lt;/ul>
+&lt;h2 id="настройка">&lt;span class="section-num">2&lt;/span> Настройка&lt;/h2>
+&lt;h3 id="задание-порогов-срабатывания">&lt;span class="section-num">2.1&lt;/span> Задание порогов срабатывания&lt;/h3>
+&lt;ul>
+&lt;li>Максимальный уровень широковещательного трафика задаётся либо в процентах от полосы пропускания (безразмерные значения), либо в битах в секунду (bps).&lt;/li>
+&lt;li>Есть два варианта конфигурирования:
+&lt;ul>
+&lt;li>однопороговое,&lt;/li>
+&lt;li>двупороговое.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="однопороговый-вариант">&lt;span class="section-num">2.1.1&lt;/span> Однопороговый вариант&lt;/h4>
+&lt;ul>
+&lt;li>Задаётся максимальный порог и действие по достижении этого порога:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="o">(&lt;/span>config&lt;span class="o">)&lt;/span>&lt;span class="c1"># int f0/1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">(&lt;/span>config-if&lt;span class="o">)&lt;/span>&lt;span class="c1"># storm-control broadcast level 30.00&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">(&lt;/span>config-if&lt;span class="o">)&lt;/span>&lt;span class="c1"># storm-control multicast level 30.00&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Команда устанавливает максимальный уровень широковещательного трафика в 30% от полосы пропускания.&lt;/li>
+&lt;/ul>
+&lt;h4 id="двупороговый-вариант">&lt;span class="section-num">2.1.2&lt;/span> Двупороговый вариант&lt;/h4>
+&lt;ul>
+&lt;li>Указывается два порога.&lt;/li>
+&lt;li>При достижении первого порога порт будет отключаться.&lt;/li>
+&lt;li>При падении уровня трафика до второго порога порт будет включаться:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="o">(&lt;/span>config-if&lt;span class="o">)&lt;/span>&lt;span class="c1"># storm-control broadcast level 30.00 10.00&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">(&lt;/span>config-if&lt;span class="o">)&lt;/span>&lt;span class="c1"># storm-control multicast level 30.00 10.00&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Здесь первый порог &amp;mdash; 30% от полосы пропускания, второй порог &amp;mdash; 10% от полосы пропускания.&lt;/li>
+&lt;/ul>
+&lt;h3 id="реакция-на-шторм">&lt;span class="section-num">2.2&lt;/span> Реакция на шторм&lt;/h3>
+&lt;ul>
+&lt;li>Необходимо задать действие при возникновении шторма
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="o">(&lt;/span>config&lt;span class="o">)&lt;/span>&lt;span class="c1"># int f0/1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">(&lt;/span>config-if&lt;span class="o">)&lt;/span>&lt;span class="c1"># storm-control action shutdown&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Вторая команда указывает на то, какое действие должно быть совершено, когда лимит будет достигнут. В данном случае мы отключаем порт (&lt;code>shutdown&lt;/code>).&lt;/li>
+&lt;li>Если действие не указывать, то свитч будет просто фильтровать трафик, превышающий порог, и не отправлять никаких оповещений.&lt;/li>
+&lt;li>Можно включить SNMP-трапы и сообщения в Syslog:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="o">(&lt;/span>config-if&lt;span class="o">)&lt;/span>&lt;span class="c1"># storm-control action trap&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="восстановление-портов">&lt;span class="section-num">2.3&lt;/span> Восстановление портов&lt;/h3>
+&lt;ul>
+&lt;li>Чтобы коммутатор автоматически восстанавливал порт через некоторое время после отключения, необходимо в глобальной конфигурации задать:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="o">(&lt;/span>config&lt;span class="o">)&lt;/span>&lt;span class="c1"># errdisable recovery cause storm-control&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">(&lt;/span>config&lt;span class="o">)&lt;/span>&lt;span class="c1"># errdisable recovery interval 180&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>В данном случае восстановление происходит через 3 минуты (180 секунд).&lt;/li>
+&lt;/ul>
+&lt;h3 id="обнаружение-петель">&lt;span class="section-num">2.4&lt;/span> Обнаружение петель&lt;/h3>
+&lt;ul>
+&lt;li>У коммутаторов Cisco есть также штатное средство обнаружения петель, основанное на периодической отправке keepalive-сообщений.&lt;/li>
+&lt;li>Эта опция обычно включена по умолчанию, и в случае срабатывания порт отключается.&lt;/li>
+&lt;li>Для механизма keepalive можно также настроить автоматическое включение интерфейса:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="o">(&lt;/span>config&lt;span class="o">)&lt;/span>&lt;span class="c1"># errdisable recovery cause loopback&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="настройка-на-все-порты-сразу">&lt;span class="section-num">2.5&lt;/span> Настройка на все порты сразу&lt;/h3>
+&lt;ul>
+&lt;li>Для настройки параметров всех портов сразу используйте &lt;em>диапазон портов&lt;/em>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="o">(&lt;/span>config&lt;span class="o">)&lt;/span>&lt;span class="c1"># interface range f0/1 - 24&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">(&lt;/span>config-if-range&lt;span class="o">)&lt;/span>&lt;span class="c1"># storm-control broadcast level 30.00 10.00&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="проверка-работы">&lt;span class="section-num">3&lt;/span> Проверка работы&lt;/h2>
+&lt;ul>
+&lt;li>Используйте команду &lt;code>show storm-control&lt;/code>, чтобы проверить конфигурацию функции подавления широковещательной и многоадресной рассылки.&lt;/li>
+&lt;li>Используйте команду &lt;code>show storm-control &amp;lt;интерфейс&amp;gt;&lt;/code>, чтобы проверить конфигурацию функции подавления широковещательной и многоадресной рассылки на интерфейсе.&lt;/li>
+&lt;li>Используйте команду &lt;code>show run interface &amp;lt;интерфейс&amp;gt;&lt;/code>, чтобы проверить ловушку (trap), настроенную для порта.&lt;/li>
+&lt;/ul></description></item></channel></rss>

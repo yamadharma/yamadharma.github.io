@@ -2809,17 +2809,22 @@ Markdown.&lt;/li>
 &lt;li>&lt;a href="#взаимодействие-с-внешними-сервисами">&lt;span class="section-num">4&lt;/span> Взаимодействие с внешними сервисами&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#процесс-создания-блога">&lt;span class="section-num">5&lt;/span> Процесс создания блога&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#создание-статического-сайта">&lt;span class="section-num">6&lt;/span> Создание статического сайта&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#ресурсы">&lt;span class="section-num">7&lt;/span> Ресурсы&lt;/a>
+&lt;li>&lt;a href="#варианты-программы">&lt;span class="section-num">7&lt;/span> Варианты программы&lt;/a>
 &lt;ul>
-&lt;li>&lt;a href="#учебные-материалы">&lt;span class="section-num">7.1&lt;/span> Учебные материалы&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#модули">&lt;span class="section-num">7.2&lt;/span> Модули&lt;/a>
-&lt;ul>
-&lt;li>&lt;a href="#hugo-modules">&lt;span class="section-num">7.2.1&lt;/span> hugo-modules&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#deploy">&lt;span class="section-num">7.1&lt;/span> deploy&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;li>&lt;a href="#темы">&lt;span class="section-num">7.3&lt;/span> Темы&lt;/a>
+&lt;li>&lt;a href="#ресурсы">&lt;span class="section-num">8&lt;/span> Ресурсы&lt;/a>
 &lt;ul>
-&lt;li>&lt;a href="#hugobricks">&lt;span class="section-num">7.3.1&lt;/span> hugobricks&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#учебные-материалы">&lt;span class="section-num">8.1&lt;/span> Учебные материалы&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#модули">&lt;span class="section-num">8.2&lt;/span> Модули&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#hugo-modules">&lt;span class="section-num">8.2.1&lt;/span> hugo-modules&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#темы">&lt;span class="section-num">8.3&lt;/span> Темы&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#hugobricks">&lt;span class="section-num">8.3.1&lt;/span> hugobricks&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
@@ -2859,8 +2864,51 @@ Markdown.&lt;/li>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/04/12/creating-hugo-site/">Создание сайта на Hugo&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;h2 id="ресурсы">&lt;span class="section-num">7&lt;/span> Ресурсы&lt;/h2>
-&lt;h3 id="учебные-материалы">&lt;span class="section-num">7.1&lt;/span> Учебные материалы&lt;/h3>
+&lt;h2 id="варианты-программы">&lt;span class="section-num">7&lt;/span> Варианты программы&lt;/h2>
+&lt;h3 id="deploy">&lt;span class="section-num">7.1&lt;/span> deploy&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>Свойство &lt;code>deploy&lt;/code> в Hugo &amp;mdash; это команда CLI, позволяющая напрямую развертывать статический сайт в облачных хранилищах: Amazon S3, Azure Blob Storage или Google Cloud Storage.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Требуется расширенная версия Hugo (Hugo extended/deploy edition).&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Основные особенности:&lt;/p>
+&lt;ul>
+&lt;li>Конфигурация целей развёртывания
+&lt;ul>
+&lt;li>В файле конфигурации сайта (например, &lt;code>hugo.yaml&lt;/code>) указываются параметры цели: имя и URL бакета с регионом (например, &lt;code>s3://my_bucket?region=us-west-1&lt;/code>).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Синхронизация файлов
+&lt;ul>
+&lt;li>Команда &lt;code>hugo deploy&lt;/code> синхронизирует содержимое локальной папки &lt;code>public&lt;/code> с удалённым бакетом, сравнивая имена файлов, их размеры и MD5-хеши.&lt;/li>
+&lt;li>Изменённые или отсутствующие файлы перезаписываются, а лишние удаляются (с ограничением на удаление не более 256 файлов по умолчанию).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Дополнительные флаги
+&lt;ul>
+&lt;li>&lt;code>--force&lt;/code> : принудительная перезапись всех файлов;&lt;/li>
+&lt;li>&lt;code>--dryRun&lt;/code> : предпросмотр изменений без применения;&lt;/li>
+&lt;li>&lt;code>--maxDeletes&lt;/code> : изменение лимита на удаление файлов.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Перед использованием необходимо:&lt;/p>
+&lt;ul>
+&lt;li>Настроить аутентификацию через CLI выбранного облачного провайдера (AWS, Azure, Google Cloud);&lt;/li>
+&lt;li>Создать бакет с публичным доступом для статического сайта.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Документация: &lt;a href="https://gohugo.io/host-and-deploy/deploy-with-hugo-deploy/" target="_blank" rel="noopener">https://gohugo.io/host-and-deploy/deploy-with-hugo-deploy/&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="ресурсы">&lt;span class="section-num">8&lt;/span> Ресурсы&lt;/h2>
+&lt;h3 id="учебные-материалы">&lt;span class="section-num">8.1&lt;/span> Учебные материалы&lt;/h3>
 &lt;ul>
 &lt;li>Учебные материалы:
 &lt;ul>
@@ -2868,14 +2916,14 @@ Markdown.&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
-&lt;h3 id="модули">&lt;span class="section-num">7.2&lt;/span> Модули&lt;/h3>
-&lt;h4 id="hugo-modules">&lt;span class="section-num">7.2.1&lt;/span> hugo-modules&lt;/h4>
+&lt;h3 id="модули">&lt;span class="section-num">8.2&lt;/span> Модули&lt;/h3>
+&lt;h4 id="hugo-modules">&lt;span class="section-num">8.2.1&lt;/span> hugo-modules&lt;/h4>
 &lt;ul>
 &lt;li>Репозиторий: &lt;a href="https://github.com/gethugothemes/hugo-modules" target="_blank" rel="noopener">https://github.com/gethugothemes/hugo-modules&lt;/a>&lt;/li>
 &lt;li>Сайт: &lt;a href="https://gethugothemes.com/hugo-modules" target="_blank" rel="noopener">https://gethugothemes.com/hugo-modules&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;h3 id="темы">&lt;span class="section-num">7.3&lt;/span> Темы&lt;/h3>
-&lt;h4 id="hugobricks">&lt;span class="section-num">7.3.1&lt;/span> hugobricks&lt;/h4>
+&lt;h3 id="темы">&lt;span class="section-num">8.3&lt;/span> Темы&lt;/h3>
+&lt;h4 id="hugobricks">&lt;span class="section-num">8.3.1&lt;/span> hugobricks&lt;/h4>
 &lt;ul>
 &lt;li>Сайт: &lt;a href="https://www.hugobricks.preview.usecue.com" target="_blank" rel="noopener">https://www.hugobricks.preview.usecue.com&lt;/a>&lt;/li>
 &lt;li>Репозитоирий: &lt;a href="https://github.com/jhvanderschee/hugobricks" target="_blank" rel="noopener">https://github.com/jhvanderschee/hugobricks&lt;/a>&lt;/li>

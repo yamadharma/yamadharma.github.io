@@ -1,4 +1,189 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Research | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/research/</link><atom:link href="https://yamadharma.github.io/ru/tag/research/index.xml" rel="self" type="application/rss+xml"/><description>Research</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>ru-ru</language><copyright>© 2025 Dmitry S. Kulyabov</copyright><lastBuildDate>Sat, 22 Mar 2025 19:29:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu_c0ee34e0b47a9b95.png</url><title>Research</title><link>https://yamadharma.github.io/ru/tag/research/</link></image><item><title>Julia. Пакет Revise</title><link>https://yamadharma.github.io/ru/post/2025/03/22/julia-revise-package/</link><pubDate>Sat, 22 Mar 2025 19:29:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2025/03/22/julia-revise-package/</guid><description>&lt;p>Julia. Пакет Revise.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Research | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/research/</link><atom:link href="https://yamadharma.github.io/ru/tag/research/index.xml" rel="self" type="application/rss+xml"/><description>Research</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>ru-ru</language><copyright>© 2025 Dmitry S. Kulyabov</copyright><lastBuildDate>Wed, 14 May 2025 19:59:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu_c0ee34e0b47a9b95.png</url><title>Research</title><link>https://yamadharma.github.io/ru/tag/research/</link></image><item><title>Julia. Пакет DrWatson</title><link>https://yamadharma.github.io/ru/post/2025/05/14/julia-drwatson/</link><pubDate>Wed, 14 May 2025 19:59:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2025/05/14/julia-drwatson/</guid><description>&lt;p>Julia. Пакет DrWatson.&lt;/p>
+&lt;details class="print:hidden xl:hidden" >
+&lt;summary>Содержание&lt;/summary>
+&lt;div class="text-sm">
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#установка-и-инициализация">&lt;span class="section-num">2&lt;/span> Установка и инициализация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#пути">&lt;span class="section-num">3&lt;/span> Пути&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#сохранение-результатов">&lt;span class="section-num">4&lt;/span> Сохранение результатов&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#загрузка-данных">&lt;span class="section-num">5&lt;/span> Загрузка данных&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#воспроизводимость">&lt;span class="section-num">6&lt;/span> Воспроизводимость&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#пакетная-обработка">&lt;span class="section-num">7&lt;/span> Пакетная обработка&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#анализ-результатов">&lt;span class="section-num">8&lt;/span> Анализ результатов&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#интеграция-с-literate-dot-jl">&lt;span class="section-num">9&lt;/span> Интеграция с Literate.jl&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#makefile">&lt;span class="section-num">10&lt;/span> Makefile&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#практики">&lt;span class="section-num">11&lt;/span> Практики&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#пример-рабочего-процесса">&lt;span class="section-num">12&lt;/span> Пример рабочего процесса&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/div>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>DrWatson.jl &amp;mdash; фреймворк для организации научных проектов в Julia.&lt;/li>
+&lt;li>Репозиторий: &lt;a href="https://github.com/JuliaDynamics/DrWatson.jl" target="_blank" rel="noopener">https://github.com/JuliaDynamics/DrWatson.jl&lt;/a>&lt;/li>
+&lt;li>Документация: &lt;a href="https://juliadynamics.github.io/DrWatson.jl" target="_blank" rel="noopener">https://juliadynamics.github.io/DrWatson.jl&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h2 id="установка-и-инициализация">&lt;span class="section-num">2&lt;/span> Установка и инициализация&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>Установка в REPL:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-julia" data-lang="julia">&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Установка&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">using&lt;/span> &lt;span class="n">Pkg&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">Pkg&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">add&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;DrWatson&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Создание проекта&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">using&lt;/span> &lt;span class="n">DrWatson&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">initialize_project&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;MyProject&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">authors&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="s">&amp;#34;Ваше Имя&amp;#34;&lt;/span>&lt;span class="p">],&lt;/span> &lt;span class="n">git&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="nb">true&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Создаваемая структура:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-text" data-lang="text">&lt;span class="line">&lt;span class="cl">MyProject/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── Project.toml
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── Manifest.toml
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── data/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│ ├── sims/ # Результаты симуляций
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│ ├── exp_raw/ # Сырые экспериментальные данные
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│ └── exp_pro/ Обработанные данные
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── scripts/ # Скрипты для анализа
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── src/ # Исходный код проекта
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">└── _research/ # Черновики и временные файлы
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Активирует окружение проекта, загружает зависимости:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-julia" data-lang="julia">&lt;span class="line">&lt;span class="cl">&lt;span class="nd">@quickactivate&lt;/span> &lt;span class="ss">:MyProject&lt;/span> &lt;span class="c"># Автоматически находит Project.toml&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="пути">&lt;span class="section-num">3&lt;/span> Пути&lt;/h2>
+&lt;ul>
+&lt;li>Стандартные пути:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-julia" data-lang="julia">&lt;span class="line">&lt;span class="cl">&lt;span class="n">datadir&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="c"># → &amp;#34;data&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">plotsdir&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="c"># → &amp;#34;plots&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">projectdir&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="c"># → Корень проекта&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">scriptdir&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;analysis.jl&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">→&lt;/span> &lt;span class="s">&amp;#34;scripts/analysis.jl&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="сохранение-результатов">&lt;span class="section-num">4&lt;/span> Сохранение результатов&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-julia" data-lang="julia">&lt;span class="line">&lt;span class="cl">&lt;span class="k">using&lt;/span> &lt;span class="n">DrWatson&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="n">savename&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nd">@dict&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">safesave&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">params&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nd">@dict&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">α&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mf">0.1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">β&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mf">2.0&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="c"># Автоматическое именование&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">results&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kt">Dict&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="ss">:data&lt;/span> &lt;span class="o">=&amp;gt;&lt;/span> &lt;span class="n">rand&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">10&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Сохранение с уникальным именем&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">filename&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">savename&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">params&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s">&amp;#34;jld2&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="c"># → &amp;#34;α=0.1_β=2.0.jld2&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">safesave&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">datadir&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;sims&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">filename&lt;/span>&lt;span class="p">),&lt;/span> &lt;span class="n">results&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="загрузка-данных">&lt;span class="section-num">5&lt;/span> Загрузка данных&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-julia" data-lang="julia">&lt;span class="line">&lt;span class="cl">&lt;span class="k">using&lt;/span> &lt;span class="n">DrWatson&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="n">load&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nd">@strdict&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Поиск файлов по параметрам&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">filter&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nd">@strdict&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">α&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mf">0.1&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">file&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">getlatest&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">filter&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">datadir&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;sims&amp;#34;&lt;/span>&lt;span class="p">))&lt;/span> &lt;span class="c"># Последний файл с α=0.1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">data&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">load&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">file&lt;/span>&lt;span class="p">)[&lt;/span>&lt;span class="s">&amp;#34;data&amp;#34;&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="воспроизводимость">&lt;span class="section-num">6&lt;/span> Воспроизводимость&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-julia" data-lang="julia">&lt;span class="line">&lt;span class="cl">&lt;span class="n">gitdescribe&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="c"># Возвращает текущий коммит Git → &amp;#34;v0.1.0-5-gf7a2d&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">tag!&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">filename&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="c"># Добавляет хеш коммита к имени файла&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="пакетная-обработка">&lt;span class="section-num">7&lt;/span> Пакетная обработка&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-julia" data-lang="julia">&lt;span class="line">&lt;span class="cl">&lt;span class="k">using&lt;/span> &lt;span class="n">BSON&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Генерация параметров&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">all_params&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kt">Dict&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="ss">:α&lt;/span> &lt;span class="o">=&amp;gt;&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="mf">0.1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mf">0.5&lt;/span>&lt;span class="p">],&lt;/span> &lt;span class="ss">:β&lt;/span> &lt;span class="o">=&amp;gt;&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="o">:&lt;/span>&lt;span class="mi">5&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Запуск симуляций&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span> &lt;span class="n">params&lt;/span> &lt;span class="k">in&lt;/span> &lt;span class="n">dict_list&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">all_params&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">result&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">simulate&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">params&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">safesave&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">datadir&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;sims&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">savename&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">params&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s">&amp;#34;bson&amp;#34;&lt;/span>&lt;span class="p">)),&lt;/span> &lt;span class="n">result&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">end&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="анализ-результатов">&lt;span class="section-num">8&lt;/span> Анализ результатов&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-julia" data-lang="julia">&lt;span class="line">&lt;span class="cl">&lt;span class="k">using&lt;/span> &lt;span class="n">DataFrames&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Сбор всех данных в DataFrame&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">df&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">collect_results&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">datadir&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;sims&amp;#34;&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">select!&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">df&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="ss">:α&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="ss">:β&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="ss">:result&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="интеграция-с-literate-dot-jl">&lt;span class="section-num">9&lt;/span> Интеграция с Literate.jl&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2025/05/12/julia-literate-programming/">Julia. Литературное программирование&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-julia" data-lang="julia">&lt;span class="line">&lt;span class="cl">&lt;span class="c"># scripts/generate_report.jl&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">using&lt;/span> &lt;span class="n">Literate&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">Literate&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">markdown&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;scripts/analysis.jl&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s">&amp;#34;docs&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">flavor&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">Literate&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">QuartoFlavor&lt;/span>&lt;span class="p">())&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="makefile">&lt;span class="section-num">10&lt;/span> Makefile&lt;/h2>
+&lt;ul>
+&lt;li>Сделаем Makefile:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-makefile" data-lang="makefile">&lt;span class="line">&lt;span class="cl">&lt;span class="nf">.PHONY&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="n">report&lt;/span> &lt;span class="n">clean&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">report&lt;/span>&lt;span class="o">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> julia --project&lt;span class="o">=&lt;/span>. scripts/run_simulations.jl
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> julia --project&lt;span class="o">=&lt;/span>. scripts/generate_report.jl
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> quarto render docs/report.qmd
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">clean&lt;/span>&lt;span class="o">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> rm -rf data/sims/*
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> rm -rf plots/*
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="практики">&lt;span class="section-num">11&lt;/span> Практики&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>Структура кода&lt;/p>
+&lt;ul>
+&lt;li>Храните многократно используемые функции в &lt;code>src/&lt;/code> как модуль:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-julia" data-lang="julia">&lt;span class="line">&lt;span class="cl">&lt;span class="c"># src/MyProject.jl&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">module&lt;/span> &lt;span class="n">MyProject&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">export&lt;/span> &lt;span class="n">simulate&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">function&lt;/span> &lt;span class="n">simulate&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">params&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c"># ...&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">end&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">end&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Версионирование данных&lt;/p>
+&lt;ul>
+&lt;li>Используйте Git LFS для больших файлов в &lt;code>data/&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Шаблоны проектов&lt;/p>
+&lt;ul>
+&lt;li>Создайте шаблон через PkgTemplates.jl:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-julia" data-lang="julia">&lt;span class="line">&lt;span class="cl">&lt;span class="k">using&lt;/span> &lt;span class="n">PkgTemplates&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">t&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">Template&lt;/span>&lt;span class="p">(;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">dir&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;~/Projects&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">julia&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sa">v&lt;/span>&lt;span class="s">&amp;#34;1.9&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">plugins&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">DrWatsonPlugin&lt;/span>&lt;span class="p">()]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">t&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;MyNewProject&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Отладка&lt;/p>
+&lt;ul>
+&lt;li>Используйте &lt;code>produce_or_load&lt;/code> для кэширования результатов:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-julia" data-lang="julia">&lt;span class="line">&lt;span class="cl">&lt;span class="n">produce_or_load&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">params&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">datadir&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;cache&amp;#34;&lt;/span>&lt;span class="p">))&lt;/span> &lt;span class="k">do&lt;/span> &lt;span class="n">p&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">compute_expensive_operation&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">p&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">end&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="пример-рабочего-процесса">&lt;span class="section-num">12&lt;/span> Пример рабочего процесса&lt;/h2>
+&lt;ul>
+&lt;li>&lt;code>initialize_project()&lt;/code> → Создает структуру&lt;/li>
+&lt;li>&lt;code>quickactivate()&lt;/code> → Активирует окружение&lt;/li>
+&lt;li>Редактируем скрипты в &lt;code>scripts/&lt;/code>&lt;/li>
+&lt;li>&lt;code>savename()&lt;/code> + &lt;code>safesave()&lt;/code> → Сохраняем результаты&lt;/li>
+&lt;li>&lt;code>collect_results()&lt;/code> → Анализируем данные&lt;/li>
+&lt;li>Literate.jl → Генерируем отчет&lt;/li>
+&lt;li>Quarto → Рендерим финальный документ&lt;/li>
+&lt;/ul></description></item><item><title>Julia. Пакет Revise</title><link>https://yamadharma.github.io/ru/post/2025/03/22/julia-revise-package/</link><pubDate>Sat, 22 Mar 2025 19:29:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2025/03/22/julia-revise-package/</guid><description>&lt;p>Julia. Пакет Revise.&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
 &lt;summary>Содержание&lt;/summary>
 &lt;div class="text-sm">
@@ -2596,6 +2781,7 @@ tabe widget</description></item><item><title>Методы машинного о�
 &lt;li>&lt;a href="#индексация">&lt;span class="section-num">1.2.3&lt;/span> Индексация&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
+&lt;li>&lt;a href="#вопросы-атомной-науки-и-техники-dot-cерия-физика-ядерных-реакторов">&lt;span class="section-num">1.3&lt;/span> Вопросы атомной науки и техники. Cерия: Физика ядерных реакторов&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
@@ -2646,6 +2832,16 @@ tabe widget</description></item><item><title>Методы машинного о�
 &lt;/li>
 &lt;li>Scopus: &lt;a href="https://www.scopus.com/sourceid/21101018670?origin=resultslist" target="_blank" rel="noopener">https://www.scopus.com/sourceid/21101018670?origin=resultslist&lt;/a>&lt;/li>
 &lt;li>WoS: &lt;a href="http://mjl.clarivate.com/cgi-bin/jrnlst/jlresults.cgi?PC=MASTER&amp;amp;ISSN=1816-9791" target="_blank" rel="noopener">http://mjl.clarivate.com/cgi-bin/jrnlst/jlresults.cgi?PC=MASTER&amp;ISSN=1816-9791&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="вопросы-атомной-науки-и-техники-dot-cерия-физика-ядерных-реакторов">&lt;span class="section-num">1.3&lt;/span> Вопросы атомной науки и техники. Cерия: Физика ядерных реакторов&lt;/h3>
+&lt;ul>
+&lt;li>Журнал &amp;ldquo;Вопросы атомной науки и техники. Cерия: Физика ядерных реакторов&amp;rdquo;&lt;/li>
+&lt;li>&lt;a href="http://nrcki.ru/catalog/nauka/nauchno-organizacionnaya-deyatelnost/izdaniya-kurchatovskogo-instituta/vant-fizika-yadernyh-reaktorov/" target="_blank" rel="noopener">http://nrcki.ru/catalog/nauka/nauchno-organizacionnaya-deyatelnost/izdaniya-kurchatovskogo-instituta/vant-fizika-yadernyh-reaktorov/&lt;/a>&lt;/li>
+&lt;li>Деньги за публикации с авторов не взимаются.&lt;/li>
+&lt;li>Статья должна соответствовать тематике журнала.&lt;/li>
+&lt;li>Как правило, статья попадает в не в очередной номер, а в следующий.&lt;/li>
+&lt;li>При подачи статьи обязательным является наличие разрешения на информационный обмен от вашей организации (что статья может быть опубликована в журнале «Вопросы атомной науки и техники. Серия: Физика ядерных реакторов», т.к. не содержит сведений, составляющих гостайну, не подпадает под действие экспортного контроля и пр.).&lt;/li>
+&lt;li>Разрешение готовится по форме вашей организации. Без разрешения мы не сможем начать работу над статьей.&lt;/li>
 &lt;/ul></description></item><item><title>Исследования. Кинетические уравнения</title><link>https://yamadharma.github.io/ru/post/2023/11/05/research-kinetic-equations/</link><pubDate>Sun, 05 Nov 2023 17:29:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/11/05/research-kinetic-equations/</guid><description>&lt;p>Исследования по кинетическим уравнениям.&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
 &lt;summary>Содержание&lt;/summary>

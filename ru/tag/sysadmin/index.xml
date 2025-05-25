@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Sysadmin | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/sysadmin/</link><atom:link href="https://yamadharma.github.io/ru/tag/sysadmin/index.xml" rel="self" type="application/rss+xml"/><description>Sysadmin</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>ru-ru</language><copyright>© 2025 Dmitry S. Kulyabov</copyright><lastBuildDate>Thu, 24 Apr 2025 16:54:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu_c0ee34e0b47a9b95.png</url><title>Sysadmin</title><link>https://yamadharma.github.io/ru/tag/sysadmin/</link></image><item><title>Администрирование сетевых подсистем</title><link>https://yamadharma.github.io/ru/teaching/net-os-admin/</link><pubDate>Thu, 19 Oct 2023 17:19:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/teaching/net-os-admin/</guid><description>&lt;p>Курс Администрирование сетевых подсистем.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Sysadmin | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/sysadmin/</link><atom:link href="https://yamadharma.github.io/ru/tag/sysadmin/index.xml" rel="self" type="application/rss+xml"/><description>Sysadmin</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>ru-ru</language><copyright>© 2025 Dmitry S. Kulyabov</copyright><lastBuildDate>Thu, 22 May 2025 11:58:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu_c0ee34e0b47a9b95.png</url><title>Sysadmin</title><link>https://yamadharma.github.io/ru/tag/sysadmin/</link></image><item><title>Администрирование сетевых подсистем</title><link>https://yamadharma.github.io/ru/teaching/net-os-admin/</link><pubDate>Thu, 19 Oct 2023 17:19:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/teaching/net-os-admin/</guid><description>&lt;p>Курс Администрирование сетевых подсистем.&lt;/p>
 &lt;ul class="list-unstyled">
 &lt;li>
 &lt;h5>&lt;a href="https://yamadharma.github.io/ru/teaching/net-os-admin/lab/">Лабораторные работы&lt;/a>&lt;/h5>
@@ -304,6 +304,490 @@ tabe widget</description></item><item><title>Процесс выполнения
 &lt;li>Во время настройки студент записывает выполняемые операции в виде кода.&lt;/li>
 &lt;li>Созданный код помещается в отчёт по лабораторной работе.&lt;/li>
 &lt;li>После создания кода студент уничтожает существующие виртуальные машины и пересоздаёт их на основе созданного кода.&lt;/li>
+&lt;/ul></description></item><item><title>Gentoo. Пакет installkernel</title><link>https://yamadharma.github.io/ru/post/2025/05/22/gentoo-installkernel/</link><pubDate>Thu, 22 May 2025 11:58:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2025/05/22/gentoo-installkernel/</guid><description>&lt;p>Gentoo. Пакет installkernel.&lt;/p>
+&lt;details class="print:hidden xl:hidden" >
+&lt;summary>Содержание&lt;/summary>
+&lt;div class="text-sm">
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#основные-команды">&lt;span class="section-num">2&lt;/span> Основные команды&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#конфигурация">&lt;span class="section-num">3&lt;/span> Конфигурация&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#layout">&lt;span class="section-num">3.1&lt;/span> layout&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#compat">&lt;span class="section-num">3.1.1&lt;/span> compat&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#efistub">&lt;span class="section-num">3.1.2&lt;/span> efistub&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#grub">&lt;span class="section-num">3.1.3&lt;/span> grub&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#bls">&lt;span class="section-num">3.1.4&lt;/span> bls&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#uki">&lt;span class="section-num">3.1.5&lt;/span> uki&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#initrd-generator">&lt;span class="section-num">3.2&lt;/span> initrd_generator&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#uki-generator">&lt;span class="section-num">3.3&lt;/span> uki_generator&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#особенности">&lt;span class="section-num">4&lt;/span> Особенности&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#dracut">&lt;span class="section-num">4.1&lt;/span> dracut&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#hostonly">&lt;span class="section-num">4.1.1&lt;/span> hostonly&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#сравнение-ukify-и-dracut">&lt;span class="section-num">5&lt;/span> Сравнение ukify и dracut&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#основные-возможности">&lt;span class="section-num">5.1&lt;/span> Основные возможности&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#настройка-и-конфигурация">&lt;span class="section-num">5.2&lt;/span> Настройка и конфигурация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#особенности-использования">&lt;span class="section-num">5.3&lt;/span> Особенности использования&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#совместимость-и-интеграция">&lt;span class="section-num">5.4&lt;/span> Совместимость и интеграция&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#рекомендации-по-выбору">&lt;span class="section-num">5.5&lt;/span> Рекомендации по выбору&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/div>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>Репозиторий: &lt;a href="https://github.com/projg2/installkernel-gentoo" target="_blank" rel="noopener">https://github.com/projg2/installkernel-gentoo&lt;/a>&lt;/li>
+&lt;li>Wiki: &lt;a href="https://wiki.gentoo.org/wiki/Installkernel" target="_blank" rel="noopener">https://wiki.gentoo.org/wiki/Installkernel&lt;/a>&lt;/li>
+&lt;li>Installkernel &amp;ndash;— это набор скриптов для автоматической установки новых ядер и обновления загрузчика конфигурации.&lt;/li>
+&lt;/ul>
+&lt;h2 id="основные-команды">&lt;span class="section-num">2&lt;/span> Основные команды&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>Установка ядра:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">kernel-install add KERNEL-VERSION KERNEL-IMAGE &lt;span class="o">[&lt;/span>INITRD-FILE...&lt;span class="o">]&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Удаление ядра:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">kernel-install remove KERNEL-VERSION
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Просмотр установленных ядер:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">kernel-install list
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Установка всех ядер:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">kernel-install add-all
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Дополнительно можно использовать &lt;code>eclean-kernel&lt;/code>.&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="конфигурация">&lt;span class="section-num">3&lt;/span> Конфигурация&lt;/h2>
+&lt;ul>
+&lt;li>Файлы конфигурации:
+&lt;ul>
+&lt;li>&lt;code>/etc/kernel/install.conf&lt;/code>;&lt;/li>
+&lt;li>&lt;code>/usr/lib/kernel/install.conf&lt;/code>;&lt;/li>
+&lt;li>первый имеет приоритет над вторым.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Параметра конфигурации:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">layout=
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">initrd_generator=
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">uki_generator=
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="layout">&lt;span class="section-num">3.1&lt;/span> layout&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>Поддерживается спецификации загрузчика:&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>тип 1 ( &lt;code>layout=bls&lt;/code> );&lt;/p>
+&lt;ul>
+&lt;li>используется с &lt;code>systemd-boot&lt;/code>;&lt;/li>
+&lt;li>рекомендуется включить USE-флаг &lt;code>systemd-boot&lt;/code>;&lt;/li>
+&lt;li>создает файлы в формате, совместимом с &lt;code>systemd-boot&lt;/code>;&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>тип 2 ( &lt;code>layout=uki&lt;/code> );&lt;/p>
+&lt;ul>
+&lt;li>предназначен для использования в унифицированных образах ядра и поддерживается grub, systemd-boot, refind;&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>для использования с GRUB ( &lt;code>layout=grub&lt;/code> );&lt;/p>
+&lt;ul>
+&lt;li>чтобы использовать GRUB в сочетании с &lt;em>Unified Kernel Images&lt;/em>, используйте раскладку &lt;code>uki&lt;/code>;&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>если USE-флаги grub , systemd-boot , efistub и uki отключены, используется макет, который обратно совместим с installkernel Debian (&lt;code>layout=compat&lt;/code>);&lt;/p>
+&lt;ul>
+&lt;li>используется по умолчанию при отсутствии других USE-флагов;&lt;/li>
+&lt;li>совместим с традиционным installkernel;&lt;/li>
+&lt;li>обеспечивает обратную совместимость;&lt;/li>
+&lt;li>рекомендуется для систем с нестандартными загрузчиками.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Макет &lt;code>uki&lt;/code> (включенный USE-флагом &lt;code>uki&lt;/code>) имеет приоритет над макетом &lt;code>bls&lt;/code> (включенным USE-флагом &lt;code>systemd-boot&lt;/code>), который, в свою очередь, имеет приоритет над макетом &lt;code>grub&lt;/code> (включенным USE-флагом &lt;code>grub&lt;/code>).&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="compat">&lt;span class="section-num">3.1.1&lt;/span> compat&lt;/h4>
+&lt;ul>
+&lt;li>Макет compat очень похож на макет в традиционном installkernel Debian:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">/boot/initramfs-xyz-gentoo-dist.img &lt;span class="c1"># Если USE=dracut (или другой генератор initramfs)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">/boot/kernel-xyz-gentoo-dist
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h4 id="efistub">&lt;span class="section-num">3.1.2&lt;/span> efistub&lt;/h4>
+&lt;ul>
+&lt;li>Макет &lt;code>efistub&lt;/code> идентичен макету &lt;code>compat&lt;/code>, но перемещен в системный раздел EFI для загрузки EFI stub.&lt;/li>
+&lt;li>Образ ядра имеет суффикс &lt;code>.efi&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">/&lt;span class="si">${&lt;/span>&lt;span class="nv">ESP&lt;/span>&lt;span class="si">}&lt;/span>/EFI/Gentoo/initramfs-xyz-gentoo-dist.img &lt;span class="c1"># Если USE=dracut (или другой генератор initramfs)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">/&lt;span class="si">${&lt;/span>&lt;span class="nv">ESP&lt;/span>&lt;span class="si">}&lt;/span>/EFI/Gentoo/kernel-xyz-gentoo-dist.efi
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h4 id="grub">&lt;span class="section-num">3.1.3&lt;/span> grub&lt;/h4>
+&lt;ul>
+&lt;li>Макет grub идентичен макету compat с добавлением grub.cfg:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">/boot/grub/grub.cfg
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">/boot/initramfs-xyz-gentoo-dist.img &lt;span class="c1"># Если USE=dracut (или другой генератор initramfs)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">/boot/kernel-xyz-gentoo-dist
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h4 id="bls">&lt;span class="section-num">3.1.4&lt;/span> bls&lt;/h4>
+&lt;ul>
+&lt;li>The Bootloader Specification Type 1&lt;/li>
+&lt;li>Используется в &lt;code>systemd-boot&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">/&lt;span class="si">${&lt;/span>&lt;span class="nv">ESP&lt;/span>&lt;span class="si">}&lt;/span>/gentoo/xyz-gentoo-dist/initrd &lt;span class="c1"># Если USE=dracut (или другой генератор initramfs)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">/&lt;span class="si">${&lt;/span>&lt;span class="nv">ESP&lt;/span>&lt;span class="si">}&lt;/span>/gentoo/xyz-gentoo-dist/linux
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">/&lt;span class="si">${&lt;/span>&lt;span class="nv">ESP&lt;/span>&lt;span class="si">}&lt;/span>/loader/entries/gentoo-xyz-gentoo-dist.conf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h4 id="uki">&lt;span class="section-num">3.1.5&lt;/span> uki&lt;/h4>
+&lt;ul>
+&lt;li>The Bootloader Specification Type 2:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">/boot/grub/grub.cfg &lt;span class="c1"># Если USE=grub&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">/&lt;span class="si">${&lt;/span>&lt;span class="nv">ESP&lt;/span>&lt;span class="si">}&lt;/span>/EFI/Linux/gentoo-xyz-gentoo-dist.efi
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="initrd-generator">&lt;span class="section-num">3.2&lt;/span> initrd_generator&lt;/h3>
+&lt;ul>
+&lt;li>Параметр определяет, какой плагин должен использоваться для генерации &lt;code>initramfs&lt;/code>.&lt;/li>
+&lt;li>В настоящее время единственным пакетом, который устанавливает такой плагин, является Dracut из &lt;code>sys-kernel/dracut&lt;/code>.&lt;/li>
+&lt;li>Если флаг &lt;code>USE=dracut&lt;/code> включён, этот параметр автоматически устанавливается в значение &lt;code>dracut&lt;/code>.&lt;/li>
+&lt;li>В противном случае для этого параметра автоматически устанавливается значение &lt;code>none&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h3 id="uki-generator">&lt;span class="section-num">3.3&lt;/span> uki_generator&lt;/h3>
+&lt;ul>
+&lt;li>Параметр управляет тем, какой плагин следует использовать для генерации унифицированного образа ядра.&lt;/li>
+&lt;li>Пакеты предоставляют такой плагин:
+&lt;ul>
+&lt;li>&lt;code>sys-kernel/dracut&lt;/code>;&lt;/li>
+&lt;li>&lt;code>systemd&lt;/code> (через флаг &lt;code>ukify&lt;/code> в &lt;code>sys-apps/systemd&lt;/code> и &lt;code>sys-apps/systemd-utils&lt;/code>).&lt;/li>
+&lt;li>Когда включен флаг &lt;code>USE=ukify&lt;/code>, этот параметр автоматически устанавливается в &lt;code>ukify&lt;/code>.&lt;/li>
+&lt;li>Когда флаг &lt;code>USE=ukify&lt;/code> отключен, но включены флаги &lt;code>USE&lt;/code> &lt;code>dracut&lt;/code> и &lt;code>uki&lt;/code>, этот параметр автоматически устанавливается в &lt;code>dracut&lt;/code>.&lt;/li>
+&lt;li>В противном случае этот параметр автоматически устанавливается в &lt;code>none&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="особенности">&lt;span class="section-num">4&lt;/span> Особенности&lt;/h2>
+&lt;h3 id="dracut">&lt;span class="section-num">4.1&lt;/span> dracut&lt;/h3>
+&lt;h4 id="hostonly">&lt;span class="section-num">4.1.1&lt;/span> hostonly&lt;/h4>
+&lt;ul>
+&lt;li>Начиная с версии &lt;code>sys-kernel/dracut-106&lt;/code> значение по умолчанию для параметра &lt;code>hostonly&lt;/code> изменилось с отключенного на включенное.&lt;/li>
+&lt;li>&lt;code>hostonly&lt;/code> :настройка для Dracut, которая управляет тем, сколько данных будет включено в создаваемый образ initramfs.&lt;/li>
+&lt;li>Когда она отключена, Dracut стремится сгенерировать образ initramfs, загружаемый на любом оборудовании.&lt;/li>
+&lt;li>Когда этот параметр включен, Dracut стремится сгенерировать образ initramfs, содержащий только то, что необходимо для загрузки текущей системы.&lt;/li>
+&lt;li>Настройка &lt;code>hostonly&lt;/code> может быть отключена с помощью в &lt;code>/etc/dracut.conf.d/&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mkdir -p /etc/dracut.conf.d
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;hostonly=no&amp;#34;&lt;/span> &amp;gt;&amp;gt; /etc/dracut.conf.d/95-no-hostonly.conf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="сравнение-ukify-и-dracut">&lt;span class="section-num">5&lt;/span> Сравнение ukify и dracut&lt;/h2>
+&lt;h3 id="основные-возможности">&lt;span class="section-num">5.1&lt;/span> Основные возможности&lt;/h3>
+&lt;ul>
+&lt;li>Dracut
+&lt;ul>
+&lt;li>Создает как UKI (Unified Kernel Image), так и initramfs самостоятельно&lt;/li>
+&lt;li>Имеет встроенный механизм создания initramfs&lt;/li>
+&lt;li>Автоматически генерирует UKI при включении соответствующих флагов&lt;/li>
+&lt;li>Поддерживает автоматическую установку в EFI System Partition&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Ukify
+&lt;ul>
+&lt;li>Создает только UKI, требует отдельный initramfs генератор&lt;/li>
+&lt;li>Работает с любым initramfs, созданным сторонними инструментами&lt;/li>
+&lt;li>Требует отдельной настройки initramfs через UgRD или Dracut&lt;/li>
+&lt;li>Более гибкая интеграция с существующими initramfs&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="настройка-и-конфигурация">&lt;span class="section-num">5.2&lt;/span> Настройка и конфигурация&lt;/h3>
+&lt;ul>
+&lt;li>Dracut
+&lt;ul>
+&lt;li>Конфигурация в файле &lt;code>/etc/dracut.conf&lt;/code>&lt;/li>
+&lt;li>Параметры командной строки ядра задаются в &lt;code>/etc/dracut.conf&lt;/code>&lt;/li>
+&lt;li>Для Secure Boot требуются настройки в &lt;code>/etc/dracut.conf&lt;/code>&lt;/li>
+&lt;li>Автоматическая генерация UKI при установке ядра&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Ukify
+&lt;ul>
+&lt;li>Конфигурация в файле &lt;code>/etc/kernel/uki.conf&lt;/code>&lt;/li>
+&lt;li>Параметры командной строки ядра задаются в &lt;code>/etc/kernel/cmdline&lt;/code>&lt;/li>
+&lt;li>Для Secure Boot требуются настройки в &lt;code>/etc/kernel/uki.conf&lt;/code>&lt;/li>
+&lt;li>Необходимость отдельной настройки initramfs генератора&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="особенности-использования">&lt;span class="section-num">5.3&lt;/span> Особенности использования&lt;/h3>
+&lt;ul>
+&lt;li>Dracut
+&lt;ul>
+&lt;li>Однофайловая система &amp;mdash; все в одном инструменте&lt;/li>
+&lt;li>Автоматическая генерация и установка UKI&lt;/li>
+&lt;li>Встроенная поддержка Secure Boot&lt;/li>
+&lt;li>Простота настройки через единый конфигурационный файл&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Ukify
+&lt;ul>
+&lt;li>Модульная система - можно комбинировать с разными initramfs генераторами&lt;/li>
+&lt;li>Более гибкая настройка параметров UKI&lt;/li>
+&lt;li>Интеграция с systemd-specific функциями&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="совместимость-и-интеграция">&lt;span class="section-num">5.4&lt;/span> Совместимость и интеграция&lt;/h3>
+&lt;ul>
+&lt;li>Dracut
+&lt;ul>
+&lt;li>Лучше интегрирован с традиционными системами&lt;/li>
+&lt;li>Поддерживает большинство загрузчиков без дополнительной настройки&lt;/li>
+&lt;li>Автоматически определяет и использует существующую конфигурацию&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Ukify
+&lt;ul>
+&lt;li>Лучше работает с systemd-based системами&lt;/li>
+&lt;li>Оптимизирован для современных UEFI систем&lt;/li>
+&lt;li>Требует дополнительной настройки при использовании нестандартных initramfs&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="рекомендации-по-выбору">&lt;span class="section-num">5.5&lt;/span> Рекомендации по выбору&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>Используйте Dracut, если:&lt;/p>
+&lt;ul>
+&lt;li>Нужна простая и единая система управления UKI и initramfs&lt;/li>
+&lt;li>Важна автоматическая генерация и установка&lt;/li>
+&lt;li>Используется традиционный подход к настройке системы&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Используйте Ukify, если:&lt;/p>
+&lt;ul>
+&lt;li>Нужна максимальная гибкость в выборе initramfs генератора&lt;/li>
+&lt;li>Важна поддержка Measured Boot&lt;/li>
+&lt;li>Используется современная systemd-based система&lt;/li>
+&lt;li>Требуется интеграция с дополнительными функциями systemd&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul></description></item><item><title>tmux. Конфигурация Oh My Tmux</title><link>https://yamadharma.github.io/ru/post/2025/05/21/tmux-oh-my-tmux/</link><pubDate>Wed, 21 May 2025 18:07:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2025/05/21/tmux-oh-my-tmux/</guid><description>&lt;p>Конфигурация Oh My Tmux.&lt;/p>
+&lt;details class="print:hidden xl:hidden" >
+&lt;summary>Содержание&lt;/summary>
+&lt;div class="text-sm">
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#ключевые-функции">&lt;span class="section-num">2&lt;/span> Ключевые функции&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#установка">&lt;span class="section-num">3&lt;/span> Установка&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#работа-с-окнами-и-панелями">&lt;span class="section-num">4&lt;/span> Работа с окнами и панелями&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#tmux-plugin-manager">&lt;span class="section-num">5&lt;/span> Tmux plugin manager&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/div>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>Репозиторий: &lt;a href="https://github.com/gpakosz/.tmux" target="_blank" rel="noopener">https://github.com/gpakosz/.tmux&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="ключевые-функции">&lt;span class="section-num">2&lt;/span> Ключевые функции&lt;/h2>
+&lt;ul>
+&lt;li>Навигация:
+&lt;ul>
+&lt;li>Добавляет вторичный префикс &lt;code>Ctrl + a&lt;/code> (как в Screen).&lt;/li>
+&lt;li>Удобно при назначении &lt;code>Ctrl&lt;/code> на &lt;code>CapsLock&lt;/code> (см. &lt;a href="https://yamadharma.github.io/ru/post/2025/05/06/keyboard-capslock/">Клавиатура. Клавиша Caps Lock&lt;/a>).&lt;/li>
+&lt;li>Основной префикс &amp;mdash; &lt;code>Ctrl + b&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Интеграция с Vim
+&lt;ul>
+&lt;li>Переключайтесь между стилями навигации Vim и Tmux без конфликтов.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Статус-бар
+&lt;ul>
+&lt;li>Отображает SSH-сессии, заряд батареи, uptime и т. д.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Копирование в буфер ОС
+&lt;ul>
+&lt;li>На Linux требует &lt;code>xsel&lt;/code>, &lt;code>xclip&lt;/code>, &lt;code>wl-copy&lt;/code>.&lt;/li>
+&lt;li>На macOS требует &lt;code>reattach-to-user-namespace&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="установка">&lt;span class="section-num">3&lt;/span> Установка&lt;/h2>
+&lt;ul>
+&lt;li>Установите конфигурацию, клонировав репозиторий и создав симлинки:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">git clone https://github.com/gpakosz/.tmux.git
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ln -s -f .tmux/.tmux.conf ~/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">cp .tmux/.tmux.conf.local ~/
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Кастомизируйте настройки через &lt;code>~/.tmux.conf.local&lt;/code>, не изменяя основной файл.&lt;/li>
+&lt;/ul>
+&lt;h2 id="работа-с-окнами-и-панелями">&lt;span class="section-num">4&lt;/span> Работа с окнами и панелями&lt;/h2>
+&lt;ul>
+&lt;li>Максимизация панели
+&lt;ul>
+&lt;li>&lt;code>&amp;lt;prefix&amp;gt; +&lt;/code> : разворачивает панель в отдельное окно.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Мышь
+&lt;ul>
+&lt;li>Включите/выключите режим мыши через &lt;code>&amp;lt;prefix&amp;gt; m&lt;/code> для изменения размеров панелей и выбора окон.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>SSH-сессии
+&lt;ul>
+&lt;li>При разделении панели Tmux автоматически переподключается к удалённому серверу.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="tmux-plugin-manager">&lt;span class="section-num">5&lt;/span> Tmux plugin manager&lt;/h2>
+&lt;ul>
+&lt;li>Конфигурация интегрирования с TPM (см. &lt;a href="https://yamadharma.github.io/ru/post/2025/05/21/tmux-tmux-plugin-manager/">tmux. Tmux Plugin Manager&lt;/a>).&lt;/li>
+&lt;/ul></description></item><item><title>tmux. Tmux Plugin Manager</title><link>https://yamadharma.github.io/ru/post/2025/05/21/tmux-tmux-plugin-manager/</link><pubDate>Wed, 21 May 2025 17:08:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2025/05/21/tmux-tmux-plugin-manager/</guid><description>&lt;p>Tmux Plugin Manager.&lt;/p>
+&lt;details class="print:hidden xl:hidden" >
+&lt;summary>Содержание&lt;/summary>
+&lt;div class="text-sm">
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#установка">&lt;span class="section-num">2&lt;/span> Установка&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#основные-команды">&lt;span class="section-num">3&lt;/span> Основные команды&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#особенности-работы">&lt;span class="section-num">4&lt;/span> Особенности работы&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#популярные-плагины">&lt;span class="section-num">5&lt;/span> Популярные плагины&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/div>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>Tmux Plugin Manager (TPM) &amp;mdash; это менеджер плагинов для терминального мультиплексора Tmux, написанный на Bash.&lt;/li>
+&lt;li>Автоматизирует установку, обновление и удаление плагинов, избавляя от ручного управления.&lt;/li>
+&lt;li>Репозиторий: &lt;a href="https://github.com/tmux-plugins/tpm" target="_blank" rel="noopener">https://github.com/tmux-plugins/tpm&lt;/a>&lt;/li>
+&lt;li>Список плагинов: &lt;a href="https://github.com/tmux-plugins/list" target="_blank" rel="noopener">https://github.com/tmux-plugins/list&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="установка">&lt;span class="section-num">2&lt;/span> Установка&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>Клонирование репозитория:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mkdir -p ~/.tmux/plugins
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Добавить в конфигурационный файл (&lt;code>~/.tmux.conf&lt;/code> или &lt;code>$XDG_CONFIG_HOME/tmux/tmux.conf&lt;/code>):&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Список плагинов&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">set&lt;/span> -g @plugin &lt;span class="s1">&amp;#39;tmux-plugins/tpm&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">set&lt;/span> -g @plugin &lt;span class="s1">&amp;#39;tmux-plugins/tmux-sensible&amp;#39;&lt;/span> &lt;span class="c1"># пример плагина&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Инициализация TPM (должна быть в конце файла)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">run &lt;span class="s1">&amp;#39;~/.tmux/plugins/tpm/tpm&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>После этого выполните (внутри сессии tmux):&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">tmux &lt;span class="nb">source&lt;/span> ~/.tmux.conf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Или:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">tmux &lt;span class="nb">source&lt;/span> ~/.config/tmux/tmux.conf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;ul>
+&lt;li>
+&lt;p>Автоматическая установка TPM.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Добавьте в &lt;code>~/.tmux.conf&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="k">if&lt;/span> &lt;span class="s2">&amp;#34;test ! -d ~/.tmux/plugins/tpm&amp;#34;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> &lt;span class="s2">&amp;#34;run &amp;#39;git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm &amp;amp;&amp;amp; ~/.tmux/plugins/tpm/bin/install_plugins&amp;#39;&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Это установит TPM при первом запуске Tmux.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="основные-команды">&lt;span class="section-num">3&lt;/span> Основные команды&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>Установка плагинов:&lt;/p>
+&lt;ul>
+&lt;li>Добавьте строку &lt;code>set -g @plugin 'автор/репозиторий'&lt;/code> в &lt;code>~/.tmux.conf&lt;/code>.&lt;/li>
+&lt;li>Нажмите &lt;code>Prefix + I&lt;/code> (Shift + i), чтобы TPM скачал и подключил плагины:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">set&lt;/span> -g @plugin &lt;span class="s1">&amp;#39;tmux-plugins/tmux-resurrect&amp;#39;&lt;/span> &lt;span class="c1"># сохранение сессий&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Обновление плагинов:&lt;/p>
+&lt;ul>
+&lt;li>Всех: &lt;code>Prefix + U&lt;/code> (Shift + u).&lt;/li>
+&lt;li>Конкретного: &lt;code>Prefix + Alt + u&lt;/code>, затем введите имя плагина.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Удаление плагинов:&lt;/p>
+&lt;ul>
+&lt;li>Удалите строку плагина из &lt;code>~/.tmux.conf&lt;/code>.&lt;/li>
+&lt;li>Нажмите &lt;code>Prefix + Alt + u&lt;/code> для очистки неиспользуемых плагинов.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="особенности-работы">&lt;span class="section-num">4&lt;/span> Особенности работы&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>Декларативная конфигурация&lt;/p>
+&lt;ul>
+&lt;li>Плагины объявляются в &lt;code>~/.tmux.conf&lt;/code>, а TPM автоматически подгружает их при старте Tmux.&lt;/li>
+&lt;li>Пример настройки tmux-resurrect:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">set&lt;/span> -g @resurrect-capture-pane-contents &lt;span class="s1">&amp;#39;on&amp;#39;&lt;/span> &lt;span class="c1"># сохраняет содержимое панелей&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Зависимости:&lt;/p>
+&lt;ul>
+&lt;li>TPM устанавливает зависимости плагинов автоматически.&lt;/li>
+&lt;li>Например, &lt;code>tmux-logging&lt;/code> требует &lt;code>tmux-prefix-highlight&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Обновление самого TPM:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> ~/.tmux/plugins/tpm &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> git pull
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="популярные-плагины">&lt;span class="section-num">5&lt;/span> Популярные плагины&lt;/h2>
+&lt;ul>
+&lt;li>tmux-resurrect : сохранение/восстановление сессий.&lt;/li>
+&lt;li>tmux-yank : копирование в системный буфер.&lt;/li>
+&lt;li>tmux-prefix-highlight : подсветка активного префикса.&lt;/li>
+&lt;li>tmux-battery : отображение заряда батареи в статус-баре.&lt;/li>
 &lt;/ul></description></item><item><title>Броузер. Реализация transient menu</title><link>https://yamadharma.github.io/ru/post/2025/04/24/browser-transient-menu/</link><pubDate>Thu, 24 Apr 2025 16:54:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2025/04/24/browser-transient-menu/</guid><description>&lt;p>Броузер. Реализация transient menu (см. &lt;a href="https://yamadharma.github.io/ru/post/2025/04/24/transient-menu-interface/">Интерфейс. Transient menu&lt;/a>).&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
 &lt;summary>Содержание&lt;/summary>
@@ -1799,6 +2283,7 @@ tabe widget</description></item><item><title>Процесс выполнения
 &lt;li>&lt;a href="#удаление-плагина">&lt;span class="section-num">3.4&lt;/span> Удаление плагина&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
+&lt;li>&lt;a href="#ресурсы">&lt;span class="section-num">4&lt;/span> Ресурсы&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/nav>
 &lt;/div>
@@ -1849,6 +2334,10 @@ tabe widget</description></item><item><title>Процесс выполнения
 &lt;li>Удаления установленного плагина:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">fisher remove &amp;lt;user_name&amp;gt;/&amp;lt;repo_name&amp;gt;
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="ресурсы">&lt;span class="section-num">4&lt;/span> Ресурсы&lt;/h2>
+&lt;ul>
+&lt;li>Fish Awesome: &lt;a href="https://github.com/jorgebucaran/awsm.fish" target="_blank" rel="noopener">https://github.com/jorgebucaran/awsm.fish&lt;/a>&lt;/li>
 &lt;/ul></description></item><item><title>Настройка vpn-клиента Континент АП</title><link>https://yamadharma.github.io/ru/post/2025/02/05/configuring-continent-ap-vpn-client/</link><pubDate>Wed, 05 Feb 2025 18:32:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2025/02/05/configuring-continent-ap-vpn-client/</guid><description>&lt;p>Настройка vpn-клиента Континент АП (Ztn Client).&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
 &lt;summary>Содержание&lt;/summary>
@@ -3109,12 +3598,48 @@ width="647" height="364" allow="autoplay; encrypted-media; fullscreen; picture-i
 &lt;nav id="TableOfContents">
 &lt;ul>
 &lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#установка">&lt;span class="section-num">2&lt;/span> Установка&lt;/a>
+&lt;li>&lt;a href="#особенности">&lt;span class="section-num">2&lt;/span> Особенности&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#утилиты">&lt;span class="section-num">3&lt;/span> Утилиты&lt;/a>
 &lt;ul>
-&lt;li>&lt;a href="#контейнер">&lt;span class="section-num">2.1&lt;/span> Контейнер&lt;/a>
+&lt;li>&lt;a href="#cleanabag">&lt;span class="section-num">3.1&lt;/span> cleanABag&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#установка">&lt;span class="section-num">4&lt;/span> Установка&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#контейнер">&lt;span class="section-num">5&lt;/span> Контейнер&lt;/a>
 &lt;ul>
-&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">2.1.1&lt;/span> Общая информация&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#podman">&lt;span class="section-num">2.1.2&lt;/span> Podman&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">5.1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#podman">&lt;span class="section-num">5.2&lt;/span> Podman&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">5.2.1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#загрузка">&lt;span class="section-num">5.2.2&lt;/span> Загрузка&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#nginx">&lt;span class="section-num">5.3&lt;/span> Nginx&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#обновление">&lt;span class="section-num">5.4&lt;/span> Обновление&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#система-на-базе-sqlite">&lt;span class="section-num">5.5&lt;/span> Система на базе SQLite&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#запуск-вручную">&lt;span class="section-num">5.5.1&lt;/span> Запуск вручную&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#docker-compose">&lt;span class="section-num">5.5.2&lt;/span> docker-compose&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#скрипт-systemd">&lt;span class="section-num">5.5.3&lt;/span> Скрипт systemd&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#система-на-базе-postgresql">&lt;span class="section-num">5.6&lt;/span> Система на базе PostgreSQL&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#docker-compose">&lt;span class="section-num">5.6.1&lt;/span> docker-compose&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#импорт-и-экспорт">&lt;span class="section-num">6&lt;/span> Импорт и экспорт&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#импорт-omnivore">&lt;span class="section-num">6.1&lt;/span> Импорт Omnivore&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#импорт-instapaper">&lt;span class="section-num">6.2&lt;/span> Импорт Instapaper&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#импорт-pocket">&lt;span class="section-num">6.3&lt;/span> Импорт Pocket&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#экспорт-всех-записей">&lt;span class="section-num">6.4&lt;/span> Экспорт всех записей&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#экспорт">&lt;span class="section-num">6.4.1&lt;/span> Экспорт&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#импорт">&lt;span class="section-num">6.4.2&lt;/span> Импорт&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#экспорта-из-контейнера">&lt;span class="section-num">6.4.3&lt;/span> Экспорта из контейнера&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
@@ -3176,12 +3701,39 @@ width="647" height="364" allow="autoplay; encrypted-media; fullscreen; picture-i
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
-&lt;h2 id="установка">&lt;span class="section-num">2&lt;/span> Установка&lt;/h2>
+&lt;h2 id="особенности">&lt;span class="section-num">2&lt;/span> Особенности&lt;/h2>
+&lt;ul>
+&lt;li>Клиенты wallabag скачивают всю базу.&lt;/li>
+&lt;li>При разрастании базы происходит деградация производительности.&lt;/li>
+&lt;li>И в конце концов клиент просто перестаёт работать.&lt;/li>
+&lt;li>Рекомендуется удалять прочитанные статьи с сервера.&lt;/li>
+&lt;/ul>
+&lt;h2 id="утилиты">&lt;span class="section-num">3&lt;/span> Утилиты&lt;/h2>
+&lt;h3 id="cleanabag">&lt;span class="section-num">3.1&lt;/span> cleanABag&lt;/h3>
+&lt;ul>
+&lt;li>Репозиторий: &lt;a href="https://git.sr.ht/~bacardi55/cleanABag" target="_blank" rel="noopener">https://git.sr.ht/~bacardi55/cleanABag&lt;/a>&lt;/li>
+&lt;li>cli-инструмент для удаления статей старше указанной даты из wallabag.&lt;/li>
+&lt;li>Омтавляет поменные и непрочтённые сообщения по умолчанию.&lt;/li>
+&lt;li>Пример запуска:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Удалите архивные статьи старше 2021-12-31 (дата в формате YYYY-MM-DD), не затрагивая непрочтённые и отмеченные&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Протестировать&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">cleanABag prune -c /path/to/credentials.json -d &lt;span class="s2">&amp;#34;2021-12-31&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Удалить&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">cleanABag prune -c /path/to/credentials.json -d &lt;span class="s2">&amp;#34;2021-12-31&amp;#34;&lt;/span> --delete
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="установка">&lt;span class="section-num">4&lt;/span> Установка&lt;/h2>
 &lt;ul>
 &lt;li>Документация: &lt;a href="https://doc.wallabag.org/en/admin/installation/installation.html" target="_blank" rel="noopener">https://doc.wallabag.org/en/admin/installation/installation.html&lt;/a>&lt;/li>
+&lt;li>При первом логине используются следующие параметры:
+&lt;ul>
+&lt;li>login: wallabag&lt;/li>
+&lt;li>password: wallabag&lt;/li>
 &lt;/ul>
-&lt;h3 id="контейнер">&lt;span class="section-num">2.1&lt;/span> Контейнер&lt;/h3>
-&lt;h4 id="общая-информация">&lt;span class="section-num">2.1.1&lt;/span> Общая информация&lt;/h4>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="контейнер">&lt;span class="section-num">5&lt;/span> Контейнер&lt;/h2>
+&lt;h3 id="общая-информация">&lt;span class="section-num">5.1&lt;/span> Общая информация&lt;/h3>
 &lt;ul>
 &lt;li>Репозиторий: &lt;a href="https://github.com/wallabag/docker" target="_blank" rel="noopener">https://github.com/wallabag/docker&lt;/a>&lt;/li>
 &lt;li>Dockerhub: &lt;a href="https://hub.docker.com/r/wallabag/wallabag/" target="_blank" rel="noopener">https://hub.docker.com/r/wallabag/wallabag/&lt;/a>&lt;/li>
@@ -3189,35 +3741,60 @@ width="647" height="364" allow="autoplay; encrypted-media; fullscreen; picture-i
 &lt;li>При первом запуске необходимо будет сконфигурить приложение.&lt;/li>
 &lt;li>Пусть доменное имя установки будет &lt;code>wallabag.example.com&lt;/code>&lt;/li>
 &lt;/ul>
-&lt;h4 id="podman">&lt;span class="section-num">2.1.2&lt;/span> Podman&lt;/h4>
-&lt;!--list-separator-->
-&lt;ol>
-&lt;li>
-&lt;p>Общая информация&lt;/p>
+&lt;h3 id="podman">&lt;span class="section-num">5.2&lt;/span> Podman&lt;/h3>
+&lt;h4 id="общая-информация">&lt;span class="section-num">5.2.1&lt;/span> Общая информация&lt;/h4>
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2024/12/04/containers-podman/">Контейнеры. podman&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;/li>
-&lt;/ol>
-&lt;!--list-separator-->
-&lt;ol start="2">
-&lt;li>
-&lt;p>Загрузка&lt;/p>
+&lt;h4 id="загрузка">&lt;span class="section-num">5.2.2&lt;/span> Загрузка&lt;/h4>
 &lt;ul>
 &lt;li>Скачайте контейнер:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">podman pull wallabag/wallabag
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
-&lt;/li>
-&lt;/ol>
-&lt;!--list-separator-->
-&lt;ol start="3">
-&lt;li>
-&lt;p>Установка с SQLite&lt;/p>
-&lt;!--list-separator-->
-&lt;ol>
-&lt;li>
-&lt;p>Запуск вручную&lt;/p>
+&lt;h3 id="nginx">&lt;span class="section-num">5.3&lt;/span> Nginx&lt;/h3>
+&lt;ul>
+&lt;li>Настройте &lt;em>nginx&lt;/em>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">server {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> listen 443 ssl http2;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> listen [::]:443 ssl http2;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> server_name wallabag.example.com;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ssl_certificate /etc/letsencrypt/live/wallabag.example.com/fullchain.pem;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ssl_certificate_key /etc/letsencrypt/live/wallabag.example.com/privkey.pem;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> charset utf-8;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> gzip on;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> gzip_types text/css application/javascript text/javascript application/x-javascript image/svg+xml text/plain text/xsd text/xsl text/xml image/x-icon;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> location / {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> proxy_pass http://localhost:40401;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> proxy_set_header X-Forwarded-Host $server_name;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> proxy_set_header X-Forwarded-Proto https;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> proxy_set_header X-Forwarded-For $remote_addr;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">server {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> listen 80;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> listen [::]:80;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> server_name wallabag.example.com;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> return 301 https://$server_name$request_uri;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="обновление">&lt;span class="section-num">5.4&lt;/span> Обновление&lt;/h3>
+&lt;ul>
+&lt;li>Обновление контейнера:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">podman pull wallabag/wallabag
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">podman stop wallabag
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">podman compose --file wallabag-sqlite.yaml up --detach
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="система-на-базе-sqlite">&lt;span class="section-num">5.5&lt;/span> Система на базе SQLite&lt;/h3>
+&lt;h4 id="запуск-вручную">&lt;span class="section-num">5.5.1&lt;/span> Запуск вручную&lt;/h4>
 &lt;ul>
 &lt;li>Создайте каталоги для постоянных данных:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mkdir -p /opt/wallabag/&lt;span class="o">{&lt;/span>data,images&lt;span class="o">}&lt;/span>
@@ -3228,12 +3805,7 @@ width="647" height="364" allow="autoplay; encrypted-media; fullscreen; picture-i
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Сервер будет доступен по &lt;code>http://localhost:40401&lt;/code>.&lt;/li>
 &lt;/ul>
-&lt;/li>
-&lt;/ol>
-&lt;!--list-separator-->
-&lt;ol start="2">
-&lt;li>
-&lt;p>docker-compose&lt;/p>
+&lt;h4 id="docker-compose">&lt;span class="section-num">5.5.2&lt;/span> docker-compose&lt;/h4>
 &lt;ul>
 &lt;li>Создадим файл docker-compose &lt;code>wallabag-sqlite.yaml&lt;/code>:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">version&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;3&amp;#39;&lt;/span>&lt;span class="w">
@@ -3276,65 +3848,7 @@ width="647" height="364" allow="autoplay; encrypted-media; fullscreen; picture-i
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">podman compose --file wallabag-sqlite.yaml up --detach
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
-&lt;/li>
-&lt;/ol>
-&lt;/li>
-&lt;/ol>
-&lt;!--list-separator-->
-&lt;ol start="4">
-&lt;li>
-&lt;p>Обновление&lt;/p>
-&lt;ul>
-&lt;li>Обновление контейнера:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">podman pull wallabag/wallabag
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">podman stop wallabag
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">podman compose --file wallabag-sqlite.yaml up --detach
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ol>
-&lt;!--list-separator-->
-&lt;ol start="5">
-&lt;li>
-&lt;p>Nginx&lt;/p>
-&lt;ul>
-&lt;li>Настройте &lt;em>nginx&lt;/em>:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">server {
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> listen 443 ssl http2;
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> listen [::]:443 ssl http2;
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> server_name wallabag.example.com;
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ssl_certificate /etc/letsencrypt/live/wallabag.example.com/fullchain.pem;
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ssl_certificate_key /etc/letsencrypt/live/wallabag.example.com/privkey.pem;
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> charset utf-8;
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> gzip on;
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> gzip_types text/css application/javascript text/javascript application/x-javascript image/svg+xml text/plain text/xsd text/xsl text/xml image/x-icon;
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> location / {
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> proxy_pass http://localhost:40401;
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> proxy_set_header X-Forwarded-Host $server_name;
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> proxy_set_header X-Forwarded-Proto https;
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> proxy_set_header X-Forwarded-For $remote_addr;
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">server {
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> listen 80;
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> listen [::]:80;
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> server_name wallabag.example.com;
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> return 301 https://$server_name$request_uri;
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ol>
-&lt;!--list-separator-->
-&lt;ol start="6">
-&lt;li>
-&lt;p>Скрипт systemd&lt;/p>
+&lt;h4 id="скрипт-systemd">&lt;span class="section-num">5.5.3&lt;/span> Скрипт systemd&lt;/h4>
 &lt;ul>
 &lt;li>Создаём файл сервиса &lt;code>/etc/containers/systemd/wallabag.container&lt;/code>:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[Unit]
@@ -3359,12 +3873,53 @@ width="647" height="364" allow="autoplay; encrypted-media; fullscreen; picture-i
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">systemctl start wallabag.service
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
-&lt;/li>
-&lt;/ol>
-&lt;!--list-separator-->
-&lt;ol start="7">
-&lt;li>
-&lt;p>Импорт Omnivore&lt;/p>
+&lt;h3 id="система-на-базе-postgresql">&lt;span class="section-num">5.6&lt;/span> Система на базе PostgreSQL&lt;/h3>
+&lt;h4 id="docker-compose">&lt;span class="section-num">5.6.1&lt;/span> docker-compose&lt;/h4>
+&lt;ul>
+&lt;li>Создадим файл docker-compose &lt;code>wallabag-pgsql.yaml&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">version&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;3&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">services&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">wallabag&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">image&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">wallabag/wallabag:latest&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">container_name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">wallabag-pgsql&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">restart&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">unless-stopped&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">environment&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="l">​ - TZ=Etc/UTC&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="l">​ - SYMFONY__ENV__MAILER_DSN=smtp://127.0.0.1&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="l">​ - SYMFONY__ENV__FROM_EMAIL=wallabag@example.com&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="l">​ - SYMFONY__ENV__DOMAIN_NAME=https://wallabag.example.com&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="l">​ - SYMFONY__ENV__SERVER_NAME=wallabag.example.com&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="l">​ - PHP_MEMORY_LIMIT=1024M&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="l">​ - PHP_MAX_EXECUTION_TIME=600&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="l">​ - PHP_MAX_INPUT_TIME=600&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="l">​ - POSTGRES_PASSWORD=&amp;lt;password1&amp;gt;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="l">​ - POSTGRES_USER=postgres&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="l">​ - SYMFONY__ENV__DATABASE_DRIVER=pdo_pgsql&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="l">​ - SYMFONY__ENV__DATABASE_HOST=wallabag-db-pgsql&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="l">​ - SYMFONY__ENV__DATABASE_PORT=5432&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="l">​ - SYMFONY__ENV__DATABASE_NAME=wallabag&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="l">​ - SYMFONY__ENV__DATABASE_USER=wallabag&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="l">​ - SYMFONY__ENV__DATABASE_PASSWORD=&amp;lt;password2&amp;gt;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">ports&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="l">​ - &amp;#34;40401:80&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">depends_on&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="l">​ - wallabag-db-pgsql&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">wallabag-db-pgsql&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">image&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">postgres:14&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">container_name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">wallabag-db-pgsql&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">restart&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">unless-stopped&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">environment&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="l">​ - POSTGRES_PASSWORD=&amp;lt;password1&amp;gt;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="l">​ - POSTGRES_USER=postgres&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Используем postgres-14, посколку в версии 15 были сделаны исправления безопасности (&lt;a href="https://www.cybertec-postgresql.com/en/error-permission-denied-schema-public/" target="_blank" rel="noopener">https://www.cybertec-postgresql.com/en/error-permission-denied-schema-public/&lt;/a>).&lt;/li>
+&lt;li>Но docker-образ для wallabag не поддерживает этого.&lt;/li>
+&lt;li>Запуск будет выполняться следующим образом:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">podman compose --file wallabag-pgsql.yaml up --detach
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="импорт-и-экспорт">&lt;span class="section-num">6&lt;/span> Импорт и экспорт&lt;/h2>
+&lt;h3 id="импорт-omnivore">&lt;span class="section-num">6.1&lt;/span> Импорт Omnivore&lt;/h3>
 &lt;ul>
 &lt;li>Экспортировал записи с Omnivore.&lt;/li>
 &lt;li>Скачал архив с большим количеством файлов json (более 600).&lt;/li>
@@ -3381,8 +3936,98 @@ width="647" height="364" allow="autoplay; encrypted-media; fullscreen; picture-i
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">done&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
+&lt;h3 id="импорт-instapaper">&lt;span class="section-num">6.2&lt;/span> Импорт Instapaper&lt;/h3>
+&lt;ul>
+&lt;li>Скопировал файл на сервер.&lt;/li>
+&lt;li>Поскольку каталог &lt;code>/opt/wallabag/images&lt;/code> уже подмонтирован к контейнеру в каталог &lt;code>/var/www/wallabag/web/assets/images&lt;/code>, сделал в нём каталог &lt;code>instapaper&lt;/code> и поместил туда файл.&lt;/li>
+&lt;li>Структура файла:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-csv" data-lang="csv">&lt;span class="line">&lt;span class="cl">&lt;span class="s">URL&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="s">Title&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="s">Selection&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="s">Folder&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="s">Timestamp&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="s">Tags&lt;/span>&lt;span class="p">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Запустил скрипт:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#!/bin/bash
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> /opt/wallabag/images/instapaper
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span> i in *.csv
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">do&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> podman &lt;span class="nb">exec&lt;/span> -it &amp;lt;container-id&amp;gt; sh -c &lt;span class="s2">&amp;#34;cd /var/www/wallabag/web/assets/images/instapaper; /var/www/wallabag/bin/console --env=prod wallabag:import -v --importer=instapaper --markAsRead=true -- &amp;lt;username&amp;gt; &lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">i&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2"> &amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">done&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="импорт-pocket">&lt;span class="section-num">6.3&lt;/span> Импорт Pocket&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/09/06/deferred-reading-pocket/">Отложенное чтение. Pocket&lt;/a>&lt;/li>
+&lt;li>Сохранить архив можно на странице: &lt;a href="https://getpocket.com/export" target="_blank" rel="noopener">https://getpocket.com/export&lt;/a>.&lt;/li>
+&lt;li>Скопировал архив на сервер.&lt;/li>
+&lt;li>Поскольку каталог &lt;code>/opt/wallabag/images&lt;/code> уже подмонтирован к контейнеру в каталог &lt;code>/var/www/wallabag/web/assets/images&lt;/code>, сделал в нём каталог &lt;code>pocket&lt;/code> и поместил туда архив.&lt;/li>
+&lt;li>Распаковал архив.&lt;/li>
+&lt;li>Там файлы &lt;code>.csv&lt;/code>, структура файлов:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-csv" data-lang="csv">&lt;span class="line">&lt;span class="cl">&lt;span class="s">title&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="s">url&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="s">time_added&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="s">tags&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="s">status&lt;/span>&lt;span class="p">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Нет отметки, что файл в избранном.&lt;/li>
+&lt;li>Импортер &lt;code>--importer=pocket&lt;/code> их не читает.&lt;/li>
+&lt;li>Переделал из под формат &lt;em>Instapaper&lt;/em>.&lt;/li>
+&lt;li>Установил csvkit (см. &lt;a href="https://yamadharma.github.io/ru/post/2023/07/06/csv-csvkit/">Формат CSV. csvkit&lt;/a>):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pipx install csvkit
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Распаковал файл &lt;code>pocket.zip&lt;/code> в каталог &lt;code>/opt/wallabag/images/pocket/in&lt;/code>:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mkdir -p /opt/wallabag/images/pocket/in
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">cp pocket.zip /opt/wallabag/images/pocket/in
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> /opt/wallabag/images/pocket/in
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">unzip pocket.zip
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Преобразовал формат:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> /opt/wallabag/images/pocket/in
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span> i in *.csv&lt;span class="p">;&lt;/span> &lt;span class="k">do&lt;/span> &lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;,&amp;#34;&lt;/span> &lt;span class="p">|&lt;/span> csvjoin &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">i&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> - &lt;span class="p">|&lt;/span> csvcut -c 2,1,6,5,3,4 &amp;gt; ../&lt;span class="si">${&lt;/span>&lt;span class="nv">i&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="k">done&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> ../
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Запустил скрипт:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#!/bin/bash
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> /opt/wallabag/images/instapaper
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span> i in *.csv
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">do&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">podman &lt;span class="nb">exec&lt;/span> -it &amp;lt;container-id&amp;gt; sh -c &lt;span class="s2">&amp;#34;cd /var/www/wallabag/web/assets/images/pocket; /var/www/wallabag/bin/console --env=prod wallabag:import -v --importer=instapaper --markAsRead=true -- &amp;lt;username&amp;gt; &lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">i&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2"> &amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">done&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="экспорт-всех-записей">&lt;span class="section-num">6.4&lt;/span> Экспорт всех записей&lt;/h3>
+&lt;h4 id="экспорт">&lt;span class="section-num">6.4.1&lt;/span> Экспорт&lt;/h4>
+&lt;ul>
+&lt;li>
+&lt;p>Перейдите в директорию установки wallabag.&lt;/p>
 &lt;/li>
-&lt;/ol></description></item><item><title>Контейнеры. podman</title><link>https://yamadharma.github.io/ru/post/2024/12/04/containers-podman/</link><pubDate>Wed, 04 Dec 2024 20:13:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2024/12/04/containers-podman/</guid><description>&lt;p>Контейнеры. podman.&lt;/p>
+&lt;li>
+&lt;p>Выполните команду:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">bin/console wallabag:export --env&lt;span class="o">=&lt;/span>prod &amp;lt;имя_пользователя&amp;gt; &lt;span class="o">[&lt;/span>&amp;lt;путь_к_файлу&amp;gt;&lt;span class="o">]&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>&lt;code>&amp;lt;имя_пользователя&amp;gt;&lt;/code> - имя пользователя, чьи записи нужно экспортировать;&lt;/li>
+&lt;li>&lt;code>&amp;lt;путь_к_файлу&amp;gt;&lt;/code> - опциональный параметр, указывающий путь к файлу экспорта.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Пример использования:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">bin/console wallabag:export --env&lt;span class="o">=&lt;/span>prod john.doe /var/www/wallabag/exports/export.json
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>После выполнения команды все записи указанного пользователя будут экспортированы в выбранный файл в формате JSON.&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="импорт">&lt;span class="section-num">6.4.2&lt;/span> Импорт&lt;/h4>
+&lt;ul>
+&lt;li>Для импорта используем следующую команду:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">bin/console wallabag:import --env&lt;span class="o">=&lt;/span>prod username export.json
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h4 id="экспорта-из-контейнера">&lt;span class="section-num">6.4.3&lt;/span> Экспорта из контейнера&lt;/h4>
+&lt;ul>
+&lt;li>Получите идентификатор контейнера:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">podman container list
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Поскольку каталог &lt;code>/opt/wallabag/images&lt;/code> уже подмонтирован к контейнеру в каталог &lt;code>/var/www/wallabag/web/assets/images&lt;/code>, будем экспортировать в его.&lt;/li>
+&lt;li>Подключитесь к контейнеру и выполните экспорт:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">podman &lt;span class="nb">exec&lt;/span> -it &amp;lt;container-id&amp;gt; sh -c &lt;span class="s2">&amp;#34;bin/console wallabag:export --env=prod john.doe /var/www/wallabag/web/assets/images/&lt;/span>&lt;span class="k">$(&lt;/span>date -I&lt;span class="k">)&lt;/span>&lt;span class="s2">.json&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul></description></item><item><title>Контейнеры. podman</title><link>https://yamadharma.github.io/ru/post/2024/12/04/containers-podman/</link><pubDate>Wed, 04 Dec 2024 20:13:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2024/12/04/containers-podman/</guid><description>&lt;p>Контейнеры. podman.&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
 &lt;summary>Содержание&lt;/summary>
 &lt;div class="text-sm">
@@ -15159,7 +15804,9 @@ width="647" height="364" allow="autoplay; encrypted-media; fullscreen; picture-i
 &lt;nav id="TableOfContents">
 &lt;ul>
 &lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#ресурсы">&lt;span class="section-num">2&lt;/span> Ресурсы&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#плагины">&lt;span class="section-num">2&lt;/span> Плагины&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#конфигурации">&lt;span class="section-num">3&lt;/span> Конфигурации&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#ресурсы">&lt;span class="section-num">4&lt;/span> Ресурсы&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/nav>
 &lt;/div>
@@ -15169,7 +15816,15 @@ width="647" height="364" allow="autoplay; encrypted-media; fullscreen; picture-i
 &lt;li>Репозиторий: &lt;a href="https://github.com/tmux/tmux" target="_blank" rel="noopener">https://github.com/tmux/tmux&lt;/a>&lt;/li>
 &lt;li>Wiki: &lt;a href="https://github.com/tmux/tmux/wiki" target="_blank" rel="noopener">https://github.com/tmux/tmux/wiki&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;h2 id="ресурсы">&lt;span class="section-num">2&lt;/span> Ресурсы&lt;/h2>
+&lt;h2 id="плагины">&lt;span class="section-num">2&lt;/span> Плагины&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2025/05/21/tmux-tmux-plugin-manager/">tmux. Tmux Plugin Manager&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="конфигурации">&lt;span class="section-num">3&lt;/span> Конфигурации&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2025/05/21/tmux-oh-my-tmux/">tmux. Конфигурация Oh My Tmux&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="ресурсы">&lt;span class="section-num">4&lt;/span> Ресурсы&lt;/h2>
 &lt;ul>
 &lt;li>Awesome Tmux: &lt;a href="https://www.trackawesomelist.com/rothgar/awesome-tmux/readme/" target="_blank" rel="noopener">https://www.trackawesomelist.com/rothgar/awesome-tmux/readme/&lt;/a>&lt;/li>
 &lt;li>Разные ссылки:
@@ -27882,6 +28537,7 @@ Configuration mode
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2024/07/06/gentoo-post-installation/">Gentoo. Постустановка&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2024/05/16/gentoo-compiling-clang/">Gentoo. Компиляция системы clang&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2024/11/02/gentoo-ebuild-rust/">Gentoo. Создание ebuild для Rust&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2025/05/22/gentoo-installkernel/">Gentoo. Пакет installkernel&lt;/a>&lt;/li>
 &lt;/ul></description></item><item><title>Серверы на Донской</title><link>https://yamadharma.github.io/ru/post/2022/09/15/servers-donskaya/</link><pubDate>Thu, 15 Sep 2022 20:19:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/09/15/servers-donskaya/</guid><description>&lt;p>Сервера на Донской.&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
 &lt;summary>Содержание&lt;/summary>
@@ -41289,6 +41945,7 @@ tabe widget
 &lt;li>&lt;a href="#темы">&lt;span class="section-num">8.3&lt;/span> Темы&lt;/a>
 &lt;ul>
 &lt;li>&lt;a href="#hugobricks">&lt;span class="section-num">8.3.1&lt;/span> hugobricks&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#dot-org-theme">&lt;span class="section-num">8.3.2&lt;/span> Dot Org Theme&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
@@ -41391,6 +42048,11 @@ tabe widget
 &lt;ul>
 &lt;li>Сайт: &lt;a href="https://www.hugobricks.preview.usecue.com" target="_blank" rel="noopener">https://www.hugobricks.preview.usecue.com&lt;/a>&lt;/li>
 &lt;li>Репозитоирий: &lt;a href="https://github.com/jhvanderschee/hugobricks" target="_blank" rel="noopener">https://github.com/jhvanderschee/hugobricks&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h4 id="dot-org-theme">&lt;span class="section-num">8.3.2&lt;/span> Dot Org Theme&lt;/h4>
+&lt;ul>
+&lt;li>Репозиторий: &lt;a href="https://github.com/cncf/dot-org-hugo-theme" target="_blank" rel="noopener">https://github.com/cncf/dot-org-hugo-theme&lt;/a>&lt;/li>
+&lt;li>Сайт: &lt;a href="https://dot-org-hugo-theme-demo.netlify.app/" target="_blank" rel="noopener">https://dot-org-hugo-theme-demo.netlify.app/&lt;/a>&lt;/li>
 &lt;/ul></description></item><item><title>Переход на Sway</title><link>https://yamadharma.github.io/ru/post/2020/09/10/migration-sway/</link><pubDate>Thu, 10 Sep 2020 10:33:15 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2020/09/10/migration-sway/</guid><description>&lt;p>Решил попробовать &lt;a href="https://wayland.freedesktop.org/" target="_blank" rel="noopener">Wayland&lt;/a>. По этой причине пришлось &lt;a href="http://way-cooler.org/blog/2020/01/09/way-cooler-post-mortem.html" target="_blank" rel="noopener">перейти&lt;/a> с &lt;a href="https://awesomewm.org/" target="_blank" rel="noopener">awesome&lt;/a> на &lt;a href="https://swaywm.org/" target="_blank" rel="noopener">sway&lt;/a>.&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
 &lt;summary>Содержание&lt;/summary>

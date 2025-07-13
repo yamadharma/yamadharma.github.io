@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Hugo | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/hugo/</link><atom:link href="https://yamadharma.github.io/ru/tag/hugo/index.xml" rel="self" type="application/rss+xml"/><description>Hugo</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>ru-ru</language><copyright>© 2025 Dmitry S. Kulyabov</copyright><lastBuildDate>Wed, 08 Jan 2025 20:35:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu_c0ee34e0b47a9b95.png</url><title>Hugo</title><link>https://yamadharma.github.io/ru/tag/hugo/</link></image><item><title>Учебный проект Сайт научника</title><link>https://yamadharma.github.io/ru/teaching/os-intro/educational-project-researcher-website/</link><pubDate>Tue, 05 Apr 2022 18:20:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/teaching/os-intro/educational-project-researcher-website/</guid><description>&lt;p>Сквозной учебный проект &lt;em>Персональный сайт научного работника&lt;/em>.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Hugo | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/hugo/</link><atom:link href="https://yamadharma.github.io/ru/tag/hugo/index.xml" rel="self" type="application/rss+xml"/><description>Hugo</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>ru-ru</language><copyright>© 2025 Dmitry S. Kulyabov</copyright><lastBuildDate>Thu, 03 Jul 2025 20:30:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu_c0ee34e0b47a9b95.png</url><title>Hugo</title><link>https://yamadharma.github.io/ru/tag/hugo/</link></image><item><title>Учебный проект Сайт научника</title><link>https://yamadharma.github.io/ru/teaching/os-intro/educational-project-researcher-website/</link><pubDate>Tue, 05 Apr 2022 18:20:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/teaching/os-intro/educational-project-researcher-website/</guid><description>&lt;p>Сквозной учебный проект &lt;em>Персональный сайт научного работника&lt;/em>.&lt;/p>
 &lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
 &lt;ul>
 &lt;li>Проект является сквозным, так как должен проходить через весь процесс обучения.&lt;/li>
@@ -210,6 +210,522 @@ tabe widget
 &lt;ul>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2020/12/17/org-mode-export-hugo/">Org-mode. Экспорт в Hugo&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/06/02/backlinks-hugo/">Обратные ссылки в Hugo&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>Org-mode. Экспорт ссылок на видео в Hugo</title><link>https://yamadharma.github.io/ru/post/2025/07/03/org-mode-video-export-hugo/</link><pubDate>Thu, 03 Jul 2025 20:30:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2025/07/03/org-mode-video-export-hugo/</guid><description>&lt;p>Org-mode. Экспорт ссылок на видео в Hugo&lt;/p>
+&lt;details class="print:hidden xl:hidden" >
+&lt;summary>Содержание&lt;/summary>
+&lt;div class="text-sm">
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#прагматика">&lt;span class="section-num">1&lt;/span> Прагматика&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#экспорт-видео-dot-решение-1">&lt;span class="section-num">2&lt;/span> Экспорт видео. Решение 1&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#экспорт-видео-dot-решение-2">&lt;span class="section-num">3&lt;/span> Экспорт видео. Решение 2&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#поддержка-вкладок">&lt;span class="section-num">4&lt;/span> Поддержка вкладок&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#использование">&lt;span class="section-num">5&lt;/span> Использование&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#загрузка-при-старте-emacs">&lt;span class="section-num">6&lt;/span> Загрузка при старте emacs&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/div>
+&lt;/details>
+&lt;h2 id="прагматика">&lt;span class="section-num">1&lt;/span> Прагматика&lt;/h2>
+&lt;ul>
+&lt;li>Нужно экспортировать ссылки на видео не только в Hugo, но и в Markdown.
+&lt;ul>
+&lt;li>Неудобно прописывать это дважды.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Синтаксис видео во вкладках (см. &lt;a href="https://yamadharma.github.io/ru/post/2022/06/26/hugo-video-tabs/">Hugo. Видео во вкладках&lt;/a>) не зафиксирован.
+&lt;ul>
+&lt;li>Пришлось переписывать все низкоуровневые вызовы при смене синтаксиса.&lt;/li>
+&lt;li>Хотелось бы зафиксировать форму записи.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Решение: использование макросов org-mode (см. &lt;a href="https://yamadharma.github.io/ru/post/2025/06/08/org-mode-macro/">Org-mode. Макросы&lt;/a>).&lt;/li>
+&lt;li>Будем использовать синтаксис от вкладок jQuery (см. &lt;a href="https://yamadharma.github.io/ru/post/2025/07/03/hugo-tabbed-view-jquery/">Hugo. Вкладки jquery&lt;/a>).&lt;/li>
+&lt;/ul>
+&lt;h2 id="экспорт-видео-dot-решение-1">&lt;span class="section-num">2&lt;/span> Экспорт видео. Решение 1&lt;/h2>
+&lt;ul>
+&lt;li>Нужно экспортировать видео и в hugo, и в markdown.&lt;/li>
+&lt;li>Сделал следующие макросы:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-org" data-lang="org">&lt;span class="line">&lt;span class="cl">&lt;span class="cs">#+macro&lt;/span>&lt;span class="c">: youtube @@hugo:{{&amp;lt; youtube $1 &amp;gt;}}@@@@md:[![Youtube](http://img.youtube.com/vi/$1/0.jpg){width=560px}](http://www.youtube.com/watch?v=$1)@@&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cs">#+macro&lt;/span>&lt;span class="c">: rutube @@hugo:{{&amp;lt; rutube $1 &amp;gt;}}@@@@markdown:[![RuTube]($2){width=560px}](https://rutube.ru/video/$1/)@@&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cs">#+macro&lt;/span>&lt;span class="c">: plvideo @@hugo:{{&amp;lt; plvideo $1 &amp;gt;}}@@@@markdown:[![Платформа]($2){width=560px}](https://plvideo.ru/watch?v=$1)@@&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Проблема: в hugo экспортируется и markdown.&lt;/li>
+&lt;li>Получаем излишнюю информацию при экспорте в hugo.&lt;/li>
+&lt;/ul>
+&lt;h2 id="экспорт-видео-dot-решение-2">&lt;span class="section-num">3&lt;/span> Экспорт видео. Решение 2&lt;/h2>
+&lt;ul>
+&lt;li>Используем подход с вычислением выражения на elisp:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-org" data-lang="org">&lt;span class="line">&lt;span class="cl">&lt;span class="cs">#+macro&lt;/span>&lt;span class="c">: youtube (eval (cond ((org-export-derived-backend-p org-export-current-backend &amp;#39;hugo) (concat &amp;#34;@@hugo:{{&amp;lt; youtube &amp;#34; $1 &amp;#34; &amp;gt;}}@@&amp;#34;)) ((org-export-derived-backend-p org-export-current-backend (or &amp;#39;md &amp;#39;markdown &amp;#39;gfm)) (concat &amp;#34;@@html:[![Youtube](http://img.youtube.com/vi/&amp;#34; $1 &amp;#34;/0.jpg){width=560px}](http://www.youtube.com/watch?v=&amp;#34; $1 &amp;#34;)@@&amp;#34;))))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cs">#+macro&lt;/span>&lt;span class="c">: rutube (eval (cond ((org-export-derived-backend-p org-export-current-backend &amp;#39;hugo) (concat &amp;#34;@@hugo:{{&amp;lt; rutube &amp;#34; $1 &amp;#34; &amp;gt;}}@@&amp;#34;)) ((org-export-derived-backend-p org-export-current-backend (or &amp;#39;md &amp;#39;markdown &amp;#39;gfm)) (concat &amp;#34;@@html:[![RuTube](&amp;#34; $2 &amp;#34;){width=560px}](https://rutube.ru/video/&amp;#34; $1 &amp;#34;/)@@&amp;#34;))))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cs">#+macro&lt;/span>&lt;span class="c">: plvideo (eval (cond ((org-export-derived-backend-p org-export-current-backend &amp;#39;hugo) (concat &amp;#34;@@hugo:{{&amp;lt; plvideo &amp;#34; $1 &amp;#34; &amp;gt;}}@@&amp;#34;)) ((org-export-derived-backend-p org-export-current-backend (or &amp;#39;md &amp;#39;markdown &amp;#39;gfm)) (concat &amp;#34;@@html:[![Платформа](&amp;#34; $2 &amp;#34;){width=560px}](https://plvideo.ru/watch?v=&amp;#34; $1 &amp;#34;)@@&amp;#34;))))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cs">#+macro&lt;/span>&lt;span class="c">: vkvideo (eval (cond ((org-export-derived-backend-p org-export-current-backend &amp;#39;hugo) (concat &amp;#34;@@hugo:{{&amp;lt; vkvideo oid=&amp;#34; $1 &amp;#34; id=&amp;#34; $2 &amp;#34; hd=2 &amp;gt;}}@@&amp;#34;)) ((org-export-derived-backend-p org-export-current-backend (or &amp;#39;md &amp;#39;markdown &amp;#39;gfm)) (concat &amp;#34;@@html:[![VKvideo](&amp;#34; $3 &amp;#34;){width=560px}](https://vkvideo.ru/video&amp;#34; $1 &amp;#34;_&amp;#34; $2 &amp;#34;)@@&amp;#34;))))&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Здесь используются сокращения для видео:
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/08/24/hugo-shortcode-vkvideo/">Hugo shortcode. Видео на VK Video&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/04/04/shortcode-video-rutube-hugo/">Сокращение для видео Rutube для Hugo&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2024/11/09/shortcode-video-plvideo-hugo/">Сокращение для видео Платформа для Hugo&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="поддержка-вкладок">&lt;span class="section-num">4&lt;/span> Поддержка вкладок&lt;/h2>
+&lt;ul>
+&lt;li>Добавим макросы для поддержки вкладок:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-org" data-lang="org">&lt;span class="line">&lt;span class="cl">&lt;span class="cs">#+macro&lt;/span>&lt;span class="c">: begin_tabs @@hugo:{{&amp;lt; tabs $1 &amp;gt;}}@@&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cs">#+macro&lt;/span>&lt;span class="c">: end_tabs @@hugo:{{&amp;lt; /tabs &amp;gt;}}@@&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cs">#+macro&lt;/span>&lt;span class="c">: youtube-tab @@hugo:{{&amp;lt; tab &amp;#34;Youtube&amp;#34; &amp;gt;}}@@{{{youtube($1)}}}@@hugo:{{&amp;lt; /tab &amp;gt;}}@@&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cs">#+macro&lt;/span>&lt;span class="c">: rutube-tab @@hugo:{{&amp;lt; tab &amp;#34;RuTube&amp;#34; &amp;gt;}}@@{{{rutube($1,$2)}}}@@hugo:{{&amp;lt; /tab &amp;gt;}}@@&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cs">#+macro&lt;/span>&lt;span class="c">: plvideo-tab @@hugo:{{&amp;lt; tab &amp;#34;Платформа&amp;#34; &amp;gt;}}@@{{{plvideo($1,$2)}}}@@hugo:{{&amp;lt; /tab &amp;gt;}}@@&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cs">#+macro&lt;/span>&lt;span class="c">: vkvideo-tab @@hugo:{{&amp;lt; tab &amp;#34;VKvideo&amp;#34; &amp;gt;}}@@{{{vkvideo($1,$2,$3)}}}@@hugo:{{&amp;lt; /tab &amp;gt;}}@@&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="использование">&lt;span class="section-num">5&lt;/span> Использование&lt;/h2>
+&lt;ul>
+&lt;li>Предполагается следующий сценарий использования (использовал видео, на которых отлаживал код):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-org" data-lang="org">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">{{{begin_tabs(&amp;#34;Создание виртуальной машины с Virtualbox&amp;#34;)}}}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">{{{rutube-tab(0a52857a1fb8a79cbf58fcb58d2d8593,https://pic.rutubelist.ru/video/2025-07-02/63/b4/63b485f63c7a400611064eb35be3ffa1.jpg)}}}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">{{{plvideo-tab(Dncja2upfmNQ,https://s-dt-rt1.cloud.edgecore.ru/fp-2025-07-cover/Dncja2upfmNQ/f91849ab-8ad2-4795-9fce-3525054e4bce.jpg)}}}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">{{{vkvideo-tab(-230024722,456239038,https://sun1-18.userapi.com/QhNtwM8UkVfXj44arwC4cvAW9XTPzBQiboJaPA/ZvwM3lG9Da4.jpg)}}}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">{{{youtube-tab(WwYYYIQdUTk)}}}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">{{{end_tabs}}}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;link rel="stylesheet" href="https://yamadharma.github.io/css/flick/jquery-ui.min.2145606a4147a5c2562a0afa9e996323dcbd14469acf347b81292370e967b906.css" integrity="sha256-IUVgakFHpcJWKgr6npljI9y9FEaazzR7gSkjcOlnuQY=">
+&lt;script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js">
+&lt;/script>
+&lt;script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js">
+&lt;/script>
+&lt;script>
+$(function() {
+$( "#tabs, #tabs1, #tabs2, #tabs3, #tabs4, #tabs5, #tabs6, #tabs7, #tabs8" ).tabs();
+});
+&lt;/script>
+&lt;div id = "tabs">
+&lt;ul>
+&lt;li>&lt;a href = "#tab-1">
+RuTube
+&lt;/a>&lt;/li>
+&lt;li>&lt;a href = "#tab-2">
+Платформа
+&lt;/a>&lt;/li>
+&lt;li>&lt;a href = "#tab-3">
+VKvideo
+&lt;/a>&lt;/li>
+&lt;li>&lt;a href = "#tab-4">
+Youtube
+&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;div id ="tab-0">
+&lt;/div>
+&lt;div id ="tab-1">
+&lt;div class="embed video-player">
+&lt;iframe class="rutube-player" type="text/html"
+width="647" height="364"
+src="https://rutube.ru/play/embed/0a52857a1fb8a79cbf58fcb58d2d8593"
+webkitAllowFullScreen mozallowfullscreen allowFullScreen
+allow="clipboard-write" frameborder="0">
+&lt;/iframe>
+&lt;/div>
+&lt;/div>
+&lt;div id ="tab-2">
+&lt;div class="embed video-player">
+&lt;iframe class="plvideo-player" type="text/html"
+width="647" height="364"
+src="https://plvideo.ru/embed/Dncja2upfmNQ"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+&lt;/iframe>
+&lt;/div>
+&lt;/div>
+&lt;div id ="tab-3">
+&lt;div class="embed video-player">
+&lt;iframe class="vkvideo-player" type="text/html"
+src="https://vkvideo.ru/video_ext.php?oid=-230024722&amp;id=456239038&amp;hd=2"
+width="647" height="364" allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;" frameborder="0" allowfullscreen>
+&lt;/iframe>
+&lt;/div>
+&lt;/div>
+&lt;div id ="tab-4">
+&lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+&lt;iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="allowfullscreen" loading="eager" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/WwYYYIQdUTk?autoplay=0&amp;amp;controls=1&amp;amp;end=0&amp;amp;loop=0&amp;amp;mute=0&amp;amp;start=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" title="YouTube video">&lt;/iframe>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+Создание виртуальной машины с Virtualbox
+&lt;h2 id="загрузка-при-старте-emacs">&lt;span class="section-num">6&lt;/span> Загрузка при старте emacs&lt;/h2>
+&lt;ul>
+&lt;li>Будем загружать эти макросы при старте emacs:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nb">setq&lt;/span> &lt;span class="nv">org-export-global-macros&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">&amp;#39;&lt;/span>&lt;span class="p">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;youtube&amp;#34;&lt;/span> &lt;span class="o">.&lt;/span> &lt;span class="s">&amp;#34;(eval (cond ((org-export-derived-backend-p org-export-current-backend &amp;#39;hugo) (concat \&amp;#34;@@hugo:{{&amp;lt; youtube \&amp;#34; $1 \&amp;#34; &amp;gt;}}@@\&amp;#34;)) ((org-export-derived-backend-p org-export-current-backend (or &amp;#39;md &amp;#39;markdown &amp;#39;gfm)) (concat \&amp;#34;@@html:[![Youtube](http://img.youtube.com/vi/\&amp;#34; $1 \&amp;#34;/0.jpg){width=560px}](http://www.youtube.com/watch?v=\&amp;#34; $1 \&amp;#34;)@@\&amp;#34;))))&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;rutube&amp;#34;&lt;/span> &lt;span class="o">.&lt;/span> &lt;span class="s">&amp;#34;(eval (cond ((org-export-derived-backend-p org-export-current-backend &amp;#39;hugo) (concat \&amp;#34;@@hugo:{{&amp;lt; rutube \&amp;#34; $1 \&amp;#34; &amp;gt;}}@@\&amp;#34;)) ((org-export-derived-backend-p org-export-current-backend (or &amp;#39;md &amp;#39;markdown &amp;#39;gfm)) (concat \&amp;#34;@@html:[![RuTube](\&amp;#34; $2 \&amp;#34;){width=560px}](https://rutube.ru/video/\&amp;#34; $1 \&amp;#34;/)@@\&amp;#34;))))&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;plvideo&amp;#34;&lt;/span> &lt;span class="o">.&lt;/span> &lt;span class="s">&amp;#34;(eval (cond ((org-export-derived-backend-p org-export-current-backend &amp;#39;hugo) (concat \&amp;#34;@@hugo:{{&amp;lt; plvideo \&amp;#34; $1 \&amp;#34; &amp;gt;}}@@\&amp;#34;)) ((org-export-derived-backend-p org-export-current-backend (or &amp;#39;md &amp;#39;markdown &amp;#39;gfm)) (concat \&amp;#34;@@html:[![Платформа](\&amp;#34; $2 \&amp;#34;){width=560px}](https://plvideo.ru/watch?v=\&amp;#34; $1 \&amp;#34;)@@\&amp;#34;))))&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;vkvideo&amp;#34;&lt;/span> &lt;span class="o">.&lt;/span> &lt;span class="s">&amp;#34;(eval (cond ((org-export-derived-backend-p org-export-current-backend &amp;#39;hugo) (concat \&amp;#34;@@hugo:{{&amp;lt; vkvideo oid=\&amp;#34; $1 \&amp;#34; id=\&amp;#34; $2 \&amp;#34; hd=2 &amp;gt;}}@@\&amp;#34;)) ((org-export-derived-backend-p org-export-current-backend (or &amp;#39;md &amp;#39;markdown &amp;#39;gfm)) (concat \&amp;#34;@@html:[![VKvideo](\&amp;#34; $3 \&amp;#34;){width=560px}](https://vkvideo.ru/video\&amp;#34; $1 \&amp;#34;_\&amp;#34; $2 \&amp;#34;)@@\&amp;#34;))))&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;begin_tabs&amp;#34;&lt;/span> &lt;span class="o">.&lt;/span> &lt;span class="s">&amp;#34;@@hugo:{{&amp;lt; tabs $1 &amp;gt;}}@@&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;end_tabs&amp;#34;&lt;/span> &lt;span class="o">.&lt;/span> &lt;span class="s">&amp;#34;@@hugo:{{&amp;lt; /tabs &amp;gt;}}@@&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;youtube-tab&amp;#34;&lt;/span> &lt;span class="o">.&lt;/span> &lt;span class="s">&amp;#34;@@hugo:{{&amp;lt; tab \&amp;#34;Youtube\&amp;#34; &amp;gt;}}@@{{{youtube($1)}}}@@hugo:{{&amp;lt; /tab &amp;gt;}}@@&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;rutube-tab&amp;#34;&lt;/span> &lt;span class="o">.&lt;/span> &lt;span class="s">&amp;#34;@@hugo:{{&amp;lt; tab \&amp;#34;RuTube\&amp;#34; &amp;gt;}}@@{{{rutube($1,$2)}}}@@hugo:{{&amp;lt; /tab &amp;gt;}}@@&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;plvideo-tab&amp;#34;&lt;/span> &lt;span class="o">.&lt;/span> &lt;span class="s">&amp;#34;@@hugo:{{&amp;lt; tab \&amp;#34;Платформа\&amp;#34; &amp;gt;}}@@{{{plvideo($1,$2)}}}@@hugo:{{&amp;lt; /tab &amp;gt;}}@@&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;vkvideo-tab&amp;#34;&lt;/span> &lt;span class="o">.&lt;/span> &lt;span class="s">&amp;#34;@@hugo:{{&amp;lt; tab \&amp;#34;VKvideo\&amp;#34; &amp;gt;}}@@{{{vkvideo($1,$2,$3)}}}@@hugo:{{&amp;lt; /tab &amp;gt;}}@@&amp;#34;&lt;/span>&lt;span class="p">)))&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul></description></item><item><title>Hugo. Вкладки jquery</title><link>https://yamadharma.github.io/ru/post/2025/07/03/hugo-tabbed-view-jquery/</link><pubDate>Thu, 03 Jul 2025 19:47:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2025/07/03/hugo-tabbed-view-jquery/</guid><description>&lt;p>Hugo. Вкладки jquery.&lt;/p>
+&lt;details class="print:hidden xl:hidden" >
+&lt;summary>Содержание&lt;/summary>
+&lt;div class="text-sm">
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#код">&lt;span class="section-num">2&lt;/span> Код&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#tabs">&lt;span class="section-num">2.1&lt;/span> &lt;code>tabs&lt;/code>&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#tab">&lt;span class="section-num">2.2&lt;/span> &lt;code>tab&lt;/code>&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#использование">&lt;span class="section-num">3&lt;/span> Использование&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/div>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>Сделал на основе сокращения &lt;a href="https://yairgadelov.me/simple-tab-widget-for-hugo-blog/" target="_blank" rel="noopener">https://yairgadelov.me/simple-tab-widget-for-hugo-blog/&lt;/a>.&lt;/li>
+&lt;li>Сокращение базируется на JQuery Tab widget (&lt;a href="https://www.tutorialspoint.com/jquery/widget-tab.htm" target="_blank" rel="noopener">https://www.tutorialspoint.com/jquery/widget-tab.htm&lt;/a>)&lt;/li>
+&lt;/ul>
+&lt;h2 id="код">&lt;span class="section-num">2&lt;/span> Код&lt;/h2>
+&lt;h3 id="tabs">&lt;span class="section-num">2.1&lt;/span> &lt;code>tabs&lt;/code>&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-html" data-lang="html">&lt;span class="line">&lt;span class="cl">{{ $title := &amp;#34;tabe widget&amp;#34; }}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{ if .IsNamedParams }}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> {{ with .Get &amp;#34;title&amp;#34; }}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> {{ $title = . }}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> {{ end }}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{ else }}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> {{ with .Get 0 }}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> {{ $title = . }}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> {{ end }}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{ end }}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&amp;lt;!-- &amp;lt;link rel = &amp;#34;stylesheet&amp;#34; --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&amp;lt;!-- href = &amp;#34;https://code.jquery.com/ui/1.14.1/themes/flick/jquery-ui.css&amp;#34;&amp;gt; --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{ $css := resources.Get &amp;#34;css/flick/jquery-ui.css&amp;#34; }}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{ $styles := $css | toCSS | minify | fingerprint }}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">link&lt;/span> &lt;span class="na">rel&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;stylesheet&amp;#34;&lt;/span> &lt;span class="na">href&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;{{ $styles.RelPermalink }}&amp;#34;&lt;/span> &lt;span class="na">integrity&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;{{ $styles.Data.Integrity }}&amp;#34;&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">script&lt;/span> &lt;span class="na">type &lt;/span>&lt;span class="o">=&lt;/span> &lt;span class="s">&amp;#34;text/javascript&amp;#34;&lt;/span> &lt;span class="na">src &lt;/span>&lt;span class="o">=&lt;/span> &lt;span class="s">&amp;#34;https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js&amp;#34;&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">script&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">script&lt;/span> &lt;span class="na">type &lt;/span>&lt;span class="o">=&lt;/span> &lt;span class="s">&amp;#34;text/javascript&amp;#34;&lt;/span> &lt;span class="na">src &lt;/span>&lt;span class="o">=&lt;/span> &lt;span class="s">&amp;#34;https://ajax.googleapis.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js&amp;#34;&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">script&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&amp;lt;!-- {{ $js := resources.Get &amp;#34;js/jquery.min.js&amp;#34; | js.Build | minify | fingerprint }} --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&amp;lt;!-- &amp;lt;script --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&amp;lt;!-- src=&amp;#34;{{ $js.RelPermalink }}&amp;#34; --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&amp;lt;!-- integrity=&amp;#34;{{ $js.Data.Integrity }}&amp;#34; --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&amp;lt;!-- defer --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&amp;lt;!-- &amp;gt;&amp;lt;/script&amp;gt; --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&amp;lt;!-- {{ $js := resources.Get &amp;#34;js/jquery-ui.min.js&amp;#34; | js.Build | minify | fingerprint }} --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&amp;lt;!-- &amp;lt;script --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&amp;lt;!-- src=&amp;#34;{{ $js.RelPermalink }}&amp;#34; --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&amp;lt;!-- integrity=&amp;#34;{{ $js.Data.Integrity }}&amp;#34; --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&amp;lt;!-- defer --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&amp;lt;!-- &amp;gt;&amp;lt;/script&amp;gt; --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&amp;lt;!-- {{ $js := resources.Get &amp;#34;js/jquery.min.js&amp;#34; | js.Build }} --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&amp;lt;!-- &amp;lt;script --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&amp;lt;!-- src=&amp;#34;{{ $js.RelPermalink }}&amp;#34; --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&amp;lt;!-- defer --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&amp;lt;!-- &amp;gt;&amp;lt;/script&amp;gt; --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&amp;lt;!-- {{ $js := resources.Get &amp;#34;js/jquery-ui.min.js&amp;#34; | js.Build }} --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&amp;lt;!-- &amp;lt;script --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&amp;lt;!-- src=&amp;#34;{{ $js.RelPermalink }}&amp;#34; --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&amp;lt;!-- defer --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&amp;lt;!-- &amp;gt;&amp;lt;/script&amp;gt; --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&amp;lt;!-- &amp;lt;script type = &amp;#34;text/javascript&amp;#34; --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&amp;lt;!-- src=&amp;#34;/js/jquery.min.js&amp;#34; --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&amp;lt;!-- &amp;gt;&amp;lt;/script&amp;gt; --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&amp;lt;!-- &amp;lt;script type = &amp;#34;text/javascript&amp;#34; src=&amp;#34;/js/jquery-ui.min.js&amp;#34;&amp;gt; --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&amp;lt;!-- &amp;lt;/script&amp;gt; --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">script&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">$&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kd">function&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">$&lt;/span>&lt;span class="p">(&lt;/span> &lt;span class="s2">&amp;#34;#tabs, #tabs1, #tabs2, #tabs3, #tabs4, #tabs5, #tabs6, #tabs7, #tabs8&amp;#34;&lt;/span> &lt;span class="p">).&lt;/span>&lt;span class="nx">tabs&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">script&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">div&lt;/span> &lt;span class="na">id &lt;/span>&lt;span class="o">=&lt;/span> &lt;span class="s">&amp;#34;tabs&amp;#34;&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{ $ss:=split .Inner &amp;#34;---&amp;#34; }}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">ul&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> {{ range $idx, $el :=$ss }}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> {{ if ne $idx 0 }}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> {{ $content:=split $el &amp;#34;$$$&amp;#34; }}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">li&lt;/span>&lt;span class="p">&amp;gt;&amp;lt;&lt;/span>&lt;span class="nt">a&lt;/span> &lt;span class="na">href &lt;/span>&lt;span class="o">=&lt;/span> &lt;span class="s">&amp;#34;#{{ (printf (&amp;#34;&lt;/span>&lt;span class="na">tab-&lt;/span>&lt;span class="err">%&lt;/span>&lt;span class="na">d&lt;/span>&lt;span class="err">&amp;#34;)&lt;/span> &lt;span class="err">$&lt;/span>&lt;span class="na">idx&lt;/span>&lt;span class="err">)&lt;/span> &lt;span class="err">}}&amp;#34;&lt;/span>&lt;span class="p">&amp;gt;&lt;/span> {{index $content 0}}&lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">a&lt;/span>&lt;span class="p">&amp;gt;&amp;lt;/&lt;/span>&lt;span class="nt">li&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> {{ end }}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> {{ end }}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">ul&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> {{ range $idx, $el :=$ss }}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> {{ $content:=split $el &amp;#34;$$$&amp;#34; }}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> {{ $tab := index $content 1 }}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">div&lt;/span> &lt;span class="na">id &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;{{ (printf (&amp;#34;&lt;/span>&lt;span class="na">tab-&lt;/span>&lt;span class="err">%&lt;/span>&lt;span class="na">d&lt;/span>&lt;span class="err">&amp;#34;)&lt;/span> &lt;span class="err">$&lt;/span>&lt;span class="na">idx&lt;/span>&lt;span class="err">)&lt;/span> &lt;span class="err">}}&amp;#34;&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> {{ $tab | markdownify }}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">div&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> {{ end }}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">div&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{ $title}}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="tab">&lt;span class="section-num">2.2&lt;/span> &lt;code>tab&lt;/code>&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-html" data-lang="html">&lt;span class="line">&lt;span class="cl">{{ $name := trim (.Get 0) &amp;#34; &amp;#34; }}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">---
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{ $name }}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$$$
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{ $.Inner }}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="использование">&lt;span class="section-num">3&lt;/span> Использование&lt;/h2>
+&lt;ul>
+&lt;li>Использовать можно следующим образом:&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-markdown" data-lang="markdown">&lt;span class="line">&lt;span class="cl">{{&lt;span class="p">&amp;lt;&lt;/span> &lt;span class="nt">tabs&lt;/span> &lt;span class="err">&amp;#34;&lt;/span>&lt;span class="na">Общее&lt;/span> &lt;span class="na">название&lt;/span>&lt;span class="err">&amp;#34;&lt;/span> &lt;span class="p">&amp;gt;&lt;/span>}}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{&lt;span class="p">&amp;lt;&lt;/span> &lt;span class="nt">tab&lt;/span> &lt;span class="err">&amp;#34;&lt;/span>&lt;span class="na">Первый&lt;/span>&lt;span class="err">&amp;#34;&lt;/span> &lt;span class="p">&amp;gt;&lt;/span>}}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Содержание 1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{&lt;span class="p">&amp;lt;&lt;/span> &lt;span class="p">/&lt;/span>&lt;span class="nt">tab&lt;/span> &lt;span class="p">&amp;gt;&lt;/span>}}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{&lt;span class="p">&amp;lt;&lt;/span> &lt;span class="nt">tab&lt;/span> &lt;span class="err">&amp;#34;&lt;/span>&lt;span class="na">Второй&lt;/span>&lt;span class="err">&amp;#34;&lt;/span> &lt;span class="p">&amp;gt;&lt;/span>}}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Содержание 2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{&lt;span class="p">&amp;lt;&lt;/span> &lt;span class="p">/&lt;/span>&lt;span class="nt">tab&lt;/span> &lt;span class="p">&amp;gt;&lt;/span>}}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{&lt;span class="p">&amp;lt;&lt;/span> &lt;span class="nt">tab&lt;/span> &lt;span class="err">&amp;#34;&lt;/span>&lt;span class="na">Третий&lt;/span>&lt;span class="err">&amp;#34;&lt;/span> &lt;span class="p">&amp;gt;&lt;/span>}}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Содержание 3
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{&lt;span class="p">&amp;lt;&lt;/span> &lt;span class="p">/&lt;/span>&lt;span class="nt">tab&lt;/span> &lt;span class="p">&amp;gt;&lt;/span>}}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{&lt;span class="p">&amp;lt;&lt;/span> &lt;span class="p">/&lt;/span>&lt;span class="nt">tabs&lt;/span> &lt;span class="p">&amp;gt;&lt;/span>}}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Hugo. Вкладки bootstrap</title><link>https://yamadharma.github.io/ru/post/2025/07/03/hugo-tabbed-view-bootstrap/</link><pubDate>Thu, 03 Jul 2025 19:23:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2025/07/03/hugo-tabbed-view-bootstrap/</guid><description>&lt;p>Hugo. Вкладки bootstrap.&lt;/p>
+&lt;details class="print:hidden xl:hidden" >
+&lt;summary>Содержание&lt;/summary>
+&lt;div class="text-sm">
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#тема-hugo-dynamic-tabs">&lt;span class="section-num">2&lt;/span> Тема &lt;em>Hugo Dynamic Tabs&lt;/em>&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#листинги-файлов">&lt;span class="section-num">2.1&lt;/span> Листинги файлов&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#использование">&lt;span class="section-num">2.2&lt;/span> Использование&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/div>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>Используем наработки из темы &lt;em>Hugo Dynamic Tabs&lt;/em>. Реализация на основе &lt;em>Bootstrap&lt;/em>.&lt;/li>
+&lt;/ul>
+&lt;h2 id="тема-hugo-dynamic-tabs">&lt;span class="section-num">2&lt;/span> Тема &lt;em>Hugo Dynamic Tabs&lt;/em>&lt;/h2>
+&lt;ul>
+&lt;li>Сайт: &lt;a href="https://hugo-dynamic-tabs.netlify.app/" target="_blank" rel="noopener">https://hugo-dynamic-tabs.netlify.app/&lt;/a>.&lt;/li>
+&lt;li>Репозиторий:
+&lt;ul>
+&lt;li>Bootstrap 4: &lt;a href="https://github.com/rvanhorn/hugo-dynamic-tabs" target="_blank" rel="noopener">https://github.com/rvanhorn/hugo-dynamic-tabs&lt;/a>;&lt;/li>
+&lt;li>Bootstrap 5: &lt;a href="https://github.com/rvanhorn/hugo-dynamic-tabs/tree/bootstrap5" target="_blank" rel="noopener">https://github.com/rvanhorn/hugo-dynamic-tabs/tree/bootstrap5&lt;/a>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Тема использует библиотеки &lt;em>Bootstrap 4&lt;/em> или &lt;em>Bootstrap 5&lt;/em>.&lt;/li>
+&lt;li>Темы &lt;em>Wowchemy&lt;/em> используют &lt;em>Bootstrap 4&lt;/em>. Поэтому дополнительных библиотек не нужно.&lt;/li>
+&lt;li>Достаточно поместить файлы &lt;code>tab.html&lt;/code> и &lt;code>tabs.html&lt;/code> в каталог сайта &lt;code>layouts/shortcodes&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h3 id="листинги-файлов">&lt;span class="section-num">2.1&lt;/span> Листинги файлов&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>Файл &lt;code>tabs.html&lt;/code> (bootstrap 4):&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-html" data-lang="html">&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">nav&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">div&lt;/span> &lt;span class="na">class&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;nav nav-tabs&amp;#34;&lt;/span> &lt;span class="na">id&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;nav-tab&amp;#34;&lt;/span> &lt;span class="na">role&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;tablist&amp;#34;&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> {{ $tabTotal := .Get &amp;#34;tabTotal&amp;#34; }} {{ $tabRightAlign
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> := .Get &amp;#34;tabRightAlign&amp;#34; }} {{ $tabName := .Scratch.Get
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;tabName&amp;#34; }} {{ $tabID := .Scratch.Get &amp;#34;tabID&amp;#34; }}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> {{ range $i, $sequence := (seq $tabTotal) }}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">a&lt;/span> &lt;span class="na">class&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;nav-item nav-link {{ if eq $i 0 }} active {{
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s"> end }}{{ if in $tabRightAlign (add 1 $i) }} ml-auto
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s"> {{ end }}&amp;#34;&lt;/span> &lt;span class="na">id&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;nav-{{ (index $tabID $i) }}&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">data-toggle&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;tab&amp;#34;&lt;/span> &lt;span class="na">href&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;#{{ (index $tabID $i) }}&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">role&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;tab&amp;#34;&lt;/span> &lt;span class="na">aria-controls&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;nav-home&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">aria-selected&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;true&amp;#34;&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>{{ (replaceRE &amp;#34;(\\s)&amp;#34; &amp;#34;&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> (index $tabName $i)) }}&lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">a&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> {{ end }}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">div&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">nav&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">div&lt;/span> &lt;span class="na">class&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;tab-content&amp;#34;&lt;/span> &lt;span class="na">id&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;nav-tab-content&amp;#34;&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> {{ .Inner }}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">div&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Файл &lt;code>tabs.html&lt;/code> (bootstrap 5):&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-html" data-lang="html">&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">nav&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">div&lt;/span> &lt;span class="na">class&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;nav nav-tabs&amp;#34;&lt;/span> &lt;span class="na">id&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;nav-tab&amp;#34;&lt;/span> &lt;span class="na">role&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;tablist&amp;#34;&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> {{ $tabTotal := .Get &amp;#34;tabTotal&amp;#34; }}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> {{ $tabRightAlign := .Get &amp;#34;tabRightAlign&amp;#34; }}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> {{ $tabName := .Scratch.Get &amp;#34;tabName&amp;#34; }}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> {{ $tabID := .Scratch.Get &amp;#34;tabID&amp;#34; }}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> {{ range $i, $sequence := (seq $tabTotal) }}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">a&lt;/span> &lt;span class="na">class&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;nav-link {{ if eq $i 0 }} active {{ end }}{{ if in $tabRightAlign (add 1 $i) }} ms-auto {{ end }}&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">id&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;{{ (index $tabID $i) }}-tab&amp;#34;&lt;/span> &lt;span class="na">data-bs-toggle&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;tab&amp;#34;&lt;/span> &lt;span class="na">data-bs-target&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;#{{ (index $tabID $i) }}&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">type&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;button&amp;#34;&lt;/span> &lt;span class="na">role&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;tab&amp;#34;&lt;/span> &lt;span class="na">aria-controls&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;nav-home&amp;#34;&lt;/span> &lt;span class="na">aria-selected&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;true&amp;#34;&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>{{ (replaceRE &amp;#34;(\\s)&amp;#34; &amp;#34;&amp;#34; (index $tabName $i)) }}&lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">a&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> {{ end }}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">div&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">nav&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">div&lt;/span> &lt;span class="na">class&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;tab-content&amp;#34;&lt;/span> &lt;span class="na">id&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;nav-tab-content&amp;#34;&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> {{ .Inner }}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">div&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Файл &lt;code>tab.html&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-html" data-lang="html">&lt;span class="line">&lt;span class="cl">{{ $tabName := .Get &amp;#34;tabName&amp;#34; }}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{ $tabID := delimit (shuffle (slice &amp;#34;a&amp;#34; &amp;#34;b&amp;#34; &amp;#34;c&amp;#34; &amp;#34;d&amp;#34; &amp;#34;e&amp;#34; &amp;#34;f&amp;#34;)) &amp;#34;&amp;#34; }}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{ .Parent.Scratch.Add &amp;#34;tabName&amp;#34; (slice $tabName) }}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{ .Parent.Scratch.Add &amp;#34;tabID&amp;#34; (slice $tabID) }}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">div&lt;/span> &lt;span class="na">class&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;tab-pane fade show {{ if eq .Ordinal 0 }}active {{ end }}&amp;#34;&lt;/span> &lt;span class="na">id&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;{{ $tabID }}&amp;#34;&lt;/span> &lt;span class="na">role&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;tabpanel&amp;#34;&lt;/span> &lt;span class="na">aria-labelledby&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;nav-1&amp;#34;&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> {{ $.Inner | markdownify }}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">div&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="использование">&lt;span class="section-num">2.2&lt;/span> Использование&lt;/h3>
+&lt;ul>
+&lt;li>Одна вкладка.
+&lt;ul>
+&lt;li>
+&lt;p>Код:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-markdown" data-lang="markdown">&lt;span class="line">&lt;span class="cl">{{&lt;span class="p">&amp;lt;&lt;/span> &lt;span class="nt">tabs&lt;/span> &lt;span class="na">tabTotal&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;1&amp;#34;&lt;/span> &lt;span class="p">&amp;gt;&lt;/span>}}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{&lt;span class="p">&amp;lt;&lt;/span> &lt;span class="nt">tab&lt;/span> &lt;span class="na">tabName&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;Tab 1&amp;#34;&lt;/span> &lt;span class="p">&amp;gt;&lt;/span>}}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="gs">**Tab 1 Content**&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{&lt;span class="p">&amp;lt;&lt;/span> &lt;span class="p">/&lt;/span>&lt;span class="nt">tab&lt;/span> &lt;span class="p">&amp;gt;&lt;/span>}}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{&lt;span class="p">&amp;lt;&lt;/span> &lt;span class="p">/&lt;/span>&lt;span class="nt">tabs&lt;/span> &lt;span class="p">&amp;gt;&lt;/span>}}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Отображение:&lt;/p>
+&lt;link rel="stylesheet" href="https://yamadharma.github.io/css/flick/jquery-ui.min.2145606a4147a5c2562a0afa9e996323dcbd14469acf347b81292370e967b906.css" integrity="sha256-IUVgakFHpcJWKgr6npljI9y9FEaazzR7gSkjcOlnuQY=">
+&lt;script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js">
+&lt;/script>
+&lt;script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js">
+&lt;/script>
+&lt;script>
+$(function() {
+$( "#tabs, #tabs1, #tabs2, #tabs3, #tabs4, #tabs5, #tabs6, #tabs7, #tabs8" ).tabs();
+});
+&lt;/script>
+&lt;div id = "tabs">
+&lt;ul>
+&lt;li>&lt;a href = "#tab-1">
+&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;div id ="tab-0">
+&lt;/div>
+&lt;div id ="tab-1">
+&lt;pre>&lt;code> **Tab 1 Content**
+&lt;/code>&lt;/pre>
+&lt;/div>
+&lt;/div>
+tabe widget
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Три вкладки. Две из них выровнены направо.
+&lt;ul>
+&lt;li>
+&lt;p>Код:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-markdown" data-lang="markdown">&lt;span class="line">&lt;span class="cl">{{&lt;span class="p">&amp;lt;&lt;/span> &lt;span class="nt">tabs&lt;/span> &lt;span class="na">tabTotal&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;3&amp;#34;&lt;/span> &lt;span class="na">tabRightAlign&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;2&amp;#34;&lt;/span> &lt;span class="p">&amp;gt;&lt;/span>}}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{&lt;span class="p">&amp;lt;&lt;/span> &lt;span class="nt">tab&lt;/span> &lt;span class="na">tabName&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;Tab 1&amp;#34;&lt;/span> &lt;span class="p">&amp;gt;&lt;/span>}}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="gs">**Tab 1 Content**&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{&lt;span class="p">&amp;lt;&lt;/span> &lt;span class="p">/&lt;/span>&lt;span class="nt">tab&lt;/span> &lt;span class="p">&amp;gt;&lt;/span>}}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{&lt;span class="p">&amp;lt;&lt;/span> &lt;span class="nt">tab&lt;/span> &lt;span class="na">tabName&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;Tab 2&amp;#34;&lt;/span> &lt;span class="p">&amp;gt;&lt;/span>}}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="gs">**Tab 2 Content**&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{&lt;span class="p">&amp;lt;&lt;/span> &lt;span class="p">/&lt;/span>&lt;span class="nt">tab&lt;/span> &lt;span class="p">&amp;gt;&lt;/span>}}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{&lt;span class="p">&amp;lt;&lt;/span> &lt;span class="nt">tab&lt;/span> &lt;span class="na">tabName&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;Tab 3&amp;#34;&lt;/span> &lt;span class="p">&amp;gt;&lt;/span>}}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="gs">**Tab 3 Content**&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{&lt;span class="p">&amp;lt;&lt;/span> &lt;span class="p">/&lt;/span>&lt;span class="nt">tab&lt;/span> &lt;span class="p">&amp;gt;&lt;/span>}}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{&lt;span class="p">&amp;lt;&lt;/span> &lt;span class="p">/&lt;/span>&lt;span class="nt">tabs&lt;/span> &lt;span class="p">&amp;gt;&lt;/span>}}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Отображение:&lt;/p>
+&lt;link rel="stylesheet" href="https://yamadharma.github.io/css/flick/jquery-ui.min.2145606a4147a5c2562a0afa9e996323dcbd14469acf347b81292370e967b906.css" integrity="sha256-IUVgakFHpcJWKgr6npljI9y9FEaazzR7gSkjcOlnuQY=">
+&lt;script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js">
+&lt;/script>
+&lt;script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js">
+&lt;/script>
+&lt;script>
+$(function() {
+$( "#tabs, #tabs1, #tabs2, #tabs3, #tabs4, #tabs5, #tabs6, #tabs7, #tabs8" ).tabs();
+});
+&lt;/script>
+&lt;div id = "tabs">
+&lt;ul>
+&lt;li>&lt;a href = "#tab-1">
+&lt;/a>&lt;/li>
+&lt;li>&lt;a href = "#tab-2">
+&lt;/a>&lt;/li>
+&lt;li>&lt;a href = "#tab-3">
+&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;div id ="tab-0">
+&lt;/div>
+&lt;div id ="tab-1">
+&lt;pre>&lt;code> **Tab 1 Content**
+&lt;/code>&lt;/pre>
+&lt;/div>
+&lt;div id ="tab-2">
+&lt;pre>&lt;code> **Tab 2 Content**
+&lt;/code>&lt;/pre>
+&lt;/div>
+&lt;div id ="tab-3">
+&lt;pre>&lt;code> **Tab 3 Content**
+&lt;/code>&lt;/pre>
+&lt;/div>
+&lt;/div>
+tabe widget
+&lt;/li>
+&lt;/ul>
+&lt;/li>
 &lt;/ul></description></item><item><title>Hugo. Шаблон для научных работников. Библиография</title><link>https://yamadharma.github.io/ru/post/2025/01/08/hugo-template-for-scientists-bibliography/</link><pubDate>Wed, 08 Jan 2025 20:35:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2025/01/08/hugo-template-for-scientists-bibliography/</guid><description>&lt;p>Hugo. Шаблон для научных работников. Библиография.&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
 &lt;summary>Содержание&lt;/summary>
@@ -577,13 +1093,24 @@ tabe widget
 &lt;nav id="TableOfContents">
 &lt;ul>
 &lt;li>&lt;a href="#прагматика">&lt;span class="section-num">1&lt;/span> Прагматика&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#реализация">&lt;span class="section-num">2&lt;/span> Реализация&lt;/a>
+&lt;li>&lt;a href="#вкладки-bootstrap">&lt;span class="section-num">2&lt;/span> Вкладки bootstrap&lt;/a>
 &lt;ul>
-&lt;li>&lt;a href="#использовать-стандартное-поведение-сокращения">&lt;span class="section-num">2.1&lt;/span> Использовать стандартное поведение сокращения&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#создание-специального-сокращения">&lt;span class="section-num">2.2&lt;/span> Создание специального сокращения&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#реализация">&lt;span class="section-num">2.1&lt;/span> Реализация&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#использовать-стандартное-поведение-сокращения">&lt;span class="section-num">2.1.1&lt;/span> Использовать стандартное поведение сокращения&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#создание-специального-сокращения">&lt;span class="section-num">2.1.2&lt;/span> Создание специального сокращения&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;li>&lt;a href="#использование">&lt;span class="section-num">3&lt;/span> Использование&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#использование">&lt;span class="section-num">2.2&lt;/span> Использование&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#вкладки-jquery">&lt;span class="section-num">3&lt;/span> Вкладки jQuery&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">3.1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#использование">&lt;span class="section-num">3.2&lt;/span> Использование&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#оптимизация-использования">&lt;span class="section-num">3.3&lt;/span> Оптимизация использования&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
 &lt;/ul>
 &lt;/nav>
 &lt;/div>
@@ -593,21 +1120,23 @@ tabe widget
 &lt;li>Из-за проблем с &lt;em>Youtube&lt;/em> было принято решение размещать видео параллельно на &lt;em>RuTube&lt;/em>.&lt;/li>
 &lt;li>Размещение видеофайлов последовательно выглядит несколько громоздко и несколько смущает пользователя.&lt;/li>
 &lt;li>Принято решение размещать видео с разных хостингов на вкладках.&lt;/li>
-&lt;/ul>
-&lt;h2 id="реализация">&lt;span class="section-num">2&lt;/span> Реализация&lt;/h2>
-&lt;ul>
 &lt;li>Релизация строится на добавлении сокращений для вкладок (см. &lt;a href="https://yamadharma.github.io/ru/post/2022/06/26/hugo-tabbed-view/">Hugo. Вкладки&lt;/a>).&lt;/li>
+&lt;/ul>
+&lt;h2 id="вкладки-bootstrap">&lt;span class="section-num">2&lt;/span> Вкладки bootstrap&lt;/h2>
+&lt;h3 id="реализация">&lt;span class="section-num">2.1&lt;/span> Реализация&lt;/h3>
+&lt;ul>
+&lt;li>Релизация строится на добавлении сокращений для вкладок bootsrap (см. &lt;a href="https://yamadharma.github.io/ru/post/2025/07/03/hugo-tabbed-view-bootstrap/">Hugo. Вкладки bootstrap&lt;/a>).&lt;/li>
 &lt;li>Проблема: При использовании сокращения &lt;code>tab&lt;/code> отображается не видеоплеер, а код.&lt;/li>
 &lt;li>Причина: Код внутри сокращения обрабатывается как Markdown.&lt;/li>
 &lt;li>Путь решения: Нужно запретить обработку кода внутри сокращения.&lt;/li>
 &lt;/ul>
-&lt;h3 id="использовать-стандартное-поведение-сокращения">&lt;span class="section-num">2.1&lt;/span> Использовать стандартное поведение сокращения&lt;/h3>
+&lt;h4 id="использовать-стандартное-поведение-сокращения">&lt;span class="section-num">2.1.1&lt;/span> Использовать стандартное поведение сокращения&lt;/h4>
 &lt;ul>
 &lt;li>Если после сокращения идёт непосредственно символ &lt;code>&amp;lt;&lt;/code> (без пробела), то внутреннее содержание сокращения дальше не обрабатывается.&lt;/li>
-&lt;li>Предподагается, что там может быть html-код.&lt;/li>
+&lt;li>Предполагается, что там может быть html-код.&lt;/li>
 &lt;li>Возникшая проблема: первая вкладка отрабатывает ожидаемым образом, последующие же всё равно обрабатывают содержимое как Markdown.&lt;/li>
 &lt;/ul>
-&lt;h3 id="создание-специального-сокращения">&lt;span class="section-num">2.2&lt;/span> Создание специального сокращения&lt;/h3>
+&lt;h4 id="создание-специального-сокращения">&lt;span class="section-num">2.1.2&lt;/span> Создание специального сокращения&lt;/h4>
 &lt;ul>
 &lt;li>Вводится сокращение &lt;code>rtab&lt;/code> (raw tab):&lt;/li>
 &lt;/ul>
@@ -630,7 +1159,7 @@ tabe widget
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Следует разместить этот файл в каталоге &lt;code>layouts/shortcodes&lt;/code> сайта.&lt;/li>
 &lt;/ul>
-&lt;h2 id="использование">&lt;span class="section-num">3&lt;/span> Использование&lt;/h2>
+&lt;h3 id="использование">&lt;span class="section-num">2.2&lt;/span> Использование&lt;/h3>
 &lt;ul>
 &lt;li>
 &lt;p>Код:&lt;/p>
@@ -704,6 +1233,47 @@ width=&amp;quot;647&amp;quot; height=&amp;quot;364&amp;quot; allow=&amp;quot;aut
 &lt;/div>
 tabe widget
 &lt;/li>
+&lt;/ul>
+&lt;h2 id="вкладки-jquery">&lt;span class="section-num">3&lt;/span> Вкладки jQuery&lt;/h2>
+&lt;h3 id="общая-информация">&lt;span class="section-num">3.1&lt;/span> Общая информация&lt;/h3>
+&lt;ul>
+&lt;li>Из-за перехода с Bootstrap на Tailwind пришлось сменить реализацию вкладок.&lt;/li>
+&lt;li>Использовал вкладки jQuery (см. &lt;a href="https://yamadharma.github.io/ru/post/2025/07/03/hugo-tabbed-view-jquery/">Hugo. Вкладки jquery&lt;/a>).&lt;/li>
+&lt;/ul>
+&lt;h3 id="использование">&lt;span class="section-num">3.2&lt;/span> Использование&lt;/h3>
+&lt;ul>
+&lt;li>Используется следующим образом:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-markdown" data-lang="markdown">&lt;span class="line">&lt;span class="cl">{{&lt;span class="p">&amp;lt;&lt;/span> &lt;span class="nt">tabs&lt;/span> &lt;span class="err">&amp;#34;&lt;/span>&lt;span class="na">Создание&lt;/span> &lt;span class="na">виртуальной&lt;/span> &lt;span class="na">машины&lt;/span> &lt;span class="na">с&lt;/span> &lt;span class="na">Virtualbox&lt;/span>&lt;span class="err">&amp;#34;&lt;/span> &lt;span class="p">&amp;gt;&lt;/span>}}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{&lt;span class="p">&amp;lt;&lt;/span> &lt;span class="nt">tab&lt;/span> &lt;span class="err">&amp;#34;&lt;/span>&lt;span class="na">RuTube&lt;/span>&lt;span class="err">&amp;#34;&lt;/span> &lt;span class="p">&amp;gt;&lt;/span>}}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{&lt;span class="p">&amp;lt;&lt;/span> &lt;span class="nt">rutube&lt;/span> &lt;span class="na">0a52857a1fb8a79cbf58fcb58d2d8593&lt;/span> &lt;span class="p">&amp;gt;&lt;/span>}}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{&lt;span class="p">&amp;lt;&lt;/span> &lt;span class="p">/&lt;/span>&lt;span class="nt">tab&lt;/span> &lt;span class="p">&amp;gt;&lt;/span>}}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{&lt;span class="p">&amp;lt;&lt;/span> &lt;span class="nt">tab&lt;/span> &lt;span class="err">&amp;#34;&lt;/span>&lt;span class="na">Платформа&lt;/span>&lt;span class="err">&amp;#34;&lt;/span> &lt;span class="p">&amp;gt;&lt;/span>}}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{&lt;span class="p">&amp;lt;&lt;/span> &lt;span class="nt">plvideo&lt;/span> &lt;span class="na">Dncja2upfmNQ&lt;/span> &lt;span class="p">&amp;gt;&lt;/span>}}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{&lt;span class="p">&amp;lt;&lt;/span> &lt;span class="p">/&lt;/span>&lt;span class="nt">tab&lt;/span> &lt;span class="p">&amp;gt;&lt;/span>}}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{&lt;span class="p">&amp;lt;&lt;/span> &lt;span class="nt">tab&lt;/span> &lt;span class="err">&amp;#34;&lt;/span>&lt;span class="na">VKvideo&lt;/span>&lt;span class="err">&amp;#34;&lt;/span> &lt;span class="p">&amp;gt;&lt;/span>}}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{&lt;span class="p">&amp;lt;&lt;/span> &lt;span class="nt">vkvideo&lt;/span> &lt;span class="na">oid&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">-230024722&lt;/span> &lt;span class="na">id&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">456239038&lt;/span> &lt;span class="na">hd&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">2&lt;/span> &lt;span class="p">&amp;gt;&lt;/span>}}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{&lt;span class="p">&amp;lt;&lt;/span> &lt;span class="p">/&lt;/span>&lt;span class="nt">tab&lt;/span> &lt;span class="p">&amp;gt;&lt;/span>}}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{&lt;span class="p">&amp;lt;&lt;/span> &lt;span class="nt">tab&lt;/span> &lt;span class="err">&amp;#34;&lt;/span>&lt;span class="na">Youtube&lt;/span>&lt;span class="err">&amp;#34;&lt;/span> &lt;span class="p">&amp;gt;&lt;/span>}}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{&lt;span class="p">&amp;lt;&lt;/span> &lt;span class="nt">youtube&lt;/span> &lt;span class="na">WwYYYIQdUTk&lt;/span> &lt;span class="p">&amp;gt;&lt;/span>}}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{&lt;span class="p">&amp;lt;&lt;/span> &lt;span class="p">/&lt;/span>&lt;span class="nt">tab&lt;/span> &lt;span class="p">&amp;gt;&lt;/span>}}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{&lt;span class="p">&amp;lt;&lt;/span> &lt;span class="p">/&lt;/span>&lt;span class="nt">tabs&lt;/span> &lt;span class="p">&amp;gt;&lt;/span>}}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Здесь используются сокращения для видео:
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/08/24/hugo-shortcode-vkvideo/">Hugo shortcode. Видео на VK Video&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/04/04/shortcode-video-rutube-hugo/">Сокращение для видео Rutube для Hugo&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2024/11/09/shortcode-video-plvideo-hugo/">Сокращение для видео Платформа для Hugo&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="оптимизация-использования">&lt;span class="section-num">3.3&lt;/span> Оптимизация использования&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2025/07/03/org-mode-video-export-hugo/">Org-mode. Экспорт ссылок на видео в Hugo&lt;/a>&lt;/li>
 &lt;/ul></description></item><item><title>Hugo. Вкладки</title><link>https://yamadharma.github.io/ru/post/2022/06/26/hugo-tabbed-view/</link><pubDate>Sun, 26 Jun 2022 18:11:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/06/26/hugo-tabbed-view/</guid><description>&lt;p>Элемент с вкладками для Hugo.&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
 &lt;summary>Содержание&lt;/summary>
@@ -711,12 +1281,8 @@ tabe widget
 &lt;nav id="TableOfContents">
 &lt;ul>
 &lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#тема-hugo-dynamic-tabs">&lt;span class="section-num">2&lt;/span> Тема &lt;em>Hugo Dynamic Tabs&lt;/em>&lt;/a>
-&lt;ul>
-&lt;li>&lt;a href="#листинги-файлов">&lt;span class="section-num">2.1&lt;/span> Листинги файлов&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#использование">&lt;span class="section-num">2.2&lt;/span> Использование&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;/li>
+&lt;li>&lt;a href="#bootstrap">&lt;span class="section-num">2&lt;/span> Bootstrap&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#jquery">&lt;span class="section-num">3&lt;/span> jQuery&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/nav>
 &lt;/div>
@@ -730,198 +1296,16 @@ tabe widget
 &lt;li>Hugo Learn Theme: &lt;a href="https://learn.netlify.app/" target="_blank" rel="noopener">https://learn.netlify.app/&lt;/a>, &lt;a href="https://github.com/matcornic/hugo-theme-learn" target="_blank" rel="noopener">https://github.com/matcornic/hugo-theme-learn&lt;/a>. Реализация на основе своих библиотек.&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;li>Используем наработки из темы &lt;em>Hugo Dynamic Tabs&lt;/em>. Реализация на основе &lt;em>Bootstrap&lt;/em>.&lt;/li>
 &lt;/ul>
-&lt;h2 id="тема-hugo-dynamic-tabs">&lt;span class="section-num">2&lt;/span> Тема &lt;em>Hugo Dynamic Tabs&lt;/em>&lt;/h2>
+&lt;h2 id="bootstrap">&lt;span class="section-num">2&lt;/span> Bootstrap&lt;/h2>
 &lt;ul>
-&lt;li>Сайт: &lt;a href="https://hugo-dynamic-tabs.netlify.app/" target="_blank" rel="noopener">https://hugo-dynamic-tabs.netlify.app/&lt;/a>.&lt;/li>
-&lt;li>Репозиторий:
-&lt;ul>
-&lt;li>Bootstrap 4: &lt;a href="https://github.com/rvanhorn/hugo-dynamic-tabs" target="_blank" rel="noopener">https://github.com/rvanhorn/hugo-dynamic-tabs&lt;/a>;&lt;/li>
-&lt;li>Bootstrap 5: &lt;a href="https://github.com/rvanhorn/hugo-dynamic-tabs/tree/bootstrap5" target="_blank" rel="noopener">https://github.com/rvanhorn/hugo-dynamic-tabs/tree/bootstrap5&lt;/a>.&lt;/li>
+&lt;li>Можно использовать наработки из темы &lt;em>Hugo Dynamic Tabs&lt;/em>. Реализация на основе &lt;em>Bootstrap&lt;/em>.&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2025/07/03/hugo-tabbed-view-bootstrap/">Hugo. Вкладки bootstrap&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;/li>
-&lt;li>Тема использует библиотеки &lt;em>Bootstrap 4&lt;/em> или &lt;em>Bootstrap 5&lt;/em>.&lt;/li>
-&lt;li>Темы &lt;em>Wowchemy&lt;/em> используют &lt;em>Bootstrap 4&lt;/em>. Поэтому дополнительных библиотек не нужно.&lt;/li>
-&lt;li>Достаточно поместить файлы &lt;code>tab.html&lt;/code> и &lt;code>tabs.html&lt;/code> в каталог сайта &lt;code>layouts/shortcodes&lt;/code>.&lt;/li>
-&lt;/ul>
-&lt;h3 id="листинги-файлов">&lt;span class="section-num">2.1&lt;/span> Листинги файлов&lt;/h3>
+&lt;h2 id="jquery">&lt;span class="section-num">3&lt;/span> jQuery&lt;/h2>
 &lt;ul>
-&lt;li>
-&lt;p>Файл &lt;code>tabs.html&lt;/code> (bootstrap 4):&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-html" data-lang="html">&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">nav&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">div&lt;/span> &lt;span class="na">class&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;nav nav-tabs&amp;#34;&lt;/span> &lt;span class="na">id&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;nav-tab&amp;#34;&lt;/span> &lt;span class="na">role&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;tablist&amp;#34;&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> {{ $tabTotal := .Get &amp;#34;tabTotal&amp;#34; }} {{ $tabRightAlign
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> := .Get &amp;#34;tabRightAlign&amp;#34; }} {{ $tabName := .Scratch.Get
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;tabName&amp;#34; }} {{ $tabID := .Scratch.Get &amp;#34;tabID&amp;#34; }}
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> {{ range $i, $sequence := (seq $tabTotal) }}
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">a&lt;/span> &lt;span class="na">class&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;nav-item nav-link {{ if eq $i 0 }} active {{
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s"> end }}{{ if in $tabRightAlign (add 1 $i) }} ml-auto
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s"> {{ end }}&amp;#34;&lt;/span> &lt;span class="na">id&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;nav-{{ (index $tabID $i) }}&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">data-toggle&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;tab&amp;#34;&lt;/span> &lt;span class="na">href&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;#{{ (index $tabID $i) }}&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">role&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;tab&amp;#34;&lt;/span> &lt;span class="na">aria-controls&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;nav-home&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">aria-selected&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;true&amp;#34;&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>{{ (replaceRE &amp;#34;(\\s)&amp;#34; &amp;#34;&amp;#34;
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> (index $tabName $i)) }}&lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">a&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> {{ end }}
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">div&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">nav&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">div&lt;/span> &lt;span class="na">class&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;tab-content&amp;#34;&lt;/span> &lt;span class="na">id&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;nav-tab-content&amp;#34;&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> {{ .Inner }}
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">div&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
-&lt;li>
-&lt;p>Файл &lt;code>tabs.html&lt;/code> (bootstrap 5):&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-html" data-lang="html">&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">nav&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">div&lt;/span> &lt;span class="na">class&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;nav nav-tabs&amp;#34;&lt;/span> &lt;span class="na">id&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;nav-tab&amp;#34;&lt;/span> &lt;span class="na">role&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;tablist&amp;#34;&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> {{ $tabTotal := .Get &amp;#34;tabTotal&amp;#34; }}
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> {{ $tabRightAlign := .Get &amp;#34;tabRightAlign&amp;#34; }}
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> {{ $tabName := .Scratch.Get &amp;#34;tabName&amp;#34; }}
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> {{ $tabID := .Scratch.Get &amp;#34;tabID&amp;#34; }}
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> {{ range $i, $sequence := (seq $tabTotal) }}
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">a&lt;/span> &lt;span class="na">class&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;nav-link {{ if eq $i 0 }} active {{ end }}{{ if in $tabRightAlign (add 1 $i) }} ms-auto {{ end }}&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">id&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;{{ (index $tabID $i) }}-tab&amp;#34;&lt;/span> &lt;span class="na">data-bs-toggle&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;tab&amp;#34;&lt;/span> &lt;span class="na">data-bs-target&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;#{{ (index $tabID $i) }}&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">type&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;button&amp;#34;&lt;/span> &lt;span class="na">role&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;tab&amp;#34;&lt;/span> &lt;span class="na">aria-controls&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;nav-home&amp;#34;&lt;/span> &lt;span class="na">aria-selected&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;true&amp;#34;&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>{{ (replaceRE &amp;#34;(\\s)&amp;#34; &amp;#34;&amp;#34; (index $tabName $i)) }}&lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">a&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> {{ end }}
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">div&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">nav&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">div&lt;/span> &lt;span class="na">class&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;tab-content&amp;#34;&lt;/span> &lt;span class="na">id&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;nav-tab-content&amp;#34;&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> {{ .Inner }}
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">div&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
-&lt;li>
-&lt;p>Файл &lt;code>tab.html&lt;/code>:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-html" data-lang="html">&lt;span class="line">&lt;span class="cl">{{ $tabName := .Get &amp;#34;tabName&amp;#34; }}
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{ $tabID := delimit (shuffle (slice &amp;#34;a&amp;#34; &amp;#34;b&amp;#34; &amp;#34;c&amp;#34; &amp;#34;d&amp;#34; &amp;#34;e&amp;#34; &amp;#34;f&amp;#34;)) &amp;#34;&amp;#34; }}
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{ .Parent.Scratch.Add &amp;#34;tabName&amp;#34; (slice $tabName) }}
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{ .Parent.Scratch.Add &amp;#34;tabID&amp;#34; (slice $tabID) }}
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">div&lt;/span> &lt;span class="na">class&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;tab-pane fade show {{ if eq .Ordinal 0 }}active {{ end }}&amp;#34;&lt;/span> &lt;span class="na">id&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;{{ $tabID }}&amp;#34;&lt;/span> &lt;span class="na">role&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;tabpanel&amp;#34;&lt;/span> &lt;span class="na">aria-labelledby&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;nav-1&amp;#34;&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> {{ $.Inner | markdownify }}
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">div&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
-&lt;/ul>
-&lt;h3 id="использование">&lt;span class="section-num">2.2&lt;/span> Использование&lt;/h3>
-&lt;ul>
-&lt;li>Одна вкладка.
-&lt;ul>
-&lt;li>
-&lt;p>Код:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-markdown" data-lang="markdown">&lt;span class="line">&lt;span class="cl">{{&lt;span class="p">&amp;lt;&lt;/span> &lt;span class="nt">tabs&lt;/span> &lt;span class="na">tabTotal&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;1&amp;#34;&lt;/span> &lt;span class="p">&amp;gt;&lt;/span>}}
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{&lt;span class="p">&amp;lt;&lt;/span> &lt;span class="nt">tab&lt;/span> &lt;span class="na">tabName&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;Tab 1&amp;#34;&lt;/span> &lt;span class="p">&amp;gt;&lt;/span>}}
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="gs">**Tab 1 Content**&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{&lt;span class="p">&amp;lt;&lt;/span> &lt;span class="p">/&lt;/span>&lt;span class="nt">tab&lt;/span> &lt;span class="p">&amp;gt;&lt;/span>}}
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{&lt;span class="p">&amp;lt;&lt;/span> &lt;span class="p">/&lt;/span>&lt;span class="nt">tabs&lt;/span> &lt;span class="p">&amp;gt;&lt;/span>}}
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
-&lt;li>
-&lt;p>Отображение:&lt;/p>
-&lt;link rel="stylesheet" href="https://yamadharma.github.io/css/flick/jquery-ui.min.2145606a4147a5c2562a0afa9e996323dcbd14469acf347b81292370e967b906.css" integrity="sha256-IUVgakFHpcJWKgr6npljI9y9FEaazzR7gSkjcOlnuQY=">
-&lt;script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js">
-&lt;/script>
-&lt;script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js">
-&lt;/script>
-&lt;script>
-$(function() {
-$( "#tabs, #tabs1, #tabs2, #tabs3, #tabs4, #tabs5, #tabs6, #tabs7, #tabs8" ).tabs();
-});
-&lt;/script>
-&lt;div id = "tabs">
-&lt;ul>
-&lt;li>&lt;a href = "#tab-1">
-&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;div id ="tab-0">
-&lt;/div>
-&lt;div id ="tab-1">
-&lt;pre>&lt;code> **Tab 1 Content**
-&lt;/code>&lt;/pre>
-&lt;/div>
-&lt;/div>
-tabe widget
-&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>Три вкладки. Две из них выровнены направо.
-&lt;ul>
-&lt;li>
-&lt;p>Код:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-markdown" data-lang="markdown">&lt;span class="line">&lt;span class="cl">{{&lt;span class="p">&amp;lt;&lt;/span> &lt;span class="nt">tabs&lt;/span> &lt;span class="na">tabTotal&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;3&amp;#34;&lt;/span> &lt;span class="na">tabRightAlign&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;2&amp;#34;&lt;/span> &lt;span class="p">&amp;gt;&lt;/span>}}
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{&lt;span class="p">&amp;lt;&lt;/span> &lt;span class="nt">tab&lt;/span> &lt;span class="na">tabName&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;Tab 1&amp;#34;&lt;/span> &lt;span class="p">&amp;gt;&lt;/span>}}
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="gs">**Tab 1 Content**&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{&lt;span class="p">&amp;lt;&lt;/span> &lt;span class="p">/&lt;/span>&lt;span class="nt">tab&lt;/span> &lt;span class="p">&amp;gt;&lt;/span>}}
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{&lt;span class="p">&amp;lt;&lt;/span> &lt;span class="nt">tab&lt;/span> &lt;span class="na">tabName&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;Tab 2&amp;#34;&lt;/span> &lt;span class="p">&amp;gt;&lt;/span>}}
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="gs">**Tab 2 Content**&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{&lt;span class="p">&amp;lt;&lt;/span> &lt;span class="p">/&lt;/span>&lt;span class="nt">tab&lt;/span> &lt;span class="p">&amp;gt;&lt;/span>}}
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{&lt;span class="p">&amp;lt;&lt;/span> &lt;span class="nt">tab&lt;/span> &lt;span class="na">tabName&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;Tab 3&amp;#34;&lt;/span> &lt;span class="p">&amp;gt;&lt;/span>}}
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="gs">**Tab 3 Content**&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{&lt;span class="p">&amp;lt;&lt;/span> &lt;span class="p">/&lt;/span>&lt;span class="nt">tab&lt;/span> &lt;span class="p">&amp;gt;&lt;/span>}}
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{{&lt;span class="p">&amp;lt;&lt;/span> &lt;span class="p">/&lt;/span>&lt;span class="nt">tabs&lt;/span> &lt;span class="p">&amp;gt;&lt;/span>}}
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
-&lt;li>
-&lt;p>Отображение:&lt;/p>
-&lt;link rel="stylesheet" href="https://yamadharma.github.io/css/flick/jquery-ui.min.2145606a4147a5c2562a0afa9e996323dcbd14469acf347b81292370e967b906.css" integrity="sha256-IUVgakFHpcJWKgr6npljI9y9FEaazzR7gSkjcOlnuQY=">
-&lt;script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js">
-&lt;/script>
-&lt;script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js">
-&lt;/script>
-&lt;script>
-$(function() {
-$( "#tabs, #tabs1, #tabs2, #tabs3, #tabs4, #tabs5, #tabs6, #tabs7, #tabs8" ).tabs();
-});
-&lt;/script>
-&lt;div id = "tabs">
-&lt;ul>
-&lt;li>&lt;a href = "#tab-1">
-&lt;/a>&lt;/li>
-&lt;li>&lt;a href = "#tab-2">
-&lt;/a>&lt;/li>
-&lt;li>&lt;a href = "#tab-3">
-&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;div id ="tab-0">
-&lt;/div>
-&lt;div id ="tab-1">
-&lt;pre>&lt;code> **Tab 1 Content**
-&lt;/code>&lt;/pre>
-&lt;/div>
-&lt;div id ="tab-2">
-&lt;pre>&lt;code> **Tab 2 Content**
-&lt;/code>&lt;/pre>
-&lt;/div>
-&lt;div id ="tab-3">
-&lt;pre>&lt;code> **Tab 3 Content**
-&lt;/code>&lt;/pre>
-&lt;/div>
-&lt;/div>
-tabe widget
-&lt;/li>
-&lt;/ul>
-&lt;/li>
+&lt;li>Сделал вкладки на jQuery.&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2025/07/03/hugo-tabbed-view-jquery/">Hugo. Вкладки jquery&lt;/a>&lt;/li>
 &lt;/ul></description></item><item><title>Создание сайта на Hugo</title><link>https://yamadharma.github.io/ru/post/2022/04/12/creating-hugo-site/</link><pubDate>Tue, 12 Apr 2022 20:49:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/04/12/creating-hugo-site/</guid><description>&lt;p>Быстрое развертывание сайта на GitHub Pages с помощью генератора статического html &lt;em>Hugo&lt;/em>.&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
 &lt;summary>Содержание&lt;/summary>

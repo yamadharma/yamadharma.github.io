@@ -1,4 +1,167 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Org-Mode | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/org-mode/</link><atom:link href="https://yamadharma.github.io/ru/tag/org-mode/index.xml" rel="self" type="application/rss+xml"/><description>Org-Mode</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>ru-ru</language><copyright>© 2025 Dmitry S. Kulyabov</copyright><lastBuildDate>Mon, 19 May 2025 15:49:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu_c0ee34e0b47a9b95.png</url><title>Org-Mode</title><link>https://yamadharma.github.io/ru/tag/org-mode/</link></image><item><title>Emacs. Пакет org-download</title><link>https://yamadharma.github.io/ru/post/2025/05/19/emacs-org-download/</link><pubDate>Mon, 19 May 2025 15:49:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2025/05/19/emacs-org-download/</guid><description>&lt;p>Emacs. Пакет org-download.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Org-Mode | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/org-mode/</link><atom:link href="https://yamadharma.github.io/ru/tag/org-mode/index.xml" rel="self" type="application/rss+xml"/><description>Org-Mode</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>ru-ru</language><copyright>© 2025 Dmitry S. Kulyabov</copyright><lastBuildDate>Thu, 03 Jul 2025 20:30:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu_c0ee34e0b47a9b95.png</url><title>Org-Mode</title><link>https://yamadharma.github.io/ru/tag/org-mode/</link></image><item><title>Org-mode. Экспорт ссылок на видео в Hugo</title><link>https://yamadharma.github.io/ru/post/2025/07/03/org-mode-video-export-hugo/</link><pubDate>Thu, 03 Jul 2025 20:30:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2025/07/03/org-mode-video-export-hugo/</guid><description>&lt;p>Org-mode. Экспорт ссылок на видео в Hugo&lt;/p>
+&lt;details class="print:hidden xl:hidden" >
+&lt;summary>Содержание&lt;/summary>
+&lt;div class="text-sm">
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#прагматика">&lt;span class="section-num">1&lt;/span> Прагматика&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#экспорт-видео-dot-решение-1">&lt;span class="section-num">2&lt;/span> Экспорт видео. Решение 1&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#экспорт-видео-dot-решение-2">&lt;span class="section-num">3&lt;/span> Экспорт видео. Решение 2&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#поддержка-вкладок">&lt;span class="section-num">4&lt;/span> Поддержка вкладок&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#использование">&lt;span class="section-num">5&lt;/span> Использование&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#загрузка-при-старте-emacs">&lt;span class="section-num">6&lt;/span> Загрузка при старте emacs&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/div>
+&lt;/details>
+&lt;h2 id="прагматика">&lt;span class="section-num">1&lt;/span> Прагматика&lt;/h2>
+&lt;ul>
+&lt;li>Нужно экспортировать ссылки на видео не только в Hugo, но и в Markdown.
+&lt;ul>
+&lt;li>Неудобно прописывать это дважды.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Синтаксис видео во вкладках (см. &lt;a href="https://yamadharma.github.io/ru/post/2022/06/26/hugo-video-tabs/">Hugo. Видео во вкладках&lt;/a>) не зафиксирован.
+&lt;ul>
+&lt;li>Пришлось переписывать все низкоуровневые вызовы при смене синтаксиса.&lt;/li>
+&lt;li>Хотелось бы зафиксировать форму записи.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Решение: использование макросов org-mode (см. &lt;a href="https://yamadharma.github.io/ru/post/2025/06/08/org-mode-macro/">Org-mode. Макросы&lt;/a>).&lt;/li>
+&lt;li>Будем использовать синтаксис от вкладок jQuery (см. &lt;a href="https://yamadharma.github.io/ru/post/2025/07/03/hugo-tabbed-view-jquery/">Hugo. Вкладки jquery&lt;/a>).&lt;/li>
+&lt;/ul>
+&lt;h2 id="экспорт-видео-dot-решение-1">&lt;span class="section-num">2&lt;/span> Экспорт видео. Решение 1&lt;/h2>
+&lt;ul>
+&lt;li>Нужно экспортировать видео и в hugo, и в markdown.&lt;/li>
+&lt;li>Сделал следующие макросы:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-org" data-lang="org">&lt;span class="line">&lt;span class="cl">&lt;span class="cs">#+macro&lt;/span>&lt;span class="c">: youtube @@hugo:{{&amp;lt; youtube $1 &amp;gt;}}@@@@md:[![Youtube](http://img.youtube.com/vi/$1/0.jpg){width=560px}](http://www.youtube.com/watch?v=$1)@@&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cs">#+macro&lt;/span>&lt;span class="c">: rutube @@hugo:{{&amp;lt; rutube $1 &amp;gt;}}@@@@markdown:[![RuTube]($2){width=560px}](https://rutube.ru/video/$1/)@@&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cs">#+macro&lt;/span>&lt;span class="c">: plvideo @@hugo:{{&amp;lt; plvideo $1 &amp;gt;}}@@@@markdown:[![Платформа]($2){width=560px}](https://plvideo.ru/watch?v=$1)@@&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Проблема: в hugo экспортируется и markdown.&lt;/li>
+&lt;li>Получаем излишнюю информацию при экспорте в hugo.&lt;/li>
+&lt;/ul>
+&lt;h2 id="экспорт-видео-dot-решение-2">&lt;span class="section-num">3&lt;/span> Экспорт видео. Решение 2&lt;/h2>
+&lt;ul>
+&lt;li>Используем подход с вычислением выражения на elisp:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-org" data-lang="org">&lt;span class="line">&lt;span class="cl">&lt;span class="cs">#+macro&lt;/span>&lt;span class="c">: youtube (eval (cond ((org-export-derived-backend-p org-export-current-backend &amp;#39;hugo) (concat &amp;#34;@@hugo:{{&amp;lt; youtube &amp;#34; $1 &amp;#34; &amp;gt;}}@@&amp;#34;)) ((org-export-derived-backend-p org-export-current-backend (or &amp;#39;md &amp;#39;markdown &amp;#39;gfm)) (concat &amp;#34;@@html:[![Youtube](http://img.youtube.com/vi/&amp;#34; $1 &amp;#34;/0.jpg){width=560px}](http://www.youtube.com/watch?v=&amp;#34; $1 &amp;#34;)@@&amp;#34;))))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cs">#+macro&lt;/span>&lt;span class="c">: rutube (eval (cond ((org-export-derived-backend-p org-export-current-backend &amp;#39;hugo) (concat &amp;#34;@@hugo:{{&amp;lt; rutube &amp;#34; $1 &amp;#34; &amp;gt;}}@@&amp;#34;)) ((org-export-derived-backend-p org-export-current-backend (or &amp;#39;md &amp;#39;markdown &amp;#39;gfm)) (concat &amp;#34;@@html:[![RuTube](&amp;#34; $2 &amp;#34;){width=560px}](https://rutube.ru/video/&amp;#34; $1 &amp;#34;/)@@&amp;#34;))))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cs">#+macro&lt;/span>&lt;span class="c">: plvideo (eval (cond ((org-export-derived-backend-p org-export-current-backend &amp;#39;hugo) (concat &amp;#34;@@hugo:{{&amp;lt; plvideo &amp;#34; $1 &amp;#34; &amp;gt;}}@@&amp;#34;)) ((org-export-derived-backend-p org-export-current-backend (or &amp;#39;md &amp;#39;markdown &amp;#39;gfm)) (concat &amp;#34;@@html:[![Платформа](&amp;#34; $2 &amp;#34;){width=560px}](https://plvideo.ru/watch?v=&amp;#34; $1 &amp;#34;)@@&amp;#34;))))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cs">#+macro&lt;/span>&lt;span class="c">: vkvideo (eval (cond ((org-export-derived-backend-p org-export-current-backend &amp;#39;hugo) (concat &amp;#34;@@hugo:{{&amp;lt; vkvideo oid=&amp;#34; $1 &amp;#34; id=&amp;#34; $2 &amp;#34; hd=2 &amp;gt;}}@@&amp;#34;)) ((org-export-derived-backend-p org-export-current-backend (or &amp;#39;md &amp;#39;markdown &amp;#39;gfm)) (concat &amp;#34;@@html:[![VKvideo](&amp;#34; $3 &amp;#34;){width=560px}](https://vkvideo.ru/video&amp;#34; $1 &amp;#34;_&amp;#34; $2 &amp;#34;)@@&amp;#34;))))&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Здесь используются сокращения для видео:
+&lt;ul>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/08/24/hugo-shortcode-vkvideo/">Hugo shortcode. Видео на VK Video&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/04/04/shortcode-video-rutube-hugo/">Сокращение для видео Rutube для Hugo&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2024/11/09/shortcode-video-plvideo-hugo/">Сокращение для видео Платформа для Hugo&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="поддержка-вкладок">&lt;span class="section-num">4&lt;/span> Поддержка вкладок&lt;/h2>
+&lt;ul>
+&lt;li>Добавим макросы для поддержки вкладок:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-org" data-lang="org">&lt;span class="line">&lt;span class="cl">&lt;span class="cs">#+macro&lt;/span>&lt;span class="c">: begin_tabs @@hugo:{{&amp;lt; tabs $1 &amp;gt;}}@@&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cs">#+macro&lt;/span>&lt;span class="c">: end_tabs @@hugo:{{&amp;lt; /tabs &amp;gt;}}@@&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cs">#+macro&lt;/span>&lt;span class="c">: youtube-tab @@hugo:{{&amp;lt; tab &amp;#34;Youtube&amp;#34; &amp;gt;}}@@{{{youtube($1)}}}@@hugo:{{&amp;lt; /tab &amp;gt;}}@@&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cs">#+macro&lt;/span>&lt;span class="c">: rutube-tab @@hugo:{{&amp;lt; tab &amp;#34;RuTube&amp;#34; &amp;gt;}}@@{{{rutube($1,$2)}}}@@hugo:{{&amp;lt; /tab &amp;gt;}}@@&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cs">#+macro&lt;/span>&lt;span class="c">: plvideo-tab @@hugo:{{&amp;lt; tab &amp;#34;Платформа&amp;#34; &amp;gt;}}@@{{{plvideo($1,$2)}}}@@hugo:{{&amp;lt; /tab &amp;gt;}}@@&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cs">#+macro&lt;/span>&lt;span class="c">: vkvideo-tab @@hugo:{{&amp;lt; tab &amp;#34;VKvideo&amp;#34; &amp;gt;}}@@{{{vkvideo($1,$2,$3)}}}@@hugo:{{&amp;lt; /tab &amp;gt;}}@@&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="использование">&lt;span class="section-num">5&lt;/span> Использование&lt;/h2>
+&lt;ul>
+&lt;li>Предполагается следующий сценарий использования (использовал видео, на которых отлаживал код):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-org" data-lang="org">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">{{{begin_tabs(&amp;#34;Создание виртуальной машины с Virtualbox&amp;#34;)}}}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">{{{rutube-tab(0a52857a1fb8a79cbf58fcb58d2d8593,https://pic.rutubelist.ru/video/2025-07-02/63/b4/63b485f63c7a400611064eb35be3ffa1.jpg)}}}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">{{{plvideo-tab(Dncja2upfmNQ,https://s-dt-rt1.cloud.edgecore.ru/fp-2025-07-cover/Dncja2upfmNQ/f91849ab-8ad2-4795-9fce-3525054e4bce.jpg)}}}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">{{{vkvideo-tab(-230024722,456239038,https://sun1-18.userapi.com/QhNtwM8UkVfXj44arwC4cvAW9XTPzBQiboJaPA/ZvwM3lG9Da4.jpg)}}}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">{{{youtube-tab(WwYYYIQdUTk)}}}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">{{{end_tabs}}}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;link rel="stylesheet" href="https://yamadharma.github.io/css/flick/jquery-ui.min.2145606a4147a5c2562a0afa9e996323dcbd14469acf347b81292370e967b906.css" integrity="sha256-IUVgakFHpcJWKgr6npljI9y9FEaazzR7gSkjcOlnuQY=">
+&lt;script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js">
+&lt;/script>
+&lt;script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js">
+&lt;/script>
+&lt;script>
+$(function() {
+$( "#tabs, #tabs1, #tabs2, #tabs3, #tabs4, #tabs5, #tabs6, #tabs7, #tabs8" ).tabs();
+});
+&lt;/script>
+&lt;div id = "tabs">
+&lt;ul>
+&lt;li>&lt;a href = "#tab-1">
+RuTube
+&lt;/a>&lt;/li>
+&lt;li>&lt;a href = "#tab-2">
+Платформа
+&lt;/a>&lt;/li>
+&lt;li>&lt;a href = "#tab-3">
+VKvideo
+&lt;/a>&lt;/li>
+&lt;li>&lt;a href = "#tab-4">
+Youtube
+&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;div id ="tab-0">
+&lt;/div>
+&lt;div id ="tab-1">
+&lt;div class="embed video-player">
+&lt;iframe class="rutube-player" type="text/html"
+width="647" height="364"
+src="https://rutube.ru/play/embed/0a52857a1fb8a79cbf58fcb58d2d8593"
+webkitAllowFullScreen mozallowfullscreen allowFullScreen
+allow="clipboard-write" frameborder="0">
+&lt;/iframe>
+&lt;/div>
+&lt;/div>
+&lt;div id ="tab-2">
+&lt;div class="embed video-player">
+&lt;iframe class="plvideo-player" type="text/html"
+width="647" height="364"
+src="https://plvideo.ru/embed/Dncja2upfmNQ"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+&lt;/iframe>
+&lt;/div>
+&lt;/div>
+&lt;div id ="tab-3">
+&lt;div class="embed video-player">
+&lt;iframe class="vkvideo-player" type="text/html"
+src="https://vkvideo.ru/video_ext.php?oid=-230024722&amp;id=456239038&amp;hd=2"
+width="647" height="364" allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;" frameborder="0" allowfullscreen>
+&lt;/iframe>
+&lt;/div>
+&lt;/div>
+&lt;div id ="tab-4">
+&lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+&lt;iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="allowfullscreen" loading="eager" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/WwYYYIQdUTk?autoplay=0&amp;amp;controls=1&amp;amp;end=0&amp;amp;loop=0&amp;amp;mute=0&amp;amp;start=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" title="YouTube video">&lt;/iframe>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+Создание виртуальной машины с Virtualbox
+&lt;h2 id="загрузка-при-старте-emacs">&lt;span class="section-num">6&lt;/span> Загрузка при старте emacs&lt;/h2>
+&lt;ul>
+&lt;li>Будем загружать эти макросы при старте emacs:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nb">setq&lt;/span> &lt;span class="nv">org-export-global-macros&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">&amp;#39;&lt;/span>&lt;span class="p">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;youtube&amp;#34;&lt;/span> &lt;span class="o">.&lt;/span> &lt;span class="s">&amp;#34;(eval (cond ((org-export-derived-backend-p org-export-current-backend &amp;#39;hugo) (concat \&amp;#34;@@hugo:{{&amp;lt; youtube \&amp;#34; $1 \&amp;#34; &amp;gt;}}@@\&amp;#34;)) ((org-export-derived-backend-p org-export-current-backend (or &amp;#39;md &amp;#39;markdown &amp;#39;gfm)) (concat \&amp;#34;@@html:[![Youtube](http://img.youtube.com/vi/\&amp;#34; $1 \&amp;#34;/0.jpg){width=560px}](http://www.youtube.com/watch?v=\&amp;#34; $1 \&amp;#34;)@@\&amp;#34;))))&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;rutube&amp;#34;&lt;/span> &lt;span class="o">.&lt;/span> &lt;span class="s">&amp;#34;(eval (cond ((org-export-derived-backend-p org-export-current-backend &amp;#39;hugo) (concat \&amp;#34;@@hugo:{{&amp;lt; rutube \&amp;#34; $1 \&amp;#34; &amp;gt;}}@@\&amp;#34;)) ((org-export-derived-backend-p org-export-current-backend (or &amp;#39;md &amp;#39;markdown &amp;#39;gfm)) (concat \&amp;#34;@@html:[![RuTube](\&amp;#34; $2 \&amp;#34;){width=560px}](https://rutube.ru/video/\&amp;#34; $1 \&amp;#34;/)@@\&amp;#34;))))&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;plvideo&amp;#34;&lt;/span> &lt;span class="o">.&lt;/span> &lt;span class="s">&amp;#34;(eval (cond ((org-export-derived-backend-p org-export-current-backend &amp;#39;hugo) (concat \&amp;#34;@@hugo:{{&amp;lt; plvideo \&amp;#34; $1 \&amp;#34; &amp;gt;}}@@\&amp;#34;)) ((org-export-derived-backend-p org-export-current-backend (or &amp;#39;md &amp;#39;markdown &amp;#39;gfm)) (concat \&amp;#34;@@html:[![Платформа](\&amp;#34; $2 \&amp;#34;){width=560px}](https://plvideo.ru/watch?v=\&amp;#34; $1 \&amp;#34;)@@\&amp;#34;))))&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;vkvideo&amp;#34;&lt;/span> &lt;span class="o">.&lt;/span> &lt;span class="s">&amp;#34;(eval (cond ((org-export-derived-backend-p org-export-current-backend &amp;#39;hugo) (concat \&amp;#34;@@hugo:{{&amp;lt; vkvideo oid=\&amp;#34; $1 \&amp;#34; id=\&amp;#34; $2 \&amp;#34; hd=2 &amp;gt;}}@@\&amp;#34;)) ((org-export-derived-backend-p org-export-current-backend (or &amp;#39;md &amp;#39;markdown &amp;#39;gfm)) (concat \&amp;#34;@@html:[![VKvideo](\&amp;#34; $3 \&amp;#34;){width=560px}](https://vkvideo.ru/video\&amp;#34; $1 \&amp;#34;_\&amp;#34; $2 \&amp;#34;)@@\&amp;#34;))))&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;begin_tabs&amp;#34;&lt;/span> &lt;span class="o">.&lt;/span> &lt;span class="s">&amp;#34;@@hugo:{{&amp;lt; tabs $1 &amp;gt;}}@@&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;end_tabs&amp;#34;&lt;/span> &lt;span class="o">.&lt;/span> &lt;span class="s">&amp;#34;@@hugo:{{&amp;lt; /tabs &amp;gt;}}@@&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;youtube-tab&amp;#34;&lt;/span> &lt;span class="o">.&lt;/span> &lt;span class="s">&amp;#34;@@hugo:{{&amp;lt; tab \&amp;#34;Youtube\&amp;#34; &amp;gt;}}@@{{{youtube($1)}}}@@hugo:{{&amp;lt; /tab &amp;gt;}}@@&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;rutube-tab&amp;#34;&lt;/span> &lt;span class="o">.&lt;/span> &lt;span class="s">&amp;#34;@@hugo:{{&amp;lt; tab \&amp;#34;RuTube\&amp;#34; &amp;gt;}}@@{{{rutube($1,$2)}}}@@hugo:{{&amp;lt; /tab &amp;gt;}}@@&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;plvideo-tab&amp;#34;&lt;/span> &lt;span class="o">.&lt;/span> &lt;span class="s">&amp;#34;@@hugo:{{&amp;lt; tab \&amp;#34;Платформа\&amp;#34; &amp;gt;}}@@{{{plvideo($1,$2)}}}@@hugo:{{&amp;lt; /tab &amp;gt;}}@@&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;vkvideo-tab&amp;#34;&lt;/span> &lt;span class="o">.&lt;/span> &lt;span class="s">&amp;#34;@@hugo:{{&amp;lt; tab \&amp;#34;VKvideo\&amp;#34; &amp;gt;}}@@{{{vkvideo($1,$2,$3)}}}@@hugo:{{&amp;lt; /tab &amp;gt;}}@@&amp;#34;&lt;/span>&lt;span class="p">)))&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul></description></item><item><title>Emacs. Пакет org-download</title><link>https://yamadharma.github.io/ru/post/2025/05/19/emacs-org-download/</link><pubDate>Mon, 19 May 2025 15:49:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2025/05/19/emacs-org-download/</guid><description>&lt;p>Emacs. Пакет org-download.&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
 &lt;summary>Содержание&lt;/summary>
 &lt;div class="text-sm">
@@ -1237,9 +1400,7 @@
 &lt;li>При подготовке иллюстраций можно передать параметры \(\LaTeX\):
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-org" data-lang="org">&lt;span class="line">&lt;span class="cl">&lt;span class="cs">#+attr_latex&lt;/span>&lt;span class="c">: :width 0.8\linewidth&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[[&lt;span class="na">file:../media/image.png&lt;/span>]]
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>В результате получим:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-latex" data-lang="latex">&lt;span class="line">&lt;span class="cl">&lt;span class="k">\includegraphics&lt;/span>&lt;span class="na">[width=0.8\linewidth]&lt;/span>&lt;span class="nb">{&lt;/span>../media/image.png&lt;span class="nb">}&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>В результате получим:&lt;/li>
 &lt;/ul></description></item><item><title>Org-mode. Экспорт в Hugo</title><link>https://yamadharma.github.io/ru/post/2020/12/17/org-mode-export-hugo/</link><pubDate>Thu, 17 Dec 2020 11:01:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2020/12/17/org-mode-export-hugo/</guid><description>&lt;p>Экспорт org-mode в Hugo является одной из составных частей научного рабочего процесса на основе Emacs и org-mode.&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
 &lt;summary>Содержание&lt;/summary>
@@ -2091,16 +2252,35 @@ Markdown.&lt;/li>
 &lt;/ul>
 &lt;h4 id="значения-параметров-экспорта">&lt;span class="section-num">1.1.1&lt;/span> Значения параметров экспорта&lt;/h4>
 &lt;ul>
-&lt;li>&lt;code>AUTHOR&lt;/code> &amp;mdash; автор (user-full-name),&lt;/li>
-&lt;li>&lt;code>CREATOR&lt;/code> &amp;mdash; программа, создавшая выходной файл &lt;code>(org-export-creator-string)&lt;/code>,&lt;/li>
-&lt;li>&lt;code>DATE&lt;/code> &amp;mdash; дата или временная метка &lt;code>(time-stamp)&lt;/code>,&lt;/li>
-&lt;li>&lt;code>EMAIL&lt;/code> &amp;mdash; адрес email &lt;code>(user-mail-address)&lt;/code>,&lt;/li>
-&lt;li>&lt;code>LANGUAGE&lt;/code> &amp;mdash; язык документа &lt;code>(org-export-default-language)&lt;/code>,&lt;/li>
-&lt;li>&lt;code>SELECT_TAGS&lt;/code> &amp;mdash; значение по умолчанию &lt;code>export&lt;/code> &lt;code>(org-export-select-tags)&lt;/code>. Метку можно поставить с помощью комбинации &lt;code>C=c C-q&lt;/code>. Помеченные поддеревья экспортируются.&lt;/li>
-&lt;li>&lt;code>EXCLUDE_TAGS&lt;/code> &amp;mdash; значение по умолчанию &lt;code>noexport&lt;/code> &lt;code>(org-export-exclude-tags)&lt;/code>. При экспортировании помеченные поддеревья игнорируются.&lt;/li>
-&lt;li>&lt;code>TITLE&lt;/code> &amp;mdash; название. Для длинных названий можно использовать несколько строк с этим названием.&lt;/li>
-&lt;li>&lt;code>EXPORT_FILE_NAME&lt;/code> &amp;mdash; явное указание имени файла при экспорте.&lt;/li>
-&lt;li>&lt;code>OPTIONS&lt;/code> &amp;mdash; дополнительные опции:
+&lt;li>
+&lt;p>&lt;code>AUTHOR&lt;/code> &amp;mdash; автор (user-full-name),&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;code>CREATOR&lt;/code> &amp;mdash; программа, создавшая выходной файл &lt;code>(org-export-creator-string)&lt;/code>,&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;code>DATE&lt;/code> &amp;mdash; дата или временная метка &lt;code>(time-stamp)&lt;/code>,&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;code>EMAIL&lt;/code> &amp;mdash; адрес email &lt;code>(user-mail-address)&lt;/code>,&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;code>LANGUAGE&lt;/code> &amp;mdash; язык документа &lt;code>(org-export-default-language)&lt;/code>,&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;code>SELECT_TAGS&lt;/code> &amp;mdash; значение по умолчанию &lt;code>export&lt;/code> &lt;code>(org-export-select-tags)&lt;/code>. Метку можно поставить с помощью комбинации &lt;code>C=c C-q&lt;/code>. Помеченные поддеревья экспортируются.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;code>EXCLUDE_TAGS&lt;/code> &amp;mdash; значение по умолчанию &lt;code>noexport&lt;/code> &lt;code>(org-export-exclude-tags)&lt;/code>. При экспортировании помеченные поддеревья игнорируются.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;code>TITLE&lt;/code> &amp;mdash; название. Для длинных названий можно использовать несколько строк с этим названием.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;code>EXPORT_FILE_NAME&lt;/code> &amp;mdash; явное указание имени файла при экспорте.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;code>OPTIONS&lt;/code> &amp;mdash; дополнительные опции:&lt;/p>
 &lt;ul>
 &lt;li>&lt;code>'&lt;/code> &amp;mdash; переключатель для умных кавычек &lt;code>(org-export-with-smart-quotes)&lt;/code>. Ставит правильные кавычки в зависимости от языка.&lt;/li>
 &lt;li>&lt;code>*&lt;/code> &amp;mdash; переключатель для текстовых выделений &lt;code>(org-export-with-emphasize)&lt;/code>.&lt;/li>
@@ -2160,10 +2340,8 @@ Markdown.&lt;/li>
 &lt;li>&lt;code>|&lt;/code> &amp;mdash; переключатель экспорта таблиц &lt;code>(org-export-with-tables)&lt;/code>.&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;/ul>
-&lt;!--listend-->
-&lt;ul>
-&lt;li>Для поддерева свойства имеют префикс &lt;code>EXPORT_&lt;/code>.
+&lt;li>
+&lt;p>Для поддерева свойства имеют префикс &lt;code>EXPORT_&lt;/code>.&lt;/p>
 &lt;ul>
 &lt;li>Например, &lt;code>DATE&lt;/code> становится &lt;code>EXPORT_DATE&lt;/code> при использовании для определённого поддерева.&lt;/li>
 &lt;/ul>

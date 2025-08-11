@@ -1038,6 +1038,7 @@
 &lt;li>&lt;a href="#запуск-вручную">&lt;span class="section-num">5.5.1&lt;/span> Запуск вручную&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#docker-compose">&lt;span class="section-num">5.5.2&lt;/span> docker-compose&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#скрипт-systemd">&lt;span class="section-num">5.5.3&lt;/span> Скрипт systemd&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#обновление-через-compose">&lt;span class="section-num">5.5.4&lt;/span> Обновление через compose&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>&lt;a href="#система-на-базе-postgresql">&lt;span class="section-num">5.6&lt;/span> Система на базе PostgreSQL&lt;/a>
@@ -1134,8 +1135,8 @@
 &lt;li>Конфигурационный файл credentials.json:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-js" data-lang="js">&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;WallabagURL&amp;#34;&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s2">&amp;#34;https://your.wallabag.tld&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;ClientId&amp;#34;&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s2">&amp;#34;client ID generate in your profile on wallabag&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;ClientSecret&amp;#34;&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s2">&amp;#34;client secrete generate in your profile on wallabag&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;ClientId&amp;#34;&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s2">&amp;#34;client ID generate in your profile on wallabag&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;ClientSecret&amp;#34;&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s2">&amp;#34;client secrete generate in your profile on wallabag&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;UserName&amp;#34;&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s2">&amp;#34;your username&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;UserPassword&amp;#34;&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s2">&amp;#34;your password&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
@@ -1236,7 +1237,7 @@
 &lt;/ul>
 &lt;h4 id="docker-compose">&lt;span class="section-num">5.5.2&lt;/span> docker-compose&lt;/h4>
 &lt;ul>
-&lt;li>Создадим файл docker-compose &lt;code>wallabag-sqlite.yaml&lt;/code>:
+&lt;li>Создадим файл для docker-compose &lt;code>docker-compose.yml&lt;/code>:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">version&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;3&amp;#39;&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">networks&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
@@ -1300,6 +1301,22 @@
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Запустим службу:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">systemctl start wallabag.service
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h4 id="обновление-через-compose">&lt;span class="section-num">5.5.4&lt;/span> Обновление через compose&lt;/h4>
+&lt;ul>
+&lt;li>Обновить:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">podman compose pull
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Остановим и переименуем старый контейнер:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">podman stop wallabag
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">podman rename wallabag wallabag.&lt;span class="k">$(&lt;/span>date -I&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Собираем контейнеры:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">podman-compose up -d
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Если всё нормально, удаляем старый контейнер:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">podman rm wallabag.&amp;lt;дата&amp;gt;
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="система-на-базе-postgresql">&lt;span class="section-num">5.6&lt;/span> Система на базе PostgreSQL&lt;/h3>
@@ -4798,6 +4815,7 @@ alt="Рис. 1.: Источник: http://phdcomics.com/comics/archive.php?comic
 &lt;li>&lt;code>science_writing&lt;/code> : &lt;a href="https://yamadharma.github.io/ru/post/2025/02/04/books-science-writing/">Книги. Научное письмо&lt;/a>&lt;/li>
 &lt;li>&lt;code>sysadmin&lt;/code>: &lt;a href="https://yamadharma.github.io/ru/post/2024/01/24/books-sysadmin/">Книги. Системное администрирование&lt;/a>&lt;/li>
 &lt;li>&lt;code>modeling&lt;/code>: &lt;a href="https://yamadharma.github.io/ru/post/2025/04/11/books-modeling/">Книги. Моделирование&lt;/a>&lt;/li>
+&lt;li>&lt;code>movie&lt;/code>: &lt;a href="https://yamadharma.github.io/ru/post/2025/08/10/movies-watched/">Просмотренные фильмы&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>

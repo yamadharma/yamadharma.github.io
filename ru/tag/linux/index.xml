@@ -1912,6 +1912,9 @@ width="647" height="364" allow="autoplay; encrypted-media; fullscreen; picture-i
 &lt;h4 id="подготовка-к-обновлению">&lt;span class="section-num">2.1.2&lt;/span> Подготовка к обновлению&lt;/h4>
 &lt;ul>
 &lt;li>
+&lt;p>Возможно, придётся заменить репозитории: &lt;a href="https://yamadharma.github.io/ru/post/2022/02/10/centos8-changing-repository-addresses/">CentOS 8. Изменение адресов репозиториев&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
 &lt;p>Обновите систему:&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sudo yum -y upgrade
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
@@ -2004,9 +2007,18 @@ width="647" height="364" allow="autoplay; encrypted-media; fullscreen; picture-i
 &lt;p>Установите удалённые пакеты, например:&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">dnf install fail2ban
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">systemctl &lt;span class="nb">enable&lt;/span> --now fail2ban.service
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Если используете LVM, обновите метаданные:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sudo vgck --updatemetadata &amp;lt;volume_group_name&amp;gt;
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
-&lt;li>Установите SELinux в &lt;code>enforcing&lt;/code> в файле &lt;code>/etc/selinux/config&lt;/code>.&lt;/li>
+&lt;li>Можно в виде скрипта:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span> i in &lt;span class="k">$(&lt;/span>vgdisplay -A -c 2&amp;gt;/dev/null &lt;span class="p">|&lt;/span> cut -f1 -d: &lt;span class="p">|&lt;/span> xargs &lt;span class="k">)&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="k">do&lt;/span> sudo vgck --updatemetadata &lt;span class="si">${&lt;/span>&lt;span class="nv">i&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="k">done&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Установите SELinux в &lt;code>enforcing&lt;/code> в файле &lt;code>/etc/selinux/config&lt;/code>.&lt;/p>
 &lt;/li>
 &lt;/ul>
 &lt;h2 id="8-9">&lt;span class="section-num">3&lt;/span> 8 → 9&lt;/h2>
@@ -2164,9 +2176,18 @@ width="647" height="364" allow="autoplay; encrypted-media; fullscreen; picture-i
 &lt;p>Установите удалённые пакеты, например:&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sudo dnf -y install fail2ban
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo systemctl &lt;span class="nb">enable&lt;/span> --now fail2ban.service
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Если используете LVM, обновите метаданные:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sudo vgck --updatemetadata &amp;lt;volume_group_name&amp;gt;
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
-&lt;li>Установите SELinux в &lt;code>enforcing&lt;/code> в файле &lt;code>/etc/selinux/config&lt;/code>.&lt;/li>
+&lt;li>Можно в виде скрипта:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span> i in &lt;span class="k">$(&lt;/span>vgdisplay -A -c 2&amp;gt;/dev/null &lt;span class="p">|&lt;/span> cut -f1 -d: &lt;span class="p">|&lt;/span> xargs &lt;span class="k">)&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="k">do&lt;/span> sudo vgck --updatemetadata &lt;span class="si">${&lt;/span>&lt;span class="nv">i&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="k">done&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Установите SELinux в &lt;code>enforcing&lt;/code> в файле &lt;code>/etc/selinux/config&lt;/code>.&lt;/p>
 &lt;/li>
 &lt;/ul>
 &lt;h2 id="9-10">&lt;span class="section-num">4&lt;/span> 9 → 10&lt;/h2></description></item><item><title>Перенос виртуальной машины на Proxmox</title><link>https://yamadharma.github.io/ru/post/2024/09/04/migrating-virtual-machine-proxmox/</link><pubDate>Wed, 04 Sep 2024 16:58:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2024/09/04/migrating-virtual-machine-proxmox/</guid><description>&lt;p>Перенос виртуальной машины на Proxmox.&lt;/p>
@@ -2205,6 +2226,10 @@ width="647" height="364" allow="autoplay; encrypted-media; fullscreen; picture-i
 &lt;/ul>
 &lt;h4 id="интерфейс-командной-строки">&lt;span class="section-num">1.1.2&lt;/span> Интерфейс командной строки&lt;/h4>
 &lt;ul>
+&lt;li>
+&lt;p>Выберите свободный идентификатор машины:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">qm list
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Пусть идентификатор машины будет 111 (для определённости).&lt;/p>
 &lt;/li>
@@ -2245,6 +2270,18 @@ width="647" height="364" allow="autoplay; encrypted-media; fullscreen; picture-i
 &lt;li>Подключить можно и через графический интерфейс.&lt;/li>
 &lt;/ul>
 &lt;/li>
+&lt;li>
+&lt;p>Зададим порядок загрузки (SCSI диск):&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">qm &lt;span class="nb">set&lt;/span> &lt;span class="m">111&lt;/span> --boot &lt;span class="nv">order&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;scsi0&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Зададим тип CPU:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">qm &lt;span class="nb">set&lt;/span> &lt;span class="m">111&lt;/span> --cpu &lt;span class="nv">cputype&lt;/span>&lt;span class="o">=&lt;/span>host
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Подключим мышку:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">qm &lt;span class="nb">set&lt;/span> &lt;span class="m">111&lt;/span> --tablet &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="после-переноса">&lt;span class="section-num">1.4&lt;/span> После переноса&lt;/h3>
 &lt;ul>
@@ -2628,6 +2665,9 @@ width="647" height="364" allow="autoplay; encrypted-media; fullscreen; picture-i
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Создание установочного образа (см. &lt;a href="https://yamadharma.github.io/ru/post/2025/05/22/gentoo-installkernel/">Gentoo. Пакет installkernel&lt;/a>):
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge &lt;span class="si">${&lt;/span>&lt;span class="nv">EMERGE_FLAGS&lt;/span>&lt;span class="si">}&lt;/span> installkernel
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Управление очисткой ядер (см. &lt;a href="https://yamadharma.github.io/ru/post/2025/07/13/gentoo-eclean-kernel/">Gentoo. Пакет eclean-kernel&lt;/a>):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge &lt;span class="si">${&lt;/span>&lt;span class="nv">EMERGE_FLAGS&lt;/span>&lt;span class="si">}&lt;/span> app-admin/eclean-kernel
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="утилиты-пользователя">&lt;span class="section-num">3.7&lt;/span> Утилиты пользователя&lt;/h3>
@@ -4140,7 +4180,6 @@ config.d/80-pass.conf
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">=&lt;/span>&lt;span class="n">app&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">emulation&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">virtualbox&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mf">7.1&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span> &lt;span class="c1"># ld.lld error&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">=&lt;/span>&lt;span class="n">app&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">emulation&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">virtualbox&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">kvm&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mf">7.0&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span> &lt;span class="c1"># ld.lld error&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">=&lt;/span>&lt;span class="n">app&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">emulation&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">virtualbox&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">kvm&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mf">7.1&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span> &lt;span class="c1"># ld.lld error&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">=&lt;/span>&lt;span class="n">dev&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">perl&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">PDL&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mf">2.63&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">=&lt;/span>&lt;span class="n">dev&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">util&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">gengetopt&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mf">2.23&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span> &lt;span class="c1">#&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">=&lt;/span>&lt;span class="n">sci&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">libs&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">coinor&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">osi&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mf">0.108&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="mi">6&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span> &lt;span class="c1"># bug: #919825&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">=&lt;/span>&lt;span class="n">sci&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">mathematics&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">octave&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">8&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span>
@@ -4180,7 +4219,7 @@ config.d/80-pass.conf
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">dev&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">lang&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">gprolog&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">clang&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">mold&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">dev&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">lang&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">harbour&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">dev&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">lang&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">rust&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># dev-lang/rust compiler-clang-mold-19&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">dev&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">lang&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">zig&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">dev&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">libs&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">cereal&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">clang&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">mold&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">18&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">dev&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">libs&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">efl&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">clang&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">mold&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">18&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">dev&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">libs&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">ffcall&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span>
@@ -4213,6 +4252,7 @@ config.d/80-pass.conf
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">dev&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">qt&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">qtwebengine&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">5&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">clang&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">mold&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">18&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">dev&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">qt&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">qtwebengine&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">6&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">clang&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">mold&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">18&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">dev&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">tex&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">tectonic&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">dev&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">util&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">android&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">tools&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">dev&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">util&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">kdevelop&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">clang&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">mold&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">18&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">dev&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">util&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">mingw64&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">toolchain&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span> &lt;span class="c1"># gcc itself&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">dev&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">util&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">yacc&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span>
@@ -4222,7 +4262,6 @@ config.d/80-pass.conf
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">kde&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">apps&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">step&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">clang&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">mold&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">18&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llvm&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">core&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">lldb&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">clang&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">mail&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">client&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">thunderbird&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># media-gfx/asymptote compiler-gcc&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">media&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gfx&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">autopano&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">sift&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">C&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">media&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gfx&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">blender&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mf">4.0&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">media&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gfx&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">exact&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">image&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span>
@@ -4264,6 +4303,7 @@ config.d/80-pass.conf
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">net&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">misc&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">netkit&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">telnetd&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">net&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">misc&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">omniORB&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">net&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">misc&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">openssh&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">contrib&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">net&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">misc&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">remmina&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">net&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">nds&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">openldap&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">clang&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">mold&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">net&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nb">print&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">gutenprint&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">net&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">proxy&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">dante&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span>
@@ -4299,9 +4339,6 @@ config.d/80-pass.conf
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">x11&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">libs&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">fox&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">x11&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">misc&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">redshift&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">x11&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">misc&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">virtualgl&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">clang&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">mold&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">dev&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">util&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">android&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">tools&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">net&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">misc&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">remmina&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">dev&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">lang&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">zig&lt;/span> &lt;span class="n">compiler&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gcc&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
 &lt;h3 id="конфигурация-специальных-окружений">&lt;span class="section-num">4.3&lt;/span> Конфигурация специальных окружений&lt;/h3>
@@ -6745,6 +6782,7 @@ config.d/80-pass.conf
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2024/05/16/gentoo-compiling-clang/">Gentoo. Компиляция системы clang&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2024/11/02/gentoo-ebuild-rust/">Gentoo. Создание ebuild для Rust&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2025/05/22/gentoo-installkernel/">Gentoo. Пакет installkernel&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2025/07/13/gentoo-eclean-kernel/">Gentoo. Пакет eclean-kernel&lt;/a>&lt;/li>
 &lt;/ul></description></item><item><title>Rocky Linux. Установка сервера</title><link>https://yamadharma.github.io/ru/post/2022/08/12/rockylinux-server-installation/</link><pubDate>Fri, 12 Aug 2022 13:57:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2022/08/12/rockylinux-server-installation/</guid><description>&lt;p>Установка базисного сервера на Rocky Linux.&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
 &lt;summary>Содержание&lt;/summary>
@@ -7347,9 +7385,7 @@ config.d/80-pass.conf
 &lt;li>Следует обновить файлы описания репозиториев в &lt;code>/etc/yum.repos.d&lt;/code>.&lt;/li>
 &lt;li>Следует использовать &lt;code>vault.centos.org&lt;/code> вместо &lt;code>mirror.centos.org&lt;/code>.&lt;/li>
 &lt;li>Предлагается выполнить следующие команды:
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sudo sed -i -e &lt;span class="s2">&amp;#34;s|mirrorlist=|#mirrorlist=|g&amp;#34;&lt;/span> &lt;span class="se">\
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>-e &lt;span class="s2">&amp;#34;s|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g&amp;#34;&lt;/span> &lt;span class="se">\
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>-e &lt;span class="s2">&amp;#34;s|\$contentdir|centos|g&amp;#34;&lt;/span> /etc/yum.repos.d/CentOS-*
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sudo sed -i -e &lt;span class="s2">&amp;#34;s|mirrorlist=|#mirrorlist=|g&amp;#34;&lt;/span> -e &lt;span class="s2">&amp;#34;s|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g&amp;#34;&lt;/span> -e &lt;span class="s2">&amp;#34;s|\$contentdir|centos|g&amp;#34;&lt;/span> /etc/yum.repos.d/CentOS-*
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul></description></item><item><title>Шрифты в Linux</title><link>https://yamadharma.github.io/ru/post/2021/10/27/linux-fonts/</link><pubDate>Wed, 27 Oct 2021 11:36:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2021/10/27/linux-fonts/</guid><description>&lt;p>Работа со шрифтами в Linux.&lt;/p>
 &lt;details class="print:hidden xl:hidden" >

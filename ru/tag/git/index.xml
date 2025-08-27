@@ -1,4 +1,301 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Git | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/git/</link><atom:link href="https://yamadharma.github.io/ru/tag/git/index.xml" rel="self" type="application/rss+xml"/><description>Git</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>ru-ru</language><copyright>© 2025 Dmitry S. Kulyabov</copyright><lastBuildDate>Thu, 22 Aug 2024 15:13:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu_c0ee34e0b47a9b95.png</url><title>Git</title><link>https://yamadharma.github.io/ru/tag/git/</link></image><item><title>Подпись коммитов git</title><link>https://yamadharma.github.io/ru/post/2024/08/22/verifying-git-commits/</link><pubDate>Thu, 22 Aug 2024 15:13:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2024/08/22/verifying-git-commits/</guid><description>&lt;p>Подпись коммитов git.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Git | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/git/</link><atom:link href="https://yamadharma.github.io/ru/tag/git/index.xml" rel="self" type="application/rss+xml"/><description>Git</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>ru-ru</language><copyright>© 2025 Dmitry S. Kulyabov</copyright><lastBuildDate>Tue, 19 Aug 2025 15:56:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu_3756dbc1adf0ae14.png</url><title>Git</title><link>https://yamadharma.github.io/ru/tag/git/</link></image><item><title>gopass. Интеграция с git</title><link>https://yamadharma.github.io/ru/post/2025/08/19/gopass-integration-git/</link><pubDate>Tue, 19 Aug 2025 15:56:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2025/08/19/gopass-integration-git/</guid><description>&lt;p>gopass. Интеграция с git.&lt;/p>
+&lt;details class="print:hidden xl:hidden" >
+&lt;summary>Содержание&lt;/summary>
+&lt;div class="text-sm">
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#установка">&lt;span class="section-num">2&lt;/span> Установка&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#настройка-git">&lt;span class="section-num">3&lt;/span> Настройка Git&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#сохранение-учётных-данных">&lt;span class="section-num">4&lt;/span> Сохранение учётных данных&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#примеры-использования">&lt;span class="section-num">5&lt;/span> Примеры использования&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#клонирование-репозитория">&lt;span class="section-num">5.1&lt;/span> Клонирование репозитория&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#отправка-изменений">&lt;span class="section-num">5.2&lt;/span> Отправка изменений&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#расширенные-настройки">&lt;span class="section-num">6&lt;/span> Расширенные настройки&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#для-разных-аккаунтов-на-одном-хосте">&lt;span class="section-num">6.1&lt;/span> Для разных аккаунтов на одном хосте&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#привязка-к-конкретному-url">&lt;span class="section-num">6.2&lt;/span> Привязка к конкретному URL&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/div>
+&lt;/details>
+&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
+&lt;ul>
+&lt;li>git-credential-gopass&lt;/li>
+&lt;li>Репозиторий:
+&lt;/li>
+&lt;li>Позволяет безопасно хранить и автоматически подставлять учётные данные (логины, пароли, токены) для работы с Git-репозиториями.&lt;/li>
+&lt;/ul>
+&lt;h2 id="установка">&lt;span class="section-num">2&lt;/span> Установка&lt;/h2>
+&lt;ul>
+&lt;li>Gentoo
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">emerge app-admin/git-credential-gopass
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Для Windows (с помощью Chocolatey):&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">choco install git-credential-gopass
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="настройка-git">&lt;span class="section-num">3&lt;/span> Настройка Git&lt;/h2>
+&lt;ul>
+&lt;li>Добавьте helper в глобальную конфигурацию Git:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global credential.helper gopass
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Проверьте конфигурацию Git:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global --get credential.helper
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Должно вернуть: &lt;code>gopass&lt;/code>.&lt;/li>
+&lt;li>Можно сохранить учётные данные в хранилище группы для совместного использования:&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config credential.helper &lt;span class="s2">&amp;#34;gopass --store=ci-team&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="сохранение-учётных-данных">&lt;span class="section-num">4&lt;/span> Сохранение учётных данных&lt;/h2>
+&lt;ul>
+&lt;li>&lt;code>git-credential-gopass&lt;/code> будет использоваться &lt;code>git&lt;/code> для запроса и сохранения учетных данных, когда они необходимы.&lt;/li>
+&lt;li>После клонирования репозитория Git, требующего HTTP-аутентификации, автоматически будет создана новая запись по шаблону &lt;code>git/HOST_PORT/USERNAME&lt;/code>.&lt;/li>
+&lt;li>Секрет должен как минимум содержать пароль и имя пользователя.&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">gopass insert git/&amp;lt;hostname&amp;gt;/&amp;lt;username&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Формат:&lt;/p>
+&lt;ul>
+&lt;li>Пароль: ваш токен или пароль&lt;/li>
+&lt;li>Доп. поля (через &lt;code>key: value&lt;/code>):
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="l">Пароль&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">user&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">your_login&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">url&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">https://github.com/your_username/repo.git&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h2 id="примеры-использования">&lt;span class="section-num">5&lt;/span> Примеры использования&lt;/h2>
+&lt;h3 id="клонирование-репозитория">&lt;span class="section-num">5.1&lt;/span> Клонирование репозитория&lt;/h3>
+&lt;ul>
+&lt;li>Gopass автоматически подставит логин и токен:&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git clone https://github.com/your_username/repo.git
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="отправка-изменений">&lt;span class="section-num">5.2&lt;/span> Отправка изменений&lt;/h3>
+&lt;ul>
+&lt;li>Gopass автоматически подставит логин и токен:&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git push origin main
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="расширенные-настройки">&lt;span class="section-num">6&lt;/span> Расширенные настройки&lt;/h2>
+&lt;h3 id="для-разных-аккаунтов-на-одном-хосте">&lt;span class="section-num">6.1&lt;/span> Для разных аккаунтов на одном хосте&lt;/h3>
+&lt;ul>
+&lt;li>Создайте отдельные записи:&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">gopass insert git/github.com/work-account
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">gopass insert git/github.com/personal-account
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="привязка-к-конкретному-url">&lt;span class="section-num">6.2&lt;/span> Привязка к конкретному URL&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global credential.https://github.com.helper gopass
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>git. Авторизация по https</title><link>https://yamadharma.github.io/ru/post/2025/08/19/git-authorization-https/</link><pubDate>Tue, 19 Aug 2025 14:10:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2025/08/19/git-authorization-https/</guid><description>&lt;details class="print:hidden xl:hidden" >
+&lt;summary>Содержание&lt;/summary>
+&lt;div class="text-sm">
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#создание-токена-доступа">&lt;span class="section-num">1&lt;/span> Создание токена доступа&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#для-github">&lt;span class="section-num">1.1&lt;/span> Для GitHub&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#для-gitlab">&lt;span class="section-num">1.2&lt;/span> Для GitLab&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#для-gitea">&lt;span class="section-num">1.3&lt;/span> Для Gitea&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#клонирование-репозитория-с-https">&lt;span class="section-num">2&lt;/span> Клонирование репозитория с HTTPS&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#хранение-учётных-данных">&lt;span class="section-num">3&lt;/span> Хранение учётных данных&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#ручное-указание-токена-в-url">&lt;span class="section-num">3.1&lt;/span> Ручное указание токена в URL&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#использование-переменных-окружения--для-скриптов">&lt;span class="section-num">3.2&lt;/span> Использование переменных окружения (для скриптов)&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#настройка-автоматической-аутентификации">&lt;span class="section-num">3.3&lt;/span> Настройка автоматической аутентификации&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#вариант-dot-кэширование-учётных-данных">&lt;span class="section-num">3.3.1&lt;/span> Вариант. Кэширование учётных данных&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#вариант-dot-постоянное-хранение--для-доверенных-устройств">&lt;span class="section-num">3.3.2&lt;/span> Вариант. Постоянное хранение (для доверенных устройств)&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#вариант-dot-хранение-в-менеджере-паролей-gopass">&lt;span class="section-num">3.3.3&lt;/span> Вариант. Хранение в менеджере паролей gopass&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#рекомендации-по-безопасности">&lt;span class="section-num">4&lt;/span> Рекомендации по безопасности&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#миграция-репозитория-с-ssh-на-https">&lt;span class="section-num">5&lt;/span> Миграция репозитория с SSH на HTTPS&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#изменение-url-удалённого-репозитория">&lt;span class="section-num">5.1&lt;/span> Изменение URL удалённого репозитория&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#массовое-изменение">&lt;span class="section-num">5.2&lt;/span> Массовое изменение&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/div>
+&lt;/details>
+&lt;h2 id="создание-токена-доступа">&lt;span class="section-num">1&lt;/span> Создание токена доступа&lt;/h2>
+&lt;h3 id="для-github">&lt;span class="section-num">1.1&lt;/span> Для GitHub&lt;/h3>
+&lt;ul>
+&lt;li>Перейдите в &lt;code>Settings → Developer Settings → Personal Access Tokens → Generate new token&lt;/code>.&lt;/li>
+&lt;li>Выберите права (минимум &lt;code>repo&lt;/code> для работы с репозиториями).&lt;/li>
+&lt;li>Скопируйте токен (отображается только один раз).&lt;/li>
+&lt;/ul>
+&lt;h3 id="для-gitlab">&lt;span class="section-num">1.2&lt;/span> Для GitLab&lt;/h3>
+&lt;ul>
+&lt;li>&lt;code>Preferences → Access Tokens&lt;/code>&lt;/li>
+&lt;li>Выберите &lt;code>read_repository&lt;/code> и &lt;code>write_repository&lt;/code>.&lt;/li>
+&lt;li>Скопируйте токен (отображается только один раз).&lt;/li>
+&lt;/ul>
+&lt;h3 id="для-gitea">&lt;span class="section-num">1.3&lt;/span> Для Gitea&lt;/h3>
+&lt;ul>
+&lt;li>Зайдите в настройки профиля
+&lt;ul>
+&lt;li>Кликните на аватар в правом верхнем углу.&lt;/li>
+&lt;li>Выберите &lt;code>Settings&lt;/code>.&lt;/li>
+&lt;li>В левом меню выберите &lt;code>Applications&lt;/code> → &lt;code>Manage Access Tokens&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Создайте новый токен
+&lt;ul>
+&lt;li>В поле &lt;code>Token Name&lt;/code> укажите название (например, &lt;code>my-token&lt;/code> ).&lt;/li>
+&lt;li>Выберите права
+&lt;ul>
+&lt;li>Для работы с репозиториями: &lt;code>read:repository&lt;/code>, &lt;code>write:repository&lt;/code>.&lt;/li>
+&lt;li>Для доступа к API: &lt;code>read:user&lt;/code>, &lt;code>write:user&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Нажмите &lt;code>Generate Token&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Скопируйте токен (отображается только один раз).&lt;/li>
+&lt;/ul>
+&lt;h2 id="клонирование-репозитория-с-https">&lt;span class="section-num">2&lt;/span> Клонирование репозитория с HTTPS&lt;/h2>
+&lt;ul>
+&lt;li>Клонируйте репозиторий:&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git clone https://github.com/username/repo.git
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>При запросе данных введите:
+&lt;ul>
+&lt;li>&lt;code>username&lt;/code> : ваш логин на платформе.&lt;/li>
+&lt;li>&lt;code>password&lt;/code> : вставьте токен (не пароль).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="хранение-учётных-данных">&lt;span class="section-num">3&lt;/span> Хранение учётных данных&lt;/h2>
+&lt;h3 id="ручное-указание-токена-в-url">&lt;span class="section-num">3.1&lt;/span> Ручное указание токена в URL&lt;/h3>
+&lt;ul>
+&lt;li>Для клонирования:&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git clone https://username:your_token@github.com/username/repo.git
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Для существующего репозитория:&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git remote set-url origin https://username:your_token@github.com/username/repo.git
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="использование-переменных-окружения--для-скриптов">&lt;span class="section-num">3.2&lt;/span> Использование переменных окружения (для скриптов)&lt;/h3>
+&lt;ul>
+&lt;li>Linux&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">GIT_USERNAME&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;ваш_логин&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">GIT_PASSWORD&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;ваш_токен&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Windows (PowerShell)&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nv">$env&lt;/span>:GIT_USERNAME &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;ваш_логин&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">$env&lt;/span>:GIT_PASSWORD &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;ваш_токен&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Использование в командах:&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git clone https://&lt;span class="nv">$GIT_USERNAME&lt;/span>:&lt;span class="nv">$GIT_PASSWORD&lt;/span>@github.com/user/repo.git
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="настройка-автоматической-аутентификации">&lt;span class="section-num">3.3&lt;/span> Настройка автоматической аутентификации&lt;/h3>
+&lt;ul>
+&lt;li>Git Credential Helper &amp;mdash; это инструмент для безопасного хранения и автоматической подстановки учётных данных (логина, пароля, токенов) при работе с Git.&lt;/li>
+&lt;li>Он избавляет от необходимости вводить данные при каждом взаимодействии с удалённым репозиторием.&lt;/li>
+&lt;/ul>
+&lt;h4 id="вариант-dot-кэширование-учётных-данных">&lt;span class="section-num">3.3.1&lt;/span> Вариант. Кэширование учётных данных&lt;/h4>
+&lt;ul>
+&lt;li>Хранит данные в памяти 15 минут
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global credential.helper cache
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Кэшировать в памяти на 1 час (3600 секунд)&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global credential.helper &lt;span class="s2">&amp;#34;cache --timeout=3600&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Проверка настроек&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global --get credential.helper
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="вариант-dot-постоянное-хранение--для-доверенных-устройств">&lt;span class="section-num">3.3.2&lt;/span> Вариант. Постоянное хранение (для доверенных устройств)&lt;/h4>
+&lt;ul>
+&lt;li>Сохранить в файл &lt;code>~/.git-credentials&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config --global credential.helper store
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Первая операция запросит логин/токен, последующие &amp;mdash; нет.&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git pull
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="вариант-dot-хранение-в-менеджере-паролей-gopass">&lt;span class="section-num">3.3.3&lt;/span> Вариант. Хранение в менеджере паролей gopass&lt;/h4>
+&lt;ul>
+&lt;li>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="рекомендации-по-безопасности">&lt;span class="section-num">4&lt;/span> Рекомендации по безопасности&lt;/h2>
+&lt;ul>
+&lt;li>Никогда не коммитьте токены в код.&lt;/li>
+&lt;li>Для публичных репозиториев используйте токены с ограниченными правами.&lt;/li>
+&lt;li>Регулярно обновляйте токены (рекомендуется каждые 3-6 месяцев).&lt;/li>
+&lt;li>Используйте &lt;code>.gitignore&lt;/code> для файлов с чувствительными данными.&lt;/li>
+&lt;/ul>
+&lt;h2 id="миграция-репозитория-с-ssh-на-https">&lt;span class="section-num">5&lt;/span> Миграция репозитория с SSH на HTTPS&lt;/h2>
+&lt;h3 id="изменение-url-удалённого-репозитория">&lt;span class="section-num">5.1&lt;/span> Изменение URL удалённого репозитория&lt;/h3>
+&lt;ul>
+&lt;li>Для каждого репозитория выполните в терминале:&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git remote set-url origin https://github.com/username/repo.git
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>
+&lt;p>Замените:&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>username&lt;/code> → ваш логин на GitHub&lt;/li>
+&lt;li>&lt;code>repo&lt;/code> → название репозитория&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Например, для репозитория &lt;code>my-project&lt;/code>:&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git remote set-url origin https://github.com/ivanov/my-project.git
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="массовое-изменение">&lt;span class="section-num">5.2&lt;/span> Массовое изменение&lt;/h3>
+&lt;ul>
+&lt;li>Создайте скрипт &lt;code>git-ssh-to-https.sh&lt;/code>:&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#!/bin/bash
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>&lt;span class="k">for&lt;/span> dir in *
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">do&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="o">[[&lt;/span> -d &lt;span class="si">${&lt;/span>&lt;span class="nv">dir&lt;/span>&lt;span class="si">}&lt;/span> &lt;span class="o">]]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">then&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">cd&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$dir&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="o">||&lt;/span> &lt;span class="nb">exit&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nv">repo_url&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>git remote get-url origin&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nv">new_url&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$repo_url&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="p">|&lt;/span> sed &lt;span class="s1">&amp;#39;s/git@github.com:/https:\/\/github.com\//; s/\.git$//&amp;#39;&lt;/span>&lt;span class="k">)&lt;/span>.git
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> git remote set-url origin &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$new_url&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;Updated: &lt;/span>&lt;span class="nv">$dir&lt;/span>&lt;span class="s2"> → &lt;/span>&lt;span class="nv">$new_url&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">fi&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">done&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Или однострочник:&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">find . -type d -name .git -exec sh -c &lt;span class="s1">&amp;#39;cd &amp;#34;{}&amp;#34; &amp;amp;&amp;amp; cd .. &amp;amp;&amp;amp; git remote set-url origin $(git remote get-url origin | sed &amp;#34;s/git@/https:\/\//; s/.com:/.com\//&amp;#34;)&amp;#39;&lt;/span> &lt;span class="se">\;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Подпись коммитов git</title><link>https://yamadharma.github.io/ru/post/2024/08/22/verifying-git-commits/</link><pubDate>Thu, 22 Aug 2024 15:13:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2024/08/22/verifying-git-commits/</guid><description>&lt;p>Подпись коммитов git.&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
 &lt;summary>Содержание&lt;/summary>
 &lt;div class="text-sm">
@@ -38,12 +335,14 @@
 &lt;ul>
 &lt;li>технология PGP:
 &lt;ul>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/01/28/verifying-git-commits-gpg/">Верификация коммитов git с помощью GPG&lt;/a>&lt;/li>
+&lt;li>
+&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>ключи SSH:
 &lt;ul>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2024/08/14/verifying-git-commits-ssh/">Подпись коммитов git ключом ssh&lt;/a>&lt;/li>
+&lt;li>
+&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
@@ -94,7 +393,8 @@
 &lt;/ul>
 &lt;h2 id="верификация-коммитов">&lt;span class="section-num">2&lt;/span> Верификация коммитов&lt;/h2>
 &lt;ul>
-&lt;li>Настройте верификацию и подписание коммитов git (см. &lt;a href="https://yamadharma.github.io/ru/post/2024/08/22/verifying-git-commits/">Подпись коммитов git&lt;/a>).&lt;/li>
+&lt;li>Настройте верификацию и подписание коммитов git (см.
+).&lt;/li>
 &lt;/ul>
 &lt;h2 id="учёт-переносов-строк">&lt;span class="section-num">3&lt;/span> Учёт переносов строк&lt;/h2>
 &lt;ul>
@@ -304,7 +604,8 @@
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">touch ~/.config/git/ignore
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git config --global core.excludesfile ~/.config/git/ignore
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
-&lt;li>Примеры файлов игнорирования можно взять в &lt;a href="https://github.com/github/gitignore" target="_blank" rel="noopener">https://github.com/github/gitignore&lt;/a>.&lt;/li>
+&lt;li>Примеры файлов игнорирования можно взять в
+.&lt;/li>
 &lt;/ul>
 &lt;h2 id="аккуратное-перебазирование">&lt;span class="section-num">13&lt;/span> Аккуратное перебазирование&lt;/h2>
 &lt;ul>
@@ -362,8 +663,10 @@
 &lt;/details>
 &lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
 &lt;ul>
-&lt;li>Сайт: &lt;a href="https://git-lfs.com/" target="_blank" rel="noopener">https://git-lfs.com/&lt;/a>&lt;/li>
-&lt;li>Репозиторий: &lt;a href="https://github.com/git-lfs/git-lfs/" target="_blank" rel="noopener">https://github.com/git-lfs/git-lfs/&lt;/a>&lt;/li>
+&lt;li>Сайт:
+&lt;/li>
+&lt;li>Репозиторий:
+&lt;/li>
 &lt;/ul>
 &lt;h2 id="установка">&lt;span class="section-num">2&lt;/span> Установка&lt;/h2>
 &lt;h3 id="linux">&lt;span class="section-num">2.1&lt;/span> Linux&lt;/h3>
@@ -504,7 +807,8 @@
 &lt;/details>
 &lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
 &lt;ul>
-&lt;li>Репозиторий: &lt;a href="https://gitea.com/gitea/tea" target="_blank" rel="noopener">https://gitea.com/gitea/tea&lt;/a>&lt;/li>
+&lt;li>Репозиторий:
+&lt;/li>
 &lt;/ul>
 &lt;h2 id="примеры-использования">&lt;span class="section-num">2&lt;/span> Примеры использования&lt;/h2>
 &lt;h3 id="подключение-к-серверу">&lt;span class="section-num">2.1&lt;/span> Подключение к серверу&lt;/h3>
@@ -596,7 +900,8 @@
 &lt;li>В связи с тем, что Bitbucket начал блокировать учётные записи, было принято решение перейти на другой хостинг.&lt;/li>
 &lt;li>Поскольку однозначный выбор хостинга не удалось сделать, было решено:
 &lt;ul>
-&lt;li>поднять свой хостинг git (см. &lt;a href="https://yamadharma.github.io/ru/post/2023/10/29/install-gitea/">Установка gitea&lt;/a>);&lt;/li>
+&lt;li>поднять свой хостинг git (см.
+);&lt;/li>
 &lt;li>перенести все репозитории;&lt;/li>
 &lt;li>перенести или пересоздать команды.&lt;/li>
 &lt;/ul>
@@ -607,12 +912,14 @@
 &lt;ul>
 &lt;li>Адрес экземпляра Gitea
 &lt;ul>
-&lt;li>Например: &lt;a href="http://hub.example.com" target="_blank" rel="noopener">http://hub.example.com&lt;/a>&lt;/li>
+&lt;li>Например:
+&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>Токен аутентификации
 &lt;ul>
-&lt;li>&lt;a href="http://hub.example.com/user/settings/applications" target="_blank" rel="noopener">http://hub.example.com/user/settings/applications&lt;/a>&lt;/li>
+&lt;li>
+&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
@@ -621,13 +928,15 @@
 &lt;li>Имя пользователя BitBucket:
 &lt;ul>
 &lt;li>это не почтовый адрес, по которому вы подключаетесь к BitBucket, а заданное в настройках имя;&lt;/li>
-&lt;li>&lt;a href="https://bitbucket.org/account/settings/" target="_blank" rel="noopener">https://bitbucket.org/account/settings/&lt;/a>&lt;/li>
+&lt;li>
+&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>Пароль BitBucket:
 &lt;ul>
 &lt;li>лучше использовать не пароль подключения к BitBucket, а создать для этого токен:&lt;/li>
-&lt;li>&lt;a href="https://bitbucket.org/account/settings/app-passwords/" target="_blank" rel="noopener">https://bitbucket.org/account/settings/app-passwords/&lt;/a>&lt;/li>
+&lt;li>
+&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>Название группы, если вы переносите команду.&lt;/li>
@@ -636,9 +945,12 @@
 &lt;h3 id="gickup">&lt;span class="section-num">3.1&lt;/span> gickup&lt;/h3>
 &lt;ul>
 &lt;li>Универсальный фреймворк по переносу git-репозиториев.&lt;/li>
-&lt;li>Репозиторий: &lt;a href="https://github.com/cooperspencer/gickup" target="_blank" rel="noopener">https://github.com/cooperspencer/gickup&lt;/a>&lt;/li>
-&lt;li>Документация: &lt;a href="https://cooperspencer.github.io/gickup-documentation/" target="_blank" rel="noopener">https://cooperspencer.github.io/gickup-documentation/&lt;/a>&lt;/li>
-&lt;li>Пример файла конфигурации: &lt;a href="https://github.com/cooperspencer/gickup/blob/main/conf.example.yml" target="_blank" rel="noopener">https://github.com/cooperspencer/gickup/blob/main/conf.example.yml&lt;/a>&lt;/li>
+&lt;li>Репозиторий:
+&lt;/li>
+&lt;li>Документация:
+&lt;/li>
+&lt;li>Пример файла конфигурации:
+&lt;/li>
 &lt;/ul>
 &lt;h4 id="проблемы">&lt;span class="section-num">3.1.1&lt;/span> Проблемы&lt;/h4>
 &lt;ul>
@@ -648,7 +960,8 @@
 &lt;h3 id="bitbuckettogitea">&lt;span class="section-num">3.2&lt;/span> BitbucketToGitea&lt;/h3>
 &lt;ul>
 &lt;li>Скрипт по переносу репозиториев BitBucket в Gitea.&lt;/li>
-&lt;li>Репозиторий: &lt;a href="https://github.com/sIspravnikov/BitbucketToGitea" target="_blank" rel="noopener">https://github.com/sIspravnikov/BitbucketToGitea&lt;/a>&lt;/li>
+&lt;li>Репозиторий:
+&lt;/li>
 &lt;/ul>
 &lt;h4 id="проблема">&lt;span class="section-num">3.2.1&lt;/span> Проблема&lt;/h4>
 &lt;ul>
@@ -657,7 +970,8 @@
 &lt;h2 id="реализация-миграции">&lt;span class="section-num">4&lt;/span> Реализация миграции&lt;/h2>
 &lt;ul>
 &lt;li>Использовал набор скриптов.&lt;/li>
-&lt;li>Репозиторий: &lt;a href="https://github.com/dstapp/bitbucket-to-gitea-migrator" target="_blank" rel="noopener">https://github.com/dstapp/bitbucket-to-gitea-migrator&lt;/a>&lt;/li>
+&lt;li>Репозиторий:
+&lt;/li>
 &lt;li>Скачайте репозиторий на свой компьютер:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git clone https://github.com/dprandzioch/bitbucket-to-gitea-migrator.git
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
@@ -802,7 +1116,8 @@
 &lt;/ul>
 &lt;h2 id="пререквизиты">&lt;span class="section-num">2&lt;/span> Пререквизиты&lt;/h2>
 &lt;ul>
-&lt;li>Установите базовый сервер (см. &lt;a href="https://yamadharma.github.io/ru/post/2022/08/12/rockylinux-server-installation/">Rocky Linux. Установка сервера&lt;/a>).&lt;/li>
+&lt;li>Установите базовый сервер (см.
+).&lt;/li>
 &lt;/ul>
 &lt;h3 id="пользователь">&lt;span class="section-num">2.1&lt;/span> Пользователь&lt;/h3>
 &lt;ul>
@@ -1034,7 +1349,8 @@
 &lt;/ul>
 &lt;h3 id="настройка-ssl">&lt;span class="section-num">4.6&lt;/span> Настройка SSL&lt;/h3>
 &lt;ul>
-&lt;li>Установите &lt;em>certbot&lt;/em> (см. &lt;a href="https://yamadharma.github.io/ru/post/2022/05/02/acme-clients-certbot/">Клиенты ACME. Certbot&lt;/a>)&lt;/li>
+&lt;li>Установите &lt;em>certbot&lt;/em> (см.
+)&lt;/li>
 &lt;li>Создайте сертификат.&lt;/li>
 &lt;li>Конфигурационный файл &lt;em>Nginx&lt;/em> будет иметь вид:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">server {
@@ -1094,8 +1410,10 @@
 &lt;h2 id="дополнительные-настройки">&lt;span class="section-num">6&lt;/span> Дополнительные настройки&lt;/h2>
 &lt;h3 id="fail2ban">&lt;span class="section-num">6.1&lt;/span> fail2ban&lt;/h3>
 &lt;ul>
-&lt;li>Настроим fail2ban (см. &lt;a href="https://yamadharma.github.io/ru/post/2023/10/30/fail2ban-basic-settings/">fail2ban. Основные настройки&lt;/a>)&lt;/li>
-&lt;li>Документация: &lt;a href="https://docs.gitea.com/next/administration/fail2ban-setup" target="_blank" rel="noopener">https://docs.gitea.com/next/administration/fail2ban-setup&lt;/a>&lt;/li>
+&lt;li>Настроим fail2ban (см.
+)&lt;/li>
+&lt;li>Документация:
+&lt;/li>
 &lt;li>Добавьте фильтр &lt;code>/etc/fail2ban/filter.d/gitea.conf&lt;/code>:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl"># gitea.conf
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[Definition]
@@ -1148,29 +1466,35 @@
 &lt;/details>
 &lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
 &lt;ul>
-&lt;li>Репозиторий: &lt;a href="https://github.com/go-gitea/gitea" target="_blank" rel="noopener">https://github.com/go-gitea/gitea&lt;/a>&lt;/li>
-&lt;li>Документация: &lt;a href="https://docs.gitea.com/" target="_blank" rel="noopener">https://docs.gitea.com/&lt;/a>&lt;/li>
+&lt;li>Репозиторий:
+&lt;/li>
+&lt;li>Документация:
+&lt;/li>
 &lt;/ul>
 &lt;h2 id="ресурсы">&lt;span class="section-num">2&lt;/span> Ресурсы&lt;/h2>
 &lt;ul>
 &lt;li>Awesome Gitea
 &lt;ul>
-&lt;li>&lt;a href="https://gitea.com/gitea/awesome-gitea" target="_blank" rel="noopener">https://gitea.com/gitea/awesome-gitea&lt;/a>&lt;/li>
+&lt;li>
+&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
 &lt;h2 id="установка-и-настройка">&lt;span class="section-num">3&lt;/span> Установка и настройка&lt;/h2>
 &lt;ul>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/10/29/install-gitea/">Установка gitea&lt;/a>&lt;/li>
+&lt;li>
+&lt;/li>
 &lt;/ul>
 &lt;h2 id="миграция">&lt;span class="section-num">4&lt;/span> Миграция&lt;/h2>
 &lt;ul>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/10/31/migration-bitbucket-gitea/">Миграция с bitbucket на gitea&lt;/a>&lt;/li>
+&lt;li>
+&lt;/li>
 &lt;/ul>
 &lt;h2 id="использование">&lt;span class="section-num">5&lt;/span> Использование&lt;/h2>
 &lt;h2 id="утилиты">&lt;span class="section-num">6&lt;/span> Утилиты&lt;/h2>
 &lt;ul>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/11/11/interacting-gitea-command-line/">Взаимодействие с gitea из командной строки&lt;/a>&lt;/li>
+&lt;li>
+&lt;/li>
 &lt;/ul></description></item><item><title>Система контроля версий git</title><link>https://yamadharma.github.io/ru/post/2020/12/07/git-cvs/</link><pubDate>Mon, 07 Dec 2020 15:47:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2020/12/07/git-cvs/</guid><description>&lt;p>Использование системы контроля версий &lt;em>git&lt;/em>.&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
 &lt;summary>Содержание&lt;/summary>
@@ -1191,31 +1515,49 @@
 &lt;/details>
 &lt;h2 id="использование-git">&lt;span class="section-num">1&lt;/span> Использование git&lt;/h2>
 &lt;ul>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/01/28/verifying-git-commits-gpg/">Верификация коммитов git с помощью GPG&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2024/08/14/verifying-git-commits-ssh/">Подпись коммитов git ключом ssh&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/07/19/git-workflow/">Варианты Git Workflow&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2020/12/11/semantic-versioning/">Семантическое версионирование&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2020/12/11/conventional-commits/">Общепринятые коммиты&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/03/27/git-multiple-remote-repositories/">git. Несколько удалённых репозиториев&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/01/17/git-practical-use-case/">Практический сценарий использования git&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2022/08/23/git-submodules/">git submodules&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2024/03/16/git-basic-setup/">Базовая настройка git&lt;/a>&lt;/li>
+&lt;li>
+&lt;/li>
+&lt;li>
+&lt;/li>
+&lt;li>
+&lt;/li>
+&lt;li>
+&lt;/li>
+&lt;li>
+&lt;/li>
+&lt;li>
+&lt;/li>
+&lt;li>
+&lt;/li>
+&lt;li>
+&lt;/li>
+&lt;li>
+&lt;/li>
+&lt;li>
+&lt;/li>
 &lt;/ul>
 &lt;h3 id="взаимодествие-с-репозиториями">&lt;span class="section-num">1.1&lt;/span> Взаимодествие с репозиториями&lt;/h3>
 &lt;ul>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2025/01/22/git-gcli-client/">git. Клиент gcli&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2021/08/04/github-command-line-utilities/">github: утилиты командной строки&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/11/11/interacting-gitea-command-line/">Взаимодействие с gitea из командной строки&lt;/a>&lt;/li>
+&lt;li>
+&lt;/li>
+&lt;li>
+&lt;/li>
+&lt;li>
+&lt;/li>
 &lt;/ul>
 &lt;h2 id="хостинги-git">&lt;span class="section-num">2&lt;/span> Хостинги git&lt;/h2>
 &lt;ul>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/10/29/git-hosting-gitea/">Хостинг git. gitea&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2025/02/28/git-hostings/">Хостинги git&lt;/a>&lt;/li>
+&lt;li>
+&lt;/li>
+&lt;li>
+&lt;/li>
 &lt;/ul>
 &lt;h2 id="расширения-git">&lt;span class="section-num">3&lt;/span> Расширения git&lt;/h2>
 &lt;ul>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2023/11/13/git-lfs/">Расширение git lfs&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/post/2025/01/03/git-git-repair/">git. Пакет gir-repair&lt;/a>&lt;/li>
+&lt;li>
+&lt;/li>
+&lt;li>
+&lt;/li>
 &lt;/ul>
 &lt;h2 id="преподавание-git">&lt;span class="section-num">4&lt;/span> Преподавание git&lt;/h2>
 &lt;p>Предполагается вводить git в лабораторные работы начиная с 1 курса.&lt;/p>
@@ -1234,14 +1576,16 @@
 &lt;ul>
 &lt;li>Основы работы с git
 &lt;ul>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/teaching/os-intro/lab/lab-initial-git-setup/">Лабораторная работа Первоначальна настройка git&lt;/a>&lt;/li>
+&lt;li>
+&lt;/li>
 &lt;li>Основы работы в git.&lt;/li>
 &lt;li>Создание учётной записи на Github.&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>Сценарии работы с git
 &lt;ul>
-&lt;li>&lt;a href="https://yamadharma.github.io/ru/teaching/os-intro/lab/lab-extended-git-setup/">Лабораторная работа Продвинутое использование git&lt;/a>&lt;/li>
+&lt;li>
+&lt;/li>
 &lt;li>Формат коммитов и версий. Даётся as is, без особых пояснений.&lt;/li>
 &lt;li>Выкладывание лабораторных работ на Git.&lt;/li>
 &lt;li>Использование git-flow.&lt;/li>
@@ -1254,7 +1598,8 @@
 &lt;/li>
 &lt;li>Для всех курсов
 &lt;ul>
-&lt;li>Рабочее пространство курса располагается в git (см. &lt;a href="https://yamadharma.github.io/ru/post/2021/01/16/workspace-laboratory-work/">Рабочее пространство для лабораторной работы&lt;/a>).&lt;/li>
+&lt;li>Рабочее пространство курса располагается в git (см.
+).&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ul></description></item></channel></rss>

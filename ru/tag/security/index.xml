@@ -2056,11 +2056,26 @@ tessen/config
 &lt;li>&lt;a href="#сокеты">&lt;span class="section-num">3.1&lt;/span> Сокеты&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;li>&lt;a href="#работа-с-ключами-ssh">&lt;span class="section-num">4&lt;/span> Работа с ключами ssh&lt;/a>
+&lt;li>&lt;a href="#основные-операции">&lt;span class="section-num">4&lt;/span> Основные операции&lt;/a>
 &lt;ul>
-&lt;li>&lt;a href="#установка-ssh-auth-sock">&lt;span class="section-num">4.1&lt;/span> Установка SSH_AUTH_SOCK&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#добавление-поддержки-в-gpg-agent">&lt;span class="section-num">4.2&lt;/span> Добавление поддержки в gpg-agent&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#добавление-ключей">&lt;span class="section-num">4.3&lt;/span> Добавление ключей&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#остановить-запустить-перезапустить-агент">&lt;span class="section-num">4.1&lt;/span> Остановить, запустить, перезапустить агент&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#просмотр-списка-ключей-в-агенте">&lt;span class="section-num">4.2&lt;/span> Просмотр списка ключей в агенте&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#добавление-ключа-в-агент">&lt;span class="section-num">4.3&lt;/span> Добавление ключа в агент&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#удаление-ключа-из-агента">&lt;span class="section-num">4.4&lt;/span> Удаление ключа из агента&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#очистить-закешированные-пароли">&lt;span class="section-num">4.5&lt;/span> Очистить закешированные пароли&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#работа-агента-ломается-после-второй-одновременной-сессии-этого-же-пользователя">&lt;span class="section-num">4.6&lt;/span> Работа агента ломается после второй одновременной сессии этого же пользователя&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#работа-с-ключами-ssh">&lt;span class="section-num">5&lt;/span> Работа с ключами ssh&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#установка-ssh-auth-sock">&lt;span class="section-num">5.1&lt;/span> Установка SSH_AUTH_SOCK&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#добавление-поддержки-в-gpg-agent">&lt;span class="section-num">5.2&lt;/span> Добавление поддержки в gpg-agent&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#добавление-ключей">&lt;span class="section-num">5.3&lt;/span> Добавление ключей&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#основные-команды">&lt;span class="section-num">5.4&lt;/span> Основные команды&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#просмотреть-список-добавленных-ключей">&lt;span class="section-num">5.4.1&lt;/span> Просмотреть список добавленных ключей&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
@@ -2107,11 +2122,111 @@ tessen/config
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
-&lt;h2 id="работа-с-ключами-ssh">&lt;span class="section-num">4&lt;/span> Работа с ключами ssh&lt;/h2>
+&lt;h2 id="основные-операции">&lt;span class="section-num">4&lt;/span> Основные операции&lt;/h2>
+&lt;h3 id="остановить-запустить-перезапустить-агент">&lt;span class="section-num">4.1&lt;/span> Остановить, запустить, перезапустить агент&lt;/h3>
+&lt;ul>
+&lt;li>gpg-agent работает как демон.&lt;/li>
+&lt;li>Это демон пользовательской сессии, а не системы в целом.&lt;/li>
+&lt;li>Остановить:&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">gpgconf --kill gpg-agent
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Запустить&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">/usr/bin/gpg-agent --daemon
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Перезапустить:&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">gpgconf --kill gpg-agent
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">/usr/bin/gpg-agent --daemon
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="просмотр-списка-ключей-в-агенте">&lt;span class="section-num">4.2&lt;/span> Просмотр списка ключей в агенте&lt;/h3>
+&lt;ul>
+&lt;li>Список отпечатков ключей:&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">$ ssh-add -l
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Показать публичные ключи:&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">$ ssh-add -L
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Можно также пользоваться командой gpg-агента:&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">gpg-connect-agent &lt;span class="s1">&amp;#39;KEYINFO --ssh-list&amp;#39;&lt;/span> /bye
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="добавление-ключа-в-агент">&lt;span class="section-num">4.3&lt;/span> Добавление ключа в агент&lt;/h3>
+&lt;ul>
+&lt;li>Добавление ключа в агент:&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">ssh-add ~/.ssh/id_rsa-TEST
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Добавление ключа с TTL=60 секунд:&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">ssh-add -t &lt;span class="m">60&lt;/span> ~/.ssh/id_rsa-TEST
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Данный вызов не модифицирует существующий ключ в &lt;code>~/.gnupg/sshcontrol&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;ul>
+&lt;li>Добавление ключа с включённым подтверждением:&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">ssh-add -c ~/.ssh/id_rsa-TEST
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Данный вызов не модифицирует существующий ключ в &lt;code>~/.gnupg/sshcontrol&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h3 id="удаление-ключа-из-агента">&lt;span class="section-num">4.4&lt;/span> Удаление ключа из агента&lt;/h3>
+&lt;ul>
+&lt;li>В ssh-add есть параметр -d, однако для gpg-agent он не сработает (вы можете выполнить команду, но она ничего не сделает).&lt;/li>
+&lt;li>Для полного удаления нужно пользоваться командами агента.&lt;/li>
+&lt;li>Сначала посмотрим список хранимых ключей:&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">ssh-add -l
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Запоминаем хеш SHA256.&lt;/li>
+&lt;li>В файл &lt;code>~/.gnupg/sshcontrol&lt;/code> находим этот хеш.:&lt;/li>
+&lt;li>Агент использует &lt;code>keygrip&lt;/code> ключа для его идентификации.&lt;/li>
+&lt;li>Именно эту строку будем использовать для удаления:&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">gpg-connect-agent &lt;span class="s1">&amp;#39;DELETE_KEY 3BC01B6F0043256039006294F76C45139B703DBF&amp;#39;&lt;/span> /bye
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Проверим:&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">$ ssh-add -l
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Если ключа в списке нет, то всё нормально.&lt;/li>
+&lt;li>Вручную удалите упоминания ключа из &lt;code>~/.gnupg/sshcontrol&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h3 id="очистить-закешированные-пароли">&lt;span class="section-num">4.5&lt;/span> Очистить закешированные пароли&lt;/h3>
+&lt;ul>
+&lt;li>Перезагрузите агент:&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">gpg-connect-agent reloadagent /bye
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="работа-агента-ломается-после-второй-одновременной-сессии-этого-же-пользователя">&lt;span class="section-num">4.6&lt;/span> Работа агента ломается после второй одновременной сессии этого же пользователя&lt;/h3>
+&lt;ul>
+&lt;li>Если запустить вторую сессию с этим же пользователем (например, через RDP), то старая отваливается.&lt;/li>
+&lt;li>Починить можно так:&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">pkill -f gpg-agent
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">gpg-connect-agent /bye
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">pkill -f gpg-agent
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">rm -rf &lt;span class="k">$(&lt;/span>dirname &lt;span class="nv">$SSH_AUTH_SOCK&lt;/span>&lt;span class="k">)&lt;/span>/*
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="работа-с-ключами-ssh">&lt;span class="section-num">5&lt;/span> Работа с ключами ssh&lt;/h2>
 &lt;ul>
 &lt;li>gpg-agent поддерживает эмуляцию агента OpenSSH.&lt;/li>
 &lt;/ul>
-&lt;h3 id="установка-ssh-auth-sock">&lt;span class="section-num">4.1&lt;/span> Установка SSH_AUTH_SOCK&lt;/h3>
+&lt;h3 id="установка-ssh-auth-sock">&lt;span class="section-num">5.1&lt;/span> Установка SSH_AUTH_SOCK&lt;/h3>
 &lt;ul>
 &lt;li>Установите переменные окружения (в &lt;code>~/.bashrc&lt;/code>):
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">unset&lt;/span> SSH_AGENT_PID
@@ -2121,13 +2236,13 @@ tessen/config
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">fi&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
-&lt;h3 id="добавление-поддержки-в-gpg-agent">&lt;span class="section-num">4.2&lt;/span> Добавление поддержки в gpg-agent&lt;/h3>
+&lt;h3 id="добавление-поддержки-в-gpg-agent">&lt;span class="section-num">5.2&lt;/span> Добавление поддержки в gpg-agent&lt;/h3>
 &lt;ul>
 &lt;li>Включим поддержку ssh:
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> enable-ssh-support &amp;gt;&amp;gt; ~/.gnupg/gpg-agent.conf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul>
-&lt;h3 id="добавление-ключей">&lt;span class="section-num">4.3&lt;/span> Добавление ключей&lt;/h3>
+&lt;h3 id="добавление-ключей">&lt;span class="section-num">5.3&lt;/span> Добавление ключей&lt;/h3>
 &lt;ul>
 &lt;li>Идентификаторы одобренных для агента ключей сохраняются в &lt;code>~/.gnupg/sshcontrol&lt;/code>.&lt;/li>
 &lt;li>Рекомендуется отключить в &lt;code>/etc/ssh/ssh_config&lt;/code>, &lt;code>~/.ssh/config&lt;/code> опцию &lt;code>AddKeysToAgent&lt;/code>, ответственную за автоматическое добавление ключей ssh.&lt;/li>
@@ -2137,7 +2252,11 @@ tessen/config
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ssh-add ~/.ssh/id_ecdsa
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;li>Сначала &lt;code>ssh&lt;/code> спросит парольную фразу для ключа, после чего появится диалог, где нужно выбрать пароль для шифрования ключа в агенте, обычно это простая короткая фраза (не пароль к ключу).&lt;/li>
-&lt;/ul></description></item><item><title>Агент для ключей ssh-agent</title><link>https://yamadharma.github.io/ru/post/2024/08/22/ssh-agent/</link><pubDate>Thu, 22 Aug 2024 20:08:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2024/08/22/ssh-agent/</guid><description>&lt;p>Агент для ключей ssh-agent.&lt;/p>
+&lt;/ul>
+&lt;h3 id="основные-команды">&lt;span class="section-num">5.4&lt;/span> Основные команды&lt;/h3>
+&lt;h4 id="просмотреть-список-добавленных-ключей">&lt;span class="section-num">5.4.1&lt;/span> Просмотреть список добавленных ключей&lt;/h4>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">ssh-add -l
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Агент для ключей ssh-agent</title><link>https://yamadharma.github.io/ru/post/2024/08/22/ssh-agent/</link><pubDate>Thu, 22 Aug 2024 20:08:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2024/08/22/ssh-agent/</guid><description>&lt;p>Агент для ключей ssh-agent.&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
 &lt;summary>Содержание&lt;/summary>
 &lt;div class="text-sm">

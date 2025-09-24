@@ -1,0 +1,1003 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Sysadmin | Д. С. Кулябов</title><link>http://localhost:1313/ru/category/sysadmin/</link><atom:link href="http://localhost:1313/ru/category/sysadmin/index.xml" rel="self" type="application/rss+xml"/><description>Sysadmin</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>ru-ru</language><copyright>© 2025 Dmitry S. Kulyabov</copyright><lastBuildDate>Thu, 17 May 2018 08:43:05 +0000</lastBuildDate><image><url>http://localhost:1313/media/icon_hu_3756dbc1adf0ae14.png</url><title>Sysadmin</title><link>http://localhost:1313/ru/category/sysadmin/</link></image><item><title>Деинсталляция WebFM из Drupal</title><link>http://localhost:1313/ru/post/2018/05/17/webfm-uninstall/</link><pubDate>Thu, 17 May 2018 08:43:05 +0000</pubDate><guid>http://localhost:1313/ru/post/2018/05/17/webfm-uninstall/</guid><description>&lt;h2 id="circumstantia">Circumstantia&lt;/h2>
+&lt;h3 id="дано">Дано&lt;/h3>
+&lt;p>Сайт на
+5.&lt;/p>
+&lt;h3 id="требуется">Требуется&lt;/h3>
+&lt;p>Превести сайт на Drupal 8.&lt;/p>
+&lt;h3 id="предварительный-план-действий">Предварительный план действий&lt;/h3>
+&lt;p>Drupal 5 -&amp;gt; Drupal 6 -&amp;gt; Drupal 8.&lt;/p>
+&lt;h3 id="проблема">Проблема&lt;/h3>
+&lt;p>В системе установлен пакет
+, который не поддерживается после Drupal 6. Webfm ведёт свою базу файлов, и в тексте сайта ставит указание не на файл, на а запись в своей базе данных.&lt;/p>
+&lt;h2 id="solutio">Solutio&lt;/h2>
+&lt;p>При поиски решения проблемы были найдены следующие сайты:&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;/li>
+&lt;li>
+&lt;/li>
+&lt;/ul>
+&lt;p>Основываясь на них, набросал скипт &lt;code>webfm-fix&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="ch">#!/usr/bin/python2&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">MySQLdb&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># For REALY work set update = True&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">update&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kc">False&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># connect to the databases&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">db&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">MySQLdb&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">connect&lt;/span>&lt;span class="p">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">host&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;localhost&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1"># your host, usually localhost&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">user&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;username&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1"># your username&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">passwd&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;userpassword&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1"># your password&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">db&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;database&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1"># name of the data base&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">use_unicode&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="kc">True&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">charset&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;utf8&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">cur&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">db&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">cursor&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># get all the file ids and paths from the old webfm table&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">filename_query&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;SELECT fid, fpath FROM webfm_file&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">cur&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">execute&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">filename_query&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">fid_max&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">filenames&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">{}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span> &lt;span class="n">row&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">cur&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">fetchall&lt;/span>&lt;span class="p">():&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">filenames&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">row&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">]]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">row&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="n">fid_max&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="n">row&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">]:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">fid_max&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">row&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># find all webfm links and replace them with the actual file path&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">query&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;SELECT nid, body, teaser FROM node_revisions WHERE body like &amp;#39;%webfm_send%&amp;#39; OR teaser like &amp;#39;%webfm_send%&amp;#39;&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">cur&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">execute&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">query&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span> &lt;span class="n">row&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">cur&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">fetchall&lt;/span>&lt;span class="p">():&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">entity_id&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">row&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">body&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">row&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">teaser&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">row&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="nb">range&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">fid_max&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">webfm1&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="sa">u&lt;/span>&lt;span class="s1">&amp;#39;ru/webfm_send/&amp;#39;&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="nb">str&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">webfm2&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="sa">u&lt;/span>&lt;span class="s1">&amp;#39;webfm_send/&amp;#39;&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="nb">str&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">webfm_list&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="n">webfm1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">webfm2&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="n">webfm&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">webfm_list&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">filenames&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">sql_body&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;UPDATE node_revisions SET body = REPLACE(body,&amp;#39;&lt;/span>&lt;span class="si">%s&lt;/span>&lt;span class="s2">&amp;#39;,&amp;#39;&lt;/span>&lt;span class="si">%s&lt;/span>&lt;span class="s2">&amp;#39;) WHERE nid = &lt;/span>&lt;span class="si">%d&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="o">%&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">webfm&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">filenames&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">],&lt;/span>&lt;span class="n">entity_id&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">sql_teaser&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;UPDATE node_revisions SET teaser = REPLACE(teaser,&amp;#39;&lt;/span>&lt;span class="si">%s&lt;/span>&lt;span class="s2">&amp;#39;,&amp;#39;&lt;/span>&lt;span class="si">%s&lt;/span>&lt;span class="s2">&amp;#39;) WHERE nid = &lt;/span>&lt;span class="si">%d&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="o">%&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">webfm&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">filenames&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">],&lt;/span>&lt;span class="n">entity_id&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="n">update&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">try&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># Execute the SQL command&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">cur&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">execute&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">sql_body&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">cur&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">execute&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">sql_teaser&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># Commit your changes in the database&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">db&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">commit&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">except&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># Rollback in case there is any error&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">db&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">rollback&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">db&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">close&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>При написании скрипта использовал следующую информацию:
+&lt;/p>
+&lt;p>In Drupal 6, content of the node&amp;rsquo;s body is saved in &lt;code>node_revisions&lt;/code> table under &lt;code>body&lt;/code> field.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">node_revisions.body
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>In Drupal 7, content of the node&amp;rsquo;s body is saved in &lt;code>field_data_body&lt;/code> table under &lt;code>body_value&lt;/code> field. In case content revisions are there then it also saves the data in &lt;code>field_revision_body&lt;/code> table under &lt;code>body_value&lt;/code> field.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">field_data_body.body_value
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">field_revision_body.body_value
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>In Drupal 8, content of the node&amp;rsquo;s body is saved in &lt;code>node__body&lt;/code> table under &lt;code>body_value&lt;/code> field. In case content revisions are there then it also saves the data in &lt;code>node_revision__body&lt;/code> table under &lt;code>body_value&lt;/code> field.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">node__body.body_value
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">node_revision__body.body_value
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Миграция с livejournal на hexo</title><link>http://localhost:1313/ru/post/2018/04/21/from-lj-to-hexo/</link><pubDate>Sat, 21 Apr 2018 15:37:34 +0000</pubDate><guid>http://localhost:1313/ru/post/2018/04/21/from-lj-to-hexo/</guid><description>&lt;p>Миграция с
+составила некоторые проблемы.&lt;/p>
+&lt;p>Хочу заметить, что комментарии я не переносил.&lt;/p>
+&lt;p>Наиболее подходящим показался мне
+. Он переводит сразу в &lt;em>markdown&lt;/em>. Однако, при этом не импортируются теги.
+Для идентификации использует параметры сессии броузера.&lt;/p>
+&lt;p>Вторым вариантом я рассмотрел
+. Он скачивает журнал в &lt;em>html&lt;/em>. Для идентификации использует логин и пароль.&lt;/p>
+&lt;p>Потом пришлось преобразовать в &lt;em>markdown&lt;/em>. Для этого написал скрипт &lt;em>xml2md&lt;/em>.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">##!/usr/bin/python3&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">## -*- coding: utf-8 -*-&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">os&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">sys&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">lxml&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">etree&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">html2text&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">datetime&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">datetime&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">transliterate&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">translit&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">get_available_language_codes&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">outdir&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s1">&amp;#39;markdown&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">os&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">makedirs&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">outdir&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">exist_ok&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="kc">True&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">infile&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">sys&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">argv&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">infile&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">tree&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">etree&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">parse&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">infile&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">post&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">tree&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">getroot&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">postTitle&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s1">&amp;#39;&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">postTags&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s1">&amp;#39;&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span> &lt;span class="n">elem&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">post&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">getchildren&lt;/span>&lt;span class="p">():&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="ow">not&lt;/span> &lt;span class="n">elem&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">text&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">text&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;None&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">else&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">text&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">elem&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">text&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">## print(elem.tag + &amp;#34; =&amp;gt; &amp;#34; + text)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">## book_dict[elem.tag] = text&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="n">elem&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">tag&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="s1">&amp;#39;subject&amp;#39;&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">postTitle&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">text&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="n">elem&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">tag&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="s1">&amp;#39;eventtime&amp;#39;&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">postDate&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">text&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="n">elem&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">tag&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="s1">&amp;#39;event&amp;#39;&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">postContent&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">text&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="n">elem&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">tag&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="s1">&amp;#39;props&amp;#39;&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="n">propsElem&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">elem&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">getchildren&lt;/span>&lt;span class="p">():&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="ow">not&lt;/span> &lt;span class="n">elem&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">text&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">text&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;None&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">else&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">text&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">propsElem&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">text&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">## print(propsElem.tag + &amp;#34; =&amp;gt; &amp;#34; + text)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="n">propsElem&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">tag&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="s1">&amp;#39;taglist&amp;#39;&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">postTags&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">text&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">postHeader&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s1">&amp;#39;layout: post&lt;/span>&lt;span class="se">\n&lt;/span>&lt;span class="s1">&amp;#39;&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="s1">&amp;#39;title: &amp;#39;&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="n">postTitle&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="s1">&amp;#39;&lt;/span>&lt;span class="se">\n&lt;/span>&lt;span class="s1">&amp;#39;&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="s1">&amp;#39;date: &amp;#39;&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="nb">str&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">postDate&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">postHeader&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">postHeader&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="s1">&amp;#39;&lt;/span>&lt;span class="se">\n&lt;/span>&lt;span class="s1">categories: blog&lt;/span>&lt;span class="se">\n&lt;/span>&lt;span class="s1">lang: ru&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">postHeader&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">postHeader&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="s1">&amp;#39;&lt;/span>&lt;span class="se">\n&lt;/span>&lt;span class="s1">tags: [&amp;#39;&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="n">postTags&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="s1">&amp;#39;]&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">postHeader&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">postHeader&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="s1">&amp;#39;&lt;/span>&lt;span class="se">\n&lt;/span>&lt;span class="s1">&amp;#39;&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="s1">&amp;#39;---&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">h&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">html2text&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">HTML2Text&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">h&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">ignore_links&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kc">False&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">h&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">body_width&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">h&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">unicode_snob&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kc">True&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">postContent&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">h&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">handle&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">postContent&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">fullPost&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">postHeader&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="s1">&amp;#39;&lt;/span>&lt;span class="se">\n\n\n&lt;/span>&lt;span class="s1">&amp;#39;&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="n">postContent&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">date&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">datetime&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">strptime&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">postDate&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s1">&amp;#39;%Y-%m-&lt;/span>&lt;span class="si">%d&lt;/span>&lt;span class="s1"> %H:%M:%S&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">outFile&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s1">&amp;#39;&lt;/span>&lt;span class="si">{0.year}&lt;/span>&lt;span class="s1">-&lt;/span>&lt;span class="si">{0.month:02d}&lt;/span>&lt;span class="s1">-&lt;/span>&lt;span class="si">{0.day:02d}&lt;/span>&lt;span class="s1">&amp;#39;&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">format&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">date&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">if&lt;/span> &lt;span class="n">postTitle&lt;/span> &lt;span class="o">!=&lt;/span> &lt;span class="s1">&amp;#39;&amp;#39;&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">translitTitle&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">translit&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">postTitle&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s1">&amp;#39;ru&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nb">reversed&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="kc">True&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">translitTitle&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">translitTitle&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">replace&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34; &amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="s2">&amp;#34;_&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">translitTitle&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">translitTitle&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">replace&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;:&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">translitTitle&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">translitTitle&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">replace&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;&amp;#39;&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">translitTitle&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">translitTitle&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">replace&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;«&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">translitTitle&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">translitTitle&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">replace&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;»&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">translitTitle&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">translitTitle&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">replace&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;;&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">else&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">translitTitle&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s1">&amp;#39;&lt;/span>&lt;span class="si">{0.hour:02d}&lt;/span>&lt;span class="s1">-&lt;/span>&lt;span class="si">{0.minute:02d}&lt;/span>&lt;span class="s1">-&lt;/span>&lt;span class="si">{0.second:02d}&lt;/span>&lt;span class="s1">&amp;#39;&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">format&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">date&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">outFile&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">outFile&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="s1">&amp;#39;-&amp;#39;&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="n">translitTitle&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">f&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">open&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">outdir&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="s1">&amp;#39;/&amp;#39;&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="nb">str&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">outFile&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="s1">&amp;#39;.md&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s1">&amp;#39;w&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">f&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">write&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">fullPost&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">f&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">close&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Преобразование можно выполнить с помощью команды:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">./xml2md &amp;lt;file&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>При этом создаётся каталог &lt;em>markdown&lt;/em> и в него помещается результат конвертации.&lt;/p></description></item><item><title>Установка темы NexT для hexo</title><link>http://localhost:1313/ru/post/2018/04/04/hexo-theme-next/</link><pubDate>Wed, 04 Apr 2018 13:24:22 +0000</pubDate><guid>http://localhost:1313/ru/post/2018/04/04/hexo-theme-next/</guid><description>&lt;p>Пробую поменять тему оформления блога на
+.&lt;/p>
+&lt;p>Также можно посмотреть документацию:&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;/li>
+&lt;li>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="скачиваем-тему">Скачиваем тему&lt;/h2>
+&lt;p>Переходим в каталог блога и скачиваем.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">git clone https://github.com/theme-next/hexo-theme-next themes/next
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="конфигурационный-файл">Конфигурационный файл&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">mkdir -p source/_data
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> source/_data
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">touch next.yml
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Убедимся, что в файле &lt;code>themes/next/_config.yml&lt;/code> установлено:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">override&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">false&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>В корневом файле &lt;code>_config.yml&lt;/code> устанавливаем:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">theme&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">next&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>и&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">source_dir&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">source&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>В файл &lt;code>source/_data/next.yml&lt;/code> переносим из &lt;code>themes/next/_config.yml&lt;/code>
+параметры, которые меняем.&lt;/p>
+&lt;h2 id="страницы-категорий-и-тегов">Страницы категорий и тегов&lt;/h2>
+&lt;p>Создадим страницы &lt;code>tags&lt;/code> и &lt;code>categories&lt;/code>&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">hexo new page &lt;span class="s2">&amp;#34;tags&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">hexo new page &lt;span class="s2">&amp;#34;categories&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Отредактирем файлы &lt;code>source/tags/index.md&lt;/code>&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-markdown" data-lang="markdown">&lt;span class="line">&lt;span class="cl">---
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">title: tags
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">date: &amp;#34;2018-04-04T14:41:32+00:00&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">type: &amp;#34;tags&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">---
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>и &lt;code>source/categories/index.md&lt;/code>&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-markdown" data-lang="markdown">&lt;span class="line">&lt;span class="cl">---
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">title: categories
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">date: &amp;#34;2018-04-04T14:41:37+00:00&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">type: &amp;#34;categories&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">---
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Добавим описание меню в файл &lt;code>source/_data/next.yml&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">menu&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">home&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">/ || home&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">tags&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">/tags/ || tags&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">categories&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">/categories/ || th&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">archives&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">/archives/ || archive&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="личная-фотография">Личная фотография&lt;/h2>
+&lt;p>Сделаем каталог для изображений:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">mkdir -p source/images
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Поместим туда файл (например, &lt;code>avatar.jpg&lt;/code>) и запишем в конфиг
+&lt;code>source/_data/next.yml&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">avatar&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">/images/avatar.jpg&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Я сделал ширину 126px.&lt;/p>
+&lt;h3 id="комментарии">Комментарии&lt;/h3>
+&lt;p>Комментарии настроил через Disqus.
+Для этого сконфигурил на
+сайт с коротким именем &lt;em>yamadharma-blog&lt;/em>.
+Добавил в файл &lt;code>source/_data/next.yml&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">disqus&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">enable&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">true&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">shortname&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">yamadharma-blog&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">count&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">true&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">lazyload&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">false&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Переход блога на hexo</title><link>http://localhost:1313/ru/post/2018/03/28/hexo/</link><pubDate>Wed, 28 Mar 2018 13:10:47 +0000</pubDate><guid>http://localhost:1313/ru/post/2018/03/28/hexo/</guid><description>&lt;p>Блог на
+вести не получилось. Попробовал перейти на
+. Он
+попроще, но зато всё, что нужно, работает сразу.&lt;/p>
+&lt;h2 id="установка-hexo">Установка Hexo&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>Установил Hexo (глобально):&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">npm install -g hexo-cli
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Инициализировал каталог блога:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">hexo init .
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">npm install
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Установил плагин для выкладывания на git (это делается в каталоге блога):&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">npm install hexo-deployer-git --save
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Установил плагин для генерации RSS (такая опция есть в теме):&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">npm install hexo-generator-feed --save
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Задал конфигурацию &lt;code>_config.yml&lt;/code>:&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Site&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">title&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">В борьбе обретёшь ты право своё&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">subtitle&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Делай, что должен, и будь, что будет&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">description&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">keywords&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">author&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Дмитрий Кулябов&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">language&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">ru&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">timezone&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="c"># URL&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="c"># If your site is put in a subdirectory, set url as &amp;#39;http://yoursite.com/child&amp;#39; and root as &amp;#39;/child/&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">url&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">https://yamadharma.bitbucket.io/&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">root&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">/&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">permalink&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="l">lang/:year/:month/:day/:title/&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">permalink_defaults&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">lang&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">ru&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="c"># Directory&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">source_dir&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">source&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">public_dir&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">public&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">tag_dir&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">tags&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">archive_dir&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">archives&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">category_dir&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">categories&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">code_dir&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">downloads/code&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">i18n_dir&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="l">lang&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">skip_render&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="c"># Writing&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">new_post_name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="l">lang/:year-:month-:day-:title.md&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c"># File name of new posts&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">default_layout&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">post&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">titlecase&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">false&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c"># Transform title into titlecase&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">external_link&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">true&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c"># Open external links in new tab&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">filename_case&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">0&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">render_drafts&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">false&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">post_asset_folder&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">false&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">relative_link&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">false&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">future&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">true&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">highlight&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">enable&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">true&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">line_number&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">true&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">auto_detect&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">false&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">tab_replace&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="c"># Home page setting&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="c"># path: Root path for your blogs index page. (default = &amp;#39;&amp;#39;)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="c"># per_page: Posts displayed per page. (0 = disable pagination)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="c"># order_by: Posts order. (Order by date descending by default)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">index_generator&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">path&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">per_page&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">10&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">order_by&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>-&lt;span class="l">date&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="c"># Category &amp;amp; Tag&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">default_category&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">uncategorized&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">category_map&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">tag_map&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="c"># Date / Time format&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="c"># Hexo uses Moment.js to parse and display date&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="c"># You can customize the date format as defined in&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="c"># http://momentjs.com/docs/#/displaying/format/&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">date_format&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">YYYY-MM-DD&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">time_format&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">HH:mm:ss&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="c"># Pagination&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="c"># Set per_page to 0 to disable pagination&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">per_page&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">10&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">pagination_dir&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">page&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="c"># Extensions&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="c"># Plugins: https://hexo.io/plugins/&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="c"># Themes: https://hexo.io/themes/&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">theme&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">landscape&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="c"># Deployment&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="c"># Docs: https://hexo.io/docs/deployment.html&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">deploy&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">type&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">git&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">repo&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">git@bitbucket.org:yamadharma/yamadharma.bitbucket.org.git&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">branch&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">master&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="c"># Feed&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="c"># https://github.com/hexojs/hexo-generator-feed&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">feed&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">type&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">atom&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">path&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">atom.xml&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">limit&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">20&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">hub&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">content&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">content_limit&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">600&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">content_limit_delim&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39; &amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Таким образом, без настройки, получена работающая конфигурация.&lt;/p>
+&lt;h2 id="порядок-работы-следующий">Порядок работы следующий&lt;/h2>
+&lt;ul>
+&lt;li>Создаём новый файл для поста:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">hexo new &amp;lt;title&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Радактируем пост.&lt;/li>
+&lt;li>Генерим страницы:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">hexo generate
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>или
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">hexo g
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Выкладываем страницы на сайт:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">hexo deploy
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>или
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">hexo d
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>Очищаем каталог:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">hexo clean
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul></description></item><item><title>Миграция с blogspot на hexo</title><link>http://localhost:1313/ru/post/2018/03/27/from-blogspot-to-hexo/</link><pubDate>Tue, 27 Mar 2018 15:56:18 +0000</pubDate><guid>http://localhost:1313/ru/post/2018/03/27/from-blogspot-to-hexo/</guid><description>&lt;h2 id="hexo">Hexo&lt;/h2>
+&lt;p>Перешёл на
+. Дополнительно решил перенести свои заметки с
+.&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>Установил пакет для миграции:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">npm install hexo-migrator-blogger --save
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Подправил файл миграции
+(&lt;code>node_modules/hexo-migrator-blogger/lib/migrate.js&lt;/code>), чтобы
+нормальные названия файлов были:
+{% codeblock lang:patch %}
+&amp;mdash; migrate.js.old 2016-09-24 10:02:27.000000000 +0300
++++ migrate.js 2018-03-27 15:23:52.475311505 +0300
+@@ -11,17 +11,19 @@ module.exports = function(source, target
+var posts = JSON.parse(body).feed.entry;
+async.each(posts, function(item, cb) {
+var title = item.title[&amp;rsquo;$t&amp;rsquo;];&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;ul>
+&lt;li>
+&lt;pre>&lt;code> var file = title.replace(/\s/g,'-').replace(/[^A-z 0-9 -]/g,'');
+var published = item.published['$t'];
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;ul>
+&lt;li>
+&lt;pre>&lt;code> var file = moment(published).format('YYYY-MM-DD') + '-' + title;
+var tags = '';
+if (item.category) {
+tags = item.category.map(prop('term'));
+}
+var header = [
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;ul>
+&lt;li>
+&lt;pre>&lt;code> 'title: |',
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;pre>&lt;code> '\t' + title,
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;ul>
+&lt;li>
+&lt;pre>&lt;code> 'layout: post',
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;pre>&lt;code> 'title: ' + '\&amp;quot;' + title + '\&amp;quot;',
+'date: ' + moment(published).format('YYYY-MM-DD HH:mm:ss'),
+'tags: [' + tags + ']',
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;pre>&lt;code> 'categories: blog',
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;pre>&lt;code> 'lang: ru',
+'---',
+];
+var content = item.content['$t'];
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ul>
+&lt;p>{% endcodeblock %}&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>Запустил миграцию:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">hexo migrate blogger &amp;#34;http://yamadharma.blogspot.ru/feeds/posts/default?alt=json&amp;amp;max-results=10000&amp;#34;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Почистил получившиеся файлы:
+{% codeblock lang:bash %}
+#!/bin/bash&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h1 id="name-clean">name: clean&lt;/h1>
+&lt;p>for i in &lt;em>.md
+do
+sed -i -e &amp;ldquo;s:&lt;/div>::g&amp;rdquo; &lt;br>
+-e &amp;ldquo;s:&amp;lt;div.&lt;/em>&amp;gt;::g&amp;rdquo; &lt;br>
+&amp;ldquo;$i&amp;rdquo;
+done
+{% endcodeblock %}&lt;/p>
+&lt;ul>
+&lt;li>Сделал транслит названий:
+{% codeblock lang:bash %}
+#!/bin/bash&lt;/li>
+&lt;/ul>
+&lt;h1 id="name-translit">name: translit&lt;/h1>
+&lt;h1 id="перекодирует-рекурсивно-в-текущем-каталоге-имена">Перекодирует рекурсивно в текущем каталоге имена&lt;/h1>
+&lt;h1 id="файлов-и-каталогов-в-транслит">файлов и каталогов в транслит.&lt;/h1>
+&lt;h1 id="успенский-в-а-к-проблеме-транслитерации-русских-текстов-латинскими-буквами">Успенский В. А. К проблеме транслитерации русских текстов латинскими буквами&lt;/h1>
+&lt;h1>
+&lt;/h1>
+&lt;p>shopt -s nullglob
+for NAME in *
+do
+TRS=&lt;code>echo $NAME | sed &amp;quot;y/абвгдезиклмнопрстуфц/abvgdeziklmnoprstufc/&amp;quot;&lt;/code>
+TRS=&lt;code>echo $TRS | sed &amp;quot;y/АБВГДЕЗИКЛМНОПРСТУФЦ/ABVGDEZIKLMNOPRSTUFC/&amp;quot;&lt;/code>
+TRS=${TRS//х/kh} TRS=${TRS//Х/KH};
+TRS=${TRS//ч/ch} TRS=${TRS//Ч/CH};
+TRS=${TRS//ш/sh} TRS=${TRS//Ш/SH};
+TRS=${TRS//ё/yo} TRS=${TRS//Ё/YO};
+TRS=${TRS//ж/zh} TRS=${TRS//Ж/ZH};
+TRS=${TRS//щ/th} TRS=${TRS//Щ/TH};
+TRS=${TRS//э/eh} TRS=${TRS//Э/EH};
+TRS=${TRS//ю/yu} TRS=${TRS//Ю/YU};
+TRS=${TRS//я/ya} TRS=${TRS//Я/YA};
+TRS=${TRS//й/yj} TRS=${TRS//Й/yj};
+TRS=${TRS//ъ/jh} TRS=${TRS//Ъ/JH};
+TRS=${TRS//ь/j} TRS=${TRS//Ь/J};
+TRS=${TRS//ы/ih} TRS=${TRS//Ы/IH};&lt;/p>
+&lt;pre>&lt;code>TRS=${TRS// /_};
+if [[ -d &amp;quot;$NAME&amp;quot; ]]
+then
+mv -v &amp;quot;$NAME&amp;quot; &amp;quot;$TRS&amp;quot;
+cd &amp;quot;$TRS&amp;quot;
+&amp;quot;$0&amp;quot;
+cd ..
+else
+mv -v &amp;quot;$NAME&amp;quot; &amp;quot;$TRS&amp;quot;
+fi
+&lt;/code>&lt;/pre>
+&lt;p>done
+{% endcodeblock %}&lt;/p></description></item><item><title>Миграция с Drupal-6 на Drupal-8</title><link>http://localhost:1313/ru/post/2015/11/19/drupal6-to-8/</link><pubDate>Thu, 19 Nov 2015 11:39:41 +0000</pubDate><guid>http://localhost:1313/ru/post/2015/11/19/drupal6-to-8/</guid><description>&lt;h2 id="информация-по-миграции">Информация по миграции&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>
+.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>
+.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>
+.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>
+.&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="обновление-php">Обновление PHP&lt;/h2>
+&lt;p>Для Drupal-8 нужен php-5.5. В Centos-7 идёт php-5.4. Обновим его до php-5.6. Вначале установним нужные репозитории
+(см.
+):&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Сделаем подмену дистрибутивного php на php-5.6:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">yum install yum-plugin-replace
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">yum replace php-common --replace-with&lt;span class="o">=&lt;/span>php56w-common
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">yum install php56w-opcache
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="установка-drush-8">Установка Drush 8&lt;/h2>
+&lt;p>Установим Composer:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">yum -y install composer
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Установим Drush (dev):&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">mkdir /usr/local/src/drush
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> /usr/local/src/drush
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">composer require drush/drush:dev-master
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ln -s /usr/local/src/drush/vendor/drush/drush/drush /usr/local/bin/drush
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Миграция с Samba3 на Samba4</title><link>http://localhost:1313/ru/post/2015/10/27/samba-migrate/</link><pubDate>Tue, 27 Oct 2015 13:48:49 +0300</pubDate><guid>http://localhost:1313/ru/post/2015/10/27/samba-migrate/</guid><description>&lt;h2 id="установка-пакетов">Установка пакетов&lt;/h2>
+&lt;p>В качестве системы для сервера используем Centos7. Там пока не
+поддерживается функционал Samba4 AD (конфликт mit-krb и heimdal). Поэтому поставим самбу с
+EnterpriseSAMBA.com
+.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> /etc/yum.repos.d
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wget https://sernet-samba-public:Noo1oxe4zo@download.sernet.de/packages/samba/4.2/rhel/7/sernet-samba-4.2.repo
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>В файле &lt;code>/etc/yum.repos.d/sernet-samba-4.2.repo&lt;/code> заменим
+&lt;code>USERNAME:ACCESSKEY&lt;/code> на свои данные либо на публичную учётную запись
+&lt;code>sernet-samba-public:Noo1oxe4zo&lt;/code>.&lt;/p>
+&lt;p>Установим нужные пакеты:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">yum -y install sernet-samba sernet-samba-ad
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">yum -y install &lt;span class="nb">bind&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="поиск-дубликатов-sid">Поиск дубликатов SID&lt;/h2>
+&lt;p>Найдём дубликаты SID с помощью следующего скрипта (запусткается на
+машине, где расположен ldap).&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="ch">#!/usr/bin/python&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># A quick and dirty python script that checks for duplicat SID&amp;#39;s using slapcat.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">os&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">data&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">os&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">popen&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;slapcat | grep sambaSID&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s1">&amp;#39;r&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">line&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">def&lt;/span> &lt;span class="nf">anydup&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">thelist&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">dups&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">list&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nb">set&lt;/span>&lt;span class="p">([&lt;/span>&lt;span class="n">x&lt;/span> &lt;span class="k">for&lt;/span> &lt;span class="n">x&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">thelist&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="n">thelist&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">count&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">&amp;gt;&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">]))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">dups&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">print&lt;/span> &lt;span class="s2">&amp;#34;Duplicate id: &amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">i&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span> &lt;span class="n">each_line&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">data&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">line&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">append&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">each_line&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">strip&lt;/span>&lt;span class="p">())&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">anydup&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">line&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Далее дубликаты удаляются с помощью редактирования ldap (я использовал
+).&lt;/p>
+&lt;h2 id="предварительная-конфигурация">Предварительная конфигурация&lt;/h2>
+&lt;p>Добавил в файл &lt;code>/etc/hosts&lt;/code> адрес хоста.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">127.0.0.1 localhost.localdomain localhost
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">10.130.64.23 dc.dk.sci.pfu.edu.ru dc
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Также прописал его в прямой и обратной зонах DNS.&lt;/p>
+&lt;h2 id="перенос-конфигурационных-файлов">Перенос конфигурационных файлов&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">pdc ~ &lt;span class="c1"># scp -r /var/lib/samba/private/ dc.dk.sci.pfu.edu.ru:/var/lib/samba/samba3tdb/&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">pdc ~ &lt;span class="c1"># scp /etc/samba/smb.conf dc.dk.sci.pfu.edu.ru:/var/lib/samba/samba3tdb/&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>В &lt;code>/var/lib/samba/samba3tdb/smb.conf&lt;/code> следует заменить имя контроллера домена.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">netbios name = dc
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Поскольку при миграции используется информация из ldap, на хосте &lt;code>dc&lt;/code>
+задаю файл &lt;code>/etc/openldap/ldap.conf&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">BASE dc=dk,dc=sci,dc=pfu,dc=edu,dc=ru
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">URI ldap://ldap.dk.sci.pfu.edu.ru
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">TLS_REQCERT allow
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="проведение-миграции">Проведение миграции&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">samba-tool domain classicupgrade --dbdir&lt;span class="o">=&lt;/span>/var/lib/samba/samba3tdb/ --use-xattrs&lt;span class="o">=&lt;/span>yes --realm&lt;span class="o">=&lt;/span>dk.sci.pfu.edu.ru --dns-backend&lt;span class="o">=&lt;/span>BIND9_DLZ /var/lib/samba/samba3tdb/smb.conf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="шаманство">Шаманство&lt;/h3>
+&lt;p>В файле &lt;code>/var/lib/samba/samba3tdb/smb.conf&lt;/code> заменил доменное имя&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">passdb backend = ldapsam:ldap://ldap.dk.sci.pfu.edu.ru
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>на ip-адрес&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">passdb backend = ldapsam:ldap://10.130.64.11
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Без этого миграция падала с ошибкой &lt;code>LDAP client internal error: NT_STATUS_BAD_NETWORK_NAME&lt;/code>.&lt;/p>
+&lt;h3 id="настройка-firewalld">Настройка firewalld&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">firewall-cmd --add-service&lt;span class="o">=&lt;/span>ldap --permanent
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">firewall-cmd --add-service&lt;span class="o">=&lt;/span>kerberos --permanent
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">firewall-cmd --add-service&lt;span class="o">=&lt;/span>kpasswd --permanent
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">firewall-cmd --add-service&lt;span class="o">=&lt;/span>samba --permanent
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">firewall-cmd --add-service&lt;span class="o">=&lt;/span>samba-client --permanent
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">firewall-cmd --reload
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="настройка-selinux">Настройка SELinux&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">setsebool -P samba_export_all_ro &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">setsebool -P samba_export_all_rw &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">setsebool -P samba_domain_controller &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="настройка-kerberos">Настройка Kerberos&lt;/h3>
+&lt;p>Создадим файл конфигурации kerberos:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">mv /etc/krb5.conf&lt;span class="o">{&lt;/span>,.default&lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">cp /var/lib/samba/private/krb5.conf /etc
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="настройка-dns">Настройка DNS&lt;/h3>
+&lt;p>В файле &lt;code>/etc/resolv.conf&lt;/code> задаём локальный DNS-сервер:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">search dk.sci.pfu.edu.ru
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">nameserver 127.0.0.1
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>В &lt;code>/etc/named.conf&lt;/code> подключаем сконфигурённую конфигурацию:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="n">include&lt;/span> &lt;span class="s2">&amp;#34;/var/lib/samba/private/named.conf&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Также в раздел &lt;code>options&lt;/code> добавляем:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="n">options&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">[&lt;/span>&lt;span class="o">...&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">tkey&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">gssapi&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">keytab&lt;/span> &lt;span class="s2">&amp;#34;/var/lib/samba/private/dns.keytab&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">[&lt;/span>&lt;span class="o">...&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">};&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>А также следующее:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">options {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> [...]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> allow-query { localhost; 10.128.0.0/9; };
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> allow-update { 10.128.0.0/9; 127.0.0.0/8; };
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> forwarders { 10.130.64.239; 8.8.8.8; 8.8.4.4; };
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> allow-transfer {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # this config is for a single master DNS server
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> none;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> };
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> [...]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">};
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="настройка-firewalld-1">Настройка firewalld&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">firewall-cmd --add-service&lt;span class="o">=&lt;/span>dns --permanent
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">firewall-cmd --reload
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="настройки-прав-доступа">Настройки прав доступа&lt;/h3>
+&lt;p>Права доступа:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">chown -R root:named /var/lib/samba/private/dns
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">chmod &lt;span class="m">770&lt;/span> /var/lib/samba/private/dns
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">chgrp named /var/lib/samba/private/dns.keytab
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">chmod g+r /var/lib/samba/private/dns.keytab
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">chgrp named /var/lib/samba/private
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">chgrp -R named /var/lib/samba/private/sam.ldb.d
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">chmod g+rw /var/lib/samba/private/sam.ldb.d/*
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="настройка-selinux-1">Настройка SELinux&lt;/h3>
+&lt;p>Изменим текущий контекст:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">chcon -t named_conf_t /var/lib/samba/private/dns.keytab
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">chcon -t named_conf_t /var/lib/samba/private/named.conf
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">chcon -t named_conf_t /var/lib/samba/private/named.conf.update
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">chcon -R -t named_var_run_t /var/lib/samba/private/dns
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">chcon -t named_var_run_t /var/lib/samba/private/dns/&lt;span class="si">${&lt;/span>&lt;span class="nv">MYREALM&lt;/span>&lt;span class="si">}&lt;/span>.zone
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Изменим постоянный контекст:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">semanage fcontext -a -t named_conf_t /var/lib/samba/private/dns.keytab
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">semanage fcontext -a -t named_conf_t /var/lib/samba/private/named.conf
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">semanage fcontext -a -t named_conf_t /var/lib/samba/private/named.conf.update
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">semanage fcontext -a -t named_var_run_t &lt;span class="s2">&amp;#34;/var/lib/samba/private/dns(/.*)?&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">semanage fcontext -a -t named_var_run_t /var/lib/samba/private/dns/&lt;span class="si">${&lt;/span>&lt;span class="nv">MYREALM&lt;/span>&lt;span class="si">}&lt;/span>.zone
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">semanage fcontext -a -t named_var_run_t /var/lib/samba/private/dns/&lt;span class="si">${&lt;/span>&lt;span class="nv">MYREALM&lt;/span>&lt;span class="si">}&lt;/span>.zone.jnl
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="запуск-демонов">Запуск демонов&lt;/h2>
+&lt;p>Сконфигурим тип сервера samba в файле &lt;code>/etc/default/sernet-samba&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">SAMBA_START_MODE=&amp;#34;ad&amp;#34;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Запустим демоны:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">systemctl start named.service
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">systemctl start sernet-samba-ad.service
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Добавим их в автозагрузку:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">systemctl &lt;span class="nb">enable&lt;/span> named.service
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">systemctl &lt;span class="nb">enable&lt;/span> sernet-samba-ad.service
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="проверка">Проверка&lt;/h2>
+&lt;p>Проверка DNS.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># host -t SRV _ldap._tcp.dk.sci.pfu.edu.ru.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">_ldap._tcp.dk.sci.pfu.edu.ru has SRV record &lt;span class="m">0&lt;/span> &lt;span class="m">100&lt;/span> &lt;span class="m">389&lt;/span> dc.dk.sci.pfu.edu.ru.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># host -t SRV _kerberos._udp.dk.sci.pfu.edu.ru.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">_kerberos._udp.dk.sci.pfu.edu.ru has SRV record &lt;span class="m">0&lt;/span> &lt;span class="m">100&lt;/span> &lt;span class="m">88&lt;/span> dc.dk.sci.pfu.edu.ru.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># host -t A dc.dk.sci.pfu.edu.ru.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">dc.dk.sci.pfu.edu.ru has address 10.130.64.23
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Замена пароля администратора:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">samba-tool user setpassword Administrator
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Проверка &lt;code>smbclient&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">smbclient //localhost/netlogon -UAdministrator -c &lt;span class="s1">&amp;#39;ls&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Аналогичный результат должно давать (&lt;code>dc&lt;/code> &amp;mdash; имя сервера):&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">smbclient //dc/netlogon -k -c &lt;span class="s1">&amp;#39;ls&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Проверка kerberos:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">kinit administrator@DK.SCI.PFU.EDU.RU
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">klist
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="дополнительно">Дополнительно&lt;/h2>
+&lt;p>Убрать проверку сложности пароля:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">samba-tool domain passwordsettings &lt;span class="nb">set&lt;/span> --complexity&lt;span class="o">=&lt;/span>off
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">samba-tool domain passwordsettings &lt;span class="nb">set&lt;/span> --history-length&lt;span class="o">=&lt;/span>&lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">samba-tool domain passwordsettings &lt;span class="nb">set&lt;/span> --min-pwd-age&lt;span class="o">=&lt;/span>&lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">samba-tool domain passwordsettings &lt;span class="nb">set&lt;/span> --max-pwd-age&lt;span class="o">=&lt;/span>&lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Настройка SELinux для некоторых приложений</title><link>http://localhost:1313/ru/post/2015/05/15/selinux-apps/</link><pubDate>Fri, 15 May 2015 05:56:13 +0000</pubDate><guid>http://localhost:1313/ru/post/2015/05/15/selinux-apps/</guid><description>&lt;ul>
+&lt;li>&lt;code>setsebool&lt;/code> запускаем как с ключём &lt;code>-P&lt;/code> (для запоминания настроек), так и без него (чтобы работало в текущей сессии).&lt;/li>
+&lt;/ul>
+&lt;h2 id="www-сервер">&lt;a name='head_www-server'>&lt;/a> WWW-сервер&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">setsebool -P httpd_unified &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">setsebool -P httpd_can_network_connect_db &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">setsebool -P httpd_can_network_connect &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">setsebool -P httpd_can_network_relay &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">setsebool -P httpd_can_sendmail &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">setsebool -P httpd_execmem &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">setsebool -P httpd_use_fusefs &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="базы-данных">&lt;a name='head_db'>&lt;/a> Базы данных&lt;/h2>
+&lt;ul>
+&lt;li>Postgres&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">setsebool -P selinuxuser_postgresql_connect_enabled &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>MySQL&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">setsebool -P selinuxuser_mysql_connect_enabled &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="ojs">OJS&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>Настраиваем
+и
+.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Настраиваем доступ к файловой системе.&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">semanage fcontext --add -t httpd_sys_rw_content_t &lt;span class="s2">&amp;#34;/var/www/html/ojs/cache(/.*)?&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">semanage fcontext --add -t httpd_sys_rw_content_t &lt;span class="s2">&amp;#34;/var/www/html/ojs/public(/.*)?&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">semanage fcontext --add -t httpd_sys_rw_content_t &lt;span class="s2">&amp;#34;/var/www/html/ojs/config.inc.php&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">semanage fcontext --add -t httpd_sys_rw_content_t &lt;span class="s2">&amp;#34;/var/www/html/ojs/plugins/generic(/.*)?&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">semanage fcontext --add -t httpd_sys_rw_content_t &lt;span class="s2">&amp;#34;/var/www/data(/.*)?&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="drupal">Drupal&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>Настраиваем
+и
+.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Настраиваем доступ к файловой системе.&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">semanage fcontext --add -t httpd_sys_rw_content_t &lt;span class="s2">&amp;#34;/var/www/html/sites/drupal/(.*)/sites/(.*)/files(/.*)?&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">semanage fcontext --add -t httpd_sys_rw_content_t &lt;span class="s2">&amp;#34;/var/www/html/sites/drupal/(.*)/cache(/.*)?&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">semanage fcontext --add -t httpd_sys_rw_content_t &lt;span class="s2">&amp;#34;/var/www/html/sites/drupal/(.*)/sites/all(/.*)?&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="moodle">Moodle&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>Настраиваем
+и
+.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Настраиваем доступ к файловой системе.&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">semanage fcontext --add -t httpd_sys_rw_content_t &lt;span class="s2">&amp;#34;/var/www/moodle/web-git/mod(/.*)?&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">semanage fcontext --add -t httpd_sys_rw_content_t &lt;span class="s2">&amp;#34;/var/www/moodle/web-git/local(/.*)?&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">semanage fcontext --add -t httpd_sys_rw_content_t &lt;span class="s2">&amp;#34;/var/www/moodle/web-git/theme(/.*)?&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="letsencript">LetsEncript&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">semanage fcontext -a -t cert_t &lt;span class="s1">&amp;#39;/etc/letsencrypt/(archive|live)(/.*)?&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Установка виртуальной машины NOC на oVirt</title><link>http://localhost:1313/ru/post/2015/05/13/ova-on-ovirt/</link><pubDate>Wed, 13 May 2015 08:48:57 +0000</pubDate><guid>http://localhost:1313/ru/post/2015/05/13/ova-on-ovirt/</guid><description>&lt;p>Чтобы не мучиться с установкой
+решил установить с образа,
+. К сажалению, образ предлагается в формате &lt;code>ova&lt;/code>, а у меня стоит oVirt (&lt;code>ovirt-engine&lt;/code>). Он этот формат не понимает. Однако у меня есть ещё хост с &lt;code>kvm&lt;/code> (&lt;code>kvm-host&lt;/code>).&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>Распаковываю &lt;code>noc-x86_64-Debian-8.ova&lt;/code>:
+{% codeblock lang:bash %}
+tar -xf noc-x86_64-Debian-8.ova
+{% endcodeblock %}&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Конвертирую в формат &lt;code>qcow2&lt;/code>:
+{% codeblock lang:bash %}
+qemu-img convert -O qcow2 noc-x86_64-Debian-8-disk1.vmdk noc-x86_64-Debian-8-disk1.qcow2
+{% endcodeblock %}&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Создаю виртуальную машину на kvm. По большому счёту это нужно лишь для создания xml-файла описания виртуальной машины.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Машина сначала не загрузилась потому, что в &lt;code>/etc/fstab&lt;/code> на &lt;code>/boot&lt;/code> был жёстко прописан &lt;code>/dev/sda1&lt;/code>. Поменял на &lt;code>/dev/vda1&lt;/code>.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Пароли следующие:
+{% codeblock lang:bash %}
+Username: user
+Password: thenocproject
+Root password: thenocproject
+{% endcodeblock %}&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>На web-интерфейс логин и пароль:
+{% codeblock lang:bash %}
+User: admin
+Password: admin
+{% endcodeblock %}&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Образы на &lt;code>kvm-host&lt;/code> находятся в каталоге &lt;code>/var/lib/libvirt/images&lt;/code>, а соответствующие конфигурационные файлы в &lt;code>/etc/libvirt/qemu&lt;/code>. Копируем нужный конфиг в &lt;code>/var/lib/libvirt/images&lt;/code> и называем &lt;code>noc-x86_64-Debian-8-disk1.xml&lt;/code>. Поскольку будем работать по сети, заменяем в нём путь к образу с &lt;code>/var/lib/...&lt;/code> на &lt;code>/net/kvm-host/var/lib/...&lt;/code>.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Заходим на хост &lt;code>ovirt-engine&lt;/code>, монтируем &lt;code>kvm-host&lt;/code> по autofs:
+{% codeblock lang:bash %}
+cd /net/kvm-host/var/lib/libvirt/images
+{% endcodeblock %}&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Импортируем образ в oVirt:&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>{% codeblock lang:bash %}
+virt-v2v -b vlan5 -i libvirtxml -o rhev -os ovirt-node-01:/ovirt/export noc-x86_64-Debian-8-disk1.xml
+{% endcodeblock %}&lt;/p>
+&lt;p>Здесь &lt;code>ovirt-node-01&lt;/code> — узел, на котором запускаются виртуальные машины, &lt;code>vlan5&lt;/code> — интерфейс, к которому она будет подключена.&lt;/p></description></item><item><title>Поддержка многоязычности</title><link>http://localhost:1313/ru/post/2015/04/20/octopus-multilingual/</link><pubDate>Mon, 20 Apr 2015 13:17:32 +0000</pubDate><guid>http://localhost:1313/ru/post/2015/04/20/octopus-multilingual/</guid><description>&lt;p>Добавим в конфигурационный файл (&lt;code>_config.yml&lt;/code>):&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">gems&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">octopress-multilingual&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">octopress-linkblog&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Также зададим язык по-умолчанию:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">lang&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">ru&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="язык-для-постов">Язык для постов&lt;/h2>
+&lt;p>Добавим язык в заголовок шаблонов:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">lang&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">ru&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="конфигурация-для-разных-языков">Конфигурация для разных языков&lt;/h2>
+&lt;p>В каталоге &lt;code>_data&lt;/code> создадим конфигурационные файлы вида
+&lt;code>lang_[language_code].yml&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="l">_data&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="l">lang_en.yml&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="l">lang_ru.yml&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Примерное их содержание:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="c"># lang_en.yml&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">title&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">English title&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="c"># lang_ru.yml&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">title&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Русское название сайта&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Перенос блога на Jekyll + Octopress</title><link>http://localhost:1313/ru/post/2015/03/23/jekyll-octopress/</link><pubDate>Mon, 23 Mar 2015 13:51:36 +0300</pubDate><guid>http://localhost:1313/ru/post/2015/03/23/jekyll-octopress/</guid><description>&lt;h2 id="репозиторий-для-сайта">Репозиторий для сайта&lt;/h2>
+&lt;ul>
+&lt;li>Создал локальный каталог для сайта:&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">mkdir ~/mysite
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="локальный-git-репозиторий">Локальный git-репозиторий&lt;/h2>
+&lt;ul>
+&lt;li>Создал пустой git-репозиторий:&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> ~/mysite
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git init
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Создал в нём файл &lt;code>README.md&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">touch README.md
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sb">``&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">- Сделал коммит:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sb">```&lt;/span>bash
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git add .
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git commit -am &lt;span class="s1">&amp;#39;Initial commit&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Создаю ветку для кода (в &lt;code>master&lt;/code> будет сайт):&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">git branch &lt;span class="nb">source&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git checkout &lt;span class="nb">source&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>
+в ветке &lt;code>source&lt;/code>.&lt;/p>
+&lt;h4 id="репозиторий-на-bitbucket">Репозиторий на Bitbucket&lt;/h4>
+&lt;p>Я пользовался
+.&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>Создал на bitbucket&amp;rsquo;е репозиторий с названием
+&lt;code>yamadharma.bitbucket.org&lt;/code>.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Выложил репозиторий&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> ~/mysite
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git remote add origin git@bitbucket.org:yamadharma/yamadharma.bitbucket.org.git
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git push -u origin --all
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git push -u origin --tags
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="выкладывание-сайта-на-bitbucket">Выкладывание сайта на Bitbucket&lt;/h2>
+&lt;ul>
+&lt;li>Создал файл &lt;code>_deploy.yml&lt;/code> с помощью команды&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">octopress deploy init git -u git@bitbucket.org:yamadharma/yamadharma.bitbucket.org.git
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Подредактировал &lt;code>.gitignore&lt;/code>:&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;.deploy&amp;#34;&lt;/span> &amp;gt;&amp;gt; .gitignore
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Сгенерил сайт:&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">jekyll b
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Выложил существующий сайт:&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">octopress deploy
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Положил ветку &lt;code>source&lt;/code> на git:&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">git add .
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git commit -am &lt;span class="s1">&amp;#39;Поправил сайт&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git push
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="создание-шаблона-сайта">&lt;a name='head_site-template-create'>&lt;/a> Создание шаблона сайта&lt;/h2>
+&lt;ul>
+&lt;li>В каталоге сайта создаю шаблон:&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> ~/mysite
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git checkout &lt;span class="nb">source&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">octopress new -f .
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Счастье есть</title><link>http://localhost:1313/ru/post/2007/06/30/schaste-est/</link><pubDate>Sat, 30 Jun 2007 13:30:00 +0000</pubDate><guid>http://localhost:1313/ru/post/2007/06/30/schaste-est/</guid><description>&lt;p>Просидел всю неделю под виндой. Качал MSDN. К концу недели стало уже плохо. В пятницу поставил Vista. Это добило меня окончательно. Вечером перегрузился под Linux. Счастье есть.&lt;/p></description></item><item><title>К вопросу о настройке маршрутизатора ASUS WL-500gP</title><link>http://localhost:1313/ru/post/2007/01/14/k-voprosu-o-nastrojke-marshrutizatora-asus-wl-500gp/</link><pubDate>Sun, 14 Jan 2007 18:18:00 +0000</pubDate><guid>http://localhost:1313/ru/post/2007/01/14/k-voprosu-o-nastrojke-marshrutizatora-asus-wl-500gp/</guid><description>&lt;p>При настройке возникли следующие проблемы.&lt;/p>
+&lt;ol>
+&lt;li>Нужно было догадаться, что сервер доступа в настройках называется Heart-Beat Server.&lt;/li>
+&lt;li>Задавать маршрутизацию можно либо на на внутреннем eth (LAN), либо на внешнем ppp (WAN). Таким образом, получить доступ к домашней сети провайдера оказалось невозможным. Пришлось качать альтернативную прошивку (
+, в которой возможно (кроме кучи других бонусов) задавать маршрутную таблицу на внешнем eth (MAN) интерфейсе.&lt;/li>
+&lt;/ol></description></item><item><title>Monit и gentoo rc-scripts</title><link>http://localhost:1313/ru/post/2006/09/17/monit-i-gentoo-rc-scripts/</link><pubDate>Sun, 17 Sep 2006 20:55:00 +0000</pubDate><guid>http://localhost:1313/ru/post/2006/09/17/monit-i-gentoo-rc-scripts/</guid><description>&lt;p>При использовании monit для перезапуска rc-скриптов в gentoo использовал killall и опцию zap.&lt;br>
+Нашёл это-же решение, но оформленное красивее.&lt;/p>
+&lt;p>Это файл /etc/monit.d/bin/kickservice&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">##!/bin/sh &lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">## kickservice by Eric Radman &lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">## Script used by monit to kill off and restart daemons &lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">## /etc/monit.d/bin/kickservice &lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">function&lt;/span> stop &lt;span class="o">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">     /etc/init.d/&lt;span class="nv">$1&lt;/span> pause
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">     /etc/init.d/&lt;span class="nv">$1&lt;/span> zap
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">     &lt;span class="k">if&lt;/span> &lt;span class="o">[&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$2&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="s2">&amp;#34;kill&amp;#34;&lt;/span> &lt;span class="o">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">         &lt;span class="k">then&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">         /bin/killall &lt;span class="nv">$3&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">     &lt;span class="k">fi&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">function&lt;/span> start &lt;span class="o">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">     /etc/init.d/&lt;span class="nv">$1&lt;/span> zap
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">     /etc/init.d/&lt;span class="nv">$1&lt;/span> start
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">case&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$1&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> in
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> start&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">     start &lt;span class="nv">$2&lt;/span> &lt;span class="nv">$3&lt;/span> &lt;span class="nv">$4&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">     &lt;span class="p">;;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> stop&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">     stop &lt;span class="nv">$2&lt;/span> &lt;span class="nv">$3&lt;/span> &lt;span class="nv">$4&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">     &lt;span class="p">;;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> *&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">     &lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;Usage: kickservice [start|stop] [service] kill [daemon]&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">     &lt;span class="p">;;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">esac&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Проблема возникла из-за того, что при установке baselayout-1.12.x перестал нормально работать pppd (при подключении через pptp к VPN-серверу провайдера). Очень часто соединение не устанавливается (вина, думаю, провайдерского сервера). По идее после этого он должен перезапускаться, а он просто ничего не делал. Решил снять проблему с помощью monit.&lt;br>
+Убрал net.ppp0 из загрузки, и заставил monit мониторить ppp0.&lt;/p>
+&lt;p>Вот скрипт /etc/monit.d/ppp0&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">check process pppd with pidfile /var/run/ppp0.pid
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">   start &lt;span class="nv">program&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;/etc/monit.d/bin/kickservice start net.ppp0&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">   stop &lt;span class="nv">program&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;/etc/monit.d/bin/kickservice stop net.ppp0 kill pppd&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">   &lt;span class="k">if&lt;/span> &lt;span class="m">5&lt;/span> restarts within &lt;span class="m">5&lt;/span> cycles &lt;span class="k">then&lt;/span> timeout
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>P. S. Хотел запостить скрипты, но не знаю как :(&lt;/p></description></item><item><title>Gentoo: конвертация из x86 в x86_64 (2)</title><link>http://localhost:1313/ru/post/2006/08/21/gentoo-konvertatsija-iz-x86-v-x86-64-2/</link><pubDate>Mon, 21 Aug 2006 12:19:00 +0000</pubDate><guid>http://localhost:1313/ru/post/2006/08/21/gentoo-konvertatsija-iz-x86-v-x86-64-2/</guid><description>&lt;ol>
+&lt;li>Провозившись с данной проблемой выходные (и частично неделю),
+провёл конвертацию.&lt;/li>
+&lt;li>Оказалось, что всё очень просто.&lt;/li>
+&lt;li>Однако, после начала обновления системы (&lt;code>emerge -e system&lt;/code>), стали
+отваливаться приложения (не могут подгрузить библиотеки).&lt;/li>
+&lt;li>К сожалению, в новом профайле не поддерживается построение
+библиотек под несколько архитектур (может, просто я не знаю).&lt;/li>
+&lt;li>Хотя в консоли всё функционирует нормально.&lt;/li>
+&lt;li>Скоро, надеюсь, всё конвертну.&lt;/li>
+&lt;/ol></description></item><item><title>Gentoo: конвертация из x86 в x86_64</title><link>http://localhost:1313/ru/post/2006/08/18/gentoo-konvertatsija-iz-x86-v-x86-64/</link><pubDate>Fri, 18 Aug 2006 09:21:00 +0000</pubDate><guid>http://localhost:1313/ru/post/2006/08/18/gentoo-konvertatsija-iz-x86-v-x86-64/</guid><description>&lt;ol>
+&lt;li>На недавно обновлённом компьютере (до этого был Pentium III)
+крутится 32-битная ОС (Gentoo Linux) (Hurd и Plan9 не учитываю).&lt;/li>
+&lt;li>Решил конвертнуть в 64-битную. Однако документации по этому вопросу
+не нашёл.&lt;/li>
+&lt;li>Так-что решил заняться самодеятельностью. Как получится, напишу об этом (с приложением скриптов).&lt;/li>
+&lt;/ol></description></item><item><title>Пожаротушение</title><link>http://localhost:1313/ru/post/2006/07/14/firefighting/</link><pubDate>Fri, 14 Jul 2006 11:48:00 +0000</pubDate><guid>http://localhost:1313/ru/post/2006/07/14/firefighting/</guid><description>&lt;p>Новая ссылочка по системам пожаротушения:
+&lt;/p>
+&lt;p>Цитата:&lt;/p>
+&lt;blockquote>
+&lt;p>По степени вредного воздействия на материальные ценности при срабатывании САП образуют (в порядке убывания вредности) следующий ряд:&lt;/p>
+&lt;ul>
+&lt;li>аэрозольные и порошковые;&lt;/li>
+&lt;li>пенные и водо-пенные;&lt;/li>
+&lt;li>водяные;&lt;/li>
+&lt;li>системы тонкодисперсной воды;&lt;/li>
+&lt;li>газовые.&lt;/li>
+&lt;/ul>&lt;/blockquote></description></item><item><title>Гроза</title><link>http://localhost:1313/ru/post/2006/07/12/groza/</link><pubDate>Wed, 12 Jul 2006 10:06:00 +0000</pubDate><guid>http://localhost:1313/ru/post/2006/07/12/groza/</guid><description>&lt;p>В воскресенье была гроза. Сработала система пожаротушения (замкнуло?). От Этого умерли все сервера на открытой стойке. В том числе и почта.&lt;/p>
+&lt;p>В понедельник была гроза. Дома сгорел монитор.&lt;/p>
+&lt;p>Почту ещё не поднял.&lt;/p>
+&lt;p>Вот ссылочка:
+&lt;/p>
+&lt;p>Цитата:&lt;/p>
+&lt;blockquote>
+&lt;p>Недостатков тоже хватает. Во-первых, тушащий материал при взаимодействии с влагой дает щелочную (аэрозоли) или кислотную реакцию (порошки), что может приводить к коррозии металла, деструкции материалов, а также к выводу из строя электронной техники. Во-вторых, в момент срабатывания системы видимость в помещении снижается почти до нуля, что небезопасно для не успевших эвакуироваться людей. В-третьих, попадание порошков и аэрозолей в глаза или дыхательные пути вредно для здоровья. В-четвертых, порошки слеживаются, что ограничивает срок их хранения (необходима перезарядка или замена устройств тушения раз в 5 - 10 лет).&lt;/p>
+&lt;p>Первые три недостатка обусловливают повышенные требования к надежности систем, в частности к защите от ложного срабатывания.&lt;/p>&lt;/blockquote></description></item></channel></rss>

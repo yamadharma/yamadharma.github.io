@@ -1,7 +1,137 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Latex3 | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/latex3/</link><atom:link href="https://yamadharma.github.io/ru/tag/latex3/index.xml" rel="self" type="application/rss+xml"/><description>Latex3</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>ru-ru</language><copyright>© 2025 Dmitry S. Kulyabov</copyright><lastBuildDate>Mon, 01 Jan 2024 21:05:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu_6ee0c25d397641dd.png</url><title>Latex3</title><link>https://yamadharma.github.io/ru/tag/latex3/</link></image><item><title>Язык программирования LaTeX3</title><link>https://yamadharma.github.io/ru/post/2024/01/01/latex3/</link><pubDate>Mon, 01 Jan 2024 21:05:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2024/01/01/latex3/</guid><description>&lt;p>Язык программирования LaTeX3.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Latex3 | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/latex3/</link><atom:link href="https://yamadharma.github.io/ru/tag/latex3/index.xml" rel="self" type="application/rss+xml"/><description>Latex3</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>ru-ru</language><copyright>© 2025 Dmitry S. Kulyabov</copyright><lastBuildDate>Fri, 10 Oct 2025 21:30:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu_6ee0c25d397641dd.png</url><title>Latex3</title><link>https://yamadharma.github.io/ru/tag/latex3/</link></image><item><title>LaTeX3. Работа с ключами</title><link>https://yamadharma.github.io/ru/post/2025/10/10/latex3-keys/</link><pubDate>Fri, 10 Oct 2025 21:30:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2025/10/10/latex3-keys/</guid><description>&lt;p>LaTeX3. Работа с ключами.&lt;/p>
 &lt;details class="print:hidden xl:hidden" >
 &lt;summary>Содержание&lt;/summary>
 &lt;div class="text-sm">
-&lt;nav id="TableOfContents">&lt;/nav>
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#интерфейс-keys-define-nn">&lt;span class="section-num">1&lt;/span> Интерфейс &lt;code>\keys_define:nn&lt;/code>&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1.1&lt;/span> Общая информация&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#детальное-описание-работы">&lt;span class="section-num">1.2&lt;/span> Детальное описание работы&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#определение-типов-ключей">&lt;span class="section-num">1.2.1&lt;/span> Определение типов ключей&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#установка-начальных-значений">&lt;span class="section-num">1.2.2&lt;/span> Установка начальных значений&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#обработчики-ключей">&lt;span class="section-num">1.2.3&lt;/span> Обработчики ключей&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#проверка-корректности-значений">&lt;span class="section-num">1.2.4&lt;/span> Проверка корректности значений&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#пример-полного-определения-ключей">&lt;span class="section-num">1.2.5&lt;/span> Пример полного определения ключей:&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#использование-определённых-ключей-в-документе">&lt;span class="section-num">1.2.6&lt;/span> Использование определённых ключей в документе&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/nav>
 &lt;/div>
-&lt;/details></description></item></channel></rss>
+&lt;/details>
+&lt;h2 id="интерфейс-keys-define-nn">&lt;span class="section-num">1&lt;/span> Интерфейс &lt;code>\keys_define:nn&lt;/code>&lt;/h2>
+&lt;h3 id="общая-информация">&lt;span class="section-num">1.1&lt;/span> Общая информация&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>Интерфейс &lt;code>\keys_define:nn&lt;/code> в LaTeX3 есть инструмент для определения и управления ключами.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Синтаксис:&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-tex" data-lang="tex">&lt;span class="line">&lt;span class="cl">&lt;span class="k">\keys&lt;/span>&lt;span class="nb">_&lt;/span>define:nn &lt;span class="nb">{&lt;/span> &amp;lt;group name&amp;gt; &lt;span class="nb">}&lt;/span> &lt;span class="nb">{&lt;/span> &amp;lt;key definitions&amp;gt; &lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Параметры:
+&lt;ul>
+&lt;li>&lt;code>&amp;lt;group name&amp;gt;&lt;/code> &amp;mdash; имя группы ключей.
+&lt;ul>
+&lt;li>Это пространство имён, которое помогает избежать конфликтов имён при использовании ключей в разных частях документа или в разных пакетах.&lt;/li>
+&lt;li>Например, &lt;code>mypackage/keys&lt;/code> указывает, что ключи принадлежат пакету &lt;code>mypackage&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;code>&amp;lt;key definitions&amp;gt;&lt;/code> &amp;mdash; список определений ключей.
+&lt;ul>
+&lt;li>Каждый ключ описывается своими свойствами и поведением.&lt;/li>
+&lt;li>В этом списке можно задать:
+&lt;ul>
+&lt;li>тип ключа (логический, строковый, целочисленный и др.);&lt;/li>
+&lt;li>значение по умолчанию;&lt;/li>
+&lt;li>обработчики, которые будут выполняться при задании ключа;&lt;/li>
+&lt;li>проверки корректности значений, которые передаются ключу.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="детальное-описание-работы">&lt;span class="section-num">1.2&lt;/span> Детальное описание работы&lt;/h3>
+&lt;h4 id="определение-типов-ключей">&lt;span class="section-num">1.2.1&lt;/span> Определение типов ключей&lt;/h4>
+&lt;ul>
+&lt;li>Логический ключ (bool): принимает значения &lt;code>true&lt;/code> или &lt;code>false&lt;/code>.
+&lt;ul>
+&lt;li>Пример: &lt;code>mybool.bool_set:N = \l_mypackage_mybool_bool&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Строковый ключ (tl): для хранения текстовых значений.
+&lt;ul>
+&lt;li>Пример: &lt;code>mystring.tl_set:N = \l_mypackage_mystring_tl&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Целочисленный ключ (int): для хранения целых чисел.
+&lt;ul>
+&lt;li>Пример: &lt;code>myint.int_set:N = \l_mypackage_myint_int&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="установка-начальных-значений">&lt;span class="section-num">1.2.2&lt;/span> Установка начальных значений&lt;/h4>
+&lt;ul>
+&lt;li>Для каждого ключа можно указать начальное значение с помощью &lt;code>.initial:n&lt;/code>.&lt;/li>
+&lt;li>Например:
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-tex" data-lang="tex">&lt;span class="line">&lt;span class="cl">mybool.initial:n = &lt;span class="nb">{&lt;/span> false &lt;span class="nb">}&lt;/span>,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mystring.initial:n = &lt;span class="nb">{&lt;/span> Default String &lt;span class="nb">}&lt;/span>,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">myint.initial:n = &lt;span class="nb">{&lt;/span> 42 &lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h4 id="обработчики-ключей">&lt;span class="section-num">1.2.3&lt;/span> Обработчики ключей&lt;/h4>
+&lt;ul>
+&lt;li>Можно определить специальные команды, которые будут выполняться при установке ключа.&lt;/li>
+&lt;li>Это позволяет реализовывать сложное поведение в зависимости от заданных параметров.&lt;/li>
+&lt;/ul>
+&lt;h4 id="проверка-корректности-значений">&lt;span class="section-num">1.2.4&lt;/span> Проверка корректности значений&lt;/h4>
+&lt;ul>
+&lt;li>С помощью дополнительных опций можно проверять корректность значений, передаваемых ключу, что повышает надёжность использования ключей.&lt;/li>
+&lt;/ul>
+&lt;h4 id="пример-полного-определения-ключей">&lt;span class="section-num">1.2.5&lt;/span> Пример полного определения ключей:&lt;/h4>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-tex" data-lang="tex">&lt;span class="line">&lt;span class="cl">&lt;span class="k">\keys&lt;/span>&lt;span class="nb">_&lt;/span>define:nn &lt;span class="nb">{&lt;/span> mypackage/keys &lt;span class="nb">}&lt;/span> &lt;span class="nb">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> mybool.bool&lt;span class="nb">_&lt;/span>set:N = &lt;span class="k">\l&lt;/span>&lt;span class="nb">_&lt;/span>mypackage&lt;span class="nb">_&lt;/span>mybool&lt;span class="nb">_&lt;/span>bool,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> mybool.initial:n = &lt;span class="nb">{&lt;/span> false &lt;span class="nb">}&lt;/span>,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> mystring.tl&lt;span class="nb">_&lt;/span>set:N = &lt;span class="k">\l&lt;/span>&lt;span class="nb">_&lt;/span>mypackage&lt;span class="nb">_&lt;/span>mystring&lt;span class="nb">_&lt;/span>tl,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> mystring.initial:n = &lt;span class="nb">{&lt;/span> Default String &lt;span class="nb">}&lt;/span>,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> myint.int&lt;span class="nb">_&lt;/span>set:N = &lt;span class="k">\l&lt;/span>&lt;span class="nb">_&lt;/span>mypackage&lt;span class="nb">_&lt;/span>myint&lt;span class="nb">_&lt;/span>int,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> myint.initial:n = &lt;span class="nb">{&lt;/span> 42 &lt;span class="nb">}&lt;/span>,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c">% Дополнительные ключи и их настройки
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span>&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="использование-определённых-ключей-в-документе">&lt;span class="section-num">1.2.6&lt;/span> Использование определённых ключей в документе&lt;/h4>
+&lt;ul>
+&lt;li>После определения ключей их можно использовать с помощью команды &lt;code>\keys_set:nn&lt;/code>:&lt;/li>
+&lt;/ul>
+&lt;!--listend-->
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-tex" data-lang="tex">&lt;span class="line">&lt;span class="cl">&lt;span class="k">\keys&lt;/span>&lt;span class="nb">_&lt;/span>set:nn &lt;span class="nb">{&lt;/span> mypackage/keys &lt;span class="nb">}&lt;/span> &lt;span class="nb">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> mybool = true,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> mystring = &lt;span class="nb">{&lt;/span> Custom String &lt;span class="nb">}&lt;/span>,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> myint = 100
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Теперь переменные &lt;code>\l_mypackage_mybool_bool&lt;/code>, &lt;code>\l_mypackage_mystring_tl&lt;/code> и &lt;code>\l_mypackage_myint_int&lt;/code> будут содержать заданные значения.&lt;/li>
+&lt;/ul></description></item><item><title>Язык программирования LaTeX3</title><link>https://yamadharma.github.io/ru/post/2024/01/01/latex3/</link><pubDate>Mon, 01 Jan 2024 21:05:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2024/01/01/latex3/</guid><description>&lt;p>Язык программирования LaTeX3.&lt;/p>
+&lt;details class="print:hidden xl:hidden" >
+&lt;summary>Содержание&lt;/summary>
+&lt;div class="text-sm">
+&lt;nav id="TableOfContents">
+&lt;ul>
+&lt;li>&lt;a href="#элементы-языка">&lt;span class="section-num">1&lt;/span> Элементы языка&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/nav>
+&lt;/div>
+&lt;/details>
+&lt;h2 id="элементы-языка">&lt;span class="section-num">1&lt;/span> Элементы языка&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;/li>
+&lt;/ul></description></item></channel></rss>

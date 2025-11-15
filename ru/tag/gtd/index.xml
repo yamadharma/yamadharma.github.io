@@ -1,1231 +1,1231 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Gtd | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/gtd/</link><atom:link href="https://yamadharma.github.io/ru/tag/gtd/index.xml" rel="self" type="application/rss+xml"/><description>Gtd</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>ru-ru</language><copyright>© 2025 Dmitry S. Kulyabov</copyright><lastBuildDate>Mon, 31 Jul 2023 18:24:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu_6ee0c25d397641dd.png</url><title>Gtd</title><link>https://yamadharma.github.io/ru/tag/gtd/</link></image><item><title>Emacs. Пакеты. Org-gtd</title><link>https://yamadharma.github.io/ru/post/2023/07/31/emacs-packages-org-gtd/</link><pubDate>Mon, 31 Jul 2023 18:24:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/07/31/emacs-packages-org-gtd/</guid><description>&lt;p>Реализация метода GTD на основе Emacs.&lt;/p>
-&lt;details class="print:hidden xl:hidden" >
-&lt;summary>Содержание&lt;/summary>
-&lt;div class="text-sm">
-&lt;nav id="TableOfContents">
-&lt;ul>
-&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#режимы">&lt;span class="section-num">2&lt;/span> Режимы&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#настраиваемые-переменные">&lt;span class="section-num">3&lt;/span> Настраиваемые переменные&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#функции-пакета-по-шагам-gtd">&lt;span class="section-num">4&lt;/span> Функции пакета по шагам GTD&lt;/a>
-&lt;ul>
-&lt;li>&lt;a href="#шаг-1-6-захват">&lt;span class="section-num">4.1&lt;/span> Шаг 1/6: Захват&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#шаг-2-6-процесс">&lt;span class="section-num">4.2&lt;/span> Шаг 2/6: Процесс&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#шаг-3-6-уточнение">&lt;span class="section-num">4.3&lt;/span> Шаг 3/6: Уточнение&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#шаг-4-6-организуйте">&lt;span class="section-num">4.4&lt;/span> Шаг 4/6: Организуйте&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#шаг-5-6-ежедневное-взаимодействие">&lt;span class="section-num">4.5&lt;/span> Шаг 5/6: Ежедневное взаимодействие&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#шаг-6-6-обзор">&lt;span class="section-num">4.6&lt;/span> Шаг 6/6: Обзор&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ul>
-&lt;/nav>
-&lt;/div>
-&lt;/details>
-&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
-&lt;ul>
-&lt;li>Репозиторий:
-&lt;/li>
-&lt;li>Пакет пытается максимально точно воспроизвести рабочий процесс GTD (см.
-).&lt;/li>
-&lt;/ul>
-&lt;h2 id="режимы">&lt;span class="section-num">2&lt;/span> Режимы&lt;/h2>
-&lt;ul>
-&lt;li>&lt;code>org-gtd-mode&lt;/code>: обновляет представления повестки дня, включать все файлы &lt;code>org-gtd&lt;/code> в &lt;code>org-agenda-files&lt;/code>.&lt;/li>
-&lt;/ul>
-&lt;h2 id="настраиваемые-переменные">&lt;span class="section-num">3&lt;/span> Настраиваемые переменные&lt;/h2>
-&lt;ul>
-&lt;li>&lt;code>org-gtd-directory&lt;/code>: каталог, в котором &lt;code>org-gtd&lt;/code> будет искать свои файлы.&lt;/li>
-&lt;li>&lt;code>org-gtd-areas-of-focus&lt;/code>: список строк, представляющих Horizon 3.&lt;/li>
-&lt;/ul>
-&lt;h2 id="функции-пакета-по-шагам-gtd">&lt;span class="section-num">4&lt;/span> Функции пакета по шагам GTD&lt;/h2>
-&lt;h3 id="шаг-1-6-захват">&lt;span class="section-num">4.1&lt;/span> Шаг 1/6: Захват&lt;/h3>
-&lt;ul>
-&lt;li>Функции:
-&lt;ul>
-&lt;li>&lt;code>org-gtd-capture&lt;/code>: обёртка вокруг &lt;code>org-capture&lt;/code>. Можно использовать для сбора в Inbox.&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>Настраиваемые переменные:
-&lt;ul>
-&lt;li>&lt;code>org-gtd-capture-templates&lt;/code>: шаблоны для &lt;code>org-gtd-capture&lt;/code>.&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ul>
-&lt;h3 id="шаг-2-6-процесс">&lt;span class="section-num">4.2&lt;/span> Шаг 2/6: Процесс&lt;/h3>
-&lt;ul>
-&lt;li>Функции:
-&lt;ul>
-&lt;li>&lt;code>org-gtd-process-inbox&lt;/code>: обработать все элементы в Inbox.&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ul>
-&lt;h3 id="шаг-3-6-уточнение">&lt;span class="section-num">4.3&lt;/span> Шаг 3/6: Уточнение&lt;/h3>
-&lt;ul>
-&lt;li>Функции:
-&lt;ul>
-&lt;li>&lt;code>org-gtd-clarify-item&lt;/code>: определить, для чего элемент из Inbox в рамках &lt;code>org-gtd&lt;/code>.&lt;/li>
-&lt;li>&lt;code>org-gtd-clarify-agenda-item&lt;/code>: организовать пункта повестки дня в рамках &lt;code>org-gtd&lt;/code>.&lt;/li>
-&lt;li>&lt;code>org-gtd-clarify-switch-to-buffer&lt;/code>: вернуться к любому существующему буферу уточнения, используйте вместо переключения обратно в обычный поток.&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>Клавиатура:
-&lt;ul>
-&lt;li>&lt;code>org-gtd-clarify-map&lt;/code>: клавиатурные комбинации в буфере уточнения.&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ul>
-&lt;h3 id="шаг-4-6-организуйте">&lt;span class="section-num">4.4&lt;/span> Шаг 4/6: Организуйте&lt;/h3>
-&lt;ul>
-&lt;li>Функции:
-&lt;ul>
-&lt;li>&lt;code>org-gtd-organize&lt;/code>: всплывающее меню с вопросом, как организовать (например, отдельное действие, встречу и т. д.) элемент в данный момент.&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>Хуки:
-&lt;ul>
-&lt;li>&lt;code>org-gtd-organize-hooks&lt;/code>: ряд функций, которые вызываются для оформления каждого элемента (например, тегов организации и т. д.).&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ul>
-&lt;h3 id="шаг-5-6-ежедневное-взаимодействие">&lt;span class="section-num">4.5&lt;/span> Шаг 5/6: Ежедневное взаимодействие&lt;/h3>
-&lt;ul>
-&lt;li>Функции:
-&lt;ul>
-&lt;li>&lt;code>org-gtd-engage&lt;/code>: ежедневный просмотр.&lt;/li>
-&lt;li>&lt;code>org-gtd-engage-grouped-by-context&lt;/code>: все действия NEXT, сгруппированные по тегам, начинающимся с @. Это может не сработать, если вы удалите &lt;code>org-set-tags-command&lt;/code> из &lt;code>org-gtd-organize-hooks&lt;/code>.&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ul>
-&lt;h3 id="шаг-6-6-обзор">&lt;span class="section-num">4.6&lt;/span> Шаг 6/6: Обзор&lt;/h3>
-&lt;ul>
-&lt;li>Функции:
-&lt;ul>
-&lt;li>&lt;code>org-gtd-oops&lt;/code>: Показать все пропущенные встречи.&lt;/li>
-&lt;li>&lt;code>org-gtd-review-area-of-focus&lt;/code>: показать представление повестки дня, предназначенное для одной из ваших областей деятельности.&lt;/li>
-&lt;li>&lt;code>org-gtd-review-stuck-*&lt;/code>: найти любой из типов деятельности, которые остались незамеченными.&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ul></description></item><item><title>Содержание списка дел</title><link>https://yamadharma.github.io/ru/post/2023/04/12/to-do-list-contents/</link><pubDate>Wed, 12 Apr 2023 09:54:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/04/12/to-do-list-contents/</guid><description>&lt;p>Содержание списка дел.&lt;/p>
-&lt;details class="print:hidden xl:hidden" >
-&lt;summary>Содержание&lt;/summary>
-&lt;div class="text-sm">
-&lt;nav id="TableOfContents">
-&lt;ul>
-&lt;li>&lt;a href="#повторяющиеся-дела">&lt;span class="section-num">1&lt;/span> Повторяющиеся дела&lt;/a>
-&lt;ul>
-&lt;li>&lt;a href="#проверка-почты">&lt;span class="section-num">1.1&lt;/span> Проверка почты&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ul>
-&lt;/nav>
-&lt;/div>
-&lt;/details>
-&lt;h2 id="повторяющиеся-дела">&lt;span class="section-num">1&lt;/span> Повторяющиеся дела&lt;/h2>
-&lt;h3 id="проверка-почты">&lt;span class="section-num">1.1&lt;/span> Проверка почты&lt;/h3>
-&lt;ul>
-&lt;li>Проверка почты проводится два раза в день.&lt;/li>
-&lt;li>Утром и вечером.&lt;/li>
-&lt;li>Одного раза не достаточно.&lt;/li>
-&lt;/ul></description></item><item><title>Метод GTD</title><link>https://yamadharma.github.io/ru/post/2021/07/12/gtd-method/</link><pubDate>Mon, 12 Jul 2021 15:00:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2021/07/12/gtd-method/</guid><description>&lt;p>Метод управления делами &lt;em>Getting Things Done (GTD)&lt;/em>.&lt;/p>
-&lt;details class="print:hidden xl:hidden" >
-&lt;summary>Содержание&lt;/summary>
-&lt;div class="text-sm">
-&lt;nav id="TableOfContents">
-&lt;ul>
-&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#основные-идеи-метода-gtd">&lt;span class="section-num">2&lt;/span> Основные идеи метода GTD&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#этапы-метода-gtd">&lt;span class="section-num">3&lt;/span> Этапы метода GTD&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#основные-элементы-метода">&lt;span class="section-num">4&lt;/span> Основные элементы метода&lt;/a>
-&lt;ul>
-&lt;li>&lt;a href="#этапы-работы-с-информацией">&lt;span class="section-num">4.1&lt;/span> Этапы работы с информацией&lt;/a>
-&lt;ul>
-&lt;li>&lt;a href="#сбор-информации">&lt;span class="section-num">4.1.1&lt;/span> Сбор информации&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#обработка">&lt;span class="section-num">4.1.2&lt;/span> Обработка&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#организация">&lt;span class="section-num">4.1.3&lt;/span> Организация&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#обзор">&lt;span class="section-num">4.1.4&lt;/span> Обзор&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#действия">&lt;span class="section-num">4.1.5&lt;/span> Действия&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>&lt;a href="#ошибки-при-работе-с-getting-things-done-методом">&lt;span class="section-num">4.2&lt;/span> Ошибки при работе с Getting Things Done методом&lt;/a>
-&lt;ul>
-&lt;li>&lt;a href="#не-ознакомившись-с-методом-приступать-к-его-использованию-dot">&lt;span class="section-num">4.2.1&lt;/span> Не ознакомившись с методом, приступать к его использованию.&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#недостаточно-часто-проводить-обзор-списков-dot">&lt;span class="section-num">4.2.2&lt;/span> Недостаточно часто проводить обзор списков.&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#сразу-делать-вывод-о-всей-системе-не-освоившись-в-ней-dot">&lt;span class="section-num">4.2.3&lt;/span> Сразу делать вывод о всей системе, не освоившись в ней.&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#хранить-информацию-в-разных-местах-и-приложениях">&lt;span class="section-num">4.2.4&lt;/span> Хранить информацию в разных местах и приложениях&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#вы-пишите-нечеткие-и-некорректные-инструкции-в-следующих-действиях">&lt;span class="section-num">4.2.5&lt;/span> Вы пишите нечеткие и некорректные инструкции в &lt;em>следующих действиях&lt;/em>&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#держать-информацию-в-голове">&lt;span class="section-num">4.2.6&lt;/span> Держать информацию в голове&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#работать-в-режиме-многозадачности">&lt;span class="section-num">4.2.7&lt;/span> Работать в режиме многозадачности&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#продолжать-придерживаться-старого-образа-жизни-и-взглядов-и-надеяться-что-система-будет-сама-работать">&lt;span class="section-num">4.2.8&lt;/span> Продолжать придерживаться старого образа жизни и взглядов и надеяться, что система будет сама работать&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>&lt;a href="#списки-gtd">&lt;span class="section-num">4.3&lt;/span> Списки GTD&lt;/a>
-&lt;ul>
-&lt;li>&lt;a href="#список-входящие">&lt;span class="section-num">4.3.1&lt;/span> Список &lt;em>Входящие&lt;/em>&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#список-следующие-действия">&lt;span class="section-num">4.3.2&lt;/span> Список &lt;em>Следующие действия&lt;/em>&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#список-ожидающие">&lt;span class="section-num">4.3.3&lt;/span> Список &lt;em>Ожидающие&lt;/em>&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#список-проекты">&lt;span class="section-num">4.3.4&lt;/span> Список &lt;em>Проекты&lt;/em>&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#список-когда-нибудь-может-быть">&lt;span class="section-num">4.3.5&lt;/span> Список &lt;em>Когда-нибудь, может быть&lt;/em>&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#список-календарь">&lt;span class="section-num">4.3.6&lt;/span> Список &lt;em>Календарь&lt;/em>&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>&lt;a href="#контексты-действий">&lt;span class="section-num">4.4&lt;/span> Контексты действий&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#еженедельный-обзор-материалов">&lt;span class="section-num">4.5&lt;/span> Еженедельный обзор материалов&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#списки-триггеров">&lt;span class="section-num">4.6&lt;/span> Списки триггеров&lt;/a>
-&lt;ul>
-&lt;li>&lt;a href="#список-триггеров-школа">&lt;span class="section-num">4.6.1&lt;/span> Список триггеров Школа&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#список-триггеров-личный">&lt;span class="section-num">4.6.2&lt;/span> Список триггеров Личный&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#trigger-list-school">&lt;span class="section-num">4.6.3&lt;/span> Trigger list School&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#trigger-list-personal">&lt;span class="section-num">4.6.4&lt;/span> Trigger list Personal&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>&lt;a href="#организация-gtd">&lt;span class="section-num">5&lt;/span> Организация GTD&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#реализации-метода-gtd">&lt;span class="section-num">6&lt;/span> Реализации метода GTD&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;/nav>
-&lt;/div>
-&lt;/details>
-&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
-&lt;ul>
-&lt;li>Метод повышения личной эффективности посредством организации и контроля задач.&lt;/li>
-&lt;li>Создан Дэвидом Алленом.&lt;/li>
-&lt;/ul>
-&lt;h2 id="основные-идеи-метода-gtd">&lt;span class="section-num">2&lt;/span> Основные идеи метода GTD&lt;/h2>
-&lt;ul>
-&lt;li>Человек должен освободить свой разум от запоминания текущих задач, перенеся сами задачи и напоминания о них на внешний носитель.&lt;/li>
-&lt;li>Концентрация на выполнении самих задач, которые должны быть чётко определены и сформулированы заранее (какое следующее действие нужно совершить?).&lt;/li>
-&lt;li>Основные элементы: контроль и видение.&lt;/li>
-&lt;li>Три базовых модели:
-&lt;ul>
-&lt;li>управление рабочим процессом;&lt;/li>
-&lt;li>обзор работы (горизонты, высота полёта);&lt;/li>
-&lt;li>естественный метод планирования.&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>Управление рабочим процессом используется для того, чтобы взять под контроль все задачи.&lt;/li>
-&lt;li>Управление рабочим процессом состоит из пяти фаз:
-&lt;ul>
-&lt;li>сбор;&lt;/li>
-&lt;li>обработка;&lt;/li>
-&lt;li>организация;&lt;/li>
-&lt;li>обзор;&lt;/li>
-&lt;li>действия.&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>Модель обзора работы включает 6 уровней (по восходящей линии):
-&lt;ul>
-&lt;li>текущие дела;&lt;/li>
-&lt;li>текущие проекты;&lt;/li>
-&lt;li>круг обязанностей;&lt;/li>
-&lt;li>ближайшие годы (1&amp;ndash;2 года);&lt;/li>
-&lt;li>пятилетняя перспектива (3&amp;ndash;5 лет);&lt;/li>
-&lt;li>жизнь.&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>Рекомендуется еженедельный обзор по различным уровням.&lt;/li>
-&lt;li>Виденье, полученное из этих обзоров, позволяет управлять личными приоритетами.&lt;/li>
-&lt;li>Во время еженедельного обзора человек анализирует контексты задач и раскладывает их по соответствующим спискам.&lt;/li>
-&lt;li>Первых двух моделей достаточно для получения контроля и виденья в большинстве задач и проектов.&lt;/li>
-&lt;li>Для более глубокого обдумывания и размышления используется третья модель &amp;mdash; естественный метод планирования.&lt;/li>
-&lt;li>В управлении рабочим процессом делается &lt;em>горизонтальная фокусировка&lt;/em> на выполнении индивидуальных задач, в естественном методе планирования делается &lt;em>вертикальная фокусировка&lt;/em> на планировании проектов и продумывании тем.&lt;/li>
-&lt;li>Модель планирования состоит из 5 стадий:
-&lt;ul>
-&lt;li>определение цели и принципов;&lt;/li>
-&lt;li>виденье желаемых результатов;&lt;/li>
-&lt;li>мозговой штурм;&lt;/li>
-&lt;li>организация;&lt;/li>
-&lt;li>определение следующего конкретного действия.&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ul>
-&lt;h2 id="этапы-метода-gtd">&lt;span class="section-num">3&lt;/span> Этапы метода GTD&lt;/h2>
-&lt;p>&lt;a id="figure--fig:gtd:indox:process">&lt;/a>&lt;/p>
-&lt;figure>
-&lt;?xml version="1.0" encoding="us-ascii" standalone="no"?>&lt;svg
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Gtd | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/gtd/</link><atom:link href="https://yamadharma.github.io/ru/tag/gtd/index.xml" rel="self" type="application/rss+xml"/><description>Gtd</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>ru-ru</language><copyright>© 2025 Dmitry S. Kulyabov</copyright><lastBuildDate>Mon, 31 Jul 2023 18:24:00 +0300</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu_6ee0c25d397641dd.png</url><title>Gtd</title><link>https://yamadharma.github.io/ru/tag/gtd/</link></image><item><title>Emacs. Пакеты. Org-gtd</title><link>https://yamadharma.github.io/ru/post/2023/07/31/emacs-packages-org-gtd/</link><pubDate>Mon, 31 Jul 2023 18:24:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/07/31/emacs-packages-org-gtd/</guid><description>&lt;p&gt;Реализация метода GTD на основе Emacs.&lt;/p&gt;
+&lt;details class="print:hidden xl:hidden" &gt;
+&lt;summary&gt;Содержание&lt;/summary&gt;
+&lt;div class="text-sm"&gt;
+&lt;nav id="TableOfContents"&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="#общая-информация"&gt;&lt;span class="section-num"&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#режимы"&gt;&lt;span class="section-num"&gt;2&lt;/span&gt; Режимы&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#настраиваемые-переменные"&gt;&lt;span class="section-num"&gt;3&lt;/span&gt; Настраиваемые переменные&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#функции-пакета-по-шагам-gtd"&gt;&lt;span class="section-num"&gt;4&lt;/span&gt; Функции пакета по шагам GTD&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="#шаг-1-6-захват"&gt;&lt;span class="section-num"&gt;4.1&lt;/span&gt; Шаг 1/6: Захват&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#шаг-2-6-процесс"&gt;&lt;span class="section-num"&gt;4.2&lt;/span&gt; Шаг 2/6: Процесс&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#шаг-3-6-уточнение"&gt;&lt;span class="section-num"&gt;4.3&lt;/span&gt; Шаг 3/6: Уточнение&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#шаг-4-6-организуйте"&gt;&lt;span class="section-num"&gt;4.4&lt;/span&gt; Шаг 4/6: Организуйте&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#шаг-5-6-ежедневное-взаимодействие"&gt;&lt;span class="section-num"&gt;4.5&lt;/span&gt; Шаг 5/6: Ежедневное взаимодействие&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#шаг-6-6-обзор"&gt;&lt;span class="section-num"&gt;4.6&lt;/span&gt; Шаг 6/6: Обзор&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/div&gt;
+&lt;/details&gt;
+&lt;h2 id="общая-информация"&gt;&lt;span class="section-num"&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Репозиторий:
+&lt;/li&gt;
+&lt;li&gt;Пакет пытается максимально точно воспроизвести рабочий процесс GTD (см.
+).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="режимы"&gt;&lt;span class="section-num"&gt;2&lt;/span&gt; Режимы&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;org-gtd-mode&lt;/code&gt;: обновляет представления повестки дня, включать все файлы &lt;code&gt;org-gtd&lt;/code&gt; в &lt;code&gt;org-agenda-files&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="настраиваемые-переменные"&gt;&lt;span class="section-num"&gt;3&lt;/span&gt; Настраиваемые переменные&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;org-gtd-directory&lt;/code&gt;: каталог, в котором &lt;code&gt;org-gtd&lt;/code&gt; будет искать свои файлы.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;org-gtd-areas-of-focus&lt;/code&gt;: список строк, представляющих Horizon 3.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="функции-пакета-по-шагам-gtd"&gt;&lt;span class="section-num"&gt;4&lt;/span&gt; Функции пакета по шагам GTD&lt;/h2&gt;
+&lt;h3 id="шаг-1-6-захват"&gt;&lt;span class="section-num"&gt;4.1&lt;/span&gt; Шаг 1/6: Захват&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Функции:
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;org-gtd-capture&lt;/code&gt;: обёртка вокруг &lt;code&gt;org-capture&lt;/code&gt;. Можно использовать для сбора в Inbox.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Настраиваемые переменные:
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;org-gtd-capture-templates&lt;/code&gt;: шаблоны для &lt;code&gt;org-gtd-capture&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="шаг-2-6-процесс"&gt;&lt;span class="section-num"&gt;4.2&lt;/span&gt; Шаг 2/6: Процесс&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Функции:
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;org-gtd-process-inbox&lt;/code&gt;: обработать все элементы в Inbox.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="шаг-3-6-уточнение"&gt;&lt;span class="section-num"&gt;4.3&lt;/span&gt; Шаг 3/6: Уточнение&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Функции:
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;org-gtd-clarify-item&lt;/code&gt;: определить, для чего элемент из Inbox в рамках &lt;code&gt;org-gtd&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;org-gtd-clarify-agenda-item&lt;/code&gt;: организовать пункта повестки дня в рамках &lt;code&gt;org-gtd&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;org-gtd-clarify-switch-to-buffer&lt;/code&gt;: вернуться к любому существующему буферу уточнения, используйте вместо переключения обратно в обычный поток.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Клавиатура:
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;org-gtd-clarify-map&lt;/code&gt;: клавиатурные комбинации в буфере уточнения.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="шаг-4-6-организуйте"&gt;&lt;span class="section-num"&gt;4.4&lt;/span&gt; Шаг 4/6: Организуйте&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Функции:
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;org-gtd-organize&lt;/code&gt;: всплывающее меню с вопросом, как организовать (например, отдельное действие, встречу и т. д.) элемент в данный момент.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Хуки:
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;org-gtd-organize-hooks&lt;/code&gt;: ряд функций, которые вызываются для оформления каждого элемента (например, тегов организации и т. д.).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="шаг-5-6-ежедневное-взаимодействие"&gt;&lt;span class="section-num"&gt;4.5&lt;/span&gt; Шаг 5/6: Ежедневное взаимодействие&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Функции:
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;org-gtd-engage&lt;/code&gt;: ежедневный просмотр.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;org-gtd-engage-grouped-by-context&lt;/code&gt;: все действия NEXT, сгруппированные по тегам, начинающимся с @. Это может не сработать, если вы удалите &lt;code&gt;org-set-tags-command&lt;/code&gt; из &lt;code&gt;org-gtd-organize-hooks&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="шаг-6-6-обзор"&gt;&lt;span class="section-num"&gt;4.6&lt;/span&gt; Шаг 6/6: Обзор&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Функции:
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;org-gtd-oops&lt;/code&gt;: Показать все пропущенные встречи.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;org-gtd-review-area-of-focus&lt;/code&gt;: показать представление повестки дня, предназначенное для одной из ваших областей деятельности.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;org-gtd-review-stuck-*&lt;/code&gt;: найти любой из типов деятельности, которые остались незамеченными.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Содержание списка дел</title><link>https://yamadharma.github.io/ru/post/2023/04/12/to-do-list-contents/</link><pubDate>Wed, 12 Apr 2023 09:54:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2023/04/12/to-do-list-contents/</guid><description>&lt;p&gt;Содержание списка дел.&lt;/p&gt;
+&lt;details class="print:hidden xl:hidden" &gt;
+&lt;summary&gt;Содержание&lt;/summary&gt;
+&lt;div class="text-sm"&gt;
+&lt;nav id="TableOfContents"&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="#повторяющиеся-дела"&gt;&lt;span class="section-num"&gt;1&lt;/span&gt; Повторяющиеся дела&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="#проверка-почты"&gt;&lt;span class="section-num"&gt;1.1&lt;/span&gt; Проверка почты&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/div&gt;
+&lt;/details&gt;
+&lt;h2 id="повторяющиеся-дела"&gt;&lt;span class="section-num"&gt;1&lt;/span&gt; Повторяющиеся дела&lt;/h2&gt;
+&lt;h3 id="проверка-почты"&gt;&lt;span class="section-num"&gt;1.1&lt;/span&gt; Проверка почты&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Проверка почты проводится два раза в день.&lt;/li&gt;
+&lt;li&gt;Утром и вечером.&lt;/li&gt;
+&lt;li&gt;Одного раза не достаточно.&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Метод GTD</title><link>https://yamadharma.github.io/ru/post/2021/07/12/gtd-method/</link><pubDate>Mon, 12 Jul 2021 15:00:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2021/07/12/gtd-method/</guid><description>&lt;p&gt;Метод управления делами &lt;em&gt;Getting Things Done (GTD)&lt;/em&gt;.&lt;/p&gt;
+&lt;details class="print:hidden xl:hidden" &gt;
+&lt;summary&gt;Содержание&lt;/summary&gt;
+&lt;div class="text-sm"&gt;
+&lt;nav id="TableOfContents"&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="#общая-информация"&gt;&lt;span class="section-num"&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#основные-идеи-метода-gtd"&gt;&lt;span class="section-num"&gt;2&lt;/span&gt; Основные идеи метода GTD&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#этапы-метода-gtd"&gt;&lt;span class="section-num"&gt;3&lt;/span&gt; Этапы метода GTD&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#основные-элементы-метода"&gt;&lt;span class="section-num"&gt;4&lt;/span&gt; Основные элементы метода&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="#этапы-работы-с-информацией"&gt;&lt;span class="section-num"&gt;4.1&lt;/span&gt; Этапы работы с информацией&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="#сбор-информации"&gt;&lt;span class="section-num"&gt;4.1.1&lt;/span&gt; Сбор информации&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#обработка"&gt;&lt;span class="section-num"&gt;4.1.2&lt;/span&gt; Обработка&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#организация"&gt;&lt;span class="section-num"&gt;4.1.3&lt;/span&gt; Организация&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#обзор"&gt;&lt;span class="section-num"&gt;4.1.4&lt;/span&gt; Обзор&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#действия"&gt;&lt;span class="section-num"&gt;4.1.5&lt;/span&gt; Действия&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href="#ошибки-при-работе-с-getting-things-done-методом"&gt;&lt;span class="section-num"&gt;4.2&lt;/span&gt; Ошибки при работе с Getting Things Done методом&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="#не-ознакомившись-с-методом-приступать-к-его-использованию-dot"&gt;&lt;span class="section-num"&gt;4.2.1&lt;/span&gt; Не ознакомившись с методом, приступать к его использованию.&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#недостаточно-часто-проводить-обзор-списков-dot"&gt;&lt;span class="section-num"&gt;4.2.2&lt;/span&gt; Недостаточно часто проводить обзор списков.&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#сразу-делать-вывод-о-всей-системе-не-освоившись-в-ней-dot"&gt;&lt;span class="section-num"&gt;4.2.3&lt;/span&gt; Сразу делать вывод о всей системе, не освоившись в ней.&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#хранить-информацию-в-разных-местах-и-приложениях"&gt;&lt;span class="section-num"&gt;4.2.4&lt;/span&gt; Хранить информацию в разных местах и приложениях&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#вы-пишите-нечеткие-и-некорректные-инструкции-в-следующих-действиях"&gt;&lt;span class="section-num"&gt;4.2.5&lt;/span&gt; Вы пишите нечеткие и некорректные инструкции в &lt;em&gt;следующих действиях&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#держать-информацию-в-голове"&gt;&lt;span class="section-num"&gt;4.2.6&lt;/span&gt; Держать информацию в голове&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#работать-в-режиме-многозадачности"&gt;&lt;span class="section-num"&gt;4.2.7&lt;/span&gt; Работать в режиме многозадачности&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#продолжать-придерживаться-старого-образа-жизни-и-взглядов-и-надеяться-что-система-будет-сама-работать"&gt;&lt;span class="section-num"&gt;4.2.8&lt;/span&gt; Продолжать придерживаться старого образа жизни и взглядов и надеяться, что система будет сама работать&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href="#списки-gtd"&gt;&lt;span class="section-num"&gt;4.3&lt;/span&gt; Списки GTD&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="#список-входящие"&gt;&lt;span class="section-num"&gt;4.3.1&lt;/span&gt; Список &lt;em&gt;Входящие&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#список-следующие-действия"&gt;&lt;span class="section-num"&gt;4.3.2&lt;/span&gt; Список &lt;em&gt;Следующие действия&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#список-ожидающие"&gt;&lt;span class="section-num"&gt;4.3.3&lt;/span&gt; Список &lt;em&gt;Ожидающие&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#список-проекты"&gt;&lt;span class="section-num"&gt;4.3.4&lt;/span&gt; Список &lt;em&gt;Проекты&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#список-когда-нибудь-может-быть"&gt;&lt;span class="section-num"&gt;4.3.5&lt;/span&gt; Список &lt;em&gt;Когда-нибудь, может быть&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#список-календарь"&gt;&lt;span class="section-num"&gt;4.3.6&lt;/span&gt; Список &lt;em&gt;Календарь&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href="#контексты-действий"&gt;&lt;span class="section-num"&gt;4.4&lt;/span&gt; Контексты действий&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#еженедельный-обзор-материалов"&gt;&lt;span class="section-num"&gt;4.5&lt;/span&gt; Еженедельный обзор материалов&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#списки-триггеров"&gt;&lt;span class="section-num"&gt;4.6&lt;/span&gt; Списки триггеров&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="#список-триггеров-школа"&gt;&lt;span class="section-num"&gt;4.6.1&lt;/span&gt; Список триггеров Школа&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#список-триггеров-личный"&gt;&lt;span class="section-num"&gt;4.6.2&lt;/span&gt; Список триггеров Личный&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#trigger-list-school"&gt;&lt;span class="section-num"&gt;4.6.3&lt;/span&gt; Trigger list School&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#trigger-list-personal"&gt;&lt;span class="section-num"&gt;4.6.4&lt;/span&gt; Trigger list Personal&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href="#организация-gtd"&gt;&lt;span class="section-num"&gt;5&lt;/span&gt; Организация GTD&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#реализации-метода-gtd"&gt;&lt;span class="section-num"&gt;6&lt;/span&gt; Реализации метода GTD&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/div&gt;
+&lt;/details&gt;
+&lt;h2 id="общая-информация"&gt;&lt;span class="section-num"&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Метод повышения личной эффективности посредством организации и контроля задач.&lt;/li&gt;
+&lt;li&gt;Создан Дэвидом Алленом.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="основные-идеи-метода-gtd"&gt;&lt;span class="section-num"&gt;2&lt;/span&gt; Основные идеи метода GTD&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Человек должен освободить свой разум от запоминания текущих задач, перенеся сами задачи и напоминания о них на внешний носитель.&lt;/li&gt;
+&lt;li&gt;Концентрация на выполнении самих задач, которые должны быть чётко определены и сформулированы заранее (какое следующее действие нужно совершить?).&lt;/li&gt;
+&lt;li&gt;Основные элементы: контроль и видение.&lt;/li&gt;
+&lt;li&gt;Три базовых модели:
+&lt;ul&gt;
+&lt;li&gt;управление рабочим процессом;&lt;/li&gt;
+&lt;li&gt;обзор работы (горизонты, высота полёта);&lt;/li&gt;
+&lt;li&gt;естественный метод планирования.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Управление рабочим процессом используется для того, чтобы взять под контроль все задачи.&lt;/li&gt;
+&lt;li&gt;Управление рабочим процессом состоит из пяти фаз:
+&lt;ul&gt;
+&lt;li&gt;сбор;&lt;/li&gt;
+&lt;li&gt;обработка;&lt;/li&gt;
+&lt;li&gt;организация;&lt;/li&gt;
+&lt;li&gt;обзор;&lt;/li&gt;
+&lt;li&gt;действия.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Модель обзора работы включает 6 уровней (по восходящей линии):
+&lt;ul&gt;
+&lt;li&gt;текущие дела;&lt;/li&gt;
+&lt;li&gt;текущие проекты;&lt;/li&gt;
+&lt;li&gt;круг обязанностей;&lt;/li&gt;
+&lt;li&gt;ближайшие годы (1&amp;ndash;2 года);&lt;/li&gt;
+&lt;li&gt;пятилетняя перспектива (3&amp;ndash;5 лет);&lt;/li&gt;
+&lt;li&gt;жизнь.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Рекомендуется еженедельный обзор по различным уровням.&lt;/li&gt;
+&lt;li&gt;Виденье, полученное из этих обзоров, позволяет управлять личными приоритетами.&lt;/li&gt;
+&lt;li&gt;Во время еженедельного обзора человек анализирует контексты задач и раскладывает их по соответствующим спискам.&lt;/li&gt;
+&lt;li&gt;Первых двух моделей достаточно для получения контроля и виденья в большинстве задач и проектов.&lt;/li&gt;
+&lt;li&gt;Для более глубокого обдумывания и размышления используется третья модель &amp;mdash; естественный метод планирования.&lt;/li&gt;
+&lt;li&gt;В управлении рабочим процессом делается &lt;em&gt;горизонтальная фокусировка&lt;/em&gt; на выполнении индивидуальных задач, в естественном методе планирования делается &lt;em&gt;вертикальная фокусировка&lt;/em&gt; на планировании проектов и продумывании тем.&lt;/li&gt;
+&lt;li&gt;Модель планирования состоит из 5 стадий:
+&lt;ul&gt;
+&lt;li&gt;определение цели и принципов;&lt;/li&gt;
+&lt;li&gt;виденье желаемых результатов;&lt;/li&gt;
+&lt;li&gt;мозговой штурм;&lt;/li&gt;
+&lt;li&gt;организация;&lt;/li&gt;
+&lt;li&gt;определение следующего конкретного действия.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="этапы-метода-gtd"&gt;&lt;span class="section-num"&gt;3&lt;/span&gt; Этапы метода GTD&lt;/h2&gt;
+&lt;p&gt;&lt;a id="figure--fig:gtd:indox:process"&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;figure&gt;
+&lt;?xml version="1.0" encoding="us-ascii" standalone="no"?&gt;&lt;svg
 xmlns="http://www.w3.org/2000/svg"
 xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css"
 height="690px" preserveAspectRatio="none"
 style="width:1118px;height:690px;background:#FFFFFF;" version="1.1"
 viewBox="0 0 1118 690" width="1118px"
-zoomAndPan="magnify">&lt;defs/>&lt;g>&lt;rect fill="none" height="25.6318"
+zoomAndPan="magnify"&gt;&lt;defs/&gt;&lt;g&gt;&lt;rect fill="none" height="25.6318"
 style="stroke:none;stroke-width:1.0;" width="1085" x="15"
-y="15.7"/>&lt;ellipse cx="85" cy="56.3318" fill="#222222" rx="10" ry="10"
-style="stroke:#222222;stroke-width:1.0;"/>&lt;rect fill="#F1F1F1"
+y="15.7"/&gt;&lt;ellipse cx="85" cy="56.3318" fill="#222222" rx="10" ry="10"
+style="stroke:#222222;stroke-width:1.0;"/&gt;&lt;rect fill="#F1F1F1"
 height="37.0881" style="stroke:#181818;stroke-width:0.5;" width="54"
-x="58" y="86.3318"/>&lt;text fill="#000000" font-family="sans-serif"
+x="58" y="86.3318"/&gt;&lt;text fill="#000000" font-family="sans-serif"
 font-size="12" lengthAdjust="spacing" textLength="34" x="68"
-y="108.6199">IN BOX&lt;/text>&lt;rect fill="#F1F1F1" height="37.0881"
+y="108.6199"&gt;IN BOX&lt;/text&gt;&lt;rect fill="#F1F1F1" height="37.0881"
 rx="12.5" ry="12.5" style="stroke:#181818;stroke-width:0.5;"
-width="57" x="56.5" y="143.4199"/>&lt;text fill="#000000"
+width="57" x="56.5" y="143.4199"/&gt;&lt;text fill="#000000"
 font-family="sans-serif" font-size="12" lengthAdjust="spacing"
-textLength="37" x="66.5" y="165.708">Review&lt;/text>&lt;polygon
+textLength="37" x="66.5" y="165.708"&gt;Review&lt;/text&gt;&lt;polygon
 fill="#F1F1F1"
 points="47,200.508,123,200.508,135,212.508,123,224.508,47,224.508,35,212.508,47,200.508"
-style="stroke:#181818;stroke-width:0.5;"/>&lt;text fill="#000000"
+style="stroke:#181818;stroke-width:0.5;"/&gt;&lt;text fill="#000000"
 font-family="sans-serif" font-size="11" lengthAdjust="spacing"
-textLength="76" x="47" y="215.94">Is it Actionable?&lt;/text>&lt;text
+textLength="76" x="47" y="215.94"&gt;Is it Actionable?&lt;/text&gt;&lt;text
 fill="#000000" font-family="sans-serif" font-size="11"
 lengthAdjust="spacing" textLength="15" x="20"
-y="208.1081">yes&lt;/text>&lt;text fill="#000000" font-family="sans-serif"
+y="208.1081"&gt;yes&lt;/text&gt;&lt;text fill="#000000" font-family="sans-serif"
 font-size="11" lengthAdjust="spacing" textLength="12" x="135"
-y="208.1081">no&lt;/text>&lt;polygon fill="#F1F1F1"
+y="208.1081"&gt;no&lt;/text&gt;&lt;polygon fill="#F1F1F1"
 points="85,612.1963,97,624.1963,85,636.1963,73,624.1963,85,612.1963"
-style="stroke:#181818;stroke-width:0.5;"/>&lt;ellipse cx="85"
+style="stroke:#181818;stroke-width:0.5;"/&gt;&lt;ellipse cx="85"
 cy="667.1963" fill="none" rx="11" ry="11"
-style="stroke:#222222;stroke-width:1.0;"/>&lt;ellipse cx="85"
+style="stroke:#222222;stroke-width:1.0;"/&gt;&lt;ellipse cx="85"
 cy="667.1963" fill="#222222" rx="6" ry="6"
-style="stroke:#111111;stroke-width:1.0;"/>&lt;line
+style="stroke:#111111;stroke-width:1.0;"/&gt;&lt;line
 style="stroke:#000000;stroke-width:1.5;" x1="15" x2="15" y1="15.7"
-y2="678.1963"/>&lt;polygon fill="#F1F1F1"
+y2="678.1963"/&gt;&lt;polygon fill="#F1F1F1"
 points="285,244.508,345,244.508,357,256.508,345,268.508,285,268.508,273,256.508,285,244.508"
-style="stroke:#181818;stroke-width:0.5;"/>&lt;text fill="#000000"
+style="stroke:#181818;stroke-width:0.5;"/&gt;&lt;text fill="#000000"
 font-family="sans-serif" font-size="11" lengthAdjust="spacing"
-textLength="60" x="285" y="259.94">Is multistep?&lt;/text>&lt;text
+textLength="60" x="285" y="259.94"&gt;Is multistep?&lt;/text&gt;&lt;text
 fill="#000000" font-family="sans-serif" font-size="11"
 lengthAdjust="spacing" textLength="15" x="258"
-y="252.1081">yes&lt;/text>&lt;text fill="#000000" font-family="sans-serif"
+y="252.1081"&gt;yes&lt;/text&gt;&lt;text fill="#000000" font-family="sans-serif"
 font-size="11" lengthAdjust="spacing" textLength="12" x="357"
-y="252.1081">no&lt;/text>&lt;rect fill="#F1F1F1" height="37.0881" rx="12.5"
+y="252.1081"&gt;no&lt;/text&gt;&lt;rect fill="#F1F1F1" height="37.0881" rx="12.5"
 ry="12.5" style="stroke:#181818;stroke-width:0.5;" width="92" x="158"
-y="288.508"/>&lt;text fill="#000000" font-family="sans-serif"
+y="288.508"/&gt;&lt;text fill="#000000" font-family="sans-serif"
 font-size="12" lengthAdjust="spacing" textLength="72" x="168"
-y="310.7961">Add to Project&lt;/text>&lt;rect fill="#F1F1F1"
+y="310.7961"&gt;Add to Project&lt;/text&gt;&lt;rect fill="#F1F1F1"
 height="37.0881" style="stroke:#181818;stroke-width:0.5;" width="56"
-x="176" y="360.5962"/>&lt;text fill="#000000" font-family="sans-serif"
+x="176" y="360.5962"/&gt;&lt;text fill="#000000" font-family="sans-serif"
 font-size="12" lengthAdjust="spacing" textLength="36" x="186"
-y="382.8842">Project&lt;/text>&lt;polygon fill="#F1F1F1"
+y="382.8842"&gt;Project&lt;/text&gt;&lt;polygon fill="#F1F1F1"
 points="315,578.1963,327,590.1963,315,602.1963,303,590.1963,315,578.1963"
-style="stroke:#181818;stroke-width:0.5;"/>&lt;line
+style="stroke:#181818;stroke-width:0.5;"/&gt;&lt;line
 style="stroke:#000000;stroke-width:1.5;" x1="152" x2="152" y1="15.7"
-y2="678.1963"/>&lt;polygon fill="#F1F1F1"
+y2="678.1963"/&gt;&lt;polygon fill="#F1F1F1"
 points="462,288.508,590,288.508,602,300.508,590,312.508,462,312.508,450,300.508,462,288.508"
-style="stroke:#181818;stroke-width:0.5;"/>&lt;text fill="#000000"
+style="stroke:#181818;stroke-width:0.5;"/&gt;&lt;text fill="#000000"
 font-family="sans-serif" font-size="11" lengthAdjust="spacing"
-textLength="128" x="462" y="303.94">Less than 2 minutes
-Action?&lt;/text>&lt;text fill="#000000" font-family="sans-serif"
+textLength="128" x="462" y="303.94"&gt;Less than 2 minutes
+Action?&lt;/text&gt;&lt;text fill="#000000" font-family="sans-serif"
 font-size="11" lengthAdjust="spacing" textLength="15" x="435"
-y="296.1081">yes&lt;/text>&lt;text fill="#000000" font-family="sans-serif"
+y="296.1081"&gt;yes&lt;/text&gt;&lt;text fill="#000000" font-family="sans-serif"
 font-size="11" lengthAdjust="spacing" textLength="12" x="602"
-y="296.1081">no&lt;/text>&lt;rect fill="#F1F1F1" height="37.0881" rx="12.5"
+y="296.1081"&gt;no&lt;/text&gt;&lt;rect fill="#F1F1F1" height="37.0881" rx="12.5"
 ry="12.5" style="stroke:#181818;stroke-width:0.5;" width="46" x="380"
-y="322.508"/>&lt;text fill="#000000" font-family="sans-serif"
+y="322.508"/&gt;&lt;text fill="#000000" font-family="sans-serif"
 font-size="12" lengthAdjust="spacing" textLength="26" x="390"
-y="344.7961">DO IT&lt;/text>&lt;line
+y="344.7961"&gt;DO IT&lt;/text&gt;&lt;line
 style="stroke:#181818;stroke-width:1.5;" x1="514.5" x2="781.5"
-y1="322.508" y2="322.508"/>&lt;path d="M490,344.008 L490,372.5201
+y1="322.508" y2="322.508"/&gt;&lt;path d="M490,344.008 L490,372.5201
 L539,372.5201 L539,354.008 L529,344.008 L490,344.008 " fill="#FEFFDD"
-style="stroke:#181818;stroke-width:0.5;"/>&lt;path d="M529,344.008
+style="stroke:#181818;stroke-width:0.5;"/&gt;&lt;path d="M529,344.008
 L529,354.008 L539,354.008 L529,344.008 " fill="#FEFFDD"
-style="stroke:#181818;stroke-width:0.5;"/>&lt;text fill="#000000"
+style="stroke:#181818;stroke-width:0.5;"/&gt;&lt;text fill="#000000"
 font-family="sans-serif" font-size="13" lengthAdjust="spacing"
-textLength="28" x="496" y="362.32">ASAP&lt;/text>&lt;rect fill="#F1F1F1"
+textLength="28" x="496" y="362.32"&gt;ASAP&lt;/text&gt;&lt;rect fill="#F1F1F1"
 height="37.0881" rx="12.5" ry="12.5"
 style="stroke:#181818;stroke-width:0.5;" width="109" x="460"
-y="407.5201"/>&lt;text fill="#000000" font-family="sans-serif"
+y="407.5201"/&gt;&lt;text fill="#000000" font-family="sans-serif"
 font-size="12" lengthAdjust="spacing" textLength="89" x="470"
-y="429.8081">Add to Action List&lt;/text>&lt;rect fill="#F1F1F1"
+y="429.8081"&gt;Add to Action List&lt;/text&gt;&lt;rect fill="#F1F1F1"
 height="37.0881" style="stroke:#181818;stroke-width:0.5;" width="78"
-x="475.5" y="479.6082"/>&lt;text fill="#000000" font-family="sans-serif"
+x="475.5" y="479.6082"/&gt;&lt;text fill="#000000" font-family="sans-serif"
 font-size="12" lengthAdjust="spacing" textLength="58" x="485.5"
-y="501.8963">Next Action&lt;/text>&lt;path d="M597,344.008 L597,372.5201
+y="501.8963"&gt;Next Action&lt;/text&gt;&lt;path d="M597,344.008 L597,372.5201
 L733,372.5201 L733,354.008 L723,344.008 L597,344.008 " fill="#FEFFDD"
-style="stroke:#181818;stroke-width:0.5;"/>&lt;path d="M723,344.008
+style="stroke:#181818;stroke-width:0.5;"/&gt;&lt;path d="M723,344.008
 L723,354.008 L733,354.008 L723,344.008 " fill="#FEFFDD"
-style="stroke:#181818;stroke-width:0.5;"/>&lt;text fill="#000000"
+style="stroke:#181818;stroke-width:0.5;"/&gt;&lt;text fill="#000000"
 font-family="sans-serif" font-size="13" lengthAdjust="spacing"
-textLength="115" x="603" y="362.32">Specific Date or Time&lt;/text>&lt;rect
+textLength="115" x="603" y="362.32"&gt;Specific Date or Time&lt;/text&gt;&lt;rect
 fill="#F1F1F1" height="37.0881" rx="12.5" ry="12.5"
 style="stroke:#181818;stroke-width:0.5;" width="102" x="614"
-y="407.5201"/>&lt;text fill="#000000" font-family="sans-serif"
+y="407.5201"/&gt;&lt;text fill="#000000" font-family="sans-serif"
 font-size="12" lengthAdjust="spacing" textLength="82" x="624"
-y="429.8081">Add to Calendar&lt;/text>&lt;rect fill="#F1F1F1"
+y="429.8081"&gt;Add to Calendar&lt;/text&gt;&lt;rect fill="#F1F1F1"
 height="37.0881" style="stroke:#181818;stroke-width:0.5;" width="66"
-x="632" y="479.6082"/>&lt;text fill="#000000" font-family="sans-serif"
+x="632" y="479.6082"/&gt;&lt;text fill="#000000" font-family="sans-serif"
 font-size="12" lengthAdjust="spacing" textLength="46" x="642"
-y="501.8963">Calendar&lt;/text>&lt;rect fill="#F1F1F1" height="37.0881"
+y="501.8963"&gt;Calendar&lt;/text&gt;&lt;rect fill="#F1F1F1" height="37.0881"
 rx="12.5" ry="12.5" style="stroke:#181818;stroke-width:0.5;"
-width="64" x="749.5" y="375.764"/>&lt;text fill="#000000"
+width="64" x="749.5" y="375.764"/&gt;&lt;text fill="#000000"
 font-family="sans-serif" font-size="12" lengthAdjust="spacing"
-textLength="44" x="759.5" y="398.0521">Delegate&lt;/text>&lt;rect
+textLength="44" x="759.5" y="398.0521"&gt;Delegate&lt;/text&gt;&lt;rect
 fill="#F1F1F1" height="37.0881"
 style="stroke:#181818;stroke-width:0.5;" width="77" x="743"
-y="447.8522"/>&lt;text fill="#000000" font-family="sans-serif"
+y="447.8522"/&gt;&lt;text fill="#000000" font-family="sans-serif"
 font-size="12" lengthAdjust="spacing" textLength="57" x="753"
-y="470.1402">Waiting For&lt;/text>&lt;line
+y="470.1402"&gt;Waiting For&lt;/text&gt;&lt;line
 style="stroke:#181818;stroke-width:1.5;" x1="514.5" x2="781.5"
-y1="536.6963" y2="536.6963"/>&lt;polygon fill="#F1F1F1"
+y1="536.6963" y2="536.6963"/&gt;&lt;polygon fill="#F1F1F1"
 points="526,544.1963,538,556.1963,526,568.1963,514,556.1963,526,544.1963"
-style="stroke:#181818;stroke-width:0.5;"/>&lt;line
+style="stroke:#181818;stroke-width:0.5;"/&gt;&lt;line
 style="stroke:#000000;stroke-width:1.5;" x1="374" x2="374" y1="15.7"
-y2="678.1963"/>&lt;line style="stroke:#181818;stroke-width:1.5;" x1="864"
-x2="1059.5" y1="244.508" y2="244.508"/>&lt;rect fill="#F1F1F1"
+y2="678.1963"/&gt;&lt;line style="stroke:#181818;stroke-width:1.5;" x1="864"
+x2="1059.5" y1="244.508" y2="244.508"/&gt;&lt;rect fill="#F1F1F1"
 height="37.0881" rx="12.5" ry="12.5"
 style="stroke:#181818;stroke-width:0.5;" width="68" x="830"
-y="266.008"/>&lt;text fill="#000000" font-family="sans-serif"
+y="266.008"/&gt;&lt;text fill="#000000" font-family="sans-serif"
 font-size="12" lengthAdjust="spacing" textLength="48" x="840"
-y="288.2961">Eliminate&lt;/text>&lt;rect fill="#F1F1F1" height="37.0881"
+y="288.2961"&gt;Eliminate&lt;/text&gt;&lt;rect fill="#F1F1F1" height="37.0881"
 style="stroke:#181818;stroke-width:0.5;" width="48" x="840"
-y="338.0962"/>&lt;text fill="#000000" font-family="sans-serif"
+y="338.0962"/&gt;&lt;text fill="#000000" font-family="sans-serif"
 font-size="12" lengthAdjust="spacing" textLength="28" x="850"
-y="360.3842">Trash&lt;/text>&lt;rect fill="#F1F1F1" height="37.0881"
+y="360.3842"&gt;Trash&lt;/text&gt;&lt;rect fill="#F1F1F1" height="37.0881"
 rx="12.5" ry="12.5" style="stroke:#181818;stroke-width:0.5;"
-width="65" x="928.5" y="266.008"/>&lt;text fill="#000000"
+width="65" x="928.5" y="266.008"/&gt;&lt;text fill="#000000"
 font-family="sans-serif" font-size="12" lengthAdjust="spacing"
-textLength="45" x="938.5" y="288.2961">Incubate&lt;/text>&lt;rect
+textLength="45" x="938.5" y="288.2961"&gt;Incubate&lt;/text&gt;&lt;rect
 fill="#F1F1F1" height="37.0881"
 style="stroke:#181818;stroke-width:0.5;" width="106" x="908"
-y="338.0962"/>&lt;text fill="#000000" font-family="sans-serif"
+y="338.0962"/&gt;&lt;text fill="#000000" font-family="sans-serif"
 font-size="12" lengthAdjust="spacing" textLength="86" x="918"
-y="360.3842">Someday/Maybe&lt;/text>&lt;rect fill="#F1F1F1" height="37.0881"
+y="360.3842"&gt;Someday/Maybe&lt;/text&gt;&lt;rect fill="#F1F1F1" height="37.0881"
 rx="12.5" ry="12.5" style="stroke:#181818;stroke-width:0.5;"
-width="38" x="1040.5" y="266.008"/>&lt;text fill="#000000"
+width="38" x="1040.5" y="266.008"/&gt;&lt;text fill="#000000"
 font-family="sans-serif" font-size="12" lengthAdjust="spacing"
-textLength="18" x="1050.5" y="288.2961">File&lt;/text>&lt;rect
+textLength="18" x="1050.5" y="288.2961"&gt;File&lt;/text&gt;&lt;rect
 fill="#F1F1F1" height="37.0881"
 style="stroke:#181818;stroke-width:0.5;" width="71" x="1024"
-y="338.0962"/>&lt;text fill="#000000" font-family="sans-serif"
+y="338.0962"/&gt;&lt;text fill="#000000" font-family="sans-serif"
 font-size="12" lengthAdjust="spacing" textLength="51" x="1034"
-y="360.3842">Reference&lt;/text>&lt;line
+y="360.3842"&gt;Reference&lt;/text&gt;&lt;line
 style="stroke:#181818;stroke-width:1.5;" x1="864" x2="1059.5"
-y1="395.1843" y2="395.1843"/>&lt;line
+y1="395.1843" y2="395.1843"/&gt;&lt;line
 style="stroke:#000000;stroke-width:1.5;" x1="824" x2="824" y1="15.7"
-y2="678.1963"/>&lt;line style="stroke:#000000;stroke-width:1.5;"
-x1="1099" x2="1099" y1="15.7" y2="678.1963"/>&lt;line
+y2="678.1963"/&gt;&lt;line style="stroke:#000000;stroke-width:1.5;"
+x1="1099" x2="1099" y1="15.7" y2="678.1963"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="85" x2="85" y1="66.3318"
-y2="86.3318"/>&lt;polygon fill="#181818"
+y2="86.3318"/&gt;&lt;polygon fill="#181818"
 points="81,76.3318,85,86.3318,89,76.3318,85,80.3318"
-style="stroke:#181818;stroke-width:1.0;"/>&lt;line
+style="stroke:#181818;stroke-width:1.0;"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="85" x2="85" y1="123.4199"
-y2="143.4199"/>&lt;polygon fill="#181818"
+y2="143.4199"/&gt;&lt;polygon fill="#181818"
 points="81,133.4199,85,143.4199,89,133.4199,85,137.4199"
-style="stroke:#181818;stroke-width:1.0;"/>&lt;line
+style="stroke:#181818;stroke-width:1.0;"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="85" x2="85" y1="180.508"
-y2="200.508"/>&lt;polygon fill="#181818"
+y2="200.508"/&gt;&lt;polygon fill="#181818"
 points="81,190.508,85,200.508,89,190.508,85,194.508"
-style="stroke:#181818;stroke-width:1.0;"/>&lt;line
+style="stroke:#181818;stroke-width:1.0;"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="85" x2="85" y1="636.1963"
-y2="656.1963"/>&lt;polygon fill="#181818"
+y2="656.1963"/&gt;&lt;polygon fill="#181818"
 points="81,646.1963,85,656.1963,89,646.1963,85,650.1963"
-style="stroke:#181818;stroke-width:1.0;"/>&lt;line
+style="stroke:#181818;stroke-width:1.0;"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="204" x2="204"
-y1="325.5962" y2="360.5962"/>&lt;polygon fill="#181818"
+y1="325.5962" y2="360.5962"/&gt;&lt;polygon fill="#181818"
 points="200,350.5962,204,360.5962,208,350.5962,204,354.5962"
-style="stroke:#181818;stroke-width:1.0;"/>&lt;line
+style="stroke:#181818;stroke-width:1.0;"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="273" x2="204"
-y1="256.508" y2="256.508"/>&lt;line
+y1="256.508" y2="256.508"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="204" x2="204"
-y1="256.508" y2="288.508"/>&lt;polygon fill="#181818"
+y1="256.508" y2="288.508"/&gt;&lt;polygon fill="#181818"
 points="200,278.508,204,288.508,208,278.508,204,282.508"
-style="stroke:#181818;stroke-width:1.0;"/>&lt;line
+style="stroke:#181818;stroke-width:1.0;"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="204" x2="204"
-y1="397.6843" y2="590.1963"/>&lt;line
+y1="397.6843" y2="590.1963"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="204" x2="303"
-y1="590.1963" y2="590.1963"/>&lt;polygon fill="#181818"
+y1="590.1963" y2="590.1963"/&gt;&lt;polygon fill="#181818"
 points="293,586.1963,303,590.1963,293,594.1963,297,590.1963"
-style="stroke:#181818;stroke-width:1.0;"/>&lt;line
+style="stroke:#181818;stroke-width:1.0;"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="514.5" x2="514.5"
-y1="372.5201" y2="407.5201"/>&lt;polygon fill="#181818"
+y1="372.5201" y2="407.5201"/&gt;&lt;polygon fill="#181818"
 points="510.5,397.5201,514.5,407.5201,518.5,397.5201,514.5,401.5201"
-style="stroke:#181818;stroke-width:1.0;"/>&lt;line
+style="stroke:#181818;stroke-width:1.0;"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="514.5" x2="514.5"
-y1="444.6082" y2="479.6082"/>&lt;polygon fill="#181818"
+y1="444.6082" y2="479.6082"/&gt;&lt;polygon fill="#181818"
 points="510.5,469.6082,514.5,479.6082,518.5,469.6082,514.5,473.6082"
-style="stroke:#181818;stroke-width:1.0;"/>&lt;line
+style="stroke:#181818;stroke-width:1.0;"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="665" x2="665"
-y1="372.5201" y2="407.5201"/>&lt;polygon fill="#181818"
+y1="372.5201" y2="407.5201"/&gt;&lt;polygon fill="#181818"
 points="661,397.5201,665,407.5201,669,397.5201,665,401.5201"
-style="stroke:#181818;stroke-width:1.0;"/>&lt;line
+style="stroke:#181818;stroke-width:1.0;"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="665" x2="665"
-y1="444.6082" y2="479.6082"/>&lt;polygon fill="#181818"
+y1="444.6082" y2="479.6082"/&gt;&lt;polygon fill="#181818"
 points="661,469.6082,665,479.6082,669,469.6082,665,473.6082"
-style="stroke:#181818;stroke-width:1.0;"/>&lt;line
+style="stroke:#181818;stroke-width:1.0;"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="781.5" x2="781.5"
-y1="412.8522" y2="447.8522"/>&lt;polygon fill="#181818"
+y1="412.8522" y2="447.8522"/&gt;&lt;polygon fill="#181818"
 points="777.5,437.8522,781.5,447.8522,785.5,437.8522,781.5,441.8522"
-style="stroke:#181818;stroke-width:1.0;"/>&lt;line
+style="stroke:#181818;stroke-width:1.0;"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="514.5" x2="514.5"
-y1="324.008" y2="344.008"/>&lt;polygon fill="#181818"
+y1="324.008" y2="344.008"/&gt;&lt;polygon fill="#181818"
 points="510.5,334.008,514.5,344.008,518.5,334.008,514.5,338.008"
-style="stroke:#181818;stroke-width:1.0;"/>&lt;line
+style="stroke:#181818;stroke-width:1.0;"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="665" x2="665"
-y1="324.008" y2="344.008"/>&lt;polygon fill="#181818"
+y1="324.008" y2="344.008"/&gt;&lt;polygon fill="#181818"
 points="661,334.008,665,344.008,669,334.008,665,338.008"
-style="stroke:#181818;stroke-width:1.0;"/>&lt;line
+style="stroke:#181818;stroke-width:1.0;"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="781.5" x2="781.5"
-y1="324.008" y2="375.764"/>&lt;polygon fill="#181818"
+y1="324.008" y2="375.764"/&gt;&lt;polygon fill="#181818"
 points="777.5,365.764,781.5,375.764,785.5,365.764,781.5,369.764"
-style="stroke:#181818;stroke-width:1.0;"/>&lt;line
+style="stroke:#181818;stroke-width:1.0;"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="514.5" x2="514.5"
-y1="516.6963" y2="536.6963"/>&lt;polygon fill="#181818"
+y1="516.6963" y2="536.6963"/&gt;&lt;polygon fill="#181818"
 points="510.5,526.6963,514.5,536.6963,518.5,526.6963,514.5,530.6963"
-style="stroke:#181818;stroke-width:1.0;"/>&lt;line
+style="stroke:#181818;stroke-width:1.0;"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="665" x2="665"
-y1="516.6963" y2="536.6963"/>&lt;polygon fill="#181818"
+y1="516.6963" y2="536.6963"/&gt;&lt;polygon fill="#181818"
 points="661,526.6963,665,536.6963,669,526.6963,665,530.6963"
-style="stroke:#181818;stroke-width:1.0;"/>&lt;line
+style="stroke:#181818;stroke-width:1.0;"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="781.5" x2="781.5"
-y1="484.9403" y2="536.6963"/>&lt;polygon fill="#181818"
+y1="484.9403" y2="536.6963"/&gt;&lt;polygon fill="#181818"
 points="777.5,526.6963,781.5,536.6963,785.5,526.6963,781.5,530.6963"
-style="stroke:#181818;stroke-width:1.0;"/>&lt;line
+style="stroke:#181818;stroke-width:1.0;"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="450" x2="403"
-y1="300.508" y2="300.508"/>&lt;line
+y1="300.508" y2="300.508"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="403" x2="403"
-y1="300.508" y2="322.508"/>&lt;polygon fill="#181818"
+y1="300.508" y2="322.508"/&gt;&lt;polygon fill="#181818"
 points="399,312.508,403,322.508,407,312.508,403,316.508"
-style="stroke:#181818;stroke-width:1.0;"/>&lt;line
+style="stroke:#181818;stroke-width:1.0;"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="602" x2="649"
-y1="300.508" y2="300.508"/>&lt;line
+y1="300.508" y2="300.508"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="649" x2="649"
-y1="300.508" y2="322.508"/>&lt;polygon fill="#181818"
+y1="300.508" y2="322.508"/&gt;&lt;polygon fill="#181818"
 points="645,312.508,649,322.508,653,312.508,649,316.508"
-style="stroke:#181818;stroke-width:1.0;"/>&lt;line
+style="stroke:#181818;stroke-width:1.0;"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="403" x2="403"
-y1="359.5962" y2="556.1963"/>&lt;line
+y1="359.5962" y2="556.1963"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="403" x2="514"
-y1="556.1963" y2="556.1963"/>&lt;polygon fill="#181818"
+y1="556.1963" y2="556.1963"/&gt;&lt;polygon fill="#181818"
 points="504,552.1963,514,556.1963,504,560.1963,508,556.1963"
-style="stroke:#181818;stroke-width:1.0;"/>&lt;line
+style="stroke:#181818;stroke-width:1.0;"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="649" x2="649"
-y1="538.1963" y2="556.1963"/>&lt;line
+y1="538.1963" y2="556.1963"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="649" x2="538"
-y1="556.1963" y2="556.1963"/>&lt;polygon fill="#181818"
+y1="556.1963" y2="556.1963"/&gt;&lt;polygon fill="#181818"
 points="548,552.1963,538,556.1963,548,560.1963,544,556.1963"
-style="stroke:#181818;stroke-width:1.0;"/>&lt;line
+style="stroke:#181818;stroke-width:1.0;"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="864" x2="864"
-y1="303.0962" y2="338.0962"/>&lt;polygon fill="#181818"
+y1="303.0962" y2="338.0962"/&gt;&lt;polygon fill="#181818"
 points="860,328.0962,864,338.0962,868,328.0962,864,332.0962"
-style="stroke:#181818;stroke-width:1.0;"/>&lt;line
+style="stroke:#181818;stroke-width:1.0;"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="961" x2="961"
-y1="303.0962" y2="338.0962"/>&lt;polygon fill="#181818"
+y1="303.0962" y2="338.0962"/&gt;&lt;polygon fill="#181818"
 points="957,328.0962,961,338.0962,965,328.0962,961,332.0962"
-style="stroke:#181818;stroke-width:1.0;"/>&lt;line
+style="stroke:#181818;stroke-width:1.0;"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="1059.5" x2="1059.5"
-y1="303.0962" y2="338.0962"/>&lt;polygon fill="#181818"
+y1="303.0962" y2="338.0962"/&gt;&lt;polygon fill="#181818"
 points="1055.5,328.0962,1059.5,338.0962,1063.5,328.0962,1059.5,332.0962"
-style="stroke:#181818;stroke-width:1.0;"/>&lt;line
+style="stroke:#181818;stroke-width:1.0;"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="864" x2="864"
-y1="246.008" y2="266.008"/>&lt;polygon fill="#181818"
+y1="246.008" y2="266.008"/&gt;&lt;polygon fill="#181818"
 points="860,256.008,864,266.008,868,256.008,864,260.008"
-style="stroke:#181818;stroke-width:1.0;"/>&lt;line
+style="stroke:#181818;stroke-width:1.0;"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="961" x2="961"
-y1="246.008" y2="266.008"/>&lt;polygon fill="#181818"
+y1="246.008" y2="266.008"/&gt;&lt;polygon fill="#181818"
 points="957,256.008,961,266.008,965,256.008,961,260.008"
-style="stroke:#181818;stroke-width:1.0;"/>&lt;line
+style="stroke:#181818;stroke-width:1.0;"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="1059.5" x2="1059.5"
-y1="246.008" y2="266.008"/>&lt;polygon fill="#181818"
+y1="246.008" y2="266.008"/&gt;&lt;polygon fill="#181818"
 points="1055.5,256.008,1059.5,266.008,1063.5,256.008,1059.5,260.008"
-style="stroke:#181818;stroke-width:1.0;"/>&lt;line
+style="stroke:#181818;stroke-width:1.0;"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="864" x2="864"
-y1="375.1843" y2="395.1843"/>&lt;polygon fill="#181818"
+y1="375.1843" y2="395.1843"/&gt;&lt;polygon fill="#181818"
 points="860,385.1843,864,395.1843,868,385.1843,864,389.1843"
-style="stroke:#181818;stroke-width:1.0;"/>&lt;line
+style="stroke:#181818;stroke-width:1.0;"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="961" x2="961"
-y1="375.1843" y2="395.1843"/>&lt;polygon fill="#181818"
+y1="375.1843" y2="395.1843"/&gt;&lt;polygon fill="#181818"
 points="957,385.1843,961,395.1843,965,385.1843,961,389.1843"
-style="stroke:#181818;stroke-width:1.0;"/>&lt;line
+style="stroke:#181818;stroke-width:1.0;"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="1059.5" x2="1059.5"
-y1="375.1843" y2="395.1843"/>&lt;polygon fill="#181818"
+y1="375.1843" y2="395.1843"/&gt;&lt;polygon fill="#181818"
 points="1055.5,385.1843,1059.5,395.1843,1063.5,385.1843,1059.5,389.1843"
-style="stroke:#181818;stroke-width:1.0;"/>&lt;line
+style="stroke:#181818;stroke-width:1.0;"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="357" x2="526"
-y1="256.508" y2="256.508"/>&lt;line
+y1="256.508" y2="256.508"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="526" x2="526"
-y1="256.508" y2="288.508"/>&lt;polygon fill="#181818"
+y1="256.508" y2="288.508"/&gt;&lt;polygon fill="#181818"
 points="522,278.508,526,288.508,530,278.508,526,282.508"
-style="stroke:#181818;stroke-width:1.0;"/>&lt;line
+style="stroke:#181818;stroke-width:1.0;"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="526" x2="526"
-y1="568.1963" y2="590.1963"/>&lt;line
+y1="568.1963" y2="590.1963"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="526" x2="327"
-y1="590.1963" y2="590.1963"/>&lt;polygon fill="#181818"
+y1="590.1963" y2="590.1963"/&gt;&lt;polygon fill="#181818"
 points="337,586.1963,327,590.1963,337,594.1963,333,590.1963"
-style="stroke:#181818;stroke-width:1.0;"/>&lt;line
+style="stroke:#181818;stroke-width:1.0;"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="35" x2="23" y1="212.508"
-y2="212.508"/>&lt;line style="stroke:#181818;stroke-width:1.0;" x1="23"
-x2="23" y1="212.508" y2="230.508"/>&lt;line
+y2="212.508"/&gt;&lt;line style="stroke:#181818;stroke-width:1.0;" x1="23"
+x2="23" y1="212.508" y2="230.508"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="23" x2="315" y1="230.508"
-y2="230.508"/>&lt;line style="stroke:#181818;stroke-width:1.0;" x1="315"
-x2="315" y1="230.508" y2="244.508"/>&lt;polygon fill="#181818"
+y2="230.508"/&gt;&lt;line style="stroke:#181818;stroke-width:1.0;" x1="315"
+x2="315" y1="230.508" y2="244.508"/&gt;&lt;polygon fill="#181818"
 points="311,234.508,315,244.508,319,234.508,315,238.508"
-style="stroke:#181818;stroke-width:1.0;"/>&lt;line
+style="stroke:#181818;stroke-width:1.0;"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="135" x2="962.5"
-y1="212.508" y2="212.508"/>&lt;line
+y1="212.508" y2="212.508"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="962.5" x2="962.5"
-y1="212.508" y2="244.508"/>&lt;polygon fill="#181818"
+y1="212.508" y2="244.508"/&gt;&lt;polygon fill="#181818"
 points="958.5,234.508,962.5,244.508,966.5,234.508,962.5,238.508"
-style="stroke:#181818;stroke-width:1.0;"/>&lt;line
+style="stroke:#181818;stroke-width:1.0;"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="315" x2="315"
-y1="602.1963" y2="606.1963"/>&lt;line
+y1="602.1963" y2="606.1963"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="315" x2="55"
-y1="606.1963" y2="606.1963"/>&lt;line
+y1="606.1963" y2="606.1963"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="55" x2="55" y1="606.1963"
-y2="624.1963"/>&lt;line style="stroke:#181818;stroke-width:1.0;" x1="55"
-x2="73" y1="624.1963" y2="624.1963"/>&lt;polygon fill="#181818"
+y2="624.1963"/&gt;&lt;line style="stroke:#181818;stroke-width:1.0;" x1="55"
+x2="73" y1="624.1963" y2="624.1963"/&gt;&lt;polygon fill="#181818"
 points="63,620.1963,73,624.1963,63,628.1963,67,624.1963"
-style="stroke:#181818;stroke-width:1.0;"/>&lt;line
+style="stroke:#181818;stroke-width:1.0;"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="962.5" x2="962.5"
-y1="396.6843" y2="624.1963"/>&lt;line
+y1="396.6843" y2="624.1963"/&gt;&lt;line
 style="stroke:#181818;stroke-width:1.0;" x1="962.5" x2="97"
-y1="624.1963" y2="624.1963"/>&lt;polygon fill="#181818"
+y1="624.1963" y2="624.1963"/&gt;&lt;polygon fill="#181818"
 points="107,620.1963,97,624.1963,107,628.1963,103,624.1963"
-style="stroke:#181818;stroke-width:1.0;"/>&lt;text fill="#000000"
+style="stroke:#181818;stroke-width:1.0;"/&gt;&lt;text fill="#000000"
 font-family="sans-serif" font-size="18" lengthAdjust="spacing"
-textLength="53" x="57" y="34.1318">Review&lt;/text>&lt;text fill="#000000"
+textLength="53" x="57" y="34.1318"&gt;Review&lt;/text&gt;&lt;text fill="#000000"
 font-family="sans-serif" font-size="18" lengthAdjust="spacing"
-textLength="53" x="236.5" y="34.1318">Project&lt;/text>&lt;text
+textLength="53" x="236.5" y="34.1318"&gt;Project&lt;/text&gt;&lt;text
 fill="#000000" font-family="sans-serif" font-size="18"
-lengthAdjust="spacing" textLength="96" x="551" y="34.1318">Direct
-Action&lt;/text>&lt;text fill="#000000" font-family="sans-serif"
+lengthAdjust="spacing" textLength="96" x="551" y="34.1318"&gt;Direct
+Action&lt;/text&gt;&lt;text fill="#000000" font-family="sans-serif"
 font-size="18" lengthAdjust="spacing" textLength="122" x="900.5"
-y="34.1318">No Direct
-Action&lt;/text>&lt;/g>&lt;/svg>
-&lt;figcaption>
-&lt;p>&lt;span class="figure-number">Рис. 1.: &lt;/span>Обработка входящей информации&lt;/p>
-&lt;/figcaption>
-&lt;/figure>
-&lt;h2 id="основные-элементы-метода">&lt;span class="section-num">4&lt;/span> Основные элементы метода&lt;/h2>
-&lt;h3 id="этапы-работы-с-информацией">&lt;span class="section-num">4.1&lt;/span> Этапы работы с информацией&lt;/h3>
-&lt;ul>
-&lt;li>GTD предлагает подойти к управлению рабочим процессом, используя пять шагов:
-&lt;ul>
-&lt;li>Cбор&lt;/li>
-&lt;li>Обработка&lt;/li>
-&lt;li>Организация&lt;/li>
-&lt;li>Обзор&lt;/li>
-&lt;li>Действия&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ul>
-&lt;h4 id="сбор-информации">&lt;span class="section-num">4.1.1&lt;/span> Сбор информации&lt;/h4>
-&lt;ul>
-&lt;li>На первом этапе все имеющиеся мысли, идеи, задачи, проекты, дела нужно выгрузить из вашего ума во внешнюю систему.&lt;/li>
-&lt;li>Нужно фиксировать и новые появляющиеся задачи.&lt;/li>
-&lt;/ul>
-&lt;h4 id="обработка">&lt;span class="section-num">4.1.2&lt;/span> Обработка&lt;/h4>
-&lt;ul>
-&lt;li>Получив информацию, первый вопрос, который необходимо себе задать: «Что это за информация?». Как только вы решите, что это такое, вы сможете ответить на вопрос: «Что с этим делать?».&lt;/li>
-&lt;/ul>
-&lt;!--list-separator-->
-&lt;ol>
-&lt;li>
-&lt;p>Разовые задачи, которые занимают не более 2 минут&lt;/p>
-&lt;ul>
-&lt;li>Это все задачи, которые занимают не более 2 минут и выполняются за одно действие. Они не относятся к какому-либо проекту и могут загромождать список дел.&lt;/li>
-&lt;li>Если вы чувствуете, что данную задачу можно завершить здесь и сейчас, задайте себе вопрос: «Это займет меньше двух минут?» Если ваш ответ &amp;mdash; да, то просто выполните задачу, вычеркивайте и больше не думайте о ней.&lt;/li>
-&lt;li>Иногда, проще выполнить и забыть, то что не требует много времени, чем стараться удержать это в памяти.&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ol>
-&lt;!--list-separator-->
-&lt;ol start="2">
-&lt;li>
-&lt;p>Проекты&lt;/p>
-&lt;ul>
-&lt;li>Если задание невозможно выполнить за один шаг, то это уже проект, для завершения которого необходимо планирование нескольких шагов или этапов.&lt;/li>
-&lt;li>Таких проектов одновременно, как правило, несколько и важно регулярно просматривать их, проверяя следующие действия &amp;mdash; необходимые дополнительные шаги для их завершения.&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ol>
-&lt;!--list-separator-->
-&lt;ol start="3">
-&lt;li>
-&lt;p>Делегирование&lt;/p>
-&lt;ul>
-&lt;li>Задачи, на выполнение которых понадобится более двух минут можно делегировать или отложить.&lt;/li>
-&lt;li>Делегировать &amp;mdash; значит перепоручить его кому-то другому для выполнения, но оставить за собой контроль и ответственность за его выполнение.&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ol>
-&lt;!--list-separator-->
-&lt;ol start="4">
-&lt;li>
-&lt;p>Следующие действия&lt;/p>
-&lt;ul>
-&lt;li>То, что нужно выполнить при первой возможности.&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ol>
-&lt;!--list-separator-->
-&lt;ol start="5">
-&lt;li>
-&lt;p>Когда-нибудь&lt;/p>
-&lt;ul>
-&lt;li>Сюда вы можете разместить дела и задачи без определенного времени для завершения, которые можно отложить на более поздний срок для рассмотрения.&lt;/li>
-&lt;li>Здесь будут храниться ваши идеи для воплощения в жизнь.&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ol>
-&lt;!--list-separator-->
-&lt;ol start="6">
-&lt;li>
-&lt;p>Архив или Справочный материал&lt;/p>
-&lt;ul>
-&lt;li>Этот список содержит в себе полезную в будущем информацию.&lt;/li>
-&lt;li>Важно легко получить к ней доступ в любой момент, когда это действительно необходимо.&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ol>
-&lt;!--list-separator-->
-&lt;ol start="7">
-&lt;li>
-&lt;p>Задачи, более не требующие действий и не несущие пользы &amp;mdash; удалите&lt;/p>
-&lt;ul>
-&lt;li>Смело избавляйтесь от информации, не кажущейся вам важной. Освободите время для действительно стоящих вашего внимания дел.&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ol>
-&lt;h4 id="организация">&lt;span class="section-num">4.1.3&lt;/span> Организация&lt;/h4>
-&lt;ul>
-&lt;li>Как только вы разберетесь со всеми пунктами во Входящих, отсортируйте их и распределите в соответствующие разделы.&lt;/li>
-&lt;/ul>
-&lt;h4 id="обзор">&lt;span class="section-num">4.1.4&lt;/span> Обзор&lt;/h4>
-&lt;ul>
-&lt;li>Для эффективного решения задач необходимо просматривать список регулярно: ежедневно, еженедельно, так часто как это требуется.&lt;/li>
-&lt;li>Чтобы добиться хорошего результата необходимо поддерживать систему &amp;mdash; чаще обращайтесь к своим спискам, пересматривайте их, очищайте, дополняйте.&lt;/li>
-&lt;li>Пренебрегая этим пунктом вы рискуете накопить новые задачи и дела, потерять всякую мотивацию и как следствие нарушить работу всей системы.&lt;/li>
-&lt;/ul>
-&lt;h4 id="действия">&lt;span class="section-num">4.1.5&lt;/span> Действия&lt;/h4>
-&lt;ul>
-&lt;li>Выполнять задачу за задачей.&lt;/li>
-&lt;li>Механизм конкретного выполнения задач не рассматривается в GTD.&lt;/li>
-&lt;li>Можно использовать другие методики, например Pomodoro (см.
-).&lt;/li>
-&lt;/ul>
-&lt;h3 id="ошибки-при-работе-с-getting-things-done-методом">&lt;span class="section-num">4.2&lt;/span> Ошибки при работе с Getting Things Done методом&lt;/h3>
-&lt;h4 id="не-ознакомившись-с-методом-приступать-к-его-использованию-dot">&lt;span class="section-num">4.2.1&lt;/span> Не ознакомившись с методом, приступать к его использованию.&lt;/h4>
-&lt;h4 id="недостаточно-часто-проводить-обзор-списков-dot">&lt;span class="section-num">4.2.2&lt;/span> Недостаточно часто проводить обзор списков.&lt;/h4>
-&lt;ul>
-&lt;li>Добиться продуктивности без постоянного пересмотра и корректировки задач невозможно.&lt;/li>
-&lt;li>Своевременно внесенные новые задачи, а также скорректированные текущие будут работать на вас, экономя ваше время.&lt;/li>
-&lt;/ul>
-&lt;h4 id="сразу-делать-вывод-о-всей-системе-не-освоившись-в-ней-dot">&lt;span class="section-num">4.2.3&lt;/span> Сразу делать вывод о всей системе, не освоившись в ней.&lt;/h4>
-&lt;ul>
-&lt;li>Дайте себе время привыкнуть к новому способу организации задач, настройте его под себя.&lt;/li>
-&lt;/ul>
-&lt;h4 id="хранить-информацию-в-разных-местах-и-приложениях">&lt;span class="section-num">4.2.4&lt;/span> Хранить информацию в разных местах и приложениях&lt;/h4>
-&lt;ul>
-&lt;li>Это неизбежно ведет к нарушению работы системы и не дает вам возможности получать своевременный доступ к информации.&lt;/li>
-&lt;/ul>
-&lt;h4 id="вы-пишите-нечеткие-и-некорректные-инструкции-в-следующих-действиях">&lt;span class="section-num">4.2.5&lt;/span> Вы пишите нечеткие и некорректные инструкции в &lt;em>следующих действиях&lt;/em>&lt;/h4>
-&lt;ul>
-&lt;li>Нужна правильная организация шагов по выполнению действий.&lt;/li>
-&lt;li>Используйте глаголы, описывающие необходимые последующие действия и подробнее расписывайте детали действий.&lt;/li>
-&lt;li>В таком случае вы сможете приступать к выполнению сразу.&lt;/li>
-&lt;/ul>
-&lt;h4 id="держать-информацию-в-голове">&lt;span class="section-num">4.2.6&lt;/span> Держать информацию в голове&lt;/h4>
-&lt;ul>
-&lt;li>Фиксировать в системе нужно все, даже мелкие задачи а также то, что кажется не таким важным сейчас.&lt;/li>
-&lt;/ul>
-&lt;h4 id="работать-в-режиме-многозадачности">&lt;span class="section-num">4.2.7&lt;/span> Работать в режиме многозадачности&lt;/h4>
-&lt;ul>
-&lt;li>Старайтесь думать только о той задаче, которую вы сейчас выполняете и двигаться от задачи к задаче, всецело отдавая силы чему-то одному на момент выполнения.&lt;/li>
-&lt;/ul>
-&lt;h4 id="продолжать-придерживаться-старого-образа-жизни-и-взглядов-и-надеяться-что-система-будет-сама-работать">&lt;span class="section-num">4.2.8&lt;/span> Продолжать придерживаться старого образа жизни и взглядов и надеяться, что система будет сама работать&lt;/h4>
-&lt;ul>
-&lt;li>Надо воспринимать задачу не как проблему, а прежде пытаться найти решение.&lt;/li>
-&lt;li>Не прокрастинировать &amp;mdash; не откладывать дела в долгий ящик или вовсе избегать их решения.&lt;/li>
-&lt;/ul>
-&lt;h3 id="списки-gtd">&lt;span class="section-num">4.3&lt;/span> Списки GTD&lt;/h3>
-&lt;ul>
-&lt;li>Применение GTD предусматривает ведение следующих списков:
-&lt;ul>
-&lt;li>Входящие.&lt;/li>
-&lt;li>Следующие действия (возможно, несколько списков).&lt;/li>
-&lt;li>Ожидающие.&lt;/li>
-&lt;li>Проекты.&lt;/li>
-&lt;li>Когда-нибудь, может быть.&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>Списки регулярно просматривают.&lt;/li>
-&lt;li>В дополнение к спискам используется Календарь, который предназначен для записи задач и событий, чётко привязанных ко времени.&lt;/li>
-&lt;/ul>
-&lt;h4 id="список-входящие">&lt;span class="section-num">4.3.1&lt;/span> Список &lt;em>Входящие&lt;/em>&lt;/h4>
-&lt;ul>
-&lt;li>В список Входящие записывают идеи и задачи по мере их появления.&lt;/li>
-&lt;li>Просто записывайте всё подряд в блокнот или в телефон.&lt;/li>
-&lt;li>Это могут быть не один, а несколько списков.&lt;/li>
-&lt;li>Наша цель &amp;mdash; разгрузить мозг.&lt;/li>
-&lt;li>В самом начале применения GTD можно выделить час-другой на то, чтобы записать всё то, что вы хотите или должны сделать.&lt;/li>
-&lt;li>Всё это &amp;mdash; так называемые разомкнутые циклы (&lt;em>open loops&lt;/em>), которые включают в себя все задачи, которые находятся не в том состоянии, в котором они должны быть, не в том месте, где они должны оказаться.&lt;/li>
-&lt;/ul>
-&lt;h4 id="список-следующие-действия">&lt;span class="section-num">4.3.2&lt;/span> Список &lt;em>Следующие действия&lt;/em>&lt;/h4>
-&lt;ul>
-&lt;li>Действия, которые нужно выполнить как только представится возможность (ASAP &amp;mdash; As Soon As Possible).&lt;/li>
-&lt;/ul>
-&lt;h4 id="список-ожидающие">&lt;span class="section-num">4.3.3&lt;/span> Список &lt;em>Ожидающие&lt;/em>&lt;/h4>
-&lt;ul>
-&lt;li>Делегирование задачи другим людям.&lt;/li>
-&lt;li>Отправляете электронное письмо, на которое ожидаете получить ответ (или в ответе на которое нуждаетесь).&lt;/li>
-&lt;li>Что-то заказываете.&lt;/li>
-&lt;li>Решаете задачу, которая заблокирована из-за того, что вы ждёте, пока кто-то что-то сделает.&lt;/li>
-&lt;/ul>
-&lt;h4 id="список-проекты">&lt;span class="section-num">4.3.4&lt;/span> Список &lt;em>Проекты&lt;/em>&lt;/h4>
-&lt;ul>
-&lt;li>Проект &amp;mdash; это любая цель, для достижения которой нужно выполнить более одного действия.&lt;/li>
-&lt;li>Список представляет собой перечень названий проектов.&lt;/li>
-&lt;li>Можно включить в него описания проектов и их желаемые результаты.&lt;/li>
-&lt;li>При просмотре списка &lt;em>Проекты&lt;/em> нужно проверять, чтобы в списке &lt;em>Следующие действия&lt;/em> присутствовало хотя бы одно действие для каждого из проектов.&lt;/li>
-&lt;li>Чтобы проекты продвигались.&lt;/li>
-&lt;/ul>
-&lt;h4 id="список-когда-нибудь-может-быть">&lt;span class="section-num">4.3.5&lt;/span> Список &lt;em>Когда-нибудь, может быть&lt;/em>&lt;/h4>
-&lt;ul>
-&lt;li>В списке &lt;em>Следующие&lt;/em> действия содержатся только записи о делах, которые нужно сделать как можно скорее.&lt;/li>
-&lt;li>Список &lt;em>Проекты&lt;/em> нужно регулярно просматривать, проверяя, чтобы в списке &lt;em>Следующие действия&lt;/em> содержалось хотя бы одно действие, связанное с каждым из проектов.&lt;/li>
-&lt;li>В списке &lt;em>Когда-нибудь, может быть&lt;/em> содержатся идеи и проекты, которые вы, возможно, решите осуществить когда-нибудь в будущем.&lt;/li>
-&lt;li>Этот список надо просматривать еженедельно, вместе с другими материалами, входящими в состав GTD.&lt;/li>
-&lt;/ul>
-&lt;h4 id="список-календарь">&lt;span class="section-num">4.3.6&lt;/span> Список &lt;em>Календарь&lt;/em>&lt;/h4>
-&lt;ul>
-&lt;li>В Календарь попадают записи о делах, которые нужно сделать в определённую дату или в определённое время.&lt;/li>
-&lt;/ul>
-&lt;h3 id="контексты-действий">&lt;span class="section-num">4.4&lt;/span> Контексты действий&lt;/h3>
-&lt;ul>
-&lt;li>Контексты действий &amp;mdash; это теги, которыми снабжают элементы в списках &lt;em>Следующие действия&lt;/em>.&lt;/li>
-&lt;li>Они представляют собой сведения о том, где может быть выполнено то или иное действие, или о том, что именно нужно для его выполнения.&lt;/li>
-&lt;li>К названиям контекстов задач часто добавляют префикс &lt;code>@&lt;/code>, что имеет смысл, когда контекст представлен каким-либо местоположением.&lt;/li>
-&lt;/ul>
-&lt;h3 id="еженедельный-обзор-материалов">&lt;span class="section-num">4.5&lt;/span> Еженедельный обзор материалов&lt;/h3>
-&lt;ul>
-&lt;li>Еженедельный обзор материалов нужно выполнять раз в неделю.&lt;/li>
-&lt;li>Выберите день и придерживайтесь его. Нужно заранее выделить это время (как минимум &amp;mdash; 30 минут).&lt;/li>
-&lt;li>Используйте список триггеров.&lt;/li>
-&lt;li>Добавьте триггерные элементы в список дел.&lt;/li>
-&lt;/ul>
-&lt;p>Синхронизация электронной почты, календаря и списка дел (с помощью триггерного списка) делает сложную занятую университетскую жизнь намного более организованной.&lt;/p>
-&lt;ul>
-&lt;li>Занимаясь еженедельным обзором, нужно сделать следующее (минимум):
-&lt;ul>
-&lt;li>Проверить, чтобы с каждым проектом было бы связано хотя бы одно действие.&lt;/li>
-&lt;li>Проверить, чтобы каждое действие из списка &lt;em>Следующие действия&lt;/em> действительно было бы чем-то таким, что вам хочется или нужно сделать на следующей неделе в том случае, если у вас будет на это время.
-&lt;ul>
-&lt;li>Если это не так &amp;mdash; действие надо переместить (и/или проект, к которому оно относится) в список &lt;em>Когда-нибудь, может быть&lt;/em>.&lt;/li>
-&lt;li>Если вы полагаете, что никогда не соберётесь это действие выполнить &amp;mdash; уберите его из всех списков (в Корзину).&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>Просмотреть список &lt;em>Когда-нибудь, может быть&lt;/em> и подумать, нужно ли перенести какие-то проекты или действия из этого списка в список &lt;em>Проекты&lt;/em> или &lt;em>Следующие действия&lt;/em>.&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ul>
-&lt;h3 id="списки-триггеров">&lt;span class="section-num">4.6&lt;/span> Списки триггеров&lt;/h3>
-&lt;ul>
-&lt;li>При выполнении еженедельного обзора материалов может оказаться полезным применение &lt;em>списков триггеров&lt;/em>.&lt;/li>
-&lt;li>Это список ключевых слов, наводящих мозг на воспоминания о разомкнутых циклах, ещё не отражённых в системе.&lt;/li>
-&lt;li>Список триггеров может выглядеть так:
-&lt;ul>
-&lt;li>Начальник.&lt;/li>
-&lt;li>Сослуживцы.&lt;/li>
-&lt;li>Начатые, но не завершённые проекты.&lt;/li>
-&lt;li>Проекты, которые нужно начать.&lt;/li>
-&lt;li>Люди, с которыми надо связаться.&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>Просматривая список триггеров, поместите всё, что вспомните, в список &lt;em>Входящие&lt;/em> для последующей обработки.&lt;/li>
-&lt;/ul>
-&lt;h4 id="список-триггеров-школа">&lt;span class="section-num">4.6.1&lt;/span> Список триггеров Школа&lt;/h4>
-&lt;ul>
-&lt;li>Начатые, но не завершенные проекты&lt;/li>
-&lt;li>Проекты, которые необходимо начать&lt;/li>
-&lt;li>Обязательства/обещания другим&lt;/li>
-&lt;li>Учителя/ассистенты&lt;/li>
-&lt;li>Соседи по комнате&lt;/li>
-&lt;li>Одноклассники - Друзья&lt;/li>
-&lt;li>Младшие классы&lt;/li>
-&lt;li>Старшеклассники&lt;/li>
-&lt;li>Люди со стороны&lt;/li>
-&lt;li>Родители&lt;/li>
-&lt;li>Организации кампуса&lt;/li>
-&lt;li>Внеклассные организации&lt;/li>
-&lt;li>Выпускники&lt;/li>
-&lt;li>Коммуникации совершать/получать&lt;/li>
-&lt;li>Внутренние/внешние&lt;/li>
-&lt;li>Инициировать или отвечать на:&lt;/li>
-&lt;li>Телефонные звонки&lt;/li>
-&lt;li>Текстовые сообщения&lt;/li>
-&lt;li>Голосовая почта&lt;/li>
-&lt;li>Электронная почта&lt;/li>
-&lt;li>Обычная почта&lt;/li>
-&lt;li>Социальные сети&lt;/li>
-&lt;li>Другие тексты для завершения/представления&lt;/li>
-&lt;li>Отчеты&lt;/li>
-&lt;li>Документы&lt;/li>
-&lt;li>Обзоры&lt;/li>
-&lt;li>Задания&lt;/li>
-&lt;li>Статьи&lt;/li>
-&lt;li>Литература&lt;/li>
-&lt;li>Переписывание и редактирование&lt;/li>
-&lt;li>Встречи, которые необходимо назначить/запросить&lt;/li>
-&lt;li>Финансы&lt;/li>
-&lt;li>Обучение&lt;/li>
-&lt;li>Финансовая помощь&lt;/li>
-&lt;li>Учебники&lt;/li>
-&lt;li>Питание&lt;/li>
-&lt;li>Расходы на колледж&lt;/li>
-&lt;li>Прочие расходы&lt;/li>
-&lt;li>Комната/квартира в общежитии&lt;/li>
-&lt;li>Аренда&lt;/li>
-&lt;li>Содержание - Коммунальные услуги&lt;/li>
-&lt;li>Еда&lt;/li>
-&lt;li>Одежда&lt;/li>
-&lt;li>Мебель&lt;/li>
-&lt;li>Украшения&lt;/li>
-&lt;li>Дополнительные материалы&lt;/li>
-&lt;li>Ожидание&amp;hellip;&lt;/li>
-&lt;li>Информация&lt;/li>
-&lt;li>Делегированные задачи/проекты&lt;/li>
-&lt;li>Завершения, важные для проектов&lt;/li>
-&lt;li>Ответы на:&lt;/li>
-&lt;li>Письма&lt;/li>
-&lt;li>СМС&lt;/li>
-&lt;li>Звонки&lt;/li>
-&lt;li>Социальные сети&lt;/li>
-&lt;li>Компенсации&lt;/li>
-&lt;li>Заказы&lt;/li>
-&lt;li>Ремонтируемые объекты&lt;/li>
-&lt;li>Заявки&lt;/li>
-&lt;li>Решения других&lt;/li>
-&lt;/ul>
-&lt;h4 id="список-триггеров-личный">&lt;span class="section-num">4.6.2&lt;/span> Список триггеров Личный&lt;/h4>
-&lt;ul>
-&lt;li>Начатые проекты, не завершенные&lt;/li>
-&lt;li>Проекты, которые необходимо начать&lt;/li>
-&lt;li>Обязательства/обещания другим&lt;/li>
-&lt;li>Значимые другие&lt;/li>
-&lt;li>Семья&lt;/li>
-&lt;li>Друзья&lt;/li>
-&lt;li>Одноклассники&lt;/li>
-&lt;li>Взятые вещи&lt;/li>
-&lt;li>Проекты: другие организации&lt;/li>
-&lt;li>Служение&lt;/li>
-&lt;li>Гражданское&lt;/li>
-&lt;li>Волонтерство&lt;/li>
-&lt;li>Общение, которое нужно сделать/получить&lt;/li>
-&lt;li>Семья&lt;/li>
-&lt;li>Друзья&lt;/li>
-&lt;li>Специалист&lt;/li>
-&lt;li>Инициировать или отвечать на:&lt;/li>
-&lt;li>Телефонные звонки&lt;/li>
-&lt;li>Текстовые сообщения&lt;/li>
-&lt;li>Голосовая почта&lt;/li>
-&lt;li>Электронная почта&lt;/li>
-&lt;li>Обычная почта&lt;/li>
-&lt;li>Социальные сети&lt;/li>
-&lt;li>Предстоящие события&lt;/li>
-&lt;li>Особые случаи&lt;/li>
-&lt;li>Дни рождения&lt;/li>
-&lt;li>Юбилеи&lt;/li>
-&lt;li>Свадьбы&lt;/li>
-&lt;li>Выпускные&lt;/li>
-&lt;li>Праздники&lt;/li>
-&lt;li>Путешествия -&lt;/li>
-&lt;li>Поездки на выходные&lt;/li>
-&lt;li>Каникулы&lt;/li>
-&lt;li>Социальные мероприятия&lt;/li>
-&lt;li>Культурные мероприятия&lt;/li>
-&lt;li>Спортивные мероприятия&lt;/li>
-&lt;li>Чем заняться&lt;/li>
-&lt;li>Куда пойти&lt;/li>
-&lt;li>Люди, с которыми можно встретиться/пригласить&lt;/li>
-&lt;li>Местные достопримечательности&lt;/li>
-&lt;li>Администрация&lt;/li>
-&lt;li>Финансовые&lt;/li>
-&lt;li>Счета&lt;/li>
-&lt;li>Банки&lt;/li>
-&lt;li>Инвестиции&lt;/li>
-&lt;li>Кредиты&lt;/li>
-&lt;li>Налоги&lt;/li>
-&lt;li>Страхование&lt;/li>
-&lt;li>Юридические вопросы&lt;/li>
-&lt;li>Подача документов&lt;/li>
-&lt;li>Ожидание&amp;hellip;&lt;/li>
-&lt;li>Почтовый перевод&lt;/li>
-&lt;li>Ремонт&lt;/li>
-&lt;li>Возмещение расходов&lt;/li>
-&lt;li>Предметы взаймы&lt;/li>
-&lt;li>Медицинские данные&lt;/li>
-&lt;li>Ответы на вопросы&lt;/li>
-&lt;li>Дом/домашнее хозяйство&lt;/li>
-&lt;li>Ландшафт&lt;/li>
-&lt;li>Кухонные принадлежности&lt;/li>
-&lt;li>Стиральная машина/ сушилка/пылесос&lt;/li>
-&lt;li>Места для организации/уборки&lt;/li>
-&lt;li>Телевизор&lt;/li>
-&lt;li>Видеомагнитофон/DVD&lt;/li>
-&lt;li>Музыка/CD/кассеты&lt;/li>
-&lt;li>Телефоны&lt;/li>
-&lt;li>Гардеробы/одежда&lt;/li>
-&lt;li>Ремонт/техническое обслуживание автомобилей&lt;/li>
-&lt;li>Инструменты&lt;/li>
-&lt;li>Багаж&lt;/li>
-&lt;li>Компьютеры&lt;/li>
-&lt;li>Программное обеспечение&lt;/li>
-&lt;li>Аппаратное обеспечение&lt;/li>
-&lt;li>Соединения&lt;/li>
-&lt;li>CD/DVD привод&lt;/li>
-&lt;li>Электронная почта&lt;/li>
-&lt;li>Интернет&lt;/li>
-&lt;li>Социальные сети&lt;/li>
-&lt;li>Здравоохранение&lt;/li>
-&lt;li>Врачи&lt;/li>
-&lt;li>Стоматологи&lt;/li>
-&lt;li>Специалисты&lt;/li>
-&lt;li>Хобби&lt;/li>
-&lt;li>Книги&lt;/li>
-&lt;li>CD&lt;/li>
-&lt;li>MP3&lt;/li>
-&lt;li>Подкасты&lt;/li>
-&lt;li>Видео&lt;/li>
-&lt;li>Приложения&lt;/li>
-&lt;li>Поручения&lt;/li>
-&lt;li>Хозяйственный магазин&lt;/li>
-&lt;li>Аптека&lt;/li>
-&lt;li>Супермаркет&lt;/li>
-&lt;li>Банк&lt;/li>
-&lt;li>Уборка&lt;/li>
-&lt;li>Книжный магазин&lt;/li>
-&lt;li>Библиотека&lt;/li>
-&lt;li>Магазин одежды&lt;/li>
-&lt;li>Сообщество&lt;/li>
-&lt;li>Район&lt;/li>
-&lt;li>Школы&lt;/li>
-&lt;li>Местное самоуправление&lt;/li>
-&lt;li>Гражданские вопросы&lt;/li>
-&lt;/ul>
-&lt;h4 id="trigger-list-school">&lt;span class="section-num">4.6.3&lt;/span> Trigger list School&lt;/h4>
-&lt;ul>
-&lt;li>Projects started, not completed&lt;/li>
-&lt;li>Projects that need to be started&lt;/li>
-&lt;li>Commitments/promises to others&lt;/li>
-&lt;li>Teachers/TAs&lt;/li>
-&lt;li>Roommates&lt;/li>
-&lt;li>Classmates&lt;/li>
-&lt;li>Friends&lt;/li>
-&lt;li>Underclassmen&lt;/li>
-&lt;li>Upperclassmen&lt;/li>
-&lt;li>&amp;ldquo;Outside&amp;rdquo; people&lt;/li>
-&lt;li>Parents&lt;/li>
-&lt;li>Campus organizations&lt;/li>
-&lt;li>Extracurricular organizations&lt;/li>
-&lt;li>Graduates&lt;/li>
-&lt;li>Communications to make/get&lt;/li>
-&lt;li>Internal/External&lt;/li>
-&lt;li>Initiate or respond to:&lt;/li>
-&lt;li>Phone calls&lt;/li>
-&lt;li>Text messages&lt;/li>
-&lt;li>Voice-mail&lt;/li>
-&lt;li>E-mail&lt;/li>
-&lt;li>Snail mail&lt;/li>
-&lt;li>Social Media&lt;/li>
-&lt;li>Other writing to finish/submit&lt;/li>
-&lt;li>Reports&lt;/li>
-&lt;li>Papers&lt;/li>
-&lt;li>Reviews&lt;/li>
-&lt;li>Assignments&lt;/li>
-&lt;li>Articles&lt;/li>
-&lt;li>Readings&lt;/li>
-&lt;li>Rewrites and edits&lt;/li>
-&lt;li>Meetings that need to be set/requested&lt;/li>
-&lt;li>Financial&lt;/li>
-&lt;li>Tuition&lt;/li>
-&lt;li>Financial aid&lt;/li>
-&lt;li>Textbooks&lt;/li>
-&lt;li>Dining&lt;/li>
-&lt;li>College Expenses&lt;/li>
-&lt;li>Other Expenses&lt;/li>
-&lt;li>Dorm Room/Apartment&lt;/li>
-&lt;li>Rent&lt;/li>
-&lt;li>Maintenance&lt;/li>
-&lt;li>Utilities&lt;/li>
-&lt;li>Food&lt;/li>
-&lt;li>Clothes&lt;/li>
-&lt;li>Furniture&lt;/li>
-&lt;li>Decorations&lt;/li>
-&lt;li>Additional Supplies&lt;/li>
-&lt;li>Waiting for&amp;hellip;&lt;/li>
-&lt;li>Information&lt;/li>
-&lt;li>Delegated tasks/projects&lt;/li>
-&lt;li>Completions critical to projects&lt;/li>
-&lt;li>Replies to:&lt;/li>
-&lt;li>Letters&lt;/li>
-&lt;li>Texts&lt;/li>
-&lt;li>Calls&lt;/li>
-&lt;li>Social Media&lt;/li>
-&lt;li>Reimbursements&lt;/li>
-&lt;li>Ordered items&lt;/li>
-&lt;li>Items being repaired&lt;/li>
-&lt;li>Tickets&lt;/li>
-&lt;li>Decisions of others&lt;/li>
-&lt;/ul>
-&lt;h4 id="trigger-list-personal">&lt;span class="section-num">4.6.4&lt;/span> Trigger list Personal&lt;/h4>
-&lt;ul>
-&lt;li>Projects started, not completed&lt;/li>
-&lt;li>Projects that need to be started&lt;/li>
-&lt;li>Commitments/promises to others&lt;/li>
-&lt;li>Significant Other&lt;/li>
-&lt;li>Family&lt;/li>
-&lt;li>Friends&lt;/li>
-&lt;li>Classmates&lt;/li>
-&lt;li>Borrowed items&lt;/li>
-&lt;li>Projects: other organizations&lt;/li>
-&lt;li>Service&lt;/li>
-&lt;li>Civic&lt;/li>
-&lt;li>Volunteer&lt;/li>
-&lt;li>Communications to make/get&lt;/li>
-&lt;li>Family&lt;/li>
-&lt;li>Friends&lt;/li>
-&lt;li>Professional&lt;/li>
-&lt;li>Initiate or respond to:&lt;/li>
-&lt;li>Phone calls&lt;/li>
-&lt;li>Text messages&lt;/li>
-&lt;li>Voicemail&lt;/li>
-&lt;li>E-mail&lt;/li>
-&lt;li>Snail mail&lt;/li>
-&lt;li>Social Media&lt;/li>
-&lt;li>Upcoming events&lt;/li>
-&lt;li>Special occasions&lt;/li>
-&lt;li>Birthdays&lt;/li>
-&lt;li>Anniversaries&lt;/li>
-&lt;li>Weddings&lt;/li>
-&lt;li>Graduations&lt;/li>
-&lt;li>Holidays&lt;/li>
-&lt;li>Travel&lt;/li>
-&lt;li>Weekend trips&lt;/li>
-&lt;li>Vacations&lt;/li>
-&lt;li>Social events&lt;/li>
-&lt;li>Cultural events&lt;/li>
-&lt;li>Sporting events&lt;/li>
-&lt;li>Things to do&lt;/li>
-&lt;li>Places to go&lt;/li>
-&lt;li>People to meet/invite&lt;/li>
-&lt;li>Local attractions&lt;/li>
-&lt;li>Administration&lt;/li>
-&lt;li>Financial&lt;/li>
-&lt;li>Bills&lt;/li>
-&lt;li>Banks&lt;/li>
-&lt;li>Investments&lt;/li>
-&lt;li>Loans&lt;/li>
-&lt;li>Taxes&lt;/li>
-&lt;li>Insurance&lt;/li>
-&lt;li>Legal affairs&lt;/li>
-&lt;li>Filing&lt;/li>
-&lt;li>Waiting for&amp;hellip;&lt;/li>
-&lt;li>Mail order&lt;/li>
-&lt;li>Repair&lt;/li>
-&lt;li>Reimbursements&lt;/li>
-&lt;li>Loaned items&lt;/li>
-&lt;li>Medical data&lt;/li>
-&lt;li>RSVPs&lt;/li>
-&lt;li>Home/household&lt;/li>
-&lt;li>Landscape&lt;/li>
-&lt;li>Kitchen things&lt;/li>
-&lt;li>Washer/dryer/vacuum&lt;/li>
-&lt;li>Areas to organize/clean&lt;/li>
-&lt;li>TV&lt;/li>
-&lt;li>VCR/DVD&lt;/li>
-&lt;li>Music/CDs/tapes&lt;/li>
-&lt;li>Phones&lt;/li>
-&lt;li>Closets/clothes&lt;/li>
-&lt;li>Vehicle repair/maintenance&lt;/li>
-&lt;li>Tools&lt;/li>
-&lt;li>Luggage&lt;/li>
-&lt;li>Computers&lt;/li>
-&lt;li>Software&lt;/li>
-&lt;li>Hardware&lt;/li>
-&lt;li>Connections&lt;/li>
-&lt;li>CD/DVD Drive&lt;/li>
-&lt;li>E-mail&lt;/li>
-&lt;li>Internet&lt;/li>
-&lt;li>Social Media&lt;/li>
-&lt;li>Health care&lt;/li>
-&lt;li>Doctors&lt;/li>
-&lt;li>Dentists&lt;/li>
-&lt;li>Specialists&lt;/li>
-&lt;li>Hobbies&lt;/li>
-&lt;li>Books&lt;/li>
-&lt;li>CDs&lt;/li>
-&lt;li>MP3s&lt;/li>
-&lt;li>Podcasts&lt;/li>
-&lt;li>Videos&lt;/li>
-&lt;li>Apps&lt;/li>
-&lt;li>Errands&lt;/li>
-&lt;li>Hardware store&lt;/li>
-&lt;li>Pharmacy&lt;/li>
-&lt;li>Supermarket&lt;/li>
-&lt;li>Bank&lt;/li>
-&lt;li>Cleaner&lt;/li>
-&lt;li>Bookstore&lt;/li>
-&lt;li>Library&lt;/li>
-&lt;li>Clothing store&lt;/li>
-&lt;li>Community&lt;/li>
-&lt;li>Neighborhood&lt;/li>
-&lt;li>Schools&lt;/li>
-&lt;li>Local government&lt;/li>
-&lt;li>Civic issues&lt;/li>
-&lt;/ul>
-&lt;h2 id="организация-gtd">&lt;span class="section-num">5&lt;/span> Организация GTD&lt;/h2>
-&lt;ul>
-&lt;li>
-&lt;/li>
-&lt;/ul>
-&lt;h2 id="реализации-метода-gtd">&lt;span class="section-num">6&lt;/span> Реализации метода GTD&lt;/h2>
-&lt;ul>
-&lt;li>
-&lt;/li>
-&lt;/ul></description></item><item><title>Реализация метода GTD на основе Emacs</title><link>https://yamadharma.github.io/ru/post/2021/07/12/implementation-gtd-method-emacs/</link><pubDate>Mon, 12 Jul 2021 14:50:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2021/07/12/implementation-gtd-method-emacs/</guid><description>&lt;ul>
-&lt;li>Метод GTD можно реализовывать с помощью разного программного обеспечения.&lt;/li>
-&lt;li>Для меня оказалось наиболее просто использовать инфраструктуру среды &lt;em>emacs&lt;/em>.&lt;/li>
-&lt;/ul>
-&lt;details class="print:hidden xl:hidden" >
-&lt;summary>Содержание&lt;/summary>
-&lt;div class="text-sm">
-&lt;nav id="TableOfContents">
-&lt;ul>
-&lt;li>&lt;a href="#общая-реализация">&lt;span class="section-num">1&lt;/span> Общая реализация&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#пакеты-реализующие-методику-gtd">&lt;span class="section-num">2&lt;/span> Пакеты, реализующие методику GTD&lt;/a>
-&lt;ul>
-&lt;li>&lt;a href="#org-gtd">&lt;span class="section-num">2.1&lt;/span> Org-gtd&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ul>
-&lt;/nav>
-&lt;/div>
-&lt;/details>
-&lt;h2 id="общая-реализация">&lt;span class="section-num">1&lt;/span> Общая реализация&lt;/h2>
-&lt;ul>
-&lt;li>В качестве основного инструментария для реализации метода GTD выступает &lt;em>org-mode&lt;/em>.&lt;/li>
-&lt;li>Для работы с почтой можно использовать один из почтовых клиентов, например, &lt;em>mu4e&lt;/em> (см.
-).&lt;/li>
-&lt;/ul>
-&lt;h2 id="пакеты-реализующие-методику-gtd">&lt;span class="section-num">2&lt;/span> Пакеты, реализующие методику GTD&lt;/h2>
-&lt;h3 id="org-gtd">&lt;span class="section-num">2.1&lt;/span> Org-gtd&lt;/h3>
-&lt;ul>
-&lt;li>
-&lt;/li>
-&lt;/ul></description></item><item><title>Emacs. Почта. Mu4e. Процесс работы с почтой</title><link>https://yamadharma.github.io/ru/post/2021/07/12/emacs-mail-mu4e-email-workflow/</link><pubDate>Mon, 12 Jul 2021 14:19:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2021/07/12/emacs-mail-mu4e-email-workflow/</guid><description>&lt;p>Организация работы с электропочтой на основе почтового клиента &lt;em>mu4e&lt;/em>.&lt;/p>
-&lt;details class="print:hidden xl:hidden" >
-&lt;summary>Содержание&lt;/summary>
-&lt;div class="text-sm">
-&lt;nav id="TableOfContents">
-&lt;ul>
-&lt;li>&lt;a href="#общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;/nav>
-&lt;/div>
-&lt;/details>
-&lt;h2 id="общая-информация">&lt;span class="section-num">1&lt;/span> Общая информация&lt;/h2>
-&lt;ul>
-&lt;li>Предлагаемая методика является реализацией методики работы с электропочтой (см.
-) на основе почтового клиента &lt;em>mu4e&lt;/em> (см.
-) и среды &lt;em>emacs&lt;/em>.&lt;/li>
-&lt;li>Методика находится в рамках метода GTD.&lt;/li>
-&lt;/ul></description></item><item><title>Работа с почтой</title><link>https://yamadharma.github.io/ru/post/2021/07/12/email-workflow/</link><pubDate>Mon, 12 Jul 2021 12:59:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2021/07/12/email-workflow/</guid><description>&lt;p>Процесс работы с электропочтой.&lt;/p>
-&lt;details class="print:hidden xl:hidden" >
-&lt;summary>Содержание&lt;/summary>
-&lt;div class="text-sm">
-&lt;nav id="TableOfContents">&lt;/nav>
-&lt;/div>
-&lt;/details>
-&lt;figure>&lt;img src="https://yamadharma.github.io/ox-hugo/phd072508s.png"
-alt="Рис. 1.: Источник: http://phdcomics.com/comics/archive.php?comicid=1047">&lt;figcaption>
-&lt;p>&lt;span class="figure-number">Рис. 1.: &lt;/span>Источник: &lt;a href="http://phdcomics.com/comics/archive.php?comicid=1047" target="_blank" rel="noopener">http://phdcomics.com/comics/archive.php?comicid=1047&lt;/a>&lt;/p>
-&lt;/figcaption>
-&lt;/figure></description></item></channel></rss>
+y="34.1318"&gt;No Direct
+Action&lt;/text&gt;&lt;/g&gt;&lt;/svg&gt;
+&lt;figcaption&gt;
+&lt;p&gt;&lt;span class="figure-number"&gt;Рис. 1.: &lt;/span&gt;Обработка входящей информации&lt;/p&gt;
+&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;h2 id="основные-элементы-метода"&gt;&lt;span class="section-num"&gt;4&lt;/span&gt; Основные элементы метода&lt;/h2&gt;
+&lt;h3 id="этапы-работы-с-информацией"&gt;&lt;span class="section-num"&gt;4.1&lt;/span&gt; Этапы работы с информацией&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;GTD предлагает подойти к управлению рабочим процессом, используя пять шагов:
+&lt;ul&gt;
+&lt;li&gt;Cбор&lt;/li&gt;
+&lt;li&gt;Обработка&lt;/li&gt;
+&lt;li&gt;Организация&lt;/li&gt;
+&lt;li&gt;Обзор&lt;/li&gt;
+&lt;li&gt;Действия&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id="сбор-информации"&gt;&lt;span class="section-num"&gt;4.1.1&lt;/span&gt; Сбор информации&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;На первом этапе все имеющиеся мысли, идеи, задачи, проекты, дела нужно выгрузить из вашего ума во внешнюю систему.&lt;/li&gt;
+&lt;li&gt;Нужно фиксировать и новые появляющиеся задачи.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id="обработка"&gt;&lt;span class="section-num"&gt;4.1.2&lt;/span&gt; Обработка&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Получив информацию, первый вопрос, который необходимо себе задать: «Что это за информация?». Как только вы решите, что это такое, вы сможете ответить на вопрос: «Что с этим делать?».&lt;/li&gt;
+&lt;/ul&gt;
+&lt;!--list-separator--&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Разовые задачи, которые занимают не более 2 минут&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Это все задачи, которые занимают не более 2 минут и выполняются за одно действие. Они не относятся к какому-либо проекту и могут загромождать список дел.&lt;/li&gt;
+&lt;li&gt;Если вы чувствуете, что данную задачу можно завершить здесь и сейчас, задайте себе вопрос: «Это займет меньше двух минут?» Если ваш ответ &amp;mdash; да, то просто выполните задачу, вычеркивайте и больше не думайте о ней.&lt;/li&gt;
+&lt;li&gt;Иногда, проще выполнить и забыть, то что не требует много времени, чем стараться удержать это в памяти.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;!--list-separator--&gt;
+&lt;ol start="2"&gt;
+&lt;li&gt;
+&lt;p&gt;Проекты&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Если задание невозможно выполнить за один шаг, то это уже проект, для завершения которого необходимо планирование нескольких шагов или этапов.&lt;/li&gt;
+&lt;li&gt;Таких проектов одновременно, как правило, несколько и важно регулярно просматривать их, проверяя следующие действия &amp;mdash; необходимые дополнительные шаги для их завершения.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;!--list-separator--&gt;
+&lt;ol start="3"&gt;
+&lt;li&gt;
+&lt;p&gt;Делегирование&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Задачи, на выполнение которых понадобится более двух минут можно делегировать или отложить.&lt;/li&gt;
+&lt;li&gt;Делегировать &amp;mdash; значит перепоручить его кому-то другому для выполнения, но оставить за собой контроль и ответственность за его выполнение.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;!--list-separator--&gt;
+&lt;ol start="4"&gt;
+&lt;li&gt;
+&lt;p&gt;Следующие действия&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;То, что нужно выполнить при первой возможности.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;!--list-separator--&gt;
+&lt;ol start="5"&gt;
+&lt;li&gt;
+&lt;p&gt;Когда-нибудь&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Сюда вы можете разместить дела и задачи без определенного времени для завершения, которые можно отложить на более поздний срок для рассмотрения.&lt;/li&gt;
+&lt;li&gt;Здесь будут храниться ваши идеи для воплощения в жизнь.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;!--list-separator--&gt;
+&lt;ol start="6"&gt;
+&lt;li&gt;
+&lt;p&gt;Архив или Справочный материал&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Этот список содержит в себе полезную в будущем информацию.&lt;/li&gt;
+&lt;li&gt;Важно легко получить к ней доступ в любой момент, когда это действительно необходимо.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;!--list-separator--&gt;
+&lt;ol start="7"&gt;
+&lt;li&gt;
+&lt;p&gt;Задачи, более не требующие действий и не несущие пользы &amp;mdash; удалите&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Смело избавляйтесь от информации, не кажущейся вам важной. Освободите время для действительно стоящих вашего внимания дел.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id="организация"&gt;&lt;span class="section-num"&gt;4.1.3&lt;/span&gt; Организация&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Как только вы разберетесь со всеми пунктами во Входящих, отсортируйте их и распределите в соответствующие разделы.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id="обзор"&gt;&lt;span class="section-num"&gt;4.1.4&lt;/span&gt; Обзор&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Для эффективного решения задач необходимо просматривать список регулярно: ежедневно, еженедельно, так часто как это требуется.&lt;/li&gt;
+&lt;li&gt;Чтобы добиться хорошего результата необходимо поддерживать систему &amp;mdash; чаще обращайтесь к своим спискам, пересматривайте их, очищайте, дополняйте.&lt;/li&gt;
+&lt;li&gt;Пренебрегая этим пунктом вы рискуете накопить новые задачи и дела, потерять всякую мотивацию и как следствие нарушить работу всей системы.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id="действия"&gt;&lt;span class="section-num"&gt;4.1.5&lt;/span&gt; Действия&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Выполнять задачу за задачей.&lt;/li&gt;
+&lt;li&gt;Механизм конкретного выполнения задач не рассматривается в GTD.&lt;/li&gt;
+&lt;li&gt;Можно использовать другие методики, например Pomodoro (см.
+).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="ошибки-при-работе-с-getting-things-done-методом"&gt;&lt;span class="section-num"&gt;4.2&lt;/span&gt; Ошибки при работе с Getting Things Done методом&lt;/h3&gt;
+&lt;h4 id="не-ознакомившись-с-методом-приступать-к-его-использованию-dot"&gt;&lt;span class="section-num"&gt;4.2.1&lt;/span&gt; Не ознакомившись с методом, приступать к его использованию.&lt;/h4&gt;
+&lt;h4 id="недостаточно-часто-проводить-обзор-списков-dot"&gt;&lt;span class="section-num"&gt;4.2.2&lt;/span&gt; Недостаточно часто проводить обзор списков.&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Добиться продуктивности без постоянного пересмотра и корректировки задач невозможно.&lt;/li&gt;
+&lt;li&gt;Своевременно внесенные новые задачи, а также скорректированные текущие будут работать на вас, экономя ваше время.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id="сразу-делать-вывод-о-всей-системе-не-освоившись-в-ней-dot"&gt;&lt;span class="section-num"&gt;4.2.3&lt;/span&gt; Сразу делать вывод о всей системе, не освоившись в ней.&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Дайте себе время привыкнуть к новому способу организации задач, настройте его под себя.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id="хранить-информацию-в-разных-местах-и-приложениях"&gt;&lt;span class="section-num"&gt;4.2.4&lt;/span&gt; Хранить информацию в разных местах и приложениях&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Это неизбежно ведет к нарушению работы системы и не дает вам возможности получать своевременный доступ к информации.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id="вы-пишите-нечеткие-и-некорректные-инструкции-в-следующих-действиях"&gt;&lt;span class="section-num"&gt;4.2.5&lt;/span&gt; Вы пишите нечеткие и некорректные инструкции в &lt;em&gt;следующих действиях&lt;/em&gt;&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Нужна правильная организация шагов по выполнению действий.&lt;/li&gt;
+&lt;li&gt;Используйте глаголы, описывающие необходимые последующие действия и подробнее расписывайте детали действий.&lt;/li&gt;
+&lt;li&gt;В таком случае вы сможете приступать к выполнению сразу.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id="держать-информацию-в-голове"&gt;&lt;span class="section-num"&gt;4.2.6&lt;/span&gt; Держать информацию в голове&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Фиксировать в системе нужно все, даже мелкие задачи а также то, что кажется не таким важным сейчас.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id="работать-в-режиме-многозадачности"&gt;&lt;span class="section-num"&gt;4.2.7&lt;/span&gt; Работать в режиме многозадачности&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Старайтесь думать только о той задаче, которую вы сейчас выполняете и двигаться от задачи к задаче, всецело отдавая силы чему-то одному на момент выполнения.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id="продолжать-придерживаться-старого-образа-жизни-и-взглядов-и-надеяться-что-система-будет-сама-работать"&gt;&lt;span class="section-num"&gt;4.2.8&lt;/span&gt; Продолжать придерживаться старого образа жизни и взглядов и надеяться, что система будет сама работать&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Надо воспринимать задачу не как проблему, а прежде пытаться найти решение.&lt;/li&gt;
+&lt;li&gt;Не прокрастинировать &amp;mdash; не откладывать дела в долгий ящик или вовсе избегать их решения.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="списки-gtd"&gt;&lt;span class="section-num"&gt;4.3&lt;/span&gt; Списки GTD&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Применение GTD предусматривает ведение следующих списков:
+&lt;ul&gt;
+&lt;li&gt;Входящие.&lt;/li&gt;
+&lt;li&gt;Следующие действия (возможно, несколько списков).&lt;/li&gt;
+&lt;li&gt;Ожидающие.&lt;/li&gt;
+&lt;li&gt;Проекты.&lt;/li&gt;
+&lt;li&gt;Когда-нибудь, может быть.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Списки регулярно просматривают.&lt;/li&gt;
+&lt;li&gt;В дополнение к спискам используется Календарь, который предназначен для записи задач и событий, чётко привязанных ко времени.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id="список-входящие"&gt;&lt;span class="section-num"&gt;4.3.1&lt;/span&gt; Список &lt;em&gt;Входящие&lt;/em&gt;&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;В список Входящие записывают идеи и задачи по мере их появления.&lt;/li&gt;
+&lt;li&gt;Просто записывайте всё подряд в блокнот или в телефон.&lt;/li&gt;
+&lt;li&gt;Это могут быть не один, а несколько списков.&lt;/li&gt;
+&lt;li&gt;Наша цель &amp;mdash; разгрузить мозг.&lt;/li&gt;
+&lt;li&gt;В самом начале применения GTD можно выделить час-другой на то, чтобы записать всё то, что вы хотите или должны сделать.&lt;/li&gt;
+&lt;li&gt;Всё это &amp;mdash; так называемые разомкнутые циклы (&lt;em&gt;open loops&lt;/em&gt;), которые включают в себя все задачи, которые находятся не в том состоянии, в котором они должны быть, не в том месте, где они должны оказаться.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id="список-следующие-действия"&gt;&lt;span class="section-num"&gt;4.3.2&lt;/span&gt; Список &lt;em&gt;Следующие действия&lt;/em&gt;&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Действия, которые нужно выполнить как только представится возможность (ASAP &amp;mdash; As Soon As Possible).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id="список-ожидающие"&gt;&lt;span class="section-num"&gt;4.3.3&lt;/span&gt; Список &lt;em&gt;Ожидающие&lt;/em&gt;&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Делегирование задачи другим людям.&lt;/li&gt;
+&lt;li&gt;Отправляете электронное письмо, на которое ожидаете получить ответ (или в ответе на которое нуждаетесь).&lt;/li&gt;
+&lt;li&gt;Что-то заказываете.&lt;/li&gt;
+&lt;li&gt;Решаете задачу, которая заблокирована из-за того, что вы ждёте, пока кто-то что-то сделает.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id="список-проекты"&gt;&lt;span class="section-num"&gt;4.3.4&lt;/span&gt; Список &lt;em&gt;Проекты&lt;/em&gt;&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Проект &amp;mdash; это любая цель, для достижения которой нужно выполнить более одного действия.&lt;/li&gt;
+&lt;li&gt;Список представляет собой перечень названий проектов.&lt;/li&gt;
+&lt;li&gt;Можно включить в него описания проектов и их желаемые результаты.&lt;/li&gt;
+&lt;li&gt;При просмотре списка &lt;em&gt;Проекты&lt;/em&gt; нужно проверять, чтобы в списке &lt;em&gt;Следующие действия&lt;/em&gt; присутствовало хотя бы одно действие для каждого из проектов.&lt;/li&gt;
+&lt;li&gt;Чтобы проекты продвигались.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id="список-когда-нибудь-может-быть"&gt;&lt;span class="section-num"&gt;4.3.5&lt;/span&gt; Список &lt;em&gt;Когда-нибудь, может быть&lt;/em&gt;&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;В списке &lt;em&gt;Следующие&lt;/em&gt; действия содержатся только записи о делах, которые нужно сделать как можно скорее.&lt;/li&gt;
+&lt;li&gt;Список &lt;em&gt;Проекты&lt;/em&gt; нужно регулярно просматривать, проверяя, чтобы в списке &lt;em&gt;Следующие действия&lt;/em&gt; содержалось хотя бы одно действие, связанное с каждым из проектов.&lt;/li&gt;
+&lt;li&gt;В списке &lt;em&gt;Когда-нибудь, может быть&lt;/em&gt; содержатся идеи и проекты, которые вы, возможно, решите осуществить когда-нибудь в будущем.&lt;/li&gt;
+&lt;li&gt;Этот список надо просматривать еженедельно, вместе с другими материалами, входящими в состав GTD.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id="список-календарь"&gt;&lt;span class="section-num"&gt;4.3.6&lt;/span&gt; Список &lt;em&gt;Календарь&lt;/em&gt;&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;В Календарь попадают записи о делах, которые нужно сделать в определённую дату или в определённое время.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="контексты-действий"&gt;&lt;span class="section-num"&gt;4.4&lt;/span&gt; Контексты действий&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Контексты действий &amp;mdash; это теги, которыми снабжают элементы в списках &lt;em&gt;Следующие действия&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;Они представляют собой сведения о том, где может быть выполнено то или иное действие, или о том, что именно нужно для его выполнения.&lt;/li&gt;
+&lt;li&gt;К названиям контекстов задач часто добавляют префикс &lt;code&gt;@&lt;/code&gt;, что имеет смысл, когда контекст представлен каким-либо местоположением.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="еженедельный-обзор-материалов"&gt;&lt;span class="section-num"&gt;4.5&lt;/span&gt; Еженедельный обзор материалов&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Еженедельный обзор материалов нужно выполнять раз в неделю.&lt;/li&gt;
+&lt;li&gt;Выберите день и придерживайтесь его. Нужно заранее выделить это время (как минимум &amp;mdash; 30 минут).&lt;/li&gt;
+&lt;li&gt;Используйте список триггеров.&lt;/li&gt;
+&lt;li&gt;Добавьте триггерные элементы в список дел.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Синхронизация электронной почты, календаря и списка дел (с помощью триггерного списка) делает сложную занятую университетскую жизнь намного более организованной.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Занимаясь еженедельным обзором, нужно сделать следующее (минимум):
+&lt;ul&gt;
+&lt;li&gt;Проверить, чтобы с каждым проектом было бы связано хотя бы одно действие.&lt;/li&gt;
+&lt;li&gt;Проверить, чтобы каждое действие из списка &lt;em&gt;Следующие действия&lt;/em&gt; действительно было бы чем-то таким, что вам хочется или нужно сделать на следующей неделе в том случае, если у вас будет на это время.
+&lt;ul&gt;
+&lt;li&gt;Если это не так &amp;mdash; действие надо переместить (и/или проект, к которому оно относится) в список &lt;em&gt;Когда-нибудь, может быть&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;Если вы полагаете, что никогда не соберётесь это действие выполнить &amp;mdash; уберите его из всех списков (в Корзину).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Просмотреть список &lt;em&gt;Когда-нибудь, может быть&lt;/em&gt; и подумать, нужно ли перенести какие-то проекты или действия из этого списка в список &lt;em&gt;Проекты&lt;/em&gt; или &lt;em&gt;Следующие действия&lt;/em&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="списки-триггеров"&gt;&lt;span class="section-num"&gt;4.6&lt;/span&gt; Списки триггеров&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;При выполнении еженедельного обзора материалов может оказаться полезным применение &lt;em&gt;списков триггеров&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;Это список ключевых слов, наводящих мозг на воспоминания о разомкнутых циклах, ещё не отражённых в системе.&lt;/li&gt;
+&lt;li&gt;Список триггеров может выглядеть так:
+&lt;ul&gt;
+&lt;li&gt;Начальник.&lt;/li&gt;
+&lt;li&gt;Сослуживцы.&lt;/li&gt;
+&lt;li&gt;Начатые, но не завершённые проекты.&lt;/li&gt;
+&lt;li&gt;Проекты, которые нужно начать.&lt;/li&gt;
+&lt;li&gt;Люди, с которыми надо связаться.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Просматривая список триггеров, поместите всё, что вспомните, в список &lt;em&gt;Входящие&lt;/em&gt; для последующей обработки.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id="список-триггеров-школа"&gt;&lt;span class="section-num"&gt;4.6.1&lt;/span&gt; Список триггеров Школа&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Начатые, но не завершенные проекты&lt;/li&gt;
+&lt;li&gt;Проекты, которые необходимо начать&lt;/li&gt;
+&lt;li&gt;Обязательства/обещания другим&lt;/li&gt;
+&lt;li&gt;Учителя/ассистенты&lt;/li&gt;
+&lt;li&gt;Соседи по комнате&lt;/li&gt;
+&lt;li&gt;Одноклассники - Друзья&lt;/li&gt;
+&lt;li&gt;Младшие классы&lt;/li&gt;
+&lt;li&gt;Старшеклассники&lt;/li&gt;
+&lt;li&gt;Люди со стороны&lt;/li&gt;
+&lt;li&gt;Родители&lt;/li&gt;
+&lt;li&gt;Организации кампуса&lt;/li&gt;
+&lt;li&gt;Внеклассные организации&lt;/li&gt;
+&lt;li&gt;Выпускники&lt;/li&gt;
+&lt;li&gt;Коммуникации совершать/получать&lt;/li&gt;
+&lt;li&gt;Внутренние/внешние&lt;/li&gt;
+&lt;li&gt;Инициировать или отвечать на:&lt;/li&gt;
+&lt;li&gt;Телефонные звонки&lt;/li&gt;
+&lt;li&gt;Текстовые сообщения&lt;/li&gt;
+&lt;li&gt;Голосовая почта&lt;/li&gt;
+&lt;li&gt;Электронная почта&lt;/li&gt;
+&lt;li&gt;Обычная почта&lt;/li&gt;
+&lt;li&gt;Социальные сети&lt;/li&gt;
+&lt;li&gt;Другие тексты для завершения/представления&lt;/li&gt;
+&lt;li&gt;Отчеты&lt;/li&gt;
+&lt;li&gt;Документы&lt;/li&gt;
+&lt;li&gt;Обзоры&lt;/li&gt;
+&lt;li&gt;Задания&lt;/li&gt;
+&lt;li&gt;Статьи&lt;/li&gt;
+&lt;li&gt;Литература&lt;/li&gt;
+&lt;li&gt;Переписывание и редактирование&lt;/li&gt;
+&lt;li&gt;Встречи, которые необходимо назначить/запросить&lt;/li&gt;
+&lt;li&gt;Финансы&lt;/li&gt;
+&lt;li&gt;Обучение&lt;/li&gt;
+&lt;li&gt;Финансовая помощь&lt;/li&gt;
+&lt;li&gt;Учебники&lt;/li&gt;
+&lt;li&gt;Питание&lt;/li&gt;
+&lt;li&gt;Расходы на колледж&lt;/li&gt;
+&lt;li&gt;Прочие расходы&lt;/li&gt;
+&lt;li&gt;Комната/квартира в общежитии&lt;/li&gt;
+&lt;li&gt;Аренда&lt;/li&gt;
+&lt;li&gt;Содержание - Коммунальные услуги&lt;/li&gt;
+&lt;li&gt;Еда&lt;/li&gt;
+&lt;li&gt;Одежда&lt;/li&gt;
+&lt;li&gt;Мебель&lt;/li&gt;
+&lt;li&gt;Украшения&lt;/li&gt;
+&lt;li&gt;Дополнительные материалы&lt;/li&gt;
+&lt;li&gt;Ожидание&amp;hellip;&lt;/li&gt;
+&lt;li&gt;Информация&lt;/li&gt;
+&lt;li&gt;Делегированные задачи/проекты&lt;/li&gt;
+&lt;li&gt;Завершения, важные для проектов&lt;/li&gt;
+&lt;li&gt;Ответы на:&lt;/li&gt;
+&lt;li&gt;Письма&lt;/li&gt;
+&lt;li&gt;СМС&lt;/li&gt;
+&lt;li&gt;Звонки&lt;/li&gt;
+&lt;li&gt;Социальные сети&lt;/li&gt;
+&lt;li&gt;Компенсации&lt;/li&gt;
+&lt;li&gt;Заказы&lt;/li&gt;
+&lt;li&gt;Ремонтируемые объекты&lt;/li&gt;
+&lt;li&gt;Заявки&lt;/li&gt;
+&lt;li&gt;Решения других&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id="список-триггеров-личный"&gt;&lt;span class="section-num"&gt;4.6.2&lt;/span&gt; Список триггеров Личный&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Начатые проекты, не завершенные&lt;/li&gt;
+&lt;li&gt;Проекты, которые необходимо начать&lt;/li&gt;
+&lt;li&gt;Обязательства/обещания другим&lt;/li&gt;
+&lt;li&gt;Значимые другие&lt;/li&gt;
+&lt;li&gt;Семья&lt;/li&gt;
+&lt;li&gt;Друзья&lt;/li&gt;
+&lt;li&gt;Одноклассники&lt;/li&gt;
+&lt;li&gt;Взятые вещи&lt;/li&gt;
+&lt;li&gt;Проекты: другие организации&lt;/li&gt;
+&lt;li&gt;Служение&lt;/li&gt;
+&lt;li&gt;Гражданское&lt;/li&gt;
+&lt;li&gt;Волонтерство&lt;/li&gt;
+&lt;li&gt;Общение, которое нужно сделать/получить&lt;/li&gt;
+&lt;li&gt;Семья&lt;/li&gt;
+&lt;li&gt;Друзья&lt;/li&gt;
+&lt;li&gt;Специалист&lt;/li&gt;
+&lt;li&gt;Инициировать или отвечать на:&lt;/li&gt;
+&lt;li&gt;Телефонные звонки&lt;/li&gt;
+&lt;li&gt;Текстовые сообщения&lt;/li&gt;
+&lt;li&gt;Голосовая почта&lt;/li&gt;
+&lt;li&gt;Электронная почта&lt;/li&gt;
+&lt;li&gt;Обычная почта&lt;/li&gt;
+&lt;li&gt;Социальные сети&lt;/li&gt;
+&lt;li&gt;Предстоящие события&lt;/li&gt;
+&lt;li&gt;Особые случаи&lt;/li&gt;
+&lt;li&gt;Дни рождения&lt;/li&gt;
+&lt;li&gt;Юбилеи&lt;/li&gt;
+&lt;li&gt;Свадьбы&lt;/li&gt;
+&lt;li&gt;Выпускные&lt;/li&gt;
+&lt;li&gt;Праздники&lt;/li&gt;
+&lt;li&gt;Путешествия -&lt;/li&gt;
+&lt;li&gt;Поездки на выходные&lt;/li&gt;
+&lt;li&gt;Каникулы&lt;/li&gt;
+&lt;li&gt;Социальные мероприятия&lt;/li&gt;
+&lt;li&gt;Культурные мероприятия&lt;/li&gt;
+&lt;li&gt;Спортивные мероприятия&lt;/li&gt;
+&lt;li&gt;Чем заняться&lt;/li&gt;
+&lt;li&gt;Куда пойти&lt;/li&gt;
+&lt;li&gt;Люди, с которыми можно встретиться/пригласить&lt;/li&gt;
+&lt;li&gt;Местные достопримечательности&lt;/li&gt;
+&lt;li&gt;Администрация&lt;/li&gt;
+&lt;li&gt;Финансовые&lt;/li&gt;
+&lt;li&gt;Счета&lt;/li&gt;
+&lt;li&gt;Банки&lt;/li&gt;
+&lt;li&gt;Инвестиции&lt;/li&gt;
+&lt;li&gt;Кредиты&lt;/li&gt;
+&lt;li&gt;Налоги&lt;/li&gt;
+&lt;li&gt;Страхование&lt;/li&gt;
+&lt;li&gt;Юридические вопросы&lt;/li&gt;
+&lt;li&gt;Подача документов&lt;/li&gt;
+&lt;li&gt;Ожидание&amp;hellip;&lt;/li&gt;
+&lt;li&gt;Почтовый перевод&lt;/li&gt;
+&lt;li&gt;Ремонт&lt;/li&gt;
+&lt;li&gt;Возмещение расходов&lt;/li&gt;
+&lt;li&gt;Предметы взаймы&lt;/li&gt;
+&lt;li&gt;Медицинские данные&lt;/li&gt;
+&lt;li&gt;Ответы на вопросы&lt;/li&gt;
+&lt;li&gt;Дом/домашнее хозяйство&lt;/li&gt;
+&lt;li&gt;Ландшафт&lt;/li&gt;
+&lt;li&gt;Кухонные принадлежности&lt;/li&gt;
+&lt;li&gt;Стиральная машина/ сушилка/пылесос&lt;/li&gt;
+&lt;li&gt;Места для организации/уборки&lt;/li&gt;
+&lt;li&gt;Телевизор&lt;/li&gt;
+&lt;li&gt;Видеомагнитофон/DVD&lt;/li&gt;
+&lt;li&gt;Музыка/CD/кассеты&lt;/li&gt;
+&lt;li&gt;Телефоны&lt;/li&gt;
+&lt;li&gt;Гардеробы/одежда&lt;/li&gt;
+&lt;li&gt;Ремонт/техническое обслуживание автомобилей&lt;/li&gt;
+&lt;li&gt;Инструменты&lt;/li&gt;
+&lt;li&gt;Багаж&lt;/li&gt;
+&lt;li&gt;Компьютеры&lt;/li&gt;
+&lt;li&gt;Программное обеспечение&lt;/li&gt;
+&lt;li&gt;Аппаратное обеспечение&lt;/li&gt;
+&lt;li&gt;Соединения&lt;/li&gt;
+&lt;li&gt;CD/DVD привод&lt;/li&gt;
+&lt;li&gt;Электронная почта&lt;/li&gt;
+&lt;li&gt;Интернет&lt;/li&gt;
+&lt;li&gt;Социальные сети&lt;/li&gt;
+&lt;li&gt;Здравоохранение&lt;/li&gt;
+&lt;li&gt;Врачи&lt;/li&gt;
+&lt;li&gt;Стоматологи&lt;/li&gt;
+&lt;li&gt;Специалисты&lt;/li&gt;
+&lt;li&gt;Хобби&lt;/li&gt;
+&lt;li&gt;Книги&lt;/li&gt;
+&lt;li&gt;CD&lt;/li&gt;
+&lt;li&gt;MP3&lt;/li&gt;
+&lt;li&gt;Подкасты&lt;/li&gt;
+&lt;li&gt;Видео&lt;/li&gt;
+&lt;li&gt;Приложения&lt;/li&gt;
+&lt;li&gt;Поручения&lt;/li&gt;
+&lt;li&gt;Хозяйственный магазин&lt;/li&gt;
+&lt;li&gt;Аптека&lt;/li&gt;
+&lt;li&gt;Супермаркет&lt;/li&gt;
+&lt;li&gt;Банк&lt;/li&gt;
+&lt;li&gt;Уборка&lt;/li&gt;
+&lt;li&gt;Книжный магазин&lt;/li&gt;
+&lt;li&gt;Библиотека&lt;/li&gt;
+&lt;li&gt;Магазин одежды&lt;/li&gt;
+&lt;li&gt;Сообщество&lt;/li&gt;
+&lt;li&gt;Район&lt;/li&gt;
+&lt;li&gt;Школы&lt;/li&gt;
+&lt;li&gt;Местное самоуправление&lt;/li&gt;
+&lt;li&gt;Гражданские вопросы&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id="trigger-list-school"&gt;&lt;span class="section-num"&gt;4.6.3&lt;/span&gt; Trigger list School&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Projects started, not completed&lt;/li&gt;
+&lt;li&gt;Projects that need to be started&lt;/li&gt;
+&lt;li&gt;Commitments/promises to others&lt;/li&gt;
+&lt;li&gt;Teachers/TAs&lt;/li&gt;
+&lt;li&gt;Roommates&lt;/li&gt;
+&lt;li&gt;Classmates&lt;/li&gt;
+&lt;li&gt;Friends&lt;/li&gt;
+&lt;li&gt;Underclassmen&lt;/li&gt;
+&lt;li&gt;Upperclassmen&lt;/li&gt;
+&lt;li&gt;&amp;ldquo;Outside&amp;rdquo; people&lt;/li&gt;
+&lt;li&gt;Parents&lt;/li&gt;
+&lt;li&gt;Campus organizations&lt;/li&gt;
+&lt;li&gt;Extracurricular organizations&lt;/li&gt;
+&lt;li&gt;Graduates&lt;/li&gt;
+&lt;li&gt;Communications to make/get&lt;/li&gt;
+&lt;li&gt;Internal/External&lt;/li&gt;
+&lt;li&gt;Initiate or respond to:&lt;/li&gt;
+&lt;li&gt;Phone calls&lt;/li&gt;
+&lt;li&gt;Text messages&lt;/li&gt;
+&lt;li&gt;Voice-mail&lt;/li&gt;
+&lt;li&gt;E-mail&lt;/li&gt;
+&lt;li&gt;Snail mail&lt;/li&gt;
+&lt;li&gt;Social Media&lt;/li&gt;
+&lt;li&gt;Other writing to finish/submit&lt;/li&gt;
+&lt;li&gt;Reports&lt;/li&gt;
+&lt;li&gt;Papers&lt;/li&gt;
+&lt;li&gt;Reviews&lt;/li&gt;
+&lt;li&gt;Assignments&lt;/li&gt;
+&lt;li&gt;Articles&lt;/li&gt;
+&lt;li&gt;Readings&lt;/li&gt;
+&lt;li&gt;Rewrites and edits&lt;/li&gt;
+&lt;li&gt;Meetings that need to be set/requested&lt;/li&gt;
+&lt;li&gt;Financial&lt;/li&gt;
+&lt;li&gt;Tuition&lt;/li&gt;
+&lt;li&gt;Financial aid&lt;/li&gt;
+&lt;li&gt;Textbooks&lt;/li&gt;
+&lt;li&gt;Dining&lt;/li&gt;
+&lt;li&gt;College Expenses&lt;/li&gt;
+&lt;li&gt;Other Expenses&lt;/li&gt;
+&lt;li&gt;Dorm Room/Apartment&lt;/li&gt;
+&lt;li&gt;Rent&lt;/li&gt;
+&lt;li&gt;Maintenance&lt;/li&gt;
+&lt;li&gt;Utilities&lt;/li&gt;
+&lt;li&gt;Food&lt;/li&gt;
+&lt;li&gt;Clothes&lt;/li&gt;
+&lt;li&gt;Furniture&lt;/li&gt;
+&lt;li&gt;Decorations&lt;/li&gt;
+&lt;li&gt;Additional Supplies&lt;/li&gt;
+&lt;li&gt;Waiting for&amp;hellip;&lt;/li&gt;
+&lt;li&gt;Information&lt;/li&gt;
+&lt;li&gt;Delegated tasks/projects&lt;/li&gt;
+&lt;li&gt;Completions critical to projects&lt;/li&gt;
+&lt;li&gt;Replies to:&lt;/li&gt;
+&lt;li&gt;Letters&lt;/li&gt;
+&lt;li&gt;Texts&lt;/li&gt;
+&lt;li&gt;Calls&lt;/li&gt;
+&lt;li&gt;Social Media&lt;/li&gt;
+&lt;li&gt;Reimbursements&lt;/li&gt;
+&lt;li&gt;Ordered items&lt;/li&gt;
+&lt;li&gt;Items being repaired&lt;/li&gt;
+&lt;li&gt;Tickets&lt;/li&gt;
+&lt;li&gt;Decisions of others&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id="trigger-list-personal"&gt;&lt;span class="section-num"&gt;4.6.4&lt;/span&gt; Trigger list Personal&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Projects started, not completed&lt;/li&gt;
+&lt;li&gt;Projects that need to be started&lt;/li&gt;
+&lt;li&gt;Commitments/promises to others&lt;/li&gt;
+&lt;li&gt;Significant Other&lt;/li&gt;
+&lt;li&gt;Family&lt;/li&gt;
+&lt;li&gt;Friends&lt;/li&gt;
+&lt;li&gt;Classmates&lt;/li&gt;
+&lt;li&gt;Borrowed items&lt;/li&gt;
+&lt;li&gt;Projects: other organizations&lt;/li&gt;
+&lt;li&gt;Service&lt;/li&gt;
+&lt;li&gt;Civic&lt;/li&gt;
+&lt;li&gt;Volunteer&lt;/li&gt;
+&lt;li&gt;Communications to make/get&lt;/li&gt;
+&lt;li&gt;Family&lt;/li&gt;
+&lt;li&gt;Friends&lt;/li&gt;
+&lt;li&gt;Professional&lt;/li&gt;
+&lt;li&gt;Initiate or respond to:&lt;/li&gt;
+&lt;li&gt;Phone calls&lt;/li&gt;
+&lt;li&gt;Text messages&lt;/li&gt;
+&lt;li&gt;Voicemail&lt;/li&gt;
+&lt;li&gt;E-mail&lt;/li&gt;
+&lt;li&gt;Snail mail&lt;/li&gt;
+&lt;li&gt;Social Media&lt;/li&gt;
+&lt;li&gt;Upcoming events&lt;/li&gt;
+&lt;li&gt;Special occasions&lt;/li&gt;
+&lt;li&gt;Birthdays&lt;/li&gt;
+&lt;li&gt;Anniversaries&lt;/li&gt;
+&lt;li&gt;Weddings&lt;/li&gt;
+&lt;li&gt;Graduations&lt;/li&gt;
+&lt;li&gt;Holidays&lt;/li&gt;
+&lt;li&gt;Travel&lt;/li&gt;
+&lt;li&gt;Weekend trips&lt;/li&gt;
+&lt;li&gt;Vacations&lt;/li&gt;
+&lt;li&gt;Social events&lt;/li&gt;
+&lt;li&gt;Cultural events&lt;/li&gt;
+&lt;li&gt;Sporting events&lt;/li&gt;
+&lt;li&gt;Things to do&lt;/li&gt;
+&lt;li&gt;Places to go&lt;/li&gt;
+&lt;li&gt;People to meet/invite&lt;/li&gt;
+&lt;li&gt;Local attractions&lt;/li&gt;
+&lt;li&gt;Administration&lt;/li&gt;
+&lt;li&gt;Financial&lt;/li&gt;
+&lt;li&gt;Bills&lt;/li&gt;
+&lt;li&gt;Banks&lt;/li&gt;
+&lt;li&gt;Investments&lt;/li&gt;
+&lt;li&gt;Loans&lt;/li&gt;
+&lt;li&gt;Taxes&lt;/li&gt;
+&lt;li&gt;Insurance&lt;/li&gt;
+&lt;li&gt;Legal affairs&lt;/li&gt;
+&lt;li&gt;Filing&lt;/li&gt;
+&lt;li&gt;Waiting for&amp;hellip;&lt;/li&gt;
+&lt;li&gt;Mail order&lt;/li&gt;
+&lt;li&gt;Repair&lt;/li&gt;
+&lt;li&gt;Reimbursements&lt;/li&gt;
+&lt;li&gt;Loaned items&lt;/li&gt;
+&lt;li&gt;Medical data&lt;/li&gt;
+&lt;li&gt;RSVPs&lt;/li&gt;
+&lt;li&gt;Home/household&lt;/li&gt;
+&lt;li&gt;Landscape&lt;/li&gt;
+&lt;li&gt;Kitchen things&lt;/li&gt;
+&lt;li&gt;Washer/dryer/vacuum&lt;/li&gt;
+&lt;li&gt;Areas to organize/clean&lt;/li&gt;
+&lt;li&gt;TV&lt;/li&gt;
+&lt;li&gt;VCR/DVD&lt;/li&gt;
+&lt;li&gt;Music/CDs/tapes&lt;/li&gt;
+&lt;li&gt;Phones&lt;/li&gt;
+&lt;li&gt;Closets/clothes&lt;/li&gt;
+&lt;li&gt;Vehicle repair/maintenance&lt;/li&gt;
+&lt;li&gt;Tools&lt;/li&gt;
+&lt;li&gt;Luggage&lt;/li&gt;
+&lt;li&gt;Computers&lt;/li&gt;
+&lt;li&gt;Software&lt;/li&gt;
+&lt;li&gt;Hardware&lt;/li&gt;
+&lt;li&gt;Connections&lt;/li&gt;
+&lt;li&gt;CD/DVD Drive&lt;/li&gt;
+&lt;li&gt;E-mail&lt;/li&gt;
+&lt;li&gt;Internet&lt;/li&gt;
+&lt;li&gt;Social Media&lt;/li&gt;
+&lt;li&gt;Health care&lt;/li&gt;
+&lt;li&gt;Doctors&lt;/li&gt;
+&lt;li&gt;Dentists&lt;/li&gt;
+&lt;li&gt;Specialists&lt;/li&gt;
+&lt;li&gt;Hobbies&lt;/li&gt;
+&lt;li&gt;Books&lt;/li&gt;
+&lt;li&gt;CDs&lt;/li&gt;
+&lt;li&gt;MP3s&lt;/li&gt;
+&lt;li&gt;Podcasts&lt;/li&gt;
+&lt;li&gt;Videos&lt;/li&gt;
+&lt;li&gt;Apps&lt;/li&gt;
+&lt;li&gt;Errands&lt;/li&gt;
+&lt;li&gt;Hardware store&lt;/li&gt;
+&lt;li&gt;Pharmacy&lt;/li&gt;
+&lt;li&gt;Supermarket&lt;/li&gt;
+&lt;li&gt;Bank&lt;/li&gt;
+&lt;li&gt;Cleaner&lt;/li&gt;
+&lt;li&gt;Bookstore&lt;/li&gt;
+&lt;li&gt;Library&lt;/li&gt;
+&lt;li&gt;Clothing store&lt;/li&gt;
+&lt;li&gt;Community&lt;/li&gt;
+&lt;li&gt;Neighborhood&lt;/li&gt;
+&lt;li&gt;Schools&lt;/li&gt;
+&lt;li&gt;Local government&lt;/li&gt;
+&lt;li&gt;Civic issues&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="организация-gtd"&gt;&lt;span class="section-num"&gt;5&lt;/span&gt; Организация GTD&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="реализации-метода-gtd"&gt;&lt;span class="section-num"&gt;6&lt;/span&gt; Реализации метода GTD&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Реализация метода GTD на основе Emacs</title><link>https://yamadharma.github.io/ru/post/2021/07/12/implementation-gtd-method-emacs/</link><pubDate>Mon, 12 Jul 2021 14:50:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2021/07/12/implementation-gtd-method-emacs/</guid><description>&lt;ul&gt;
+&lt;li&gt;Метод GTD можно реализовывать с помощью разного программного обеспечения.&lt;/li&gt;
+&lt;li&gt;Для меня оказалось наиболее просто использовать инфраструктуру среды &lt;em&gt;emacs&lt;/em&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;details class="print:hidden xl:hidden" &gt;
+&lt;summary&gt;Содержание&lt;/summary&gt;
+&lt;div class="text-sm"&gt;
+&lt;nav id="TableOfContents"&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="#общая-реализация"&gt;&lt;span class="section-num"&gt;1&lt;/span&gt; Общая реализация&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#пакеты-реализующие-методику-gtd"&gt;&lt;span class="section-num"&gt;2&lt;/span&gt; Пакеты, реализующие методику GTD&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="#org-gtd"&gt;&lt;span class="section-num"&gt;2.1&lt;/span&gt; Org-gtd&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/div&gt;
+&lt;/details&gt;
+&lt;h2 id="общая-реализация"&gt;&lt;span class="section-num"&gt;1&lt;/span&gt; Общая реализация&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;В качестве основного инструментария для реализации метода GTD выступает &lt;em&gt;org-mode&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;Для работы с почтой можно использовать один из почтовых клиентов, например, &lt;em&gt;mu4e&lt;/em&gt; (см.
+).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="пакеты-реализующие-методику-gtd"&gt;&lt;span class="section-num"&gt;2&lt;/span&gt; Пакеты, реализующие методику GTD&lt;/h2&gt;
+&lt;h3 id="org-gtd"&gt;&lt;span class="section-num"&gt;2.1&lt;/span&gt; Org-gtd&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Emacs. Почта. Mu4e. Процесс работы с почтой</title><link>https://yamadharma.github.io/ru/post/2021/07/12/emacs-mail-mu4e-email-workflow/</link><pubDate>Mon, 12 Jul 2021 14:19:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2021/07/12/emacs-mail-mu4e-email-workflow/</guid><description>&lt;p&gt;Организация работы с электропочтой на основе почтового клиента &lt;em&gt;mu4e&lt;/em&gt;.&lt;/p&gt;
+&lt;details class="print:hidden xl:hidden" &gt;
+&lt;summary&gt;Содержание&lt;/summary&gt;
+&lt;div class="text-sm"&gt;
+&lt;nav id="TableOfContents"&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="#общая-информация"&gt;&lt;span class="section-num"&gt;1&lt;/span&gt; Общая информация&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/div&gt;
+&lt;/details&gt;
+&lt;h2 id="общая-информация"&gt;&lt;span class="section-num"&gt;1&lt;/span&gt; Общая информация&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Предлагаемая методика является реализацией методики работы с электропочтой (см.
+) на основе почтового клиента &lt;em&gt;mu4e&lt;/em&gt; (см.
+) и среды &lt;em&gt;emacs&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;Методика находится в рамках метода GTD.&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Работа с почтой</title><link>https://yamadharma.github.io/ru/post/2021/07/12/email-workflow/</link><pubDate>Mon, 12 Jul 2021 12:59:00 +0300</pubDate><guid>https://yamadharma.github.io/ru/post/2021/07/12/email-workflow/</guid><description>&lt;p&gt;Процесс работы с электропочтой.&lt;/p&gt;
+&lt;details class="print:hidden xl:hidden" &gt;
+&lt;summary&gt;Содержание&lt;/summary&gt;
+&lt;div class="text-sm"&gt;
+&lt;nav id="TableOfContents"&gt;&lt;/nav&gt;
+&lt;/div&gt;
+&lt;/details&gt;
+&lt;figure&gt;&lt;img src="https://yamadharma.github.io/ox-hugo/phd072508s.png"
+alt="Рис. 1.: Источник: http://phdcomics.com/comics/archive.php?comicid=1047"&gt;&lt;figcaption&gt;
+&lt;p&gt;&lt;span class="figure-number"&gt;Рис. 1.: &lt;/span&gt;Источник: &lt;a href="http://phdcomics.com/comics/archive.php?comicid=1047" target="_blank" rel="noopener"&gt;http://phdcomics.com/comics/archive.php?comicid=1047&lt;/a&gt;&lt;/p&gt;
+&lt;/figcaption&gt;
+&lt;/figure&gt;</description></item></channel></rss>

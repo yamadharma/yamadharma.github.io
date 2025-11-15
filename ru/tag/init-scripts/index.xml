@@ -1,43 +1,43 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Init-Scripts | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/init-scripts/</link><atom:link href="https://yamadharma.github.io/ru/tag/init-scripts/index.xml" rel="self" type="application/rss+xml"/><description>Init-Scripts</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>ru-ru</language><copyright>© 2025 Dmitry S. Kulyabov</copyright><lastBuildDate>Sun, 17 Sep 2006 20:55:00 +0000</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu_6ee0c25d397641dd.png</url><title>Init-Scripts</title><link>https://yamadharma.github.io/ru/tag/init-scripts/</link></image><item><title>Monit и gentoo rc-scripts</title><link>https://yamadharma.github.io/ru/post/2006/09/17/monit-i-gentoo-rc-scripts/</link><pubDate>Sun, 17 Sep 2006 20:55:00 +0000</pubDate><guid>https://yamadharma.github.io/ru/post/2006/09/17/monit-i-gentoo-rc-scripts/</guid><description>&lt;p>При использовании monit для перезапуска rc-скриптов в gentoo использовал killall и опцию zap.&lt;br>
-Нашёл это-же решение, но оформленное красивее.&lt;/p>
-&lt;p>Это файл /etc/monit.d/bin/kickservice&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">##!/bin/sh &lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">## kickservice by Eric Radman &lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">## Script used by monit to kill off and restart daemons &lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">## /etc/monit.d/bin/kickservice &lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">function&lt;/span> stop &lt;span class="o">()&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">{&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">     /etc/init.d/&lt;span class="nv">$1&lt;/span> pause
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">     /etc/init.d/&lt;span class="nv">$1&lt;/span> zap
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">     &lt;span class="k">if&lt;/span> &lt;span class="o">[&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$2&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="s2">&amp;#34;kill&amp;#34;&lt;/span> &lt;span class="o">]&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">         &lt;span class="k">then&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">         /bin/killall &lt;span class="nv">$3&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">     &lt;span class="k">fi&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">}&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">function&lt;/span> start &lt;span class="o">()&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">{&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">     /etc/init.d/&lt;span class="nv">$1&lt;/span> zap
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">     /etc/init.d/&lt;span class="nv">$1&lt;/span> start
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">}&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">case&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$1&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> in
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> start&lt;span class="o">)&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">     start &lt;span class="nv">$2&lt;/span> &lt;span class="nv">$3&lt;/span> &lt;span class="nv">$4&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">     &lt;span class="p">;;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> stop&lt;span class="o">)&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">     stop &lt;span class="nv">$2&lt;/span> &lt;span class="nv">$3&lt;/span> &lt;span class="nv">$4&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">     &lt;span class="p">;;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> *&lt;span class="o">)&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">     &lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;Usage: kickservice [start|stop] [service] kill [daemon]&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">     &lt;span class="p">;;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">esac&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Проблема возникла из-за того, что при установке baselayout-1.12.x перестал нормально работать pppd (при подключении через pptp к VPN-серверу провайдера). Очень часто соединение не устанавливается (вина, думаю, провайдерского сервера). По идее после этого он должен перезапускаться, а он просто ничего не делал. Решил снять проблему с помощью monit.&lt;br>
-Убрал net.ppp0 из загрузки, и заставил monit мониторить ppp0.&lt;/p>
-&lt;p>Вот скрипт /etc/monit.d/ppp0&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">check process pppd with pidfile /var/run/ppp0.pid
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">   start &lt;span class="nv">program&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;/etc/monit.d/bin/kickservice start net.ppp0&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">   stop &lt;span class="nv">program&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;/etc/monit.d/bin/kickservice stop net.ppp0 kill pppd&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">   &lt;span class="k">if&lt;/span> &lt;span class="m">5&lt;/span> restarts within &lt;span class="m">5&lt;/span> cycles &lt;span class="k">then&lt;/span> timeout
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>P. S. Хотел запостить скрипты, но не знаю как :(&lt;/p></description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Init-Scripts | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/init-scripts/</link><atom:link href="https://yamadharma.github.io/ru/tag/init-scripts/index.xml" rel="self" type="application/rss+xml"/><description>Init-Scripts</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>ru-ru</language><copyright>© 2025 Dmitry S. Kulyabov</copyright><lastBuildDate>Sun, 17 Sep 2006 20:55:00 +0000</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu_6ee0c25d397641dd.png</url><title>Init-Scripts</title><link>https://yamadharma.github.io/ru/tag/init-scripts/</link></image><item><title>Monit и gentoo rc-scripts</title><link>https://yamadharma.github.io/ru/post/2006/09/17/monit-i-gentoo-rc-scripts/</link><pubDate>Sun, 17 Sep 2006 20:55:00 +0000</pubDate><guid>https://yamadharma.github.io/ru/post/2006/09/17/monit-i-gentoo-rc-scripts/</guid><description>&lt;p&gt;При использовании monit для перезапуска rc-скриптов в gentoo использовал killall и опцию zap.&lt;br&gt;
+Нашёл это-же решение, но оформленное красивее.&lt;/p&gt;
+&lt;p&gt;Это файл /etc/monit.d/bin/kickservice&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;##!/bin/sh &lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;## kickservice by Eric Radman &lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;## Script used by monit to kill off and restart daemons &lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;## /etc/monit.d/bin/kickservice &lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;function&lt;/span&gt; stop &lt;span class="o"&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;     /etc/init.d/&lt;span class="nv"&gt;$1&lt;/span&gt; pause
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;     /etc/init.d/&lt;span class="nv"&gt;$1&lt;/span&gt; zap
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;     &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="nv"&gt;$2&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;kill&amp;#34;&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;         &lt;span class="k"&gt;then&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;         /bin/killall &lt;span class="nv"&gt;$3&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;     &lt;span class="k"&gt;fi&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;function&lt;/span&gt; start &lt;span class="o"&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;     /etc/init.d/&lt;span class="nv"&gt;$1&lt;/span&gt; zap
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;     /etc/init.d/&lt;span class="nv"&gt;$1&lt;/span&gt; start
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;case&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&lt;/span&gt; in
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; start&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;     start &lt;span class="nv"&gt;$2&lt;/span&gt; &lt;span class="nv"&gt;$3&lt;/span&gt; &lt;span class="nv"&gt;$4&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;     &lt;span class="p"&gt;;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; stop&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;     stop &lt;span class="nv"&gt;$2&lt;/span&gt; &lt;span class="nv"&gt;$3&lt;/span&gt; &lt;span class="nv"&gt;$4&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;     &lt;span class="p"&gt;;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; *&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;     &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;Usage: kickservice [start|stop] [service] kill [daemon]&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;     &lt;span class="p"&gt;;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;esac&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Проблема возникла из-за того, что при установке baselayout-1.12.x перестал нормально работать pppd (при подключении через pptp к VPN-серверу провайдера). Очень часто соединение не устанавливается (вина, думаю, провайдерского сервера). По идее после этого он должен перезапускаться, а он просто ничего не делал. Решил снять проблему с помощью monit.&lt;br&gt;
+Убрал net.ppp0 из загрузки, и заставил monit мониторить ppp0.&lt;/p&gt;
+&lt;p&gt;Вот скрипт /etc/monit.d/ppp0&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;check process pppd with pidfile /var/run/ppp0.pid
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;   start &lt;span class="nv"&gt;program&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;/etc/monit.d/bin/kickservice start net.ppp0&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;   stop &lt;span class="nv"&gt;program&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;/etc/monit.d/bin/kickservice stop net.ppp0 kill pppd&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;   &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="m"&gt;5&lt;/span&gt; restarts within &lt;span class="m"&gt;5&lt;/span&gt; cycles &lt;span class="k"&gt;then&lt;/span&gt; timeout
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;P. S. Хотел запостить скрипты, но не знаю как :(&lt;/p&gt;</description></item></channel></rss>

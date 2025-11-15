@@ -1,105 +1,105 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Centos | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/centos/</link><atom:link href="https://yamadharma.github.io/ru/tag/centos/index.xml" rel="self" type="application/rss+xml"/><description>Centos</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>ru-ru</language><copyright>© 2025 Dmitry S. Kulyabov</copyright><lastBuildDate>Thu, 19 Nov 2015 11:39:41 +0000</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu_6ee0c25d397641dd.png</url><title>Centos</title><link>https://yamadharma.github.io/ru/tag/centos/</link></image><item><title>Миграция с Drupal-6 на Drupal-8</title><link>https://yamadharma.github.io/ru/post/2015/11/19/drupal6-to-8/</link><pubDate>Thu, 19 Nov 2015 11:39:41 +0000</pubDate><guid>https://yamadharma.github.io/ru/post/2015/11/19/drupal6-to-8/</guid><description>&lt;h2 id="информация-по-миграции">Информация по миграции&lt;/h2>
-&lt;ul>
-&lt;li>
-&lt;p>
-.&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>
-.&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>
-.&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>
-.&lt;/p>
-&lt;/li>
-&lt;/ul>
-&lt;h2 id="обновление-php">Обновление PHP&lt;/h2>
-&lt;p>Для Drupal-8 нужен php-5.5. В Centos-7 идёт php-5.4. Обновим его до php-5.6. Вначале установним нужные репозитории
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Centos | Д. С. Кулябов</title><link>https://yamadharma.github.io/ru/tag/centos/</link><atom:link href="https://yamadharma.github.io/ru/tag/centos/index.xml" rel="self" type="application/rss+xml"/><description>Centos</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>ru-ru</language><copyright>© 2025 Dmitry S. Kulyabov</copyright><lastBuildDate>Thu, 19 Nov 2015 11:39:41 +0000</lastBuildDate><image><url>https://yamadharma.github.io/media/icon_hu_6ee0c25d397641dd.png</url><title>Centos</title><link>https://yamadharma.github.io/ru/tag/centos/</link></image><item><title>Миграция с Drupal-6 на Drupal-8</title><link>https://yamadharma.github.io/ru/post/2015/11/19/drupal6-to-8/</link><pubDate>Thu, 19 Nov 2015 11:39:41 +0000</pubDate><guid>https://yamadharma.github.io/ru/post/2015/11/19/drupal6-to-8/</guid><description>&lt;h2 id="информация-по-миграции"&gt;Информация по миграции&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;
+.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;
+.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;
+.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;
+.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="обновление-php"&gt;Обновление PHP&lt;/h2&gt;
+&lt;p&gt;Для Drupal-8 нужен php-5.5. В Centos-7 идёт php-5.4. Обновим его до php-5.6. Вначале установним нужные репозитории
 (см.
-):&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Сделаем подмену дистрибутивного php на php-5.6:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">yum install yum-plugin-replace
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">yum replace php-common --replace-with&lt;span class="o">=&lt;/span>php56w-common
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">yum install php56w-opcache
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="установка-drush-8">Установка Drush 8&lt;/h2>
-&lt;p>Установим Composer:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">yum -y install composer
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Установим Drush (dev):&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">mkdir /usr/local/src/drush
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> /usr/local/src/drush
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">composer require drush/drush:dev-master
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ln -s /usr/local/src/drush/vendor/drush/drush/drush /usr/local/bin/drush
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Настройка SELinux для некоторых приложений</title><link>https://yamadharma.github.io/ru/post/2015/05/15/selinux-apps/</link><pubDate>Fri, 15 May 2015 05:56:13 +0000</pubDate><guid>https://yamadharma.github.io/ru/post/2015/05/15/selinux-apps/</guid><description>&lt;ul>
-&lt;li>&lt;code>setsebool&lt;/code> запускаем как с ключём &lt;code>-P&lt;/code> (для запоминания настроек), так и без него (чтобы работало в текущей сессии).&lt;/li>
-&lt;/ul>
-&lt;h2 id="www-сервер">&lt;a name='head_www-server'>&lt;/a> WWW-сервер&lt;/h2>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">setsebool -P httpd_unified &lt;span class="m">1&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">setsebool -P httpd_can_network_connect_db &lt;span class="m">1&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">setsebool -P httpd_can_network_connect &lt;span class="m">1&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">setsebool -P httpd_can_network_relay &lt;span class="m">1&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">setsebool -P httpd_can_sendmail &lt;span class="m">1&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">setsebool -P httpd_execmem &lt;span class="m">1&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">setsebool -P httpd_use_fusefs &lt;span class="m">1&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="базы-данных">&lt;a name='head_db'>&lt;/a> Базы данных&lt;/h2>
-&lt;ul>
-&lt;li>Postgres&lt;/li>
-&lt;/ul>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">setsebool -P selinuxuser_postgresql_connect_enabled &lt;span class="m">1&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
-&lt;li>MySQL&lt;/li>
-&lt;/ul>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">setsebool -P selinuxuser_mysql_connect_enabled &lt;span class="m">1&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="ojs">OJS&lt;/h2>
-&lt;ul>
-&lt;li>
-&lt;p>Настраиваем
+):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Сделаем подмену дистрибутивного php на php-5.6:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;yum install yum-plugin-replace
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;yum replace php-common --replace-with&lt;span class="o"&gt;=&lt;/span&gt;php56w-common
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;yum install php56w-opcache
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="установка-drush-8"&gt;Установка Drush 8&lt;/h2&gt;
+&lt;p&gt;Установим Composer:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;yum -y install composer
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Установим Drush (dev):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mkdir /usr/local/src/drush
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; /usr/local/src/drush
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;composer require drush/drush:dev-master
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;ln -s /usr/local/src/drush/vendor/drush/drush/drush /usr/local/bin/drush
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item><item><title>Настройка SELinux для некоторых приложений</title><link>https://yamadharma.github.io/ru/post/2015/05/15/selinux-apps/</link><pubDate>Fri, 15 May 2015 05:56:13 +0000</pubDate><guid>https://yamadharma.github.io/ru/post/2015/05/15/selinux-apps/</guid><description>&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;setsebool&lt;/code&gt; запускаем как с ключём &lt;code&gt;-P&lt;/code&gt; (для запоминания настроек), так и без него (чтобы работало в текущей сессии).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="www-сервер"&gt;&lt;a name='head_www-server'&gt;&lt;/a&gt; WWW-сервер&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;setsebool -P httpd_unified &lt;span class="m"&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;setsebool -P httpd_can_network_connect_db &lt;span class="m"&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;setsebool -P httpd_can_network_connect &lt;span class="m"&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;setsebool -P httpd_can_network_relay &lt;span class="m"&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;setsebool -P httpd_can_sendmail &lt;span class="m"&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;setsebool -P httpd_execmem &lt;span class="m"&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;setsebool -P httpd_use_fusefs &lt;span class="m"&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="базы-данных"&gt;&lt;a name='head_db'&gt;&lt;/a&gt; Базы данных&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Postgres&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;setsebool -P selinuxuser_postgresql_connect_enabled &lt;span class="m"&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;MySQL&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;setsebool -P selinuxuser_mysql_connect_enabled &lt;span class="m"&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="ojs"&gt;OJS&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Настраиваем
 и
-.&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>Настраиваем доступ к файловой системе.&lt;/p>
-&lt;/li>
-&lt;/ul>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">semanage fcontext --add -t httpd_sys_rw_content_t &lt;span class="s2">&amp;#34;/var/www/html/ojs/cache(/.*)?&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">semanage fcontext --add -t httpd_sys_rw_content_t &lt;span class="s2">&amp;#34;/var/www/html/ojs/public(/.*)?&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">semanage fcontext --add -t httpd_sys_rw_content_t &lt;span class="s2">&amp;#34;/var/www/html/ojs/config.inc.php&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">semanage fcontext --add -t httpd_sys_rw_content_t &lt;span class="s2">&amp;#34;/var/www/html/ojs/plugins/generic(/.*)?&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">semanage fcontext --add -t httpd_sys_rw_content_t &lt;span class="s2">&amp;#34;/var/www/data(/.*)?&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="drupal">Drupal&lt;/h2>
-&lt;ul>
-&lt;li>
-&lt;p>Настраиваем
+.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Настраиваем доступ к файловой системе.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;semanage fcontext --add -t httpd_sys_rw_content_t &lt;span class="s2"&gt;&amp;#34;/var/www/html/ojs/cache(/.*)?&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;semanage fcontext --add -t httpd_sys_rw_content_t &lt;span class="s2"&gt;&amp;#34;/var/www/html/ojs/public(/.*)?&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;semanage fcontext --add -t httpd_sys_rw_content_t &lt;span class="s2"&gt;&amp;#34;/var/www/html/ojs/config.inc.php&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;semanage fcontext --add -t httpd_sys_rw_content_t &lt;span class="s2"&gt;&amp;#34;/var/www/html/ojs/plugins/generic(/.*)?&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;semanage fcontext --add -t httpd_sys_rw_content_t &lt;span class="s2"&gt;&amp;#34;/var/www/data(/.*)?&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="drupal"&gt;Drupal&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Настраиваем
 и
-.&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>Настраиваем доступ к файловой системе.&lt;/p>
-&lt;/li>
-&lt;/ul>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">semanage fcontext --add -t httpd_sys_rw_content_t &lt;span class="s2">&amp;#34;/var/www/html/sites/drupal/(.*)/sites/(.*)/files(/.*)?&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">semanage fcontext --add -t httpd_sys_rw_content_t &lt;span class="s2">&amp;#34;/var/www/html/sites/drupal/(.*)/cache(/.*)?&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">semanage fcontext --add -t httpd_sys_rw_content_t &lt;span class="s2">&amp;#34;/var/www/html/sites/drupal/(.*)/sites/all(/.*)?&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="moodle">Moodle&lt;/h2>
-&lt;ul>
-&lt;li>
-&lt;p>Настраиваем
+.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Настраиваем доступ к файловой системе.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;semanage fcontext --add -t httpd_sys_rw_content_t &lt;span class="s2"&gt;&amp;#34;/var/www/html/sites/drupal/(.*)/sites/(.*)/files(/.*)?&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;semanage fcontext --add -t httpd_sys_rw_content_t &lt;span class="s2"&gt;&amp;#34;/var/www/html/sites/drupal/(.*)/cache(/.*)?&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;semanage fcontext --add -t httpd_sys_rw_content_t &lt;span class="s2"&gt;&amp;#34;/var/www/html/sites/drupal/(.*)/sites/all(/.*)?&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="moodle"&gt;Moodle&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Настраиваем
 и
-.&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>Настраиваем доступ к файловой системе.&lt;/p>
-&lt;/li>
-&lt;/ul>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">semanage fcontext --add -t httpd_sys_rw_content_t &lt;span class="s2">&amp;#34;/var/www/moodle/web-git/mod(/.*)?&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">semanage fcontext --add -t httpd_sys_rw_content_t &lt;span class="s2">&amp;#34;/var/www/moodle/web-git/local(/.*)?&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">semanage fcontext --add -t httpd_sys_rw_content_t &lt;span class="s2">&amp;#34;/var/www/moodle/web-git/theme(/.*)?&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="letsencript">LetsEncript&lt;/h2>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">semanage fcontext -a -t cert_t &lt;span class="s1">&amp;#39;/etc/letsencrypt/(archive|live)(/.*)?&amp;#39;&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item></channel></rss>
+.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Настраиваем доступ к файловой системе.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;semanage fcontext --add -t httpd_sys_rw_content_t &lt;span class="s2"&gt;&amp;#34;/var/www/moodle/web-git/mod(/.*)?&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;semanage fcontext --add -t httpd_sys_rw_content_t &lt;span class="s2"&gt;&amp;#34;/var/www/moodle/web-git/local(/.*)?&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;semanage fcontext --add -t httpd_sys_rw_content_t &lt;span class="s2"&gt;&amp;#34;/var/www/moodle/web-git/theme(/.*)?&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="letsencript"&gt;LetsEncript&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;semanage fcontext -a -t cert_t &lt;span class="s1"&gt;&amp;#39;/etc/letsencrypt/(archive|live)(/.*)?&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item></channel></rss>

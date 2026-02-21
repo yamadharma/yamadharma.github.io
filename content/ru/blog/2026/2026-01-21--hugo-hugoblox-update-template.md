@@ -2,7 +2,7 @@
 title: "Hugo. HugoBlox. Обновление шаблонов"
 author: ["Dmitry S. Kulyabov"]
 date: 2026-01-21T21:54:00+03:00
-lastmod: 2026-01-23T20:13:00+03:00
+lastmod: 2026-02-21T19:53:00+03:00
 tags: ["hugo"]
 categories: ["computer-science"]
 draft: false
@@ -168,6 +168,7 @@ Hugo. HugoBlox. Обновление шаблонов.
 
 -   Меняются
     -   `page_type:`
+-   Перестал работать ручной метод развёртывания (см. [Hugo. Развёртывание на базе страниц GitHub]({{< relref "2026-02-21--hugo-deploy-github-pages" >}})).
 
 
 ### <span class="section-num">4.2</span> Предлагаемые скрипты {#предлагаемые-скрипты}

@@ -2,7 +2,7 @@
 title: "Создание сайта на Hugo"
 author: ["Dmitry S. Kulyabov"]
 date: 2022-04-12T20:49:00+03:00
-lastmod: 2025-10-02T15:57:00+03:00
+lastmod: 2026-02-21T19:36:00+03:00
 tags: ["hugo"]
 categories: ["computer-science"]
 draft: false
@@ -132,70 +132,7 @@ slug: "creating-hugo-site"
 
 ## <span class="section-num">5</span> Публикация сайта {#публикация-сайта}
 
-
-### <span class="section-num">5.1</span> Развёртывание на базе страниц GitHub (github pages) {#развёртывание-на-базе-страниц-github--github-pages}
-
-
-#### <span class="section-num">5.1.1</span> Типы страниц GitHub {#типы-страниц-github}
-
--   Существует два типа страниц GitHub:
-    -   Страницы пользователей/организаций: `https://<USERNAME|ORGANIZATION>.github.io/`
-        -   Необходимо создать отдельный репозиторий `<USERNAME|ORGANIZATION>.github.io`.
-        -   У пользователя может быть только одна страница подобного типа.
-        -   Используется для личной страницы пользователя.
-    -   Страницы проекта: `https://<USERNAME|ORGANIZATION>.github.io/<PROJECT>`
-        -   Создаётся как ветка `gh-pages` в рамках существующего репозитория.
-        -   Ваши файлы _Hugo_ хранятся в одной ветке, а ваши сгенерированные файлы публикуются в отдельной ветке в рамках одного проекта.
-
-
-#### <span class="section-num">5.1.2</span> Создание репозитория для страницы пользователя на Github {#создание-репозитория-для-страницы-пользователя-на-github}
-
--   Чтобы опубликовать свой сайт со ссылкой `https://username.github.io`, необходимо создать репозиторий с именем `username.github.io`.
--   Перейдите на свою веб-страницу Github и нажмите «Создать», чтобы создать новый репозиторий.
--   Можно создать с помощью утилиты `gh` (см. [github: утилиты командной строки]({{< relref "2021-08-04-github-command-line-utilities" >}})):
-    ```shell
-    gh repo create username.github.io --public
-    ```
-
-
-#### <span class="section-num">5.1.3</span> Подключение репозитория к вложенной папке {#подключение-репозитория-к-вложенной-папке}
-
--   Создайте подмодуль `public` в папке блога:
-    ```shell
-    cd ~/work/blog/blog
-    git submodule add git@github.com:username/username.github.io.git public
-    ```
-
-
-#### <span class="section-num">5.1.4</span> Изменить `baseURL` в `config.yaml` {#изменить-baseurl-в-config-dot-yaml}
-
--   Не забудьте задать значение для `baseURL` в файле `config.yaml`:
-    -   `baseURL: 'https://<USERNAME>.github.io'` : для страницы пользователя;
-    -   `baseURL: 'https://<USERNAME>.github.io/<REPOSITORY_NAME>'` : для репозитория проекта.
--   Если это не сделать, то ваш сайт не будет работать.
-
-
-#### <span class="section-num">5.1.5</span> Генерация и развёртывание сайта {#генерация-и-развёртывание-сайта}
-
--   Сгенерите проект
-    ```shell
-    cd ~/work/blog/blog
-    hugo
-    ```
--   Зафиксируйте изменения и отправьте контент на GitHub:
-    ```shell
-    # Go To Public folder
-    cd public
-
-    # Add changes to git.
-    git add .
-
-    # Commit changes.
-    git commit -am "rebuilding site $(date)"
-
-    # Push source and build repos.
-    git push origin master
-    ```
+-   [Hugo. Развёртывание на базе страниц GitHub]({{< relref "2026-02-21--hugo-deploy-github-pages" >}})
 
 
 ## <span class="section-num">6</span> Добавление контента {#добавление-контента}

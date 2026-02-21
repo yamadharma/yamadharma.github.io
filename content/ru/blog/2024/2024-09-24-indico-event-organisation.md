@@ -28,9 +28,9 @@ slug: "indico-event-organisation"
 
 ## <span class="section-num">2</span> Администрирование {#администрирование}
 
--   [Indico. Обновление]({{< relref "20240924112300-indico_обновление.md" >}})
+-   [Indico. Обновление]({{< relref "2024-09-24-indico-update" >}})
 
 
 ## <span class="section-num">3</span> Виды событий {#виды-событий}
 
--   [Indico. Конференции]({{< relref "20260214T170200--indico_конференции.md" >}})
+-   [Indico. Конференции]({{< relref "2026-02-14--indico-conference" >}})

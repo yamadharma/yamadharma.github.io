@@ -519,7 +519,7 @@ RP91Ry8m38Nl-HNU3KwJTYo7gLk7L8a10hJjmi6qRl6K9bLYjY7rno-YBQEmI-HOttj-Zd9NEomhX8Ed
 
 -   Выполнять задачу за задачей.
 -   Механизм конкретного выполнения задач не рассматривается в GTD.
--   Можно использовать другие методики, например Pomodoro (см. [Метод pomodoro]({{< relref "../notes/public/20221218135000-метод_pomodoro.md" >}})).
+-   Можно использовать другие методики, например Pomodoro (см. [Метод pomodoro]({{< relref "2022-12-18-pomodoro" >}})).
 
 
 ### <span class="section-num">4.2</span> Ошибки при работе с Getting Things Done методом {#ошибки-при-работе-с-getting-things-done-методом}
@@ -1007,14 +1007,14 @@ RP91Ry8m38Nl-HNU3KwJTYo7gLk7L8a10hJjmi6qRl6K9bLYjY7rno-YBQEmI-HOttj-Zd9NEomhX8Ed
 
 ### <span class="section-num">4.7</span> Горизонты GTD {#горизонты-gtd}
 
--   [GTD. Горизонты]({{< relref "../notes/public/20260204T191300--gtd_горизонты.md" >}})
+-   [GTD. Горизонты]({{< relref "2026-02-04--gtd-horizons" >}})
 
 
 ## <span class="section-num">5</span> Организация GTD {#организация-gtd}
 
--   [Содержание списка дел]({{< relref "../notes/public/20230412095400-содержание_списка_дел.md" >}})
+-   [Содержание списка дел]({{< relref "2023-04-12-to-do-list-contents" >}})
 
 
 ## <span class="section-num">6</span> Реализации метода GTD {#реализации-метода-gtd}
 
--   [Реализация метода GTD на основе Emacs]({{< relref "../notes/public/20210712145000-реализация_метода_gtd_на_основе_emacs.md" >}})
+-   [Реализация метода GTD на основе Emacs]({{< relref "2021-07-12-implementation-gtd-method-emacs" >}})

@@ -18,7 +18,7 @@ Quarto. Плагин minted-quarto.
 
 ## <span class="section-num">1</span> Общая информация {#общая-информация}
 
--   Плагин служит для выделения кода посредством minted (см. [LaTeX. Пакет minted]({{< relref "20241105120700-latex_пакет_minted.md" >}})).
+-   Плагин служит для выделения кода посредством minted (см. [LaTeX. Пакет minted]({{< relref "2024-11-05-latex-minted" >}})).
 
 
 ## <span class="section-num">2</span> nikitoshina/minted-quarto {#nikitoshina-minted-quarto}

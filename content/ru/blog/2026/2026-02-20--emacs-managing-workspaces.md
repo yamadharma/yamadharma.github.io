@@ -21,7 +21,7 @@ Emacs. Управление рабочим пространством.
 
 ### <span class="section-num">1.1</span> Bufler {#bufler}
 
--   [Emacs. Пакет Bufler]({{< relref "20250714T121600--emacs_пакет_bufler.md" >}})
+-   [Emacs. Пакет Bufler]({{< relref "2025-07-14--emacs-bufler" >}})
 
 
 ### <span class="section-num">1.2</span> Perspective {#perspective}
@@ -36,4 +36,4 @@ Emacs. Управление рабочим пространством.
 
 ### <span class="section-num">1.4</span> Tabspaces {#tabspaces}
 
--   [Emacs. Пакет Tabspaces]({{< relref "20260220T142900--emacs_пакет_tabspaces.md" >}})
+-   [Emacs. Пакет Tabspaces]({{< relref "2026-02-20--emacs-tabspaces" >}})

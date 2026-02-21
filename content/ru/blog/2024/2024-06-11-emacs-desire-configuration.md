@@ -92,7 +92,7 @@ slug: "emacs-desire-configuration"
 
 ### <span class="section-num">3.3</span> Управление пакетами {#управление-пакетами}
 
--   [Emacs. Управление пакетами]({{< relref "../notes/public/20231218161900-emacs_управление_пакетами.md" >}})
+-   [Emacs. Управление пакетами]({{< relref "2023-12-18-emacs-package-management" >}})
 
 <!--listend-->
 
@@ -103,7 +103,7 @@ slug: "emacs-desire-configuration"
 
 #### <span class="section-num">3.3.1</span> Встроенный пакетный менеджер {#встроенный-пакетный-менеджер}
 
--   [Emacs. Управление пакетами. package]({{< relref "../notes/public/20250125T141900--emacs_управление_пакетами_package.md" >}})
+-   [Emacs. Управление пакетами. package]({{< relref "2025-01-25--emacs-package-management-package" >}})
 
 <!--list-separator-->
 
@@ -694,7 +694,7 @@ slug: "emacs-desire-configuration"
 
 ### <span class="section-num">3.7</span> Поддержка LSP {#поддержка-lsp}
 
--   [Emacs. Поддержка LSP]({{< relref "../notes/public/20240114183500-emacs_поддержка_lsp.md" >}})
+-   [Emacs. Поддержка LSP]({{< relref "2024-01-14-emacs-lsp" >}})
 
 
 #### <span class="section-num">3.7.1</span> Начало {#начало}
@@ -1018,7 +1018,7 @@ slug: "emacs-desire-configuration"
 
 #### <span class="section-num">3.9.1</span> xclip {#xclip}
 
--   [Emacs. xclip]({{< relref "../notes/public/20250312T142900--emacs_xclip.md" >}})
+-   [Emacs. xclip]({{< relref "2025-03-12--emacs-xclip" >}})
 -   Подключение:
     ```emacs-lisp
     (desire 'xclip)
@@ -1299,7 +1299,7 @@ slug: "emacs-desire-configuration"
 
         1.  tab-line
 
-            -   [Emacs. Пакет tab-line]({{< relref "../notes/public/20240108200200-emacs_пакет_tab_line.md" >}})
+            -   [Emacs. Пакет tab-line]({{< relref "2024-01-08-emacs-tab-line" >}})
             -   Поддержка `nerd-icons` в `tab-line`:
                 -   <https://github.com/lucius-martius/tab-line-nerd-icons>
             -   Пакет применяет иконки из `nerd-icons` к вкладкам `tab-line`.
@@ -1442,7 +1442,7 @@ slug: "emacs-desire-configuration"
 
 1.  centaur-tabs
 
-    -   [Emacs. Пакет Centaur tabs]({{< relref "../notes/public/20240108202300-emacs_пакет_centaur_tabs.md" >}})
+    -   [Emacs. Пакет Centaur tabs]({{< relref "2024-01-08-emacs-centaur-tabs" >}})
     -   Подключение:
         ```emacs-lisp
         ;; (desire 'centaur-tabs)
@@ -1456,7 +1456,7 @@ slug: "emacs-desire-configuration"
 
 2.  tab-bar
 
-    -   [Emacs. Пакет tab-bar]({{< relref "../notes/public/20250714T131000--emacs_пакет_tab_bar.md" >}})
+    -   [Emacs. Пакет tab-bar]({{< relref "2025-07-14--emacs-tab-bar" >}})
 
     <!--list-separator-->
 
@@ -1607,7 +1607,7 @@ slug: "emacs-desire-configuration"
 
         1.  tab-bar-lost-commands
 
-            -   [Emacs. tab-bar. Пакет tab-bar-lost-commands]({{< relref "../notes/public/20251018T153100--emacs_tab_bar_пакет_tab_bar_lost_commands.md" >}})
+            -   [Emacs. tab-bar. Пакет tab-bar-lost-commands]({{< relref "2025-10-18--emacs-tab-bar-lost-commands" >}})
             -   Файл: `packages/tab-bar/desire.ecd/tab-bar-lost-commands.ecf`
                 ```emacs-lisp
                 ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
@@ -1659,7 +1659,7 @@ slug: "emacs-desire-configuration"
 
 3.  tab-line
 
-    -   [Emacs. Пакет tab-line]({{< relref "../notes/public/20240108200200-emacs_пакет_tab_line.md" >}})
+    -   [Emacs. Пакет tab-line]({{< relref "2024-01-08-emacs-tab-line" >}})
 
     <!--list-separator-->
 
@@ -1738,7 +1738,7 @@ slug: "emacs-desire-configuration"
 
     5.  Intuitive Tabs in Emacs
 
-        -   [Emacs. tab-line. Пакет intuitive-tab-line-mode]({{< relref "../notes/public/20251016T091900--emacs_tab_line_пакет_intuitive_tab_line_mode.md" >}})
+        -   [Emacs. tab-line. Пакет intuitive-tab-line-mode]({{< relref "2025-10-16--emacs-intuitive-tab-line-mode" >}})
         -   Файл: `packages/tab-line/desire.ecd/intuitive-tab-line.ecf`
             ```emacs-lisp
             ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
@@ -1772,7 +1772,7 @@ slug: "emacs-desire-configuration"
 
 #### <span class="section-num">3.10.3</span> Нумерация строк {#нумерация-строк}
 
--   [Emacs. Нумерация строк]({{< relref "../notes/public/20241128195000-emacs_нумерация_строк.md" >}})
+-   [Emacs. Нумерация строк]({{< relref "2024-11-28-emacs-line-numbering" >}})
 
 <!--list-separator-->
 
@@ -1900,7 +1900,7 @@ slug: "emacs-desire-configuration"
 
 #### <span class="section-num">3.10.5</span> shrface : функциональность Org-mode для eww {#shrface-функциональность-org-mode-для-eww}
 
--   [Emacs. Пакет shrface]({{< relref "../notes/public/20250605T150200--emacs_пакет_shrface.md" >}})
+-   [Emacs. Пакет shrface]({{< relref "2025-06-05--emacs-shrface" >}})
 
 <!--list-separator-->
 
@@ -2557,7 +2557,7 @@ slug: "emacs-desire-configuration"
 
 #### <span class="section-num">3.13.1</span> transient {#transient}
 
--   [Emacs. Пакет transient]({{< relref "../notes/public/20241026172400-emacs_пакет_transient.md" >}})
+-   [Emacs. Пакет transient]({{< relref "2024-10-26-emacs-transient" >}})
 -   Подключение:
     ```emacs-lisp
     ;;;;; Transient
@@ -2601,7 +2601,7 @@ slug: "emacs-desire-configuration"
 
 #### <span class="section-num">3.13.2</span> Casual Suite {#casual-suite}
 
--   [Emacs. Пакет casual]({{< relref "../notes/public/20241026173500-emacs_пакет_casual.md" >}})
+-   [Emacs. Пакет casual]({{< relref "2024-10-26-emacs-casual" >}})
 
 <!--list-separator-->
 
@@ -2873,7 +2873,7 @@ slug: "emacs-desire-configuration"
 
 ### <span class="section-num">3.16</span> Навигация по окнам {#навигация-по-окнам}
 
--   [Emacs. Окна]({{< relref "../notes/public/20241015155800-emacs_окна.md" >}})
+-   [Emacs. Окна]({{< relref "2024-10-15-emacs-window" >}})
 
 
 #### <span class="section-num">3.16.1</span> Начало {#начало}
@@ -2890,7 +2890,7 @@ slug: "emacs-desire-configuration"
 
 #### <span class="section-num">3.16.2</span> Windmove {#windmove}
 
--   [Emacs. Окна. Windmove]({{< relref "../notes/public/20241020190800-emacs_окна_windmove.md" >}})
+-   [Emacs. Окна. Windmove]({{< relref "2024-10-20-emacs-window-windmove" >}})
 -   Файл `rc.packages.el`:
     ```emacs-lisp
     (desire 'windmove)
@@ -2966,7 +2966,7 @@ slug: "emacs-desire-configuration"
 
 #### <span class="section-num">3.17.1</span> Apheleia {#apheleia}
 
--   [Emacs. Автоформатирование. apheleia]({{< relref "../notes/public/20251115T135400--emacs_автоформатирование_apheleia.md" >}})
+-   [Emacs. Автоформатирование. apheleia]({{< relref "2025-11-15--emacs-autoformatting-apheleia" >}})
 
 <!--list-separator-->
 
@@ -3015,7 +3015,7 @@ slug: "emacs-desire-configuration"
 
 4.  Форматер latex
 
-    -   [Форматирование. LaTeX. tex-fmt]({{< relref "../notes/public/20251115T140500--форматирование_latex_tex_fmt.md" >}})
+    -   [Форматирование. LaTeX. tex-fmt]({{< relref "2025-11-15--formatting-latex-tex-fmt" >}})
     -   Файл: `packages/apheleia/desire.ecd/latex.ecf`
         ```emacs-lisp
         ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
@@ -3065,7 +3065,7 @@ slug: "emacs-desire-configuration"
 
 #### <span class="section-num">3.17.2</span> Tree-sitter {#tree-sitter}
 
--   [Emacs. Инкрементальный парсер tree-sitter]({{< relref "../notes/public/20251127T171100--emacs_инкрементальныи_парсер_tree_sitter.md" >}})
+-   [Emacs. Инкрементальный парсер tree-sitter]({{< relref "2025-11-27--emacs-tree-sitter" >}})
 
 <!--list-separator-->
 
@@ -3150,7 +3150,7 @@ slug: "emacs-desire-configuration"
 
 #### <span class="section-num">3.17.3</span> Пробелы {#пробелы}
 
--   [Emacs. Пробелы]({{< relref "../notes/public/20250411T193500--emacs_пробелы.md" >}})
+-   [Emacs. Пробелы]({{< relref "2025-04-11--emacs-space" >}})
 -   Секция:
     ```emacs-lisp
     ;;;; Spaces
@@ -3210,7 +3210,7 @@ slug: "emacs-desire-configuration"
 
 #### <span class="section-num">3.18.1</span> outline {#outline}
 
--   [Emacs. Пакет outline-mode]({{< relref "../notes/public/20250128T115900--emacs_пакет_outline_mode.md" >}})
+-   [Emacs. Пакет outline-mode]({{< relref "2025-01-28--emacs-outline-mode" >}})
 
 <!--list-separator-->
 
@@ -3479,7 +3479,7 @@ slug: "emacs-desire-configuration"
 
 #### <span class="section-num">3.18.2</span> origami {#origami}
 
--   [Emacs. Сворачивание (folding)]({{< relref "../notes/public/20250128T111800--emacs_сворачивание_folding.md" >}})
+-   [Emacs. Сворачивание (folding)]({{< relref "2025-01-28--emacs-folding" >}})
 -   Подключение:
     ```emacs-lisp
     ;; (desire 'origami)
@@ -3523,7 +3523,7 @@ slug: "emacs-desire-configuration"
 
 #### <span class="section-num">3.18.3</span> outli {#outli}
 
--   [Emacs. Пакет outli]({{< relref "../notes/public/20250128T121000--emacs_пакет_outli.md" >}})
+-   [Emacs. Пакет outli]({{< relref "2025-01-28--emacs-outli" >}})
 -   Подключение:
     ```emacs-lisp
     (desire 'outli :recipe '(:fetcher github :repo "jdtsmith/outli" :branch "main"))
@@ -3896,7 +3896,7 @@ slug: "emacs-desire-configuration"
 #### <span class="section-num">3.18.7</span> outline-indent {#outline-indent}
 
 -   Сворачивание и разворачивание разделов кода в зависимости от уровня отступа.
--   [Emacs. Пакет outline-indent]({{< relref "../notes/public/20260211T173500--emacs_пакет_outline_indent.md" >}})
+-   [Emacs. Пакет outline-indent]({{< relref "2026-02-11--emacs-outline-indent" >}})
 
 <!--list-separator-->
 
@@ -4388,7 +4388,7 @@ slug: "emacs-desire-configuration"
 1.  Расположение файлов
 
     -   Персональные настройки расположения файлов.
-    -   [Организация рабочего каталога]({{< relref "../notes/public/20210801155100-организация_рабочего_каталога.md" >}})
+    -   [Организация рабочего каталога]({{< relref "2021-08-01-organization-working-directory" >}})
         ```emacs-lisp
         ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
         ;;;
@@ -4562,7 +4562,7 @@ slug: "emacs-desire-configuration"
 
 #### <span class="section-num">3.23.3</span> move-text {#move-text}
 
--   [Emacs. Работа с текстом]({{< relref "../notes/public/20250127T211000--emacs_работа_с_текстом.md" >}})
+-   [Emacs. Работа с текстом]({{< relref "2025-01-27--emacs-working-text" >}})
 -   Позволяет перемещать строки текста.
 -   Подключение:
     ```emacs-lisp
@@ -4683,7 +4683,7 @@ slug: "emacs-desire-configuration"
 
     1.  lsp-mode
 
-        -   [Emacs. LSP для Markdown]({{< relref "../notes/public/20250811T135900--emacs_lsp_для_markdown.md" >}})
+        -   [Emacs. LSP для Markdown]({{< relref "2025-08-11--emacs-lsp-markdown" >}})
         -   Файл: `packages/markdown-mode/lsp-mode.ecf`
             ```emacs-lisp
             ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
@@ -4705,7 +4705,7 @@ slug: "emacs-desire-configuration"
 
     2.  eglot
 
-        -   [Emacs. LSP для Markdown]({{< relref "../notes/public/20250811T135900--emacs_lsp_для_markdown.md" >}})
+        -   [Emacs. LSP для Markdown]({{< relref "2025-08-11--emacs-lsp-markdown" >}})
         -   Файл: `packages/markdown-mode/eglot.ecf`
             ```emacs-lisp
             ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
@@ -4728,7 +4728,7 @@ slug: "emacs-desire-configuration"
 
 1.  Оглавление pdf
 
-    -   [Emacs. Пакет doc-toc]({{< relref "../notes/public/20250510T141500--emacs_пакет_doc_toc.md" >}})
+    -   [Emacs. Пакет doc-toc]({{< relref "2025-05-10--emacs-package-doc-toc" >}})
     -   Подключение:
         ```emacs-lisp
         (desire 'doc-toc)
@@ -4776,7 +4776,7 @@ slug: "emacs-desire-configuration"
 
 2.  Метаданные pdf
 
-    -   [Emacs. Пакет pdf-meta-edit]({{< relref "../notes/public/20250615T193100--emacs_пакет_pdf_meta_edit.md" >}})
+    -   [Emacs. Пакет pdf-meta-edit]({{< relref "2025-06-15--emacs-pdf-meta-edit" >}})
     -   Подключение:
         ```emacs-lisp
         (desire 'pdf-meta-edit)
@@ -4908,7 +4908,7 @@ slug: "emacs-desire-configuration"
 
     1.  lsp-mode
 
-        -   [Emacs. LSP для Markdown]({{< relref "../notes/public/20250811T135900--emacs_lsp_для_markdown.md" >}})
+        -   [Emacs. LSP для Markdown]({{< relref "2025-08-11--emacs-lsp-markdown" >}})
         -   Файл: `packages/quarto-mode/lsp-mode.ecf`
             ```emacs-lisp
             ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
@@ -4930,7 +4930,7 @@ slug: "emacs-desire-configuration"
 
     2.  eglot
 
-        -   [Emacs. LSP для Markdown]({{< relref "../notes/public/20250811T135900--emacs_lsp_для_markdown.md" >}})
+        -   [Emacs. LSP для Markdown]({{< relref "2025-08-11--emacs-lsp-markdown" >}})
         -   Файл: `packages/markdown-mode/eglot.ecf`
             ```emacs-lisp
             ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
@@ -4949,7 +4949,7 @@ slug: "emacs-desire-configuration"
 
 #### <span class="section-num">3.23.9</span> calibredb {#calibredb}
 
--   Клиент для Calibre (см. [Каталогизатор книг Calibre]({{< relref "../notes/public/20250204T190900--каталогизатор_книг_calibre.md" >}})).
+-   Клиент для Calibre (см. [Каталогизатор книг Calibre]({{< relref "2025-02-04--calibre-book-cataloger" >}})).
 -   <https://github.com/chenyanming/calibredb.el>
 -   Подключение:
     ```emacs-lisp
@@ -5064,7 +5064,7 @@ slug: "emacs-desire-configuration"
 
 #### <span class="section-num">3.24.1</span> pomm {#pomm}
 
--   [Emacs. Метод pomodoro]({{< relref "../notes/public/20250116T173000--emacs_метод_pomodoro.md" >}})
+-   [Emacs. Метод pomodoro]({{< relref "2025-01-16--emacs-pomodoro-method" >}})
 
 <!--list-separator-->
 
@@ -5288,7 +5288,7 @@ slug: "emacs-desire-configuration"
 
 ### <span class="section-num">3.26</span> Org-mode {#org-mode}
 
--   [Org-mode]({{< relref "../notes/public/20211014181100-org_mode.md" >}})
+-   [Org-mode]({{< relref "2021-10-14-org-mode" >}})
 -   Конфигурация для `org-mode`:
     ```emacs-lisp
     ;;;; Org-mode
@@ -5301,7 +5301,7 @@ slug: "emacs-desire-configuration"
 
 #### <span class="section-num">3.26.1</span> Babel {#babel}
 
--   [Emacs. Org Babel]({{< relref "../notes/public/20221015212100-emacs_org_babel.md" >}})
+-   [Emacs. Org Babel]({{< relref "2022-10-15-emacs-org-babel" >}})
 -   Общие настройки babel:
     ```emacs-lisp
     ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
@@ -5488,7 +5488,7 @@ slug: "emacs-desire-configuration"
 
 #### <span class="section-num">3.26.4</span> org-transclusion {#org-transclusion}
 
--   [Emacs. Org-transclusion]({{< relref "../notes/public/20251230T144300--emacs_org_transclusion.md" >}})
+-   [Emacs. Org-transclusion]({{< relref "2025-12-30--emacs-org-transclusion" >}})
 
 <!--list-separator-->
 
@@ -5770,7 +5770,7 @@ slug: "emacs-desire-configuration"
 
 #### <span class="section-num">3.26.8</span> org-gtd {#org-gtd}
 
--   [Emacs. Пакеты. Org-gtd]({{< relref "../notes/public/20230731182400-emacs_пакеты_org_gtd.md" >}})
+-   [Emacs. Пакеты. Org-gtd]({{< relref "2023-07-31-emacs-packages-org-gtd" >}})
 
 <!--list-separator-->
 
@@ -6092,7 +6092,7 @@ slug: "emacs-desire-configuration"
 
 #### <span class="section-num">3.26.10</span> org-download {#org-download}
 
--   [Emacs. Пакет org-download]({{< relref "../notes/public/20250519T154900--emacs_пакет_org_download.md" >}})
+-   [Emacs. Пакет org-download]({{< relref "2025-05-19--emacs-org-download" >}})
 -   Объявление пакета:
     ```emacs-lisp
     (desire 'org-download)
@@ -6231,7 +6231,7 @@ slug: "emacs-desire-configuration"
 #### <span class="section-num">3.26.11</span> org-mode {#org-mode}
 
 -   Собственно org-mode.
--   [Org-mode]({{< relref "../notes/public/20211014181100-org_mode.md" >}})
+-   [Org-mode]({{< relref "2021-10-14-org-mode" >}})
 -   Подключение:
     ```emacs-lisp
     (desire 'org)
@@ -6352,7 +6352,7 @@ slug: "emacs-desire-configuration"
     ;; (advice-add 'org-export-output-file-name :around #'org-export-output-file-name-modified)
     ```
 
-    -   [Org-mode. Экспорт ссылок на видео в Hugo]({{< relref "../notes/public/20250703T203000--org_mode_экспорт_ссылок_на_видео_в_hugo.md" >}})
+    -   [Org-mode. Экспорт ссылок на видео в Hugo]({{< relref "2025-07-03--org-mode-video-export-hugo" >}})
 
     <!--listend-->
 
@@ -6447,7 +6447,7 @@ slug: "emacs-desire-configuration"
 
 #### <span class="section-num">3.26.12</span> Предпросмотр LaTeX {#предпросмотр-latex}
 
--   [Org-mode. Предпросмотр TeX]({{< relref "../notes/public/20240106193800-org_mode_предпросмотр_tex.md" >}})
+-   [Org-mode. Предпросмотр TeX]({{< relref "2024-01-06-org-mode-latex-preview" >}})
     ```emacs-lisp
     ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
     ;;; Previewing LaTeX fragments
@@ -6545,7 +6545,7 @@ slug: "emacs-desire-configuration"
 
 #### <span class="section-num">3.26.13</span> Преобразование markdown ←→ org через буфер обмена {#преобразование-markdown-org-через-буфер-обмена}
 
--   [Emacs. Markdown в Org с помощью буфера обмена]({{< relref "../notes/public/20260102T202700--emacs_markdown_в_org_с_помощью_буфера_обмена.md" >}})
+-   [Emacs. Markdown в Org с помощью буфера обмена]({{< relref "2026-01-02--emacs-markdown-org-clipboard" >}})
 -   Файл: `packages/org/desire.ecd/markdown-org-clipboard.ecf`
     ```emacs-lisp
     ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
@@ -6586,7 +6586,7 @@ slug: "emacs-desire-configuration"
 
 ### <span class="section-num">3.27</span> Заметочники {#заметочники}
 
--   [Emacs. Персональная база знаний]({{< relref "../notes/public/20231107155400-emacs_персональная_база_знании.md" >}})
+-   [Emacs. Персональная база знаний]({{< relref "2023-11-07-emacs-personal-knowledge-base" >}})
 -   Разные заметочники:
     ```emacs-lisp
     ;;; Notes
@@ -6903,7 +6903,7 @@ slug: "emacs-desire-configuration"
 
 5.  org-daily-reflection
 
-    -   [Emacs. Пакет org-daily-reflection]({{< relref "../notes/public/20250606T204800--emacs_пакет_org_daily_reflection.md" >}})
+    -   [Emacs. Пакет org-daily-reflection]({{< relref "2025-06-06--emacs-org-daily-reflection" >}})
     -   Загрузка.
         ```emacs-lisp
         ;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
@@ -6941,7 +6941,7 @@ slug: "emacs-desire-configuration"
 
 #### <span class="section-num">3.28.1</span> Диаграммы Ганта {#диаграммы-ганта}
 
--   [Emacs. Диаграммы Ганта]({{< relref "../notes/public/20241210170100-emacs_диаграммы_ганта.md" >}})
+-   [Emacs. Диаграммы Ганта]({{< relref "2024-12-10-emacs-gantt-charts" >}})
 
 <!--list-separator-->
 
@@ -7268,12 +7268,12 @@ slug: "emacs-desire-configuration"
 
 ### <span class="section-num">3.32</span> Организация рабочего пространства {#организация-рабочего-пространства}
 
--   [Emacs. Управление рабочим пространством]({{< relref "../notes/public/20260220T142300--emacs_управление_рабочим_пространством.md" >}})
+-   [Emacs. Управление рабочим пространством]({{< relref "2026-02-20--emacs-managing-workspaces" >}})
 
 
 #### <span class="section-num">3.32.1</span> one-tab-per-project {#one-tab-per-project}
 
--   [Emacs. Пакет otpp]({{< relref "../notes/public/20250203T195700--emacs_пакет_otpp.md" >}})
+-   [Emacs. Пакет otpp]({{< relref "2025-02-03--emacs-otpp" >}})
 -   Автоматическое создание вкладки для каждого проекта, обеспечивающее управление рабочим пространством на основе панели вкладок для Emacs.
 -   <https://github.com/abougouffa/one-tab-per-project>
 -   Подключение пакета:
@@ -7364,7 +7364,7 @@ slug: "emacs-desire-configuration"
 
 #### <span class="section-num">3.32.3</span> tabspaces {#tabspaces}
 
--   [Emacs. Пакет Tabspaces]({{< relref "../notes/public/20260220T142900--emacs_пакет_tabspaces.md" >}})
+-   [Emacs. Пакет Tabspaces]({{< relref "2026-02-20--emacs-tabspaces" >}})
 
 <!--list-separator-->
 
@@ -7950,7 +7950,7 @@ slug: "emacs-desire-configuration"
 
 #### <span class="section-num">3.38.1</span> Pocket reader {#pocket-reader}
 
--   [Emacs. Pocket reader]({{< relref "../notes/public/20230906155200-emacs_pocket_reader.md" >}})
+-   [Emacs. Pocket reader]({{< relref "2023-09-06-emacs_pocket_reader" >}})
 
 <!--listend-->
 
@@ -8067,7 +8067,7 @@ slug: "emacs-desire-configuration"
 
 #### <span class="section-num">3.38.3</span> Elfeed {#elfeed}
 
--   [Emacs. Чтение rss. Elfeed]({{< relref "../notes/public/20250602T154400--emacs_чтение_rss_elfeed.md" >}})
+-   [Emacs. Чтение rss. Elfeed]({{< relref "2025-06-02--emacs-rss-elfeed" >}})
     Объявление:
     ```emacs-lisp
     (desire 'elfeed)
@@ -8329,7 +8329,7 @@ slug: "emacs-desire-configuration"
 
 #### <span class="section-num">3.40.2</span> Пакет csv-mode {#пакет-csv-mode}
 
--   [Emacs. cvs-mode]({{< relref "../notes/public/20240904111600-emacs_cvs_mode.md" >}})
+-   [Emacs. cvs-mode]({{< relref "2024-09-04-emacs-cvs-mode" >}})
 -   Файл `rc.packages.el`:
     ```emacs-lisp
     ;;; csv-mode
@@ -8830,7 +8830,7 @@ slug: "emacs-desire-configuration"
 
 ### <span class="section-num">3.41</span> Редактирование текста в броузере {#редактирование-текста-в-броузере}
 
--   [Emacs. Редактирование текста в броузере]({{< relref "../notes/public/20240828210100-emacs_редактирование_текста_в_броузере.md" >}})
+-   [Emacs. Редактирование текста в броузере]({{< relref "2024-08-28-emacs-edit-text-area-browser" >}})
 
 
 #### <span class="section-num">3.41.1</span> Начало {#начало}
@@ -8911,7 +8911,7 @@ slug: "emacs-desire-configuration"
 
 ### <span class="section-num">3.42</span> Навигация по файлам {#навигация-по-файлам}
 
--   [Emacs. Просмотр каталогов]({{< relref "../notes/public/20211003202500-emacs_просмотр_каталогов.md" >}})
+-   [Emacs. Просмотр каталогов]({{< relref "2021-10-03-emacs-directory-browsing" >}})
 
 
 #### <span class="section-num">3.42.1</span> dired {#dired}
@@ -8955,7 +8955,7 @@ slug: "emacs-desire-configuration"
 
 #### <span class="section-num">3.42.2</span> Neotree {#neotree}
 
--   [Emacs. Neotree]({{< relref "../notes/public/20220323185200-emacs_neotree.md" >}})
+-   [Emacs. Neotree]({{< relref "2022-03-23-emacs-neotree" >}})
 -   Файл `rc.packages.el`:
     ```emacs-lisp
     ;; (desire 'neotree)
@@ -8964,7 +8964,7 @@ slug: "emacs-desire-configuration"
 
 #### <span class="section-num">3.42.3</span> Treemacs {#treemacs}
 
--   [Emacs. Пакет treemacs]({{< relref "../notes/public/20250120T090900--emacs_пакет_treemacs.md" >}})
+-   [Emacs. Пакет treemacs]({{< relref "2025-01-20--emacs-treemacs" >}})
 
 <!--list-separator-->
 
@@ -9323,7 +9323,7 @@ slug: "emacs-desire-configuration"
 
 #### <span class="section-num">3.45.1</span> Шрифты {#шрифты}
 
--   [Emacs. Шрифты]({{< relref "../notes/public/20250401T150400--emacs_шрифты.md" >}})
+-   [Emacs. Шрифты]({{< relref "2025-04-01--emacs-fonts" >}})
 -   Раздел:
     ```emacs-lisp
     ;;;;; Fonts
@@ -9829,7 +9829,7 @@ slug: "emacs-desire-configuration"
 
 1.  Modus-themes
 
-    -   [Emacs. Темы. Modus-themes]({{< relref "../notes/public/20230215172600-emacs_темы_modus_themes.md" >}})
+    -   [Emacs. Темы. Modus-themes]({{< relref "2023-02-15-emacs-themes-modus-themes" >}})
 
     <!--list-separator-->
 
@@ -9958,7 +9958,7 @@ slug: "emacs-desire-configuration"
 
 2.  Ef-themes
 
-    -   [Emacs. Темы. Ef-themes]({{< relref "../notes/public/20230613153800-emacs_темы_ef_themes.md" >}})
+    -   [Emacs. Темы. Ef-themes]({{< relref "2023-06-13-emacs-themes-ef-themes" >}})
     -   Подключаем темы в файле `rc.packages.el`:
         ```emacs-lisp
         ;; (desire 'ef-themes)

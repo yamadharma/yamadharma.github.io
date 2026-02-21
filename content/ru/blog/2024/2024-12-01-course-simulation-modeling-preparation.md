@@ -57,7 +57,7 @@ slug: "course-simulation-modeling-preparation"
 
 ### <span class="section-num">3.1</span> Установка и настройка программного обеспечения {#установка-и-настройка-программного-обеспечения}
 
--   [Рабочее пространство на основе DrWatson]({{< relref "../notes/public/20260129T143900--рабочее_пространство_на_основе_drwatson.md" >}})
+-   [Рабочее пространство на основе DrWatson]({{< relref "2026-01-29--workspace-based-drwatson" >}})
 
 
 ### <span class="section-num">3.2</span> Сквозные задачи {#сквозные-задачи}

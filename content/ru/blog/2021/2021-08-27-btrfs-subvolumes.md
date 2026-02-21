@@ -43,7 +43,7 @@ slug: "btrfs-subvolumes"
 | `@var@lib`            | `/var/lib`                                   | Вместо создания `@machines`, `@portables`, `@docker` можно создать только этот, если в `/var/lib` не будет храниться чего-то важного                    |
 | `@var@tmp`            | `/var/tmp`                                   | Содержит временные файлы. Должен монтироваться с `nodatacow`                                                                                            |
 | `@var@log` или `@log` | `/var/log`                                   | Содержит большое количество файлов, которые пишутся маленькими частями. Должен монтироваться с `nodatacow`                                              |
-| `@swap`               | `/swap` или `/var/swap`, или `/var/lib/swap` | Подтом для файла подкачки. Должен монтироваться с `nodatacow` (см. [Файл подкачки на btrfs]({{< relref "20220520102900-фаил_подкачки_на_btrfs.md" >}})) |
+| `@swap`               | `/swap` или `/var/swap`, или `/var/lib/swap` | Подтом для файла подкачки. Должен монтироваться с `nodatacow` (см. [Файл подкачки на btrfs]({{< relref "2022-05-20-btrfs-swap-file" >}})) |
 | `@libvirt`            | `/var/lib/libvirt/images`                    | Образы для _libvirt_. Должен монтироваться с `nodatacow`                                                                                                |
 
 

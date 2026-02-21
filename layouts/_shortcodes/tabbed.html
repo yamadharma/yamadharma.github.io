@@ -1,0 +1,81 @@
+{{ $id := .Get "id" | default "tabs" }}
+{{ $titles := .Get "titles" }}
+{{ $contents := .Inner }}
+
+<div class="tabs-container" id="{{ $id }}">
+  <ul class="tabs-nav">
+    {{ $titleList := split $titles "," }}
+    {{ range $i, $title := $titleList }}
+      <li class="tab-nav" data-tab="{{ $i }}">{{ $title }}</li>
+    {{ end }}
+  </ul>
+  <div class="tabs-content">
+    {{ $delimiters := split $contents "<!-- tab -->" }}
+    {{ range $i, $content := $delimiters }}
+      <div class="tab-pane" data-tab="{{ $i }}">
+        {{ $content | markdownify }}
+      </div>
+    {{ end }}
+  </div>
+</div>
+
+<style>
+  .tabs-container {
+    font-family: Arial, sans-serif;
+  }
+  .tabs-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+  }
+  .tab-nav {
+    padding: 10px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 3px 3px 0 0;
+    margin-right: 5px;
+  }
+  .tab-nav.active {
+    background-color: #f1f1f1;
+    border-bottom: 1px solid transparent;
+  }
+  .tabs-content {
+    border: 1px solid #ccc;
+    border-radius: 0 0 3px 3px;
+    padding: 10px;
+  }
+  .tab-pane {
+    display: none;
+  }
+  .tab-pane.active {
+    display: block;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const container = document.getElementById('{{ $id }}');
+    if (!container) return;
+    
+    const tabs = container.querySelectorAll('.tab-nav');
+    const panes = container.querySelectorAll('.tab-pane');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', function () {
+        tabs.forEach(t => t.classList.remove('active'));
+        panes.forEach(p => p.classList.remove('active'));
+
+        this.classList.add('active');
+        const index = this.getAttribute('data-tab');
+        container.querySelector(`.tab-pane[data-tab="${index}"]`).classList.add('active');
+      });
+    });
+
+    // Activate the first tab by default
+    if (tabs.length > 0) {
+      tabs[0].classList.add('active');
+      panes[0].classList.add('active');
+    }
+  });
+</script>

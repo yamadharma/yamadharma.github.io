@@ -1,0 +1,218 @@
+# Configuration of Hugo
+# Guide: https://wowchemy.com/docs/getting-started/
+# Hugo Documentation: https://gohugo.io/getting-started/configuration/#all-configuration-settings
+# This file is formatted using YAML syntax - learn more at https://learnxinyminutes.com/docs/yaml/
+
+## Website name
+# title: "Dmitry S. Kulyabov"
+title: ""
+## Website URL
+baseURL: "https://yamadharma.github.io/"
+copyright: "&copy; {year} Dmitry S. Kulyabov"
+
+# relativeURLs: true
+
+############################
+## LANGUAGE
+############################
+
+defaultContentLanguage: en
+hasCJKLanguage: false
+defaultContentLanguageInSubdir: true
+removePathAccents: true
+
+languages:
+  ru:
+    params:
+      date_format: "2006-01-02"
+      address_format: zh
+
+############################
+## PAGE OPTIONS
+############################
+
+cascade:
+  ## Blog post options
+  - _target:
+      path: /blog/**
+    editable: false
+    reading_time: true
+    commentable: false
+    show_related: true
+    show_breadcrumb: true
+    share: false
+    backlinks: true
+    header:
+      navbar:
+        enable: true
+  - _target:
+      path: /courses/**
+    editable: false
+    reading_time: true
+    commentable: false
+    show_related: true
+    show_breadcrumb: true
+    share: false
+    backlinks: true
+    invert_pager: false
+    header:
+      navbar:
+        enable: true
+  - _target:
+      path: /slides/**
+      kind: page
+    outputs: [HTML, present]
+
+############################
+## ADVANCED
+############################
+
+build:
+  writeStats: true
+
+enableGitInfo: false
+summaryLength: 30
+
+pagination:
+  pagerSize: 20
+
+enableEmoji: true
+enableRobotsTXT: true
+canonifyURLs: true
+footnotereturnlinkcontents: <sup>^</sup>
+ignoreFiles: [".ipynb_checkpoints$", "\\.Rmd$", "\\.Rmarkdown$", "_cache$"]
+disableAliases: true
+
+permalinks:
+  blog: "/post/:year/:month/:day/:slug"
+  # authors: "/author/:slug/"
+  # event: "/events/:slug/"
+  # categories: "/category/:slug/"
+  # publication_types: "/publication-type/:slug/"
+  # tags: "/tag/:slug/"
+
+taxonomies:
+  author: authors
+  tag: tags
+  publication_type: publication_types
+  # category: categories
+
+outputs:
+  home: [HTML, RSS, headers, redirects, backlinks]
+  section: [HTML, RSS]
+  # page: [HTML, RSS]
+  # rss: [RSS]
+  # taxonomy: [HTML, RSS]
+  # term: [HTML, RSS]
+
+imaging:
+  resampleFilter: lanczos
+  quality: 90
+  anchor: smart
+  hint: picture
+timeout: 600000
+
+markup:
+  _merge: deep
+  defaultMarkdownHandler: goldmark
+  goldmark:
+    renderHooks:
+      link:
+        # Process backlinks hook
+        useEmbedded: fallback
+    renderer:
+      # Render HTML in Markdown
+      unsafe: true
+    parser:
+      # Support Latex math
+      attribute:
+        block: true
+        title: true
+    extensions:
+      # Support Latex math
+      passthrough:
+        enable: true
+        delimiters:
+          block:
+            - - \[
+              - \]
+            - - $$
+              - $$
+          inline:
+            - - \(
+              - \)
+            - - $
+              - $
+      extras:
+        # Enable subscript, superscript, and highlighting with ~,^, and == wrappers
+        insert:
+          enable: false
+        mark:
+          enable: true
+        subscript:
+          enable: true
+        superscript:
+          enable: true
+  highlight:
+    # Enable code highlighting
+    codeFences: true
+    noHl: false
+    lineNumbersInTable: false
+    noClasses: false
+    guessSyntax: true
+    anchorLineNos: true
+    lineNoStart: 1
+    lineNos: false
+  tableOfContents:
+    startLevel: 2
+    endLevel: 4
+minify:
+  minifyOutput: true
+  tdewolff:
+    html:
+      keepComments: true
+      keepSpecialComments: true
+sitemap:
+  changefreq: weekly
+
+security:
+  funcs:
+    getenv:
+      # Allow HUGO_ and HUGO_BLOX_ vars
+      - ^HUGO_
+      # Allow continuous integration vars
+      - ^CI$
+outputFormats:
+  backlinks:
+    mediaType: application/json
+    baseName: backlinks
+    isPlainText: true
+    notAlternative: true
+  WebAppManifest:
+    mediaType: application/manifest+json
+    rel: manifest
+params:
+  locale:
+    date_format: "2006-01-02"
+    time_format: "15:04"
+    address_format: zh
+related:
+  threshold: 80.0
+  includeNewer: true
+  toLower: true
+  indices:
+    - name: title
+      weight: 60.0
+    - name: summary
+      weight: 50.0
+    - name: tags
+      weight: 80.0
+    - name: categories
+      weight: 70.0
+    - name: authors
+      weight: 20.0
+
+mediaTypes:
+  application/manifest+json:
+    suffixes:
+      - webmanifest

@@ -1,0 +1,85 @@
+{{ $title := "tabe widget" }}
+{{ if .IsNamedParams }}
+  {{ with .Get "title" }}
+    {{ $title = . }}
+  {{ end }}
+{{ else }}
+  {{ with .Get 0 }}
+    {{ $title = . }}
+  {{ end }}
+{{ end }}
+
+<!-- <link rel = "stylesheet" -->
+<!--       href = "https://code.jquery.com/ui/1.14.1/themes/flick/jquery-ui.css"> -->
+
+{{ $css := resources.Get "css/flick/jquery-ui.css" }}
+{{ $styles := $css | toCSS | minify | fingerprint }}
+<link rel="stylesheet" href="{{ $styles.RelPermalink }}" integrity="{{ $styles.Data.Integrity }}">
+
+<script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js">
+</script>
+
+<script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js">
+</script>
+
+<!-- {{ $js := resources.Get "js/jquery.min.js" | js.Build | minify | fingerprint }} -->
+<!-- <script -->
+<!--   src="{{ $js.RelPermalink }}" -->
+<!--   integrity="{{ $js.Data.Integrity }}" -->
+<!--   defer -->
+<!-- ></script> -->
+
+<!-- {{ $js := resources.Get "js/jquery-ui.min.js" | js.Build | minify | fingerprint }} -->
+<!-- <script -->
+<!--   src="{{ $js.RelPermalink }}" -->
+<!--   integrity="{{ $js.Data.Integrity }}" -->
+<!--   defer -->
+<!-- ></script> -->
+
+<!-- {{ $js := resources.Get "js/jquery.min.js" | js.Build }} -->
+<!-- <script -->
+<!--   src="{{ $js.RelPermalink }}" -->
+<!--   defer -->
+<!-- ></script> -->
+
+<!-- {{ $js := resources.Get "js/jquery-ui.min.js" | js.Build }} -->
+<!-- <script -->
+<!--   src="{{ $js.RelPermalink }}" -->
+<!--   defer -->
+<!-- ></script> -->
+
+<!-- <script type = "text/javascript" -->
+<!--   src="/js/jquery.min.js" -->
+<!-- ></script> -->
+
+<!-- <script type = "text/javascript" src="/js/jquery-ui.min.js"> -->
+<!-- </script> -->
+
+<script>
+    $(function() {
+	$( "#tabs, #tabs1, #tabs2, #tabs3, #tabs4, #tabs5, #tabs6, #tabs7, #tabs8" ).tabs();
+    });
+</script>
+
+<div id = "tabs">
+{{ $ss:=split .Inner "---" }}
+    <ul>
+    {{ range $idx, $el :=$ss }}
+      {{ if ne $idx 0 }}
+	{{ $content:=split $el "$$$" }}
+        <li><a href = "#{{  (printf ("tab-%d") $idx)  }}"> {{index $content 0}}</a></li>
+      {{ end }}
+    {{ end }}
+    </ul>
+
+    {{ range $idx, $el :=$ss }}
+	{{ $content:=split $el "$$$" }}
+	{{ $tab := index $content 1 }}
+	<div id ="{{  (printf ("tab-%d") $idx)  }}">
+	     {{ $tab | markdownify }}
+	</div>
+
+    {{ end }}
+
+</div>
+{{ $title}}

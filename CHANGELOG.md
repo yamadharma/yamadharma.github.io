@@ -1,3 +1,21 @@
+# 1.1.0 (2026-02-23)
+
+
+### Bug Fixes
+
+* **content:** fix links in content ([d271331](https://github.com/yamadharma/yamadharma.github.io/commit/d27133192bbf7eb3ac2d06ecc6e1993b46c0e851))
+* **gitflow:** change branch from main to master ([891dafc](https://github.com/yamadharma/yamadharma.github.io/commit/891dafc9c9efc6286843e51f1b27c4166916a92d))
+* **post:** update preparation quantum computing course ([ae4e797](https://github.com/yamadharma/yamadharma.github.io/commit/ae4e7975e441622164afab7a4a327173d69925ac))
+
+
+### Features
+
+* **main:** switch to single repo format ([05a35e8](https://github.com/yamadharma/yamadharma.github.io/commit/05a35e8df88e1389a3124a5003f854f84b9dfce7))
+* **post:** add amnezia ([2f11ed2](https://github.com/yamadharma/yamadharma.github.io/commit/2f11ed2e827e54a146bed81afd3808ad4fbbe470))
+* **post:** add new posts ([ccf6297](https://github.com/yamadharma/yamadharma.github.io/commit/ccf6297c0bf42f93b87a21b59e1b9d6b0858af77))
+
+
+
 ## [1.0.3](https://github.com/yamadharma/blog/compare/v1.0.2...v1.0.3) (2026-01-24)
 
 

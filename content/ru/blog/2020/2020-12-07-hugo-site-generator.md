@@ -2,7 +2,7 @@
 title: "Генератор статических сайтов Hugo"
 author: ["Dmitry S. Kulyabov"]
 date: 2020-12-07T14:06:00+03:00
-lastmod: 2025-08-11T21:13:00+03:00
+lastmod: 2026-02-21T19:32:00+03:00
 tags: ["hugo", "MOC", "sysadmin"]
 categories: ["computer-science"]
 draft: false
@@ -45,7 +45,7 @@ slug: "hugo-site-generator"
 
 -   Предлагается не писать заметки непосредственно для сайта, а использовать систему генерации статических сайтов как бэкенд для систем ведения заметок.
 -   Предлагается использовать режим _org-roam_ (см. [Org-roam. Экспорт в Hugo]({{< relref "2022-11-23-org-roam-hugo-export" >}})) редактора _emacs_ как реализации _Zettelkasten_ (см. [Метод Zettelkasten]({{< relref "2021-02-18-zettelkasten-method" >}})).
--   Для реализации методики _Zettelkasten_ на сайте необходима реализация обратных ссылок (см. [Обратные ссылки в Hugo]({{< relref "2021-06-02-backlinks-hugo" >}})).
+-   Для реализации методики _Zettelkasten_ на сайте желательна реализация обратных ссылок (см. [Обратные ссылки в Hugo]({{< relref "2021-06-02-backlinks-hugo" >}})).
 
 
 ## <span class="section-num">6</span> Создание статического сайта {#создание-статического-сайта}

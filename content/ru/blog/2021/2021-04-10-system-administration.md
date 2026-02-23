@@ -2,7 +2,7 @@
 title: "Системное администрирование"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-04-10T18:18:00+03:00
-lastmod: 2026-02-15T20:33:00+03:00
+lastmod: 2026-02-23T18:36:00+03:00
 tags: ["MOC", "sysadmin"]
 categories: ["computer-science"]
 draft: false
@@ -402,6 +402,7 @@ slug: "system-administration"
 -   [Настройка vpn-клиента Континент АП]({{< relref "2025-02-05--configuring-continent-ap-vpn-client" >}})
 -   [WireGuard VPN]({{< relref "2025-11-06--wireguard_vpn" >}})
 -   [Пиринговые VPN]({{< relref "2026-01-15--p2p-vpn" >}})
+-   [VPN. Реализация Amnezia VPN]({{< relref "2026-02-23--amnezia-vpn" >}})
 
 
 ### <span class="section-num">16.4</span> Железо {#железо}

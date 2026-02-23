@@ -2,7 +2,7 @@
 title: "Системное администрирование"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-04-10T18:18:00+03:00
-lastmod: 2026-02-15T20:33:00+03:00
+lastmod: 2026-02-23T18:36:00+03:00
 tags: ["MOC", "sysadmin"]
 categories: ["computer-science"]
 draft: false
@@ -18,13 +18,13 @@ slug: "system-administration"
 
 ## <span class="section-num">1</span> DevOps {#devops}
 
--   [Непрерывная интеграция. GitHub Actions]({{< relref "2023-07-16-continuous-integration-github-actions" >}})
--   [Система автоматизации Ansible]({{< relref "2025-12-10--ansible" >}})
+-   [Непрерывная интеграция. GitHub Actions]({{< relref "20230716190400-непрерывная_интеграция_github_actions.md" >}})
+-   [Система автоматизации Ansible]({{< relref "20251210T201500--система_автоматизации_ansible.md" >}})
 
 
 ## <span class="section-num">2</span> Базы данных {#базы-данных}
 
--   [PostgreSQL]({{< relref "2025-12-11--postgresql" >}})
+-   [PostgreSQL]({{< relref "20251211T112000--postgresql.md" >}})
 
 
 ## <span class="section-num">3</span> Безопасность {#безопасность}
@@ -32,34 +32,34 @@ slug: "system-administration"
 
 ### <span class="section-num">3.1</span> Пароли {#пароли}
 
--   [Менеджеры паролей]({{< relref "2021-04-29-password-managers" >}})
--   [Have I Been Pwned (HIBP)]({{< relref "2021-05-03-have-i-been-pwned-hibp" >}})
--   [Одноразовые пароли]({{< relref "2023-08-24-one-time-passwords" >}})
+-   [Менеджеры паролей]({{< relref "20210429115600-менеджеры_паролеи.md" >}})
+-   [Have I Been Pwned (HIBP)]({{< relref "20210503152100-have_i_been_pwned_hibp.md" >}})
+-   [Одноразовые пароли]({{< relref "20230824200900-одноразовые_пароли.md" >}})
 
 
 ### <span class="section-num">3.2</span> PKI {#pki}
 
--   [Конвертация сертификатов PKCS12 в PEM]({{< relref "2024-12-13-convert-pkcs12-pem" >}})
+-   [Конвертация сертификатов PKCS12 в PEM]({{< relref "20241213205800-конвертация_сертификатов_pkcs12_в_pem.md" >}})
 
 
 ### <span class="section-num">3.3</span> Разное {#разное}
 
--   [Тип ключа ssh]({{< relref "2022-02-03-ssh-key-type" >}})
--   [Сертификаты ACME]({{< relref "2022-04-30-acme-certificates" >}})
--   [Механизм HSTS]({{< relref "2022-05-03-hsts-mechanism" >}})
--   [fail2ban. Основные настройки]({{< relref "2023-10-30-fail2ban-basic-settings" >}})
+-   [Тип ключа ssh]({{< relref "20220203144800-тип_ключа_ssh.md" >}})
+-   [Сертификаты ACME]({{< relref "20220430144900-сертификаты_let_s_encrypt.md" >}})
+-   [Механизм HSTS]({{< relref "20220503200500-механизм_hsts.md" >}})
+-   [fail2ban. Основные настройки]({{< relref "20231030110100-fail2ban_основные_настроики.md" >}})
 
 
 ### <span class="section-num">3.4</span> Резервное копирование {#резервное-копирование}
 
--   [Ротирование бэкапов]({{< relref "2025-03-11--backup-rotation" >}})
--   [Proxmox Backup Server]({{< relref "2025-03-04--proxmox-backup-server" >}})
--   [Резервное копирование. Restic]({{< relref "2025-08-17--backup-restic" >}})
+-   [Ротирование бэкапов]({{< relref "20250311T162900--ротирование_бэкапов.md" >}})
+-   [Proxmox Backup Server]({{< relref "20250304T140200--proxmox_backup_server.md" >}})
+-   [Резервное копирование. Restic]({{< relref "20250817T205600--резервное_копирование_restic.md" >}})
 
 
 ## <span class="section-num">4</span> Гаджеты {#гаджеты}
 
--   [Гаджеты]({{< relref "2024-08-22-gadget" >}})
+-   [Гаджеты]({{< relref "20240822143100-гаджеты.md" >}})
 
 
 ## <span class="section-num">5</span> Графическое окружение {#графическое-окружение}
@@ -67,52 +67,52 @@ slug: "system-administration"
 
 ### <span class="section-num">5.1</span> Общее {#общее}
 
--   [Буфер обмена]({{< relref "2025-03-11--clipboard" >}})
--   [Интерфейс. Transient menu]({{< relref "2025-04-24--transient-menu-interface" >}})
--   [Броузер. Реализация transient menu]({{< relref "2025-04-24--browser-transient-menu" >}})
+-   [Буфер обмена]({{< relref "20250311T090300--буфер_обмена.md" >}})
+-   [Интерфейс. Transient menu]({{< relref "20250424T155000--интерфеис_transient_menu.md" >}})
+-   [Броузер. Реализация transient menu]({{< relref "20250424T165400--броузер_реализация_transient_menu.md" >}})
 
 
 ### <span class="section-num">5.2</span> Linux {#linux}
 
--   [Мультимедиа сервер PipeWire]({{< relref "2021-04-28-pipewire-multimedia-server" >}})
--   [XDG. Каталоги]({{< relref "2024-10-19-xdg-directories" >}})
--   [XDG. Пользовательские каталоги]({{< relref "2021-09-16-xdg-user-directories" >}})
--   [XDG. Приложения MIME]({{< relref "2023-04-02-xdg-mime-applications" >}})
--   [Ввод с помощью Compose]({{< relref "2021-12-26-using-compose-key" >}})
--   [Тайловые оконные менеджеры]({{< relref "2023-06-19-tiling-window-manager" >}})
--   [Консоль linux. Kmscon]({{< relref "2024-06-25-linux-console-kmscon" >}})
--   [Лаунчеры]({{< relref "2024-08-11-launcher" >}})
--   [Дисплейный менеджер gdm]({{< relref "2025-08-21--display-manager-gdm" >}})
+-   [Мультимедиа сервер PipeWire]({{< relref "20210428162800-мультимедиа_сервер_pipewire.md" >}})
+-   [XDG. Каталоги]({{< relref "20241019182100-xdg_каталоги.md" >}})
+-   [XDG. Пользовательские каталоги]({{< relref "20210916201500-xdg_пользовательские_каталоги.md" >}})
+-   [XDG. Приложения MIME]({{< relref "20230402133900-xdg_mime_applications.md" >}})
+-   [Ввод с помощью Compose]({{< relref "20211226133300-ввод_с_помощью_compose.md" >}})
+-   [Тайловые оконные менеджеры]({{< relref "20230619093700-таиловые_оконные_менеджеры.md" >}})
+-   [Консоль linux. Kmscon]({{< relref "20240625120800-консоль_linux_kmscon.md" >}})
+-   [Лаунчеры]({{< relref "20240811120000-лаунчеры.md" >}})
+-   [Дисплейный менеджер gdm]({{< relref "20250821T115000--дисплеиныи_менеджер_gdm.md" >}})
 
 
 ### <span class="section-num">5.3</span> Wayland {#wayland}
 
--   [Wayland]({{< relref "2023-08-14-wayland" >}})
--   [Linux. Приложения. Индикатор прогресса wob]({{< relref "2024-03-06-linux-applications-progress-indicator-wob" >}})
--   [Переход на Sway]({{< relref "2020-09-10-migration-sway" >}})
+-   [Wayland]({{< relref "20230814114900-wayland.md" >}})
+-   [Linux. Приложения. Индикатор прогресса wob]({{< relref "20240306210000-linux_приложения_индикатор_прогресса_wob.md" >}})
+-   [Переход на Sway]({{< relref "20210410175400-переход_на_sway.md" >}})
 
 
 ### <span class="section-num">5.4</span> X11 {#x11}
 
--   [Window manager i3]({{< relref "2021-05-14-window-manager-i3" >}})
+-   [Window manager i3]({{< relref "20210514113200-window_manager_i3.md" >}})
 
 
 ### <span class="section-num">5.5</span> Темы оформления {#темы-оформления}
 
--   [Linux. Темы оформления]({{< relref "2024-05-07-linux-themes" >}})
+-   [Linux. Темы оформления]({{< relref "20240507153900-linux_темы_оформления.md" >}})
 
 
 ## <span class="section-num">6</span> Инфраструктура в РУДН {#инфраструктура-в-рудн}
 
--   [Переход на домен pfur.ru]({{< relref "2023-04-20-switching-domain-pfur" >}})
--   [Спецификации компьютеров]({{< relref "2023-06-11-computer-specifications" >}})
--   [Серверы на Донской]({{< relref "2022-09-15-servers-donskaya" >}})
--   [Сеть на Донской]({{< relref "2023-08-13-network-donskaya" >}})
+-   [Переход на домен pfur.ru]({{< relref "20230420181800-переход_на_домен_pfur_ru.md" >}})
+-   [Спецификации компьютеров]({{< relref "20230611215000-спецификации_компьютеров.md" >}})
+-   [Серверы на Донской]({{< relref "20220915201900-виртуальные_машины_на_донскои.md" >}})
+-   [Сеть на Донской]({{< relref "20230813194000-сеть_на_донскои.md" >}})
 
 
 ## <span class="section-num">7</span> Конфигурации {#конфигурации}
 
--   [Моя конфигурация программного обеспечения]({{< relref "2024-03-06-my-software-configuration" >}})
+-   [Моя конфигурация программного обеспечения]({{< relref "20240306214200-моя_конфигурация_программного_обеспечения.md" >}})
 
 
 ## <span class="section-num">8</span> Оборудование {#оборудование}
@@ -120,15 +120,15 @@ slug: "system-administration"
 
 ### <span class="section-num">8.1</span> Подбор компьютера {#подбор-компьютера}
 
--   [Критерии выбора ноутбука]({{< relref "2022-04-30-criteria-choosing-laptop" >}})
--   [Критерии выбора персонального компьютера]({{< relref "2022-07-21-criteria-choosing-personal-computer" >}})
--   [Набор вещей для системного администратора]({{< relref "2022-09-11-system-administrator-tools" >}})
--   [Клавиатуры]({{< relref "2023-10-11-keyboards" >}})
+-   [Критерии выбора ноутбука]({{< relref "20220430200600-критерии_выбора_ноутбука.md" >}})
+-   [Критерии выбора персонального компьютера]({{< relref "20220721201700-критерии_выбора_персонального_компьютера.md" >}})
+-   [Набор вещей для системного администратора]({{< relref "20220911165100-набор_вещеи_для_системного_администратора.md" >}})
+-   [Клавиатуры]({{< relref "20231011164900-клавиатуры.md" >}})
 
 
 ### <span class="section-num">8.2</span> Процессоры {#процессоры}
 
--   [Варианты микроархитектуры x86]({{< relref "2024-09-20-microarchitecture-level-x86-64" >}})
+-   [Варианты микроархитектуры x86]({{< relref "20240920201600-варианты_микроархитектуры_x86.md" >}})
 
 
 ## <span class="section-num">9</span> Операционные системы {#операционные-системы}
@@ -136,59 +136,59 @@ slug: "system-administration"
 
 ### <span class="section-num">9.1</span> Windows {#windows}
 
--   [Администрирование Windows]({{< relref "2021-05-01-windows-administration" >}})
--   [MSYS2. Приложения Unix под Windows]({{< relref "2023-09-23-msys2-unix-applications-windows" >}})
+-   [Администрирование Windows]({{< relref "20210501162800-администрирование_windows.md" >}})
+-   [MSYS2. Приложения Unix под Windows]({{< relref "20230923155500-msys2_приложения_unix_под_windows.md" >}})
 
 
 ### <span class="section-num">9.2</span> Linux {#linux}
 
--   [Администрирование Linux]({{< relref "2023-06-07-linux-administration" >}})
--   [Linux. Подсистема Live Update Orchestrator]({{< relref "2026-02-15--linux-live-update-orchestrator" >}})
+-   [Администрирование Linux]({{< relref "20230607183500-администрирование_linux.md" >}})
+-   [Linux. Подсистема Live Update Orchestrator]({{< relref "20260215T202900--linux_подсистема_live_update_orchestrator.md" >}})
 
 
 ### <span class="section-num">9.3</span> Установка операционных систем {#установка-операционных-систем}
 
--   [Загрузочная флешка]({{< relref "2021-04-10-bootable-usb-stick" >}})
--   [Перенос Linux на btrfs]({{< relref "2021-05-21-installing-linux-btrfs" >}})
--   [Установка загрузчика grub]({{< relref "2021-09-19-installing-grub-bootloader" >}})
--   [Использование vagrant]({{< relref "2021-11-12-using-vagrant" >}})
--   [Система установки SALI]({{< relref "2024-08-27-sali-automatic-linux-installer" >}})
--   [Система установки SALII]({{< relref "2024-08-27-salii-installer" >}})
+-   [Загрузочная флешка]({{< relref "20210410184600-загрузочная_флешка.md" >}})
+-   [Перенос Linux на btrfs]({{< relref "20210521203800-установка_linux_на_btrfs.md" >}})
+-   [Установка загрузчика grub]({{< relref "20210919135800-установка_загрузчика_grub.md" >}})
+-   [Использование vagrant]({{< relref "20211112121100-использование_vagrant.md" >}})
+-   [Система установки SALI]({{< relref "20240827174200-система_установки_sali.md" >}})
+-   [Система установки SALII]({{< relref "20240827192500-система_установки_salii.md" >}})
 
 
 ### <span class="section-num">9.4</span> Серверные системы {#серверные-системы}
 
--   [Замена Centos]({{< relref "2021-05-25-replacing-centos" >}})
--   [CentOS 8. Изменение адресов репозиториев]({{< relref "2022-02-10-centos8-changing-repository-addresses" >}})
--   [Rocky Linux. Установка сервера]({{< relref "2022-08-12-rockylinux-server-installation" >}})
--   [Автообновление систем на базе деривативов RedHat]({{< relref "2022-09-25-redhat-based-systems-auto-update" >}})
--   [Обновление деривативов RedHat]({{< relref "2024-09-12-redhat-derivatives-update" >}})
+-   [Замена Centos]({{< relref "20210525152200-замена_centos.md" >}})
+-   [CentOS 8. Изменение адресов репозиториев]({{< relref "20220210143900-centos_8_изменение_адресов_репозиториев.md" >}})
+-   [Rocky Linux. Установка сервера]({{< relref "20220812135700-rocky_linux_9_установка_сервера.md" >}})
+-   [Автообновление систем на базе деривативов RedHat]({{< relref "20220925094200-автообновление_систем_на_базе_деривативов_redhat.md" >}})
+-   [Обновление деривативов RedHat]({{< relref "20240912124800-обновление_деривативов_redhat.md" >}})
 
 
 ### <span class="section-num">9.5</span> Управление программным обеспечением {#управление-программным-обеспечением}
 
--   [Обновление пакетов python]({{< relref "2022-01-21-update-all-python-packages" >}})
+-   [Обновление пакетов python]({{< relref "20220121163300-обновление_пакетов_python.md" >}})
 
 
 ### <span class="section-num">9.6</span> Терминальный доступ {#терминальный-доступ}
 
--   [Virtual Desktop Infrastructure]({{< relref "2022-07-23-virtual-desktop-infrastructure" >}})
+-   [Virtual Desktop Infrastructure]({{< relref "20220723192900-virtual_desktop_infrastructure.md" >}})
 
 
 ### <span class="section-num">9.7</span> Утилиты настройки среды {#утилиты-настройки-среды}
 
--   [Утилита module]({{< relref "2022-07-24-module-utility" >}})
+-   [Утилита module]({{< relref "20220724161400-утилита_module.md" >}})
 
 
 ### <span class="section-num">9.8</span> Загрузчики {#загрузчики}
 
--   [Загрузчик rEFInd]({{< relref "2024-01-29-refind-boot-manager" >}})
+-   [Загрузчик rEFInd]({{< relref "20240129114100-загрузчик_refind.md" >}})
 
 
 ## <span class="section-num">10</span> Организация обучения {#организация-обучения}
 
--   [Дисплейные классы]({{< relref "2021-09-26-computer-classes" >}})
--   [Системы управления обучением]({{< relref "2024-09-14-learning-management-systems" >}})
+-   [Дисплейные классы]({{< relref "20210926194000-дисплеиные_классы.md" >}})
+-   [Системы управления обучением]({{< relref "20240914165200-системы_управления_обучением.md" >}})
 
 
 ## <span class="section-num">11</span> Пользовательские программы {#пользовательские-программы}
@@ -196,73 +196,73 @@ slug: "system-administration"
 
 ### <span class="section-num">11.1</span> Виртуализация {#виртуализация}
 
--   [Система виртуализации VirtualBox]({{< relref "2021-09-17-virtualbox-virtualization-system" >}})
--   [Система виртуализации VMware]({{< relref "2024-05-16-vmware-virtualization-system" >}})
--   [Виртуализация. Libvirt]({{< relref "2024-11-26-virtualization-libvirt" >}})
-    -   [Виртуализация. Virt-manager]({{< relref "2024-11-26-virtualization-virt-manager" >}})
-    -   [Виртуализация. Virtiofs]({{< relref "2024-11-26-virtualization-virtiofs" >}})
--   [Контейнеры. podman]({{< relref "2024-12-04-containers-podman" >}})
+-   [Система виртуализации VirtualBox]({{< relref "20210917113500-система_виртуализации_virtualbox.md" >}})
+-   [Система виртуализации VMware]({{< relref "20240516113300-система_виртуализации_vmware.md" >}})
+-   [Виртуализация. Libvirt]({{< relref "20241126133900-виртуализация_libvirt.md" >}})
+    -   [Виртуализация. Virt-manager]({{< relref "20241126140800-виртуализация_virt_manager.md" >}})
+    -   [Виртуализация. Virtiofs]({{< relref "20241126145000-виртуализация_virtiofs.md" >}})
+-   [Контейнеры. podman]({{< relref "20241204201300-контеинеры_podman.md" >}})
 
 
 ### <span class="section-num">11.2</span> Вычисления {#вычисления}
 
--   [Принципы работы на суперкомпьютере]({{< relref "2022-07-22-principles-using-supercomputer" >}})
--   [Регламент доступа к суперкомпьютеру РУДН]({{< relref "2022-09-07-regulations-access-supercomputer-rudn" >}})
+-   [Принципы работы на суперкомпьютере]({{< relref "20220722105100-принципы_работы_на_суперкомпьютере.md" >}})
+-   [Регламент доступа к суперкомпьютеру РУДН]({{< relref "20220907143700-регламент_доступа_к_суперкомпьютеру_рудн.md" >}})
 
 
 ### <span class="section-num">11.3</span> Квантовая химия {#квантовая-химия}
 
--   [Квантовая химия. Gamess]({{< relref "2022-10-17-quantum-chemistry-gamess" >}})
+-   [Квантовая химия. Gamess]({{< relref "20221017165800-квантовая_химия_gamess.md" >}})
 
 
 ### <span class="section-num">11.4</span> Наборы программ {#наборы-программ}
 
--   [Программы на Android]({{< relref "2023-06-26-android-apps" >}})
+-   [Программы на Android]({{< relref "20230626190600-программы_на_android.md" >}})
 
 
 ### <span class="section-num">11.5</span> Обработка видео {#обработка-видео}
 
--   [Видео. KDEnlive]({{< relref "2021-07-23-video-kdenlive" >}})
--   [Обработка видео. Командная строка]({{< relref "2021-10-21-video-processing-command-line" >}})
--   [Закачка с youtube]({{< relref "2022-03-09-download-youtube" >}})
--   [OBS Studio]({{< relref "2025-02-20--obs-studio" >}})
--   [OBS Studio. Стриминг]({{< relref "2025-02-16--obs-studio-streaming" >}})
+-   [Видео. KDEnlive]({{< relref "20210723191000-видео_kdenlive.md" >}})
+-   [Обработка видео. Командная строка]({{< relref "20211021172600-обработка_видео_командная_строка.md" >}})
+-   [Закачка с youtube]({{< relref "20220309173800-закачка_с_youtube.md" >}})
+-   [OBS Studio]({{< relref "20250220T113800--obs_studio.md" >}})
+-   [OBS Studio. Стриминг]({{< relref "20250216T171600--obs_studio_стриминг.md" >}})
 
 
 ### <span class="section-num">11.6</span> Офисные программы {#офисные-программы}
 
--   [Настройка LibreOffice]({{< relref "2022-01-27-libreoffice-tuning" >}})
--   [Альтернативы Microsoft Office]({{< relref "2023-03-19-microsoft-office-alternatives" >}})
+-   [Настройка LibreOffice]({{< relref "20220127140000-настроика_libreoffice.md" >}})
+-   [Альтернативы Microsoft Office]({{< relref "20230319171300-альтернативы_microsoft_office.md" >}})
 
 
 ### <span class="section-num">11.7</span> Просмотрщики {#просмотрщики}
 
--   [Pdf. Просмотр. Zathura]({{< relref "2023-09-20-pdf-viewer-zathura" >}})
+-   [Pdf. Просмотр. Zathura]({{< relref "20230920131200-pdf_просмотр_zathura.md" >}})
 
 
 ### <span class="section-num">11.8</span> Работа с дисками {#работа-с-дисками}
 
--   [Использование sfdisk]({{< relref "2022-03-08-using-sfdisk" >}})
+-   [Использование sfdisk]({{< relref "20220308194500-использование_sfdisk.md" >}})
 
 
 ### <span class="section-num">11.9</span> Работа с терминалом {#работа-с-терминалом}
 
--   [Терминальный мультиплексор tmux]({{< relref "2024-02-19-terminal-multiplexer-tmux" >}})
--   [Эмулятор терминала kitty]({{< relref "2024-03-16-kitty-terminal-emulator" >}})
--   [Командные оболочки Unix]({{< relref "2025-01-01--unix-shells" >}})
+-   [Терминальный мультиплексор tmux]({{< relref "20240219101100-терминальныи_мультиплексор_tmux.md" >}})
+-   [Эмулятор терминала kitty]({{< relref "20240316170700-эмулятор_терминала_kitty.md" >}})
+-   [Командные оболочки Unix]({{< relref "20250101T160600--командные_оболочки_unix.md" >}})
 
 
 ### <span class="section-num">11.10</span> Работа с файлами {#работа-с-файлами}
 
--   [Файловый менеджер Midnight Commander]({{< relref "2023-08-26-midnight-commander-file-manager" >}})
+-   [Файловый менеджер Midnight Commander]({{< relref "20230826174000-фаиловыи_менеджер_midnight_commander.md" >}})
 
 
 ### <span class="section-num">11.11</span> Редакторы {#редакторы}
 
--   [Emacs]({{< relref "2020-12-24-emacs" >}})
--   [Редактор VSCode]({{< relref "2025-12-31--vscode" >}})
--   [Редактор vim]({{< relref "2023-07-04-vim-editor" >}})
--   [Семейство редакторов vi]({{< relref "2025-01-28--vi-editor-family" >}})
+-   [Emacs]({{< relref "20201224162300-emacs.md" >}})
+-   [Редактор VSCode]({{< relref "20251231T221400--vscode.md" >}})
+-   [Редактор vim]({{< relref "20230704202200-редактор_vim.md" >}})
+-   [Семейство редакторов vi]({{< relref "20250128T192200--семеиство_редакторов_vi.md" >}})
 
 
 ### <span class="section-num">11.12</span> Видео {#видео}
@@ -270,68 +270,68 @@ slug: "system-administration"
 
 #### <span class="section-num">11.12.1</span> Просмотр {#просмотр}
 
--   [Проигрывание видеофайлов]({{< relref "2024-12-12-playing-videos" >}})
+-   [Проигрывание видеофайлов]({{< relref "20241212162600-проигрывание_видеофаилов.md" >}})
 
 
 #### <span class="section-num">11.12.2</span> Видео-серверы {#видео-серверы}
 
--   [Plex Media Server]({{< relref "2025-01-27--plex-media-server" >}})
+-   [Plex Media Server]({{< relref "20250127T120200--plex_media_server.md" >}})
 
 
 ### <span class="section-num">11.13</span> Сетевые клиенты {#сетевые-клиенты}
 
--   [Почтовый клиент aerc]({{< relref "2024-07-17-email-client-aerc" >}})
--   [Linux. Использование мессенджеров]({{< relref "2025-06-26--linux-messengers" >}})
+-   [Почтовый клиент aerc]({{< relref "20240717185500-почтовыи_клиент_aerc.md" >}})
+-   [Linux. Использование мессенджеров]({{< relref "20250626T123600--linux_использование_мессенджеров.md" >}})
 
 
 #### <span class="section-num">11.13.1</span> Броузеры {#броузеры}
 
--   [Флаги запуска google chrome]({{< relref "2023-02-28-google-chrome-flags" >}})
--   [Броузер Nyxt]({{< relref "2023-10-05-nyxt-browser" >}})
--   [Броузер Qutebrowser]({{< relref "2024-12-01-qutebrowser-browser" >}})
--   [Firefox. Расширения]({{< relref "2006-12-24-firefox-extention" >}})
--   [Firefox. Настройка]({{< relref "2025-11-22--firefox-tuning" >}})
--   [Vim. Клавиатура. Броузеры]({{< relref "2023-08-19-vim-keyboard-browsers" >}})
--   [Emacs. Клавиатура. Броузеры]({{< relref "2023-08-19-emacs-keyboard-browsers" >}})
+-   [Флаги запуска google chrome]({{< relref "20230228153100-флаги_запуска_google_chrome.md" >}})
+-   [Броузер Nyxt]({{< relref "20231005204300-броузер_nyxt.md" >}})
+-   [Броузер Qutebrowser]({{< relref "20241201184100-броузер_qutebrowser.md" >}})
+-   [Firefox. Расширения]({{< relref "20240823202500-firefox_расширения.md" >}})
+-   [Firefox. Настройка]({{< relref "20251122T190900--firefox_настроика.md" >}})
+-   [Vim. Клавиатура. Броузеры]({{< relref "20230819184700-vim_клавиатура_броузеры.md" >}})
+-   [Emacs. Клавиатура. Броузеры]({{< relref "20230819191500-emscs_клавиатура_броузеры.md" >}})
 
 
 ### <span class="section-num">11.14</span> Синхронизация файлов {#синхронизация-файлов}
 
--   [rclone]({{< relref "2022-10-27-rclone" >}})
--   [Синхронизация файлов с помощью syncthing]({{< relref "2021-08-01-synchronizing-files-syncthing" >}})
--   [Скачать фотографии с google photo]({{< relref "2024-06-01-google-photo-download" >}})
+-   [rclone]({{< relref "20221027142900-rclone.md" >}})
+-   [Синхронизация файлов с помощью syncthing]({{< relref "20210801155800-синхронизация_фаилов_с_помощью_syncthing.md" >}})
+-   [Скачать фотографии с google photo]({{< relref "20240601164200-скачать_фотографии_с_google_photo.md" >}})
 
 
 ### <span class="section-num">11.15</span> Телеконференции {#телеконференции}
 
--   [Аналоги программ для видеоконференций]({{< relref "2023-03-23-video-conferencing-software-analogues" >}})
+-   [Аналоги программ для видеоконференций]({{< relref "20230323183200-аналоги_программ_для_видеоконференции.md" >}})
 
 
 ### <span class="section-num">11.16</span> Утилиты {#утилиты}
 
--   [Pdf. Поиск подстроки]({{< relref "2023-06-27-pdf-grep" >}})
--   [Локальные поисковики]({{< relref "2023-06-27-desktop-search" >}})
--   [Linux. Архивирование]({{< relref "2024-03-22-linux-archiving" >}})
--   [Менеджер закладок buku]({{< relref "2024-06-22-buku-bookmark-manager" >}})
+-   [Pdf. Поиск подстроки]({{< relref "20230627092800-pdf_поиск_подстроки.md" >}})
+-   [Локальные поисковики]({{< relref "20230627105700-локальные_поисковики.md" >}})
+-   [Linux. Архивирование]({{< relref "20240322134200-linux_архивирование.md" >}})
+-   [Менеджер закладок buku]({{< relref "20240622204300-менеджер_закладок_buku.md" >}})
 
 
 ### <span class="section-num">11.17</span> Файлы конфигурации {#файлы-конфигурации}
 
--   [Управление файлами конфигурации. Домашний каталог. Chezmoi]({{< relref "2022-10-28-configuration-file-management-chezmoi" >}})
--   [Управление файлами конфигурации. Домашний каталог. Репозиторий]({{< relref "2023-07-30-configuration-file-management-repo" >}})
+-   [Управление файлами конфигурации. Домашний каталог. Chezmoi]({{< relref "20221028194900-управление_фаилами_конфигурации_chezmoi.md" >}})
+-   [Управление файлами конфигурации. Домашний каталог. Репозиторий]({{< relref "20230730142400-управление_фаилами_конфигурации_домашнии_каталог_репозитории.md" >}})
 
 
 ## <span class="section-num">12</span> Профессиональные требования {#профессиональные-требования}
 
--   [Профессия Системный администратор]({{< relref "2021-07-02-profession-system-administrator" >}})
--   [Тест Лимончелли]({{< relref "2024-01-27-limoncelli-test" >}})
+-   [Профессия Системный администратор]({{< relref "20210702120200-профессия_системныи_администратор.md" >}})
+-   [Тест Лимончелли]({{< relref "20240127202600-тест_лимончелли.md" >}})
 
 
 ## <span class="section-num">13</span> Разработка {#разработка}
 
--   [Обновление хостовых ключей ssh Bitbucket Cloud]({{< relref "2023-06-14-update-bitbucket-ssh-host-keys" >}})
--   [Система контроля версий git]({{< relref "2020-12-07-git-cvs" >}})
--   [Система контроля версий Jujutsu]({{< relref "2025-10-13--jujutsu-vcs" >}})
+-   [Обновление хостовых ключей ssh Bitbucket Cloud]({{< relref "20230614174500-обновление_хостовых_ключеи_ssh_bitbucket_cloud.md" >}})
+-   [Система контроля версий git]({{< relref "20201207154700-система_контроля_версии_git.md" >}})
+-   [Система контроля версий Jujutsu]({{< relref "20251013T100900--система_контроля_версии_jujutsu.md" >}})
 
 
 ## <span class="section-num">14</span> Серверы приложений {#серверы-приложений}
@@ -339,45 +339,45 @@ slug: "system-administration"
 
 ### <span class="section-num">14.1</span> RSS {#rss}
 
--   [rss. Сервер FreshRSS]({{< relref "2025-06-02--rss-server-freshrss" >}})
--   [Подключение ресурсов через RSS]({{< relref "2022-01-17-resources-to-rss" >}})
--   [Emacs. Чтение rss. Elfeed]({{< relref "2025-06-02--emacs-rss-elfeed" >}})
+-   [rss. Сервер FreshRSS]({{< relref "20250602T143700--rss_сервер_freshrss.md" >}})
+-   [Подключение ресурсов через RSS]({{< relref "20220117171400-подключение_ресурсов_через_rss.md" >}})
+-   [Emacs. Чтение rss. Elfeed]({{< relref "20250602T154400--emacs_чтение_rss_elfeed.md" >}})
 
 
 ### <span class="section-num">14.2</span> Drupal {#drupal}
 
--   [Перенос Drupal на другую машину]({{< relref "2022-09-13-move-drupal-other-machine" >}})
+-   [Перенос Drupal на другую машину]({{< relref "20220913194500-перенос_drupal_на_другую_машину.md" >}})
 
 
 ### <span class="section-num">14.3</span> OJS {#ojs}
 
--   [Open Journal Systems]({{< relref "2022-10-22-open-journal-systems" >}})
+-   [Open Journal Systems]({{< relref "20221022155000-open_journal_systems.md" >}})
 
 
 ### <span class="section-num">14.4</span> Ldap {#ldap}
 
--   [Перенос Openldap на другую машину]({{< relref "2023-09-01-openldap-migration" >}})
--   [Настройка Openldap]({{< relref "2023-09-02-configure-openldap-rocky-linux" >}})
+-   [Перенос Openldap на другую машину]({{< relref "20230901201200-перенос_openldap_на_другую_машину.md" >}})
+-   [Настройка Openldap]({{< relref "20230902195300-настроика_openldap.md" >}})
 
 
 ### <span class="section-num">14.5</span> Kerberos {#kerberos}
 
--   [Перенос kerberos на другую машину]({{< relref "2023-09-03-kerberos-migration" >}})
+-   [Перенос kerberos на другую машину]({{< relref "20230903181300-перенос_kerberos_на_другую_машину.md" >}})
 
 
 ### <span class="section-num">14.6</span> Git {#git}
 
--   [Хостинг git. gitea]({{< relref "2023-10-29-git-hosting-gitea" >}})
+-   [Хостинг git. gitea]({{< relref "20231029185400-хостинг_git_gitea.md" >}})
 
 
 ### <span class="section-num">14.7</span> Хранилища {#хранилища}
 
--   [Файловое хранилище Seafile]({{< relref "2025-04-08--seafile-file-server" >}})
+-   [Файловое хранилище Seafile]({{< relref "20250408T122100--фаиловое_хранилище_seafile.md" >}})
 
 
 ## <span class="section-num">15</span> Разное {#разное}
 
--   [Сайт The Movie Database]({{< relref "2024-11-14-the-movie-database" >}})
+-   [Сайт The Movie Database]({{< relref "20241114185600-саит_the_movie_database.md" >}})
 
 
 ## <span class="section-num">16</span> Сети {#сети}
@@ -385,51 +385,52 @@ slug: "system-administration"
 
 ### <span class="section-num">16.1</span> Оборудование {#оборудование}
 
--   [Администрирование Cisco]({{< relref "2021-06-16-cisco-administration" >}})
--   [Администрирование Huawei]({{< relref "2024-09-06-huawei-administration" >}})
--   [Mesh-системы]({{< relref "2024-10-07-mesh-systems" >}})
+-   [Администрирование Cisco]({{< relref "20210616123800-администрирование_cisco.md" >}})
+-   [Администрирование Huawei]({{< relref "20240906153400-администрирование_huawei.md" >}})
+-   [Mesh-системы]({{< relref "20241007162700-mesh_системы.md" >}})
 
 
 ### <span class="section-num">16.2</span> VLAN {#vlan}
 
--   [Linux. Настройка vlan]({{< relref "2024-05-13-linux-vlan-configuration" >}})
+-   [Linux. Настройка vlan]({{< relref "20240513103400-linux_настроика_vlan.md" >}})
 
 
 ### <span class="section-num">16.3</span> VPN {#vpn}
 
--   [VPN. L2TP+IPsec. Подключение клиента]({{< relref "2023-02-05-l2tp-ipsec-vpn-client-setup" >}})
--   [Подключение к Cisco VPN]({{< relref "2023-08-19-cisco-vpn-client-setup" >}})
--   [Настройка vpn-клиента Континент АП]({{< relref "2025-02-05--configuring-continent-ap-vpn-client" >}})
--   [WireGuard VPN]({{< relref "2025-11-06--wireguard_vpn" >}})
--   [Пиринговые VPN]({{< relref "2026-01-15--p2p-vpn" >}})
+-   [VPN. L2TP+IPsec. Подключение клиента]({{< relref "20230205133500-vpn_l2tp_ipsec_подключение_клиента.md" >}})
+-   [Подключение к Cisco VPN]({{< relref "20230819133400-подключение_к_cisco_vpn.md" >}})
+-   [Настройка vpn-клиента Континент АП]({{< relref "20250205T183200--настроика_vpn_клиента_континент_ап.md" >}})
+-   [WireGuard VPN]({{< relref "20251106T085300--wireguard_vpn.md" >}})
+-   [Пиринговые VPN]({{< relref "20260115T161600--пиринговые_vpn.md" >}})
+-   [VPN. Реализация Amnezia VPN]({{< relref "20260223T183300--vpn_реализация_amnezia_vpn.md" >}})
 
 
 ### <span class="section-num">16.4</span> Железо {#железо}
 
--   [Формат Small Form-factor Pluggable (SFP)]({{< relref "2023-03-19-small-form-factor-pluggable" >}})
+-   [Формат Small Form-factor Pluggable (SFP)]({{< relref "20230319163800-small_form_factor_pluggable_sfp.md" >}})
 
 
 ### <span class="section-num">16.5</span> Коммутаторы {#коммутаторы}
 
--   [DHCP snooping]({{< relref "2023-09-05-dhcp-snooping" >}})
+-   [DHCP snooping]({{< relref "20230905094900-dhcp_snooping.md" >}})
 
 
 ### <span class="section-num">16.6</span> Управление и мониторинг {#управление-и-мониторинг}
 
--   [Система мониторинга Observium]({{< relref "2023-03-02-observium-monitoring-system" >}})
--   [Система мониторинга LibreNMS]({{< relref "2023-03-20-librenms-monitoring-system" >}})
--   [Мониторинг пропускной способности и скорости сети]({{< relref "2023-06-16-bandwidth-network-speed-monitoring" >}})
--   [Система управления сетью NetBox]({{< relref "2024-06-19-netbox" >}})
+-   [Система мониторинга Observium]({{< relref "20230302154600-система_мониторинга_observium.md" >}})
+-   [Система мониторинга LibreNMS]({{< relref "20230320150700-система_мониторинга_librenms.md" >}})
+-   [Мониторинг пропускной способности и скорости сети]({{< relref "20230616113400-мониторинг_пропускнои_способности_и_скорости_сети.md" >}})
+-   [Система управления сетью NetBox]({{< relref "20240619175200-система_управления_сетью_netbox.md" >}})
 
 
 ### <span class="section-num">16.7</span> Протоколы {#протоколы}
 
--   [Протокол IPv6]({{< relref "2023-06-26-ipv6-protocol" >}})
+-   [Протокол IPv6]({{< relref "20230626193600-протокол_ipv6.md" >}})
 
 
 #### <span class="section-num">16.7.1</span> Bittorrent {#bittorrent}
 
--   [bittorrent. Трекер opentracker]({{< relref "2024-01-31-bittorrent-opentracker" >}})
+-   [bittorrent. Трекер opentracker]({{< relref "20240131211500-bittorrent_трекер_opentracker.md" >}})
 
 
 ### <span class="section-num">16.8</span> Сетевые сервисы {#сетевые-сервисы}
@@ -437,35 +438,35 @@ slug: "system-administration"
 
 #### <span class="section-num">16.8.1</span> DNS {#dns}
 
--   [Domain Name System (DNS)]({{< relref "2023-09-16-domain-name-system-dns" >}})
+-   [Domain Name System (DNS)]({{< relref "20230916194700-domain_name_system_dns.md" >}})
 
 
 #### <span class="section-num">16.8.2</span> DHCP {#dhcp}
 
--   [Сервер DHCP Kea]({{< relref "2024-06-18-dhcp-kea-server" >}})
--   [Сервер ISC DHCP]({{< relref "2024-06-19-server-isc-dhcp" >}})
--   [DHCP snooping]({{< relref "2023-09-05-dhcp-snooping" >}})
--   [Адресация IPv4 и IPv6. Настройка DHCP для IPv4]({{< relref "2022-08-15-configuring-dhcp-ipv4" >}})
--   [Адресация IPv4 и IPv6. Настройка DHCPv6 для IPv6]({{< relref "2022-08-17-configuring-dhcpv6-ipv6" >}})
+-   [Сервер DHCP Kea]({{< relref "20240618110700-сервер_dhcp_kea.md" >}})
+-   [Сервер ISC DHCP]({{< relref "20240619152600-сервер_isc_dhcp.md" >}})
+-   [DHCP snooping]({{< relref "20230905094900-dhcp_snooping.md" >}})
+-   [Адресация IPv4 и IPv6. Настройка DHCP для IPv4]({{< relref "20220815202100-адресация_ipv4_и_ipv6_настроика_dhcp_для_ipv4.md" >}})
+-   [Адресация IPv4 и IPv6. Настройка DHCPv6 для IPv6]({{< relref "20220817194800-адресация_ipv4_и_ipv6_настроика_dhcpv6_для_ipv6.md" >}})
 
 
 #### <span class="section-num">16.8.3</span> Почта {#почта}
 
--   [Запросы по протоколу imap из командной строки]({{< relref "2024-04-13-imap-queries-command-line" >}})
+-   [Запросы по протоколу imap из командной строки]({{< relref "20240413172700-запросы_по_протоколу_imap_из_комманднои_строки.md" >}})
 
 
 #### <span class="section-num">16.8.4</span> HTTP {#http}
 
--   [Web-сервер Nginx]({{< relref "2024-12-05-web-server-nginx" >}})
--   [Обратный прокси-сервер Nginx Proxy Manager]({{< relref "2025-04-12--nginx-proxy-manager" >}})
+-   [Web-сервер Nginx]({{< relref "20241205133600-web_сервер_nginx.md" >}})
+-   [Обратный прокси-сервер Nginx Proxy Manager]({{< relref "20250412T131600--обратныи_прокси_сервер_nginx_proxy_manager.md" >}})
 
 
 ## <span class="section-num">17</span> Управление и мониторинг {#управление-и-мониторинг}
 
--   [Web консоль Cockpit]({{< relref "2022-01-18-cockpit-web-console" >}})
--   [Система мониторинга LibreNMS]({{< relref "2023-03-20-librenms-monitoring-system" >}})
--   [Система мониторинга Observium]({{< relref "2023-03-02-observium-monitoring-system" >}})
--   [IPMI. Supermicro]({{< relref "2025-10-27--ipmi_supermicro" >}})
+-   [Web консоль Cockpit]({{< relref "20220118172300-web_консоль_cockpit.md" >}})
+-   [Система мониторинга LibreNMS]({{< relref "20230320150700-система_мониторинга_librenms.md" >}})
+-   [Система мониторинга Observium]({{< relref "20230302154600-система_мониторинга_observium.md" >}})
+-   [IPMI. Supermicro]({{< relref "20251027T184200--ipmi_supermicro.md" >}})
 
 
 ## <span class="section-num">18</span> Файловые системы {#файловые-системы}
@@ -473,22 +474,22 @@ slug: "system-administration"
 
 ### <span class="section-num">18.1</span> Локальные файловые системы {#локальные-файловые-системы}
 
--   [Файловая система btrfs]({{< relref "2021-08-27-btrfs-file-system" >}})
--   [Дедупликация данных]({{< relref "2022-05-26-data-deduplication" >}})
--   [Файловая система xfs]({{< relref "2023-08-26-xfs-file-system" >}})
+-   [Файловая система btrfs]({{< relref "20210827113300-фаиловая_система_btrfs.md" >}})
+-   [Дедупликация данных]({{< relref "20220526133100-дедупликация_данных.md" >}})
+-   [Файловая система xfs]({{< relref "20230826195000-фаиловая_система_xfs.md" >}})
 
 
 ### <span class="section-num">18.2</span> Сетевые и распределённые файловые системы {#сетевые-и-распределённые-файловые-системы}
 
--   [Файловая система afs]({{< relref "2023-08-28-file-system-afs" >}})
--   [Использование Яндекс-диска]({{< relref "2024-06-25-using-yandex-disk" >}})
--   [Файловая система ipfs]({{< relref "2024-08-30-ipfs-file-system" >}})
--   [Настройка NFS]({{< relref "2025-08-17--nfs-setting" >}})
+-   [Файловая система afs]({{< relref "20230828100400-фаиловая_система_afs.md" >}})
+-   [Использование Яндекс-диска]({{< relref "20240625153200-использование_яндекс_диска.md" >}})
+-   [Файловая система ipfs]({{< relref "20240830202700-фаиловая_система_ipfs.md" >}})
+-   [Настройка NFS]({{< relref "20250817T201600--настроика_nfs.md" >}})
 
 
 ### <span class="section-num">18.3</span> Файловые системы объединения (union) {#файловые-системы-объединения--union}
 
--   [Файловая система mergerfs]({{< relref "2024-01-28-mergerfs" >}})
+-   [Файловая система mergerfs]({{< relref "20240128190400-фаиловая_система_mergerfs.md" >}})
 
 
 ## <span class="section-num">19</span> Форматы файлов {#форматы-файлов}
@@ -496,27 +497,27 @@ slug: "system-administration"
 
 ### <span class="section-num">19.1</span> csv {#csv}
 
--   [Формат CSV. csvkit]({{< relref "2023-07-06-csv-csvkit" >}})
+-   [Формат CSV. csvkit]({{< relref "20230706182900-формат_csv_csvkit.md" >}})
 
 
 ### <span class="section-num">19.2</span> Офисные форматы файлов {#офисные-форматы-файлов}
 
--   [Конвертация документов. unoserver]({{< relref "2025-11-22--document-conversion-unoserver" >}})
+-   [Конвертация документов. unoserver]({{< relref "20251122T180300--конвертация_документов_unoserver.md" >}})
 
 
 ### <span class="section-num">19.3</span> Epub {#epub}
 
--   [Epub. Утилиты]({{< relref "2026-01-09--epub-utilities" >}})
+-   [Epub. Утилиты]({{< relref "20260109T213700--epub_утилиты.md" >}})
 
 
 ## <span class="section-num">20</span> Шрифты {#шрифты}
 
--   [Шрифты в Linux]({{< relref "2021-10-27-linux-fonts" >}})
+-   [Шрифты в Linux]({{< relref "20211027113600-шрифты_в_linux.md" >}})
 
 
 ## <span class="section-num">21</span> Языки программирования {#языки-программирования}
 
--   [Язык программирования HCL]({{< relref "2022-11-05-hcl-programming-language" >}})
+-   [Язык программирования HCL]({{< relref "20221105180300-язык_программирования_hcl.md" >}})
 
 
 ## <span class="section-num">22</span> Ресурсы {#ресурсы}
@@ -526,10 +527,10 @@ slug: "system-administration"
 
 ## <span class="section-num">23</span> Серверы приложений {#серверы-приложений}
 
--   [Система управления событиями Indico]({{< relref "2024-09-24-indico-event-organisation" >}})
--   [Система управления обучением Moodle]({{< relref "2024-09-15-moodle-learning-management-system" >}})
+-   [Система управления событиями Indico]({{< relref "20240924111300-система_управления_событиями_indico.md" >}})
+-   [Система управления обучением Moodle]({{< relref "20240915161000-система_управления_обучением_moodle.md" >}})
 
 
 ## <span class="section-num">24</span> Репозитории программного обеспечения {#репозитории-программного-обеспечения}
 
--   [Репозиторий программного обеспечения Entware]({{< relref "2024-12-20--entware-software-repository" >}})
+-   [Репозиторий программного обеспечения Entware]({{< relref "20241220T181800--репозитории_программного_обеспечения_entware.md" >}})

@@ -2,7 +2,7 @@
 title: "Hugo. Развёртывание на базе страниц GitHub"
 author: ["Dmitry S. Kulyabov"]
 date: 2026-02-21T19:35:00+03:00
-lastmod: 2026-02-21T20:19:00+03:00
+lastmod: 2026-02-23T18:42:00+03:00
 draft: false
 slug: "hugo-deploy-github-pages"
 ---
@@ -56,7 +56,7 @@ Hugo. Развёртывание на базе страниц GitHub (github pag
 -   Видимость: public (бесплатный GitHub Pages работает с публичными репозиториями).
 -   При создании не нужно сразу добавлять файлы README, .gitignore или лицензию.
 -   Перейдите на свою веб-страницу Github и нажмите «Создать», чтобы создать новый репозиторий.
--   Можно создать с помощью утилиты `gh` (см. [github: утилиты командной строки]({{< relref "2021-08-04-github-command-line-utilities" >}})):
+-   Можно создать с помощью утилиты `gh` (см. [github: утилиты командной строки]({{< relref "../notes/public/20210804144000-github_утилиты_команднои_строки.md" >}})):
     ```shell
     gh repo create username.github.io --public
     ```
@@ -127,6 +127,16 @@ Hugo. Развёртывание на базе страниц GitHub (github pag
     -   устанавливает Hugo;
     -   выполняет `hugo --minify`, создавая виртуальный каталог `public` на лету;
     -   берет содержимое этого виртуального каталога и отправляет его на хостинг GitHub Pages.
+
+
+### <span class="section-num">6.5</span> Шаблон Academic CV {#шаблон-academic-cv}
+
+-   В комплекте идут файлы:
+    -   `.github/workflows/build.yml`
+    -   `.github/workflows/deploy.yml`
+-   В них задано развёртывание сайта для ветки `main`.
+-   Если у вас ветка `master`, то замените название в этих файлах.
+-   Остальные файлы в этом каталоге можно удалить.
 
 
 ## <span class="section-num">7</span> Ручной метод {#ручной-метод}

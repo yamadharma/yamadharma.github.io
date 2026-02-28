@@ -2,7 +2,7 @@
 title: "Hugo shortcode. Видео на VK Video"
 author: ["Dmitry S. Kulyabov"]
 date: 2023-08-24T18:35:00+03:00
-lastmod: 2025-04-16T21:02:00+03:00
+lastmod: 2026-02-24T09:24:00+03:00
 tags: ["hugo"]
 categories: ["computer-science"]
 draft: false
@@ -19,6 +19,7 @@ Shortcode для видео _VK Video_ для Hugo.
 ## <span class="section-num">1</span> Общее описание {#общее-описание}
 
 -   Видеохостинг _VK Video_: <https://vk.com/video>.
+-   [VKVideo. Виджет для вставки видео]({{< relref "2026-02-24--vkvideo-video-embed" >}})
 -   Реализация сделана на скорую руку.
 
 

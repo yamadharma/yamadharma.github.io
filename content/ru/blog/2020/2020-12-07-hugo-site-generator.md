@@ -2,7 +2,7 @@
 title: "Генератор статических сайтов Hugo"
 author: ["Dmitry S. Kulyabov"]
 date: 2020-12-07T14:06:00+03:00
-lastmod: 2026-02-21T19:32:00+03:00
+lastmod: 2026-02-24T21:29:00+03:00
 tags: ["hugo", "MOC", "sysadmin"]
 categories: ["computer-science"]
 draft: false
@@ -94,6 +94,11 @@ slug: "hugo-site-generator"
 
 -   Репозиторий: <https://github.com/gethugothemes/hugo-modules>
 -   Сайт: <https://gethugothemes.com/hugo-modules>
+
+
+#### <span class="section-num">8.2.2</span> hugo-shortcodes {#hugo-shortcodes}
+
+-   Репозиторий: <https://github.com/squidfingers/hugo-shortcodes>
 
 
 ### <span class="section-num">8.3</span> Списки тем {#списки-тем}

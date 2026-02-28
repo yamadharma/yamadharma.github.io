@@ -2,7 +2,7 @@
 title: "Система именования каталогов Johnny Decimal"
 author: ["Dmitry S. Kulyabov"]
 date: 2025-07-11T21:22:00+03:00
-lastmod: 2025-07-11T22:00:00+03:00
+lastmod: 2026-02-26T21:58:00+03:00
 categories: ["computer-science", "self-management"]
 draft: false
 slug: "johnny-decimal-naming-system"
@@ -15,15 +15,9 @@ slug: "johnny-decimal-naming-system"
 {{< toc >}}
 
 
-## <span class="section-num">1</span> Ресурсы {#ресурсы}
-
-
-### <span class="section-num">1.1</span> Описание {#описание}
+## <span class="section-num">1</span> Общая информация {#общая-информация}
 
 -   Исходное описание системы: <https://johnnydecimal.com/>
-
-
-### <span class="section-num">1.2</span> Программные решения {#программные-решения}
 
 
 ## <span class="section-num">2</span> Основные принципы системы {#основные-принципы-системы}
@@ -132,3 +126,18 @@ slug: "johnny-decimal-naming-system"
 -   Использовать трёхзначные коды для расширения категорий
 -   Сочетать с тегами для быстрого поиска
 -   Автоматизировать создание структуры через скрипты
+
+
+## <span class="section-num">6</span> Описания {#описания}
+
+-   <https://klb2.gitlab.io/2024/11/08/johnny-decimal-for-researchers.html>
+    -   Скрипт: <https://gist.github.com/klb2/92224a9eb36137e6d93ae3b6664ee008>
+
+
+## <span class="section-num">7</span> Ресурсы {#ресурсы}
+
+
+### <span class="section-num">7.1</span> sgibson91/johnny-decimal {#sgibson91-johnny-decimal}
+
+-   Репозиторий: <https://github.com/sgibson91/johnny-decimal>
+-   Набор скриптов для организайии файловой системы Johnny Decimal.

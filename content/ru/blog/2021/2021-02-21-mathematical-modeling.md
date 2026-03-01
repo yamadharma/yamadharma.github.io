@@ -2,7 +2,7 @@
 title: "Математическое моделирование"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-02-21T16:33:00+03:00
-lastmod: 2025-07-13T20:19:00+03:00
+lastmod: 2026-03-01T20:05:00+03:00
 tags: ["MOC", "modeling"]
 categories: ["science"]
 draft: false
@@ -51,6 +51,9 @@ slug: "mathematical-modeling"
 #### <span class="section-num">2.4.2</span> Обработка больших данных {#обработка-больших-данных}
 
 
-## <span class="section-num">3</span> Модельные теории {#модельные-теории}
+## <span class="section-num">3</span> Разные подходы {#разные-подходы}
+
+
+## <span class="section-num">4</span> Модельные теории {#модельные-теории}
 
 -   [Теория ограничений]({{< relref "2025-07-09--theory-constraints" >}})

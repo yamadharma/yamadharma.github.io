@@ -2,7 +2,7 @@
 title: "Emacs. Desire. Конфигурация"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-06-11T18:55:00+03:00
-lastmod: 2026-02-28T21:41:00+03:00
+lastmod: 2026-03-01T18:47:00+03:00
 tags: ["emacs"]
 categories: ["computer-science"]
 draft: false
@@ -5722,6 +5722,8 @@ slug: "emacs-desire-configuration"
 
 #### <span class="section-num">3.26.7</span> org-habit-ng {#org-habit-ng}
 
+-   [Org-mode. Пакет org-habit-ng]({{< relref "2026-01-28--org-mode-org-habit-ng" >}})
+
 <!--list-separator-->
 
 1.  Подключение
@@ -5768,7 +5770,71 @@ slug: "emacs-desire-configuration"
         ```
 
 
-#### <span class="section-num">3.26.8</span> org-gtd {#org-gtd}
+#### <span class="section-num">3.26.8</span> org-window-habit {#org-window-habit}
+
+-   [Org-mode. Пакет org-window-habit]({{< relref "2026-03-01--org-mode-org-window-habit" >}})
+
+<!--list-separator-->
+
+1.  Подключение
+
+    -   Файл: `rc.packages.el`
+        ```emacs-lisp
+        (desire 'org-window-habit)
+        ```
+
+<!--list-separator-->
+
+2.  Загрузка
+
+    -   Файл: `packages/org-window-habit/loaddefs.ecf`
+        ```emacs-lisp
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;; Window-based habit tracking
+        ;; https://github.com/colonelpanic8/org-window-habit
+
+        ;;; Code:
+
+        ;;;
+        ```
+
+<!--list-separator-->
+
+3.  Настройка
+
+    -   Файл: `packages/org-window-habit/desire.ecf`
+        ```emacs-lisp
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;; Window-based habit tracking
+        ;; https://github.com/colonelpanic8/org-window-habit
+
+        ;;; Code:
+
+        (require 'org-window-habit)
+        (org-window-habit-mode +1)
+
+        ;;;
+        ```
+
+<!--list-separator-->
+
+4.  Интеграция с org-mode
+
+    -   Файл: `packages/org/org-window-habit.ecf`
+        ```emacs-lisp
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;; Window-based habit tracking
+        ;; https://github.com/colonelpanic8/org-window-habit
+
+        ;;; Code:
+
+        (require 'org-window-habit)
+
+        ;;;
+        ```
+
+
+#### <span class="section-num">3.26.9</span> org-gtd {#org-gtd}
 
 -   [Emacs. Пакеты. Org-gtd]({{< relref "2023-07-31-emacs-packages-org-gtd" >}})
 
@@ -6094,7 +6160,7 @@ slug: "emacs-desire-configuration"
         ```
 
 
-#### <span class="section-num">3.26.9</span> mobileorg {#mobileorg}
+#### <span class="section-num">3.26.10</span> mobileorg {#mobileorg}
 
 ```emacs-lisp
 (desired 'mobileorg)
@@ -6105,7 +6171,7 @@ slug: "emacs-desire-configuration"
 </div>
 
 
-#### <span class="section-num">3.26.10</span> org-download {#org-download}
+#### <span class="section-num">3.26.11</span> org-download {#org-download}
 
 -   [Emacs. Пакет org-download]({{< relref "2025-05-19--emacs-org-download" >}})
 -   Объявление пакета:
@@ -6243,7 +6309,7 @@ slug: "emacs-desire-configuration"
         </div>
 
 
-#### <span class="section-num">3.26.11</span> org-mode {#org-mode}
+#### <span class="section-num">3.26.12</span> org-mode {#org-mode}
 
 -   Собственно org-mode.
 -   [Org-mode]({{< relref "2021-10-14-org-mode" >}})
@@ -6460,7 +6526,7 @@ slug: "emacs-desire-configuration"
         ```
 
 
-#### <span class="section-num">3.26.12</span> Предпросмотр LaTeX {#предпросмотр-latex}
+#### <span class="section-num">3.26.13</span> Предпросмотр LaTeX {#предпросмотр-latex}
 
 -   [Org-mode. Предпросмотр TeX]({{< relref "2024-01-06-org-mode-latex-preview" >}})
     ```emacs-lisp
@@ -6558,7 +6624,7 @@ slug: "emacs-desire-configuration"
     </div>
 
 
-#### <span class="section-num">3.26.13</span> Преобразование markdown ←→ org через буфер обмена {#преобразование-markdown-org-через-буфер-обмена}
+#### <span class="section-num">3.26.14</span> Преобразование markdown ←→ org через буфер обмена {#преобразование-markdown-org-через-буфер-обмена}
 
 -   [Emacs. Markdown в Org с помощью буфера обмена]({{< relref "2026-01-02--emacs-markdown-org-clipboard" >}})
 -   Файл: `packages/org/desire.ecd/markdown-org-clipboard.ecf`

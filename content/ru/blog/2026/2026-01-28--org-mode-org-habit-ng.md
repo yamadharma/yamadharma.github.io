@@ -2,7 +2,7 @@
 title: "Org-mode. Пакет org-habit-ng"
 author: ["Dmitry S. Kulyabov"]
 date: 2026-01-28T21:07:00+03:00
-lastmod: 2026-01-29T11:34:00+03:00
+lastmod: 2026-03-01T17:13:00+03:00
 tags: ["org-mode", "emacs"]
 categories: ["computer-science"]
 draft: false

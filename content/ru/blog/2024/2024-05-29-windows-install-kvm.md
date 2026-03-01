@@ -2,7 +2,7 @@
 title: "Windows. Установка в kvm"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-05-29T19:46:00+03:00
-lastmod: 2025-04-18T18:12:00+03:00
+lastmod: 2026-02-27T11:52:00+03:00
 tags: ["windows", "sysadmin"]
 categories: ["computer-science"]
 draft: false
@@ -147,7 +147,7 @@ slug: "windows-install-kvm"
     -   Выберите _Файловая система_ (_File system_) на левой панели в окне добавления нового оборудования.
     -   Затем выберите _Driver=virtiofs_ на вкладке Подробности.
     -   Нажмите на _browse &gt; browse local_ и выберите путь к хосту из вашей системы Linux, например `/home`.
-    -   В целевом пути укажите любое имя, например `home`.
+    -   В целевом пути укажите любое имя диска, например `h:`.
 -   Установите в системе Windows WinFSP (FUSE для Windows).
     -   Можно скачать с сайта <https://github.com/winfsp/winfsp/releases/>.
     -   Можно установить с Chocolatey (см. [Пакетный менеджер для Windows. Chocolatey]({{< relref "2021-01-18-package-manager-windows-chocolatey" >}})):
@@ -165,7 +165,11 @@ slug: "windows-install-kvm"
         sc start VirtioFsSvc
         ```
     -   Установите её на автозапуск (VirtIO-Sevice-FS &gt; Properties &gt; Startup type &gt; Manual to Automatic).
--   После запуска службы откройте Проводник, и вы должны увидеть метку монтирования, которую вы создали в первом шаге выше, и которая должна быть отображена как диск `Z:`.
+    -   Или из командной строки:
+        ```shell
+        sc config VirtioFsSvc start= auto
+        ```
+-   После запуска службы откройте Проводник, и вы должны увидеть метку монтирования, которую вы создали в первом шаге выше, и которая должна быть отображена как диск `H:`.
 
 
 ## <span class="section-num">7</span> Буфер обмена {#буфер-обмена}

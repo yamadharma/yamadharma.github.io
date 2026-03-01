@@ -2,8 +2,8 @@
 title: "Emacs. Персональная база знаний"
 author: ["Dmitry S. Kulyabov"]
 date: 2023-11-07T15:54:00+03:00
-lastmod: 2025-04-15T17:21:00+03:00
-tags: ["emacs", "zettelkasten"]
+lastmod: 2026-02-28T20:56:00+03:00
+tags: ["org-roam", "emacs", "zettelkasten"]
 categories: ["computer-science", "self-management"]
 draft: false
 slug: "emacs-personal-knowledge-base"
@@ -32,6 +32,174 @@ slug: "emacs-personal-knowledge-base"
 -   Имеет достаточно большое количество сопутствующих пакетов.
 
 
+#### <span class="section-num">1.1.1</span> Сопутствующие проекты Org-roam {#сопутствующие-проекты-org-roam}
+
+<!--list-separator-->
+
+1.  Визуализация
+
+    <!--list-separator-->
+
+    1.  org-roam-ui
+
+        -   Графический интерфейс, строящий граф для заметок org-roam.
+        -   Визуализация связей между заметками.
+
+        <!--list-separator-->
+
+        1.  org-roam/org-roam-ui
+
+            -   Репозиторий: <https://github.com/org-roam/org-roam-ui>.
+            -   Подключение: <http://127.0.0.1:35901/>
+            -   Давно не обновляется.
+            -   У меня перестало показывать что-либо.
+
+        <!--list-separator-->
+
+        2.  lkarp-744/org-roam-ui
+
+            -   Репозиторий: <https://github.com/lkarp-744/org-roam-ui>
+            -   Неофициальный форк.
+            -   Обновляется.
+            -   Подключение: <http://127.0.0.1:35901/>
+
+    <!--list-separator-->
+
+    2.  org-roam-ui-lite
+
+        -   Репозиторий: <https://github.com/tani/org-roam-ui-lite>
+
+    <!--list-separator-->
+
+    3.  roam-viz
+
+        -   Репозиторий: <https://github.com/kkrausse/roam-viz>
+
+<!--list-separator-->
+
+2.  Разные форматы
+
+    <!--list-separator-->
+
+    1.  md-roam
+
+        -   Репозиторий: <https://github.com/nobiot/md-roam>
+        -   Поддержка файлов Markdown.
+        -   Смешивание файлов Markdown с файлами Org в одной базе данных Org-roam для заметок и обратных ссылок в стиле Zettelkasten.
+
+<!--list-separator-->
+
+3.  BibTeX
+
+    <!--list-separator-->
+
+    1.  org-roam-bibtex
+
+        -   Репозиторий: <https://github.com/org-roam/org-roam-bibtex>.
+        -   Интеграция org-roam с программным обеспечением для управления библиографией.
+
+    <!--list-separator-->
+
+    2.  citar-org-roam
+
+        -   Репозиторий: <https://github.com/emacs-citar/citar-org-roam>
+        -   Интеграция Citar и Org-Roam.
+
+<!--list-separator-->
+
+4.  Zettelkasten
+
+    -   [Метод Zettelkasten]({{< relref "2021-02-18-zettelkasten-method" >}})
+
+    <!--list-separator-->
+
+    1.  zetteldesk.el
+
+        -   Репозиторий: <https://github.com/Vidianos-Giannitsis/zetteldesk.el>
+        -   Навигация по заметкам.
+
+    <!--list-separator-->
+
+    2.  vulpea
+
+        -   Репозиторий: <https://github.com/d12frosted/vulpea>
+        -   Библиотека для расширения возможности ведения заметок в org-roam.
+
+    <!--list-separator-->
+
+    3.  org-workbench
+
+        -   Реализует систему цифровых карточек для работы в духе Zettelkasten.
+        -   [Emacs. Пакет org-workbench]({{< relref "2026-02-28--emacs-org-workbench" >}})
+
+<!--list-separator-->
+
+5.  Folgezettel
+
+    -   [Нумерация Folgezettel]({{< relref "2025-02-08--folgezettel-numbering" >}})
+
+    <!--list-separator-->
+
+    1.  org-roam-folgezettel
+
+        -   Репозиторий: <https://github.com/krisbalintona/org-roam-folgezettel>
+
+    <!--list-separator-->
+
+    2.  org-roam-fz
+
+        -   Репозиторий: <https://github.com/okomestudio/org-roam-fz>
+        -   Репозиторий помечен как read-only <span class="timestamp-wrapper"><span class="timestamp">[2026-02-28 Сб]</span></span>.
+
+<!--list-separator-->
+
+6.  Дневник
+
+    -   [Emacs. Пакет org-daily-reflection]({{< relref "2025-06-06--emacs-org-daily-reflection" >}})
+    -   [Org-roam. Daily notes]({{< relref "2025-06-08--org-roam-daily-notes" >}})
+
+<!--list-separator-->
+
+7.  Разные улучшения
+
+    <!--list-separator-->
+
+    1.  org-roam-more
+
+        -   Репозиторий: <https://github.com/gongshangzheng/org-roam-more>
+        -   Расширенное управление трансклюзией.
+        -   Синхронизация содержимого между узлами.
+        -   Утилиты манипулирования содержимым узлов.
+        -   Иерархические операции с узлами.
+
+    <!--list-separator-->
+
+    2.  org-roam-download
+
+        -   Репозиторий: <https://github.com/selwynsimsek/org-roam-download>
+        -   Используется для загрузки и размещения ссылок на вложения, такие как PDF-файлы или изображения, в узлах org-roam, которые создаются во время веб-серфинга.
+
+    <!--list-separator-->
+
+    3.  org-transclusion-power-pack
+
+        -   Репозиторий: <https://github.com/incandescentman/org-transclusion-power-pack>
+        -   Набор улучшений для пакета `org-transclusion` (позволяет динамически отображать содержимое одного org-файла в другом).
+        -   Включение и выключение трансклюзии одним нажатием клавиши.
+        -   Функция добавления узла org-roam в качестве трансклюзии.
+        -   Функция добавления трансклюзии и соответствия текущему уровню org-заголовка.
+        -   Более интуитивные названия функций для облегчения навигации.
+
+    <!--list-separator-->
+
+    4.  org-roam-ok
+
+        -   Репозиторий: <https://github.com/okomestudio/org-roam-ok>
+        -   Информация в строке мини-буфера.
+        -   Автоматическое создание отсутствующих родительских каталогов.
+        -   Кэширование в памяти для ускорения поиска узлов.
+
+
 ### <span class="section-num">1.2</span> Gkroam {#gkroam}
 
 -   Репозиторий: <https://github.com/Kinneyzhang/gkroam>
@@ -58,7 +226,41 @@ slug: "emacs-personal-knowledge-base"
 -   Реализуются обратные ссылки.
 
 
-### <span class="section-num">3.1</span> phi-notes {#phi-notes}
+### <span class="section-num">3.1</span> denote {#denote}
+
+-   [Emacs. Пакет denote]({{< relref "2025-01-03--emacs-denote" >}})
+-   Репозиторий: <https://github.com/protesilaos/denote>
+-   Документация: <https://protesilaos.com/emacs/denote>
+-   Большое внимание уделяется схеме именования файлов.
+-   Поддерживает реализацию цепочек заметок (Folgezettel, см. [Нумерация Folgezettel]({{< relref "2025-02-08--folgezettel-numbering" >}})) (см. [Denote. Соглашение об именовании]({{< relref "2025-01-03--denote-naming-convention" >}}))
+-   Поддерживает любые текстовые форматы файлов.
+-   Информация кодируется в названии файла.
+-   Название файла следует строгим соглашениям.
+
+
+### <span class="section-num">3.2</span> ekg {#ekg}
+
+-   ekg (emacs knowledge graph)
+-   Репозиторий: <https://github.com/ahyatt/ekg>
+-   Данные хранятся в базе данных sqlite.
+-   Заметки организованы по тегам.
+-   Можете просмотреть множество заметок, просматривая один или несколько тегов.
+
+
+### <span class="section-num">3.3</span> howm {#howm}
+
+-   Репозиторий: <https://github.com/kaorahi/howm>
+-   Сайт: <https://kaorahi.github.io/howm/>
+
+
+### <span class="section-num">3.4</span> org-zk {#org-zk}
+
+-   Репозиторий: <https://github.com/villarragut/org-zk>
+-   Пакет для Zettelcasten в духе Denote.
+-   Использует формат org.
+
+
+### <span class="section-num">3.5</span> phi-notes {#phi-notes}
 
 -   Репозиторий: <https://github.com/brunocbr/phi-notes>
 -   Особенности:
@@ -71,34 +273,6 @@ slug: "emacs-personal-knowledge-base"
     -   Заметки могут быть написаны в Markdown.
 
 
-### <span class="section-num">3.2</span> zk {#zk}
-
--   Репозиторий: <https://github.com/localauthor/zk>
-
-
-### <span class="section-num">3.3</span> ekg {#ekg}
-
--   ekg (emacs knowledge graph)
--   Репозиторий: <https://github.com/ahyatt/ekg>
--   Данные хранятся в базе данных sqlite.
--   Заметки организованы по тегам.
--   Можете просмотреть множество заметок, просматривая один или несколько тегов.
-
-
-### <span class="section-num">3.4</span> denote {#denote}
-
--   [Emacs. Пакет denote]({{< relref "2025-01-03--emacs-denote" >}})
--   Репозиторий: <https://github.com/protesilaos/denote>
--   Большое внимание уделяется схеме именования файлов.
--   Поддерживает реализацию цепочек заметок (Folgezettel, см. [Нумерация Folgezettel]({{< relref "2025-02-08--folgezettel-numbering" >}})) (см. [Denote. Соглашение об именовании]({{< relref "2025-01-03--denote-naming-convention" >}}))
-
-
-### <span class="section-num">3.5</span> howm {#howm}
-
--   Репозиторий: <https://github.com/kaorahi/howm>
--   Сайт: <https://kaorahi.github.io/howm/>
-
-
 ### <span class="section-num">3.6</span> zetteldeft {#zetteldeft}
 
 -   Репозиторий: <https://github.com/EFLS/zetteldeft>
@@ -106,21 +280,9 @@ slug: "emacs-personal-knowledge-base"
 -   Автор перешёл на Denote и забросил пакет.
 
 
-### <span class="section-num">3.7</span> org-zk {#org-zk}
+### <span class="section-num">3.7</span> zk {#zk}
 
--   Репозиторий: <https://github.com/villarragut/org-zk>
--   Пакет для Zettelcasten в духе Denote.
--   Использует формат org.
-
-
-### <span class="section-num">3.8</span> denote {#denote}
-
--   [Emacs. Пакет denote]({{< relref "2025-01-03--emacs-denote" >}})
--   Репозиторий: <https://github.com/protesilaos/denote>
--   Документация: <https://protesilaos.com/emacs/denote>
--   Поддерживает любые текстовые форматы файлов.
--   Информация кодируется в названии файла.
--   Название файла следует строгим соглашениям.
+-   Репозиторий: <https://github.com/localauthor/zk>
 
 
 ## <span class="section-num">4</span> Поиск по файлам {#поиск-по-файлам}

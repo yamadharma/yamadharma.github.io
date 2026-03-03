@@ -2,7 +2,7 @@
 title: "Генератор статических сайтов Hugo"
 author: ["Dmitry S. Kulyabov"]
 date: 2020-12-07T14:06:00+03:00
-lastmod: 2026-02-24T21:29:00+03:00
+lastmod: 2026-03-03T21:07:00+03:00
 tags: ["hugo", "MOC", "sysadmin"]
 categories: ["computer-science"]
 draft: false
@@ -52,6 +52,8 @@ slug: "hugo-site-generator"
 
 -   [Создание сайта на Hugo]({{< relref "2022-04-12-creating-hugo-site" >}})
 -   [Hugo. Система шаблонов]({{< relref "2025-08-11--hugo-template-system" >}})
+-   [Hugo. Использование page bundle]({{< relref "2026-03-03--hugo-page-bundle" >}})
+-   [Hugo. Поддержка многоязычности]({{< relref "2026-03-03--hugo-multilingual-support" >}})
 
 
 ## <span class="section-num">7</span> Варианты программы {#варианты-программы}

@@ -2,7 +2,7 @@
 title: "VPN. Реализация Amnezia VPN"
 author: ["Dmitry S. Kulyabov"]
 date: 2026-02-23T18:33:00+03:00
-lastmod: 2026-02-23T20:36:00+03:00
+lastmod: 2026-03-03T14:48:00+03:00
 draft: false
 slug: "amnezia-vpn"
 ---
@@ -71,3 +71,88 @@ VPN. Реализация Amnezia VPN.
 | OpenVPN + Cloak | С маскировкой | Высокая            | Средняя            | Сложно                    |
 | XRay (REALITY)  | С маскировкой | Очень высокая      | Высокая            | Крайне сложно             |
 | Shadowsocks     | С маскировкой | Средняя            | Высокая            | Может быть обнаружен      |
+
+
+## <span class="section-num">2</span> Установка {#установка}
+
+
+### <span class="section-num">2.1</span> Linux {#linux}
+
+
+#### <span class="section-num">2.1.1</span> Установщик {#установщик}
+
+-   Скачайте установщик. Скачайте файл `AmneziaVPN_Linux_Installer.tar`.
+-   Распакуйте архив. В терминале перейдите в папку со скачанным файлом и выполните:
+    ```shell
+    tar -xvf AmneziaVPN_Linux_Installer.tar
+    ```
+
+-   Установите необходимые зависимости.
+    -   Для Ubuntu/Debian:
+        ```shell
+        sudo apt update
+        sudo apt install libxcb-xinerama0 libxcb-cursor0
+        ```
+
+-   Запустите установку.
+    ```shell
+    chmod +x AmneziaVPN_Linux_Installer.bin
+    ./AmneziaVPN_Linux_Installer.bin
+    ```
+
+
+#### <span class="section-num">2.1.2</span> Gentoo (serg-sg) {#gentoo--serg-sg}
+
+-   Для установки бинарной версии клиента можно использовать оверлей serg-sg.
+
+-   Добавьте оверлей serg-sg:
+    ```shell
+    eselect repository add serg-sg git https://git.calculate-linux.org/serg-sg/gentoo-ebuild.git
+    ```
+
+-   Если репозиторий не включился автоматически, включите его:
+    ```shell
+    eselect repository enable serg-sg
+    ```
+
+-   Затем синхронизируйте:
+    ```sh
+    emerge --sync serg-sg
+    # или
+    emaint sync --repo serg-sg
+    ```
+
+-   Размаскируйте пакет.
+    -   Добавьте в файл `/etc/portage/package.accept_keywords/custom` строку:
+        ```sh
+        echo "net-vpn/amnezia-client-bin::serg-sg ~amd64" >> /etc/portage/package.accept_keywords/custom
+        ```
+
+-   Установите клиент.
+    ```sh
+    emerge --ask net-vpn/amnezia-client-bin
+    ```
+
+
+#### <span class="section-num">2.1.3</span> Gentoo {#gentoo}
+
+-   Установка из репозитория karma (см. [Gentoo. Репозиторий karma]({{< relref "2024-05-25-gentoo-karma-repository" >}})):
+    ```shell
+    emerge amnezia-client-bin
+    ```
+-   Подключение сервиса:
+    ```shell
+    systemctl enable --now AmneziaVPN.service
+    ```
+-   Запуск:
+    ```shell
+    AmneziaVPN
+    ```
+
+
+#### <span class="section-num">2.1.4</span> Manjaro {#manjaro}
+
+-   Из AUR:
+    ```shell
+    pamac install amneziavpn-bin
+    ```

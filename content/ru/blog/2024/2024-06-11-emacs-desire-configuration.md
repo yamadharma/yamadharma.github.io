@@ -2,7 +2,7 @@
 title: "Emacs. Desire. Конфигурация"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-06-11T18:55:00+03:00
-lastmod: 2026-03-01T18:47:00+03:00
+lastmod: 2026-03-02T18:53:00+03:00
 tags: ["emacs"]
 categories: ["computer-science"]
 draft: false
@@ -5780,7 +5780,7 @@ slug: "emacs-desire-configuration"
 
     -   Файл: `rc.packages.el`
         ```emacs-lisp
-        (desire 'org-window-habit)
+        ;; (desire 'org-window-habit)
         ```
 
 <!--list-separator-->

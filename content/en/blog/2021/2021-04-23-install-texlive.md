@@ -2,7 +2,7 @@
 title: "Installing TeXlive"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-04-23T18:09:00+03:00
-lastmod: 2025-08-27T18:04:00+03:00
+lastmod: 2026-03-03T10:42:00+03:00
 tags: ["latex", "tex"]
 categories: ["computer-science"]
 draft: false
@@ -160,7 +160,8 @@ tlmgr path add
 <!--listend-->
 
 ```shell
-tlmgr path remove
+sudo tlmgr path remove
+sudo find /usr/local/bin/ -xtype l -delete
 ```
 
 -   Move the entire TeXlive directory to match the new version, for example:
@@ -168,7 +169,7 @@ tlmgr path remove
 <!--listend-->
 
 ```shell
-mv /usr/local/texlive/2024/ /usr/local/texlive/2025
+sudo mv /usr/local/texlive/2025/ /usr/local/texlive/2026
 ```
 
 -   Remove package backups:
@@ -176,7 +177,7 @@ mv /usr/local/texlive/2024/ /usr/local/texlive/2025
 <!--listend-->
 
 ```shell
-rm /usr/local/texlive/2025/tlpkg/backups/*
+sudo rm /usr/local/texlive/2026/tlpkg/backups/*
 ```
 
 -   Create links to executables:
@@ -184,7 +185,7 @@ rm /usr/local/texlive/2025/tlpkg/backups/*
 <!--listend-->
 
 ```shell
-/usr/local/texlive/2025/bin/x86_64-linux/tlmgr path add
+sudo /usr/local/texlive/2026/bin/x86_64-linux/tlmgr path add
 ```
 
 -   Download the latest version of the script `update-tlmgr-latest.sh`:
@@ -200,7 +201,7 @@ wget https://mirror.ctan.org/systems/texlive/tlnet/update-tlmgr-latest.sh -O /tm
 <!--listend-->
 
 ```shell
-sh /tmp/update-tlmgr-latest.sh -- upgrade
+sudo sh /tmp/update-tlmgr-latest.sh -- upgrade
 ```
 
 -   If you do not want to use the default repository for downloading new files, then replace it:
@@ -208,7 +209,7 @@ sh /tmp/update-tlmgr-latest.sh -- upgrade
 <!--listend-->
 
 ```shell
-tlmgr option repository <reponame>
+sudo tlmgr option repository <reponame>
 ```
 
 -   Update the TeXlive package manager:
@@ -216,7 +217,7 @@ tlmgr option repository <reponame>
 <!--listend-->
 
 ```shell
-tlmgr update --self
+sudo tlmgr update --self
 ```
 
 -   Update TeXlive packages:
@@ -224,7 +225,7 @@ tlmgr update --self
 <!--listend-->
 
 ```shell
-tlmgr update --all
+sudo tlmgr update --all
 ```
 
 -   Set symbolic links to executables in system directories (`/usr/local/bin`):
@@ -232,7 +233,7 @@ tlmgr update --all
 <!--listend-->
 
 ```shell
-tlmgr path add
+sudo tlmgr path add
 ```
 
 -   You can recreate the cache _lualatex_ under the user:
@@ -240,7 +241,7 @@ tlmgr path add
 <!--listend-->
 
 ```shell
-mv ~/.texlive2024 ~/.texlive2025
+mv ~/.texlive2025 ~/.texlive2026
 luaotfload-tool -fu
 ```
 

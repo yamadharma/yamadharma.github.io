@@ -2,7 +2,7 @@
 title: "Установка TeXlive"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-04-23T18:09:00+03:00
-lastmod: 2025-08-15T15:43:00+03:00
+lastmod: 2026-03-03T15:49:00+03:00
 tags: ["latex", "tex"]
 categories: ["computer-science"]
 draft: false
@@ -110,11 +110,11 @@ slug: "install-texlive"
 
     if [[ -d /com/lib/portage/extras/texlive ]]
     then
-            tlmgr update --repository=/com/lib/portage/extras/texlive --self
-            tlmgr update --repository=/com/lib/portage/extras/texlive --all
+        tlmgr update --repository=/com/lib/portage/extras/texlive --self
+        tlmgr update --repository=/com/lib/portage/extras/texlive --all
     else
-            tlmgr update --self
-            tlmgr update --all
+        tlmgr update --self
+        tlmgr update --all
     fi
     tlmgr path add
     ```
@@ -131,19 +131,20 @@ slug: "install-texlive"
 -   Будем считать, что у нас архитектура `x86_64-linux`.
 -   Если вы установили символические ссылки в системные каталоги (через опцию установщика или `tlmgr path add`), удалите их:
     ```shell
-    tlmgr path remove
+    sudo tlmgr path remove
+    sudo find /usr/local/bin/ -xtype l -delete
     ```
 -   Перенесите весь каталог TeXlive так, чтобы он соответствовал новой версии, например:
     ```shell
-    mv /usr/local/texlive/2024/ /usr/local/texlive/2025
+    sudo mv /usr/local/texlive/2025/ /usr/local/texlive/2026
     ```
 -   Удалите бекапы пакетов:
     ```shell
-    rm /usr/local/texlive/2025/tlpkg/backups/*
+    sudo rm /usr/local/texlive/2026/tlpkg/backups/*
     ```
 -   Создайте ссылки на исполняемые файлы:
     ```shell
-    /usr/local/texlive/2025/bin/x86_64-linux/tlmgr path add
+    sudo /usr/local/texlive/2026/bin/x86_64-linux/tlmgr path add
     ```
 -   Загрузите последнюю версию скрипта `update-tlmgr-latest.sh`:
     ```shell
@@ -151,28 +152,35 @@ slug: "install-texlive"
     ```
 -   Запустите скрипт:
     ```shell
-    sh /tmp/update-tlmgr-latest.sh -- upgrade
+    sudo sh /tmp/update-tlmgr-latest.sh -- upgrade
     ```
 -   Если вы не хотите использовать репозиторий по умолчанию для загрузки новых файлов, то замените его:
     ```shell
-    tlmgr option repository <reponame>
+    sudo tlmgr option repository <reponame>
     ```
 -   Обновите менеджер пакетов TeXlive:
     ```shell
-    tlmgr update --self
+    sudo tlmgr update --self
     ```
 -   Обновите пакеты TeXlive:
     ```shell
-    tlmgr update --all
+    sudo tlmgr update --all
     ```
 -   Установите символические ссылки на исполняемые файлы в системные каталоги (`/usr/local/bin`):
     ```shell
-    tlmgr path add
+    sudo tlmgr path add
     ```
 -   Можно пересоздать кэш _lualatex_ под пользователем:
     ```shell
-    mv ~/.texlive2024 ~/.texlive2025
+    mv ~/.texlive2025 ~/.texlive2026
     luaotfload-tool -fu
     ```
 
     -   Если этого не сделать, то кэш будет пересоздан при первом запуске `lualatex`.
+-   Если у Вас есть `ttc`-шрифты, то их индексация может занять много времени.
+-   Можно ограничить индексируемые шрифты.
+-   Добавьте в файл `~/.config/luaotfload/luaotfload.conf`:
+    ```conf-unix
+    [db]
+        formats = ttf,otf
+    ```

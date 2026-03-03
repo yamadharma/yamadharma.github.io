@@ -1,3 +1,13 @@
+## [1.1.2](https://github.com/yamadharma/yamadharma.github.io/compare/v1.1.1...v1.1.2) (2026-03-03)
+
+
+### Bug Fixes
+
+* **post:** add update TeXLive ([37724f6](https://github.com/yamadharma/yamadharma.github.io/commit/37724f6019d65b6d8e7bfa5b87fb403eced5e40f))
+* **post:** update TeXLive post ([c50a534](https://github.com/yamadharma/yamadharma.github.io/commit/c50a534180eabe751db8954652f9e986b22aa470))
+
+
+
 ## [1.1.1](https://github.com/yamadharma/yamadharma.github.io/compare/v1.1.0...v1.1.1) (2026-03-01)
 
 

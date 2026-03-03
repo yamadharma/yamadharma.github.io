@@ -2,7 +2,7 @@
 title: "Installing TeXlive"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-04-23T18:09:00+03:00
-lastmod: 2025-08-27T18:04:00+03:00
+lastmod: 2026-03-02T08:39:00+03:00
 tags: ["latex", "tex"]
 categories: ["computer-science"]
 draft: false
@@ -168,7 +168,7 @@ tlmgr path remove
 <!--listend-->
 
 ```shell
-mv /usr/local/texlive/2024/ /usr/local/texlive/2025
+mv /usr/local/texlive/2025/ /usr/local/texlive/2026
 ```
 
 -   Remove package backups:
@@ -176,7 +176,7 @@ mv /usr/local/texlive/2024/ /usr/local/texlive/2025
 <!--listend-->
 
 ```shell
-rm /usr/local/texlive/2025/tlpkg/backups/*
+rm /usr/local/texlive/2026/tlpkg/backups/*
 ```
 
 -   Create links to executables:
@@ -184,7 +184,7 @@ rm /usr/local/texlive/2025/tlpkg/backups/*
 <!--listend-->
 
 ```shell
-/usr/local/texlive/2025/bin/x86_64-linux/tlmgr path add
+/usr/local/texlive/2026/bin/x86_64-linux/tlmgr path add
 ```
 
 -   Download the latest version of the script `update-tlmgr-latest.sh`:
@@ -240,7 +240,7 @@ tlmgr path add
 <!--listend-->
 
 ```shell
-mv ~/.texlive2024 ~/.texlive2025
+mv ~/.texlive2025 ~/.texlive2026
 luaotfload-tool -fu
 ```
 

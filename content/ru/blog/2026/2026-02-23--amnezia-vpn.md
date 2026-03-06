@@ -2,7 +2,7 @@
 title: "VPN. Реализация Amnezia VPN"
 author: ["Dmitry S. Kulyabov"]
 date: 2026-02-23T18:33:00+03:00
-lastmod: 2026-03-03T14:48:00+03:00
+lastmod: 2026-03-06T16:41:00+03:00
 draft: false
 slug: "amnezia-vpn"
 ---
@@ -140,14 +140,6 @@ VPN. Реализация Amnezia VPN.
     ```shell
     emerge amnezia-client-bin
     ```
--   Подключение сервиса:
-    ```shell
-    systemctl enable --now AmneziaVPN.service
-    ```
--   Запуск:
-    ```shell
-    AmneziaVPN
-    ```
 
 
 #### <span class="section-num">2.1.4</span> Manjaro {#manjaro}
@@ -156,3 +148,46 @@ VPN. Реализация Amnezia VPN.
     ```shell
     pamac install amneziavpn-bin
     ```
+
+
+#### <span class="section-num">2.1.5</span> Настройка после установки {#настройка-после-установки}
+
+<!--list-separator-->
+
+1.  Модуль tun
+
+    -   Необходимо наличие в ядре модуля `tun`.
+    -   Пакет устанавливает конфигурационный файл для загрузки этого модуля.
+
+<!--list-separator-->
+
+2.  cgroup
+
+    -   Желательно подключить net_cls cgroup.
+    -   Необходимо смонтировать `/sys/fs/cgroup/net_cls/` как файловую систему cgroup v1:
+        ```shell
+        sudo mkdir -p /sys/fs/cgroup/net_cls
+        sudo mount -t cgroup -o net_cls net_cls /sys/fs/cgroup/net_cls
+        ```
+    -   Постоянная конфигурация в файле `/etc/fstab`:
+        ```conf-unix
+        net_cls /sys/fs/cgroup/net_cls cgroup net_cls 0 0
+        ```
+
+<!--list-separator-->
+
+3.  Сервис
+
+    -   Подключение сервиса:
+        ```shell
+        systemctl enable --now AmneziaVPN.service
+        ```
+
+<!--list-separator-->
+
+4.  Запуск
+
+    -   Запуск:
+        ```shell
+        AmneziaVPN
+        ```

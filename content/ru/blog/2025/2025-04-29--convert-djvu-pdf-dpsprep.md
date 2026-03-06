@@ -2,7 +2,7 @@
 title: "Конвертация djvu в pdf. dpsprep"
 author: ["Dmitry S. Kulyabov"]
 date: 2025-04-29T16:29:00+03:00
-lastmod: 2025-10-18T18:34:00+03:00
+lastmod: 2026-03-05T21:47:00+03:00
 tags: ["pdf"]
 categories: ["computer-science"]
 draft: false
@@ -74,7 +74,7 @@ slug: "convert-djvu-pdf-dpsprep"
     ```
 -   Использовать большой пул рабочих процессов:
     ```shell
-    dpsprep --pool=16 input.djvu
+    dpsprep --pool-size 16 input.djvu
     ```
 -   Принудительно сделать изображения двуцветными:
     ```shell
@@ -87,4 +87,46 @@ slug: "convert-djvu-pdf-dpsprep"
 -   Просто проигнорируйте текстовый слой без OCR:
     ```shell
     dpsprep --no-text input.djvu
+    ```
+
+
+## <span class="section-num">6</span> Обработка для разных страниц {#обработка-для-разных-страниц}
+
+-   В `dpsprep` нет встроенной возможности указать разные параметры обработки для конкретных страниц, параметры применяются ко всему документу сразу.
+-   Эту задачу можно решить, разбив процесс на несколько шагов.
+-   Предположим, что надо по разному обрабатывать обложку и основной текст.
+
+
+### <span class="section-num">6.1</span> Разделить исходный DjVu файл {#разделить-исходный-djvu-файл}
+
+-   Разбить файл на две части: обложку (страница 1) и основной блок (остальные страницы).
+-   Например, с помощью утилиты `ddjvu`.
+-   Извлечь только первую страницу (обложку) в отдельный файл:
+    ```shell
+    ddjvu -format=pdf -page=1 input.djvu cover1.pdf
+    ```
+
+
+### <span class="section-num">6.2</span> Конвертируйте с нужными параметрами {#конвертируйте-с-нужными-параметрами}
+
+-   Теперь примените `dpsprep` к основной части с теми настройками, которые вам нужны.
+-   Используем вам параметр `-m bitonal` .
+    ```shell
+    dpsprep --pool-size 16 -O3 -m bitonal input.djvu
+    ```
+-   Удалите обложку из полученного файла:
+    ```shell
+    qpdf input.pdf --pages . 2-r1 -- output.pdf
+    ```
+-   Обработайте обложку отдельно:
+    ```shell
+    ocrmypdf --tesseract-timeout 0 --optimize 3 cover1.pdf cover1-1.pdf
+    ```
+
+
+### <span class="section-num">6.3</span> Объедините полученные PDF файлы {#объедините-полученные-pdf-файлы}
+
+-   Соедините файлы:
+    ```shell
+    gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=итоговый_файл.pdf cover1-1.pdf output.pdf
     ```

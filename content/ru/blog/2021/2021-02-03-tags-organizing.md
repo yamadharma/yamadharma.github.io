@@ -2,7 +2,7 @@
 title: "Организация меток для записей"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-02-03T12:21:00+03:00
-lastmod: 2025-08-10T15:45:00+03:00
+lastmod: 2026-03-05T20:26:00+03:00
 tags: ["MOC", "emacs", "hugo"]
 categories: ["computer-science", "self-management"]
 draft: false
@@ -107,6 +107,7 @@ slug: "tags-organizing"
 
 -   `@thinking`: [Мысли]({{< relref "2021-12-14-reflections" >}})
     -   `sociology`: [Социологические заметки]({{< relref "2021-10-23-sociological-notes" >}})
+    -   `philosophy`: [Вопросы философии]({{< relref "2026-03-05--philosophy" >}})
 
 | Уровень  | org-mode todo     | org-roam            | blog (ru)         | blog (en)         |
 |----------|-------------------|---------------------|-------------------|-------------------|

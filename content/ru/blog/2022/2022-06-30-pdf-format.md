@@ -2,8 +2,8 @@
 title: "Формат PDF"
 author: ["Dmitry S. Kulyabov"]
 date: 2022-06-30T18:47:00+03:00
-lastmod: 2025-04-29T16:32:00+03:00
-tags: ["pdf"]
+lastmod: 2026-03-05T20:20:00+03:00
+tags: ["pdf", "MOC"]
 categories: ["computer-science"]
 draft: false
 slug: "pdf-format"
@@ -52,6 +52,7 @@ slug: "pdf-format"
 -   [Конвертация djvu в pdf. dpsprep]({{< relref "2025-04-29--convert-djvu-pdf-dpsprep" >}})
 -   [Примеры команд для обработки pdf]({{< relref "2024-04-28-examples-pdf-processing-commands" >}})
 -   [Распознавание pdf]({{< relref "2024-08-21-pdf-ocr" >}})
+-   [Pdf. Редакторы]({{< relref "2026-03-05--pdf-editors" >}})
 
 
 ## <span class="section-num">4</span> Оглавление в PDF {#оглавление-в-pdf}

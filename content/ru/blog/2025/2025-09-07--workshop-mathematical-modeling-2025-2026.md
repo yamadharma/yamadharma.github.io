@@ -2,7 +2,7 @@
 title: "Семинар Математическое моделирование, 2025-2026"
 author: ["Dmitry S. Kulyabov"]
 date: 2025-09-07T17:19:00+03:00
-lastmod: 2026-02-04T18:48:00+03:00
+lastmod: 2026-03-05T14:48:00+03:00
 tags: ["modeling"]
 categories: ["science"]
 draft: false
@@ -19,7 +19,7 @@ slug: "workshop-mathematical-modeling-2025-2026"
 ## <span class="section-num">1</span> Семинар Математическое моделирование, 2025-2 {#семинар-математическое-моделирование-2025-2}
 
 
-### <span class="org-todo done DONE">DONE</span> <span class="section-num">1.1</span> <span class="timestamp-wrapper"><span class="timestamp">&lt;2025-09-25 Чт&gt; </span></span> Сергеев С. В. - Модифицированный метод Чебышевской коллокации {#сергеев-с-dot-в-dot-модифицированный-метод-чебышевской-коллокации}
+### <span class="org-todo done DONE">DONE</span> <span class="section-num">1.1</span> <span class="timestamp-wrapper"><span class="timestamp">&lt;2025-09-25 Чт&gt;</span></span> Сергеев С. В. - Модифицированный метод Чебышевской коллокации {#сергеев-с-dot-в-dot-модифицированный-метод-чебышевской-коллокации}
 
 
 #### <span class="section-num">1.1.1</span> Докладчик {#докладчик}
@@ -68,7 +68,7 @@ Solving initial boundary value problems for more general parabolic equations (wi
 {{< /tabs >}}
 
 
-### <span class="org-todo done DONE">DONE</span> <span class="section-num">1.2</span> <span class="timestamp-wrapper"><span class="timestamp">&lt;2025-10-09 Чт&gt; </span></span> Селиверстов А. В. - Конечные проективные плоскости с 1892 года до середины XX века {#селиверстов-а-dot-в-dot-конечные-проективные-плоскости-с-1892-года-до-середины-xx-века}
+### <span class="org-todo done DONE">DONE</span> <span class="section-num">1.2</span> <span class="timestamp-wrapper"><span class="timestamp">&lt;2025-10-09 Чт&gt;</span></span> Селиверстов А. В. - Конечные проективные плоскости с 1892 года до середины XX века {#селиверстов-а-dot-в-dot-конечные-проективные-плоскости-с-1892-года-до-середины-xx-века}
 
 
 #### <span class="section-num">1.2.1</span> Докладчик {#докладчик}
@@ -110,7 +110,7 @@ We review the early period of research on finite projective planes, beginning wi
 {{< /tabs >}}
 
 
-### <span class="org-todo done DONE">DONE</span> <span class="section-num">1.3</span> <span class="timestamp-wrapper"><span class="timestamp">&lt;2025-10-23 Чт&gt; </span></span> Степанцов М. Е. - Метод замены дифференциальных уравнений клеточными автоматами {#степанцов-м-dot-е-dot-метод-замены-дифференциальных-уравнений-клеточными-автоматами}
+### <span class="org-todo done DONE">DONE</span> <span class="section-num">1.3</span> <span class="timestamp-wrapper"><span class="timestamp">&lt;2025-10-23 Чт&gt;</span></span> Степанцов М. Е. - Метод замены дифференциальных уравнений клеточными автоматами {#степанцов-м-dot-е-dot-метод-замены-дифференциальных-уравнений-клеточными-автоматами}
 
 
 #### <span class="section-num">1.3.1</span> Докладчик {#докладчик}
@@ -160,7 +160,7 @@ The report is the presentation of a doctoral thesis considering the method of re
 {{< /tabs >}}
 
 
-### <span class="org-todo done DONE">DONE</span> <span class="section-num">1.4</span> <span class="timestamp-wrapper"><span class="timestamp">&lt;2025-10-30 Чт&gt; </span></span> Ермолаева А. М., Велиева Т. Р., Живцова А. А. - Воспроизводимые исследования при моделировании сетей {#ермолаева-а-dot-м-dot-велиева-т-dot-р-dot-живцова-а-dot-а-dot-воспроизводимые-исследования-при-моделировании-сетей}
+### <span class="org-todo done DONE">DONE</span> <span class="section-num">1.4</span> <span class="timestamp-wrapper"><span class="timestamp">&lt;2025-10-30 Чт&gt;</span></span> Ермолаева А. М., Велиева Т. Р., Живцова А. А. - Воспроизводимые исследования при моделировании сетей {#ермолаева-а-dot-м-dot-велиева-т-dot-р-dot-живцова-а-dot-а-dot-воспроизводимые-исследования-при-моделировании-сетей}
 
 
 #### <span class="section-num">1.4.1</span> Докладчик {#докладчик}
@@ -238,7 +238,7 @@ The choice of a specific solution depends on non-technical factors: popularity a
 {{< /tabs >}}
 
 
-### <span class="org-todo done DONE">DONE</span> <span class="section-num">1.5</span> <span class="timestamp-wrapper"><span class="timestamp">&lt;2025-11-13 Чт&gt; </span></span> Хлебников Ф. Б. - Математическое моделирование электромагнитного поля зеркального коллиматора {#хлебников-ф-dot-б-dot-математическое-моделирование-электромагнитного-поля-зеркального-коллиматора}
+### <span class="org-todo done DONE">DONE</span> <span class="section-num">1.5</span> <span class="timestamp-wrapper"><span class="timestamp">&lt;2025-11-13 Чт&gt;</span></span> Хлебников Ф. Б. - Математическое моделирование электромагнитного поля зеркального коллиматора {#хлебников-ф-dot-б-dot-математическое-моделирование-электромагнитного-поля-зеркального-коллиматора}
 
 
 #### <span class="section-num">1.5.1</span> Докладчик {#докладчик}
@@ -283,7 +283,7 @@ Using cross-sections of extended model collimators with different parameters, it
 {{< /tabs >}}
 
 
-### <span class="org-todo done DONE">DONE</span> <span class="section-num">1.6</span> <span class="timestamp-wrapper"><span class="timestamp">&lt;2025-12-11 Чт&gt; </span></span> Блинков Ю. А. - PyGInv. Исследование и решение полиномиальных и дифференциальных систем {#блинков-ю-dot-а-dot-pyginv-dot-исследование-и-решение-полиномиальных-и-дифференциальных-систем}
+### <span class="org-todo done DONE">DONE</span> <span class="section-num">1.6</span> <span class="timestamp-wrapper"><span class="timestamp">&lt;2025-12-11 Чт&gt;</span></span> Блинков Ю. А. - PyGInv. Исследование и решение полиномиальных и дифференциальных систем {#блинков-ю-dot-а-dot-pyginv-dot-исследование-и-решение-полиномиальных-и-дифференциальных-систем}
 
 
 #### <span class="section-num">1.6.1</span> Докладчик {#докладчик}
@@ -339,7 +339,7 @@ The source code, presented in four files (monomial.py, polynomial.py, janet.py, 
 ## <span class="section-num">2</span> Семинар Математическое моделирование, 2026-1 {#семинар-математическое-моделирование-2026-1}
 
 
-### <span class="org-todo done DONE">DONE</span> <span class="section-num">2.1</span> <span class="timestamp-wrapper"><span class="timestamp">&lt;2026-01-29 Чт&gt; </span></span> Захаров И. И. - Математическое моделирование нелокальных физических процессов в средах с фрактальной структурой {#захаров-и-dot-и-dot-математическое-моделирование-нелокальных-физических-процессов-в-средах-с-фрактальной-структурой}
+### <span class="org-todo done DONE">DONE</span> <span class="section-num">2.1</span> <span class="timestamp-wrapper"><span class="timestamp">&lt;2026-01-29 Чт&gt;</span></span> Захаров И. И. - Математическое моделирование нелокальных физических процессов в средах с фрактальной структурой {#захаров-и-dot-и-dot-математическое-моделирование-нелокальных-физических-процессов-в-средах-с-фрактальной-структурой}
 
 
 #### <span class="section-num">2.1.1</span> Докладчик {#докладчик}
@@ -380,7 +380,7 @@ This paper explores the development of mathematical modeling tools using fractio
 {{< /tabs >}}
 
 
-### <span class="org-todo done DONE">DONE</span> <span class="section-num">2.2</span> <span class="timestamp-wrapper"><span class="timestamp">&lt;2026-02-04 Ср&gt; </span></span> Штепа К. А. - Моделирование трансформирующих сред средствами лучевой оптики {#штепа-к-dot-а-dot-моделирование-трансформирующих-сред-средствами-лучевой-оптики}
+### <span class="org-todo done DONE">DONE</span> <span class="section-num">2.2</span> <span class="timestamp-wrapper"><span class="timestamp">&lt;2026-02-04 Ср&gt;</span></span> Штепа К. А. - Моделирование трансформирующих сред средствами лучевой оптики {#штепа-к-dot-а-dot-моделирование-трансформирующих-сред-средствами-лучевой-оптики}
 
 
 #### <span class="section-num">2.2.1</span> Докладчик {#докладчик}
@@ -408,3 +408,54 @@ This paper explores the development of mathematical modeling tools using fractio
 -   Department of Probability Theory and Cybersecurity at RUDN University
 
 The research is devoted to the study of mathematical and computational methods for modeling the propagation of radiation in transforming media based on the eikonal equation. A formulation of the problem is given within the framework of geometrical optics, and an analysis of radially symmetric refractive index profiles, including the Luneburg, Maxwell, and Eaton lenses, is carried out. A numerical algorithm for solving the eikonal equation using the Fast Sweeping Method (FSM) has been implemented, and the convergence and stability of the scheme have been investigated. Software in the Julia programming language has been developed to compute level lines of the phase function and reconstruct ray trajectories. Wavefront modeling and verification on analytical profiles have been performed. A neural network-based approach to solving the eikonal equation using Physics-Informed Neural Networks (PINN) within the SciML library of the Julia language has been implemented. A comparative analysis of numerical and neural approaches has been conducted, and the feasibility of their combined application for modeling diffraction systems has been substantiated.
+
+
+### <span class="org-todo todo TODO">TODO</span> <span class="section-num">2.3</span> <span class="timestamp-wrapper"><span class="timestamp">[2026-03-11 Ср]</span></span> Гостев И. М. - Управление заданиями в больших вычислительных системах на основе интеллектуальных агентов {#гостев-и-dot-м-dot-управление-заданиями-в-больших-вычислительных-системах-на-основе-интеллектуальных-агентов}
+
+
+#### <span class="section-num">2.3.1</span> Докладчик {#докладчик}
+
+-   Гостев Иван Михайлович
+-   г.н.с ИППИ им А.А. Харкевича РАН
+
+
+#### <span class="section-num">2.3.2</span> Информация {#информация}
+
+-   <https://events.rudn.ru/event/314/>
+-   Управление заданиями в больших вычислительных системах на основе интеллектуальных агентов
+-   Гостев Иван Михайлович
+-   г.н.с ИППИ им А.А. Харкевича РАН
+
+Управление выполнением задач в большой вычислительной системе специального назначения представляет собой сложную проблему, связанную с необходимостью распределения задач по вычислительным узлам так, чтобы выполнялись ряд условий:
+
+-   все задачи выполнялись в рамках заданного времени выполнения (обеспечение директивных сроков выполнения);
+-   существовала бы возможность выполнения одной задачи параллельно на нескольких вычислителях (например, при независимости подзадач по данным);
+-   существует множество входных потоков задач, которые могут иметь различные законы их поступления (равномерный, экспоненциальный, пуассоновский и т.д.);
+-   эффективность работы такого комплекса должна быть максимальной. То есть все вычислители должны быть загружены на 100%;
+-   для повышения эффективности работы системы, в случае нахождения решения задачи в одной из подзадач, выполнение всех остальные должно быть прекращено;
+-   в случае отсутствия решения некоторой задачи при заданных условиях, она должна автоматически перезапускаться с изменёнными начальными условиями;
+-   при отказе одного из вычислителей при решении некоторой подзадачи, она повторно перезапускается.
+
+Очевидно, что удовлетворение таких условий при непрерывном потоке задач и непредсказуемых законов их поступления - становится весьма сложной.
+
+В докладе рассматривается методология управления специализированной распределенной вычислительной системой на основе спорадического контроля, реализованного на базе интеллектуальных агентов, удовлетворяющая поставленным условиям на основе теории массового обслуживания.
+
+---
+
+-   Job management in large computing systems based on intelligent agent
+-   Gostev, Ivan Mikhailovich
+-   chief researcher, A. A. Kharkevich Institute for Information Transmission Problems, RAS
+
+Managing the execution of tasks in a large computing system of special purpose is a complex problem associated with the need to distribute tasks among computing nodes in such a way that a number of conditions are met:
+
+-   all tasks were carried out within the specified time of completion (ensuring directive deadlines);
+-   it would be possible to execute one task in parallel on several computers (for example, if subtasks are independent of data);
+-   there are many input streams of tasks that can have different laws of their arrival (uniform, exponential, Poisson, etc.);
+-   The efficiency of such a complex should be maximum. That is, all calculators must be loaded at 100%;
+-   to improve the efficiency of the system, if a solution to the problem is found in one of the subtasks, the execution of all the rest should be stopped;
+-   in the absence of a solution to a certain task under given conditions, it should automatically restart with changed initial conditions;
+-   if one of the calculators fails when solving some subtask, it restarts again.
+
+Obviously, the satisfaction of such conditions with a continuous flow of tasks and unpredictable laws of their arrival becomes very difficult.
+
+The report considers a simulation model of a system that satisfies the set conditions on the base of the queuing theory.

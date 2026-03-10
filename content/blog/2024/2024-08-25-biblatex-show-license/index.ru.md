@@ -2,9 +2,9 @@
 title: "BibLaTeX. Ссылка на лицензию"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-08-25T13:21:00+03:00
-lastmod: 2024-08-25T20:31:00+03:00
+lastmod: 2026-03-10T19:41:00+03:00
 tags: ["latex", "tex", "bib"]
-categories: ["computer"]
+categories: ["computer-science"]
 draft: false
 slug: "biblatex-show-license"
 ---
@@ -27,7 +27,7 @@ BibLaTeX. Ссылка на лицензию.
 ## <span class="section-num">2</span> Использование {#использование}
 
 -   Загрузить пакет после `biblatex`:
-    ```latex
+    ```tex
     \usepackage[options]{biblatex-license}
     ```
 -   Опции:

@@ -2,7 +2,7 @@
 title: "Emacs. Desire. Конфигурация"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-06-11T18:55:00+03:00
-lastmod: 2026-03-07T18:22:00+03:00
+lastmod: 2026-03-10T19:40:00+03:00
 tags: ["emacs"]
 categories: ["computer-science"]
 draft: false
@@ -5286,7 +5286,7 @@ slug: "emacs-desire-configuration"
         </div>
 
 
-### <span class="section-num">3.26</span> Org-mode {#org-mode}
+### <span class="section-num">3.26</span> Инфраструктура Org-mode {#инфраструктура-org-mode}
 
 -   [Org-mode]({{< relref "2021-10-14-org-mode" >}})
 -   Конфигурация для `org-mode`:

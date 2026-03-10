@@ -2,9 +2,9 @@
 title: "Linux. Темы оформления"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-05-07T15:39:00+03:00
-lastmod: 2024-06-16T20:05:00+03:00
+lastmod: 2026-03-10T19:38:00+03:00
 tags: ["linux"]
-categories: ["computer"]
+categories: ["computer-science"]
 draft: false
 slug: "linux-themes"
 ---

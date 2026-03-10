@@ -2,9 +2,9 @@
 title: "Emacs. Пакет Deft"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-04-15T11:54:00+03:00
-lastmod: 2024-04-15T16:13:00+03:00
+lastmod: 2026-03-10T19:32:00+03:00
 tags: ["emacs"]
-categories: ["computer"]
+categories: ["computer-science"]
 draft: false
 slug: "emacs-deft"
 ---

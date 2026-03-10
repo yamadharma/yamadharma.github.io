@@ -5,13 +5,13 @@
 
 DIR=$(pwd)
 
-academic import ~/work/bib/bib/mine.bib content/ru/publications --compact --overwrite --verbose
+academic import ~/work/bib/bib/mine.bib content/publications --compact --overwrite --verbose
 
-cd ${DIR}/content/en/publications
-find . -xtype l -delete
-ln -s ../../ru/publications/* .
-grep -r russian * | cut -f1 -d":" | xargs -r dirname | xargs -r rm
+#cd ${DIR}/content/en/publications
+#find . -xtype l -delete
+#ln -s ../../ru/publications/* .
+#grep -r russian * | cut -f1 -d":" | xargs -r dirname | xargs -r rm
 
-cd ${DIR}
+#cd ${DIR}
 
-./scripts/bib-hugoblox-fix.py --directory content/ru/publications/ --no-backup
+./scripts/bib-hugoblox-fix.py --directory content/publications/ --no-backup

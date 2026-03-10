@@ -2,7 +2,7 @@
 title: "Hugo. Использование page bundle"
 author: ["Dmitry S. Kulyabov"]
 date: 2026-03-03T20:48:00+03:00
-lastmod: 2026-03-03T21:09:00+03:00
+lastmod: 2026-03-10T15:25:00+03:00
 tags: ["sysadmin", "hugo"]
 categories: ["computer-science"]
 draft: false
@@ -101,3 +101,13 @@ Hugo. Использование page bundle.
 | Поддержка в темах    | Базовая                                                       | Расширенная (методы `.Resources`, обработка изображений) |
 | Многоязычность       | Требует внешних соглашений                                    | Встроенная поддержка через локализованные папки          |
 | Производительность   | Одинаковая                                                    | Одинаковая                                               |
+
+
+## <span class="section-num">5</span> Миграция сайта на page bundle {#миграция-сайта-на-page-bundle}
+
+
+### <span class="section-num">5.1</span> Скрипт refactor-pages-to-page-bundles.sh {#скрипт-refactor-pages-to-page-bundles-dot-sh}
+
+-   Репозиторий: <https://github.com/HugoBlox/awesome-hugo>
+-   Скрипт не учитывает язык.
+-   Нужно внести правки в скрипт самому.

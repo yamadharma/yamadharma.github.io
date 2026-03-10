@@ -2,7 +2,7 @@
 title: "Шрифт. Iosevka"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-04-11T19:15:00+03:00
-lastmod: 2025-04-01T15:12:00+03:00
+lastmod: 2026-03-09T13:44:00+03:00
 tags: ["font"]
 categories: ["computer-science"]
 draft: false
@@ -85,3 +85,27 @@ slug: "font-iosevka"
 
 -   Репозиторий: <https://github.com/v3rmine/Iosevka-custom-conf>
 -   Описание возможности настройки шрифта Iosevka.
+
+
+## <span class="section-num">6</span> Проблемы {#проблемы}
+
+
+### <span class="section-num">6.1</span> LuaTeX {#luatex}
+
+-   Шрифты для luatex индексируются в базу при помощи программы `luaotfload-tool`.
+-   Индексация иногда зависает на некоторых файлах формата `.ttc`.
+-   Iosevka распространяется именно в этом формате.
+-   И именно на шрифтах Iosevka индексирование виснет на неопределённое время.
+-   Следует занести шрифты в блэклист.
+-   Создайте файл `luaotfload-blacklist.cnf`:
+    ```conf-unix
+    Iosevka.ttc
+    IosevkaAile.ttc
+    IosevkaCurly.ttc
+    IosevkaCurlySlab.ttc
+    IosevkaEtoile.ttc
+    IosevkaSlab.ttc
+    ```
+-   Разместите его в каталог, доступный для поиска TeX:
+    -   `/usr/local/texlive/2026/texmf-dist/tex/luatex/luaotfload/luaotfload-blacklist.cnf`;
+    -   `~/texmf/tex/luatex/luaotfload/luaotfload-blacklist.cnf`.

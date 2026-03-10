@@ -2,7 +2,7 @@
 title: "Emacs. Desire. Конфигурация"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-06-11T18:55:00+03:00
-lastmod: 2026-03-02T18:53:00+03:00
+lastmod: 2026-03-07T18:22:00+03:00
 tags: ["emacs"]
 categories: ["computer-science"]
 draft: false
@@ -5769,6 +5769,24 @@ slug: "emacs-desire-configuration"
         ;;;
         ```
 
+<!--list-separator-->
+
+4.  Интеграция с org-mode
+
+    -   Файл: `packages/org/org-habit-ng.ecf`
+        ```emacs-lisp
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;; Org-habit-ng lets you schedule habits that org-mode's standard repeaters can't express
+        ;; https://codeberg.org/Trevoke/org-habit-ng
+
+        ;;; Code:
+
+        (require 'transient)
+        (require 'org-habit-ng)
+
+        ;;;
+        ```
+
 
 #### <span class="section-num">3.26.8</span> org-window-habit {#org-window-habit}
 
@@ -6313,7 +6331,11 @@ slug: "emacs-desire-configuration"
 
 -   Собственно org-mode.
 -   [Org-mode]({{< relref "2021-10-14-org-mode" >}})
--   Подключение:
+
+<!--list-separator-->
+
+1.  Подключение
+
     ```emacs-lisp
     (desire 'org)
 
@@ -6326,7 +6348,11 @@ slug: "emacs-desire-configuration"
       <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 170:</span>
       rc.packages.el
     </div>
--   Загрузка:
+
+<!--list-separator-->
+
+2.  Загрузка
+
     ```emacs-lisp
     ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
     ;;; Org mode
@@ -6338,37 +6364,37 @@ slug: "emacs-desire-configuration"
       packages/org/loaddefs.ecf
     </div>
 
--   Список расширений для моды:
-    ```emacs-lisp
-    (add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\|txt\\)$" . org-mode))
-    ```
-    <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 172:</span>
-      packages/org/loaddefs.ecf
-    </div>
+    -   Список расширений для моды:
+        ```emacs-lisp
+        (add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\|txt\\)$" . org-mode))
+        ```
+        <div class="src-block-caption">
+          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 172:</span>
+          packages/org/loaddefs.ecf
+        </div>
 
--   Клавиатурные комбинации:
-    ```emacs-lisp
-    (global-set-key (kbd "C-c a") #'("Agenda" . org-agenda))
-    (global-set-key (kbd "C-c d e") #'("Engage" . org-gtd-engage))
-    ```
-    <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 173:</span>
-      packages/org/loaddefs.ecf
-    </div>
+    -   Клавиатурные комбинации:
+        ```emacs-lisp
+        (global-set-key (kbd "C-c a") #'("Agenda" . org-agenda))
+        (global-set-key (kbd "C-c d e") #'("Engage" . org-gtd-engage))
+        ```
+        <div class="src-block-caption">
+          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 173:</span>
+          packages/org/loaddefs.ecf
+        </div>
 
--   Завершение файла:
-    ```emacs-lisp
-    ;;;
-    ```
-    <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 174:</span>
-      packages/org/loaddefs.ecf
-    </div>
+    -   Завершение файла:
+        ```emacs-lisp
+        ;;;
+        ```
+        <div class="src-block-caption">
+          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 174:</span>
+          packages/org/loaddefs.ecf
+        </div>
 
 <!--list-separator-->
 
-1.  Экспорт
+3.  Экспорт
 
     -   Экспорт из org-mode.
     -   Файл: `packages/org/desire.ecd/ox.ecf`
@@ -6457,7 +6483,7 @@ slug: "emacs-desire-configuration"
 
 <!--list-separator-->
 
-2.  org-imgtog
+4.  org-imgtog
 
     -   <https://github.com/gaoDean/org-imgtog>
     -   Отключение предпромотра избражения.
@@ -6483,7 +6509,7 @@ slug: "emacs-desire-configuration"
 
 <!--list-separator-->
 
-3.  org-remoteimg
+5.  org-remoteimg
 
     -   <https://github.com/gaoDean/org-remoteimg>
     -   Отображение удаленных встроенных изображений в org-режиме с автоматическим кэшированием.
@@ -6509,160 +6535,204 @@ slug: "emacs-desire-configuration"
 
 <!--list-separator-->
 
-4.  org-habit-ng
+6.  Добавление сства CREATED
 
-    -   Файл: `packages/org/org-habit-ng.ecf`
+    -   Файл: `packages/org/desire.ecd/created.ecf`
         ```emacs-lisp
         ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Org-habit-ng lets you schedule habits that org-mode's standard repeaters can't express
-        ;; https://codeberg.org/Trevoke/org-habit-ng
+        ;;; Allow automatically handing of created/expired meta data
+        ;; https://gist.github.com/mrvdb/4037694
 
         ;;; Code:
 
-        (require 'transient)
-        (require 'org-habit-ng)
+        (require 'org-expiry)
+
+        (setopt
+          org-expiry-created-property-name "CREATED" ; Name of property when an item is created
+          org-expiry-inactive-timestamps   t         ; Don't have everything in the agenda view
+        )
+
+        (defun ecf/insert-created-timestamp()
+          "Insert a CREATED property using org-expiry.el for TODO entries"
+          (org-expiry-insert-created)
+          (org-back-to-heading)
+          (org-end-of-line)
+          ;; (insert " ")
+        )
+
+        ;;;; Whenever a TODO entry is created, I want a timestamp
+        ;;;; Advice org-insert-todo-heading to insert a created timestamp using org-expiry
+
+        (defadvice org-insert-todo-heading (after ecf/created-timestamp-advice activate)
+          "Insert a CREATED property using org-expiry.el for TODO entries"
+          (ecf/insert-created-timestamp)
+        )
+        ;;;; Make it active
+        (ad-activate 'org-insert-todo-heading)
+
+        (require 'org-capture)
+
+        (defadvice org-capture (after ecf/created-timestamp-advice activate)
+          "Insert a CREATED property using org-expiry.el for TODO entries"
+          ;; Test if the captured entry is a TODO, if so insert the created
+          ;; timestamp property, otherwise ignore
+          (when (member (org-get-todo-state) org-todo-keywords-1)
+            (ecf/insert-created-timestamp)))
+        (ad-activate 'org-capture)
+
+        ;;;; Add feature to allow easy adding of tags in a capture window
+        (defun ecf/add-tags-in-capture()
+          (interactive)
+          "Insert tags in a capture window without losing the point"
+          (save-excursion
+            (org-back-to-heading)
+            (org-set-tags)))
+        ;;;; Bind this to a reasonable key
+        (define-key org-capture-mode-map "\C-c\C-t" 'ecf/add-tags-in-capture)
 
         ;;;
         ```
 
+<!--list-separator-->
 
-#### <span class="section-num">3.26.13</span> Предпросмотр LaTeX {#предпросмотр-latex}
+7.  Предпросмотр LaTeX
 
--   [Org-mode. Предпросмотр TeX]({{< relref "2024-01-06-org-mode-latex-preview" >}})
-    ```emacs-lisp
-    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-    ;;; Previewing LaTeX fragments
-    ;;; https://orgmode.org/manual/Previewing-LaTeX-fragments.html
-    ```
-    <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 175:</span>
-      packages/org/desire.ecd/preview-latex.ecf
-    </div>
--   Зададим каталог для создаваемых изображений (по умолчанию они создаются в рабочем каталоге):
-    ```emacs-lisp
-    ;;; LaTeX image directory
-    (setopt org-preview-latex-image-directory (concat home-cache-path "org-latex/"))
-    ```
-    <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 176:</span>
-      packages/org/desire.ecd/preview-latex.ecf
-    </div>
--   Зададим опции создания изображений:
-    ```emacs-lisp
-    ;;; Output format
-    (setopt org-format-latex-options (plist-put org-format-latex-options :scale 1.0))
-    (setopt org-format-latex-options (plist-put org-format-latex-options :density 600))
-    (setopt org-format-latex-options (plist-put org-format-latex-options :background "Transparent"))
-    ```
-    <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 177:</span>
-      packages/org/desire.ecd/preview-latex.ecf
-    </div>
--   Зададим формат изображений. В данном случае это формат `svg`:
-    ```emacs-lisp
-    (setopt org-latex-create-formula-image-program 'dvisvgm)
+    -   [Org-mode. Предпросмотр TeX]({{< relref "2024-01-06-org-mode-latex-preview" >}})
+        ```emacs-lisp
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;; Previewing LaTeX fragments
+        ;;; https://orgmode.org/manual/Previewing-LaTeX-fragments.html
+        ```
+        <div class="src-block-caption">
+          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 175:</span>
+          packages/org/desire.ecd/preview-latex.ecf
+        </div>
+    -   Зададим каталог для создаваемых изображений (по умолчанию они создаются в рабочем каталоге):
+        ```emacs-lisp
+        ;;; LaTeX image directory
+        (setopt org-preview-latex-image-directory (concat home-cache-path "org-latex/"))
+        ```
+        <div class="src-block-caption">
+          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 176:</span>
+          packages/org/desire.ecd/preview-latex.ecf
+        </div>
+    -   Зададим опции создания изображений:
+        ```emacs-lisp
+        ;;; Output format
+        (setopt org-format-latex-options (plist-put org-format-latex-options :scale 1.0))
+        (setopt org-format-latex-options (plist-put org-format-latex-options :density 600))
+        (setopt org-format-latex-options (plist-put org-format-latex-options :background "Transparent"))
+        ```
+        <div class="src-block-caption">
+          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 177:</span>
+          packages/org/desire.ecd/preview-latex.ecf
+        </div>
+    -   Зададим формат изображений. В данном случае это формат `svg`:
+        ```emacs-lisp
+        (setopt org-latex-create-formula-image-program 'dvisvgm)
 
-    (setopt org-preview-latex-process-alist
-        '((dvipng :programs ("latex" "dvipng") :description "dvi > png"
-              :message
-              "you need to install the programs: latex and dvipng."
-              :image-input-type "dvi" :image-output-type "png"
-              :image-size-adjust (1.0 . 1.0) :latex-compiler
-              ("latex -interaction nonstopmode -output-directory %o %f")
-              :image-converter ("dvipng -D %D -T tight -o %O %f")
-              :transparent-image-converter
-              ("dvipng -D %D -T tight -bg Transparent -o %O %f"))
-          (dvisvgm :programs ("xelatex" "dvisvgm") :description "xdv > svg"
-               :message
-               "you need to install the programs: latex and dvisvgm."
-               :image-input-type "xdv" :image-output-type "svg"
-               :image-size-adjust (1.7 . 1.5) :latex-compiler
-               ("xelatex --no-pdf -interaction nonstopmode -output-directory %o %f")
-               :image-converter
-               ("dvisvgm %f --no-fonts --exact-bbox --scale=%S --output=%O"))
-          (imagemagick :programs ("xelatex" "convert") :description "pdf > png"
+        (setopt org-preview-latex-process-alist
+            '((dvipng :programs ("latex" "dvipng") :description "dvi > png"
+                  :message
+                  "you need to install the programs: latex and dvipng."
+                  :image-input-type "dvi" :image-output-type "png"
+                  :image-size-adjust (1.0 . 1.0) :latex-compiler
+                  ("latex -interaction nonstopmode -output-directory %o %f")
+                  :image-converter ("dvipng -D %D -T tight -o %O %f")
+                  :transparent-image-converter
+                  ("dvipng -D %D -T tight -bg Transparent -o %O %f"))
+              (dvisvgm :programs ("xelatex" "dvisvgm") :description "xdv > svg"
                    :message
-                   "you need to install the programs: latex and imagemagick."
-                   :image-input-type "pdf" :image-output-type "png"
-                   :image-size-adjust (1.0 . 1.0) :latex-compiler
-                   ("xelatex -interaction nonstopmode -output-directory %o %f")
+                   "you need to install the programs: latex and dvisvgm."
+                   :image-input-type "xdv" :image-output-type "svg"
+                   :image-size-adjust (1.7 . 1.5) :latex-compiler
+                   ("xelatex --no-pdf -interaction nonstopmode -output-directory %o %f")
                    :image-converter
-                   ("convert -density %D -trim -antialias %f -quality 100 %O"))))
-    ```
-    <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 178:</span>
-      packages/org/desire.ecd/preview-latex.ecf
-    </div>
--   Теперь зададим настройки для LaTeX:
-    ```emacs-lisp
-    ;;; Configure latex
-    (setopt org-latex-inputenc-alist '(("utf8" . "utf8x")))
-    ;;; Default position for LaTeX figures
-    (setopt org-latex-default-figure-position "!htbp")
-    ```
-    <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 179:</span>
-      packages/org/desire.ecd/preview-latex.ecf
-    </div>
--   Опишем используемые пакеты:
-    ```emacs-lisp
-    ;;; Unicode fonts
-    (add-to-list 'org-latex-packages-alist '("" "unicode-math") t)
-    ;;; Physics2 package
-    ;; (add-to-list 'org-latex-packages-alist '("" "physics2") t)
-    ;;; Math
-    (add-to-list 'org-latex-packages-alist '("" "amsmath") t)
-    (add-to-list 'org-latex-packages-alist '("" "mathtools") t)
-    ;;; Local definitions
-    ;; (add-to-list 'org-latex-packages-alist '("" "local-define") t)
+                   ("dvisvgm %f --no-fonts --exact-bbox --scale=%S --output=%O"))
+              (imagemagick :programs ("xelatex" "convert") :description "pdf > png"
+                       :message
+                       "you need to install the programs: latex and imagemagick."
+                       :image-input-type "pdf" :image-output-type "png"
+                       :image-size-adjust (1.0 . 1.0) :latex-compiler
+                       ("xelatex -interaction nonstopmode -output-directory %o %f")
+                       :image-converter
+                       ("convert -density %D -trim -antialias %f -quality 100 %O"))))
+        ```
+        <div class="src-block-caption">
+          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 178:</span>
+          packages/org/desire.ecd/preview-latex.ecf
+        </div>
+    -   Теперь зададим настройки для LaTeX:
+        ```emacs-lisp
+        ;;; Configure latex
+        (setopt org-latex-inputenc-alist '(("utf8" . "utf8x")))
+        ;;; Default position for LaTeX figures
+        (setopt org-latex-default-figure-position "!htbp")
+        ```
+        <div class="src-block-caption">
+          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 179:</span>
+          packages/org/desire.ecd/preview-latex.ecf
+        </div>
+    -   Опишем используемые пакеты:
+        ```emacs-lisp
+        ;;; Unicode fonts
+        (add-to-list 'org-latex-packages-alist '("" "unicode-math") t)
+        ;;; Physics2 package
+        ;; (add-to-list 'org-latex-packages-alist '("" "physics2") t)
+        ;;; Math
+        (add-to-list 'org-latex-packages-alist '("" "amsmath") t)
+        (add-to-list 'org-latex-packages-alist '("" "mathtools") t)
+        ;;; Local definitions
+        ;; (add-to-list 'org-latex-packages-alist '("" "local-define") t)
 
-    ;;;
-    ```
-    <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 180:</span>
-      packages/org/desire.ecd/preview-latex.ecf
-    </div>
+        ;;;
+        ```
+        <div class="src-block-caption">
+          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 180:</span>
+          packages/org/desire.ecd/preview-latex.ecf
+        </div>
 
+<!--list-separator-->
 
-#### <span class="section-num">3.26.14</span> Преобразование markdown ←→ org через буфер обмена {#преобразование-markdown-org-через-буфер-обмена}
+8.  Преобразование markdown ←→ org через буфер обмена
 
--   [Emacs. Markdown в Org с помощью буфера обмена]({{< relref "2026-01-02--emacs-markdown-org-clipboard" >}})
--   Файл: `packages/org/desire.ecd/markdown-org-clipboard.ecf`
-    ```emacs-lisp
-    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-    ;;; Import Markdown to Org with the Clipboard
+    -   [Emacs. Markdown в Org с помощью буфера обмена]({{< relref "2026-01-02--emacs-markdown-org-clipboard" >}})
+    -   Файл: `packages/org/desire.ecd/markdown-org-clipboard.ecf`
+        ```emacs-lisp
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;; Import Markdown to Org with the Clipboard
 
-    ;;; Code:
+        ;;; Code:
 
-    (defun ecf/yank-markdown-as-org ()
-      "Yank Markdown text as Org.
+        (defun ecf/yank-markdown-as-org ()
+          "Yank Markdown text as Org.
 
-    This command will convert Markdown text in the top of the `kill-ring'
-    and convert it to Org using the pandoc utility."
-      (interactive)
-      (save-excursion
-        (with-temp-buffer
-          (yank)
-          (shell-command-on-region
-           (point-min) (point-max)
-           "pandoc -f gfm -t org --wrap=preserve" t t)
-          (kill-region (point-min) (point-max)))
-        (yank)))
+        This command will convert Markdown text in the top of the `kill-ring'
+        and convert it to Org using the pandoc utility."
+          (interactive)
+          (save-excursion
+            (with-temp-buffer
+              (yank)
+              (shell-command-on-region
+               (point-min) (point-max)
+               "pandoc -f gfm -t org --wrap=preserve" t t)
+              (kill-region (point-min) (point-max)))
+            (yank)))
 
-    (defun ecf/org-copy-region-as-markdown ()
-      "Copy the region (in Org) to the system clipboard as Markdown."
-      (interactive)
-      (if (use-region-p)
-          (let* ((region
-              (buffer-substring-no-properties
-                  (region-beginning)
-                  (region-end)))
-             (markdown
-              (org-export-string-as region 'md t '(:with-toc nil))))
-        (gui-set-selection 'CLIPBOARD markdown))))
+        (defun ecf/org-copy-region-as-markdown ()
+          "Copy the region (in Org) to the system clipboard as Markdown."
+          (interactive)
+          (if (use-region-p)
+              (let* ((region
+                  (buffer-substring-no-properties
+                      (region-beginning)
+                      (region-end)))
+                 (markdown
+                  (org-export-string-as region 'md t '(:with-toc nil))))
+            (gui-set-selection 'CLIPBOARD markdown))))
 
-    ;;;
-    ```
+        ;;;
+        ```
 
 
 ### <span class="section-num">3.27</span> Инфраструктура Org-roam {#инфраструктура-org-roam}

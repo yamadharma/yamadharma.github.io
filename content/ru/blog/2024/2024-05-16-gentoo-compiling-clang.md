@@ -2,7 +2,7 @@
 title: "Gentoo. Компиляция системы clang"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-05-16T15:18:00+03:00
-lastmod: 2026-02-10T11:37:00+03:00
+lastmod: 2026-03-08T14:24:00+03:00
 tags: ["gentoo", "sysadmin", "linux"]
 categories: ["computer-science"]
 draft: false
@@ -177,6 +177,9 @@ slug: "gentoo-compiling-clang"
 
 -   Можно задать компилятор для каждого пакета в отдельности в файле `/etc/portage/package.env`:
     ```conf-unix
+    # sci-mathematics/giac				compiler-gcc
+    # sci-mathematics/pari				compiler-gcc		# needs fix makefiles
+    # sci-mathematics/singular			compiler-gcc
     =app-emulation/virtualbox-7.0*			compiler-gcc    # ld.lld error
     =app-emulation/virtualbox-7.1*			compiler-gcc    # ld.lld error
     =app-emulation/virtualbox-7.2*			compiler-gcc    # ld.lld error
@@ -219,8 +222,10 @@ slug: "gentoo-compiling-clang"
     dev-java/openjdk:21				compiler-clang-mold
     dev-java/openjdk:8				compiler-gcc
     dev-java/snappy					compiler-gcc
+    dev-lang/ghc					compiler-gcc
     dev-lang/gprolog				compiler-clang-mold
     dev-lang/harbour				compiler-gcc
+    dev-lang/python					compiler-gcc
     dev-lang/rust					compiler-gcc
     dev-lang/zig					compiler-gcc
     dev-libs/cereal					compiler-clang-mold-18
@@ -243,6 +248,7 @@ slug: "gentoo-compiling-clang"
     dev-libs/opencl-clang:15			compiler-gcc
     dev-libs/totem-pl-parser			compiler-clang-mold
     dev-libs/xmlrpc-c				compiler-gcc
+    dev-lisp/clisp					compiler-gcc
     dev-lisp/ecl					compiler-gcc
     dev-perl/OpenGL					compiler-clang-mold
     dev-perl/OpenGL-GLUT				compiler-clang-mold
@@ -254,6 +260,7 @@ slug: "gentoo-compiling-clang"
     dev-python/zstandard				compiler-gcc
     dev-qt/qtwebengine:5				compiler-clang-mold-18
     dev-qt/qtwebengine:6				compiler-clang-mold-18
+    dev-tcltk/blt                   compiler-clang-mold-21
     dev-tex/tectonic				compiler-gcc
     dev-util/android-tools				compiler-gcc
     dev-util/kdevelop				compiler-clang-mold-18
@@ -312,11 +319,9 @@ slug: "gentoo-compiling-clang"
     net-proxy/dante					compiler-gcc
     net-vpn/networkmanager-vpnc			compiler-gcc
     sci-libs/djbfft					compiler-gcc
+    sci-libs/netcdf-cxx				compiler-gcc
     sci-libs/pdal					compiler-clang-mold-18
     sci-libs/vtk					compiler-clang-mold-18
-    sci-mathematics/giac				compiler-gcc
-    sci-mathematics/pari				compiler-gcc		# needs fix makefiles
-    sci-mathematics/singular			compiler-gcc
     sci-physics/openmodelica			compiler-gcc
     sci-visualization/gnuplot			compiler-gcc
     sci-visualization/paraview			compiler-clang-mold-18
@@ -327,12 +332,14 @@ slug: "gentoo-compiling-clang"
     sys-apps/systemd				compiler-gcc
     sys-auth/sssd					compiler-clang-mold
     sys-boot/gnu-efi				compiler-gcc
+    sys-boot/grub					compiler-gcc
     sys-cluster/glusterfs				compiler-clang-mold
     sys-devel/bin86					compiler-gcc    # error: ISO C99
     sys-devel/binutils				compiler-gcc	# gcc itself	# configure: error: AR
     sys-devel/gcc					compiler-gcc	# gcc itself
     sys-fs/duperemove				compiler-gcc
     sys-libs/binutils-libs				compiler-gcc	# gcc itself
+    sys-libs/freeipmi				compiler-gcc
     sys-libs/ldb					compiler-clang-mold
     sys-libs/talloc					compiler-gcc
     sys-libs/tdb					compiler-clang-mold
@@ -342,12 +349,6 @@ slug: "gentoo-compiling-clang"
     x11-libs/fox					compiler-gcc
     x11-misc/redshift				compiler-gcc
     x11-misc/virtualgl				compiler-clang-mold
-    dev-lang/python					compiler-gcc
-    sys-boot/grub					compiler-gcc
-    sci-libs/netcdf-cxx				compiler-gcc
-    dev-lisp/clisp					compiler-gcc
-    sys-libs/freeipmi				compiler-gcc
-    dev-lang/ghc					compiler-gcc
     ```
 
 
@@ -495,7 +496,32 @@ LDFLAGS="${LDFLAGS} -fuse-ld=mold"
 </div>
 
 
-#### <span class="section-num">4.3.7</span> clang + binutils {#clang-plus-binutils}
+#### <span class="section-num">4.3.7</span> clang-21 + mold {#clang-21-plus-mold}
+
+```conf-unix
+# Normal settings here
+COMMON_FLAGS="-O2 -march=native"
+CFLAGS="${COMMON_FLAGS}"
+CXXFLAGS="${COMMON_FLAGS}"
+CLANG_NO_DEFAULT_CONFIG=1
+
+CC="clang-21"
+CPP="clang-cpp-21"
+CXX="clang++-21"
+AR="llvm-ar"
+NM="llvm-nm"
+RANLIB="llvm-ranlib"
+OBJCOPY="llvm-objcopy"
+LD="mold"
+LDFLAGS="${LDFLAGS} -fuse-ld=mold"
+```
+<div class="src-block-caption">
+  <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 14:</span>
+  /etc/portage/env/compiler-clang-mold-21
+</div>
+
+
+#### <span class="section-num">4.3.8</span> clang + binutils {#clang-plus-binutils}
 
 -   Конфигурация для компилятора /clang/в файле `/etc/portage/env/compiler-clang-binutils`:
     ```conf-unix
@@ -510,7 +536,7 @@ LDFLAGS="${LDFLAGS} -fuse-ld=mold"
     LD="ld"
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 14:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 15:</span>
       /etc/portage/env/compiler-clang-binutils
     </div>
 

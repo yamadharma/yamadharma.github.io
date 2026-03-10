@@ -2,7 +2,7 @@
 title: "LaTeX. Пакет siunitx"
 author: ["Dmitry S. Kulyabov"]
 date: 2026-03-06T21:39:00+03:00
-lastmod: 2026-03-06T22:14:00+03:00
+lastmod: 2026-03-09T21:15:00+03:00
 tags: ["latex"]
 categories: ["computer-science"]
 draft: false
@@ -206,7 +206,7 @@ LaTeX. Пакет siunitx
 
 <!--listend-->
 
-```tex
+```bibtex
 \documentclass{article}
 \usepackage{tabularray}
 \UseTblrLibrary{siunitx}

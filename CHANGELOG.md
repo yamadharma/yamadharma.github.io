@@ -1,3 +1,22 @@
+## [1.1.3](https://github.com/yamadharma/yamadharma.github.io/compare/v1.1.2...v1.1.3) (2026-03-13)
+
+
+### Bug Fixes
+
+* **script:** fix org-roam-links script ([ce64b40](https://github.com/yamadharma/yamadharma.github.io/commit/ce64b407582f123a162af9fff582fd59c2b401a2))
+* **scripts:** fix scripts ([01b2c2e](https://github.com/yamadharma/yamadharma.github.io/commit/01b2c2e1bb4aa22c9f69f830eb69103f169d6f76))
+
+
+### Features
+
+* **post:** add post about magit ([cc29d35](https://github.com/yamadharma/yamadharma.github.io/commit/cc29d35114dd600b78b2f0e76d645b315ba9c7d4))
+* **post:** add siunitx ([81562a5](https://github.com/yamadharma/yamadharma.github.io/commit/81562a53b03301fe59811e8e852270ee1afc7838))
+* **theme:** begin switch to page bundle ([26f9938](https://github.com/yamadharma/yamadharma.github.io/commit/26f99383abc15d859525d1294d42f12a70194ab7))
+* **theme:** move publications to page bundle ([e9a9232](https://github.com/yamadharma/yamadharma.github.io/commit/e9a92322bde90d5fcf82ae92fd942ac35702964f))
+* **theme:** switch to page bundle ([aa25f7f](https://github.com/yamadharma/yamadharma.github.io/commit/aa25f7ff4ce6da2b62aa92bf331624e40d15b406))
+
+
+
 ## [1.1.2](https://github.com/yamadharma/yamadharma.github.io/compare/v1.1.1...v1.1.2) (2026-03-03)
 
 

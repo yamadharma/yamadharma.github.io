@@ -5,7 +5,7 @@ authors:
 - Дмитрий Сергеевич Кулябов
 - Юрий Юрьевич Сёмкин
 date: '2009-01-01'
-publishDate: '2026-03-10T09:32:56.375484Z'
+publishDate: '2026-03-14T17:17:54.398228Z'
 publication_types:
 - paper-conference
 publication: '*Демидовские чтения – ТУЛА, 2009*'

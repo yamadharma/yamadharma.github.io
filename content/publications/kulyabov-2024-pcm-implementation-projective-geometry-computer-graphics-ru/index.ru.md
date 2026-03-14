@@ -6,7 +6,7 @@ authors:
 - Дмитрий Сергеевич Кулябов
 - Леонид Антонович Севастьянов
 date: '2024-01-01'
-publishDate: '2026-03-10T09:32:58.984789Z'
+publishDate: '2026-03-14T17:17:56.392660Z'
 publication_types:
 - article-journal
 publication: '*Программирование*'

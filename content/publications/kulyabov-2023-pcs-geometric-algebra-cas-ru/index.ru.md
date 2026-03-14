@@ -7,7 +7,7 @@ authors:
 - Анастасия Вячеславовна Демидова
 - Татьяна Рефатовна Велиева
 date: '2023-01-01'
-publishDate: '2026-03-10T09:32:58.870120Z'
+publishDate: '2026-03-14T17:17:56.300216Z'
 publication_types:
 - article-journal
 publication: '*Программирование*'

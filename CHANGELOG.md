@@ -1,3 +1,18 @@
+## [1.1.4](https://github.com/yamadharma/yamadharma.github.io/compare/v1.1.3...v1.1.4) (2026-03-17)
+
+
+### Bug Fixes
+
+* **bib:** fix show english publication in russian page ([e518876](https://github.com/yamadharma/yamadharma.github.io/commit/e5188765ef9ec1a9755afc864f3ff70920b60860))
+* **theme:** fix author name ([e395c30](https://github.com/yamadharma/yamadharma.github.io/commit/e395c30aec8b5ee5d852ddd492ada0684ad869ce))
+
+
+### Features
+
+* **post:** add post about events and slides ([5ae1141](https://github.com/yamadharma/yamadharma.github.io/commit/5ae1141f007bf2d4cfc1dcced08b2a45380f29fc))
+
+
+
 ## [1.1.3](https://github.com/yamadharma/yamadharma.github.io/compare/v1.1.2...v1.1.3) (2026-03-13)
 
 

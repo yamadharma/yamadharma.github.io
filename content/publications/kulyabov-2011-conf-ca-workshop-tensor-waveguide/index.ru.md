@@ -5,7 +5,7 @@ authors:
 - Дмитрий Сергеевич Кулябов
 - Наталья Андреевна Немчанинова
 date: '2011-01-01'
-publishDate: '2026-03-10T09:32:56.524033Z'
+publishDate: '2026-03-14T17:17:54.524107Z'
 publication_types:
 - paper-conference
 publication: '*14-th Workshop on Computer Algebra June 2-3, 2011, Dubna*'

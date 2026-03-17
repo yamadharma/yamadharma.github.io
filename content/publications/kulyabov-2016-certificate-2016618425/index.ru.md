@@ -6,7 +6,7 @@ authors:
 - Мигран Нельсонович Геворкян
 - Хосе Роландо Мачука
 date: '2016-07-01'
-publishDate: '2026-03-10T09:32:57.148190Z'
+publishDate: '2026-03-14T17:17:55.015034Z'
 publication_types:
 - patent
 

@@ -5,7 +5,7 @@ authors:
 - Анна Владиславовна Королькова
 - Леонид Антонович Севастьянов
 date: '2019-01-01'
-publishDate: '2026-03-10T09:32:58.303833Z'
+publishDate: '2026-03-14T17:17:55.824585Z'
 publication_types:
 - article-journal
 publication: '*Программирование*'

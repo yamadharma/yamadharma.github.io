@@ -6,7 +6,7 @@ authors:
 - Анастасия Вячеславовна Демидова
 - Олеся Витальевна Кузнецова
 date: '2013-01-01'
-publishDate: '2026-03-10T09:32:56.720934Z'
+publishDate: '2026-03-14T17:17:54.692406Z'
 publication_types:
 - article-journal
 publication: '*T-Comm - Телекоммуникации и транспорт*'

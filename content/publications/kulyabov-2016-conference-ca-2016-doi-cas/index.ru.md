@@ -6,7 +6,7 @@ authors:
 - Дмитрий Сергеевич Кулябов
 - Леонид Антонович Севастьянов
 date: '2016-01-01'
-publishDate: '2026-03-10T09:32:57.199293Z'
+publishDate: '2026-03-14T17:17:55.039674Z'
 publication_types:
 - paper-conference
 publication: '*Компьютерная алгебра*'

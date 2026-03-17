@@ -3,6 +3,7 @@
 import os
 import re
 import yaml
+import shutil
 from pathlib import Path
 import argparse
 
@@ -135,7 +136,7 @@ def migrate_fields(content):
     return content, data
 
 
-def process_file(file_path, backup=True, rename_lang=True):
+def process_file(file_path, backup=True, rename_lang=True, copy_en_to_ru=True):
     dir_name = os.path.dirname(file_path)
     bib_path = os.path.join(dir_name, "cite.bib")
 
@@ -188,6 +189,7 @@ def process_file(file_path, backup=True, rename_lang=True):
 
     # Переименование по языку (если нужно)
     renamed = False
+    final_path = file_path  # итоговый путь после возможного переименования
     if rename_lang:
         lang = get_language_from_bib(bib_path)
         if lang:
@@ -205,17 +207,32 @@ def process_file(file_path, backup=True, rename_lang=True):
                 print(f"Переименован: {file_path} -> {new_path}")
                 renamed = True
 
+    # Копирование index.en.md в index.ru.md, если требуется
+    if copy_en_to_ru and os.path.basename(final_path) == "index.en.md":
+        ru_path = os.path.join(dir_name, "index.ru.md")
+        if os.path.exists(ru_path):
+            if backup:
+                backup_ru = f"{ru_path}.bak"
+                os.rename(ru_path, backup_ru)
+                print(f"Существующий {ru_path} перемещён в {backup_ru}")
+            else:
+                os.remove(ru_path)
+        shutil.copy2(final_path, ru_path)
+        print(f"Скопирован {final_path} -> {ru_path}")
+
     return modified or renamed
 
 
-def process_directory(directory="content/publications/", backup=True, rename_lang=True):
+def process_directory(
+    directory="content/publications/", backup=True, rename_lang=True, copy_en_to_ru=True
+):
     modified_files = []
 
     for root, _, files in os.walk(directory):
         for file in files:
             if file.endswith(".md"):
                 full_path = os.path.join(root, file)
-                if process_file(full_path, backup, rename_lang):
+                if process_file(full_path, backup, rename_lang, copy_en_to_ru):
                     modified_files.append(full_path)
 
     print(f"Обработка завершена. Файлы с изменениями: {len(modified_files)}")
@@ -245,6 +262,12 @@ if __name__ == "__main__":
         dest="rename_lang",
         help="Отключить автоматическое переименование по языку",
     )
+    parser.add_argument(
+        "--no-copy-en-to-ru",
+        action="store_false",
+        dest="copy_en_to_ru",
+        help="Отключить копирование index.en.md в index.ru.md",
+    )
 
     args = parser.parse_args()
-    process_directory(args.directory, args.backup, args.rename_lang)
+    process_directory(args.directory, args.backup, args.rename_lang, args.copy_en_to_ru)

@@ -6,7 +6,7 @@ authors:
 - Анна Владиславовна Королькова
 - Анастасия Вячеславовна Демидова
 date: '2025-01-01'
-publishDate: '2026-03-10T09:32:59.011631Z'
+publishDate: '2026-03-14T17:17:56.413994Z'
 publication_types:
 - book
 publication: '*РУДН*'

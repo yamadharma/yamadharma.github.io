@@ -2,7 +2,7 @@
 title: "Hugo. Шаблон для научных работников"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-07-02T15:02:00+03:00
-lastmod: 2026-01-21T21:57:00+03:00
+lastmod: 2026-03-17T21:19:00+03:00
 tags: ["hugo", "sysadmin"]
 categories: ["computer-science"]
 draft: false
@@ -88,6 +88,8 @@ slug: "hugo-template-for-scientists"
 ## <span class="section-num">5</span> Типы контента Wowchemy {#типы-контента-wowchemy}
 
 -   [Hugo. Wowchemy. Book]({{< relref "2022-11-22-hugo-wowchemy-book" >}})
+-   [Hugo. Hugoblox. Events]({{< relref "2026-03-17--hugo-hugoblox-events" >}})
+-   [Hugo. Hugoblox. Слайды]({{< relref "2026-03-17--hugo-hugoblox-slides" >}})
 
 
 ## <span class="section-num">6</span> Полезности {#полезности}

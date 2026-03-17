@@ -14,7 +14,7 @@ title: Plan9
 
 ## Plan9 ####
 
-{{< figure library="true" src="/2006/06/glenda-vs-tux.jpg" title="Glenda vs Tux" lightbox="true" >}}
+{{< figure library="true" src="glenda-vs-tux.jpg" title="Glenda vs Tux" lightbox="true" >}}
 
 <!--more-->
 

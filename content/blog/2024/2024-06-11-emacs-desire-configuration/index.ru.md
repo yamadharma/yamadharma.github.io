@@ -2,7 +2,7 @@
 title: "Emacs. Desire. Конфигурация"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-06-11T18:55:00+03:00
-lastmod: 2026-03-13T16:17:00+03:00
+lastmod: 2026-03-21T18:13:00+03:00
 tags: ["emacs"]
 categories: ["computer-science"]
 draft: false
@@ -3203,6 +3203,92 @@ slug: "emacs-desire-configuration"
           <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 93:</span>
           packages/stripspace.ecf
         </div>
+
+
+#### <span class="section-num">3.17.4</span> julia-formatter {#julia-formatter}
+
+-   [Emacs. Пакет julia-formatter]({{< relref "2026-03-21--emacs-julia-formatter" >}})
+
+<!--list-separator-->
+
+1.  Подключение
+
+    -   Файл: `rc.packages.el`
+        ```emacs-lisp
+        ;; (desire 'julia-formatter)
+        ```
+
+<!--list-separator-->
+
+2.  Загрузка
+
+    -   Файл: `packages/julia-formatter/loaddefs.ecf`
+        ```emacs-lisp
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;; Use JuliaFormatter.jl to format julia code in Emacs
+        ;; https://codeberg.org/FelipeLema/julia-formatter.el
+
+        ;;; Code:
+
+
+        ;;;
+        ```
+
+<!--list-separator-->
+
+3.  Конфигурация
+
+    -   Файл: `packages/julia-formatter/desire.ecf`
+        ```emacs-lisp
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;; Use JuliaFormatter.jl to format julia code in Emacs
+        ;; https://codeberg.org/FelipeLema/julia-formatter.el
+
+        ;;; Code:
+
+        (require 'julia-formatter)
+
+        ;;;; Julia Image compilation prompt
+        (setopt julia-formatter-should-compile-julia-image 'always-compile)
+
+        (add-hook 'julia-mode-hook #'julia-formatter-mode)
+
+        ;;;
+        ```
+
+<!--list-separator-->
+
+4.  Интеграция с aggressive-indent
+
+    -   Файл: `packages/julia-formatter/aggressive-indent.ecf`
+        ```emacs-lisp
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;; Use JuliaFormatter.jl to format julia code in Emacs
+        ;; https://codeberg.org/FelipeLema/julia-formatter.el
+
+        ;;; Code:
+
+        (add-hook 'julia-formatter-mode-hook #'aggressive-indent)
+
+        ;;;
+        ```
+
+<!--list-separator-->
+
+5.  Интеграция с julia-mode
+
+    -   Файл: `packages/julia-mode/julia-formatter.ecf`
+        ```emacs-lisp
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;; Use JuliaFormatter.jl to format julia code in Emacs
+        ;; https://codeberg.org/FelipeLema/julia-formatter.el
+
+        ;;; Code:
+
+        (require 'julia-formatter)
+
+        ;;;
+        ```
 
 
 ### <span class="section-num">3.18</span> Сворачивание {#сворачивание}
@@ -8994,6 +9080,30 @@ slug: "emacs-desire-configuration"
             ;;;; Configure lsp + julia
             (add-hook 'julia-mode-hook #'lsp-mode)
             (add-hook 'julia-mode-hook #'lsp)
+
+            ;;;
+            ```
+
+        <!--list-separator-->
+
+        4.  apheleia
+
+            -   Файл: `packages/julia-mode/apheleia.ecf`
+
+            <!--listend-->
+
+            ```emacs-lisp
+            ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+            ;;; An opinionated code formatter for Julia
+            ;; https://github.com/domluna/JuliaFormatter.jl
+
+            ;;; Code:
+
+            (if (executable-find "jlfmt")
+                (with-eval-after-load 'apheleia
+                  (setf (alist-get 'jlfmt apheleia-formatters) '("jlfmt" "-o" filepath))
+                  (setf (alist-get 'julia-mode apheleia-mode-alist) 'jlfmt))
+              nil)
 
             ;;;
             ```

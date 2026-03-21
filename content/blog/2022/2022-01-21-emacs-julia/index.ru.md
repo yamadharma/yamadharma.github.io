@@ -2,7 +2,7 @@
 title: "Emacs. Julia"
 author: ["Dmitry S. Kulyabov"]
 date: 2022-01-21T17:13:00+03:00
-lastmod: 2025-07-06T21:58:00+03:00
+lastmod: 2026-03-21T16:44:00+03:00
 tags: ["MOC", "julia", "emacs", "programming"]
 categories: ["computer-science"]
 draft: false
@@ -30,3 +30,8 @@ slug: "emacs-julia"
 ## <span class="section-num">3</span> lsp {#lsp}
 
 -   [Emacs. Julia. Julia-lsp]({{< relref "2025-07-06--emacs-julia-julia-lsp" >}})
+
+
+## <span class="section-num">4</span> Форматирование {#форматирование}
+
+-   [Emacs. Пакет julia-formatter]({{< relref "2026-03-21--emacs-julia-formatter" >}})

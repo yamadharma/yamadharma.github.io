@@ -2,8 +2,8 @@
 title: "Обновление деривативов RedHat"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-09-12T12:48:00+03:00
-lastmod: 2025-09-10T15:12:00+03:00
-tags: ["linux", "sysadmin"]
+lastmod: 2026-03-19T17:48:00+03:00
+tags: ["redhat", "linux", "sysadmin"]
 categories: ["computer-science"]
 draft: false
 slug: "redhat-derivatives-update"
@@ -358,3 +358,187 @@ slug: "redhat-derivatives-update"
 
 
 ## <span class="section-num">4</span> 9 → 10 {#9-10}
+
+
+### <span class="section-num">4.1</span> Обновление Alma 9 до Alma 10 {#обновление-alma-9-до-alma-10}
+
+
+#### <span class="section-num">4.1.1</span> Общая информация {#общая-информация}
+
+-   Будем использовать проект Elevate.
+
+
+#### <span class="section-num">4.1.2</span> Подготовка к обновлению {#подготовка-к-обновлению}
+
+<!--list-separator-->
+
+1.  Проверка готовности
+
+    -   Обновите систему:
+        ```shell
+        sudo dnf -y upgrade
+        ```
+    -   Перегрузите машину:
+        ```shell
+        sudo reboot
+        ```
+    -   Проверка архитектуры процессора (CPU).
+        -   AlmaLinux 10 требует поддержки архитектуры `x86_64-v3`.
+        -   Выполните команду, чтобы убедиться, что ваш процессор совместим.
+            ```shell
+            /usr/lib64/ld-linux-x86-64.so.2 --help | grep x86-64-v3
+            ```
+        -   Если в выводе есть `x86-64-v3 (supported, searched)`, то система готова к обновлению.
+    -   Убедитесь, что на корневом разделе (`/`) есть не менее 5 ГБ свободного места для загрузки и распаковки новых пакетов.
+
+<!--list-separator-->
+
+2.  Установка инструментов
+
+    -   Установите пакет _elevate-release_:
+        ```shell
+        sudo dnf install -y http://repo.almalinux.org/elevate/elevate-release-latest-el$(rpm --eval %rhel).noarch.rpm
+        ```
+    -   Отменить исключение пакетов, выполненное при предыдущем обновлении:
+        ```shell
+        sudo dnf config-manager --save --setopt exclude=''
+        ```
+    -   Установите утилиты для миграции:
+        ```shell
+        sudo dnf install -y leapp-upgrade leapp-data-almalinux
+        ```
+    -   Лучше установить SELinux в `permissive` в файле `/etc/selinux/config`.
+    -   Перегрузите компьютер.
+    -   Восстановите метки SELinux:
+        ```shell
+        sudo restorecon -vR /
+        ```
+    -   Удалите внешние репозитории:
+        ```shell
+        dnf remove epel-release
+        ```
+
+<!--list-separator-->
+
+3.  Проверка готовности (Preupgrade)
+
+    -   Проверьте возможность обновления:
+        ```shell
+        sudo leapp preupgrade
+        ```
+    -   Отчёт находится в файле `/var/log/leapp/leapp-report.txt`.
+    -   Там же находятся и рекомендации по устранению проблем.
+    -   Тут же будет список неподписанных пакетов, которые, скорее всего, вам придётся установить заново после обновления.
+    -   Также создаётся файл `/var/log/leapp/answerfile`, где нужно подтвердить действия.
+        -   Ответить на них можно командой
+            ```shell
+            sudo leapp answer --section <имя_секции>.confirm=True
+            ```
+    -   Нужно вносить исправления до тех пор, пока повторный запуск `sudo leapp preupgrade` не покажет `0 Inhibitors`.
+
+<!--list-separator-->
+
+4.  Наиболее частые проблемы (ингибиторы)
+
+    -   Устаревшая сетевая конфигурация (Legacy network configuration).
+        -   Leapp сообщит, что обнаружены файлы в `/etc/sysconfig/network-scripts/`.
+        -   Нужно мигрировать конфигурацию в формат, поддерживаемый NetworkManager.
+            ```shell
+            sudo nmcli con migrate
+            ```
+        -   Сами скрипты нужно удалить.
+
+    -   Модуль ядра `qla4xxx`.
+        -   Может вызывать конфликт.
+        -   Нужно выгрузить модуль.
+            ```shell
+            sudo rmmod qla4xxx
+            ```
+
+    -   Репозиторий Ceph
+        -   Файл конфигурации этого репозитория может мешать обновлению.
+        -   Нужно удалить его.
+            ```sh
+            sudo rm /etc/yum.repos.d/ceph.repo
+            ```
+
+
+#### <span class="section-num">4.1.3</span> Обновление {#обновление}
+
+-   Обычно пакеты `make-devel` и `rocky-logos` приводят к сбою обновления. Удалите их:
+    ```shell
+    dnf -y remove make-devel
+    dnf -y remove rocky-logos
+    ```
+-   После подготовки сделайте обновление:
+    ```shell
+    sudo leapp upgrade
+    ```
+-   После скачивания необходимых пакетов будет предложено перегрузить машину.
+-   Выполните перезагрузку:
+    ```shell
+    sudo reboot
+    ```
+-   После перезагрузки в меню GRUB автоматически будет выбран пункт `ELevate-Upgrade-Initramfs` (или аналогичный).
+-   Не вмешивайтесь в процесс.
+    Начнется финальная фаза обновления, в ходе которой будут заменены все пакеты.
+-   Этот этап может занять от 10 до 30 минут и более, в зависимости от производительности сервера.
+-   На экране будет отображаться прогресс.
+-   По окончании этого процесса сервер снова перезагрузится автоматически и загрузится уже с ядром AlmaLinux 10.
+
+
+#### <span class="section-num">4.1.4</span> После обновления {#после-обновления}
+
+-   Проверьте версию ОС после входа в систему:
+    ```shell
+    cat /etc/almalinux-release
+    # Ожидаемый вывод: AlmaLinux 10.X
+
+    uname -r
+    # Должно отображаться ядро версии 5.14.0 или новее
+    ```
+
+-   Удалите оставшиеся пакеты от AlmaLinux 9.
+    ```shell
+    # Посмотреть список пакетов с меткой el9
+    rpm -qa | grep el9
+
+    # Удалить их все одной командой (будьте внимательны!)
+    sudo dnf remove $(rpm -qa | grep el9)
+    ```
+
+-   Верните SELinux в `enforcing mode`.
+-   Отредактируйте файл конфигурации:
+    ```shell
+    sudo vi /etc/sysconfig/selinux
+    ```
+-   Установите параметр `SELINUX=enforcing`, затем перезагрузите сервер для применения настроек.
+    ```shell
+    sudo reboot
+    ```
+
+-   Установите внешние репозитории:
+    ```shell
+    sudo dnf config-manager --set-enabled crb
+    sudo dnf -y install epel-release
+    sudo /usr/bin/crb enable
+    sudo dnf -y install almalinux-release-devel
+    ```
+-   Обновите необновлённые пакеты:
+    ```shell
+    sudo dnf -y update
+    ```
+-   Установите удалённые пакеты, например:
+    ```shell
+    sudo dnf -y install fail2ban
+    sudo systemctl enable --now fail2ban.service
+    ```
+-   Если используете LVM, обновите метаданные:
+    ```shell
+    sudo vgck --updatemetadata <volume_group_name>
+    ```
+
+    -   Можно в виде скрипта:
+        ```shell
+        for i in $(vgdisplay -A -c 2>/dev/null | cut -f1 -d: | xargs ); do sudo vgck --updatemetadata ${i}; done
+        ```

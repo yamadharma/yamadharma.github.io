@@ -2,7 +2,7 @@
 title: "Семинар Математическое моделирование, 2025-2026"
 author: ["Dmitry S. Kulyabov"]
 date: 2025-09-07T17:19:00+03:00
-lastmod: 2026-03-05T14:48:00+03:00
+lastmod: 2026-03-20T17:29:00+03:00
 tags: ["modeling"]
 categories: ["science"]
 draft: false
@@ -410,7 +410,7 @@ This paper explores the development of mathematical modeling tools using fractio
 The research is devoted to the study of mathematical and computational methods for modeling the propagation of radiation in transforming media based on the eikonal equation. A formulation of the problem is given within the framework of geometrical optics, and an analysis of radially symmetric refractive index profiles, including the Luneburg, Maxwell, and Eaton lenses, is carried out. A numerical algorithm for solving the eikonal equation using the Fast Sweeping Method (FSM) has been implemented, and the convergence and stability of the scheme have been investigated. Software in the Julia programming language has been developed to compute level lines of the phase function and reconstruct ray trajectories. Wavefront modeling and verification on analytical profiles have been performed. A neural network-based approach to solving the eikonal equation using Physics-Informed Neural Networks (PINN) within the SciML library of the Julia language has been implemented. A comparative analysis of numerical and neural approaches has been conducted, and the feasibility of their combined application for modeling diffraction systems has been substantiated.
 
 
-### <span class="org-todo todo TODO">TODO</span> <span class="section-num">2.3</span> <span class="timestamp-wrapper"><span class="timestamp">[2026-03-11 Ср]</span></span> Гостев И. М. - Управление заданиями в больших вычислительных системах на основе интеллектуальных агентов {#гостев-и-dot-м-dot-управление-заданиями-в-больших-вычислительных-системах-на-основе-интеллектуальных-агентов}
+### <span class="org-todo done DONE">DONE</span> <span class="section-num">2.3</span> <span class="timestamp-wrapper"><span class="timestamp">[2026-03-11 Ср]</span></span> Гостев И. М. - Управление заданиями в больших вычислительных системах на основе интеллектуальных агентов {#гостев-и-dot-м-dot-управление-заданиями-в-больших-вычислительных-системах-на-основе-интеллектуальных-агентов}
 
 
 #### <span class="section-num">2.3.1</span> Докладчик {#докладчик}
@@ -459,3 +459,45 @@ Managing the execution of tasks in a large computing system of special purpose i
 Obviously, the satisfaction of such conditions with a continuous flow of tasks and unpredictable laws of their arrival becomes very difficult.
 
 The report considers a simulation model of a system that satisfies the set conditions on the base of the queuing theory.
+
+
+### <span class="org-todo todo TODO">TODO</span> <span class="section-num">2.4</span> <span class="timestamp-wrapper"><span class="timestamp">&lt;2026-03-26 Чт&gt;</span></span> Мамонов А. А. - Реализация и тестирование инволютивных алгоритмов нахождения базиса Гребнера {#мамонов-а-dot-а-dot-реализация-и-тестирование-инволютивных-алгоритмов-нахождения-базиса-гребнера}
+
+
+#### <span class="section-num">2.4.1</span> Докладчик {#докладчик}
+
+-   Мамонов Антон Алексеевич
+-   аспирант
+-   кафедра математического моделирования и искусственного интеллекта РУДН
+
+
+#### <span class="section-num">2.4.2</span> Информация {#информация}
+
+-   <https://events.rudn.ru/event/318/>
+-   Реализация и тестирование инволютивных алгоритмов нахождения базиса Гребнера
+-   Мамонов Антон Алексеевич
+-   аспирант
+-   кафедра математического моделирования и искусственного интеллекта РУДН
+
+Дано обобщение понятия деления в полиномиальных идеалах в виде понятия линейного деления. На его основе представлено оригинальное изложение теории инволютивного деления в полиномиальных идеалах.
+
+Также проведено оригинальное исследование стационарных и периодических режимов многовидовой модели конкуренции и миграции типа Вольтерра с использованием разработанных инструментов. Показано, что система GInv позволяет находить режимы, недоступные стандартному алгоритму Бухбергера.
+
+Реализован программный модуль для системы GInv, выполняющий прогнозирование времени вычисления и выбор оптимальных параметров на основе структурных характеристик полиномиального идеала. На базе тестовых примеров проведено сравнение эффективности классического алгоритма вычисления базиса Гребнера (алгоритм Бухбергера) в системе Sage и инволютивного алгоритма в системе GInv.
+
+На основе результатов компьютерных экспериментов выполнена проверка гипотез о влиянии выбора мономиального порядка и типа деления на вычислительную сложность задачи. Обоснована необходимость предварительной классификации полиномиальных идеалов для оптимизации проводимых вычислений.
+
+---
+
+-   Implementation and testing of involutive algorithms for finding the Grobner basis
+-   Mamonov, Anton Alekseevich
+-   graduate student
+-   Department of Mathematical Modeling and Artificial Intelligence at RUDN University
+
+A generalization of the concept of division in polynomial ideals is given in the form of the concept of linear division. Based on it, an original presentation of the theory of involutive division in polynomial ideals is presented.
+
+An original study of stationary and periodic modes of a multi-species model of competition and migration of the Volterra type was also conducted using the developed tools. It is shown that the GInv system makes it possible to find modes inaccessible to the standard Buchberger algorithm.
+
+A software module has been implemented for the GInv system, which predicts the calculation time and selects optimal parameters based on the structural characteristics of a polynomial ideal. Based on test examples, the effectiveness of the classical algorithm for calculating the Grobner basis (Buchberger algorithm) in the Sage system and the involutive algorithm in the GInv system is compared.
+
+Based on the results of computer experiments, hypotheses about the effect of choosing a monomial order and type of division on the computational complexity of the problem were tested. The necessity of a preliminary classification of polynomial ideals for optimizing the calculations is substantiated.

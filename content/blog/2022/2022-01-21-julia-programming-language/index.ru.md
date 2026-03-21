@@ -2,7 +2,7 @@
 title: "Язык программирования Julia"
 author: ["Dmitry S. Kulyabov"]
 date: 2022-01-21T16:52:00+03:00
-lastmod: 2025-10-09T17:55:00+03:00
+lastmod: 2026-03-21T14:59:00+03:00
 tags: ["MOC", "julia", "programming"]
 categories: ["computer-science"]
 draft: false
@@ -43,12 +43,17 @@ slug: "julia-programming-language"
 ## <span class="section-num">4</span> Пакеты {#пакеты}
 
 
-### <span class="section-num">4.1</span> Дифференциальные уравнения {#дифференциальные-уравнения}
+### <span class="section-num">4.1</span> Работа с кодом {#работа-с-кодом}
+
+-   [Julia. Форматирование кода]({{< relref "2026-03-21--julia-code-formatting" >}})
+
+
+### <span class="section-num">4.2</span> Дифференциальные уравнения {#дифференциальные-уравнения}
 
 -   [Julia. DifferentialEquations.jl. Callback functions]({{< relref "2021-01-02-julia-differentialequations-callback-functions" >}})
 
 
-### <span class="section-num">4.2</span> Управление рабочей средой {#управление-рабочей-средой}
+### <span class="section-num">4.3</span> Управление рабочей средой {#управление-рабочей-средой}
 
 -   [Julia. Пакет Revise]({{< relref "2025-03-22--julia-revise-package" >}})
 -   [Julia. Пакет DrWatson]({{< relref "2025-05-14--julia-drwatson" >}})
@@ -56,6 +61,6 @@ slug: "julia-programming-language"
 -   [Обновление Julia]({{< relref "2025-10-09--update-julia" >}})
 
 
-### <span class="section-num">4.3</span> Скрипты {#скрипты}
+### <span class="section-num">4.4</span> Скрипты {#скрипты}
 
 -   [Julia. JuliaScript]({{< relref "2025-03-25--julia-juliascript" >}})

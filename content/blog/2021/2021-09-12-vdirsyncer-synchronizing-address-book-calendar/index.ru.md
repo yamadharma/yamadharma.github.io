@@ -2,7 +2,7 @@
 title: "Vdirsyncer. Синхронизация адресной книги и календаря"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-09-12T16:01:00+03:00
-lastmod: 2021-11-02T12:31:00+03:00
+lastmod: 2026-03-19T20:49:00+03:00
 tags: ["sysadmin"]
 categories: ["computer-science"]
 draft: false
@@ -26,7 +26,6 @@ slug: "vdirsyncer-synchronizing-address-book-calendar"
 
 -   Linux
     -   Gentoo
-
         ```shell
         emerge vdirsyncer
         ```
@@ -38,7 +37,6 @@ slug: "vdirsyncer-synchronizing-address-book-calendar"
 ### <span class="section-num">3.1</span> Типовая конфигурация {#типовая-конфигурация}
 
 -   В поставке идёт пример файла конфигурации:
-
     ```ini
     # An example configuration for vdirsyncer.
     #
@@ -138,7 +136,6 @@ slug: "vdirsyncer-synchronizing-address-book-calendar"
 
 -   Дистрибутив включает файлы модулей для запуска с определённым интервалом (по умолчанию каждые 15 ± 5 минут).
 -   Файл `vdirsyncer.service`:
-
     ```ini
     [Unit]
     Description=Synchronize calendars and contacts
@@ -150,7 +147,6 @@ slug: "vdirsyncer-synchronizing-address-book-calendar"
     Restart=on-failure
     ```
 -   Файл `vdirsyncer.timer`:
-
     ```ini
     [Unit]
     Description=Synchronize vdirs
@@ -165,7 +161,6 @@ slug: "vdirsyncer-synchronizing-address-book-calendar"
     ```
 -   Для запуска на уровне пользователя скопируйте их в каталог `~/.config/systemd/user`.
 -   Для активации и запуска выполните:
-
     ```shell
     systemctl --user enable vdirsyncer.timer
     systemctl --user start vdirsyncer.timer

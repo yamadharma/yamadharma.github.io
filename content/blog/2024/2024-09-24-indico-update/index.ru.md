@@ -2,7 +2,7 @@
 title: "Indico. Обновление"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-09-24T11:23:00+03:00
-lastmod: 2024-09-24T15:45:00+03:00
+lastmod: 2026-03-21T21:24:00+03:00
 tags: ["sysadmin"]
 categories: ["computer-science"]
 draft: false

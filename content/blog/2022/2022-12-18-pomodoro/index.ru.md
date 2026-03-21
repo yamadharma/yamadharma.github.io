@@ -2,7 +2,7 @@
 title: "Метод pomodoro"
 author: ["Dmitry S. Kulyabov"]
 date: 2022-12-18T13:50:00+03:00
-lastmod: 2023-01-10T16:17:00+03:00
+lastmod: 2026-03-19T20:45:00+03:00
 categories: ["self-management"]
 draft: false
 slug: "pomodoro"
@@ -176,14 +176,12 @@ slug: "pomodoro"
     -   Решение
         -   Отсутствует
 
+
+## <span class="section-num">4</span> Библиография {#библиография}
+
 ## Литература
 
-<style>.csl-left-margin{float: left; padding-right: 0em;}
- .csl-right-inline{margin: 0 0 0 1em;}</style><div class="csl-bib-body">
-  <div class="csl-entry"><a id="citeproc_bib_item_1"></a>
-    <div class="csl-left-margin">1.</div><div class="csl-right-inline">Чирилло Ф. <a href="https://libgen.li/file.php?md5=6bb42e194ac3a28f84b40b2e4d28f937">Метод помидора: Управление временем, вдохновением и концентрацией</a> / trans. by Бабина Н.В. 2020. 120 p.</div>
-  </div>
-  <div class="csl-entry"><a id="citeproc_bib_item_2"></a>
-    <div class="csl-left-margin">2.</div><div class="csl-right-inline">Нётеберг Ш. Тайм-менеджмент по помидору: Как концентрироваться на одном деле хотя бы 25 минут. 2-е изд. / trans. by Подобед В.В. Москва: Альпина Паблишер, 2020. 245 p.</div>
-  </div>
+<div class="csl-bib-body">
+  <div class="csl-entry"><a id="citeproc_bib_item_1"></a>1.	Чирилло, Ф. <a href="https://libgen.li/file.php?md5=6bb42e194ac3a28f84b40b2e4d28f937">Метод Помидора: Управление временем, вдохновением и концентрацией</a>. Метод Помидора / Ф. Чирилло; Н.В. Бабина пер. . – 2020. – 120 сс.</div>
+  <div class="csl-entry"><a id="citeproc_bib_item_2"></a>2.	Нётеберг, Ш. Тайм-менеджмент по помидору: Как концентрироваться на одном деле хотя бы 25 минут : Библиотека ЭКОПСИ. Тайм-менеджмент по помидору / Ш. Нётеберг; В.В. Подобед пер. . – 2-е изд. – Москва : Альпина Паблишер, 2020. – 245 сс.</div>
 </div>

@@ -2,7 +2,7 @@
 title: "Системное администрирование"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-04-10T18:18:00+03:00
-lastmod: 2026-02-23T18:36:00+03:00
+lastmod: 2026-03-21T14:24:00+03:00
 tags: ["MOC", "sysadmin"]
 categories: ["computer-science"]
 draft: false
@@ -163,11 +163,13 @@ slug: "system-administration"
 -   [Rocky Linux. Установка сервера]({{< relref "2022-08-12-rockylinux-server-installation" >}})
 -   [Автообновление систем на базе деривативов RedHat]({{< relref "2022-09-25-redhat-based-systems-auto-update" >}})
 -   [Обновление деривативов RedHat]({{< relref "2024-09-12-redhat-derivatives-update" >}})
+-   [Миграция на AlmaLinux]({{< relref "2026-03-19--migrating-almalinux" >}})
 
 
 ### <span class="section-num">9.5</span> Управление программным обеспечением {#управление-программным-обеспечением}
 
 -   [Обновление пакетов python]({{< relref "2022-01-21-update-all-python-packages" >}})
+-   [Python. Переход с pipx на uv]({{< relref "2026-03-21--python-moving-pipx-uv" >}})
 
 
 ### <span class="section-num">9.6</span> Терминальный доступ {#терминальный-доступ}

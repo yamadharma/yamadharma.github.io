@@ -2,7 +2,7 @@
 title: "Обновление пакетов python"
 author: ["Dmitry S. Kulyabov"]
 date: 2022-01-21T16:33:00+03:00
-lastmod: 2023-09-19T09:30:00+03:00
+lastmod: 2026-03-21T14:19:00+03:00
 tags: ["sysadmin"]
 categories: ["computer-science"]
 draft: false

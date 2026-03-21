@@ -1,3 +1,12 @@
+## [1.1.5](https://github.com/yamadharma/yamadharma.github.io/compare/v1.1.4...v1.1.5) (2026-03-21)
+
+
+### Features
+
+* **post:** add post about julia formatters ([4faec6e](https://github.com/yamadharma/yamadharma.github.io/commit/4faec6ed2deb52e2cf32694009c8216cba14a730))
+
+
+
 ## [1.1.4](https://github.com/yamadharma/yamadharma.github.io/compare/v1.1.3...v1.1.4) (2026-03-17)
 
 

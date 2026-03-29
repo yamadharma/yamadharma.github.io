@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2007-01-28T18:25:00+00:00'
-lang: ru
 slug: udn
 tags:
   - даты

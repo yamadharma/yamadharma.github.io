@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2007-05-30T14:35:00+00:00'
-lang: ru
 slug: sic-transit-gloria-mundi
 tags:
   - однако

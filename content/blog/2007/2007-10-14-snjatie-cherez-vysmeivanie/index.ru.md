@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2007-10-14T22:22:00+00:00'
-lang: ru
 slug: snjatie-cherez-vysmeivanie
 tags:
   - мысли

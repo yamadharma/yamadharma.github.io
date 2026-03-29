@@ -2,7 +2,7 @@
 title: "Администрирование Linux"
 author: ["Dmitry S. Kulyabov"]
 date: 2023-06-07T18:35:00+03:00
-lastmod: 2025-10-14T20:17:00+03:00
+lastmod: 2026-03-23T09:37:00+03:00
 tags: ["MOC", "sysadmin", "linux"]
 categories: ["computer-science"]
 draft: false
@@ -32,6 +32,7 @@ slug: "linux-administration"
 ### <span class="section-num">1.3</span> Дистрибутивы общего назначения {#дистрибутивы-общего-назначения}
 
 -   [Linux. Дистрибутив Gentoo]({{< relref "2022-09-17-linux-gentoo-distribution" >}})
+-   [Linux. Дистрибутив Manjaro]({{< relref "2026-03-23--linux-manjaro" >}})
 
 
 ### <span class="section-num">1.4</span> Виртуальные машины {#виртуальные-машины}

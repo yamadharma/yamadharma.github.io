@@ -2,7 +2,7 @@
 title: "Семинар Математическое моделирование, 2025-2026"
 author: ["Dmitry S. Kulyabov"]
 date: 2025-09-07T17:19:00+03:00
-lastmod: 2026-03-20T17:29:00+03:00
+lastmod: 2026-03-29T15:54:00+03:00
 tags: ["modeling"]
 categories: ["science"]
 draft: false
@@ -461,7 +461,7 @@ Obviously, the satisfaction of such conditions with a continuous flow of tasks a
 The report considers a simulation model of a system that satisfies the set conditions on the base of the queuing theory.
 
 
-### <span class="org-todo todo TODO">TODO</span> <span class="section-num">2.4</span> <span class="timestamp-wrapper"><span class="timestamp">&lt;2026-03-26 Чт&gt;</span></span> Мамонов А. А. - Реализация и тестирование инволютивных алгоритмов нахождения базиса Гребнера {#мамонов-а-dot-а-dot-реализация-и-тестирование-инволютивных-алгоритмов-нахождения-базиса-гребнера}
+### <span class="org-todo done DONE">DONE</span> <span class="section-num">2.4</span> <span class="timestamp-wrapper"><span class="timestamp">&lt;2026-03-26 Чт&gt;</span></span> Мамонов А. А. - Реализация и тестирование инволютивных алгоритмов нахождения базиса Гребнера {#мамонов-а-dot-а-dot-реализация-и-тестирование-инволютивных-алгоритмов-нахождения-базиса-гребнера}
 
 
 #### <span class="section-num">2.4.1</span> Докладчик {#докладчик}
@@ -501,3 +501,60 @@ An original study of stationary and periodic modes of a multi-species model of c
 A software module has been implemented for the GInv system, which predicts the calculation time and selects optimal parameters based on the structural characteristics of a polynomial ideal. Based on test examples, the effectiveness of the classical algorithm for calculating the Grobner basis (Buchberger algorithm) in the Sage system and the involutive algorithm in the GInv system is compared.
 
 Based on the results of computer experiments, hypotheses about the effect of choosing a monomial order and type of division on the computational complexity of the problem were tested. The necessity of a preliminary classification of polynomial ideals for optimizing the calculations is substantiated.
+
+
+#### <span class="section-num">2.4.3</span> Видео {#видео}
+
+{{< tabs "Мамонов А. А. - Реализация и тестирование инволютивных алгоритмов нахождения базиса Гребнера" >}}
+
+{{< tab "RuTube" >}}{{< rutube 5346b82caa41a2ac80d784eb65f7b07a >}}{{< /tab >}}
+
+{{< tab "VKvideo" >}}{{< vkvideo oid=-230024722 id=456239618 hd=2 >}}{{< /tab >}}
+
+{{< /tabs >}}
+
+
+### <span class="org-todo todo TODO">TODO</span> <span class="section-num">2.5</span> <span class="timestamp-wrapper"><span class="timestamp">&lt;2026-04-08 Ср&gt;</span></span> Захаров И. И. - Математическое моделирование нелокальных физических процессов в средах с фрактальной структурой {#захаров-и-dot-и-dot-математическое-моделирование-нелокальных-физических-процессов-в-средах-с-фрактальной-структурой}
+
+
+#### <span class="section-num">2.5.1</span> Докладчик {#докладчик}
+
+-   Захаров Иван Иванович
+-   преподаватель
+-   кафедра высшей математики НИУ МГСУ
+
+
+#### <span class="section-num">2.5.2</span> Информация {#информация}
+
+-   <https://events.rudn.ru/event/320/>
+-   Математическое моделирование нелокальных физических процессов в средах с фрактальной структурой
+-   Захаров Иван Иванович
+-   преподаватель
+-   кафедра высшей математики НИУ МГСУ
+
+Широкий класс явлений описывается математической моделью, основанной на уравнении адвекции-диффузии. Среди них следует называть прежде всего явление теплопереноса и взаимного проникновения друг в друга различных веществ.
+
+Эта модель перестает быть адекватной при описании процессов адвекции-диффузии в средах с фрактальными свойствами. Поэтому необходимость разработки новых математических методов и высоко эффективных вычислительных алгоритмов востребовали проблемы моделирования как локальных, так и нелокальных процессов тепломассопереноса в средах с фрактальной структурой. В частности, процессы распространения радона в пористых средах. В диссертационной работе идёт речь о моделях, заданных в виде ДДУ, описывающих анормальную диффузию. Прежде всего хотелось бы отметить, что во многих работах, ДДУ (не только уравнения дробной диффузии) получены с помощью простой замены обычных производных на дробные производные (у одних авторов это производная Римана-Лиувилля, у других Капуто и т.д.).
+
+Вышесказанное приводит к тому, что имеется ни одно, а несколько (далеко неэквивалентных) ДДУ для описания процесса адвекции-диффузии. И для проведения реального моделирования нужно не только выбрать соответствующее ДДУ, но и поставить для него технически реализуемую краевую задачу с естественными краевыми условиями.
+
+Таким образом поиск наиболее корректной формы уравнения дробного порядка, описывающей аномальную диффузию, является актуальной проблемой, решение которой необходимо для точного математического моделирования в различных областях науки и технике.
+
+Диссертационная работа посвящена поиску наиболее корректной формы уравнения дробного порядка, описывающего аномальную диффузию. В частности, проблеме корректной формы состояния вещества (особенно при высоком давлении), которая до сих остается открытой.
+
+---
+
+-   Mathematical modelling of non-local physical processes in media with a fractal structure
+-   Zakharov, Ivan Ivanovich
+-   lecturer
+-   Department of Highter Mathematics at Moscow State University of Civil Engineering
+
+A wide range of physical phenomena is described by a mathematical model based on the advection-diffusion equation. Among these, the most notable are heat transfer and the mutual diffusion of different substances.
+
+This model is no longer adequate for describing advection-diffusion processes in media with fractal properties. Consequently, the need to develop new mathematical methods and highly efficient computational algorithms has given rise to the challenge of modelling both local and non-local heat and mass transfer processes in media with a fractal structure. In particular, the processes of radon transport in porous media. This dissertation discusses models formulated as fractional differential equations (FDE) describing anomalous Diffusion. First of all, it should be noted that in many works, FDE (not only fractional diffusion equations) are obtained by simply replacing ordinary derivatives with fractional derivatives (in some authors work this is the Riemann–Liouville derivative, in others the Caputo derivative, etc.).
+
+The above implies that there is not just one, but several (far from equivalent) FDE for describing the advection-diffusion process. And in order to carry out realistic modelling, it is necessary not only to select the appropriate FDE, but also to formulate a technically feasible boundary value problem for it with natural boundary conditions.
+
+Thus, the search for the most accurate form of a fractional-order equation describing anomalous diffusion is a relevant problem, the solution of which is necessary for accurate mathematical modelling in various fields of science and engineering.
+
+This dissertation is devoted to the search for the most correct form of a fractional-order equation describing anomalous diffusion. In particular, it addresses the problem of the correct form of the state of matter (especially at high pressure), which remains an open question to this day.

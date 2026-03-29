@@ -2,7 +2,7 @@
 title: "Gentoo. Компиляция системы clang"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-05-16T15:18:00+03:00
-lastmod: 2026-03-19T12:42:00+03:00
+lastmod: 2026-03-22T12:04:00+03:00
 tags: ["gentoo", "sysadmin", "linux"]
 categories: ["computer-science"]
 draft: false
@@ -177,6 +177,9 @@ slug: "gentoo-compiling-clang"
 
 -   Можно задать компилятор для каждого пакета в отдельности в файле `/etc/portage/package.env`:
     ```conf-unix
+    # kde-apps/step					compiler-clang-mold-18
+    # media-gfx/openvdb				compiler-clang-mold-18
+    # sci-libs/pdal					compiler-clang-mold-18
     # sci-mathematics/giac				compiler-gcc
     # sci-mathematics/pari				compiler-gcc		# needs fix makefiles
     # sci-mathematics/singular			compiler-gcc
@@ -260,7 +263,7 @@ slug: "gentoo-compiling-clang"
     dev-python/zstandard				compiler-gcc
     dev-qt/qtwebengine:5				compiler-clang-mold-18
     dev-qt/qtwebengine:6				compiler-clang-mold-18
-    dev-tcltk/blt                   compiler-clang-mold-21
+    dev-tcltk/blt					compiler-clang-mold-21
     dev-tex/tectonic				compiler-gcc
     dev-util/android-tools				compiler-gcc
     dev-util/kdevelop				compiler-clang-mold-18
@@ -269,7 +272,6 @@ slug: "gentoo-compiling-clang"
     dev-vcs/cvs					compiler-gcc
     dev-vcs/darcs					compiler-clang
     gui-libs/gtk:4					compiler-clang
-    kde-apps/step					compiler-clang-mold-18
     llvm-core/lldb					compiler-clang
     mail-client/thunderbird				compiler-gcc
     media-gfx/autopano-sift-C			compiler-gcc
@@ -277,7 +279,6 @@ slug: "gentoo-compiling-clang"
     media-gfx/exact-image				compiler-gcc
     media-gfx/graphicsmagick			compiler-clang-mold
     media-gfx/inkscape				compiler-clang-mold
-    media-gfx/openvdb				compiler-clang-mold-18
     media-gfx/povray				compiler-gcc
     media-gfx/sane-backends				compiler-gcc
     media-libs/avidemux-core			compiler-gcc
@@ -294,6 +295,7 @@ slug: "gentoo-compiling-clang"
     media-libs/openglide				compiler-gcc
     media-libs/tg_owt				compiler-gcc
     media-libs/urt					compiler-gcc
+    media-libs/vips					compiler-clang-mold-21
     media-sound/audacity				compiler-clang-mold
     media-sound/sox					compiler-clang-mold
     media-video/avidemux				compiler-gcc
@@ -320,7 +322,6 @@ slug: "gentoo-compiling-clang"
     net-vpn/networkmanager-vpnc			compiler-gcc
     sci-libs/djbfft					compiler-gcc
     sci-libs/netcdf-cxx				compiler-gcc
-    sci-libs/pdal					compiler-clang-mold-18
     sci-libs/vtk					compiler-clang-mold-18
     sci-physics/openmodelica			compiler-gcc
     sci-visualization/gnuplot			compiler-gcc
@@ -349,7 +350,6 @@ slug: "gentoo-compiling-clang"
     x11-libs/fox					compiler-gcc
     x11-misc/redshift				compiler-gcc
     x11-misc/virtualgl				compiler-clang-mold
-    media-libs/vips					compiler-clang-mold-21
     ```
 
 

@@ -2,7 +2,6 @@
 categories:
   - волшебный фонарь
 date: '2012-06-24T12:24:00+00:00'
-lang: ru
 slug: filjm-belosnezhka-i-okhotnik
 tags: []
 title: Фильм Белоснежка и охотник

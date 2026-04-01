@@ -2,7 +2,6 @@
 categories:
   - листая-страницы
 date: '2009-07-06T14:34:00+00:00'
-lang: ru
 slug: komedija
 tags:
   - culture

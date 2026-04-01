@@ -2,7 +2,6 @@
 categories:
   - sysadmin
 date: 2015-10-27T13:48:49+03:00
-lang: ru
 slug: samba-migrate
 tags:
   - samba

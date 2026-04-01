@@ -2,7 +2,6 @@
 categories:
   - волшебный фонарь
 date: '2014-05-13T09:13:00+00:00'
-lang: ru
 slug: filjm-bihstree-chem-kroliki
 tags: []
 title: Быстрее, чем кролики

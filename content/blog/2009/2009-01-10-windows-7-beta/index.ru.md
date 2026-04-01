@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2009-01-10T21:08:00+00:00'
-lang: ru
 slug: windows-7-beta
 tags:
   - windows

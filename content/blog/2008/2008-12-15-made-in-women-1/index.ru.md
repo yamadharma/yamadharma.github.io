@@ -2,7 +2,6 @@
 categories:
   - волшебный фонарь
 date: '2008-12-15T12:30:00+00:00'
-lang: ru
 slug: made-in-women-1
 tags:
   - акын

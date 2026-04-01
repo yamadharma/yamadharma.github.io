@@ -2,7 +2,6 @@
 categories:
   - волшебный фонарь
 date: '2009-12-23T18:23:00+00:00'
-lang: ru
 slug: filma-1814
 tags:
   - culture

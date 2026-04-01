@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2006-09-10T16:50:00+00:00'
-lang: ru
 slug: 16-50-00
 tags:
   - politics

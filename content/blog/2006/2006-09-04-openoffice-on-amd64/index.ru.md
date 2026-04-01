@@ -2,7 +2,6 @@
 categories:
   - soft
 date: '2006-09-04T09:16:00+00:00'
-lang: ru
 slug: openoffice-on-amd64
 tags:
   - 64bit

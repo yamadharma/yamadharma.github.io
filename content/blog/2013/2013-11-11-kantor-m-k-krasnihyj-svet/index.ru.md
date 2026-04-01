@@ -2,7 +2,6 @@
 categories:
   - листая-страницы
 date: '2013-11-11T15:59:00+00:00'
-lang: ru
 slug: kantor-m-k-krasnihyj-svet
 tags: []
 title: Кантор М. К. - Красный свет

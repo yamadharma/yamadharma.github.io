@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2006-11-16T10:11:00+00:00'
-lang: ru
 slug: 10-11-00
 tags:
   - приходящие к тебе

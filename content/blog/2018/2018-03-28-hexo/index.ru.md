@@ -2,7 +2,6 @@
 categories:
   - sysadmin
 date: '2018-03-28T13:10:47+00:00'
-lang: ru
 slug: hexo
 tags:
   - blogging

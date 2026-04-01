@@ -2,7 +2,6 @@
 categories:
   - листая-страницы
 date: '2012-12-28T10:15:00+00:00'
-lang: ru
 slug: pikard-l-viktorianskiyj-london-zhiznj-goroda
 tags:
   - microhistory

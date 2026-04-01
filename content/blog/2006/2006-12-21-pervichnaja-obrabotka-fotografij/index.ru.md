@@ -2,7 +2,6 @@
 categories:
   - soft
 date: '2006-12-21T13:41:00+00:00'
-lang: ru
 slug: pervichnaja-obrabotka-fotografij
 tags:
   - хозяйке на заметку

@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2007-04-25T14:00:00+00:00'
-lang: ru
 slug: lubok
 tags:
   - однако

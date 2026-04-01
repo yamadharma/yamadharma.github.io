@@ -2,7 +2,6 @@
 categories:
   - sysadmin
 date: '2018-05-17T08:43:05+00:00'
-lang: ru
 slug: webfm-uninstall
 tags:
   - drupal

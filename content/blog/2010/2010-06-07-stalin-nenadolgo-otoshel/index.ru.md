@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2010-06-07T17:28:00+00:00'
-lang: ru
 slug: stalin-nenadolgo-otoshel
 tags:
   - history

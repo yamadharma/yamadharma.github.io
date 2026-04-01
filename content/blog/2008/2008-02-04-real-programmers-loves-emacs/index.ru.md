@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2008-02-04T15:03:00+00:00'
-lang: ru
 slug: real-programmers-loves-emacs
 tags:
   - музыкой-навеяло

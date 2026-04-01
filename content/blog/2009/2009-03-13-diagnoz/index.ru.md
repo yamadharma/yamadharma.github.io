@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2009-03-13T16:26:00+00:00'
-lang: ru
 slug: diagnoz
 tags:
   - музыкой-навеяло

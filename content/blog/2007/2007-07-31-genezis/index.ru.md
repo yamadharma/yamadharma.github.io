@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2007-07-31T14:01:00+00:00'
-lang: ru
 slug: genezis
 tags:
   - мысли

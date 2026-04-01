@@ -2,7 +2,6 @@
 categories:
   - листая-страницы
 date: '2012-10-07T12:39:00+03:00'
-lang: ru
 slug: vasserman-samihe-interesnihe-faktih
 tags:
   - познавательно

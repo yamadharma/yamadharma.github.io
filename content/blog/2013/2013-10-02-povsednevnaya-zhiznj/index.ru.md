@@ -2,7 +2,6 @@
 categories:
   - листая-страницы
 date: '2013-10-02T06:58:00+00:00'
-lang: ru
 slug: povsednevnaya-zhiznj
 tags:
   - microhistory

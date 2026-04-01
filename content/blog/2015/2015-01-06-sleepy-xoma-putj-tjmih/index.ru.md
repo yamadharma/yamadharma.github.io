@@ -2,7 +2,6 @@
 categories:
   - листая-страницы
 date: '2015-01-06T21:18:00+00:00'
-lang: ru
 slug: sleepy-xoma-putj-tjmih
 tags:
   - fantasy

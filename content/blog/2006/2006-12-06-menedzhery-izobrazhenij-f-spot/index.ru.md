@@ -2,7 +2,6 @@
 categories:
   - soft
 date: '2006-12-06T16:48:00+00:00'
-lang: ru
 slug: menedzhery-izobrazhenij-f-spot
 tags:
   - blogging

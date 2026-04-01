@@ -2,7 +2,6 @@
 categories:
   - листая-страницы
 date: '2012-11-24T15:49:00+00:00'
-lang: ru
 slug: rukhadze-a-a-sobihtiya-i-lyudi
 tags:
   - science-history

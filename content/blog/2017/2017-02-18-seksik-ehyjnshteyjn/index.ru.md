@@ -2,7 +2,6 @@
 categories:
   - листая-страницы
 date: '2017-02-18T14:42:00+00:00'
-lang: ru
 slug: seksik-ehyjnshteyjn
 tags:
   - science-people

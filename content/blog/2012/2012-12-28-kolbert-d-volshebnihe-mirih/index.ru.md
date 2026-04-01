@@ -2,7 +2,6 @@
 categories:
   - листая-страницы
 date: '2012-12-28T10:10:00+00:00'
-lang: ru
 slug: kolbert-d-volshebnihe-mirih
 tags:
   - literary-studies

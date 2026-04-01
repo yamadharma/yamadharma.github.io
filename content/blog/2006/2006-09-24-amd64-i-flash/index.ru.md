@@ -2,7 +2,6 @@
 categories:
   - soft
 date: '2006-09-24T15:19:00+00:00'
-lang: ru
 slug: amd64-i-flash
 tags:
   - 64bit

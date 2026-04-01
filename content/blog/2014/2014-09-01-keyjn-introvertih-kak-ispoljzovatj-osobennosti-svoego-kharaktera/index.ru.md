@@ -2,7 +2,6 @@
 categories:
   - листая-страницы
 date: '2014-09-01T09:58:00+00:00'
-lang: ru
 slug: keyjn-introvertih-kak-ispoljzovatj-osobennosti-svoego-kharaktera
 tags:
   - психология

@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2008-02-14T17:10:00+00:00'
-lang: ru
 slug: prazdnik
 tags:
   - музыкой-навеяло

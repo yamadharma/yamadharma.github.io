@@ -2,7 +2,6 @@
 categories:
   - sysadmin
 date: '2006-09-17T20:55:00+00:00'
-lang: ru
 slug: monit-i-gentoo-rc-scripts
 tags:
   - init-scripts

@@ -2,7 +2,6 @@
 categories:
   - листая-страницы
 date: '2013-09-02T07:09:00+00:00'
-lang: ru
 slug: romanova-g-l-zapiski-provincialjnogo-nekromanta
 tags:
   - fantasy

@@ -2,7 +2,6 @@
 categories:
   - листая-страницы
 date: '2012-02-16T13:19:00+00:00'
-lang: ru
 slug: ehyjnshteyjn-chastnaya-zhiznj
 tags:
   - science-people

@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2010-06-04T11:24:00+00:00'
-lang: ru
 slug: 11-24-00
 tags:
   - события

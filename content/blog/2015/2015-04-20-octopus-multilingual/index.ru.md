@@ -2,7 +2,6 @@
 categories:
   - sysadmin
 date: 2015-04-20T13:17:32+00:00
-lang: ru
 slug: octopus-multilingual
 subtitle: Поддержка многоязычности в Jekyll на основе Octopress Multilingual
 tags:
@@ -23,7 +22,6 @@ gems:
 Также зададим язык по-умолчанию:
 
 ```yaml
-lang: ru
 ```
 
 <!--more-->
@@ -33,7 +31,6 @@ lang: ru
 Добавим язык  в заголовок шаблонов:
 
 ```yaml
-lang: ru
 ```
 
 ## Конфигурация для разных языков ##

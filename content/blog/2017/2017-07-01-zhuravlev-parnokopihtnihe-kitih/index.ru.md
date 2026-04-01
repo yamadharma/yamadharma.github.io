@@ -2,7 +2,6 @@
 categories:
   - листая-страницы
 date: '2017-07-01T18:59:00+00:00'
-lang: ru
 slug: zhuravlev-parnokopihtnihe-kitih
 tags:
   - popular-science

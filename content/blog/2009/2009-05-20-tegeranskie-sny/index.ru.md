@@ -2,7 +2,6 @@
 categories:
   - листая-страницы
 date: '2009-05-20T11:02:00+00:00'
-lang: ru
 slug: tegeranskie-sny
 tags:
   - музыкой-навеяло

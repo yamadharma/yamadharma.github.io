@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2008-04-29T15:50:00+00:00'
-lang: ru
 slug: 15-50-00
 tags:
   - мысли

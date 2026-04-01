@@ -2,7 +2,6 @@
 categories:
   - листая-страницы
 date: '2018-12-20T08:37:16+00:00'
-lang: ru
 slug: kumar-quant
 tags:
   - science-history

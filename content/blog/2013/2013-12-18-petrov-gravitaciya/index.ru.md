@@ -2,7 +2,6 @@
 categories:
   - листая-страницы
 date: '2013-12-18T07:38:00+00:00'
-lang: ru
 slug: petrov-gravitaciya
 tags:
   - popular-science

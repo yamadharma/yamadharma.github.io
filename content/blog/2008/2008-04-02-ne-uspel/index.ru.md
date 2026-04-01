@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2008-04-02T10:32:00+00:00'
-lang: ru
 slug: ne-uspel
 tags:
   - однако

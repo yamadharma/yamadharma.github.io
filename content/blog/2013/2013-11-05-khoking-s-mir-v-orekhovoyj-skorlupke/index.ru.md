@@ -2,7 +2,6 @@
 categories:
   - листая-страницы
 date: '2013-11-05T07:19:00+00:00'
-lang: ru
 slug: khoking-s-mir-v-orekhovoyj-skorlupke
 tags:
   - popular-science

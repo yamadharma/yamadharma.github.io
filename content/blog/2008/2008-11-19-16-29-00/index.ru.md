@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2008-11-19T16:29:00+00:00'
-lang: ru
 slug: 16-29-00
 tags:
   - science

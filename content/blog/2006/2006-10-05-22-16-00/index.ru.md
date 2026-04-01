@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2006-10-05T22:16:00+00:00'
-lang: ru
 slug: 22-16-00
 tags:
   - мысли

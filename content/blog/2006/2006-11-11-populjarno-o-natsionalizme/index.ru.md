@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2006-11-11T13:40:00+00:00'
-lang: ru
 slug: populjarno-o-natsionalizme
 tags:
   - politics

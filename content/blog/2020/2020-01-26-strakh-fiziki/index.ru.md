@@ -2,7 +2,6 @@
 categories:
   - листая-страницы
 date: '2020-01-26T13:42:57+00:00'
-lang: ru
 slug: strakh-fiziki
 tags:
   - popular-science

@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2009-09-21T17:02:00+00:00'
-lang: ru
 slug: mechty-o-nju-jorke
 tags:
   - музыкой-навеяло

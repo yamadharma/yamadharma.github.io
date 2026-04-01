@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2006-12-04T10:43:00+00:00'
-lang: ru
 slug: den-rozhdenija-sovetskoj-informatiki
 tags:
   - даты

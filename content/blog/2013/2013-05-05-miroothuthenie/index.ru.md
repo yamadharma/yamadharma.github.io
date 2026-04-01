@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2013-05-05T10:51:00+00:00'
-lang: ru
 slug: miroothuthenie
 tags:
   - музыкой-навеяло

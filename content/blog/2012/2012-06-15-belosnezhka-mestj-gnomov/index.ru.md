@@ -2,7 +2,6 @@
 categories:
   - волшебный фонарь
 date: '2012-06-15T17:33:00+00:00'
-lang: ru
 slug: belosnezhka-mestj-gnomov
 tags: []
 title: 'Белоснежка: Месть гномов [Mirror Mirror]'

@@ -2,7 +2,6 @@
 categories:
   - листая-страницы
 date: '2013-10-09T07:35:00+00:00'
-lang: ru
 slug: khoking-kratchayjshaya-istoriya-vremeni
 tags:
   - popular-science

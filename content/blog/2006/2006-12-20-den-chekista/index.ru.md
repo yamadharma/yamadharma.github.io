@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2006-12-20T13:42:00+00:00'
-lang: ru
 slug: den-chekista
 tags:
   - даты

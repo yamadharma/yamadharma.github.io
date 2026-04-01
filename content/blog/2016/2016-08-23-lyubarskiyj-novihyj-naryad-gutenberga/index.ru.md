@@ -2,7 +2,6 @@
 categories:
   - листая-страницы
 date: '2016-08-23T18:54:00+00:00'
-lang: ru
 slug: lyubarskiyj-novihyj-naryad-gutenberga
 tags:
   - culture

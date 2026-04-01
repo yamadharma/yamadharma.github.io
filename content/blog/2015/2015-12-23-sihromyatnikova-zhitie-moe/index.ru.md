@@ -2,7 +2,6 @@
 categories:
   - листая-страницы
 date: '2015-12-23T11:51:00+00:00'
-lang: ru
 slug: sihromyatnikova-zhitie-moe
 tags:
   - fantasy

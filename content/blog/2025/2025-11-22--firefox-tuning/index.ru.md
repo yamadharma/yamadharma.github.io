@@ -2,7 +2,7 @@
 title: "Firefox. Настройка"
 author: ["Dmitry S. Kulyabov"]
 date: 2025-11-22T19:09:00+03:00
-lastmod: 2025-11-22T21:13:00+03:00
+lastmod: 2026-03-31T18:10:00+03:00
 tags: ["network", "sysadmin"]
 categories: ["computer-science"]
 draft: false

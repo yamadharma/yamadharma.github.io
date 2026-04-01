@@ -2,7 +2,6 @@
 categories:
   - волшебный фонарь
 date: '2012-04-03T11:38:00+00:00'
-lang: ru
 slug: muljtfiljm-80-dneyj-vokrug-sveta
 tags:
   - музыкой-навеяло

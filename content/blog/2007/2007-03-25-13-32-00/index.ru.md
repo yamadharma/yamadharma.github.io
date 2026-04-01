@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2007-03-25T13:32:00+00:00'
-lang: ru
 slug: 13-32-00
 tags:
   - соционика

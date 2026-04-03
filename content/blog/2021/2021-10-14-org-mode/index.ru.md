@@ -2,7 +2,7 @@
 title: "Org-mode"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-10-14T18:11:00+03:00
-lastmod: 2026-03-01T19:20:00+03:00
+lastmod: 2026-04-01T14:34:00+03:00
 tags: ["MOC", "org-mode", "emacs"]
 categories: ["computer-science"]
 draft: false

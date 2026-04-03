@@ -2,7 +2,7 @@
 title: "Hugo. Поддержка многоязычности"
 author: ["Dmitry S. Kulyabov"]
 date: 2026-03-03T21:05:00+03:00
-lastmod: 2026-03-10T16:51:00+03:00
+lastmod: 2026-04-01T13:34:00+03:00
 tags: ["markdown", "sysadmin", "hugo"]
 categories: ["computer-science"]
 draft: false
@@ -176,7 +176,7 @@ content/
 ## <span class="section-num">5</span> Дополнительные возможности {#дополнительные-возможности}
 
 -   Переопределение языка в front matter
-    -   Можно использовать один файл `index.md` и указать язык в front matter (`lang: ru`).
+    -   ~~Можно использовать один файл `index.md` и указать язык в front matter (`lang: ru`).~~&nbsp;[^fn:1]
     -   Но подход с суффиксами в имени файла (`index.ru.md`) часто удобнее и автоматически определяет язык без необходимости писать front matter.
 -   Меню и настройки
     -   Hugo позволяет локализовать меню, параметры сайта и даже шаблоны.
@@ -252,3 +252,10 @@ content/
 defaultContentLanguage: en
 defaultContentLanguageInSubdir: true
 ```
+
+[^fn:1]: Запрещено, начиная с hugo 0.144.0.
+    Необходимо удалить из файлов эту конструкцию:
+
+    ```shell
+    ind . -iname "*.ru.md" -exec sed -i '/^lang: ru$/d' '{}' \;
+    ```

@@ -2,7 +2,7 @@
 title: "Язык разметки org-mode"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-10-14T18:49:00+03:00
-lastmod: 2023-07-08T16:09:00+03:00
+lastmod: 2026-04-01T13:08:00+03:00
 tags: ["emacs", "org-mode"]
 categories: ["computer-science"]
 draft: false
@@ -36,3 +36,8 @@ slug: "org-mode-markup-language"
 -   Можно активировать отображение встроенных изображений при запуске:
     -   настроив переменную `org-startup-with-inline-images`;
     -   установив в буфере параметр `STARTUP` в `inlineimages` (или `noinlineimages`).
+
+
+### <span class="section-num">1.2</span> Сноски {#сноски}
+
+-   [Org-mode. Сноски]({{< relref "2026-04-01--org-mode-footnote" >}})

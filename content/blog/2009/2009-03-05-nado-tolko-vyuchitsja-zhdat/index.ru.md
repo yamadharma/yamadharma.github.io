@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2009-03-05T23:27:00+00:00'
-lang: ru
 slug: nado-tolko-vyuchitsja-zhdat
 tags:
   - приходящие к тебе

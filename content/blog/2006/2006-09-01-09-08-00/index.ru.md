@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2006-09-01T09:08:00+00:00'
-lang: ru
 slug: 09-08-00
 tags:
   - события

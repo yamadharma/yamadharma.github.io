@@ -2,7 +2,6 @@
 categories:
   - листая-страницы
 date: '2011-02-17T15:22:00+00:00'
-lang: ru
 slug: razgvor-s-dzerzhinskim
 tags:
   - настроение

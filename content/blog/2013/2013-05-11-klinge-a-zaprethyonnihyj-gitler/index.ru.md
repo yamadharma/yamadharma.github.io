@@ -2,7 +2,6 @@
 categories:
   - листая-страницы
 date: '2013-05-11T20:22:00+00:00'
-lang: ru
 slug: klinge-a-zaprethyonnihyj-gitler
 tags:
   - history

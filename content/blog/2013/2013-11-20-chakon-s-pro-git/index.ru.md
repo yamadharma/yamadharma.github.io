@@ -2,7 +2,6 @@
 categories:
   - листая-страницы
 date: '2013-11-20T07:36:00+00:00'
-lang: ru
 slug: chakon-s-pro-git
 tags:
   - programming

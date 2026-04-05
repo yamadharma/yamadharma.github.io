@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2008-04-11T11:38:00+00:00'
-lang: ru
 slug: 11-38-00
 tags:
   - однако

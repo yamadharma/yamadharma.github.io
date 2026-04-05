@@ -2,7 +2,6 @@
 categories:
   - листая-страницы
 date: '2014-09-08T07:33:00+00:00'
-lang: ru
 slug: myasoedov-spasti-temnogo-vlastelina
 tags:
   - fantasy

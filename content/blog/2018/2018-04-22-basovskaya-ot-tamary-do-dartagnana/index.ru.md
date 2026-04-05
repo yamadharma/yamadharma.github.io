@@ -2,7 +2,6 @@
 categories:
   - листая-страницы
 date: '2018-04-22T16:55:59+00:00'
-lang: ru
 slug: basovskaya-ot-tamary-do-dartagnana
 tags:
   - history

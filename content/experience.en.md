@@ -21,17 +21,17 @@ sections:
   - block: resume-skills
     content:
       title: Skills & Hobbies
-      username: me_en
+      username: dharma_en
     design:
       show_skill_percentage: false
   - block: resume-awards
     content:
       title: Awards
-      username: me_en
+      username: dharma_en
   - block: resume-languages
     content:
       title: Languages
-      username: me_en
+      username: dharma_en
 ---
 <!-- Local Variables: -->
 <!-- mode: yaml -->

@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2006-11-03T10:03:00+00:00'
-lang: ru
 slug: 10-03-00
 tags:
   - акын

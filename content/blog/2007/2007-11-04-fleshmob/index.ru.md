@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2007-11-04T23:38:00+00:00'
-lang: ru
 slug: fleshmob
 tags:
   - акын

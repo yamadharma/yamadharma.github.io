@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2009-02-08T17:18:00+00:00'
-lang: ru
 slug: k-voprosu-o-termorektalnom-kriptoanalize
 tags:
   - приходящие к тебе

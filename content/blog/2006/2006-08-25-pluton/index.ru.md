@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2006-08-25T09:24:00+00:00'
-lang: ru
 slug: pluton
 tags:
   - события

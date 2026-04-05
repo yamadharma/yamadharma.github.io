@@ -2,7 +2,6 @@
 categories:
   - sysadmin
 date: '2006-07-12T10:06:00+00:00'
-lang: ru
 slug: groza
 tags:
   - гроза

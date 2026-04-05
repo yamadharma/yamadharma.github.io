@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2008-11-03T18:14:00+00:00'
-lang: ru
 slug: 18-14-00
 tags:
   - за-окном

@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2010-03-07T00:05:00+00:00'
-lang: ru
 slug: 00-05-00
 tags:
   - музыкой-навеяло

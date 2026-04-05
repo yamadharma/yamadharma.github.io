@@ -2,7 +2,6 @@
 categories:
   - листая-страницы
 date: '2016-02-21T20:40:00+00:00'
-lang: ru
 slug: sokolov-kak-stanovyatsya-professorami
 tags:
   - science

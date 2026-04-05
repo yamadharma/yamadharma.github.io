@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2011-09-27T10:35:00+00:00'
-lang: ru
 slug: politika-povyornutaya-v-proshloe
 tags:
   - мысли

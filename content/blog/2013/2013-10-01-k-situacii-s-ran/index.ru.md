@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2013-10-01T07:21:00+00:00'
-lang: ru
 slug: k-situacii-s-ran
 tags:
   - музыкой-навеяло

@@ -2,7 +2,6 @@
 categories:
   - листая-страницы
 date: '2009-07-14T10:00:00+00:00'
-lang: ru
 slug: ljubaja-kuharka-sposobna-upravljat-gosudarstvom
 tags:
   - акын

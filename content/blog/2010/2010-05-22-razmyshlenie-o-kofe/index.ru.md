@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2010-05-22T16:01:00+00:00'
-lang: ru
 slug: razmyshlenie-o-kofe
 tags:
   - музыкой-навеяло

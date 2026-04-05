@@ -1,3 +1,19 @@
+## [1.1.6](https://github.com/yamadharma/yamadharma.github.io/compare/v1.1.5...v1.1.6) (2026-04-05)
+
+
+### Bug Fixes
+
+* **content:** fix error lang: depricate ([921884b](https://github.com/yamadharma/yamadharma.github.io/commit/921884b42e2c9769ddfcbfd4dd1eee808cfbe7f4))
+
+
+### Features
+
+* **post:** add new posts ([6477f4c](https://github.com/yamadharma/yamadharma.github.io/commit/6477f4c8823e8622f327f7f4c89994d22950e7eb))
+* **theme:** update hugoblox modules ([a0eae54](https://github.com/yamadharma/yamadharma.github.io/commit/a0eae54c881c7e8b521ce3d1d75439c6d08e1a15))
+* **theme:** update theme ([d0db97e](https://github.com/yamadharma/yamadharma.github.io/commit/d0db97e890302d2193ed08bf2dea312e2f039395))
+
+
+
 ## [1.1.5](https://github.com/yamadharma/yamadharma.github.io/compare/v1.1.4...v1.1.5) (2026-03-21)
 
 

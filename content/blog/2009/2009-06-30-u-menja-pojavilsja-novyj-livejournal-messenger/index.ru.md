@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2009-06-30T09:39:00+00:00'
-lang: ru
 slug: u-menja-pojavilsja-novyj-livejournal-messenger
 tags:
   - blogging

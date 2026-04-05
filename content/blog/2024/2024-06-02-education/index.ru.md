@@ -2,7 +2,7 @@
 title: "Образование"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-06-02T20:16:00+03:00
-lastmod: 2024-08-14T14:37:00+03:00
+lastmod: 2026-03-29T18:48:00+03:00
 tags: ["education"]
 categories: ["science"]
 draft: false
@@ -35,6 +35,7 @@ slug: "education"
 
 -   [Поступление в аспирантуру студентов]({{< relref "2021-02-07-admission-postgraduate-students" >}})
 -   [Учебная траектория аспиранта]({{< relref "2024-06-02-educational-track-postgraduate" >}})
+-   [Аспирантура. Сдача минимумов]({{< relref "2026-03-29--postgraduate-completing-minimum-exams" >}})
 
 
 ## <span class="section-num">5</span> Научное руководство {#научное-руководство}

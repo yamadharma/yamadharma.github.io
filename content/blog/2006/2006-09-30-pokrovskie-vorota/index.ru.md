@@ -2,7 +2,6 @@
 categories:
   - волшебный фонарь
 date: '2006-09-30T22:58:00+00:00'
-lang: ru
 slug: pokrovskie-vorota
 tags:
   - culture

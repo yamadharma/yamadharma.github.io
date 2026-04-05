@@ -2,7 +2,7 @@
 title: "Формат PDF"
 author: ["Dmitry S. Kulyabov"]
 date: 2022-06-30T18:47:00+03:00
-lastmod: 2026-03-05T20:20:00+03:00
+lastmod: 2026-04-03T21:43:00+03:00
 tags: ["pdf", "MOC"]
 categories: ["computer-science"]
 draft: false
@@ -44,6 +44,7 @@ slug: "pdf-format"
 ## <span class="section-num">2</span> Стандарты формата PDF {#стандарты-формата-pdf}
 
 -   [Стандарт PDF/A]({{< relref "2021-07-30-pdf-a-standard" >}})
+-   [Тегированный pdf]({{< relref "2026-04-03--tagged-pdf" >}})
 
 
 ## <span class="section-num">3</span> Обработка PDF {#обработка-pdf}

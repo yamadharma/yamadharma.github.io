@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2012-12-18T07:51:00+00:00'
-lang: ru
 slug: pogoda-na-nedelyu
 tags:
   - весёлые картинки

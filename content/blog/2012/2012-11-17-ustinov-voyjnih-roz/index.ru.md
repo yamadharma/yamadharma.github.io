@@ -2,7 +2,6 @@
 categories:
   - листая-страницы
 date: '2012-11-17T16:08:00+00:00'
-lang: ru
 slug: ustinov-voyjnih-roz
 tags:
   - history

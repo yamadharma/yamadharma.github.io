@@ -2,7 +2,6 @@
 categories:
   - листая-страницы
 date: '2016-07-02T19:10:00+00:00'
-lang: ru
 slug: fisher-rastut-li-volosih-u-pokoyjnika
 tags:
   - popular-science

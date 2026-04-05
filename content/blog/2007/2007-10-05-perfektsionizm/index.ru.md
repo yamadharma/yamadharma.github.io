@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2007-10-05T10:01:00+00:00'
-lang: ru
 slug: perfektsionizm
 tags:
   - мысли

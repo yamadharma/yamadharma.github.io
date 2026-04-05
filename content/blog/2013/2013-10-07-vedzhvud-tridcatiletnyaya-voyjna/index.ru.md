@@ -2,7 +2,6 @@
 categories:
   - листая-страницы
 date: '2013-10-07T07:13:00+00:00'
-lang: ru
 slug: vedzhvud-tridcatiletnyaya-voyjna
 tags:
   - history

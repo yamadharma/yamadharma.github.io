@@ -2,7 +2,6 @@
 categories:
   - листая-страницы
 date: '2013-02-18T16:10:00+00:00'
-lang: ru
 slug: ehvans-r-tretiyj-reyjkh
 tags:
   - history

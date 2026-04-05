@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2006-12-16T21:42:00+00:00'
-lang: ru
 slug: pogoda
 tags:
   - за-окном

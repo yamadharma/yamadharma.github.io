@@ -2,7 +2,6 @@
 categories:
   - листая-страницы
 date: '2016-12-07T09:37:00+00:00'
-lang: ru
 slug: tochinov-ostrov-bez-sokrovith
 tags:
   - literary-studies

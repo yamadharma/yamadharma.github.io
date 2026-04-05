@@ -2,7 +2,6 @@
 categories:
   - листая-страницы
 date: '2020-01-04T14:32:43+00:00'
-lang: ru
 slug: byt-diktatorom
 tags:
   - popular-science

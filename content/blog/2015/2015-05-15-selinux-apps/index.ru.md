@@ -2,7 +2,6 @@
 categories:
   - sysadmin
 date: 2015-05-15T05:56:13+00:00
-lang: ru
 slug: selinux-apps
 tags:
   - selinux

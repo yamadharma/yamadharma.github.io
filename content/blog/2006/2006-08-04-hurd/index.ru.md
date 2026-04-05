@@ -2,7 +2,6 @@
 categories:
   - soft
 date: '2006-08-04T22:30:00+00:00'
-lang: ru
 slug: hurd
 tags:
   - hurd

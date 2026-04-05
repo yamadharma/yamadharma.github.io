@@ -2,7 +2,6 @@
 categories:
   - листая-страницы
 date: '2013-10-10T07:17:00+00:00'
-lang: ru
 slug: romanova-sluga-charodeya
 tags:
   - fantasy

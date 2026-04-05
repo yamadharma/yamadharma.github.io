@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2008-07-08T10:49:00+00:00'
-lang: ru
 slug: physics-vs-math
 tags:
   - мысли

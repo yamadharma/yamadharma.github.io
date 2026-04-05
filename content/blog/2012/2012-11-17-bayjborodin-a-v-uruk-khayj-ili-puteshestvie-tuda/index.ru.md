@@ -2,7 +2,6 @@
 categories:
   - листая-страницы
 date: '2012-11-17T15:21:00+00:00'
-lang: ru
 slug: bayjborodin-a-v-uruk-khayj-ili-puteshestvie-tuda
 tags:
   - fantasy

@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2007-01-05T12:41:00+00:00'
-lang: ru
 slug: graf-monte-kristo
 tags:
   - culture

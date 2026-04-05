@@ -2,7 +2,6 @@
 categories:
   - blog
 date: 2015-03-25T09:29:42+03:00
-lang: ru
 slug: address-rules
 tags:
   - хозяйке на заметку

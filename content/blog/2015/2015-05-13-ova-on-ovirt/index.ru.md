@@ -2,7 +2,6 @@
 categories:
   - sysadmin
 date: 2015-05-13T08:48:57+00:00
-lang: ru
 slug: ova-on-ovirt
 tags:
   - net

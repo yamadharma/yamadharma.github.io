@@ -2,7 +2,6 @@
 categories:
   - sysadmin
 date: '2007-01-14T18:18:00+00:00'
-lang: ru
 slug: k-voprosu-o-nastrojke-marshrutizatora-asus-wl-500gp
 tags:
   - net

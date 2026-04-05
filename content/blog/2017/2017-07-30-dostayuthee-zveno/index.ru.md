@@ -2,7 +2,6 @@
 categories:
   - листая-страницы
 date: '2017-07-30T16:34:00+00:00'
-lang: ru
 slug: dostayuthee-zveno
 tags:
   - popular-science

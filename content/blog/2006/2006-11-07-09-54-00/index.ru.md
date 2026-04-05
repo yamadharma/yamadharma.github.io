@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2006-11-07T09:54:00+00:00'
-lang: ru
 slug: 09-54-00
 tags:
   - даты

@@ -2,7 +2,6 @@
 categories:
   - sysadmin
 date: 2015-11-19T11:39:41+00:00
-lang: ru
 slug: drupal6-to-8
 tags:
   - drupal

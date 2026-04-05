@@ -2,7 +2,6 @@
 categories:
   - soft
 date: '2006-10-28T08:00:00+00:00'
-lang: ru
 slug: lj-jabber
 tags:
   - net

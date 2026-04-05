@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2006-12-11T10:17:00+00:00'
-lang: ru
 slug: 150-let-so-dnja-rozhdenija-g-v-plehanova
 tags:
   - даты

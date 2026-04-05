@@ -1,7 +1,6 @@
 ---
 categories: ["листая-страницы"]
 date: '2020-02-23T15:31:03+03:00'
-lang: ru
 slug: gureev-einstein
 tags: ["science-people"]
 title: Гуреев М. А. - Альберт Эйнштейн. Теория всего

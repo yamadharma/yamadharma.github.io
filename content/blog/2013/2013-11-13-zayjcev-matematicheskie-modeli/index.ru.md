@@ -2,7 +2,6 @@
 categories:
   - листая-страницы
 date: '2013-11-13T07:14:00+00:00'
-lang: ru
 slug: zayjcev-matematicheskie-modeli
 tags:
   - science

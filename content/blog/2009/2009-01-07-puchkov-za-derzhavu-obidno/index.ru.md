@@ -2,7 +2,6 @@
 categories:
   - листая-страницы
 date: '2009-01-07T20:22:00+00:00'
-lang: ru
 slug: puchkov-za-derzhavu-obidno
 tags:
   - познавательно

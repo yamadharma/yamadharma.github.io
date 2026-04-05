@@ -2,7 +2,6 @@
 categories:
   - листая-страницы
 date: '2012-06-12T16:33:00+00:00'
-lang: ru
 slug: azbuka-sistemnogo-mihshleniya
 tags:
   - science

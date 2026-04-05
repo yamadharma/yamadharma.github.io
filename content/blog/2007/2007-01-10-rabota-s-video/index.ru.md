@@ -2,7 +2,6 @@
 categories:
   - soft
 date: '2007-01-10T22:59:00+00:00'
-lang: ru
 slug: rabota-s-video
 tags:
   - linux

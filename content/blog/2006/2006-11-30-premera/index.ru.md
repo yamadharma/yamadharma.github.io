@@ -2,7 +2,6 @@
 categories:
   - волшебный фонарь
 date: '2006-11-30T15:53:00+00:00'
-lang: ru
 slug: premera
 tags:
   - culture

@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2010-07-04T21:22:00+00:00'
-lang: ru
 slug: krestnyj-batka
 tags:
   - акын

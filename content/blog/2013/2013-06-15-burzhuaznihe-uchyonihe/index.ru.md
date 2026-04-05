@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2013-06-15T18:09:00+00:00'
-lang: ru
 slug: burzhuaznihe-uchyonihe
 tags:
   - музыкой-навеяло

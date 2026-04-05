@@ -2,7 +2,6 @@
 categories:
   - soft
 date: '2006-07-12T10:50:00+00:00'
-lang: ru
 slug: plan9
 tags:
   - hurd

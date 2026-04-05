@@ -2,7 +2,6 @@
 categories:
   - волшебный фонарь
 date: '2013-11-29T14:49:00+00:00'
-lang: ru
 slug: serial-sherlok-kholms
 tags: []
 title: Сериал Шерлок Холмс (Андрей Кавун)

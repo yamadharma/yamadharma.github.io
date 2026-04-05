@@ -2,7 +2,6 @@
 categories:
   - листая-страницы
 date: '2017-02-23T19:12:00+00:00'
-lang: ru
 slug: mortimer-srednevekovaya-angliya
 tags:
   - history

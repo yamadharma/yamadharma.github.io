@@ -2,7 +2,6 @@
 categories:
   - листая-страницы
 date: '2012-10-18T10:52:00+00:00'
-lang: ru
 slug: sviderskaya-kak-napisatj-i-opublikovatj-statjyu
 tags:
   - science

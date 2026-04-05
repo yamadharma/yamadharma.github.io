@@ -2,7 +2,6 @@
 categories:
   - листая-страницы
 date: '2017-08-20T12:25:00+00:00'
-lang: ru
 slug: mezhdu-fizikoyj-i-metafizikoyj
 tags:
   - science

@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2008-01-06T13:35:00+00:00'
-lang: ru
 slug: nam-pishut-iz-gruzii
 tags:
   - акын

@@ -2,7 +2,6 @@
 categories:
   - листая-страницы
 date: '2015-10-24T20:04:00+00:00'
-lang: ru
 slug: chertanov-ehyjnshteyjn
 tags:
   - science-people

@@ -2,7 +2,6 @@
 categories:
   - листая-страницы
 date: '2013-10-30T07:36:00+03:00'
-lang: ru
 slug: vasserman-sunduk-istorii
 tags:
   - познавательно

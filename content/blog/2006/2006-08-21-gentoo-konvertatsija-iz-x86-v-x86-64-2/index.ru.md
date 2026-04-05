@@ -2,7 +2,6 @@
 categories:
   - sysadmin
 date: '2006-08-21T12:19:00+00:00'
-lang: ru
 slug: gentoo-konvertatsija-iz-x86-v-x86-64-2
 tags:
   - 64bit

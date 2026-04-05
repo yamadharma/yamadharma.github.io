@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2009-09-30T16:15:00+00:00'
-lang: ru
 slug: stabilnosti-net
 tags:
   - музыкой-навеяло

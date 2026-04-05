@@ -2,7 +2,6 @@
 categories:
   - листая-страницы
 date: '2014-05-13T08:51:00+00:00'
-lang: ru
 slug: gamov-moya-mirovaya-liniya
 tags:
   - science-history

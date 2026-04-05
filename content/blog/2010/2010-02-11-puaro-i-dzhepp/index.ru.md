@@ -2,7 +2,6 @@
 categories:
   - волшебный фонарь
 date: '2010-02-11T20:42:00+00:00'
-lang: ru
 slug: puaro-i-dzhepp
 tags:
   - однако

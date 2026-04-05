@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2009-05-19T16:40:00+00:00'
-lang: ru
 slug: den-vsesojuznoj-pionerskoj-organizatsii
 tags:
   - даты

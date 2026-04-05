@@ -2,7 +2,6 @@
 categories:
   - листая-страницы
 date: '2014-03-05T07:18:00+00:00'
-lang: ru
 slug: ulam-priklyucheniya-matematika
 tags:
   - science-history

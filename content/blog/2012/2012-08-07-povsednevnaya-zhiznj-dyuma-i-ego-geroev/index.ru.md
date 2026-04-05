@@ -2,7 +2,6 @@
 categories:
   - листая-страницы
 date: '2012-08-07T11:55:00+00:00'
-lang: ru
 slug: povsednevnaya-zhiznj-dyuma-i-ego-geroev
 tags:
   - microhistory

@@ -2,7 +2,6 @@
 categories:
   - blog
 date: '2009-04-21T08:53:00+00:00'
-lang: ru
 slug: utro
 tags:
   - за-окном

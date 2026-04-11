@@ -1,0 +1,9 @@
+{{- $destination := .Destination -}}
+{{- $isInternal := not (or (hasPrefix $destination "http") (hasPrefix $destination "#") (hasPrefix $destination "mailto:")) -}}
+{{- if $isInternal -}}
+  {{- with site.GetPage (strings.TrimPrefix site.BaseURL $destination) -}}
+    {{- $backlinksKey := printf "backlinks_to_%s" .RelPermalink -}}
+    {{- $.Page.Scratch.SetInMap $backlinksKey (string $.Page) true -}}
+  {{- end -}}
+{{- end -}}
+<a href="{{ $destination | safeURL }}"{{ with .Title}} title="{{ . }}"{{ end }}>{{ .Text | safeHTML }}</a>

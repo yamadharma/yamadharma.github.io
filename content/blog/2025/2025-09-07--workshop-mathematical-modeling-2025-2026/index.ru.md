@@ -2,7 +2,7 @@
 title: "Семинар Математическое моделирование, 2025-2026"
 author: ["Dmitry S. Kulyabov"]
 date: 2025-09-07T17:19:00+03:00
-lastmod: 2026-03-29T15:54:00+03:00
+lastmod: 2026-04-09T13:41:00+03:00
 tags: ["modeling"]
 categories: ["science"]
 draft: false
@@ -514,7 +514,7 @@ Based on the results of computer experiments, hypotheses about the effect of cho
 {{< /tabs >}}
 
 
-### <span class="org-todo todo TODO">TODO</span> <span class="section-num">2.5</span> <span class="timestamp-wrapper"><span class="timestamp">&lt;2026-04-08 Ср&gt;</span></span> Захаров И. И. - Математическое моделирование нелокальных физических процессов в средах с фрактальной структурой {#захаров-и-dot-и-dot-математическое-моделирование-нелокальных-физических-процессов-в-средах-с-фрактальной-структурой}
+### <span class="org-todo done DONE">DONE</span> <span class="section-num">2.5</span> <span class="timestamp-wrapper"><span class="timestamp">&lt;2026-04-08 Ср&gt;</span></span> Захаров И. И. - Математическое моделирование нелокальных физических процессов в средах с фрактальной структурой {#захаров-и-dot-и-dot-математическое-моделирование-нелокальных-физических-процессов-в-средах-с-фрактальной-структурой}
 
 
 #### <span class="section-num">2.5.1</span> Докладчик {#докладчик}
@@ -558,3 +558,14 @@ The above implies that there is not just one, but several (far from equivalent) 
 Thus, the search for the most accurate form of a fractional-order equation describing anomalous diffusion is a relevant problem, the solution of which is necessary for accurate mathematical modelling in various fields of science and engineering.
 
 This dissertation is devoted to the search for the most correct form of a fractional-order equation describing anomalous diffusion. In particular, it addresses the problem of the correct form of the state of matter (especially at high pressure), which remains an open question to this day.
+
+
+#### <span class="section-num">2.5.3</span> Видео {#видео}
+
+{{< tabs "Захаров И. И. - Математическое моделирование нелокальных физических процессов в средах с фрактальной структурой" >}}
+
+{{< tab "RuTube" >}}{{< rutube b62880560144bc1eda092f44fd788647 >}}{{< /tab >}}
+
+{{< tab "VKvideo" >}}{{< vkvideo oid=-230024722 id=456239624 hd=2 >}}{{< /tab >}}
+
+{{< /tabs >}}

@@ -1,0 +1,21 @@
+{{ $currentPage := . }}
+{{ $backlinksKey := printf "backlinks_to_%s" $currentPage.RelPermalink }}
+{{ $referencedBy := slice }}
+
+{{ range where site.RegularPages "RelPermalink" "ne" $currentPage.RelPermalink }}
+  {{ $checkKey := printf "backlinks_to_%s" .RelPermalink }}
+  {{ if .Scratch.Get $checkKey }}
+    {{ $referencedBy = $referencedBy | append . }}
+  {{ end }}
+{{ end }}
+
+{{ with $referencedBy }}
+  <div class="backlinks">
+    <h3>Обратные ссылки</h3>
+    <ul>
+      {{ range . }}
+        <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+      {{ end }}
+    </ul>
+  </div>
+{{ end }}

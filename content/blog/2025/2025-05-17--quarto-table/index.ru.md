@@ -2,7 +2,7 @@
 title: "Quarto. Таблицы"
 author: ["Dmitry S. Kulyabov"]
 date: 2025-05-17T15:42:00+03:00
-lastmod: 2025-05-17T19:36:00+03:00
+lastmod: 2026-04-11T17:53:00+03:00
 tags: ["science-writing", "markdown"]
 categories: ["computer-science"]
 draft: false
@@ -61,3 +61,8 @@ Quarto. Таблицы.
     #| tbl-cap-location: top
     #| tbl-class: borderless
     ```
+
+
+## <span class="section-num">2</span> Варианты {#варианты}
+
+-   [Quarto. Таблицы-списки]({{< relref "2026-04-11--quarto-list-tables" >}})

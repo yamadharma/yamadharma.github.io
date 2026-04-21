@@ -2,7 +2,7 @@
 title: "Тегированный pdf"
 author: ["Dmitry S. Kulyabov"]
 date: 2026-04-03T21:41:00+03:00
-lastmod: 2026-04-11T15:56:00+03:00
+lastmod: 2026-04-13T14:30:00+03:00
 tags: ["pdf"]
 categories: ["computer-science"]
 draft: false

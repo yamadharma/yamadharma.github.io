@@ -2,7 +2,7 @@
 title: "Пиринговые VPN. tinc"
 author: ["Dmitry S. Kulyabov"]
 date: 2026-01-15T16:24:00+03:00
-lastmod: 2026-02-03T11:09:00+03:00
+lastmod: 2026-04-19T11:26:00+03:00
 tags: ["sysadmin", "network"]
 categories: ["computer-science"]
 draft: false
@@ -158,7 +158,7 @@ slug: "p2p-vpn-tinc"
     ```
 -   Подключитесь к VPN (с отладкой):
     ```shell
-    sudo tincd -n <VPNNAME>
+    sudo tincd -n <VPNNAME> -D
     ```
 -   Подключите хост:
     ```shell

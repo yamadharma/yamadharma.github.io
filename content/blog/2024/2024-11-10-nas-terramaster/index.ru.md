@@ -2,7 +2,7 @@
 title: "NAS. TerraMaster"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-11-10T18:35:00+03:00
-lastmod: 2025-08-18T15:59:00+03:00
+lastmod: 2026-04-11T19:30:00+03:00
 tags: ["sysadmin", "hard"]
 categories: ["computer-science"]
 draft: false
@@ -189,7 +189,7 @@ NAS. TerraMaster.
     ```
 -   Обновите пакеты:
     ```shell
-    opkg upgrade
+    opkg list-upgradable | cut -f 1 -d ' ' | xargs opkg upgrade
     ```
 
 
@@ -269,6 +269,13 @@ NAS. TerraMaster.
     ```
 
 
+### <span class="section-num">8.2</span> Обновление сертификата {#обновление-сертификата}
+
+-   Откройте веб-интерфейс TerraMaster.
+-   Перейдите: Панель управления (Control Panel) -&gt; Общие настройки (General Settings) -&gt; Безопасность (Security) -&gt; Сертификат (Certificate).
+-   Нажмите _Обновить_.
+
+
 ## <span class="section-num">9</span> Стандартные операции {#стандартные-операции}
 
 
@@ -342,7 +349,7 @@ NAS. TerraMaster.
     -   В стандартном репозитории.
 
 
-#### <span class="section-num">11.1.2</span> <span class="timestamp-wrapper"><span class="timestamp">[2024-12-01 Вс] </span></span> Первичное подключение {#первичное-подключение}
+#### <span class="section-num">11.1.2</span> <span class="timestamp-wrapper"><span class="timestamp">[2024-12-01 Вс]</span></span> Первичное подключение {#первичное-подключение}
 
 -   В консоли не смог залогиниться.
 -   Посмотрел ip-адрес (на сервере DHCP, но можно было и в консоли).
@@ -373,7 +380,7 @@ NAS. TerraMaster.
 -   Установил BTRFS (см. [Файловая система btrfs]({{< relref "2021-08-27-btrfs-file-system" >}})).
 
 
-#### <span class="section-num">11.1.3</span> <span class="timestamp-wrapper"><span class="timestamp">[2024-12-12 Чт] </span></span> Добавление диска {#добавление-диска}
+#### <span class="section-num">11.1.3</span> <span class="timestamp-wrapper"><span class="timestamp">[2024-12-12 Чт]</span></span> Добавление диска {#добавление-диска}
 
 -   Купил 2 жёстких диска.
 -   Жесткий диск 18TB SATA 6Gb/s Seagate ST18000NM000J
@@ -387,7 +394,7 @@ NAS. TerraMaster.
 -   Размер хранилища остался 3.63TB.
 
 
-#### <span class="section-num">11.1.4</span> <span class="timestamp-wrapper"><span class="timestamp">[2024-12-13 Пт] </span></span> Замена диска {#замена-диска}
+#### <span class="section-num">11.1.4</span> <span class="timestamp-wrapper"><span class="timestamp">[2024-12-13 Пт]</span></span> Замена диска {#замена-диска}
 
 -   Перешёл в меню _Панель управления &gt; Жёсткий диск &gt; Жёсткий диск_.
 -   Выбрал диск на 4TB.
@@ -410,7 +417,7 @@ NAS. TerraMaster.
 -   Запустил перестройку RAID.
 
 
-#### <span class="section-num">11.1.5</span> <span class="timestamp-wrapper"><span class="timestamp">[2024-12-14 Сб] </span></span> Расширение тома {#расширение-тома}
+#### <span class="section-num">11.1.5</span> <span class="timestamp-wrapper"><span class="timestamp">[2024-12-14 Сб]</span></span> Расширение тома {#расширение-тома}
 
 -   Синхронизация RAID закончилась.
 -   Перешёл в меню _Панель управления &gt; Том &gt; Том 1_.

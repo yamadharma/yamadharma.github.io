@@ -2,7 +2,7 @@
 title: "Python. Переход с pipx на uv"
 author: ["Dmitry S. Kulyabov"]
 date: 2026-03-21T14:21:00+03:00
-lastmod: 2026-03-21T14:43:00+03:00
+lastmod: 2026-04-14T10:57:00+03:00
 tags: ["programming", "sysadmin"]
 categories: ["computer-science"]
 draft: false
@@ -61,7 +61,7 @@ Python. Переход с pipx на uv.
 
 <div class="table-caption">
   <span class="table-number">&#1058;&#1072;&#1073;&#1083;&#1080;&#1094;&#1072; 1:</span>
-  Основные команды <code>pipx</code> и их аналоги в <code>uv</code>
+  Основные команды pipx и их аналоги в uv
 </div>
 
 | Действие                                  | pipx                         | uv / uvx                                                    |

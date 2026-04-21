@@ -2,8 +2,8 @@
 title: "LaTeX. Что читать"
 author: ["Dmitry S. Kulyabov"]
 date: 2023-01-20T19:28:00+03:00
-lastmod: 2026-01-09T22:48:00+03:00
-tags: ["tex"]
+lastmod: 2026-04-12T17:01:00+03:00
+tags: ["latex", "tex"]
 categories: ["book", "computer-science"]
 draft: false
 slug: "latex-what-read"

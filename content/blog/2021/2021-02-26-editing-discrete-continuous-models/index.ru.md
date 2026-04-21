@@ -2,7 +2,7 @@
 title: "Редактирование. Discrete and Continuous Models"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-02-26T11:41:00+03:00
-lastmod: 2026-02-27T17:37:00+03:00
+lastmod: 2026-04-16T14:25:00+03:00
 tags: ["rudn", "science-admin"]
 categories: ["job", "science"]
 draft: false
@@ -117,6 +117,26 @@ slug: "editing-discrete-continuous-models"
     | Computer Science (miscellaneous)      | Q3       |
     | Modeling and Simulation               | Q4       |
     | Physics and Astronomy (miscellaneous) | Q3       |
+    | Theoretical Computer Science          | Q4       |
+
+
+#### <span class="section-num">1.3.3</span> 2025 {#2025}
+
+-   ВАК: К2.
+
+<!--list-separator-->
+
+1.  SJR
+
+    -   SJR: Q4.
+    -   SJR 2025: 0.208
+    -   H-Index: 5
+
+    | Category                              | Quartile |
+    |---------------------------------------|----------|
+    | Computer Science (miscellaneous)      | Q4       |
+    | Modeling and Simulation               | Q4       |
+    | Physics and Astronomy (miscellaneous) | Q4       |
     | Theoretical Computer Science          | Q4       |
 
 

@@ -2,7 +2,7 @@
 title: "Семинар Математическое моделирование, 2025-2026"
 author: ["Dmitry S. Kulyabov"]
 date: 2025-09-07T17:19:00+03:00
-lastmod: 2026-04-09T13:41:00+03:00
+lastmod: 2026-04-15T16:04:00+03:00
 tags: ["modeling"]
 categories: ["science"]
 draft: false
@@ -569,3 +569,76 @@ This dissertation is devoted to the search for the most correct form of a fracti
 {{< tab "VKvideo" >}}{{< vkvideo oid=-230024722 id=456239624 hd=2 >}}{{< /tab >}}
 
 {{< /tabs >}}
+
+
+### <span class="org-todo todo TODO">TODO</span> <span class="section-num">2.6</span> <span class="timestamp-wrapper"><span class="timestamp">&lt;2026-04-22 Ср&gt;</span></span> Геворкян М. Н. - Использование и визуализация комплексного дробно-линейного преобразования для описания собственных движений трехмерного пространства {#геворкян-м-dot-н-dot-использование-и-визуализация-комплексного-дробно-линейного-преобразования-для-описания-собственных-движений-трехмерного-пространства}
+
+
+#### <span class="section-num">2.6.1</span> Докладчик {#докладчик}
+
+-   Геворкян Мигран Нельсонович
+    -   доцент, к.ф.-м.н, доцент
+    -   кафедра теории вероятностей и кибербезопасности РУДН
+
+
+#### <span class="section-num">2.6.2</span> Информация {#информация}
+
+-   <https://events.rudn.ru/event/321/>
+-   Использование и визуализация комплексного дробно-линейного преобразования для описания собственных движений трехмерного пространства
+-   Геворкян Мигран Нельсонович
+    -   доцент, к.ф.-м.н, доцент
+    -   кафедра теории вероятностей и кибербезопасности РУДН
+
+Дробно-линейное преобразование на дополненной плоскости комплексных чисел позволяет описать все собственные движения сферы. Изложение начинается со сведений из элементарной планиметрии таких как: инверсия, комплексная инверсия, сложное отношение четырех точек, круговые свойства отображений. Эти сведения далее используются для всестороннего изучения дробно-линейного преобразования, которое исследуется несколькими путями: с помощью классификации неподвижных точек, канонического разложения и представления в виде проективного преобразования на проективной комплексной прямой. После этого вводится стереографическая проекция сферы на дополненную плоскость комплексных чисел (сфера Римана). и изучаются ее свойства. Дается интерпретация действий четырех классов дробно-линейного преобразования с помощью сферы Римана. Делается переход к проективному пространству и вводятся спин-векторы спиновое преобразование и спин-матрица. Отдельно рассматриваются вращения на сфере, унитарные преобразования, коэффициенты Кейли-Кляйна, вводятся матрицы Паули, показывается их связь с проективными матрицами 4х4 и с кватернионами.
+Доклад носит в целом методологический характер и делает упор на раскрытия герметического смысла рассматриваемых преобразований и программную визуализацию, которая в некоторых случаях может быть нетривиальной, ввиду необходимости работать с точкой на бесконечности.
+
+---
+
+-   Usage and visualization a Möbius transformation transformation to describe isometries of a three-dimensional space
+-   Gevorkyan, Migran Nelsonovich
+    -   Docent, PhD, Associate Professor
+    -   Department of Probability Theory and Cybersecurity, RUDN University
+
+The fractional linear transformation on the augmented plane of complex numbers makes it possible to describe all the proper motions of a sphere. The presentation begins with information from elementary planimetry such as: inversion, complex inversion, cross-ratio of four points, circular properties of maps. This information is further used for a comprehensive study of the Möbius transformation, which is being studied in several ways: by classifying fixed points, canonical decomposition, and representation as a projective transformation on a projective complex line. After that, a stereographic projection of the sphere onto the augmented plane of complex numbers (the Riemann sphere) is introduced and its properties are being studied. The interpretation of the actions of four classes of Möbius transformation using the Riemann sphere is given. A transition to a projective space is made and spin vectors, a spin transformation and a spin matrix are introduced. Rotations on a sphere, unitary transformations, and Cayley-Klein coefficients are considered separately, Pauli matrices are introduced, and their relationship to 4x4 projective matrices and quaternions is shown.
+The report is generally methodological in nature and focuses on programmatic visualization, which in some cases may be non-trivial due to the need to work with a point at infinity.
+
+
+### <span class="org-todo todo TODO">TODO</span> <span class="section-num">2.7</span> <span class="timestamp-wrapper"><span class="timestamp">&lt;2026-04-29 Ср&gt;</span></span> Ермолаева А. М. - Механизмы кумулятивного преимущества в наукометрии {#ермолаева-а-dot-м-dot-механизмы-кумулятивного-преимущества-в-наукометрии}
+
+
+#### <span class="section-num">2.7.1</span> Докладчик {#докладчик}
+
+-   Анна Михайловна Ермолаева
+    -   ассистент
+    -   кафедра теории вероятностей и кибербезопасности РУДН
+
+
+#### <span class="section-num">2.7.2</span> Информация {#информация}
+
+-   <https://events.rudn.ru/event/322/>
+-   Механизмы кумулятивного преимущества в наукометрии
+-   Анна Михайловна Ермолаева
+    -   ассистент
+    -   кафедра теории вероятностей и кибербезопасности РУДН
+
+Актуальность обусловлена доминированием конференций в компьютерных науках, отсутствием единых метрик их ранжирования и необходимостью предсказания рейтинга новых площадок.
+Предложена методология расчёта квартилей конференций на основе SJR Scopus.
+Введён показатель MNCS (средняя нормализованная цитируемость), позволяющий выявить конференции, на которых авторы из конкретной страны превосходят ожидаемый уровень цитирования.
+Проведён сравнительный анализ для России, Китая и США в области ИИ за 2011–-2020 гг., сформированы страновые рекомендательные списки.
+Использована нелинейная динамическая модель рейтинга конференций, обобщающая модель Ферхюльста и включающая асимметричную конкуренцию с кумулятивным преимуществом.
+Показано, что эффект Матфея приводит к бистабильности и доминированию лидеров.
+Для прогнозирования квартиля новой конференции по невременным данным построены и сравнены три модели: линейная регрессия, дискриминантный анализ и нейронная сеть.
+
+---
+
+-   Mechanisms of cumulative advantage in scientometrics
+-   Anna Mikhailovna Ermolaeva
+    -   Assistent Professor
+    -   Department of Probability Theory and Cybersecurity, RUDN University
+
+Its relevance lies in the dominance of conferences in computer science, the lack of unified ranking metrics, and the need to predict the rankings of new venues.
+A methodology for calculating conference quartiles based on Scopus SJR is proposed.
+The MNCS (mean normalized citation impact) metric is introduced, allowing the identification of conferences where authors from a particular country exceed the expected citation rate.
+A comparative analysis of Russia, China, and the United States in the field of AI for 2011–-2020 was conducted, and country-specific recommendation lists were compiled. A nonlinear dynamic conference ranking model was used, generalizing the Verhulst model and incorporating asymmetric competition with cumulative advantage.
+It was shown that the Matthew effect leads to bistability and leader dominance.
+To predict the quartile of a new conference using non-temporal data, three models were constructed and compared: linear regression, discriminant analysis, and a neural network.

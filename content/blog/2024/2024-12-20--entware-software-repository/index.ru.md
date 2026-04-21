@@ -2,7 +2,7 @@
 title: "Репозиторий программного обеспечения Entware"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-12-20T18:18:00+03:00
-lastmod: 2024-12-20T18:26:00+03:00
+lastmod: 2026-04-11T19:24:00+03:00
 tags: ["sysadmin"]
 categories: ["computer-science"]
 draft: false

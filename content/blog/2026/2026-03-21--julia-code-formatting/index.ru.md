@@ -2,7 +2,7 @@
 title: "Julia. Форматирование кода"
 author: ["Dmitry S. Kulyabov"]
 date: 2026-03-21T14:57:00+03:00
-lastmod: 2026-03-21T16:40:00+03:00
+lastmod: 2026-04-19T20:52:00+03:00
 tags: ["julia", "programming"]
 categories: ["computer-science"]
 draft: false
@@ -75,6 +75,7 @@ julia -e 'using Pkg; Pkg.add("JuliaFormatter")'
 
 -   Установка:
     ```julia
+    pkg> app remove JuliaFormatter
     pkg> app add JuliaFormatter
     ```
 

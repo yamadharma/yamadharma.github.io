@@ -2,7 +2,7 @@
 title: "Windows. Установка в kvm"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-05-29T19:46:00+03:00
-lastmod: 2026-02-27T11:52:00+03:00
+lastmod: 2026-04-21T11:52:00+03:00
 tags: ["windows", "sysadmin"]
 categories: ["computer-science"]
 draft: false
@@ -69,7 +69,7 @@ slug: "windows-install-kvm"
     ```shell
     virt-install \
         --connect qemu:///system \
-        --disk /var/lib/libvirt/images/win11.iso,device=cdrom \
+        --disk /var/lib/libvirt/images/windows11.iso,device=cdrom \
         --disk /var/lib/libvirt/images/virtio-win.iso,device=cdrom \
         --disk pool=default,size=120,bus=virtio,format=qcow2 \
         --name windows11 \
@@ -150,7 +150,7 @@ slug: "windows-install-kvm"
     -   В целевом пути укажите любое имя диска, например `h:`.
 -   Установите в системе Windows WinFSP (FUSE для Windows).
     -   Можно скачать с сайта <https://github.com/winfsp/winfsp/releases/>.
-    -   Можно установить с Chocolatey (см. [Пакетный менеджер для Windows. Chocolatey]({{< relref "2021-01-18-package-manager-windows-chocolatey" >}})):
+    -   Можно установить с помощью Chocolatey (см. [Пакетный менеджер для Windows. Chocolatey]({{< relref "2021-01-18-package-manager-windows-chocolatey" >}})):
         ```shell
         choco install winfsp -y
         ```
@@ -188,24 +188,9 @@ slug: "windows-install-kvm"
 ## <span class="section-num">8</span> Видео {#видео}
 
 {{< tabs "Установка Windows на KVM" >}}
-{{< tab "RuTube" >}}
 
-{{< rutube 46f95eeb6c0c8e5bbf51b2fe0851e76d >}}
+{{< tab "RuTube" >}}{{< rutube 46f95eeb6c0c8e5bbf51b2fe0851e76d >}}{{< /tab >}}
 
-{{< /tab >}}
-{{< tab "Платформа" >}}
+{{< tab "VKvideo" >}}{{< vkvideo oid=-230024722 id=456239026 hd=2 >}}{{< /tab >}}
 
-{{< plvideo coo_ngzPjq8D >}}
-
-{{< /tab >}}
-{{< tab "VKvideo" >}}
-
-{{< vkvideo -230024722 456239026 2 >}}
-
-{{< /tab >}}
-{{< tab "Youtube" >}}
-
-{{< youtube pZla1y1aPhI >}}
-
-{{< /tab >}}
 {{< /tabs >}}

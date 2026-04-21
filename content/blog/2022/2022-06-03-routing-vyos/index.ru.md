@@ -2,7 +2,7 @@
 title: "Маршрутизация. VyOS"
 author: ["Dmitry S. Kulyabov"]
 date: 2022-06-03T12:24:00+03:00
-lastmod: 2026-03-20T13:53:00+03:00
+lastmod: 2026-04-16T19:31:00+03:00
 tags: ["network", "sysadmin"]
 categories: ["computer-science"]
 draft: false
@@ -44,7 +44,7 @@ slug: "routing-vyos"
     -   Для учебных заведений и некоммерческих организаций предоставляется бесплатный доступ к релизам.
 -   Образы для rolling релизов можно скачивать бесплатно.
 -   Rolling релизы:
-    -   <https://vyos.net/get/?dir=rolling/current/amd64>;
+    -   <https://vyos.net/get/nightly-builds/>;
     -   <https://community.vyos.net/get/>;
     -   <https://vyos.net/get/stream/>.
 -   Блокируются российский ip-адреса.
@@ -224,16 +224,24 @@ slug: "routing-vyos"
     ```
 
 
-## <span class="section-num">5</span> Скачать образ {#скачать-образ}
+## <span class="section-num">5</span> Ресурсы {#ресурсы}
 
 
-### <span class="section-num">5.1</span> VyOS Stream 2026.03 {#vyos-stream-2026-dot-03}
+### <span class="section-num">5.1</span> Документация {#документация}
+
+-   <https://opennix.org/docs/vyos/>
+
+
+## <span class="section-num">6</span> Скачать образ {#скачать-образ}
+
+
+### <span class="section-num">6.1</span> VyOS Stream 2026.03 {#vyos-stream-2026-dot-03}
 
 -   <https://community-downloads.vyos.dev/stream/2026.03/vyos-2026.03-generic-amd64.iso>
 -   <https://community-downloads.vyos.dev/stream/2026.03/circinus-2026.03.tar.gz>
 
 
-## <span class="section-num">6</span> Образы операционной системы {#образы-операционной-системы}
+## <span class="section-num">7</span> Образы операционной системы {#образы-операционной-системы}
 
 -   [GNS3. Образ VyOS]({{< relref "2022-07-14-gns3-vyos" >}})
 -   [Сборка образа VyOS]({{< relref "2023-07-06-vyos-build" >}})

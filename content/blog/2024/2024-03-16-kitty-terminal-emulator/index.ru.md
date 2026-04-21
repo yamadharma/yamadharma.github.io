@@ -2,8 +2,8 @@
 title: "Эмулятор терминала kitty"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-03-16T17:07:00+03:00
-lastmod: 2024-10-09T11:00:00+03:00
-tags: ["sysadmin"]
+lastmod: 2026-04-18T21:40:00+03:00
+tags: ["MOC", "sysadmin"]
 categories: ["computer-science"]
 draft: false
 slug: "kitty-terminal-emulator"
@@ -37,10 +37,15 @@ slug: "kitty-terminal-emulator"
 -   <https://github.com/ttys3/my-kitty-config>
 
 
-## <span class="section-num">3</span> Конфигурация {#конфигурация}
+## <span class="section-num">3</span> Приёмы работы {#приёмы-работы}
+
+-   [Kitty. Работа без мышки]({{< relref "2026-04-18--kitty-mouseless" >}})
 
 
-### <span class="section-num">3.1</span> Для редакторов {#для-редакторов}
+## <span class="section-num">4</span> Конфигурация {#конфигурация}
+
+
+### <span class="section-num">4.1</span> Для редакторов {#для-редакторов}
 
 -   Заголовок для редакторов:
     ```conf-unix
@@ -48,7 +53,7 @@ slug: "kitty-terminal-emulator"
     ```
 
 
-### <span class="section-num">3.2</span> Структура {#структура}
+### <span class="section-num">4.2</span> Структура {#структура}
 
 -   Подключение отдельных конфигурационных файлов:
     ```conf-unix
@@ -62,10 +67,10 @@ slug: "kitty-terminal-emulator"
     ```
 
 
-### <span class="section-num">3.3</span> Темы {#темы}
+### <span class="section-num">4.3</span> Темы {#темы}
 
 
-#### <span class="section-num">3.3.1</span> Настройка вручную {#настройка-вручную}
+#### <span class="section-num">4.3.1</span> Настройка вручную {#настройка-вручную}
 
 -   Посмотреть все темы:
     ```shell
@@ -80,7 +85,7 @@ slug: "kitty-terminal-emulator"
     ```
 
 
-#### <span class="section-num">3.3.2</span> Конфигурационный файл {#конфигурационный-файл}
+#### <span class="section-num">4.3.2</span> Конфигурационный файл {#конфигурационный-файл}
 
 -   Для примера подключим тему _Wryan_.
 -   Конфигурация темы (файл `current-theme.conf`):

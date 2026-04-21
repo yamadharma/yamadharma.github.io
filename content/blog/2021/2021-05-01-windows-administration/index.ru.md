@@ -2,8 +2,8 @@
 title: "Администрирование Windows"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-05-01T16:28:00+03:00
-lastmod: 2024-10-22T14:10:00+03:00
-tags: ["sysadmin", "windows"]
+lastmod: 2026-04-15T18:53:00+03:00
+tags: ["MOC", "sysadmin", "windows"]
 categories: ["computer-science"]
 draft: false
 slug: "windows-administration"
@@ -35,6 +35,7 @@ slug: "windows-administration"
 ## <span class="section-num">3</span> Настройка операционной системы {#настройка-операционной-системы}
 
 -   [Windows. Синхронизация времени]({{< relref "2022-11-16-windows-time-synchronization" >}})
+-   [Windows. Ключ восстановления BitLocker]({{< relref "2026-04-15--windows-bitlocker-key-recovery" >}})
 
 
 ## <span class="section-num">4</span> Интерфейс пользователя {#интерфейс-пользователя}

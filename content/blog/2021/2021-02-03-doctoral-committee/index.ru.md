@@ -2,7 +2,7 @@
 title: "Диссертационный совет"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-02-03T12:46:00+03:00
-lastmod: 2025-10-25T17:12:00+03:00
+lastmod: 2026-04-13T13:47:00+03:00
 tags: ["MOC", "science-admin"]
 categories: ["science"]
 draft: false
@@ -111,9 +111,10 @@ slug: "doctoral-committee"
 
 ## <span class="section-num">7</span> Подготовка документов {#подготовка-документов}
 
--   [Подготовка документов для защиты диссертации]({{< relref "2024-06-23-preparation-documents-defense-dissertation" >}})
--   Список документов специфичен для РУДН (см. [РУДН]({{< relref "2023-01-17-rudn" >}})), поскольку РУДН имеет право самостоятельно защищать соискателей.
+-   [Подготовка документов для защиты диссертации]({{% relref "2024-06-23-preparation-documents-defense-dissertation" %}})
+-   Список документов специфичен для РУДН (см. [РУДН]({{% relref "2023-01-17-rudn" %}})), поскольку РУДН имеет право самостоятельно защищать соискателей.
 -   При этом правила защиты РУДН постоянно гармонизируют с правилами ВАК.
+-   [Диссертация. Фиксация содержания]({{% relref "2026-04-13--dissertation-content-fixation" %}})
 
 
 ## <span class="section-num">8</span> Рекомендации соискателям {#рекомендации-соискателям}
@@ -143,8 +144,11 @@ slug: "doctoral-committee"
 
 -   Видеозаписи находятся на следующих хостингах:
     -   RuTube: <https://rutube.ru/plst/141990/>
-    -   Youtube: <https://www.youtube.com/playlist?list=PLhyPdV6jkp-QZjeLE06ts1Ucvafhz1CD->
     -   VK Видео: <https://vk.com/video/playlist/606414976_2>
+    -   ~~Youtube: <https://www.youtube.com/playlist?list=PLhyPdV6jkp-QZjeLE06ts1Ucvafhz1CD->~~
+
+
+## <span class="section-num">10</span> Библиография {#библиография}
 
 ## Литература
 

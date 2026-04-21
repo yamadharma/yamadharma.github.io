@@ -2,7 +2,7 @@
 title: "Org-mode. Экспорт ссылок на видео в Hugo"
 author: ["Dmitry S. Kulyabov"]
 date: 2025-07-03T20:30:00+03:00
-lastmod: 2025-07-04T18:06:00+03:00
+lastmod: 2026-04-21T14:33:00+03:00
 tags: ["emacs", "org-mode", "hugo"]
 categories: ["computer-science"]
 draft: false

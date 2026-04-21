@@ -2,7 +2,7 @@
 title: "Pdf. Оглавление. pdf.tocgen"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-06-21T20:36:00+03:00
-lastmod: 2025-07-11T19:34:00+03:00
+lastmod: 2026-04-14T10:59:00+03:00
 tags: ["pdf"]
 categories: ["computer-science"]
 draft: false
@@ -95,7 +95,7 @@ Pdf. Оглавление. pdf.tocgen.
     ```
 -   Его можно сразу импортировать в файл PDF с помощью `pdftocio`:
     ```shell
-    $ pdftocgen in.pdf < recipe.toml | pdftocio -o out.pdf in.pdf
+    pdftocgen in.pdf < recipe.toml | pdftocio -o out.pdf in.pdf
     ```
 -   Можно отредактировать оглавление перед его импортом:
     ```shell

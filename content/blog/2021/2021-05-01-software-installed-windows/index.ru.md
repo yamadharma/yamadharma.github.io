@@ -2,7 +2,7 @@
 title: "Программное обеспечение, устанавливаемое на Windows"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-05-01T16:38:00+03:00
-lastmod: 2023-10-31T09:38:00+03:00
+lastmod: 2026-04-21T14:44:00+03:00
 tags: ["education", "windows"]
 categories: ["computer-science"]
 draft: false
@@ -29,7 +29,14 @@ slug: "software-installed-windows"
         -   Проще всего запустить его комбинаций клавиш `Win+X`.
     -   Команда установки находится на странице <https://chocolatey.org/install>.
 
-        {{< youtube _1O4vKHhm3I >}}
+{{< tabs "Подготовка ПО - Windows - Chocolatey" >}}
+
+{{< tab "RuTube" >}}{{< rutube 7ea952f0683dae22d9bab8139cf0d8ea >}}{{< /tab >}}
+
+{{< tab "VKvideo" >}}{{< vkvideo oid=606414976 id=456239324 hd=2 >}}{{< /tab >}}
+
+{{< /tabs >}}
+
 -   Для того, чтобы установка происходила без запроса подтверждения, можно сделать следующую настройку:
     ```shell
     choco feature enable -n=allowGlobalConfirmation
@@ -131,6 +138,15 @@ slug: "software-installed-windows"
 -   Установить с Chocolatey:
     ```shell
     choco install xournalplusplus
+    ```
+
+
+### <span class="section-num">8.2</span> Sumatra PDF {#sumatra-pdf}
+
+-   Сайт: <https://www.sumatrapdfreader.org/free-pdf-reader>
+-   Репозиторий: <https://github.com/sumatrapdfreader/sumatrapdf>
+    ```shell
+    choco install sumatrapdf
     ```
 
 

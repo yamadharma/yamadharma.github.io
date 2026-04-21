@@ -12,7 +12,7 @@ design:
 sections:
   - block: resume-experience
     content:
-      username: dharma_en
+      username: dharma
     design:
       # Hugo date format
       date_format: '2006-01-02'
@@ -21,17 +21,17 @@ sections:
   - block: resume-skills
     content:
       title: Skills & Hobbies
-      username: dharma_en
+      username: dharma
     design:
       show_skill_percentage: false
   - block: resume-awards
     content:
       title: Awards
-      username: dharma_en
+      username: dharma
   - block: resume-languages
     content:
       title: Languages
-      username: dharma_en
+      username: dharma
 ---
 <!-- Local Variables: -->
 <!-- mode: yaml -->

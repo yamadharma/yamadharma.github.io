@@ -1,3 +1,13 @@
+## [1.1.7](https://github.com/yamadharma/yamadharma.github.io/compare/v1.1.6...v1.1.7) (2026-04-21)
+
+
+### Features
+
+* **post:** add new posts ([3f6c626](https://github.com/yamadharma/yamadharma.github.io/commit/3f6c626328acfff14464e2bf0703066c6592ac73))
+* **theme:** enable Multilingual author data ([4c28588](https://github.com/yamadharma/yamadharma.github.io/commit/4c28588ea912007a91b84dd706890f05060294cf))
+
+
+
 ## [1.1.6](https://github.com/yamadharma/yamadharma.github.io/compare/v1.1.5...v1.1.6) (2026-04-05)
 
 

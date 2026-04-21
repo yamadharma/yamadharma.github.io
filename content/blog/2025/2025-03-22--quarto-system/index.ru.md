@@ -2,7 +2,7 @@
 title: "Система Quarto"
 author: ["Dmitry S. Kulyabov"]
 date: 2025-03-22T17:37:00+03:00
-lastmod: 2026-02-01T18:43:00+03:00
+lastmod: 2026-04-10T17:25:00+03:00
 tags: ["science-writing", "markdown"]
 categories: ["computer-science"]
 draft: false
@@ -147,6 +147,7 @@ flowchart LR
 -   [Quarto. Использование переменных]({{< relref "2026-01-31--quarto-variables" >}})
 -   [Quarto. Библиография]({{< relref "2026-02-01--quarto-bibliography" >}})
 -   [Quarto. subfigures]({{< relref "2026-02-01--quarto-subfigures" >}})
+-   [Quarto. Примечания]({{< relref "2026-04-10--quarto-notes" >}})
 
 
 ## <span class="section-num">6</span> Ресурсы {#ресурсы}

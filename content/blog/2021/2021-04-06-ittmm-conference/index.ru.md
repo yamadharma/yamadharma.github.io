@@ -2,7 +2,7 @@
 title: "Конференция ITTMM"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-04-06T16:11:00+03:00
-lastmod: 2025-10-17T20:37:00+03:00
+lastmod: 2026-04-10T15:09:00+03:00
 tags: ["science-admin"]
 categories: ["science"]
 draft: false
@@ -24,13 +24,121 @@ slug: "ittmm-conference"
 ## <span class="section-num">2</span> Список по годам {#список-по-годам}
 
 
-### <span class="section-num">2.1</span> 2025 {#2025}
+### <span class="section-num">2.1</span> 2026 {#2026}
+
+-   <https://events.rudn.su/event/306/>
+
+
+#### <span class="section-num">2.1.1</span> Секции {#секции}
+
+<!--list-separator-->
+
+1.  MTT + NGN: Joint section: Chairman Gaidamaka Yuliya and Kochetkova Irina
+
+    -   Ссылка на видеовстречу: <https://telemost.yandex.ru/j/1146674480>
+    -   Section Teletraffic theory and its applications
+    -   Chairmen: A.P. Pshenichnikov, Yu.V. Gaydamaka
+    -   Section Next-generation communication networks: management, quality, architecture
+    -   Chairmen: V.M. Vishnevsky, I.A. Kochetkova
+    -   <https://events.rudn.su/event/306/sessions/147/>
+    -   Время и дата Понедельник, 13 апреля, 13:30 — 17:50
+
+<!--list-separator-->
+
+2.  Computer algebra and its applications
+
+    -   Ссылка на видеовстречу: <https://telemost.yandex.ru/j/5278941889>
+    -   <https://events.rudn.su/event/306/sessions/151/>
+    -   Время и дата Понедельник, 13 апреля, 15:00 — 18:00
+
+<!--list-separator-->
+
+3.  MTT + NGN: Joint section/Poster: Posters
+
+    -   Ссылка на видеовстречу: <https://telemost.yandex.ru/j/6383478706>
+    -   <https://events.rudn.su/event/306/sessions/153/>
+    -   Время и дата Понедельник, 13 апреля, 18:00 — 20:00
+
+<!--list-separator-->
+
+4.  Plenary session
+
+    -   Ссылка на видеовстречу: <https://telemost.yandex.ru/j/9546503129>
+    -   <https://events.rudn.su/event/306/sessions/140/>
+    -   Время и дата Вторник, 14 апреля, 12:00 — 14:00
+
+<!--list-separator-->
+
+5.  Mathematical modeling and simulation
+
+    -   Ссылка на видеовстречу: <https://telemost.yandex.ru/j/4478257718>
+    -   <https://events.rudn.su/event/306/sessions/144/>
+    -   Время и дата Вторник, 14 апреля, 14:00 — 18:50
+
+<!--list-separator-->
+
+6.  Mathematical modeling/Poster
+
+    -   Ссылка на видеовстречу: <https://telemost.yandex.ru/j/5857929595>
+    -   <https://events.rudn.su/event/306/sessions/145/>
+    -   Время и дата Вторник, 14 апреля, 17:25 — 19:25
+
+<!--list-separator-->
+
+7.  Artificial intelligence and image recognition
+
+    -   Ссылка на видеовстречу: <https://telemost.yandex.ru/j/3200993392>
+    -   <https://events.rudn.su/event/306/sessions/149/>
+    -   Время и дата Среда, 15 апреля, 10:00 — 16:00
+
+<!--list-separator-->
+
+8.  Artificial Intelligence in Biology and Medicine
+
+    -   Ссылка на видеовстречу: <https://telemost.yandex.ru/j/7635688950>
+    -   <https://events.rudn.su/event/306/sessions/152/>
+    -   Время и дата Среда, 15 апреля, 13:00 — 17:00
+
+<!--list-separator-->
+
+9.  Applied artificial intelligence systems and neural networks
+
+    -   Ссылка на видеовстречу: <https://telemost.yandex.ru/j/1329520507>
+    -   <https://events.rudn.su/event/306/sessions/150/>
+    -   Время и дата Четверг, 16 апреля, 09:30 — 17:35
+
+<!--list-separator-->
+
+10.  Information systems and business process automation
+
+    -   Ссылка на видеовстречу: <https://telemost.yandex.ru/j/5777463728>
+    -   <https://events.rudn.su/event/306/sessions/141/>
+    -   Время и дата Четверг, 16 апреля, 13:00 — 15:05
+
+<!--list-separator-->
+
+11.  Computer algebra and its applications
+
+    -   Ссылка на видеовстречу: <https://telemost.yandex.ru/j/9575497969>
+    -   <https://events.rudn.su/event/306/sessions/151/>
+    -   Время и дата Четверг, 16 апреля, 15:00 — 18:00
+
+<!--list-separator-->
+
+12.  Applied information systems/Poster: Poster session
+
+    -   Ссылка на видеовстречу: <https://telemost.yandex.ru/j/5444536136>
+    -   <https://events.rudn.su/event/306/sessions/146/>
+    -   Время и дата Четверг, 16 апреля, 18:00 — 19:00
+
+
+### <span class="section-num">2.2</span> 2025 {#2025}
 
 -   <https://events.rudn.ru/event/272/>
 -   eLibrary: <https://elibrary.ru/item.asp?id=83014806>
 
 
-#### <span class="section-num">2.1.1</span> Секции (воркшопы) {#секции--воркшопы}
+#### <span class="section-num">2.2.1</span> Секции (воркшопы) {#секции--воркшопы}
 
 -   Телекоммуникации [Telecommunications]
     -   Сети связи следующего поколения [Next-generation communication networks: management, quality, architecture] (Кочеткова И.А.)
@@ -47,37 +155,37 @@ slug: "ittmm-conference"
     -   Компьютерная алгебра и её приложения [Computer algebra and its applications] (Малых М.Д.)
 
 
-### <span class="section-num">2.2</span> 2024 {#2024}
+### <span class="section-num">2.3</span> 2024 {#2024}
 
 -   <https://events.rudn.ru/e/conference/ittmm/2024>
 
 
-### <span class="section-num">2.3</span> 2023 {#2023}
+### <span class="section-num">2.4</span> 2023 {#2023}
 
 -   <https://events.rudn.ru/e/conference/ittmm/2023>
 
 
-### <span class="section-num">2.4</span> 2022 {#2022}
+### <span class="section-num">2.5</span> 2022 {#2022}
 
 -   <https://events.rudn.ru/e/conference/ittmm/2022>
 
 
-### <span class="section-num">2.5</span> 2021 {#2021}
+### <span class="section-num">2.6</span> 2021 {#2021}
 
 -   <https://events.rudn.ru/e/conference/ittmm/2021>
 
 
-### <span class="section-num">2.6</span> 2020 {#2020}
+### <span class="section-num">2.7</span> 2020 {#2020}
 
 -   <https://events.rudn.ru/e/conference/ittmm/2020>
 
 
-### <span class="section-num">2.7</span> 2019 {#2019}
+### <span class="section-num">2.8</span> 2019 {#2019}
 
 -   <https://events.rudn.ru/e/conference/ittmm/2019>
 
 
-### <span class="section-num">2.8</span> 2018 {#2018}
+### <span class="section-num">2.9</span> 2018 {#2018}
 
 -   <https://events.rudn.ru/e/conference/ittmm/2018>
 

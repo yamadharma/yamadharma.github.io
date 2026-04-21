@@ -2,7 +2,7 @@
 title: "Типографика"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-03-07T09:19:00+03:00
-lastmod: 2025-12-05T21:03:00+03:00
+lastmod: 2026-04-17T20:56:00+03:00
 tags: ["typography"]
 categories: ["computer-science"]
 draft: false
@@ -21,3 +21,4 @@ slug: "typography"
 -   [Форматы книжных изданий]({{< relref "2024-03-07-book-formats" >}})
 -   [Формат конверта]({{< relref "2025-03-27--envelope-size" >}})
 -   [Условный печатный лист]({{< relref "2025-12-05--conventional-printed-sheet" >}})
+-   [Рекомендации набора английского текста]({{< relref "2026-04-17--recommendations-typing-english-text" >}})

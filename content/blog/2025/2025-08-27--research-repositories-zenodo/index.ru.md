@@ -2,7 +2,8 @@
 title: "Репозитории для научных исследований. Zenodo"
 author: ["Dmitry S. Kulyabov"]
 date: 2025-08-27T17:41:00+03:00
-lastmod: 2025-08-27T17:58:00+03:00
+lastmod: 2026-05-03T20:15:00+03:00
+categories: ["science", "computer-science"]
 draft: false
 slug: "research-repositories-zenodo"
 ---

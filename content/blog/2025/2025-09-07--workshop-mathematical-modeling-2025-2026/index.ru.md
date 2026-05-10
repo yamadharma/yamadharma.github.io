@@ -2,7 +2,7 @@
 title: "Семинар Математическое моделирование, 2025-2026"
 author: ["Dmitry S. Kulyabov"]
 date: 2025-09-07T17:19:00+03:00
-lastmod: 2026-04-15T16:04:00+03:00
+lastmod: 2026-05-01T18:44:00+03:00
 tags: ["modeling"]
 categories: ["science"]
 draft: false
@@ -59,11 +59,7 @@ Solving initial boundary value problems for more general parabolic equations (wi
 
 {{< tab "RuTube" >}}{{< rutube 2ad8097514db84d66ebce8b4e5eb59fd >}}{{< /tab >}}
 
-{{< tab "Платформа" >}}{{< plvideo Y9zG7WMf-A3A >}}{{< /tab >}}
-
 {{< tab "VKvideo" >}}{{< vkvideo oid=-230024722 id=456239055 hd=2 >}}{{< /tab >}}
-
-{{< tab "Youtube" >}}{{< youtube 0rEol7HPLtU >}}{{< /tab >}}
 
 {{< /tabs >}}
 
@@ -101,11 +97,7 @@ We review the early period of research on finite projective planes, beginning wi
 
 {{< tab "RuTube" >}}{{< rutube 054af06db4dbfb2b52daccb2bdd7b386 >}}{{< /tab >}}
 
-{{< tab "Платформа" >}}{{< plvideo 7-dwcxIsRko6 >}}{{< /tab >}}
-
 {{< tab "VKvideo" >}}{{< vkvideo oid=-230024722 id=456239061 hd=2 >}}{{< /tab >}}
-
-{{< tab "Youtube" >}}{{< youtube 21zQH5ooY-Y >}}{{< /tab >}}
 
 {{< /tabs >}}
 
@@ -151,11 +143,7 @@ The report is the presentation of a doctoral thesis considering the method of re
 
 {{< tab "RuTube" >}}{{< rutube a44d00aa7e748ef7f19aec51a574d42e >}}{{< /tab >}}
 
-{{< tab "Платформа" >}}{{< plvideo YgtwLmJxWp8j >}}{{< /tab >}}
-
 {{< tab "VKvideo" >}}{{< vkvideo oid=-230024722 id=456239066 hd=2 >}}{{< /tab >}}
-
-{{< tab "Youtube" >}}{{< youtube ASmJR2ipr_E >}}{{< /tab >}}
 
 {{< /tabs >}}
 
@@ -233,8 +221,6 @@ The choice of a specific solution depends on non-technical factors: popularity a
 
 {{< tab "VKvideo" >}}{{< vkvideo oid=-230024722 id=456239071 hd=2 >}}{{< /tab >}}
 
-{{< tab "Youtube" >}}{{< youtube 0s_-WH33ZyE >}}{{< /tab >}}
-
 {{< /tabs >}}
 
 
@@ -277,8 +263,6 @@ Using cross-sections of extended model collimators with different parameters, it
 {{< tab "RuTube" >}}{{< rutube 1cbb1c2836c98959cd680429aad8368e >}}{{< /tab >}}
 
 {{< tab "VKvideo" >}}{{< vkvideo oid=-230024722 id=456239079 hd=2 >}}{{< /tab >}}
-
-{{< tab "Youtube" >}}{{< youtube HUkLdCuLMB4 >}}{{< /tab >}}
 
 {{< /tabs >}}
 
@@ -330,8 +314,6 @@ The source code, presented in four files (monomial.py, polynomial.py, janet.py, 
 {{< tab "RuTube" >}}{{< rutube f5435b5c0fb36e0d96d9350deb8e4d70 >}}{{< /tab >}}
 
 {{< tab "VKvideo" >}}{{< vkvideo oid=-230024722 id=456239563 hd=2 >}}{{< /tab >}}
-
-{{< tab "Youtube" >}}{{< youtube 2vLbHAWE_-s >}}{{< /tab >}}
 
 {{< /tabs >}}
 
@@ -571,7 +553,7 @@ This dissertation is devoted to the search for the most correct form of a fracti
 {{< /tabs >}}
 
 
-### <span class="org-todo todo TODO">TODO</span> <span class="section-num">2.6</span> <span class="timestamp-wrapper"><span class="timestamp">&lt;2026-04-22 Ср&gt;</span></span> Геворкян М. Н. - Использование и визуализация комплексного дробно-линейного преобразования для описания собственных движений трехмерного пространства {#геворкян-м-dot-н-dot-использование-и-визуализация-комплексного-дробно-линейного-преобразования-для-описания-собственных-движений-трехмерного-пространства}
+### <span class="org-todo done DONE">DONE</span> <span class="section-num">2.6</span> <span class="timestamp-wrapper"><span class="timestamp">&lt;2026-04-22 Ср&gt;</span></span> Геворкян М. Н. - Использование и визуализация комплексного дробно-линейного преобразования для описания собственных движений трехмерного пространства {#геворкян-м-dot-н-dot-использование-и-визуализация-комплексного-дробно-линейного-преобразования-для-описания-собственных-движений-трехмерного-пространства}
 
 
 #### <span class="section-num">2.6.1</span> Докладчик {#докладчик}
@@ -603,7 +585,18 @@ The fractional linear transformation on the augmented plane of complex numbers m
 The report is generally methodological in nature and focuses on programmatic visualization, which in some cases may be non-trivial due to the need to work with a point at infinity.
 
 
-### <span class="org-todo todo TODO">TODO</span> <span class="section-num">2.7</span> <span class="timestamp-wrapper"><span class="timestamp">&lt;2026-04-29 Ср&gt;</span></span> Ермолаева А. М. - Механизмы кумулятивного преимущества в наукометрии {#ермолаева-а-dot-м-dot-механизмы-кумулятивного-преимущества-в-наукометрии}
+#### <span class="section-num">2.6.3</span> Видео {#видео}
+
+{{< tabs "Геворкян М. Н. - Использование и визуализация комплексного дробно-линейного преобразования" >}}
+
+{{< tab "RuTube" >}}{{< rutube adccc2687a76396356fbcd1705c04517 >}}{{< /tab >}}
+
+{{< tab "VKvideo" >}}{{< vkvideo oid=-230024722 id=456239641 hd=2 >}}{{< /tab >}}
+
+{{< /tabs >}}
+
+
+### <span class="org-todo done DONE">DONE</span> <span class="section-num">2.7</span> <span class="timestamp-wrapper"><span class="timestamp">&lt;2026-04-29 Ср&gt;</span></span> Ермолаева А. М. - Механизмы кумулятивного преимущества в наукометрии {#ермолаева-а-dot-м-dot-механизмы-кумулятивного-преимущества-в-наукометрии}
 
 
 #### <span class="section-num">2.7.1</span> Докладчик {#докладчик}
@@ -642,3 +635,14 @@ The MNCS (mean normalized citation impact) metric is introduced, allowing the id
 A comparative analysis of Russia, China, and the United States in the field of AI for 2011–-2020 was conducted, and country-specific recommendation lists were compiled. A nonlinear dynamic conference ranking model was used, generalizing the Verhulst model and incorporating asymmetric competition with cumulative advantage.
 It was shown that the Matthew effect leads to bistability and leader dominance.
 To predict the quartile of a new conference using non-temporal data, three models were constructed and compared: linear regression, discriminant analysis, and a neural network.
+
+
+#### <span class="section-num">2.7.3</span> Видео {#видео}
+
+{{< tabs "Ермолаева А. М. - Механизмы кумулятивного преимущества в наукометрии" >}}
+
+{{< tab "RuTube" >}}{{< rutube eae22854f328cbddc52f715c2cca583c >}}{{< /tab >}}
+
+{{< tab "VKvideo" >}}{{< vkvideo oid=-230024722 id=456239649 hd=2 >}}{{< /tab >}}
+
+{{< /tabs >}}

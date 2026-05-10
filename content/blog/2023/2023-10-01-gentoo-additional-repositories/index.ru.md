@@ -2,7 +2,7 @@
 title: "Gentoo. Дополнительные репозитории"
 author: ["Dmitry S. Kulyabov"]
 date: 2023-10-01T13:41:00+03:00
-lastmod: 2024-12-20T17:35:00+03:00
+lastmod: 2026-05-07T15:17:00+03:00
 tags: ["linux", "gentoo"]
 categories: ["computer-science"]
 draft: false
@@ -189,7 +189,7 @@ Gentoo. Дополнительные репозитории.
 ## <span class="section-num">6</span> Списки полезных репозиториев {#списки-полезных-репозиториев}
 
 
-### <span class="section-num">6.1</span> Karma {#karma}
+### <span class="section-num">6.1</span> karma {#karma}
 
 -   [Gentoo. Репозиторий karma]({{< relref "2024-05-25-gentoo-karma-repository" >}})
 

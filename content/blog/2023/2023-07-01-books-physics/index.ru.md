@@ -2,8 +2,8 @@
 title: "Книги. Физика"
 author: ["Dmitry S. Kulyabov"]
 date: 2023-07-01T20:19:00+03:00
-lastmod: 2024-07-10T16:46:00+03:00
-tags: ["physics"]
+lastmod: 2026-04-25T21:00:00+03:00
+tags: ["MOC", "physics"]
 categories: ["book"]
 draft: false
 slug: "books-physics"
@@ -21,13 +21,13 @@ slug: "books-physics"
 
 ### <span class="section-num">1.1</span> 2023 {#2023}
 
--   <span class="timestamp-wrapper"><span class="timestamp">[2023-07-01 Сб 20:07] </span></span> [Компанеец, А. С. (1967): Может ли окончиться физическая наука]({{< relref "2023-07-01-kompaneyets_book_can-physical-science-end_ru" >}}) [<a href="#citeproc_bib_item_1">1</a>]
--   <span class="timestamp-wrapper"><span class="timestamp">[2023-11-14 Вт 20:15] </span></span> [Станюкович, К. П., Колесников, С. М. (1964): Гравитация]({{< relref "2023-11-14-stanyukovich_book_gravity_ru" >}}) [<a href="#citeproc_bib_item_2">2</a>]
+-   <span class="timestamp-wrapper"><span class="timestamp">[2023-07-01 Сб 20:07]</span></span> [Компанеец, А. С. (1967): Может ли окончиться физическая наука]({{< relref "2023-07-01-kompaneyets_book_can-physical-science-end_ru" >}}) [<a href="#citeproc_bib_item_1">1</a>]
+-   <span class="timestamp-wrapper"><span class="timestamp">[2023-11-14 Вт 20:15]</span></span> [Станюкович, К. П., Колесников, С. М. (1964): Гравитация]({{< relref "2023-11-14-stanyukovich_book_gravity_ru" >}}) [<a href="#citeproc_bib_item_2">2</a>]
 
 
 ### <span class="section-num">1.2</span> 2024 {#2024}
 
--   <span class="timestamp-wrapper"><span class="timestamp">[2024-07-08 Пн 03:56] </span></span> [Плясовских, А. П. (2023) Детская ошибка Эйнштейна]({{< relref "2024-07-09-plyasovskikh_book_einstein-childhood-mistake_ru" >}}) [<a href="#citeproc_bib_item_3">3</a>]
+-   <span class="timestamp-wrapper"><span class="timestamp">[2024-07-08 Пн 03:56]</span></span> [Плясовских, А. П. (2023) Детская ошибка Эйнштейна]({{< relref "2024-07-09-plyasovskikh_book_einstein-childhood-mistake_ru" >}}) [<a href="#citeproc_bib_item_3">3</a>]
 
 
 ## <span class="section-num">2</span> Темы {#темы}
@@ -49,6 +49,11 @@ slug: "books-physics"
 ### <span class="section-num">2.4</span> Частная теория относительности (анти) {#частная-теория-относительности--анти}
 
 -   [Плясовских, А. П. (2023) Детская ошибка Эйнштейна]({{< relref "2024-07-09-plyasovskikh_book_einstein-childhood-mistake_ru" >}}) [<a href="#citeproc_bib_item_3">3</a>]
+
+
+### <span class="section-num">2.5</span> Учебники {#учебники}
+
+-   [Курс Зельдовича]({{< relref "2026-04-25--zeldovich-course" >}})
 
 
 ## <span class="section-num">3</span> Библиография {#библиография}

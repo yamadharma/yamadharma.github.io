@@ -2,7 +2,7 @@
 title: "Emacs. Desire. Конфигурация"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-06-11T18:55:00+03:00
-lastmod: 2026-03-21T18:13:00+03:00
+lastmod: 2026-05-15T17:43:00+03:00
 tags: ["emacs"]
 categories: ["computer-science"]
 draft: false
@@ -598,8 +598,8 @@ slug: "emacs-desire-configuration"
     ()
   (progn
     (desire-conf 'window-system)
-                                        ;    (desire-conf  'faces)
-                                        ;    (desire-conf  'multi-frame)
+                    ;    (desire-conf  'faces)
+                    ;    (desire-conf  'multi-frame)
     )
   )
 
@@ -3032,8 +3032,8 @@ slug: "emacs-desire-configuration"
             (progn
               (setf (alist-get 'latex-mode apheleia-mode-alist) 'tex-fmt)
               (setf (alist-get 'LaTeX-mode apheleia-mode-alist) 'tex-fmt)
-                 (setf (alist-get 'TeX-latex-mode apheleia-mode-alist) 'tex-fmt)
-                 (setf (alist-get 'TeX-mode apheleia-mode-alist) 'tex-fmt))
+             (setf (alist-get 'TeX-latex-mode apheleia-mode-alist) 'tex-fmt)
+             (setf (alist-get 'TeX-mode apheleia-mode-alist) 'tex-fmt))
           nil)
 
         ;;;
@@ -3990,7 +3990,7 @@ slug: "emacs-desire-configuration"
 
     -   Файл: `rc.packages.el`
         ```emacs-lisp
-        (desire 'outline-indent)
+        ;; (desire 'outline-indent)
         ```
 
 <!--list-separator-->
@@ -5265,7 +5265,7 @@ slug: "emacs-desire-configuration"
           (if (eq arg 4)
               (pomm--do-reset)
             (if (eq 'running (alist-get 'status pomm--state))
-                (pomm-pause)
+            (pomm-pause)
               (pomm-start))))
 
         ;;;
@@ -6009,18 +6009,18 @@ slug: "emacs-desire-configuration"
         (setopt org-gtd-refile-to-any-target nil)
         ;;;; These types prompt for refile target
         (setopt org-gtd-refile-prompt-for-types
-                '(single-action
-                  project-heading
-                  project-task
-                  ;; calendar
+            '(single-action
+              project-heading
+              project-task
+              ;; calendar
                   someday
-                  delegated
-                  tickler
-                  ;; habit
-                  knowledge
-                  quick-action
-                  ;; trash
-                  ))
+              delegated
+              tickler
+              ;; habit
+              knowledge
+              quick-action
+              ;; trash
+              ))
 
         ;;;
         ```
@@ -6091,83 +6091,83 @@ slug: "emacs-desire-configuration"
             ;; (prefix . (project area-of-focus "—"))
             (prefix-width . ,org-gtd-prefix-width)
             (blocks . (
-                       ((name . "Weekly Agenda")
-                        (view-type . agenda)
-                        (agenda-span . 1))
-                       ;; ((name . "Today's Schedule")
-                       ;;  (block-type . calendar-day))
-                       ((name . "Overdue events")
-                        (type . calendar)
-                        (when . past))
-                       ((name . "Overdue habits")
-                        (type . habit)
-                        (when . past))
-                       ;; ((name . "Past")
-                       ;;	(type . next-action)
-                       ;;	(scheduled . past)
-                       ;;	(deadline . past))
-                       ;; ((name . "Daily Agenda")
-                       ;;	(view-type . agenda)
-                       ;;	(agenda-span . 1))
-                       ;; ((name . "Future Habits")
-                       ;;	(type . habit)
-                       ;;	(when . future))
-                       ;; ((name . "High Priority")
-                       ;;	(type . next-action)
-                       ;;	(priority . A))
-                       ((name . "Important Tasks")
-                        (type . next-action)
-                        (priority . (>= B)))
-                       ((name . "Quick Work")
-                        (type . next-action)
-                        (effort . (<= "30min")))
-                       ((name . "Science")
-                        (type . next-action)
-                        (area-of-focus . "Science"))
-                       ((name . "Sciadmin")
-                        (type . next-action)
-                        (area-of-focus . "Sciadmin"))
-                       ((name . "Teaching")
-                        (type . next-action)
-                        (area-of-focus . "Teaching"))
-                       ((name . "Sysadmin")
-                        (type . next-action)
-                        (area-of-focus . "Sysadmin"))
-                       ((name . "All actions ready to be executed")
-                        (type . next-action)
-                        (not-habit . t))
-                       ((name . "Read")
-                        (type . next-action)
-                        (area-of-focus . "Read"))
-                       ((name . "Deep in Progress")
-                        (type . next-action)
-                        (clocked . (> "1:00")))
-                       ((name . "Tickler items ready for today")
-                        (type . tickler)
-                        (when . today))
-                       ((name . "Delegated items to check in on today")
-                        (type . delegated)
-                        (when . today))
-                       ((name . "Missed Delegated")
-                        (type . delegated)
-                        (when . past))
-                       ((name . "Active Projects")
-                        (type . project))
-                       ((name . "Overdue Projects")
-                        (type . project)
-                        (deadline . past))
-                       ((name . "Incubated Projects")
-                        (type . incubated-project))
-                       ((name . "Stuck Projects")
-                        (type . stuck-project))
-                       ((name . "Someday/Maybe")
-                        (type . someday))
-                       ((name . "Completed This Week")
-                        (done . past-week))
-                       ((name . "Weekly Agenda")
-                        (view-type . agenda)
-                        (agenda-span . 7))
-                        ))))
+                   ((name . "Weekly Agenda")
+                (view-type . agenda)
+                (agenda-span . 1))
+                   ;; ((name . "Today's Schedule")
+                   ;;  (block-type . calendar-day))
+                   ((name . "Overdue events")
+                (type . calendar)
+                (when . past))
+                   ((name . "Overdue habits")
+                (type . habit)
+                (when . past))
+                   ;; ((name . "Past")
+                   ;;	(type . next-action)
+                   ;;	(scheduled . past)
+                   ;;	(deadline . past))
+                   ;; ((name . "Daily Agenda")
+                   ;;	(view-type . agenda)
+                   ;;	(agenda-span . 1))
+                   ;; ((name . "Future Habits")
+                   ;;	(type . habit)
+                   ;;	(when . future))
+                   ;; ((name . "High Priority")
+                   ;;	(type . next-action)
+                   ;;	(priority . A))
+                   ((name . "Important Tasks")
+                (type . next-action)
+                (priority . (>= B)))
+                   ((name . "Quick Work")
+                (type . next-action)
+                (effort . (<= "30min")))
+                   ((name . "Science")
+                (type . next-action)
+                (area-of-focus . "Science"))
+                   ((name . "Sciadmin")
+                (type . next-action)
+                (area-of-focus . "Sciadmin"))
+                   ((name . "Teaching")
+                (type . next-action)
+                (area-of-focus . "Teaching"))
+                   ((name . "Sysadmin")
+                (type . next-action)
+                (area-of-focus . "Sysadmin"))
+                   ((name . "All actions ready to be executed")
+                (type . next-action)
+                (not-habit . t))
+                   ((name . "Read")
+                (type . next-action)
+                (area-of-focus . "Read"))
+                   ((name . "Deep in Progress")
+                (type . next-action)
+                (clocked . (> "1:00")))
+                   ((name . "Tickler items ready for today")
+                (type . tickler)
+                (when . today))
+                   ((name . "Delegated items to check in on today")
+                (type . delegated)
+                (when . today))
+                   ((name . "Missed Delegated")
+                (type . delegated)
+                (when . past))
+                   ((name . "Active Projects")
+                (type . project))
+                   ((name . "Overdue Projects")
+                (type . project)
+                (deadline . past))
+                   ((name . "Incubated Projects")
+                (type . incubated-project))
+                   ((name . "Stuck Projects")
+                (type . stuck-project))
+                   ((name . "Someday/Maybe")
+                (type . someday))
+                   ((name . "Completed This Week")
+                (done . past-week))
+                   ((name . "Weekly Agenda")
+                (view-type . agenda)
+                (agenda-span . 7))
+                ))))
 
         ;;;
         ```
@@ -6217,7 +6217,7 @@ slug: "emacs-desire-configuration"
 
         ;; Install hooks
         (setopt org-gtd-organize-hooks
-                '(org-gtd-set-area-of-focus    ;; set area first
+            '(org-gtd-set-area-of-focus    ;; set area first
                   org-set-tags-command         ;; then tags
                   ecf/auto-tag-contexts        ;; suggest context tags
                   ecf/add-effort               ;; estimate effort
@@ -6356,9 +6356,9 @@ slug: "emacs-desire-configuration"
     (setopt org-download-screenshot-method
             (cond (IS-MAC "screencapture -i %s")
                   (IS-LINUX
-                   (cond ((executable-find "grim") "grim -g \"$(slurp)\" %s")
-                         ((executable-find "flameshot") "flameshot gui --raw > %s")
-                         ((executable-find "maim") "maim -s %s")
+               (cond ((executable-find "grim") "grim -g \"$(slurp)\" %s")
+                 ((executable-find "flameshot") "flameshot gui --raw > %s")
+                 ((executable-find "maim") "maim -s %s")
                          ((executable-find "scrot") "scrot -s %s")
                          ((executable-find "gnome-screenshot") "gnome-screenshot -a -f %s")))))
 
@@ -6497,7 +6497,7 @@ slug: "emacs-desire-configuration"
 
     (setopt org-alphabetical-lists t)
 
-                                            ; Allow binding variables on export without confirmation
+                        ; Allow binding variables on export without confirmation
     (setopt org-export-allow-bind t)
     (setopt org-export-allow-bind-keywords t)
 
@@ -6512,16 +6512,16 @@ slug: "emacs-desire-configuration"
     ;; HTML
     (desire 'htmlize)
     (require 'ox-html)
-                                            ; Export HTML without XML header
+                        ; Export HTML without XML header
     (setopt org-html-xml-declaration (quote (("html" . "")
-                                             ("was-html" . "<?xml version=\"1.0\" encoding=\"%s\"?>")
-                                             ("php" . "<?php echo \"<?xml version=\\\"1.0\\\" encoding=\\\"%s\\\" ?>\"; ?>"))))
+                         ("was-html" . "<?xml version=\"1.0\" encoding=\"%s\"?>")
+                         ("php" . "<?php echo \"<?xml version=\\\"1.0\\\" encoding=\\\"%s\\\" ?>\"; ?>"))))
 
     ;;
     (require 'ox)
     (require 'ox-ascii)
     (require 'ox-md)
-                                            ;(require 'ox-man)
+                        ;(require 'ox-man)
     (require 'ox-odt)
     (require 'ox-publish)
 
@@ -6553,7 +6553,7 @@ slug: "emacs-desire-configuration"
     ;;;; Export macros
     (setq org-export-global-macros
           '(
-            ("youtube" . "(eval (cond ((org-export-derived-backend-p org-export-current-backend 'hugo) (concat \"@@hugo:{{</* youtube \" $1 \" */>}}@@\")) ((org-export-derived-backend-p org-export-current-backend (or 'md 'markdown 'gfm)) (concat \"@@html:[![Youtube](http://img.youtube.com/vi/\" $1 \"/0.jpg){width=560px}](http://www.youtube.com/watch?v=\" $1 \")@@\"))))")
+        ("youtube" . "(eval (cond ((org-export-derived-backend-p org-export-current-backend 'hugo) (concat \"@@hugo:{{</* youtube \" $1 \" */>}}@@\")) ((org-export-derived-backend-p org-export-current-backend (or 'md 'markdown 'gfm)) (concat \"@@html:[![Youtube](http://img.youtube.com/vi/\" $1 \"/0.jpg){width=560px}](http://www.youtube.com/watch?v=\" $1 \")@@\"))))")
             ("rutube" . "(eval (cond ((org-export-derived-backend-p org-export-current-backend 'hugo) (concat \"@@hugo:{{</* rutube \" $1 \" */>}}@@\")) ((org-export-derived-backend-p org-export-current-backend (or 'md 'markdown 'gfm)) (concat \"@@html:[![RuTube](\" $2 \"){width=560px}](https://rutube.ru/video/\" $1 \"/)@@\"))))")
             ("plvideo" . "(eval (cond ((org-export-derived-backend-p org-export-current-backend 'hugo) (concat \"@@hugo:{{</* plvideo \" $1 \" */>}}@@\")) ((org-export-derived-backend-p org-export-current-backend (or 'md 'markdown 'gfm)) (concat \"@@html:[![Платформа](\" $2 \"){width=560px}](https://plvideo.ru/watch?v=\" $1 \")@@\"))))")
             ("vkvideo" . "(eval (cond ((org-export-derived-backend-p org-export-current-backend 'hugo) (concat \"@@hugo:{{</* vkvideo oid=\" $1 \" id=\" $2 \" hd=2 */>}}@@\")) ((org-export-derived-backend-p org-export-current-backend (or 'md 'markdown 'gfm)) (concat \"@@html:[![VKvideo](\" $3 \"){width=560px}](https://vkvideo.ru/video\" $1 \"_\" $2 \")@@\"))))")
@@ -6720,31 +6720,31 @@ slug: "emacs-desire-configuration"
         (setopt org-latex-create-formula-image-program 'dvisvgm)
 
         (setopt org-preview-latex-process-alist
-                '((dvipng :programs ("latex" "dvipng") :description "dvi > png"
-                          :message
-                          "you need to install the programs: latex and dvipng."
-                          :image-input-type "dvi" :image-output-type "png"
-                          :image-size-adjust (1.0 . 1.0) :latex-compiler
-                          ("latex -interaction nonstopmode -output-directory %o %f")
-                          :image-converter ("dvipng -D %D -T tight -o %O %f")
-                          :transparent-image-converter
-                          ("dvipng -D %D -T tight -bg Transparent -o %O %f"))
-                  (dvisvgm :programs ("xelatex" "dvisvgm") :description "xdv > svg"
-                           :message
-                           "you need to install the programs: latex and dvisvgm."
-                           :image-input-type "xdv" :image-output-type "svg"
-                           :image-size-adjust (1.7 . 1.5) :latex-compiler
-                           ("xelatex --no-pdf -interaction nonstopmode -output-directory %o %f")
-                           :image-converter
-                           ("dvisvgm %f --no-fonts --exact-bbox --scale=%S --output=%O"))
-                  (imagemagick :programs ("xelatex" "convert") :description "pdf > png"
-                               :message
-                               "you need to install the programs: latex and imagemagick."
-                               :image-input-type "pdf" :image-output-type "png"
-                               :image-size-adjust (1.0 . 1.0) :latex-compiler
-                               ("xelatex -interaction nonstopmode -output-directory %o %f")
-                               :image-converter
-                               ("convert -density %D -trim -antialias %f -quality 100 %O"))))
+            '((dvipng :programs ("latex" "dvipng") :description "dvi > png"
+                  :message
+                  "you need to install the programs: latex and dvipng."
+                  :image-input-type "dvi" :image-output-type "png"
+                  :image-size-adjust (1.0 . 1.0) :latex-compiler
+                  ("latex -interaction nonstopmode -output-directory %o %f")
+                  :image-converter ("dvipng -D %D -T tight -o %O %f")
+                  :transparent-image-converter
+                  ("dvipng -D %D -T tight -bg Transparent -o %O %f"))
+              (dvisvgm :programs ("xelatex" "dvisvgm") :description "xdv > svg"
+                   :message
+                   "you need to install the programs: latex and dvisvgm."
+                   :image-input-type "xdv" :image-output-type "svg"
+                   :image-size-adjust (1.7 . 1.5) :latex-compiler
+                   ("xelatex --no-pdf -interaction nonstopmode -output-directory %o %f")
+                   :image-converter
+                   ("dvisvgm %f --no-fonts --exact-bbox --scale=%S --output=%O"))
+              (imagemagick :programs ("xelatex" "convert") :description "pdf > png"
+                       :message
+                       "you need to install the programs: latex and imagemagick."
+                       :image-input-type "pdf" :image-output-type "png"
+                       :image-size-adjust (1.0 . 1.0) :latex-compiler
+                       ("xelatex -interaction nonstopmode -output-directory %o %f")
+                       :image-converter
+                       ("convert -density %D -trim -antialias %f -quality 100 %O"))))
         ```
         <div class="src-block-caption">
           <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 178:</span>
@@ -6812,12 +6812,12 @@ slug: "emacs-desire-configuration"
           (interactive)
           (if (use-region-p)
               (let* ((region
-                      (buffer-substring-no-properties
-                              (region-beginning)
-                              (region-end)))
-                     (markdown
-                      (org-export-string-as region 'md t '(:with-toc nil))))
-                (gui-set-selection 'CLIPBOARD markdown))))
+                  (buffer-substring-no-properties
+                      (region-beginning)
+                      (region-end)))
+                 (markdown
+                  (org-export-string-as region 'md t '(:with-toc nil))))
+            (gui-set-selection 'CLIPBOARD markdown))))
 
         ;;;
         ```
@@ -7377,10 +7377,10 @@ slug: "emacs-desire-configuration"
         ;;;; Some tweaks
         (setopt org-taskjuggler-default-project-duration 999)
         (setopt org-taskjuggler-valid-task-attributes
-                '(account start note duration endbuffer endcredit end
-                          flags journalentry length limits maxend maxstart minend
-                          minstart period reference responsible scheduling
-                          startbuffer startcredit statusnote chargeset charge booking))
+            '(account start note duration endbuffer endcredit end
+                  flags journalentry length limits maxend maxstart minend
+                  minstart period reference responsible scheduling
+                  startbuffer startcredit statusnote chargeset charge booking))
 
 
 
@@ -7396,7 +7396,7 @@ slug: "emacs-desire-configuration"
                                      (org-element-property :PRECEDES task))))
                    (and precs
                         (split-string (replace-regexp-in-string "{.*?}" "" precs)
-                                      "[ ,]* +"))))
+                          "[ ,]* +"))))
                 precedes)
             (when precs-ids
               ;; Find tasks with :task_id: property matching id in PRECS-IDS.
@@ -7408,7 +7408,7 @@ slug: "emacs-desire-configuration"
                       (org-element-map tasks 'headline
                         (lambda (task)
                           (let ((task-id (or (org-element-property :TASK_ID task)
-                                             (org-element-property :ID task))))
+                             (org-element-property :ID task))))
                             (and task-id (member task-id precs-ids) task)))
                         info)))
               ;; Check BLOCKER and PRECEDES properties.  If "previous-sibling"
@@ -7434,33 +7434,33 @@ slug: "emacs-desire-configuration"
         INFO is a plist used as a communication channel.  Return value
         doesn't include leading \"precedes\"."
           (let* ((dep-str (concat (org-element-property :BLOCKER task)
-                                  " "
-                                  (org-element-property :PRECEDES task)))
-                 (get-path
-                  (lambda (dep)
-                    ;; Return path to DEP relatively to TASK.
-                    (let ((parent (org-export-get-parent task))
-                          (exclamations 1)
-                          (option
-                           (let ((id (org-element-property :TASK_ID dep)))
-                             (and id
-                                  (string-match (concat id " +\\({.*?}\\)") dep-str)
-                                  (match-string-no-properties 1 dep-str))))
-                          path)
-                      ;; Compute number of exclamation marks by looking for the
-                      ;; common ancestor between TASK and DEP.
-                      (while (not (org-element-map parent 'headline
-                                  (lambda (hl) (eq hl dep))))
-                        (cl-incf exclamations)
-                        (setq parent (org-export-get-parent parent)))
-                      ;; Build path from DEP to PARENT.
-                      (while (not (eq parent dep))
-                        (push (org-taskjuggler-get-id dep info) path)
-                        (setq dep (org-export-get-parent dep)))
-                      ;; Return full path.  Add dependency options, if any.
-                      (concat (make-string exclamations ?!)
-                              (mapconcat 'identity path ".")
-                              (and option (concat " " option)))))))
+                      " "
+                      (org-element-property :PRECEDES task)))
+             (get-path
+              (lambda (dep)
+                ;; Return path to DEP relatively to TASK.
+                (let ((parent (org-export-get-parent task))
+                  (exclamations 1)
+                  (option
+                   (let ((id (org-element-property :TASK_ID dep)))
+                     (and id
+                      (string-match (concat id " +\\({.*?}\\)") dep-str)
+                      (match-string-no-properties 1 dep-str))))
+                  path)
+                  ;; Compute number of exclamation marks by looking for the
+                  ;; common ancestor between TASK and DEP.
+                  (while (not (org-element-map parent 'headline
+                      (lambda (hl) (eq hl dep))))
+                (cl-incf exclamations)
+                (setq parent (org-export-get-parent parent)))
+                  ;; Build path from DEP to PARENT.
+                  (while (not (eq parent dep))
+                (push (org-taskjuggler-get-id dep info) path)
+                (setq dep (org-export-get-parent dep)))
+                  ;; Return full path.  Add dependency options, if any.
+                  (concat (make-string exclamations ?!)
+                      (mapconcat 'identity path ".")
+                      (and option (concat " " option)))))))
             ;; Return precedes string, without the leading "precedes".
             (mapconcat (lambda (dep) (funcall get-path dep)) precedes ", ")))
 
@@ -7479,20 +7479,20 @@ slug: "emacs-desire-configuration"
                   (if (eq (org-element-property :todo-type task) 'done) "100"
                     (org-element-property :COMPLETE task)))
                  (depends (org-taskjuggler-resolve-dependencies task info))
-                 (precedes (org-taskjuggler-resolve-precedes task info))
+             (precedes (org-taskjuggler-resolve-precedes task info))
                  (effort (let ((property
-                                (intern (concat ":" (upcase org-effort-property)))))
-                           (org-element-property property task)))
+                    (intern (concat ":" (upcase org-effort-property)))))
+                   (org-element-property property task)))
                  (milestone
                   (or (org-element-property :MILESTONE task)
                       (not (or (org-element-map (org-element-contents task) 'headline
-                                 'identity info t)  ; Has task any child?
-                               effort
-                               (org-element-property :LENGTH task)
-                               (org-element-property :DURATION task)
-                               (and (org-taskjuggler-get-start task)
-                                    (org-taskjuggler-get-end task))
-                               (org-element-property :PERIOD task)))))
+                     'identity info t)  ; Has task any child?
+                       effort
+                       (org-element-property :LENGTH task)
+                       (org-element-property :DURATION task)
+                       (and (org-taskjuggler-get-start task)
+                        (org-taskjuggler-get-end task))
+                       (org-element-property :PERIOD task)))))
                  (priority
                   (let ((pri (org-element-property :priority task)))
                     (and pri
@@ -8163,15 +8163,65 @@ slug: "emacs-desire-configuration"
 ```
 
 
-### <span class="section-num">3.36</span> Почта {#почта}
+### <span class="section-num">3.36</span> Интеграция с десктопом {#интеграция-с-десктопом}
 
 
-#### <span class="section-num">3.36.1</span> Общие опции {#общие-опции}
+#### <span class="section-num">3.36.1</span> browse-url {#browse-url}
+
+-   Настройка программы для открытия html.
+-   [Emacs. Поддержка броузеров]({{< relref "2026-05-15--emacs-browser-support" >}})
+
+<!--list-separator-->
+
+1.  Подключение
+
+    -   Файл: `rc.packages.el`
+        ```emacs-lisp
+        (desire 'browse-url)
+        ```
+
+<!--list-separator-->
+
+2.  Загрузка
+
+    -   Файл: `packages/browse-url/loaddefs.ecf`
+        ```emacs-lisp
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;; Pass a URL to a web browser
+
+        ;;; Code:
+
+        (require 'browse-url)
+
+        ;;;
+        ```
+
+<!--list-separator-->
+
+3.  Конфигурация
+
+    -   Файл: `packages/browse-url/desire.ecf`
+        ```emacs-lisp
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;; Pass a URL to a web browser
+
+        ;;; Code:
+
+        (setq browse-url-browser-function 'browse-url-default-browser)
+
+        ;;;
+        ```
+
+
+### <span class="section-num">3.37</span> Почта {#почта}
+
+
+#### <span class="section-num">3.37.1</span> Общие опции {#общие-опции}
 
 ```emacs-lisp
 ;;; These provide options for the various message handling packages {{{
 
-(desire 'browse-url)
+;; (desire 'browse-url)
 ;; (desire-conf 'mailcrypt)
 ;; (desire 'supercite)
 
@@ -8179,7 +8229,7 @@ slug: "emacs-desire-configuration"
 ```
 
 
-#### <span class="section-num">3.36.2</span> Работа с почтой {#работа-с-почтой}
+#### <span class="section-num">3.37.2</span> Работа с почтой {#работа-с-почтой}
 
 ```emacs-lisp
 ;;; Message {{{
@@ -8193,7 +8243,7 @@ slug: "emacs-desire-configuration"
 ```
 
 
-#### <span class="section-num">3.36.3</span> mu4e {#mu4e}
+#### <span class="section-num">3.37.3</span> mu4e {#mu4e}
 
 -   Подключение:
     ```emacs-lisp
@@ -8223,7 +8273,7 @@ slug: "emacs-desire-configuration"
     </div>
 
 
-### <span class="section-num">3.37</span> Блоги {#блоги}
+### <span class="section-num">3.38</span> Блоги {#блоги}
 
 ```emacs-lisp
 ;;; Blogs {{{
@@ -8261,17 +8311,17 @@ slug: "emacs-desire-configuration"
 ```
 
 
-### <span class="section-num">3.38</span> Мессенджеры {#мессенджеры}
+### <span class="section-num">3.39</span> Мессенджеры {#мессенджеры}
 
 ```emacs-lisp
 (desire 'telega)
 ```
 
 
-### <span class="section-num">3.39</span> Отложенное чтение {#отложенное-чтение}
+### <span class="section-num">3.40</span> Отложенное чтение {#отложенное-чтение}
 
 
-#### <span class="section-num">3.39.1</span> Pocket reader {#pocket-reader}
+#### <span class="section-num">3.40.1</span> Pocket reader {#pocket-reader}
 
 -   [Emacs. Pocket reader]({{< relref "2023-09-06-emacs_pocket_reader" >}})
 
@@ -8282,7 +8332,7 @@ slug: "emacs-desire-configuration"
 ```
 
 
-#### <span class="section-num">3.39.2</span> Wallabag {#wallabag}
+#### <span class="section-num">3.40.2</span> Wallabag {#wallabag}
 
 -   Подключение пакета:
     ```emacs-lisp
@@ -8388,7 +8438,7 @@ slug: "emacs-desire-configuration"
     ```
 
 
-#### <span class="section-num">3.39.3</span> Elfeed {#elfeed}
+#### <span class="section-num">3.40.3</span> Elfeed {#elfeed}
 
 -   [Emacs. Чтение rss. Elfeed]({{< relref "2025-06-02--emacs-rss-elfeed" >}})
     Объявление:
@@ -8455,7 +8505,7 @@ slug: "emacs-desire-configuration"
     </div>
 
 
-#### <span class="section-num">3.39.4</span> Elfeed-protocol {#elfeed-protocol}
+#### <span class="section-num">3.40.4</span> Elfeed-protocol {#elfeed-protocol}
 
 -   Поддержка серверов rss:
 
@@ -8620,7 +8670,7 @@ slug: "emacs-desire-configuration"
     </div>
 
 
-### <span class="section-num">3.40</span> Dashboard {#dashboard}
+### <span class="section-num">3.41</span> Dashboard {#dashboard}
 
 ```emacs-lisp
 
@@ -8639,10 +8689,10 @@ slug: "emacs-desire-configuration"
 ```
 
 
-### <span class="section-num">3.41</span> Разные программные режимы {#разные-программные-режимы}
+### <span class="section-num">3.42</span> Разные программные режимы {#разные-программные-режимы}
 
 
-#### <span class="section-num">3.41.1</span> Начало {#начало}
+#### <span class="section-num">3.42.1</span> Начало {#начало}
 
 -   Файл `rc.packages.el`:
     ```emacs-lisp
@@ -8650,7 +8700,7 @@ slug: "emacs-desire-configuration"
     ```
 
 
-#### <span class="section-num">3.41.2</span> Пакет csv-mode {#пакет-csv-mode}
+#### <span class="section-num">3.42.2</span> Пакет csv-mode {#пакет-csv-mode}
 
 -   [Emacs. cvs-mode]({{< relref "2024-09-04-emacs-cvs-mode" >}})
 -   Файл `rc.packages.el`:
@@ -8693,7 +8743,7 @@ slug: "emacs-desire-configuration"
         ```
 
 
-#### <span class="section-num">3.41.3</span> Поддержка ebuild-файлов {#поддержка-ebuild-файлов}
+#### <span class="section-num">3.42.3</span> Поддержка ebuild-файлов {#поддержка-ebuild-файлов}
 
 -   Сайт: <https://wiki.gentoo.org/wiki/Project:Emacs>
 -   Файл `rc.packages.el`:
@@ -8752,7 +8802,7 @@ slug: "emacs-desire-configuration"
     </div>
 
 
-#### <span class="section-num">3.41.4</span> Asymptote {#asymptote}
+#### <span class="section-num">3.42.4</span> Asymptote {#asymptote}
 
 -   <https://asymptote.sourceforge.io/>
 
@@ -8813,7 +8863,7 @@ slug: "emacs-desire-configuration"
     </div>
 
 
-#### <span class="section-num">3.41.5</span> kmonad-файлы {#kmonad-файлы}
+#### <span class="section-num">3.42.5</span> kmonad-файлы {#kmonad-файлы}
 
 -   Поддержка синтаксиса конфигурационных файлов kmonad.
 -   Файл `rc.packages.el`:
@@ -8842,7 +8892,7 @@ slug: "emacs-desire-configuration"
     </div>
 
 
-#### <span class="section-num">3.41.6</span> Julia {#julia}
+#### <span class="section-num">3.42.6</span> Julia {#julia}
 
 ```emacs-lisp
 ;;;;; Julia
@@ -9109,7 +9159,7 @@ slug: "emacs-desire-configuration"
             ```
 
 
-#### <span class="section-num">3.41.7</span> Поддержка командной оболочки fish {#поддержка-командной-оболочки-fish}
+#### <span class="section-num">3.42.7</span> Поддержка командной оболочки fish {#поддержка-командной-оболочки-fish}
 
 -   Загрузка пакета:
     ```emacs-lisp
@@ -9138,7 +9188,7 @@ slug: "emacs-desire-configuration"
     </div>
 
 
-#### <span class="section-num">3.41.8</span> Разное {#разное}
+#### <span class="section-num">3.42.8</span> Разное {#разное}
 
 ```emacs-lisp
 (desire 'speedbar)
@@ -9167,7 +9217,7 @@ slug: "emacs-desire-configuration"
 ```
 
 
-#### <span class="section-num">3.41.9</span> Конец {#конец}
+#### <span class="section-num">3.42.9</span> Конец {#конец}
 
 -   Файл `rc.packages.el`:
     ```emacs-lisp
@@ -9175,12 +9225,12 @@ slug: "emacs-desire-configuration"
     ```
 
 
-### <span class="section-num">3.42</span> Редактирование текста в броузере {#редактирование-текста-в-броузере}
+### <span class="section-num">3.43</span> Редактирование текста в броузере {#редактирование-текста-в-броузере}
 
 -   [Emacs. Редактирование текста в броузере]({{< relref "2024-08-28-emacs-edit-text-area-browser" >}})
 
 
-#### <span class="section-num">3.42.1</span> Начало {#начало}
+#### <span class="section-num">3.43.1</span> Начало {#начало}
 
 -   Файл `rc.packages.el`:
     ```emacs-lisp
@@ -9188,7 +9238,7 @@ slug: "emacs-desire-configuration"
     ```
 
 
-#### <span class="section-num">3.42.2</span> Edit with Emacs {#edit-with-emacs}
+#### <span class="section-num">3.43.2</span> Edit with Emacs {#edit-with-emacs}
 
 -   Файл `rc.packages.el`:
     ```emacs-lisp
@@ -9212,7 +9262,7 @@ slug: "emacs-desire-configuration"
     ```
 
 
-#### <span class="section-num">3.42.3</span> Ghost Text {#ghost-text}
+#### <span class="section-num">3.43.3</span> Ghost Text {#ghost-text}
 
 -   Файл `rc.packages.el`:
     ```emacs-lisp
@@ -9248,7 +9298,7 @@ slug: "emacs-desire-configuration"
     ```
 
 
-#### <span class="section-num">3.42.4</span> Конец {#конец}
+#### <span class="section-num">3.43.4</span> Конец {#конец}
 
 -   Файл `rc.packages.el`:
     ```emacs-lisp
@@ -9256,12 +9306,12 @@ slug: "emacs-desire-configuration"
     ```
 
 
-### <span class="section-num">3.43</span> Навигация по файлам {#навигация-по-файлам}
+### <span class="section-num">3.44</span> Навигация по файлам {#навигация-по-файлам}
 
 -   [Emacs. Просмотр каталогов]({{< relref "2021-10-03-emacs-directory-browsing" >}})
 
 
-#### <span class="section-num">3.43.1</span> dired {#dired}
+#### <span class="section-num">3.44.1</span> dired {#dired}
 
 <!--list-separator-->
 
@@ -9300,7 +9350,7 @@ slug: "emacs-desire-configuration"
         </div>
 
 
-#### <span class="section-num">3.43.2</span> Neotree {#neotree}
+#### <span class="section-num">3.44.2</span> Neotree {#neotree}
 
 -   [Emacs. Neotree]({{< relref "2022-03-23-emacs-neotree" >}})
 -   Файл `rc.packages.el`:
@@ -9309,7 +9359,7 @@ slug: "emacs-desire-configuration"
     ```
 
 
-#### <span class="section-num">3.43.3</span> Treemacs {#treemacs}
+#### <span class="section-num">3.44.3</span> Treemacs {#treemacs}
 
 -   [Emacs. Пакет treemacs]({{< relref "2025-01-20--emacs-treemacs" >}})
 
@@ -9367,10 +9417,10 @@ slug: "emacs-desire-configuration"
                 treemacs-file-follow-delay             0.2
                 treemacs-file-name-transformer         #'identity
                 treemacs-follow-after-init             t
-                treemacs-find-workspace-method         'find-for-file-or-pick-first
+            treemacs-find-workspace-method         'find-for-file-or-pick-first
                 treemacs-git-command-pipe              ""
                 treemacs-goto-tag-strategy             'refetch-index
-                treemacs-header-scroll-indicators      '(nil . "^^^^^^")
+            treemacs-header-scroll-indicators      '(nil . "^^^^^^")
                 treemacs-hide-dot-git-directory        t
                 treemacs-indentation                   2
                 treemacs-indentation-string            " "
@@ -9388,22 +9438,22 @@ slug: "emacs-desire-configuration"
                 treemacs-recenter-after-tag-follow     nil
                 treemacs-recenter-after-project-jump   'always
                 treemacs-recenter-after-project-expand 'on-distance
-                treemacs-litter-directories            '("/node_modules" "/.venv" "/.cask")
+            treemacs-litter-directories            '("/node_modules" "/.venv" "/.cask")
                 treemacs-project-follow-into-home      nil
                 treemacs-show-cursor                   nil
                 treemacs-show-hidden-files             t
                 treemacs-silent-filewatch              nil
                 treemacs-silent-refresh                nil
                 treemacs-sorting                       'alphabetic-asc
-                treemacs-select-when-already-in-treemacs 'move-back
+            treemacs-select-when-already-in-treemacs 'move-back
                 treemacs-space-between-root-nodes      t
                 treemacs-tag-follow-cleanup            t
                 treemacs-tag-follow-delay              1.5
                 treemacs-user-mode-line-format         nil
                 treemacs-user-header-line-format       nil
-                treemacs-wide-toggle-width             70
+            treemacs-wide-toggle-width             70
                 treemacs-width                         35
-                treemacs-width-increment               1
+            treemacs-width-increment               1
                 treemacs-width-is-initially-locked     t
                 treemacs-workspace-switch-cleanup      nil)
 
@@ -9550,10 +9600,10 @@ slug: "emacs-desire-configuration"
         ```
 
 
-### <span class="section-num">3.44</span> Навигация по тексту {#навигация-по-тексту}
+### <span class="section-num">3.45</span> Навигация по тексту {#навигация-по-тексту}
 
 
-#### <span class="section-num">3.44.1</span> Начало {#начало}
+#### <span class="section-num">3.45.1</span> Начало {#начало}
 
 -   Файл `rc.packages.el`:
     ```emacs-lisp
@@ -9561,7 +9611,7 @@ slug: "emacs-desire-configuration"
     ```
 
 
-#### <span class="section-num">3.44.2</span> line-reminder {#line-reminder}
+#### <span class="section-num">3.45.2</span> line-reminder {#line-reminder}
 
 -   Line annotation for changed and saved lines: <https://github.com/emacs-vs/line-reminder>
 -   Файл `rc.packages.el`:
@@ -9589,7 +9639,7 @@ slug: "emacs-desire-configuration"
     ```
 
 
-#### <span class="section-num">3.44.3</span> Конец {#конец}
+#### <span class="section-num">3.45.3</span> Конец {#конец}
 
 -   Файл `rc.packages.el`:
     ```emacs-lisp
@@ -9597,10 +9647,10 @@ slug: "emacs-desire-configuration"
     ```
 
 
-### <span class="section-num">3.45</span> Перевод {#перевод}
+### <span class="section-num">3.46</span> Перевод {#перевод}
 
 
-#### <span class="section-num">3.45.1</span> gt {#gt}
+#### <span class="section-num">3.46.1</span> gt {#gt}
 
 -   Подключаем:
     ```emacs-lisp
@@ -9656,7 +9706,7 @@ slug: "emacs-desire-configuration"
     </div>
 
 
-### <span class="section-num">3.46</span> UI {#ui}
+### <span class="section-num">3.47</span> UI {#ui}
 
 -   Раздел:
     ```emacs-lisp
@@ -9668,7 +9718,7 @@ slug: "emacs-desire-configuration"
     </div>
 
 
-#### <span class="section-num">3.46.1</span> Шрифты {#шрифты}
+#### <span class="section-num">3.47.1</span> Шрифты {#шрифты}
 
 -   [Emacs. Шрифты]({{< relref "2025-04-01--emacs-fonts" >}})
 -   Раздел:
@@ -10028,18 +10078,18 @@ slug: "emacs-desire-configuration"
 
         ;;; Configure the ligature set
         (setopt unicode-fonts-ligature-set '("|||>" "<|||" "<==>" "<!--" "####" "~~>" "***" "||=" "||>"
-                                           ":::" "::=" "=:=" "===" "==>" "=!=" "=>>" "=<<" "=/=" "!=="
-                                           "!!." ">=>" ">>=" ">>>" ">>-" ">->" "->>" "-->" "---" "-<<"
-                                           "<~~" "<~>" "<*>" "<||" "<|>" "<$>" "<==" "<=>" "<=<" "<->"
-                                           "<--" "<-<" "<<=" "<<-" "<<<" "<+>" "</>" "###" "#_(" "..<"
-                                           "..." "+++" "/==" "///" "_|_" "www" "&&" "^=" "~~" "~@" "~="
-                                           "~>" "~-" "**" "*>" "*/" "||" "|}" "|]" "|=" "|>" "|-" "{|"
-                                           "[|" "]#" "::" ":=" ":>" ":<" "$>" "==" "=>" "!=" "!!" ">:"
-                                           ">=" ">>" ">-" "-~" "-|" "->" "-<" "<~" "<*" "<|" "<:" "<$"
-                                           "<=" "<>" "<-" "<<" "<+" "</" "#{" "#[" "#:" "#=" "#!" "##"
-                                           "#(" "#?" "#_" "%%" ".=" ".-" ".." ".?" "+>" "++" "?:" "?="
-                                           "?." "??" ";;" "/*" "/**" "/=" "/>" "__" "~~" "(*" "*)"
-                                           "://"))
+                           ":::" "::=" "=:=" "===" "==>" "=!=" "=>>" "=<<" "=/=" "!=="
+                           "!!." ">=>" ">>=" ">>>" ">>-" ">->" "->>" "-->" "---" "-<<"
+                           "<~~" "<~>" "<*>" "<||" "<|>" "<$>" "<==" "<=>" "<=<" "<->"
+                           "<--" "<-<" "<<=" "<<-" "<<<" "<+>" "</>" "###" "#_(" "..<"
+                           "..." "+++" "/==" "///" "_|_" "www" "&&" "^=" "~~" "~@" "~="
+                           "~>" "~-" "**" "*>" "*/" "||" "|}" "|]" "|=" "|>" "|-" "{|"
+                           "[|" "]#" "::" ":=" ":>" ":<" "$>" "==" "=>" "!=" "!!" ">:"
+                           ">=" ">>" ">-" "-~" "-|" "->" "-<" "<~" "<*" "<|" "<:" "<$"
+                           "<=" "<>" "<-" "<<" "<+" "</" "#{" "#[" "#:" "#=" "#!" "##"
+                           "#(" "#?" "#_" "%%" ".=" ".-" ".." ".?" "+>" "++" "?:" "?="
+                           "?." "??" ";;" "/*" "/**" "/=" "/>" "__" "~~" "(*" "*)"
+                           "://"))
 
         (setopt ecf-unicode-font (font-spec :family "Iosevka" :size 12))
 
@@ -10058,7 +10108,7 @@ slug: "emacs-desire-configuration"
         </div>
 
 
-#### <span class="section-num">3.46.2</span> Modeline {#modeline}
+#### <span class="section-num">3.47.2</span> Modeline {#modeline}
 
 <!--list-separator-->
 
@@ -10142,7 +10192,7 @@ slug: "emacs-desire-configuration"
         </div>
 
 
-#### <span class="section-num">3.46.3</span> Темы {#темы}
+#### <span class="section-num">3.47.3</span> Темы {#темы}
 
 -   Подключаем темы в файле `rc.packages.el`:
     ```emacs-lisp
@@ -10414,7 +10464,7 @@ slug: "emacs-desire-configuration"
         </div>
 
 
-#### <span class="section-num">3.46.4</span> Внешний вид {#внешний-вид}
+#### <span class="section-num">3.47.4</span> Внешний вид {#внешний-вид}
 
 <!--list-separator-->
 
@@ -10588,7 +10638,7 @@ slug: "emacs-desire-configuration"
     ```
 
 
-### <span class="section-num">3.47</span> Финализирование {#финализирование}
+### <span class="section-num">3.48</span> Финализирование {#финализирование}
 
 -   Финализируем файл `rc.packages.el`:
     ```emacs-lisp

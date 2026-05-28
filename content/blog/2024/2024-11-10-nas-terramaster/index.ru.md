@@ -2,7 +2,7 @@
 title: "NAS. TerraMaster"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-11-10T18:35:00+03:00
-lastmod: 2026-04-11T19:30:00+03:00
+lastmod: 2026-05-21T14:11:00+03:00
 tags: ["sysadmin", "hard"]
 categories: ["computer-science"]
 draft: false
@@ -193,10 +193,50 @@ NAS. TerraMaster.
     ```
 
 
-### <span class="section-num">6.2</span> Программное обеспечение {#программное-обеспечение}
+### <span class="section-num">6.2</span> Запуск сервисов {#запуск-сервисов}
+
+-   Скрипт `/opt/etc/init.d/rc.unslung` запускает все сервисы с идентиыикатором `S` из `/opt/etc/init.d/`:
+    ```shell
+    /opt/etc/init.d/rc.unslung start
+    ```
+-   Создайте юнит systemd:
+    ```shell
+    touch /etc/systemd/system/rc.unslung.service
+    ```
+-   Вставьте в него следующий код:
+    ```conf-unix
+    [Unit]
+    Description=Entware init script (rc.unslung)
+    After=network-online.target
+    Wants=network-online.target
+    After=local-fs.target remote-fs.target
+
+    [Service]
+    Type=oneshot
+    RemainAfterExit=yes
+    ExecStart=/opt/etc/init.d/rc.unslung start
+    ExecStop=/opt/etc/init.d/rc.unslung stop
+    StandardOutput=journal
+    StandardError=journal
+
+    [Install]
+    WantedBy=multi-user.target
+    ```
+
+    -   `After=network-online.target` и `Wants=network-online.target` --- запуск только после полного поднятия сети.
+    -   `Type=oneshot` и `RemainAfterExit=yes` --- скрипт отрабатывает один раз при старте и считается активным, что позволяет корректно выполнить `stop` при выключении.
+    -   `ExecStart`, `ExecStop` --- команды запуска и остановки вашего Entware-окружения, которые вызовут все `S*`-скрипты из `/opt/etc/init.d`.
+-   Активируйте и запустите:
+    ```shell
+    systemctl daemon-reload
+    systemctl enable --now rc.unslung.service
+    ```
 
 
-#### <span class="section-num">6.2.1</span> git {#git}
+### <span class="section-num">6.3</span> Программное обеспечение {#программное-обеспечение}
+
+
+#### <span class="section-num">6.3.1</span> git {#git}
 
 -   Для работы с git:
     ```shell
@@ -204,7 +244,7 @@ NAS. TerraMaster.
     ```
 
 
-#### <span class="section-num">6.2.2</span> Syncthing {#syncthing}
+#### <span class="section-num">6.3.2</span> Syncthing {#syncthing}
 
 -   Установить:
     ```shell

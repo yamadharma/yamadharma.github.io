@@ -2,7 +2,7 @@
 title: "Повышение квалификации"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-09-20T10:24:00+03:00
-lastmod: 2025-12-15T19:57:00+03:00
+lastmod: 2026-05-15T22:02:00+03:00
 tags: ["rudn", "science-admin"]
 categories: ["job", "science"]
 draft: false

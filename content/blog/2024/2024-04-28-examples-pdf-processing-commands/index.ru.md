@@ -2,7 +2,7 @@
 title: "Примеры команд для обработки pdf"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-04-28T18:02:00+03:00
-lastmod: 2026-04-19T13:45:00+03:00
+lastmod: 2026-05-19T20:22:00+03:00
 tags: ["pdf"]
 categories: ["computer-science"]
 draft: false
@@ -136,13 +136,9 @@ mutool clean -g infile .pdf исходящий файл .pdf первый - по
     -   `replacement.pdf` --- файл, из которого будут взяты новые страницы.
 
 -   Заменим, например, страницы со 2-й по 4-ю в `original.pdf` на страницы с 1-й по 3-ю из `replacement.pdf`:
-
-<!--listend-->
-
-```shell
-qpdf --empty --pages original.pdf 1 replacement.pdf 1-3 original.pdf 5-z -- out.pdf
-```
-
+    ```shell
+    qpdf --empty --pages original.pdf 1 replacement.pdf 1-3 original.pdf 5-z -- out.pdf
+    ```
 -   Пояснения:
     -   `--empty` --- говорит `qpdf` создать новый, пустой файл.
     -   `--pages` --- начинает список источников страниц.
@@ -160,12 +156,9 @@ qpdf --empty --pages original.pdf 1 replacement.pdf 1-3 original.pdf 5-z -- out.
 ### <span class="section-num">7.2</span> pdftk {#pdftk}
 
 -   Заменим страницы 2-4 в `original.pdf` на страницы 1-3 из `replacement.pdf`:
-
-<!--listend-->
-
-```sh
-pdftk A=original.pdf B=replacement.pdf cat A1 B1-3 A5-end output out.pdf
-```
+    ```shell
+    pdftk A=original.pdf B=replacement.pdf cat A1 B1-3 A5-end output out.pdf
+    ```
 
 -   Пояснение:
     -   `A=original.pdf B=replacement.pdf` --- мы присваиваем каждому входному файлу буквенную метку (A, B и т.д.).

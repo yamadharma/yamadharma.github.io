@@ -2,7 +2,7 @@
 title: "Пример конфигурации раскладки клавиатуры"
 author: ["Dmitry S. Kulyabov"]
 date: 2025-04-23T18:33:00+03:00
-lastmod: 2025-05-21T16:51:00+03:00
+lastmod: 2026-05-20T11:14:00+03:00
 tags: ["hard"]
 categories: ["computer-science"]
 draft: false
@@ -33,24 +33,73 @@ slug: "kanata-configuration-example"
 -   Разрешаем использование команд оболочки.
     ```lisp
     (defcfg
-        danger-enable-cmd yes
+      danger-enable-cmd yes
+      ;; Process keys not explicitly defined in defsrc to ensure consistent state tracking.
+      process-unmapped-keys yes
       )
     ```
 -   Определяем переменные.
     ```lisp
     (defvar
-      streak-count 3
-      streak-time 325
-      tap-timeout 200
-      hold-timeout 500
-      chord-timeout 50
+      ;; Timing variables for home row mods and chords
+      streak-count 3      ;; Number of keys to consider a "typing streak"
+      streak-time 325     ;; Max time (ms) window to maintain a streak
+      tap-timeout 200     ;; Max time (ms) for a tap to be recognized
+      hold-timeout 300    ;; Time (ms) to wait before a hold is recognized
+      chord-timeout 50    ;; Window (ms) to press keys together for a chord
       tt $tap-timeout
       ht $hold-timeout
       )
     ```
 
 
-#### <span class="section-num">1.1.2</span> Структура раскладки {#структура-раскладки}
+#### <span class="section-num">1.1.2</span> Шаблоны модификаторов {#шаблоны-модификаторов}
+
+<!--list-separator-->
+
+1.  flowtap
+
+    -   Проверка, быстро ли вы печатаете.
+    -   Если это так, нажимается клавиша ($flow).
+    -   В противном случае выполняется логика нажатия/удержания ($tap).
+        ```lisp
+        ;; 'flowtap' checks if you are typing fast.
+        ;; If so, it immediately taps the key ($flow).
+        ;; Otherwise, it executes the tap/hold logic ($tap).
+        (deftemplate flowtap (flow tap)
+          (switch
+            ((key-timing $streak-count less-than $streak-time)) $flow break
+            () $tap break
+          )
+        )
+        ```
+    -   Параметры:
+        -   `key-timing $streak-count less-than $streak-time` — проверяет, нажата ли предыдущая клавиша (3-я по счёту) менее 250 мс назад. Если да, модификатор игнорируется, чтобы избежать ложных срабатываний при быстрой печати.
+        -   Проверка `key-timing` снижает ошибки при быстрой печати.
+
+<!--list-separator-->
+
+2.  charmod
+
+    -   Для реализации home row.
+        ```lisp
+        ;; 'charmod' implements home row modifiers.
+        ;; It uses 'flowtap' to avoid mod misfires during fast typing.
+        ;; tap-hold-release-timeout resolves as a hold if another key is pressed and released.
+        (deftemplate charmod (char mod)
+          (t! flowtap
+            $char
+            (tap-hold-release-timeout $tap-timeout $hold-timeout $char $mod $char reset-timeout-on-press)
+          )
+        )
+        ```
+    -   Параметры:
+        -   `tap-hold-release-timeout $tap-timeout $hold-timeout`:
+            -   `$tap-timeout` : время (мс) удержания для активации модификатора;
+            -   `$hold-timeout` : таймаут (мс) для возврата к символу, если модификатор не использован.
+
+
+#### <span class="section-num">1.1.3</span> Структура раскладки {#структура-раскладки}
 
 -   Структура раскладки:
     ```lisp
@@ -62,27 +111,6 @@ slug: "kanata-configuration-example"
         lctl lmet lalt           spc            ralt rmet menu rctl
         )
     ```
-
-
-#### <span class="section-num">1.1.3</span> Шаблон модификаторов {#шаблон-модификаторов}
-
--   Цель: реализация Tap-Hold модификаторов (клавиша работает как символ при коротком нажатии и как модификатор при удержании).
--   Задаём шаблон:
-    ```lisp
-    (deftemplate charmod (char mod)
-      (switch
-        ((key-timing $streak-count less-than $streak-time)) $char break
-        () (tap-hold-release-timeout $tap-timeout $hold-timeout $char $mod $char) break
-      )
-    )
-    ```
-
-    -   Параметры:
-        -   `key-timing $streak-count less-than $streak-time` — проверяет, нажата ли предыдущая клавиша (3-я по счёту) менее 250 мс назад. Если да, модификатор игнорируется, чтобы избежать ложных срабатываний при быстрой печати.
-        -   Проверка `key-timing` снижает ошибки при быстрой печати.
-        -   `tap-hold-release-timeout $tap-timeout $hold-timeout`:
-            -   `$tap-timeout` : время (мс) удержания для активации модификатора;
-            -   `$hold-timeout` : таймаут (мс) для возврата к символу, если модификатор не использован.
 
 
 #### <span class="section-num">1.1.4</span> Слой main {#слой-main}
@@ -109,6 +137,7 @@ slug: "kanata-configuration-example"
         <!--listend-->
 
         ```lisp
+        ;; Virtual keys for managing state when switching layers
         shift (multi (layer-switch main) lsft)
         ```
 
@@ -182,25 +211,37 @@ slug: "kanata-configuration-example"
 3.  Карта слоя
 
     -   Зададим уровень `main` через `deflayermap`.
-    -   Подключим ранее определённые аккорды:
 
     <!--listend-->
 
     ```lisp
     (deflayermap (main)
-        w (chord mtl w)
-        e (chord mtl e)
-        i (chord mtr i)
-        o (chord mtr o)
-        x (chord mbl x)
-        c (chord mbl c)
-        , (chord mbr ,)
-        . (chord mbr .)
     ```
 
     <!--list-separator-->
 
-    1.  Home Row Mods
+    1.  Подключение аккордов
+
+        -   Подключим ранее определённые аккорды:
+
+        <!--listend-->
+
+        ```lisp
+        ;; Top row chords
+        w (chord mtl w)
+        e (chord mtl e)
+        i (chord mtr i)
+        o (chord mtr o)
+        ;; Bottom row modifiers
+        x (chord mbl x)
+        c (chord mbl c)
+        , (chord mbr ,)
+        . (chord mbr .)
+        ```
+
+    <!--list-separator-->
+
+    2.  Home Row Mods
 
         -   [kanata. Настройка Home Row Mods]({{< relref "2025-05-01--kanata-home-row-mods" >}})
         -   Используется макет `GACS` / `◆⎇⎈⇧`.
@@ -209,6 +250,7 @@ slug: "kanata-configuration-example"
         <!--listend-->
 
         ```lisp
+        ;; Home row modifiers
         a (t! charmod a lmet)
         s (t! charmod s lalt)
         d (t! charmod d lctl)
@@ -221,7 +263,7 @@ slug: "kanata-configuration-example"
 
     <!--list-separator-->
 
-    2.  Дополнительные управляющие клавиши
+    3.  Дополнительные управляющие клавиши
 
         ```lisp
         z (t! charmod z lctl)
@@ -230,7 +272,7 @@ slug: "kanata-configuration-example"
 
     <!--list-separator-->
 
-    3.  Переключение на слой fumbol
+    4.  Переключение на слой fumbol
 
         ```lisp
         v (t! charmod v (layer-while-held fumbol))
@@ -239,7 +281,7 @@ slug: "kanata-configuration-example"
 
     <!--list-separator-->
 
-    4.  Замена `Caps Lock` на `Ctrl` и `Escape`
+    5.  Замена `Caps Lock` на `Ctrl` и `Escape`
 
         -   [kanata. Клавиша Caps Lock]({{< relref "2025-05-06--kanata-capslock" >}})
         -   Заменим `Caps Lock` на комбинацию:
@@ -253,7 +295,7 @@ slug: "kanata-configuration-example"
 
     <!--list-separator-->
 
-    5.  Использование XKB для переключения раскладок
+    6.  Использование XKB для переключения раскладок
 
         -   [kanata. Русская раскладка]({{< relref "2025-04-21--kanata-russian-layout" >}})
         -   Используется XKB для переключения раскладок (см. [Клавиатура. xkb]({{< relref "2025-04-22--keyboard-xkb" >}})).
@@ -267,18 +309,7 @@ slug: "kanata-configuration-example"
 
         <!--list-separator-->
 
-        1.  Переключение с помощью команды оболочки
-
-            -   Переключаем с помощью команд оболочки (для Sway).
-                ```lisp
-                ;; ralt (tap-hold-press $tt $ht (cmd swaymsg input 'type:keyboard' xkb_layout ru) ralt)
-                ;; lalt (tap-hold-press $tt $ht (cmd swaymsg input 'type:keyboard' xkb_layout us) lalt)
-                ```
-            -   При этом перестаёт работать переключение языка на уровне окна (<https://github.com/artemsen/swaykbdd>).
-
-        <!--list-separator-->
-
-        2.  Переключение путём отправки комбинации клавиш
+        1.  Переключение путём отправки комбинации клавиш
 
             -   Установим опцию xkb:
                 ```conf-unix
@@ -295,13 +326,14 @@ slug: "kanata-configuration-example"
 
     <!--list-separator-->
 
-    6.  Использование пробела для переключения уровней
+    7.  Использование пробела для переключения уровней
 
         -   Определяем поведение клавиши пробела (`spc`) с использованием Tap-Hold модификатора.
 
         <!--listend-->
 
         ```lisp
+        ;; Space overloaded to 'extend' layer with state clearing logic
         spc (t! charmod spc (multi (layer-switch extend) (on-release tap-virtualkey clear)))
         ```
 
@@ -324,7 +356,7 @@ slug: "kanata-configuration-example"
 
     <!--list-separator-->
 
-    7.  Завершение
+    8.  Завершение
 
         ```lisp
         )
@@ -335,32 +367,39 @@ slug: "kanata-configuration-example"
 
 ```lisp
 (deflayermap (extend)
-  e (layer-switch fumbol)
-  r (on-press press-virtualkey shift)
-  y ins
-  u home
-  i up
-  o end
-  p pgup
-  a lmet
-  s lalt
-  d lsft
-  f lctl
-  g comp ;; Enable if not MacOS.
-  h esc
-  j left
-  k down
-  l rght
-  ; pgdn
-  z mute
-  x vold
-  c volu
-  v pp
-  n tab
-  m bspc
-  , spc
-  . del
-  / ret
+    ;; Navigation, media, and layer switching
+    e (on-press press-virtualkey shift)
+    r (layer-switch fumbol)
+    y ins
+    u home
+    i up
+    o end
+    p pgup
+
+    ;; Modifiers
+    a lmet
+    s lalt
+    d lctl
+    f lsft
+    g comp
+
+    ;; Navigation & Media
+    h esc
+    j left
+    k down
+    l rght
+    ; pgdn
+    z mute
+    x vold
+    c volu
+    v pp
+
+    ;; Shortcuts
+    n tab
+    m bspc
+    , spc
+    . del
+    / ret
 )
 ```
 
@@ -372,6 +411,8 @@ slug: "kanata-configuration-example"
 1.  Аккорды слоя
 
     ```lisp
+    ;; Chord definitions for the 'fumbol' layer (Function, Numbers, Symbols)
+
     (defchords ftl $chord-timeout
       (w  ) f2
       (  e) f3
@@ -382,6 +423,25 @@ slug: "kanata-configuration-example"
       (i  ) f8
       (  o) f9
       (i o) bspc
+    )
+
+    ;; Chords for numbers and math symbols on the home row
+    (defchords fcl $chord-timeout
+     (s    ) (t! charmod 2 lalt)
+     (  d  ) (t! charmod 3 lctl)
+     (    f) (t! charmod 4 lsft)
+     (s d  ) kp-
+     (  d f) kp+
+     (s   f) 🔢₌
+    )
+
+    (defchords fcr $chord-timeout
+     (j    ) (t! charmod 7 rsft)
+     (  k  ) (t! charmod 8 rctl)
+     (    l) (t! charmod 9 lalt)
+     (j k  ) kp/
+     (  k l) kp*
+     (j   l) .
     )
 
     (defchords fbl $chord-timeout
@@ -403,38 +463,40 @@ slug: "kanata-configuration-example"
 
     ```lisp
     (deflayermap (fumbol)
-      q f1
-      w (chord ftl w)
-      e (chord ftl e)
-      r f4
-      t f5
-      y f6
-      u f7
-      i (chord ftr i)
-      o (chord ftr o)
-      p f10
-      [ f11
-      ] f12
-      \ f13
-      a (t! charmod 1 lmet)
-      s (t! charmod 2 lalt)
-      d (t! charmod 3 lsft)
-      f (t! charmod 4 lctl)
-      g 5
-      h 6
-      j (t! charmod 7 rctl)
-      k (t! charmod 8 rsft)
-      l (t! charmod 9 lalt)
-      ; (t! charmod 0 rmet)
-      z (t! charmod lsgt lctl)
-      x (chord fbl x)
-      c (chord fbl c)
-      v =
-      b f11
-      n f12
-      m '
-      , (chord fbr ,)
-      . (chord fbr .)
-      / (t! charmod \ lctl)
+        ;; Top row: Function keys
+        q f1
+        w (chord ftl w)
+        e (chord ftl e)
+        r f4
+        t f5
+        y f6
+        u f7
+        i (chord ftr i)
+        o (chord ftr o)
+        p f10
+
+        ;; Home row: Numbers with mods and symbols
+        a (t! charmod 1 lmet)
+        s (chord fcl s)
+        d (chord fcl d)
+        f (chord fcl f)
+        g 5
+        h 6
+        j (chord fcr j)
+        k (chord fcr k)
+        l (chord fcr l)
+        ; (t! charmod 0 rmet)
+
+        ;; Bottom row: Symbols
+        z (t! charmod lsgt lctl)
+        x (chord fbl x)
+        c (chord fbl c)
+        v =
+        b f11
+        n f12
+        m '
+        , (chord fbr ,)
+        . (chord fbr .)
+        / (t! charmod \ lctl)
     )
     ```

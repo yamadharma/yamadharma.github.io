@@ -2,7 +2,7 @@
 title: "Установка TeXlive"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-04-23T18:09:00+03:00
-lastmod: 2026-03-03T15:49:00+03:00
+lastmod: 2026-06-28T19:41:00+03:00
 tags: ["latex", "tex"]
 categories: ["computer-science"]
 draft: false
@@ -110,11 +110,11 @@ slug: "install-texlive"
 
     if [[ -d /com/lib/portage/extras/texlive ]]
     then
-        tlmgr update --repository=/com/lib/portage/extras/texlive --self
-        tlmgr update --repository=/com/lib/portage/extras/texlive --all
+            tlmgr update --repository=/com/lib/portage/extras/texlive --self
+            tlmgr update --repository=/com/lib/portage/extras/texlive --all
     else
-        tlmgr update --self
-        tlmgr update --all
+            tlmgr update --self
+            tlmgr update --all
     fi
     tlmgr path add
     ```
@@ -184,3 +184,4 @@ slug: "install-texlive"
     [db]
         formats = ttf,otf
     ```
+-   Также можно ограничить конкретные семейства шрифтов (например, как в [Шрифт. Iosevka]({{< relref "2024-04-11-font-iosevka" >}})).

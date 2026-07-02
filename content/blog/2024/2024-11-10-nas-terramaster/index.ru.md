@@ -2,7 +2,7 @@
 title: "NAS. TerraMaster"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-11-10T18:35:00+03:00
-lastmod: 2026-05-21T14:11:00+03:00
+lastmod: 2026-06-04T11:26:00+03:00
 tags: ["sysadmin", "hard"]
 categories: ["computer-science"]
 draft: false
@@ -467,3 +467,11 @@ NAS. TerraMaster.
 -   Выбрал кнопку _Редактировать_.
 -   Увеличил файловую систему до максимума.
 -   Получилось 16.36TB.
+
+
+#### <span class="section-num">11.1.6</span> <span class="timestamp-wrapper"><span class="timestamp">[2026-06-04 Чт]</span></span> SSD-кэш {#ssd-кэш}
+
+-   Установил SSD диск.
+-   Samsung EVO 970.
+-   500 GB.
+-   Для кэша.

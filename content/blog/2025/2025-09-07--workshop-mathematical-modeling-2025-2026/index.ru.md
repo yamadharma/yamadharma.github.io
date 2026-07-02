@@ -2,7 +2,7 @@
 title: "Семинар Математическое моделирование, 2025-2026"
 author: ["Dmitry S. Kulyabov"]
 date: 2025-09-07T17:19:00+03:00
-lastmod: 2026-05-01T18:44:00+03:00
+lastmod: 2026-07-01T21:45:00+03:00
 tags: ["modeling"]
 categories: ["science"]
 draft: false
@@ -644,5 +644,50 @@ To predict the quartile of a new conference using non-temporal data, three model
 {{< tab "RuTube" >}}{{< rutube eae22854f328cbddc52f715c2cca583c >}}{{< /tab >}}
 
 {{< tab "VKvideo" >}}{{< vkvideo oid=-230024722 id=456239649 hd=2 >}}{{< /tab >}}
+
+{{< /tabs >}}
+
+
+### <span class="org-todo done DONE">DONE</span> <span class="section-num">2.8</span> <span class="timestamp-wrapper"><span class="timestamp">&lt;2026-07-01 Ср&gt;</span></span> Геворкян М. Н. - Собственные и несобственные движения (изометрии) евклидова пространства {#геворкян-м-dot-н-dot-собственные-и-несобственные-движения--изометрии--евклидова-пространства}
+
+
+#### <span class="section-num">2.8.1</span> Докладчик {#докладчик}
+
+-   Геворкян Мигран Нельсонович
+    -   доцент, к.ф.-м.н, доцент
+    -   кафедра теории вероятностей и кибербезопасности РУДН
+
+
+#### <span class="section-num">2.8.2</span> Информация {#информация}
+
+-   <https://events.rudn.ru/event/330/>
+-   Собственные и несобственные движения (изометрии) евклидова пространства
+-   Геворкян Мигран Нельсонович
+    -   доцент, к.ф.-м.н, доцент
+    -   кафедра теории вероятностей и кибербезопасности РУДН
+
+Целью доклада является наиболее полный обзор подходов, используемых для описания движений в трехмерном евклидовом пространстве. Под движениями или изометриями евклидова пространства подразумеваются такие преобразования, которые сохраняют расстояние между любыми двумя точками. Движения делятся на два класса: собственные (винтовое движение) и несобственные (зеркальное вращение и скользящая симметрия). Все работа происходит в пространстве R3 и проективном RP3.
+
+Первой особенностью изложения является использование формулы Родрига как основного способа описания вращений в трехмерном пространстве. Все остальные способы тем или иным способом выводятся из формулы Родрига. Вторая особенность заключается в формулах движения не только точек и векторов, но также и прямых и плоскостей.  Все приведенные формулы использованы для реализации набора структур, функций и скриптов на языке Asymptote для визуализации трансляций, вращений и отражений точек, прямых и плоскостей.
+
+---
+
+-   Proper and improper motions (isometries) of Euclidean space Annotation
+-   Gevorkyan, Migran Nelsonovich
+    -   Docent, PhD, Associate Professor
+    -   Department of Probability Theory and Cybersecurity, RUDN University
+
+The purpose of the report is to provide the most comprehensive overview of the approaches used to describe movements in three-dimensional Euclidean space. By movements or isometries of Euclidean space, we mean transformations that preserve the distance between any two points. Movements are divided into two classes: proper (helical motion) and improper (mirror rotation and sliding symmetry).
+
+The first feature of the presentation is the use of the Rodrigues formula as the main way to describe rotations in three-dimensional space. All other methods are derived in one way or another from the Rodrigues formula. The second feature is the formulas of motion not only of points and vectors, but also of straight lines and planes. All of these formulas are used to implement a set of structures, functions, and scripts in the Asymptote language for visualizing translations, rotations, and reflections of points, lines, and planes.
+
+
+#### <span class="section-num">2.8.3</span> Видео {#видео}
+
+{{< tabs "Геворкян М. Н. - Собственные и несобственные движения (изометрии) евклидова пространства" >}}
+
+{{< tab "RuTube" >}}{{< rutube 0523944e47331fd5a33c8a69edf2e658 >}}{{< /tab >}}
+
+{{< tab "VKvideo" >}}{{< vkvideo oid=-230024722 id=456239668 hd=2 >}}{{< /tab >}}
 
 {{< /tabs >}}

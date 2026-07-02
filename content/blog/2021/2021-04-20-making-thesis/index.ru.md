@@ -2,7 +2,7 @@
 title: "Оформление диссертации"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-04-20T17:46:00+03:00
-lastmod: 2023-09-17T16:18:00+03:00
+lastmod: 2026-06-24T19:59:00+03:00
 tags: ["research"]
 categories: ["science"]
 draft: false

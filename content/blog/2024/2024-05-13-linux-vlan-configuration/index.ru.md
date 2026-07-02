@@ -2,7 +2,7 @@
 title: "Linux. Настройка vlan"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-05-13T10:34:00+03:00
-lastmod: 2025-03-13T15:08:00+03:00
+lastmod: 2026-06-15T17:12:00+03:00
 tags: ["network", "sysadmin"]
 categories: ["computer-science"]
 draft: false

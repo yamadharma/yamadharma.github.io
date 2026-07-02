@@ -2,7 +2,7 @@
 title: "Gentoo. Компиляция системы clang"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-05-16T15:18:00+03:00
-lastmod: 2026-05-21T16:36:00+03:00
+lastmod: 2026-06-16T08:03:00+03:00
 tags: ["gentoo", "sysadmin", "linux"]
 categories: ["computer-science"]
 draft: false
@@ -352,6 +352,7 @@ slug: "gentoo-compiling-clang"
     x11-misc/virtualgl				compiler-clang-mold
     dev-python/m2crypto				compiler-gcc
     =app-emulation/wine-proton-11.0*		compiler-gcc
+    media-gfx/asymptote				compiler-gcc
     ```
 
 

@@ -2,7 +2,7 @@
 title: "Обработка видео. Командная строка"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-10-21T17:26:00+03:00
-lastmod: 2025-07-09T18:15:00+03:00
+lastmod: 2026-06-20T17:15:00+03:00
 categories: ["computer-science"]
 draft: false
 slug: "video-processing-command-line"
@@ -110,7 +110,53 @@ slug: "video-processing-command-line"
 -   Кроме объединения, мы задали язык звуковой дорожки (русский) и каждый файл обозначили как главу.
 
 
-### <span class="section-num">2.5</span> Замена аудио-дорожки в видеофайле {#замена-аудио-дорожки-в-видеофайле}
+### <span class="section-num">2.5</span> Объединить несколько файлов с помощью `avidemux` {#объединить-несколько-файлов-с-помощью-avidemux}
+
+-   Копирование без перекодирования:
+    ```shell
+    avidemux3_cli --load "1.mkv" --append "2.mkv" --video-codec copy --audio-codec copy --output-format MKV --save "result.mkv" --quit
+    ```
+-   Если файлов много, можно использовать цикл, чтобы не прописывать каждый из них вручную:
+    ```shell
+    #!/bin/bash
+
+    # Собираем имена всех .mkv файлов в переменную
+    FILES=$(ls *.mkv | sort)
+    # Формируем команду
+    CMD="avidemux3_cli --load $(echo $FILES | cut -d' ' -f1)"
+    for f in $(echo $FILES | cut -d' ' -f2-); do
+      CMD="$CMD --append $f"
+    done
+    CMD="$CMD --save result.mkv --quit"
+    # Выполняем команду
+    eval $CMD
+    ```
+-   Объединение с перекодированием:
+    ```shell
+    avidemux3_cli --load "первый_файл.mkv" \
+                  --append "второй_файл.mkv" \
+                  --append "третий_файл.mkv" \
+                  --video-codec x264 \
+                  --audio-codec FDK_AAC \
+                  --output-format MKV \
+                  --save "result.mkv" \
+                  --quit
+    ```
+-   Скрипт:
+    ```shell
+    #!/bin/bash
+
+    FILES=$(ls *.mkv | sort)
+    CMD="avidemux3_cli --load $(echo $FILES | cut -d' ' -f1)"
+    for f in $(echo $FILES | cut -d' ' -f2-); do
+      CMD="$CMD --append $f"
+    done
+    CMD="$CMD --video-codec x264 --audio-codec FDK_AAC --output-format MKV --save result.mkv --quit"
+    eval $CMD
+    ```
+
+
+### <span class="section-num">2.6</span> Замена аудио-дорожки в видеофайле {#замена-аудио-дорожки-в-видеофайле}
 
 -   Заменит аудио-дорожку в видеофайле:
     ```shell
@@ -123,7 +169,7 @@ slug: "video-processing-command-line"
     -   `-shortest` : сделать выходной файл такой же продолжительности, как и самый короткий входной.
 
 
-### <span class="section-num">2.6</span> Добавить аудио к видео {#добавить-аудио-к-видео}
+### <span class="section-num">2.7</span> Добавить аудио к видео {#добавить-аудио-к-видео}
 
 -   Добавим дополнительную аудио-дорожку к видео:
     ```shell
@@ -136,7 +182,7 @@ slug: "video-processing-command-line"
     -   `-shortest` : сделать выходной файл такой же продолжительности, как и самый короткий входной.
 
 
-### <span class="section-num">2.7</span> Добавить беззвучную звуковую дорожку {#добавить-беззвучную-звуковую-дорожку}
+### <span class="section-num">2.8</span> Добавить беззвучную звуковую дорожку {#добавить-беззвучную-звуковую-дорожку}
 
 -   Можно использовать фильтр `anullsrc` для создания беззвучного аудиопотока.
 -   Фильтр позволяет выбрать желаемое расположение каналов (моно, стерео, 5.1 и т. д.) и частоту дискретизации.
@@ -145,7 +191,7 @@ slug: "video-processing-command-line"
     ```
 
 
-### <span class="section-num">2.8</span> Смикшировать два аудиопотока в один {#смикшировать-два-аудиопотока-в-один}
+### <span class="section-num">2.9</span> Смикшировать два аудиопотока в один {#смикшировать-два-аудиопотока-в-один}
 
 -   Используем видео из файла video.mkv.
 -   Смешаем аудио из файлов video.mkv и audio.m4a с помощью фильтра `amerge`:

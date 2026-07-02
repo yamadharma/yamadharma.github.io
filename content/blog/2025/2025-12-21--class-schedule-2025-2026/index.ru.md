@@ -2,7 +2,7 @@
 title: "Расписание занятий - 2025-2026"
 author: ["Dmitry S. Kulyabov"]
 date: 2025-12-21T20:39:00+03:00
-lastmod: 2026-05-18T14:33:00+03:00
+lastmod: 2026-06-22T09:43:00+03:00
 tags: ["education", "teaching", "rudn"]
 categories: ["science", "job"]
 draft: false
@@ -312,7 +312,7 @@ slug: "class-schedule-2025-2026"
     -   Ермолаева
 
 
-## <span class="org-todo todo TODO">TODO</span> <span class="section-num">2</span> 2025-2026 учебный год, промежуточные аттестации <code>[1/3]</code><code>[33%]</code> {#2025-2026-учебный-год-промежуточные-аттестации}
+## <span class="org-todo todo TODO">TODO</span> <span class="section-num">2</span> 2025-2026 учебный год, промежуточные аттестации <code>[2/3]</code><code>[66%]</code> {#2025-2026-учебный-год-промежуточные-аттестации}
 
 
 ### <span class="org-todo done DONE">DONE</span> <span class="section-num">2.1</span> Сессия, семестр 1, 2025-2026 <code>[3/3]</code><code>[100%]</code> {#сессия-семестр-1-2025-2026}
@@ -485,11 +485,11 @@ slug: "class-schedule-2025-2026"
     | 5    | Экзамен        | Методы математического моделирования в кибербезопасности | 02.04.02    | 26.06.2026 | 12:00-13:20 | 210       | Кулябов Д.С.                  |
 
 
-#### <span class="org-todo todo TODO">TODO</span> <span class="section-num">2.2.2</span> Экзамены, семестр 2, 2025-2026 <code>[0/4]</code> {#экзамены-семестр-2-2025-2026}
+#### <span class="org-todo todo TODO">TODO</span> <span class="section-num">2.2.2</span> Экзамены, семестр 2, 2025-2026 <code>[3/4]</code> {#экзамены-семестр-2-2025-2026}
 
 <!--list-separator-->
 
-1. <span class="org-todo todo TODO">TODO</span>  Математическое моделирование, 2025-2026, экзамен <code>[3/3]</code>
+1. <span class="org-todo done DONE">DONE</span>  Математическое моделирование, 2025-2026, экзамен <code>[3/3]</code>
 
     <!--list-separator-->
 
@@ -513,47 +513,43 @@ slug: "class-schedule-2025-2026"
 
 <!--list-separator-->
 
-2. <span class="org-todo todo TODO">TODO</span>  Операционные системы, 2025-2026, экзамен  <code>[0/4]</code>
+2. <span class="org-todo done DONE">DONE</span>  Операционные системы, 2025-2026, экзамен  <code>[3/3]</code>
 
     <!--list-separator-->
 
-    1. <span class="org-todo todo TODO">TODO</span>  Компьютерные науки и технология программирования, 2025-2026, экзамен, НММбд
+    1. <span class="org-todo done DONE">DONE</span>  Архитектура компьютеров и операционные системы, 2025-2026, экзамен, НКАбд
 
     <!--list-separator-->
 
-    2. <span class="org-todo todo TODO">TODO</span>  Архитектура компьютеров и операционные системы, 2025-2026, экзамен, НБИбд
+    2. <span class="org-todo done DONE">DONE</span>  Архитектура компьютеров и операционные системы, 2025-2026, экзамен, НПИбд
 
     <!--list-separator-->
 
-    3. <span class="org-todo todo TODO">TODO</span>  Архитектура компьютеров и операционные системы, 2025-2026, экзамен, НКАбд
-
-    <!--list-separator-->
-
-    4. <span class="org-todo todo TODO">TODO</span>  Архитектура компьютеров и операционные системы, 2025-2026, экзамен, НПИбд
+    3. <span class="org-todo done DONE">DONE</span>  Архитектура компьютеров и операционные системы, 2025-2026, экзамен, НБИбд
 
 <!--list-separator-->
 
-3. <span class="org-todo todo TODO">TODO</span>  Основы информационной безопасности, 2025-2026, экзамен <code>[0/3]</code>
+3. <span class="org-todo done DONE">DONE</span>  Основы информационной безопасности, 2025-2026, экзамен <code>[3/3]</code>
 
     <!--list-separator-->
 
-    1. <span class="org-todo todo TODO">TODO</span>  Основы информационной безопасности, 2025-2026, экзамен, НКАбд
+    1. <span class="org-todo done DONE">DONE</span>  Основы информационной безопасности, 2025-2026, экзамен, НКАбд
 
     <!--list-separator-->
 
-    2. <span class="org-todo todo TODO">TODO</span>  Основы информационной безопасности, 2025-2026, экзамен, НПИбд
+    2. <span class="org-todo done DONE">DONE</span>  Основы информационной безопасности, 2025-2026, экзамен, НПИбд
 
     <!--list-separator-->
 
-    3. <span class="org-todo todo TODO">TODO</span>  Основы информационной безопасности, 2025-2026, экзамен, НБИбд
+    3. <span class="org-todo done DONE">DONE</span>  Основы информационной безопасности, 2025-2026, экзамен, НБИбд
 
 <!--list-separator-->
 
-4. <span class="org-todo todo TODO">TODO</span>  Имитационное моделирование, 2025-2026, экзамен <code>[0/1]</code>
+4. <span class="org-todo todo TODO">TODO</span>  Имитационное моделирование, 2025-2026, экзамен <code>[1/1]</code>
 
     <!--list-separator-->
 
-    1. <span class="org-todo todo TODO">TODO</span>  Имитационное моделирование, 2025-2026, экзамен
+    1. <span class="org-todo done DONE">DONE</span>  Имитационное моделирование, 2025-2026, экзамен
 
 
 #### <span class="org-todo todo TODO">TODO</span> <span class="section-num">2.2.3</span> Переаттестации, семестр 2, 2025-2026  <code>[0/2]</code> {#переаттестации-семестр-2-2025-2026}
@@ -605,12 +601,3 @@ slug: "class-schedule-2025-2026"
     <!--list-separator-->
 
     5. <span class="org-todo todo TODO">TODO</span>  Основы информационной безопасности, 2025-2026, Переаттестация № 2
-
-
-### <span class="org-todo todo TODO">TODO</span> <span class="section-num">2.3</span> Государственные экзамены, 2025-2026 <code>[2/2]</code> {#государственные-экзамены-2025-2026}
-
-
-#### <span class="org-todo done DONE">DONE</span> <span class="section-num">2.3.1</span> Защиты, бакалавры, 2025-2026, НФИбд, НКНбд {#защиты-бакалавры-2025-2026-нфибд-нкнбд}
-
-
-#### <span class="org-todo done DONE">DONE</span> <span class="section-num">2.3.2</span> Защиты, магистры, 2025-2026, 01.04.02, 02.04.02 {#защиты-магистры-2025-2026-01-dot-04-dot-02-02-dot-04-dot-02}

@@ -2,7 +2,7 @@
 title: "Quarto. Презентации"
 author: ["Dmitry S. Kulyabov"]
 date: 2025-05-13T14:24:00+03:00
-lastmod: 2025-05-13T16:00:00+03:00
+lastmod: 2026-06-07T21:05:00+03:00
 tags: ["markdown", "science-writing"]
 categories: ["computer-science"]
 draft: false
@@ -301,3 +301,85 @@ Quarto. Презентации.
         background-image: background.png
     ---
     ```
+
+
+## <span class="section-num">4</span> Слайды beamer с заметками {#слайды-beamer-с-заметками}
+
+
+### <span class="section-num">4.1</span> Добавление заметок к слайдам {#добавление-заметок-к-слайдам}
+
+-   В Quarto для beamer заметки добавляются с помощью блока `notes`:
+
+<!--listend-->
+
+```markdown
+## Заголовок слайда
+
+Содержимое слайда...
+
+::: {.notes}
+Здесь ваши заметки / примечания к этому слайду.
+В PDF-файле со слайдами они не видны.
+:::
+```
+
+-   Печатайте материал с заметками:
+    ```yaml
+    ---
+    title: "Моя презентация"
+    format:
+      beamer+notes:
+        handout: true
+        include-in-header:
+    ​      - text: |
+              \usepackage{pgfpages}
+              \pgfpagesuselayout{2 on 1}[a4paper, border shrink=5mm]
+              \setbeameroption{show notes}
+        # Остальные настройки темы
+        theme: "metropolis"
+        colortheme: "default"
+        fonttheme: "structurebold"
+        toc: true
+        slide-number: true
+    ---
+    ```
+
+
+### <span class="section-num">4.2</span> Создание раздаточного материала (Handout) {#создание-раздаточного-материала--handout}
+
+-   Создание раздаточного материала с 4 слайдами на странице и местом для заметок рядом.
+-   Используем LaTeX-пакет `handoutWithNotes`.
+
+-   Пример настройки:
+    ```yaml
+    ---
+    title: "Моя презентация"
+    format:
+      beamer+handout:
+        handout: true
+        include-in-header:
+    ​      - text: |
+              \usepackage{handoutWithNotes}
+              \pgfpagesuselayout{4 on 1 with notes}[a4paper, border shrink=5mm]
+        # Остальные настройки темы
+        theme: "metropolis"
+        colortheme: "default"
+        fonttheme: "structurebold"
+        toc: true
+        slide-number: true
+    ---
+    ```
+
+    -   `handout:true` --- свёртывает все анимации, переходы (например, `\pause`), чтобы на каждом слайде показывалась финальная версия.
+    -   `\pgfpagesuselayout{4 on 1 with notes}` : указывает пакету `handoutWithNotes` разместить 4 слайда и соответствующие 4 блока заметок на одной физической странице. Макет включает место для записей справа от каждого слайда.
+    -   Параметры в квадратных скобках (`[a4paper, border shrink=5mm]`) задают размер бумаги и уменьшают поля, чтобы освободить больше места.
+
+-   Размер бумаги и ориентация.
+    -   По умолчанию используется `a4paper` (книжная).
+    -   Если вы хотите альбомную ориентацию, укажите явно:
+        ```tex
+        \pgfpagesuselayout{4 on 1 with notes}[a4paper, landscape, border shrink=5mm]
+        ```
+
+-   Рамки вокруг слайдов, заметок.
+    -   Пакет поддерживает опции `slide-frame=true` и `note-frame=true`.

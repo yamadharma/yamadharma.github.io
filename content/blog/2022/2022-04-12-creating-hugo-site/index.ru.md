@@ -2,7 +2,7 @@
 title: "Создание сайта на Hugo"
 author: ["Dmitry S. Kulyabov"]
 date: 2022-04-12T20:49:00+03:00
-lastmod: 2026-02-21T19:36:00+03:00
+lastmod: 2026-07-02T16:46:00+03:00
 tags: ["hugo"]
 categories: ["computer-science"]
 draft: false
@@ -128,6 +128,8 @@ slug: "creating-hugo-site"
 
 
 ## <span class="section-num">4</span> Настройка сайта {#настройка-сайта}
+
+-   [Hugo. Шаблон для научных работников. Подготовка структуры]({{< relref "2026-07-02--hugo-hugoblox-preparing-structure" >}})
 
 
 ## <span class="section-num">5</span> Публикация сайта {#публикация-сайта}

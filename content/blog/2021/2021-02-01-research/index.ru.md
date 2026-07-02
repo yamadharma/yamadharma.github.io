@@ -2,7 +2,7 @@
 title: "Научно-исследовательская деятельность"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-02-01T20:18:00+03:00
-lastmod: 2026-03-20T13:51:00+03:00
+lastmod: 2026-07-01T20:42:00+03:00
 tags: ["MOC", "research"]
 categories: ["science"]
 draft: false
@@ -73,6 +73,11 @@ slug: "research"
 ### <span class="section-num">1.11</span> Частная теория относительности {#частная-теория-относительности}
 
 -   [Модель Кэли--Кляйна]({{< relref "2024-11-05-cayley-klein-model" >}})
+
+
+### <span class="section-num">1.12</span> Кватернионы {#кватернионы}
+
+-   [Винтовое исчисление]({{< relref "2026-07-01--screw-theory" >}})
 
 
 ## <span class="section-num">2</span> Публикации {#публикации}

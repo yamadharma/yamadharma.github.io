@@ -2,7 +2,7 @@
 title: "Emacs. Desire. Конфигурация"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-06-11T18:55:00+03:00
-lastmod: 2026-05-15T17:43:00+03:00
+lastmod: 2026-06-24T20:34:00+03:00
 tags: ["emacs"]
 categories: ["computer-science"]
 draft: false
@@ -199,37 +199,29 @@ slug: "emacs-desire-configuration"
         ;;; Code:
 
         ;;;; Repos
-        (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
-                            (not (gnutls-available-p))))
-               (proto (if no-ssl "http://" "https://")))
         ;;;; Comment/uncomment these two lines to enable/disable MELPA and MELPA Stable as desired
 
-          (add-to-list 'package-archives (cons "melpa" (concat proto "melpa.org/packages/")) t)
-          (add-to-list 'package-archives (cons "melpa-stable" (concat proto "stable.melpa.org/packages/")) t)
-          ;; (add-to-list 'package-archives (cons "org" (concat proto "orgmode.org/elpa/")) t)
-          (add-to-list 'package-archives (cons "gnu-devel" (concat proto "elpa.gnu.org/devel/")) t)
-          (add-to-list 'package-archives (cons "gnu" (concat proto "elpa.gnu.org/packages/")) t)
-          (add-to-list 'package-archives (cons "nongnu" (concat proto "elpa.nongnu.org/nongnu/")) t)
+        (setopt package-archives
+              '(("gnu" . "https://elpa.gnu.org/packages/")
+                ("nongnu" . "https://elpa.nongnu.org/nongnu/")
+                ("gnu-devel" . "https://elpa.gnu.org/devel/")
+                ("melpa" . "https://melpa.org/packages/")
+                ("melpa-stable" . "https://stable.melpa.org/packages/")))
 
         ;;;; Mirror for some Emacs package archives
-        ;; https://github.com/d12frosted/elpa-mirror
-          (add-to-list 'package-archives (cons "melpa-github-mirror" "https://raw.githubusercontent.com/d12frosted/elpa-mirror/master/melpa") t)
-          (add-to-list 'package-archives (cons "melpa-stable-github-mirror" "https://raw.githubusercontent.com/d12frosted/elpa-mirror/master/stable-melpa") t)
-          (add-to-list 'package-archives (cons "gnu-github-mirror" "https://raw.githubusercontent.com/d12frosted/elpa-mirror/master/gnu") t)
-          (add-to-list 'package-archives (cons "nongnu-github-mirror" "https://raw.githubusercontent.com/d12frosted/elpa-mirror/master/nongnu") t)
+        ;;;; https://github.com/d12frosted/elpa-mirror
+        ;; (setopt package-archives
+        ;;       '(("melpa" . "https://raw.githubusercontent.com/d12frosted/elpa-mirror/master/melpa/")
+        ;; 	("melpa-stable" . "https://raw.githubusercontent.com/d12frosted/elpa-mirror/master/stable-melpa")
+        ;;         ("gnu" . "https://raw.githubusercontent.com/d12frosted/elpa-mirror/master/gnu/")
+        ;; 	("nongnu" . "https://raw.githubusercontent.com/d12frosted/elpa-mirror/master/nongnu")))
 
-          (add-to-list 'package-archives (cons "melpa-gitlab-mirror" "https://gitlab.com/d12frosted/elpa-mirror/-/tree/master/melpa") t)
-          (add-to-list 'package-archives (cons "melpa-stable-gitlab-mirror" "https://gitlab.com/d12frosted/elpa-mirror/-/tree/master/stable-melpa") t)
-          (add-to-list 'package-archives (cons "gnu-gitlab-mirror" "https://gitlab.com/d12frosted/elpa-mirror/-/tree/master/gnu") t)
-          (add-to-list 'package-archives (cons "nongnu-gitlab-mirror" "https://gitlab.com/d12frosted/elpa-mirror/-/tree/master/nongnu") t)
-
-
-        ;;;; Marmalade doesn't work
-        ;; (add-to-list 'package-archives (cons "marmalade" "http://marmalade-repo.org/packages/") t)
-
-          (when (< emacs-major-version 24)
-            ;;; For important compatibility libraries like cl-lib
-            (add-to-list 'package-archives (cons "gnu" (concat proto "elpa.gnu.org/packages/")) t)))
+        ;;;; https://gitlab.com/d12frosted/elpa-mirror/
+        ;; (setopt package-archives
+        ;;       '(("melpa" . "https://gitlab.com/d12frosted/elpa-mirror/-/tree/master/melpa")
+        ;; 	("melpa-stable" . "https://gitlab.com/d12frosted/elpa-mirror/-/tree/master/stable-melpa")
+        ;;         ("gnu" . "https://gitlab.com/d12frosted/elpa-mirror/-/tree/master/gnu")
+        ;; 	("nongnu" . "https://gitlab.com/d12frosted/elpa-mirror/-/tree/master/nongnu")))
 
         (unless package--initialized
           (package-initialize))
@@ -598,8 +590,8 @@ slug: "emacs-desire-configuration"
     ()
   (progn
     (desire-conf 'window-system)
-                    ;    (desire-conf  'faces)
-                    ;    (desire-conf  'multi-frame)
+                                        ;    (desire-conf  'faces)
+                                        ;    (desire-conf  'multi-frame)
     )
   )
 
@@ -3032,8 +3024,8 @@ slug: "emacs-desire-configuration"
             (progn
               (setf (alist-get 'latex-mode apheleia-mode-alist) 'tex-fmt)
               (setf (alist-get 'LaTeX-mode apheleia-mode-alist) 'tex-fmt)
-             (setf (alist-get 'TeX-latex-mode apheleia-mode-alist) 'tex-fmt)
-             (setf (alist-get 'TeX-mode apheleia-mode-alist) 'tex-fmt))
+                 (setf (alist-get 'TeX-latex-mode apheleia-mode-alist) 'tex-fmt)
+                 (setf (alist-get 'TeX-mode apheleia-mode-alist) 'tex-fmt))
           nil)
 
         ;;;
@@ -5265,7 +5257,7 @@ slug: "emacs-desire-configuration"
           (if (eq arg 4)
               (pomm--do-reset)
             (if (eq 'running (alist-get 'status pomm--state))
-            (pomm-pause)
+                (pomm-pause)
               (pomm-start))))
 
         ;;;
@@ -6009,18 +6001,18 @@ slug: "emacs-desire-configuration"
         (setopt org-gtd-refile-to-any-target nil)
         ;;;; These types prompt for refile target
         (setopt org-gtd-refile-prompt-for-types
-            '(single-action
-              project-heading
-              project-task
-              ;; calendar
+                '(single-action
+                  project-heading
+                  project-task
+                  ;; calendar
                   someday
-              delegated
-              tickler
-              ;; habit
-              knowledge
-              quick-action
-              ;; trash
-              ))
+                  delegated
+                  tickler
+                  ;; habit
+                  knowledge
+                  quick-action
+                  ;; trash
+                  ))
 
         ;;;
         ```
@@ -6091,83 +6083,83 @@ slug: "emacs-desire-configuration"
             ;; (prefix . (project area-of-focus "—"))
             (prefix-width . ,org-gtd-prefix-width)
             (blocks . (
-                   ((name . "Weekly Agenda")
-                (view-type . agenda)
-                (agenda-span . 1))
-                   ;; ((name . "Today's Schedule")
-                   ;;  (block-type . calendar-day))
-                   ((name . "Overdue events")
-                (type . calendar)
-                (when . past))
-                   ((name . "Overdue habits")
-                (type . habit)
-                (when . past))
-                   ;; ((name . "Past")
-                   ;;	(type . next-action)
-                   ;;	(scheduled . past)
-                   ;;	(deadline . past))
-                   ;; ((name . "Daily Agenda")
-                   ;;	(view-type . agenda)
-                   ;;	(agenda-span . 1))
-                   ;; ((name . "Future Habits")
-                   ;;	(type . habit)
-                   ;;	(when . future))
-                   ;; ((name . "High Priority")
-                   ;;	(type . next-action)
-                   ;;	(priority . A))
-                   ((name . "Important Tasks")
-                (type . next-action)
-                (priority . (>= B)))
-                   ((name . "Quick Work")
-                (type . next-action)
-                (effort . (<= "30min")))
-                   ((name . "Science")
-                (type . next-action)
-                (area-of-focus . "Science"))
-                   ((name . "Sciadmin")
-                (type . next-action)
-                (area-of-focus . "Sciadmin"))
-                   ((name . "Teaching")
-                (type . next-action)
-                (area-of-focus . "Teaching"))
-                   ((name . "Sysadmin")
-                (type . next-action)
-                (area-of-focus . "Sysadmin"))
-                   ((name . "All actions ready to be executed")
-                (type . next-action)
-                (not-habit . t))
-                   ((name . "Read")
-                (type . next-action)
-                (area-of-focus . "Read"))
-                   ((name . "Deep in Progress")
-                (type . next-action)
-                (clocked . (> "1:00")))
-                   ((name . "Tickler items ready for today")
-                (type . tickler)
-                (when . today))
-                   ((name . "Delegated items to check in on today")
-                (type . delegated)
-                (when . today))
-                   ((name . "Missed Delegated")
-                (type . delegated)
-                (when . past))
-                   ((name . "Active Projects")
-                (type . project))
-                   ((name . "Overdue Projects")
-                (type . project)
-                (deadline . past))
-                   ((name . "Incubated Projects")
-                (type . incubated-project))
-                   ((name . "Stuck Projects")
-                (type . stuck-project))
-                   ((name . "Someday/Maybe")
-                (type . someday))
-                   ((name . "Completed This Week")
-                (done . past-week))
-                   ((name . "Weekly Agenda")
-                (view-type . agenda)
-                (agenda-span . 7))
-                ))))
+                       ((name . "Weekly Agenda")
+                        (view-type . agenda)
+                        (agenda-span . 1))
+                       ;; ((name . "Today's Schedule")
+                       ;;  (block-type . calendar-day))
+                       ((name . "Overdue events")
+                        (type . calendar)
+                        (when . past))
+                       ((name . "Overdue habits")
+                        (type . habit)
+                        (when . past))
+                       ;; ((name . "Past")
+                       ;;	(type . next-action)
+                       ;;	(scheduled . past)
+                       ;;	(deadline . past))
+                       ;; ((name . "Daily Agenda")
+                       ;;	(view-type . agenda)
+                       ;;	(agenda-span . 1))
+                       ;; ((name . "Future Habits")
+                       ;;	(type . habit)
+                       ;;	(when . future))
+                       ;; ((name . "High Priority")
+                       ;;	(type . next-action)
+                       ;;	(priority . A))
+                       ((name . "Important Tasks")
+                        (type . next-action)
+                        (priority . (>= B)))
+                       ((name . "Quick Work")
+                        (type . next-action)
+                        (effort . (<= "30min")))
+                       ((name . "Science")
+                        (type . next-action)
+                        (area-of-focus . "Science"))
+                       ((name . "Sciadmin")
+                        (type . next-action)
+                        (area-of-focus . "Sciadmin"))
+                       ((name . "Teaching")
+                        (type . next-action)
+                        (area-of-focus . "Teaching"))
+                       ((name . "Sysadmin")
+                        (type . next-action)
+                        (area-of-focus . "Sysadmin"))
+                       ((name . "All actions ready to be executed")
+                        (type . next-action)
+                        (not-habit . t))
+                       ((name . "Read")
+                        (type . next-action)
+                        (area-of-focus . "Read"))
+                       ((name . "Deep in Progress")
+                        (type . next-action)
+                        (clocked . (> "1:00")))
+                       ((name . "Tickler items ready for today")
+                        (type . tickler)
+                        (when . today))
+                       ((name . "Delegated items to check in on today")
+                        (type . delegated)
+                        (when . today))
+                       ((name . "Missed Delegated")
+                        (type . delegated)
+                        (when . past))
+                       ((name . "Active Projects")
+                        (type . project))
+                       ((name . "Overdue Projects")
+                        (type . project)
+                        (deadline . past))
+                       ((name . "Incubated Projects")
+                        (type . incubated-project))
+                       ((name . "Stuck Projects")
+                        (type . stuck-project))
+                       ((name . "Someday/Maybe")
+                        (type . someday))
+                       ((name . "Completed This Week")
+                        (done . past-week))
+                       ((name . "Weekly Agenda")
+                        (view-type . agenda)
+                        (agenda-span . 7))
+                        ))))
 
         ;;;
         ```
@@ -6217,7 +6209,7 @@ slug: "emacs-desire-configuration"
 
         ;; Install hooks
         (setopt org-gtd-organize-hooks
-            '(org-gtd-set-area-of-focus    ;; set area first
+                '(org-gtd-set-area-of-focus    ;; set area first
                   org-set-tags-command         ;; then tags
                   ecf/auto-tag-contexts        ;; suggest context tags
                   ecf/add-effort               ;; estimate effort
@@ -6356,9 +6348,9 @@ slug: "emacs-desire-configuration"
     (setopt org-download-screenshot-method
             (cond (IS-MAC "screencapture -i %s")
                   (IS-LINUX
-               (cond ((executable-find "grim") "grim -g \"$(slurp)\" %s")
-                 ((executable-find "flameshot") "flameshot gui --raw > %s")
-                 ((executable-find "maim") "maim -s %s")
+                   (cond ((executable-find "grim") "grim -g \"$(slurp)\" %s")
+                         ((executable-find "flameshot") "flameshot gui --raw > %s")
+                         ((executable-find "maim") "maim -s %s")
                          ((executable-find "scrot") "scrot -s %s")
                          ((executable-find "gnome-screenshot") "gnome-screenshot -a -f %s")))))
 
@@ -6497,7 +6489,7 @@ slug: "emacs-desire-configuration"
 
     (setopt org-alphabetical-lists t)
 
-                        ; Allow binding variables on export without confirmation
+                                            ; Allow binding variables on export without confirmation
     (setopt org-export-allow-bind t)
     (setopt org-export-allow-bind-keywords t)
 
@@ -6512,16 +6504,16 @@ slug: "emacs-desire-configuration"
     ;; HTML
     (desire 'htmlize)
     (require 'ox-html)
-                        ; Export HTML without XML header
+                                            ; Export HTML without XML header
     (setopt org-html-xml-declaration (quote (("html" . "")
-                         ("was-html" . "<?xml version=\"1.0\" encoding=\"%s\"?>")
-                         ("php" . "<?php echo \"<?xml version=\\\"1.0\\\" encoding=\\\"%s\\\" ?>\"; ?>"))))
+                                             ("was-html" . "<?xml version=\"1.0\" encoding=\"%s\"?>")
+                                             ("php" . "<?php echo \"<?xml version=\\\"1.0\\\" encoding=\\\"%s\\\" ?>\"; ?>"))))
 
     ;;
     (require 'ox)
     (require 'ox-ascii)
     (require 'ox-md)
-                        ;(require 'ox-man)
+                                            ;(require 'ox-man)
     (require 'ox-odt)
     (require 'ox-publish)
 
@@ -6553,7 +6545,7 @@ slug: "emacs-desire-configuration"
     ;;;; Export macros
     (setq org-export-global-macros
           '(
-        ("youtube" . "(eval (cond ((org-export-derived-backend-p org-export-current-backend 'hugo) (concat \"@@hugo:{{</* youtube \" $1 \" */>}}@@\")) ((org-export-derived-backend-p org-export-current-backend (or 'md 'markdown 'gfm)) (concat \"@@html:[![Youtube](http://img.youtube.com/vi/\" $1 \"/0.jpg){width=560px}](http://www.youtube.com/watch?v=\" $1 \")@@\"))))")
+            ("youtube" . "(eval (cond ((org-export-derived-backend-p org-export-current-backend 'hugo) (concat \"@@hugo:{{</* youtube \" $1 \" */>}}@@\")) ((org-export-derived-backend-p org-export-current-backend (or 'md 'markdown 'gfm)) (concat \"@@html:[![Youtube](http://img.youtube.com/vi/\" $1 \"/0.jpg){width=560px}](http://www.youtube.com/watch?v=\" $1 \")@@\"))))")
             ("rutube" . "(eval (cond ((org-export-derived-backend-p org-export-current-backend 'hugo) (concat \"@@hugo:{{</* rutube \" $1 \" */>}}@@\")) ((org-export-derived-backend-p org-export-current-backend (or 'md 'markdown 'gfm)) (concat \"@@html:[![RuTube](\" $2 \"){width=560px}](https://rutube.ru/video/\" $1 \"/)@@\"))))")
             ("plvideo" . "(eval (cond ((org-export-derived-backend-p org-export-current-backend 'hugo) (concat \"@@hugo:{{</* plvideo \" $1 \" */>}}@@\")) ((org-export-derived-backend-p org-export-current-backend (or 'md 'markdown 'gfm)) (concat \"@@html:[![Платформа](\" $2 \"){width=560px}](https://plvideo.ru/watch?v=\" $1 \")@@\"))))")
             ("vkvideo" . "(eval (cond ((org-export-derived-backend-p org-export-current-backend 'hugo) (concat \"@@hugo:{{</* vkvideo oid=\" $1 \" id=\" $2 \" hd=2 */>}}@@\")) ((org-export-derived-backend-p org-export-current-backend (or 'md 'markdown 'gfm)) (concat \"@@html:[![VKvideo](\" $3 \"){width=560px}](https://vkvideo.ru/video\" $1 \"_\" $2 \")@@\"))))")
@@ -6655,8 +6647,9 @@ slug: "emacs-desire-configuration"
           "Insert a CREATED property using org-expiry.el for TODO entries"
           (ecf/insert-created-timestamp)
         )
+
         ;;;; Make it active
-        (ad-activate 'org-insert-todo-heading)
+        ;; (ad-activate 'org-insert-todo-heading)
 
         (require 'org-capture)
 
@@ -6683,7 +6676,38 @@ slug: "emacs-desire-configuration"
 
 <!--list-separator-->
 
-7.  Предпросмотр LaTeX
+7.  Логирование
+
+    -   Файл: `packages/org/desire.ecd/log.ecf`
+        ```emacs-lisp
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;; Configuring Progress Logging
+
+        ;;; Code:
+
+        ;;;; Record a timestamp when a task is completed
+        (setopt org-log-done 'time)
+
+        ;;;; Automatically leave a note when changing states
+        (setopt org-log-state-notes-insert-after-states t)
+
+        ;;;; Define what shows up in Log Mode (options can include 'clock, 'state, 'done)
+        (setq org-agenda-log-mode-items '(clock state))
+
+        ;;;; Where state changes, clock times, and note-taking logs are stored
+        ;;;; `t` : inside a folded :LOGBOOK: drawer
+        (setopt org-log-into-drawer t)
+
+        ;;;; `t` : notes are inserted after the headline, any properties/drawers, and schedule/deadline lines
+        ;;;; `nil` : notes are potentially placing above existing drawers
+        (setopt org-log-state-notes-insert-after-drawers nil)
+
+        ;;;
+        ```
+
+<!--list-separator-->
+
+8.  Предпросмотр LaTeX
 
     -   [Org-mode. Предпросмотр TeX]({{< relref "2024-01-06-org-mode-latex-preview" >}})
         ```emacs-lisp
@@ -6720,31 +6744,31 @@ slug: "emacs-desire-configuration"
         (setopt org-latex-create-formula-image-program 'dvisvgm)
 
         (setopt org-preview-latex-process-alist
-            '((dvipng :programs ("latex" "dvipng") :description "dvi > png"
-                  :message
-                  "you need to install the programs: latex and dvipng."
-                  :image-input-type "dvi" :image-output-type "png"
-                  :image-size-adjust (1.0 . 1.0) :latex-compiler
-                  ("latex -interaction nonstopmode -output-directory %o %f")
-                  :image-converter ("dvipng -D %D -T tight -o %O %f")
-                  :transparent-image-converter
-                  ("dvipng -D %D -T tight -bg Transparent -o %O %f"))
-              (dvisvgm :programs ("xelatex" "dvisvgm") :description "xdv > svg"
-                   :message
-                   "you need to install the programs: latex and dvisvgm."
-                   :image-input-type "xdv" :image-output-type "svg"
-                   :image-size-adjust (1.7 . 1.5) :latex-compiler
-                   ("xelatex --no-pdf -interaction nonstopmode -output-directory %o %f")
-                   :image-converter
-                   ("dvisvgm %f --no-fonts --exact-bbox --scale=%S --output=%O"))
-              (imagemagick :programs ("xelatex" "convert") :description "pdf > png"
-                       :message
-                       "you need to install the programs: latex and imagemagick."
-                       :image-input-type "pdf" :image-output-type "png"
-                       :image-size-adjust (1.0 . 1.0) :latex-compiler
-                       ("xelatex -interaction nonstopmode -output-directory %o %f")
-                       :image-converter
-                       ("convert -density %D -trim -antialias %f -quality 100 %O"))))
+                '((dvipng :programs ("latex" "dvipng") :description "dvi > png"
+                          :message
+                          "you need to install the programs: latex and dvipng."
+                          :image-input-type "dvi" :image-output-type "png"
+                          :image-size-adjust (1.0 . 1.0) :latex-compiler
+                          ("latex -interaction nonstopmode -output-directory %o %f")
+                          :image-converter ("dvipng -D %D -T tight -o %O %f")
+                          :transparent-image-converter
+                          ("dvipng -D %D -T tight -bg Transparent -o %O %f"))
+                  (dvisvgm :programs ("xelatex" "dvisvgm") :description "xdv > svg"
+                           :message
+                           "you need to install the programs: latex and dvisvgm."
+                           :image-input-type "xdv" :image-output-type "svg"
+                           :image-size-adjust (1.7 . 1.5) :latex-compiler
+                           ("xelatex --no-pdf -interaction nonstopmode -output-directory %o %f")
+                           :image-converter
+                           ("dvisvgm %f --no-fonts --exact-bbox --scale=%S --output=%O"))
+                  (imagemagick :programs ("xelatex" "convert") :description "pdf > png"
+                               :message
+                               "you need to install the programs: latex and imagemagick."
+                               :image-input-type "pdf" :image-output-type "png"
+                               :image-size-adjust (1.0 . 1.0) :latex-compiler
+                               ("xelatex -interaction nonstopmode -output-directory %o %f")
+                               :image-converter
+                               ("convert -density %D -trim -antialias %f -quality 100 %O"))))
         ```
         <div class="src-block-caption">
           <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 178:</span>
@@ -6782,7 +6806,7 @@ slug: "emacs-desire-configuration"
 
 <!--list-separator-->
 
-8.  Преобразование markdown ←→ org через буфер обмена
+9.  Преобразование markdown ←→ org через буфер обмена
 
     -   [Emacs. Markdown в Org с помощью буфера обмена]({{< relref "2026-01-02--emacs-markdown-org-clipboard" >}})
     -   Файл: `packages/org/desire.ecd/markdown-org-clipboard.ecf`
@@ -6812,12 +6836,12 @@ slug: "emacs-desire-configuration"
           (interactive)
           (if (use-region-p)
               (let* ((region
-                  (buffer-substring-no-properties
-                      (region-beginning)
-                      (region-end)))
-                 (markdown
-                  (org-export-string-as region 'md t '(:with-toc nil))))
-            (gui-set-selection 'CLIPBOARD markdown))))
+                      (buffer-substring-no-properties
+                              (region-beginning)
+                              (region-end)))
+                     (markdown
+                      (org-export-string-as region 'md t '(:with-toc nil))))
+                (gui-set-selection 'CLIPBOARD markdown))))
 
         ;;;
         ```
@@ -7377,10 +7401,10 @@ slug: "emacs-desire-configuration"
         ;;;; Some tweaks
         (setopt org-taskjuggler-default-project-duration 999)
         (setopt org-taskjuggler-valid-task-attributes
-            '(account start note duration endbuffer endcredit end
-                  flags journalentry length limits maxend maxstart minend
-                  minstart period reference responsible scheduling
-                  startbuffer startcredit statusnote chargeset charge booking))
+                '(account start note duration endbuffer endcredit end
+                          flags journalentry length limits maxend maxstart minend
+                          minstart period reference responsible scheduling
+                          startbuffer startcredit statusnote chargeset charge booking))
 
 
 
@@ -7396,7 +7420,7 @@ slug: "emacs-desire-configuration"
                                      (org-element-property :PRECEDES task))))
                    (and precs
                         (split-string (replace-regexp-in-string "{.*?}" "" precs)
-                          "[ ,]* +"))))
+                                      "[ ,]* +"))))
                 precedes)
             (when precs-ids
               ;; Find tasks with :task_id: property matching id in PRECS-IDS.
@@ -7408,7 +7432,7 @@ slug: "emacs-desire-configuration"
                       (org-element-map tasks 'headline
                         (lambda (task)
                           (let ((task-id (or (org-element-property :TASK_ID task)
-                             (org-element-property :ID task))))
+                                             (org-element-property :ID task))))
                             (and task-id (member task-id precs-ids) task)))
                         info)))
               ;; Check BLOCKER and PRECEDES properties.  If "previous-sibling"
@@ -7434,33 +7458,33 @@ slug: "emacs-desire-configuration"
         INFO is a plist used as a communication channel.  Return value
         doesn't include leading \"precedes\"."
           (let* ((dep-str (concat (org-element-property :BLOCKER task)
-                      " "
-                      (org-element-property :PRECEDES task)))
-             (get-path
-              (lambda (dep)
-                ;; Return path to DEP relatively to TASK.
-                (let ((parent (org-export-get-parent task))
-                  (exclamations 1)
-                  (option
-                   (let ((id (org-element-property :TASK_ID dep)))
-                     (and id
-                      (string-match (concat id " +\\({.*?}\\)") dep-str)
-                      (match-string-no-properties 1 dep-str))))
-                  path)
-                  ;; Compute number of exclamation marks by looking for the
-                  ;; common ancestor between TASK and DEP.
-                  (while (not (org-element-map parent 'headline
-                      (lambda (hl) (eq hl dep))))
-                (cl-incf exclamations)
-                (setq parent (org-export-get-parent parent)))
-                  ;; Build path from DEP to PARENT.
-                  (while (not (eq parent dep))
-                (push (org-taskjuggler-get-id dep info) path)
-                (setq dep (org-export-get-parent dep)))
-                  ;; Return full path.  Add dependency options, if any.
-                  (concat (make-string exclamations ?!)
-                      (mapconcat 'identity path ".")
-                      (and option (concat " " option)))))))
+                                  " "
+                                  (org-element-property :PRECEDES task)))
+                 (get-path
+                  (lambda (dep)
+                    ;; Return path to DEP relatively to TASK.
+                    (let ((parent (org-export-get-parent task))
+                          (exclamations 1)
+                          (option
+                           (let ((id (org-element-property :TASK_ID dep)))
+                             (and id
+                                  (string-match (concat id " +\\({.*?}\\)") dep-str)
+                                  (match-string-no-properties 1 dep-str))))
+                          path)
+                      ;; Compute number of exclamation marks by looking for the
+                      ;; common ancestor between TASK and DEP.
+                      (while (not (org-element-map parent 'headline
+                                  (lambda (hl) (eq hl dep))))
+                        (cl-incf exclamations)
+                        (setq parent (org-export-get-parent parent)))
+                      ;; Build path from DEP to PARENT.
+                      (while (not (eq parent dep))
+                        (push (org-taskjuggler-get-id dep info) path)
+                        (setq dep (org-export-get-parent dep)))
+                      ;; Return full path.  Add dependency options, if any.
+                      (concat (make-string exclamations ?!)
+                              (mapconcat 'identity path ".")
+                              (and option (concat " " option)))))))
             ;; Return precedes string, without the leading "precedes".
             (mapconcat (lambda (dep) (funcall get-path dep)) precedes ", ")))
 
@@ -7479,20 +7503,20 @@ slug: "emacs-desire-configuration"
                   (if (eq (org-element-property :todo-type task) 'done) "100"
                     (org-element-property :COMPLETE task)))
                  (depends (org-taskjuggler-resolve-dependencies task info))
-             (precedes (org-taskjuggler-resolve-precedes task info))
+                 (precedes (org-taskjuggler-resolve-precedes task info))
                  (effort (let ((property
-                    (intern (concat ":" (upcase org-effort-property)))))
-                   (org-element-property property task)))
+                                (intern (concat ":" (upcase org-effort-property)))))
+                           (org-element-property property task)))
                  (milestone
                   (or (org-element-property :MILESTONE task)
                       (not (or (org-element-map (org-element-contents task) 'headline
-                     'identity info t)  ; Has task any child?
-                       effort
-                       (org-element-property :LENGTH task)
-                       (org-element-property :DURATION task)
-                       (and (org-taskjuggler-get-start task)
-                        (org-taskjuggler-get-end task))
-                       (org-element-property :PERIOD task)))))
+                                 'identity info t)  ; Has task any child?
+                               effort
+                               (org-element-property :LENGTH task)
+                               (org-element-property :DURATION task)
+                               (and (org-taskjuggler-get-start task)
+                                    (org-taskjuggler-get-end task))
+                               (org-element-property :PERIOD task)))))
                  (priority
                   (let ((pri (org-element-property :priority task)))
                     (and pri
@@ -9417,10 +9441,10 @@ slug: "emacs-desire-configuration"
                 treemacs-file-follow-delay             0.2
                 treemacs-file-name-transformer         #'identity
                 treemacs-follow-after-init             t
-            treemacs-find-workspace-method         'find-for-file-or-pick-first
+                treemacs-find-workspace-method         'find-for-file-or-pick-first
                 treemacs-git-command-pipe              ""
                 treemacs-goto-tag-strategy             'refetch-index
-            treemacs-header-scroll-indicators      '(nil . "^^^^^^")
+                treemacs-header-scroll-indicators      '(nil . "^^^^^^")
                 treemacs-hide-dot-git-directory        t
                 treemacs-indentation                   2
                 treemacs-indentation-string            " "
@@ -9438,22 +9462,22 @@ slug: "emacs-desire-configuration"
                 treemacs-recenter-after-tag-follow     nil
                 treemacs-recenter-after-project-jump   'always
                 treemacs-recenter-after-project-expand 'on-distance
-            treemacs-litter-directories            '("/node_modules" "/.venv" "/.cask")
+                treemacs-litter-directories            '("/node_modules" "/.venv" "/.cask")
                 treemacs-project-follow-into-home      nil
                 treemacs-show-cursor                   nil
                 treemacs-show-hidden-files             t
                 treemacs-silent-filewatch              nil
                 treemacs-silent-refresh                nil
                 treemacs-sorting                       'alphabetic-asc
-            treemacs-select-when-already-in-treemacs 'move-back
+                treemacs-select-when-already-in-treemacs 'move-back
                 treemacs-space-between-root-nodes      t
                 treemacs-tag-follow-cleanup            t
                 treemacs-tag-follow-delay              1.5
                 treemacs-user-mode-line-format         nil
                 treemacs-user-header-line-format       nil
-            treemacs-wide-toggle-width             70
+                treemacs-wide-toggle-width             70
                 treemacs-width                         35
-            treemacs-width-increment               1
+                treemacs-width-increment               1
                 treemacs-width-is-initially-locked     t
                 treemacs-workspace-switch-cleanup      nil)
 
@@ -10078,18 +10102,18 @@ slug: "emacs-desire-configuration"
 
         ;;; Configure the ligature set
         (setopt unicode-fonts-ligature-set '("|||>" "<|||" "<==>" "<!--" "####" "~~>" "***" "||=" "||>"
-                           ":::" "::=" "=:=" "===" "==>" "=!=" "=>>" "=<<" "=/=" "!=="
-                           "!!." ">=>" ">>=" ">>>" ">>-" ">->" "->>" "-->" "---" "-<<"
-                           "<~~" "<~>" "<*>" "<||" "<|>" "<$>" "<==" "<=>" "<=<" "<->"
-                           "<--" "<-<" "<<=" "<<-" "<<<" "<+>" "</>" "###" "#_(" "..<"
-                           "..." "+++" "/==" "///" "_|_" "www" "&&" "^=" "~~" "~@" "~="
-                           "~>" "~-" "**" "*>" "*/" "||" "|}" "|]" "|=" "|>" "|-" "{|"
-                           "[|" "]#" "::" ":=" ":>" ":<" "$>" "==" "=>" "!=" "!!" ">:"
-                           ">=" ">>" ">-" "-~" "-|" "->" "-<" "<~" "<*" "<|" "<:" "<$"
-                           "<=" "<>" "<-" "<<" "<+" "</" "#{" "#[" "#:" "#=" "#!" "##"
-                           "#(" "#?" "#_" "%%" ".=" ".-" ".." ".?" "+>" "++" "?:" "?="
-                           "?." "??" ";;" "/*" "/**" "/=" "/>" "__" "~~" "(*" "*)"
-                           "://"))
+                                           ":::" "::=" "=:=" "===" "==>" "=!=" "=>>" "=<<" "=/=" "!=="
+                                           "!!." ">=>" ">>=" ">>>" ">>-" ">->" "->>" "-->" "---" "-<<"
+                                           "<~~" "<~>" "<*>" "<||" "<|>" "<$>" "<==" "<=>" "<=<" "<->"
+                                           "<--" "<-<" "<<=" "<<-" "<<<" "<+>" "</>" "###" "#_(" "..<"
+                                           "..." "+++" "/==" "///" "_|_" "www" "&&" "^=" "~~" "~@" "~="
+                                           "~>" "~-" "**" "*>" "*/" "||" "|}" "|]" "|=" "|>" "|-" "{|"
+                                           "[|" "]#" "::" ":=" ":>" ":<" "$>" "==" "=>" "!=" "!!" ">:"
+                                           ">=" ">>" ">-" "-~" "-|" "->" "-<" "<~" "<*" "<|" "<:" "<$"
+                                           "<=" "<>" "<-" "<<" "<+" "</" "#{" "#[" "#:" "#=" "#!" "##"
+                                           "#(" "#?" "#_" "%%" ".=" ".-" ".." ".?" "+>" "++" "?:" "?="
+                                           "?." "??" ";;" "/*" "/**" "/=" "/>" "__" "~~" "(*" "*)"
+                                           "://"))
 
         (setopt ecf-unicode-font (font-spec :family "Iosevka" :size 12))
 

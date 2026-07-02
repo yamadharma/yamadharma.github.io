@@ -2,7 +2,7 @@
 title: "VPN. Реализация Amnezia VPN"
 author: ["Dmitry S. Kulyabov"]
 date: 2026-02-23T18:33:00+03:00
-lastmod: 2026-03-19T12:03:00+03:00
+lastmod: 2026-06-14T16:32:00+03:00
 draft: false
 slug: "amnezia-vpn"
 ---
@@ -192,3 +192,16 @@ VPN. Реализация Amnezia VPN.
         ```shell
         AmneziaVPN
         ```
+
+<!--list-separator-->
+
+5.  Дополнительные настройки
+
+    <!--list-separator-->
+
+    1.  VLESS
+
+        -   В графическом интерфейсе нажмите на шестерёнку.
+        -   Выберите Серверы → Amnezia Premium.
+        -   Включите протокол VLESS.
+        -   Правда, могут быть проблемы с DNS (<https://github.com/amnezia-vpn/amnezia-client/issues/2722>)

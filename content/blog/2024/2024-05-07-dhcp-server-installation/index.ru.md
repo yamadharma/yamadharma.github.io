@@ -2,7 +2,7 @@
 title: "DHCP. Установка сервера DHCP Kea"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-05-07T11:39:00+03:00
-lastmod: 2025-09-12T19:04:00+03:00
+lastmod: 2026-05-20T13:07:00+03:00
 tags: ["network", "linux", "sysadmin"]
 categories: ["computer-science"]
 draft: false
@@ -212,11 +212,35 @@ slug: "dhcp-server-installation"
 
 #### <span class="section-num">3.2.2</span> Репозиторий ISC {#репозиторий-isc}
 
--   Текущая стабильная версия в репозитории: 2.6.x.
+-   Текущая стабильная версия в репозитории: 3.0.x.
 
 <!--list-separator-->
 
-1.  Kea-2.6
+1.  Kea-3.0
+
+    -   Бекэнд: только memcashed
+    -   Подключаем репозиторий:
+        ```shell
+        curl -1sLf 'https://dl.cloudsmith.io/public/isc/kea-3-0/setup.rpm.sh' | sudo -E bash
+        ```
+    -   Отключите старые репозитории, если они были установлены:
+        ```shell
+        dnf config-manager --disable isc-kea-2-4 isc-kea-2-4-noarch isc-kea-2-4-source
+        dnf config-manager --disable isc-kea-2-6 isc-kea-2-6-noarch isc-kea-2-6-source
+        dnf clean all
+        ```
+    -   Проверьте, что репозитории отключены:
+        ```shell
+        dnf repolist
+        ```
+    -   Устанавливаем сервер _Kea_:
+        ```shell
+        dnf -y install isc-kea isc-kea-hooks
+        ```
+
+<!--list-separator-->
+
+2.  Kea-2.6
 
     -   Подключаем репозиторий:
         ```shell
@@ -238,7 +262,7 @@ slug: "dhcp-server-installation"
 
 <!--list-separator-->
 
-2.  Kea-2.4
+3.  Kea-2.4
 
     -   Подключаем репозиторий:
         ```shell

@@ -2,7 +2,7 @@
 title: "Wayland. Просмотрщик изображений Swayimg"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-05-01T18:44:00+03:00
-lastmod: 2024-05-01T21:15:00+03:00
+lastmod: 2026-05-20T11:56:00+03:00
 tags: ["wayland", "sysadmin"]
 categories: ["computer-science"]
 draft: false
@@ -57,161 +57,82 @@ Wayland. Просмотрщик изображений Swayimg.
 
 ## <span class="section-num">3</span> Конфигурации {#конфигурации}
 
--   Каталоги поиска конфигурации (файл `config`):
-    -   `$XDG_CONFIG_HOME/swayimg`;
-    -   `$HOME/.config/swayimg`;
-    -   `$XDG_CONFIG_DIRS/swayimg`;
-    -   `/etc/xdg/swayimg`.
--   Конфигурация по умолчанию `/usr/share/swayimg/swayimgrc`:
-    ```conf-unix
-    # Swayimg configuration file.
+-   Конфигурация в lua.
+-   Каталоги поиска конфигурации:
+    -   `$XDG_CONFIG_HOME/swayimg/init.lua`
+    -   `$HOME/.config/swayimg/init.lua`
+    -   `$XDG_CONFIG_DIRS/swayimg/init.lua`
+    -   `/etc/xdg/swayimg/init.lua`
 
-    # This file contains the default configuration.
-    # The viewer searches for the config file in the following locations:
-    # 1. $XDG_CONFIG_HOME/swayimg/config
-    # 2. $HOME/.config/swayimg/config
-    # 3. $XDG_CONFIG_DIRS/swayimg/config
-    # 4. /etc/xdg/swayimg/config
-
-    # Any of these options can be overridden using the --config argument
-    # on the command line, for instance:
-    # $ swayimg --config="general.scale=real"
-
-    ################################################################################
-    # General options
-    ################################################################################
-    [general]
-
-    # Initial scale (optimal/fit/width/height/fill/real)
-    scale = optimal
-
-    # Start in full screen mode (yes/no)
-    fullscreen = no
-
-    # Anti-aliasing (yes/no)
-    antialiasing = no
-
-    # Background for transparent images (none/grid/RGB, e.g. #112233)
-    transparency = grid
-
-    # Window position (parent or absolute coordinates, e.g. 100,200)
-    position = parent
-    # Window size (parent, image, or absolute size, e.g. 800,600)
-    size = parent
-    # Window background mode/color (none/RGB, e.g. #112233)
-    background = none
-
-    # Run slideshow at startup (yes/no)
-    slideshow = no
-    # Slideshow image display time (seconds)
-    slideshow_time = 3
-
-    ################################################################################
-    # Image list configuration
-    ################################################################################
-    [list]
-    # Default order (none/alpha/random)
-    order = alpha
-    # Looping list of images (yes/no)
-    loop = yes
-    # Read directories recursively (yes/no)
-    recursive = no
-    # Open all files in the start directory (yes/no)
-    all = yes
-
-    ################################################################################
-    # Font configuration
-    ################################################################################
-    [font]
-    # Font name
-    name = monospace
-    # Font size (in pt)
-    size = 14
-    # Font color
-    color = #cccccc
-    # Drop shadow (none/RGB, e.g. #112233)
-    shadow = #000000
-
-    ################################################################################
-    # Image meta info scheme (format, size, EXIF, etc)
-    ################################################################################
-    [info]
-    # Mode on startup (off/brief/full)
-    mode = full
-    # Display scheme for the "full" mode: position = content
-    full.topleft = name,format,filesize,imagesize,exif
-    full.topright = index
-    full.bottomleft = scale,frame
-    full.bottomright = status
-    # Display scheme for the "brief" mode: position = content
-    brief.topleft = index
-    brief.topright = none
-    brief.bottomleft = none
-    brief.bottomright = status
-
-    ################################################################################
-    # Key binding section: key = action [parameters]
-    # Key can be specified with modifiers, e.g "Ctrl+Alt+Shift+x"
-    # Use the `xkbcli` tool to get key name: `xkbcli interactive-wayland`
-    ################################################################################
-    [keys]
-    F1 = help
-    Home = first_file
-    End = last_file
-    Prior = prev_file
-    Next = next_file
-    Space = next_file
-    Shift+d = prev_dir
-    d = next_dir
-    Shift+o = prev_frame
-    o = next_frame
-    Shift+s = slideshow
-    s = animation
-    f = fullscreen
-    Left = step_left 10
-    Right = step_right 10
-    Up = step_up 10
-    Down = step_down 10
-    Equal = zoom +10
-    Plus = zoom +10
-    Minus = zoom -10
-    w = zoom width
-    Shift+w = zoom height
-    z = zoom fit
-    Shift+z = zoom fill
-    0 = zoom real
-    BackSpace = zoom optimal
-    bracketleft = rotate_left
-    bracketright = rotate_right
-    m = flip_vertical
-    Shift+m = flip_horizontal
-    a = antialiasing
-    r = reload
-    i = info
-    e = exec echo "Image: %"
-    Escape = exit
-    q = exit
-
-    ################################################################################
-    # Mouse / touchpad configuration, same format as in [keys]
-    ################################################################################
-    [mouse]
-    ScrollLeft = step_right 5
-    ScrollRight = step_left 5
-    ScrollUp = step_down 5
-    ScrollDown = step_up 5
-    Ctrl+ScrollUp = zoom +10
-    Ctrl+ScrollDown = zoom -10
-    Shift+ScrollUp = prev_file
-    Shift+ScrollDown = next_file
-    Alt+ScrollUp = prev_frame
-    Alt+ScrollDown = next_frame
-
-    # vim: filetype=dosini
-    ```
+-   Конфигурация, используемая по умолчанию, хранится в `/usr/share/swayimg/example.lua`.
 
 
-## <span class="section-num">4</span> Установка по умолчанию {#установка-по-умолчанию}
+## <span class="section-num">4</span> Клавиатурные сочетания {#клавиатурные-сочетания}
+
+
+### <span class="section-num">4.1</span> Просмотрщик и слайд-шоу {#просмотрщик-и-слайд-шоу}
+
+-   Esc : Выход из приложения
+-   Войти : Переключиться в режим галереи
+-   s : Включить/выключить режим слайд-шоу
+-   Ins : Отметить/снять отметку с отображаемого изображения
+-   f : Включить/выключить полноэкранный режим
+-   a : Включить/отключить сглаживание
+-   ] : Поверните изображение на 90 градусов по часовой стрелке
+-   [ : Поверните изображение на 90 градусов против часовой стрелки
+-   m : Перевернуть изображение по вертикали
+-   Shift-m : Отразить изображение по горизонтали
+-   i : Показать/скрыть текстовый информационный слой
+-   PgDown : Показать следующее изображение
+-   PgUp : Показать предыдущее изображение
+-   Shift-PgDown : Показать следующий кадр
+-   Shift-PgUp : Показать предыдущее изображение
+-   + : Увеличение масштаба
+-   - : Отдаление
+-   Влево/Вправо/Вверх/Вниз : Переместить изображение
+-   Клавиша Backspace : Сбросить масштаб и положение изображения до значений по умолчанию.
+
+
+#### <span class="section-num">4.1.1</span> Привязки мыши {#привязки-мыши}
+
+-   ScrollUp/ScrollDown/ScrollLeft/ScrollRight : Перемещение изображения
+-   Ctrl-ScrollUp : Увеличение масштаба
+-   Ctrl-ScrollDown : Уменьшить масштаб
+-   MouseLeft : Переместить изображение (перетащить)
+-   MouseRight : Перетаскивание изображений во внешние приложения.
+
+
+### <span class="section-num">4.2</span> Галерея {#галерея}
+
+-   Esc : Выход из приложения
+-   Home : Выберите первое миниатюрное изображение в списке изображений
+-   End : Выберите последнюю миниатюру в списке изображений.
+-   Left : выберите миниатюру слева от текущей.
+-   Right : выберите миниатюру справа от текущей.
+-   Up : Выберите миниатюру над текущей.
+-   Down : Выберите миниатюру под текущей.
+-   PgUp : Выберите миниатюру на предыдущей странице
+-   PgDown : Выберите миниатюру на следующей странице
+-   Enter : Переключиться в режим просмотра
+-   s : Переключиться в режим слайд-шоу
+-   Ins : Отметить/снять отметку с выбранного изображения
+-   f : Включить/выключить полноэкранный режим
+-   a : Включить/отключить сглаживание
+-   - : Увеличить размер миниатюры
+-   - : Уменьшить размер миниатюры
+-   i : Показать/скрыть текстовый информационный слой
+
+
+#### <span class="section-num">4.2.1</span> Привязки мыши {#привязки-мыши}
+
+-   MouseLeft : Открыть выбранное изображение в окне просмотра
+-   MouseRight : Перетаскивание изображений во внешние приложения.
+-   Ctrl-ScrollUp : Увеличение размера миниатюры
+-   Ctrl-ScrollDown : Уменьшить размер миниатюры
+-   Прокрутка вверх/прокрутка вниз/прокрутка влево/прокрутка вправо : выберите следующее изображение
+
+
+## <span class="section-num">5</span> Установка по умолчанию {#установка-по-умолчанию}
 
 -   Можно установить swayimg как просмотрщик по умолчанию (см. [XDG. Приложения MIME]({{< relref "2023-04-02-xdg-mime-applications" >}})).
 -   Проверим, какие ассоциации актуальны:

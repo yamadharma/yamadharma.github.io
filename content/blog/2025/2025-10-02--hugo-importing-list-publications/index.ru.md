@@ -2,7 +2,7 @@
 title: "Hugo. Сайт научника. Импорт списка публикаций"
 author: ["Dmitry S. Kulyabov"]
 date: 2025-10-02T15:57:00+03:00
-lastmod: 2026-03-10T14:26:00+03:00
+lastmod: 2026-07-02T20:19:00+03:00
 tags: ["hugo"]
 categories: ["computer-science"]
 draft: false
@@ -377,7 +377,29 @@ hugoblox:
 -   Скрипт автоматически обработает все `.md` файлы в указанной директории и её поддиректориях.
 
 
-## <span class="section-num">3</span> Общий скрипт {#общий-скрипт}
+## <span class="section-num">3</span> Формат после hugoblox-0.12.0 {#формат-после-hugoblox-0-dot-12-dot-0}
+
+-   Предыдущий формат (одно поле):
+    ```yaml
+    publication: "Journal of Physics A, 42(30):305202"
+    ```
+
+-   Новый формат:
+
+<!--listend-->
+
+```yaml
+publication:
+  name: "Journal of Physics A"
+  short_name: "J. Phys. A"
+  volume: "42"
+  issue: "30"
+  pages: "305202"
+  publisher: ""
+```
+
+
+## <span class="section-num">4</span> Общий скрипт {#общий-скрипт}
 
 -   Мой скрипт для переноса библиографии (`scripts/bib.sh`):
     ```shell

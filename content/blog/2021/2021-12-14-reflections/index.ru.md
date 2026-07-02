@@ -2,7 +2,7 @@
 title: "Мысли"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-12-14T17:33:00+03:00
-lastmod: 2026-04-29T09:56:00+03:00
+lastmod: 2026-07-02T20:32:00+03:00
 tags: ["MOC"]
 categories: ["thinking"]
 draft: false
@@ -34,3 +34,10 @@ slug: "reflections"
 -   [Учёный и инженер]({{< relref "2023-05-09-scientist-engineer" >}})
 -   [Высокий и низкий контекст]({{< relref "2025-05-25--high-context-low-context" >}})
 -   [Метод прогрессивного джипега]({{< relref "2025-12-10--progressive-jpeg-method" >}})
+
+
+## <span class="section-num">4</span> Области интересов {#области-интересов}
+
+-   [Вопросы истории]({{< relref "2026-07-02--history" >}})
+-   [Вопросы философии]({{< relref "2026-03-05--philosophy" >}})
+-   [Социологические заметки]({{< relref "2021-10-23-sociological-notes" >}})

@@ -2,7 +2,7 @@
 title: "Proxmox. Установка Windows"
 author: ["Dmitry S. Kulyabov"]
 date: 2025-02-22T19:20:00+03:00
-lastmod: 2025-02-23T18:16:00+03:00
+lastmod: 2026-06-11T12:11:00+03:00
 tags: ["windows"]
 categories: ["computer-science"]
 draft: false
@@ -57,6 +57,8 @@ Proxmox. Установка Windows.
     ```shell
     pvesm alloc local-lvm 200 vm-200-disk-0 160G
     ```
+
+    -   При ZFS хранилище `local-zfs`.
 -   Зададим драйвер диска:
     ```shell
     qm set 200 --scsihw virtio-scsi-single
@@ -86,6 +88,8 @@ Proxmox. Установка Windows.
     ```shell
     qm set 200 --tablet 1
     ```
+-   После этого запускаем установку из графического окружения.
+-   [Windows. Установка в kvm]({{< relref "2024-05-29-windows-install-kvm" >}})
 
 
 ## <span class="section-num">4</span> Скрипт установки {#скрипт-установки}

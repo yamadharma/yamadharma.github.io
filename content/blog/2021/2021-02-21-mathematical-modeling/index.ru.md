@@ -2,7 +2,7 @@
 title: "Математическое моделирование"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-02-21T16:33:00+03:00
-lastmod: 2026-04-30T21:05:00+03:00
+lastmod: 2026-06-25T10:45:00+03:00
 tags: ["MOC", "modeling"]
 categories: ["science"]
 draft: false
@@ -60,3 +60,6 @@ slug: "mathematical-modeling"
 ## <span class="section-num">4</span> Модельные теории {#модельные-теории}
 
 -   [Теория ограничений]({{< relref "2025-07-09--theory-constraints" >}})
+
+
+## <span class="section-num">5</span> Профессиональные вопросы {#профессиональные-вопросы}

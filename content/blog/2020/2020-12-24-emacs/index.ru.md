@@ -2,7 +2,7 @@
 title: "Emacs"
 author: ["Dmitry S. Kulyabov"]
 date: 2020-12-24T16:23:00+03:00
-lastmod: 2026-03-13T20:59:00+03:00
+lastmod: 2026-05-15T17:24:00+03:00
 tags: ["MOC", "emacs"]
 categories: ["computer-science"]
 draft: false
@@ -64,6 +64,7 @@ slug: "emacs"
 -   [Emacs. Рабочее пространство]({{< relref "2024-01-14-emacs-workspaces" >}})
 -   [Emacs. Табы]({{< relref "2023-12-13-emacs-tabs" >}})
 -   [Emacs. Пакет casual]({{< relref "2024-10-26-emacs-casual" >}})
+-   [Emacs. Поддержка броузеров]({{< relref "2026-05-15--emacs-browser-support" >}})
 
 
 ### <span class="section-num">4.5</span> Поддержка языков программирования {#поддержка-языков-программирования}

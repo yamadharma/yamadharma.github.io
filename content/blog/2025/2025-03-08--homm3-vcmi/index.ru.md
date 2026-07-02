@@ -2,7 +2,7 @@
 title: "Homm3. VCMI"
 author: ["Dmitry S. Kulyabov"]
 date: 2025-03-08T18:36:00+03:00
-lastmod: 2025-03-08T18:53:00+03:00
+lastmod: 2026-05-17T15:45:00+03:00
 tags: ["homm"]
 categories: ["games"]
 draft: false
@@ -103,3 +103,9 @@ emerge vcmi
     ```shell
     vcmilauncher
     ```
+
+
+## <span class="section-num">3</span> Ресурсы {#ресурсы}
+
+-   <https://vk.com/vcmiofficial>
+-   <https://mightandmagic.fandom.com/ru/wiki/VCMI>

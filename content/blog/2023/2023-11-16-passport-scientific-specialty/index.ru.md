@@ -2,7 +2,7 @@
 title: "Паспорт научной специальности"
 author: ["Dmitry S. Kulyabov"]
 date: 2023-11-16T19:15:00+03:00
-lastmod: 2023-12-24T18:38:00+03:00
+lastmod: 2026-06-11T14:27:00+03:00
 tags: ["science-admin"]
 categories: ["science"]
 draft: false
@@ -54,4 +54,4 @@ slug: "passport-scientific-specialty"
 ## <span class="section-num">4</span> Паспорта специальностей ВАК {#паспорта-специальностей-вак}
 
 -   Паспорта специальностей на сайте ВАК: <https://drive.google.com/drive/folders/1RNYkXhvAzaEF85GqxOH8HhbenJIoUMR7>.
--   [Паспорт специальности 1.2.2]({{< relref "2023-11-16-passport-scientific-specialty-1_2_2" >}})
+-   [Паспорт специальности 1.2.2 --- Математическое моделирование, численные методы и комплексы программ]({{< relref "2023-11-16-passport-scientific-specialty-1_2_2" >}})

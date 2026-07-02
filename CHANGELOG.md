@@ -1,3 +1,10 @@
+## [1.1.9](https://github.com/yamadharma/yamadharma/compare/v1.1.8...v1.1.9) (2026-07-02)
+
+### Features
+
+* **post:** add new posts ([37e59c6](https://github.com/yamadharma/yamadharma/commit/37e59c6c282f9089d3c1d65fcf07e9e573a3573f))
+* **theme:** update theme ([b9ce990](https://github.com/yamadharma/yamadharma/commit/b9ce990fa828b9d6510a4ed1bfb52b0d6fed979a))
+
 ## [1.1.8](https://github.com/yamadharma/yamadharma.github.io/compare/v1.1.7...v1.1.8) (2026-05-10)
 
 

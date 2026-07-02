@@ -2,7 +2,7 @@
 title: "Emacs. Управление пакетами. package"
 author: ["Dmitry S. Kulyabov"]
 date: 2025-01-25T14:19:00+03:00
-lastmod: 2025-01-25T17:17:00+03:00
+lastmod: 2026-06-24T20:28:00+03:00
 tags: ["emacs"]
 categories: ["computer-science"]
 draft: false
@@ -62,3 +62,80 @@ Emacs. Управление пакетами. package.
              :lisp-dir "lisp"
              :doc "doc/bbdb.texi"))
     ```
+
+
+## <span class="section-num">4</span> Зеркала для пакетного менеджера {#зеркала-для-пакетного-менеджера}
+
+
+### <span class="section-num">4.1</span> Базовые источники {#базовые-источники}
+
+-   Emacs скачивает пакеты из источников, перечисленных в переменной `package-archives`.
+-   По умолчанию там только GNU ELPA.
+-   Обычно сразу добавляют MELPA.
+-   Чтобы использовать зеркала, нужно просто подставить их URL перед вызовом `package-initialize`.
+    ```elisp
+    ;; ~/.emacs.d/init.el
+    (require 'package)
+
+    (setq package-archives
+          '(("gnu" . "https://elpa.gnu.org/packages/")
+            ("nongnu" . "https://elpa.nongnu.org/nongnu/")
+            ("gnu-devel" . "https://elpa.gnu.org/devel/")
+            ("melpa" . "https://melpa.org/packages/")
+            ("melpa-stable" . "https://stable.melpa.org/packages/")))
+
+    (package-initialize)
+    (unless package-archive-contents
+      (package-refresh-contents))
+    ```
+
+-   Традиционно сложились такие имена:
+    -   gnu --- официальный архив GNU ELPA. Исторически он единственный был встроен по умолчанию.
+    -   melpa --- самый популярный неофициальный архив со срезом последних коммитов пакетов (сборочная модель «снимки»).
+    -   melpa-stable --- архив MELPA, в который попадают только стабильные релизы (теги) пакетов.
+-   Emacs из коробки не поддерживает fallback-зеркала.
+-   В `package-archives` у каждого имени может быть только один URL. Если добавить две записи с одинаковым именем, последняя просто перезапишет предыдущую.
+-   Технически можно добавить несколько архивов, содержащих одно и то же, под разными именами.
+-   Тогда в списке пакетов вы увидите одни и те же пакеты дважды, и Emacs может установить пакет из любого архива.
+-   Приоритет будет у первого.
+-   Если основное зеркало недоступно, то при `package-refresh-contents` вы получите ошибку о недоступности основного репозитория.
+-   Однако это порождает путаницу и не гарантирует корректного разрешения зависимостей (версии могут отличаться).
+-   Это не рекомендуется.
+
+
+### <span class="section-num">4.2</span> Зеркала {#зеркала}
+
+
+#### <span class="section-num">4.2.1</span> Зеркало d12frosted на github {#зеркало-d12frosted-на-github}
+
+-   Автоматически зеркалирует GNU ELPA, MELPA, Org ELPA с помощью GitHub Actions.
+-   Репозиторий: <https://github.com/d12frosted/elpa-mirror>:
+    ```elisp
+    (setq package-archives
+          '(("melpa" . "https://raw.githubusercontent.com/d12frosted/elpa-mirror/master/melpa/")
+            ("melpa-stable" . "https://raw.githubusercontent.com/d12frosted/elpa-mirror/master/stable-melpa")
+            ("gnu" . "https://raw.githubusercontent.com/d12frosted/elpa-mirror/master/gnu/")
+            ("nongnu" . "https://raw.githubusercontent.com/d12frosted/elpa-mirror/master/nongnu")))
+    ```
+-   По ссылке нельзя просмотреть содержимое каталога, поэтому emacs выдаёт ошибку.
+-   Я отключил эти зеркала.
+
+
+#### <span class="section-num">4.2.2</span> Зеркало d12frosted на GitLab {#зеркало-d12frosted-на-gitlab}
+
+-   Автоматически зеркалирует GNU ELPA, MELPA, Org ELPA с помощью GitHub Actions.
+-   Репозиторий: <https://gitlab.com/d12frosted/elpa-mirror/>:
+    ```elisp
+    (setq package-archives
+          '(("melpa" . "https://gitlab.com/d12frosted/elpa-mirror/-/tree/master/melpa")
+            ("melpa-stable" . "https://gitlab.com/d12frosted/elpa-mirror/-/tree/master/stable-melpa")
+            ("gnu" . "https://gitlab.com/d12frosted/elpa-mirror/-/tree/master/gnu")
+            ("nongnu" . "https://gitlab.com/d12frosted/elpa-mirror/-/tree/master/nongnu")))
+    ```
+
+
+#### <span class="section-num">4.2.3</span> Проверка зеркала {#проверка-зеркала}
+
+-   Любой URL, добавляемый в `package-archives`, должен отдавать файл `archive-contents`.
+-   Просто откройте в браузере `<адрес>/archive-contents`.
+-   Если видите текстовые данные с описанием пакетов, зеркало работает.

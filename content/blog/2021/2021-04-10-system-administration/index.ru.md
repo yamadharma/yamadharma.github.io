@@ -2,7 +2,7 @@
 title: "Системное администрирование"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-04-10T18:18:00+03:00
-lastmod: 2026-05-24T16:44:00+03:00
+lastmod: 2026-07-04T20:39:00+03:00
 tags: ["MOC", "sysadmin"]
 categories: ["computer-science"]
 draft: false
@@ -35,6 +35,7 @@ slug: "system-administration"
 -   [Менеджеры паролей]({{< relref "2021-04-29-password-managers" >}})
 -   [Have I Been Pwned (HIBP)]({{< relref "2021-05-03-have-i-been-pwned-hibp" >}})
 -   [Одноразовые пароли]({{< relref "2023-08-24-one-time-passwords" >}})
+-   [Технология passkey]({{< relref "2026-07-04--passkey" >}})
 
 
 ### <span class="section-num">3.2</span> PKI {#pki}
@@ -300,6 +301,7 @@ slug: "system-administration"
 -   [Firefox. Настройка]({{< relref "2025-11-22--firefox-tuning" >}})
 -   [Vim. Клавиатура. Броузеры]({{< relref "2023-08-19-vim-keyboard-browsers" >}})
 -   [Emacs. Клавиатура. Броузеры]({{< relref "2023-08-19-emacs-keyboard-browsers" >}})
+-   [Chromium. Расширения]({{< relref "2026-05-27--chromium-extensions" >}})
 
 
 ### <span class="section-num">11.15</span> Синхронизация файлов {#синхронизация-файлов}

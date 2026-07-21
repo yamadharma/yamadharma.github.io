@@ -2,7 +2,7 @@
 title: "Практический сценарий использования git"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-01-17T20:06:00+03:00
-lastmod: 2025-09-06T18:47:00+03:00
+lastmod: 2026-07-19T16:34:00+03:00
 tags: ["programming", "education"]
 categories: ["computer-science"]
 draft: false

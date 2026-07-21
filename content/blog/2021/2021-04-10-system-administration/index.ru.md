@@ -2,7 +2,7 @@
 title: "Системное администрирование"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-04-10T18:18:00+03:00
-lastmod: 2026-07-04T20:39:00+03:00
+lastmod: 2026-07-20T19:28:00+03:00
 tags: ["MOC", "sysadmin"]
 categories: ["computer-science"]
 draft: false
@@ -49,6 +49,7 @@ slug: "system-administration"
 -   [Сертификаты ACME]({{< relref "2022-04-30-acme-certificates" >}})
 -   [Механизм HSTS]({{< relref "2022-05-03-hsts-mechanism" >}})
 -   [fail2ban. Основные настройки]({{< relref "2023-10-30-fail2ban-basic-settings" >}})
+-   [Заголовки безопасности HTTP]({{< relref "2026-07-20--http-security-headers" >}})
 
 
 ### <span class="section-num">3.4</span> Резервное копирование {#резервное-копирование}

@@ -2,7 +2,7 @@
 title: "Система LaTeX"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-01-01T20:52:00+03:00
-lastmod: 2026-03-06T21:43:00+03:00
+lastmod: 2026-07-16T21:09:00+03:00
 tags: ["MOC", "tex", "latex"]
 categories: ["computer-science"]
 draft: false
@@ -96,3 +96,4 @@ slug: "latex"
 -   [LaTeX. Шаблоны публикаций. Elsevier]({{< relref "2021-07-03-latex-publication-templates-elsevier" >}})
 -   [LaTeX. Класс статьи quantumarticle]({{< relref "2025-01-07--latex-class-quantumarticle" >}})
 -   [LaTeX. Классы для публикаций]({{< relref "2025-05-08--latex-classes-publications" >}})
+-   [LaTeX. Классы для резюме]({{< relref "2026-07-16--latex-classes-cv" >}})

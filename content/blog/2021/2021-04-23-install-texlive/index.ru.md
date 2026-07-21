@@ -2,7 +2,7 @@
 title: "Установка TeXlive"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-04-23T18:09:00+03:00
-lastmod: 2026-06-28T19:41:00+03:00
+lastmod: 2026-07-21T16:38:00+03:00
 tags: ["latex", "tex"]
 categories: ["computer-science"]
 draft: false
@@ -177,11 +177,65 @@ slug: "install-texlive"
     ```
 
     -   Если этого не сделать, то кэш будет пересоздан при первом запуске `lualatex`.
--   Если у Вас есть `ttc`-шрифты, то их индексация может занять много времени.
+
+
+## <span class="section-num">6</span> Возможные проблемы {#возможные-проблемы}
+
+
+### <span class="section-num">6.1</span> Долгая индексация шрифтов {#долгая-индексация-шрифтов}
+
+-   Если у Вас есть `ttc`-шрифты, то их индексация для luatex может занять много времени.
 -   Можно ограничить индексируемые шрифты.
--   Добавьте в файл `~/.config/luaotfload/luaotfload.conf`:
-    ```conf-unix
-    [db]
-        formats = ttf,otf
-    ```
+    -   Но это может сделать недоступным часть шрифтов.
+    -   Добавьте в файл `~/.config/luaotfload/luaotfload.conf`:
+        ```conf-unix
+        [db]
+            formats = ttf,otf
+        ```
 -   Также можно ограничить конкретные семейства шрифтов (например, как в [Шрифт. Iosevka]({{< relref "2024-04-11-font-iosevka" >}})).
+
+
+### <span class="section-num">6.2</span> Проблемы с библиотеками (TeXlive 2026) {#проблемы-с-библиотеками--texlive-2026}
+
+-   biber скомпилирован со старой библиотекой libcrypt.so.1.
+
+
+#### <span class="section-num">6.2.1</span> Ubuntu / Debian {#ubuntu-debian}
+
+-   Установите пакет `libcrypt1`:
+    ```shell
+    sudo apt update
+    sudo apt install libcrypt1
+    ```
+
+
+#### <span class="section-num">6.2.2</span> Fedora / RHEL / CentOS {#fedora-rhel-centos}
+
+-   Установите пакет `libxcrypt-compat`:
+    ```shell
+    sudo dnf install libxcrypt-compat
+    ```
+
+
+#### <span class="section-num">6.2.3</span> Arch Linux / Manjaro {#arch-linux-manjaro}
+
+-   Установите пакет `libxcrypt-compat` из репозитория AUR:
+    ```shell
+    # Manjaro (из официального репозитория)
+    sudo pacman -S libxcrypt-compat
+
+    # Arch Linux (из AUR, например, с помощью yay)
+    yay -S libxcrypt-compat
+    ```
+
+
+#### <span class="section-num">6.2.4</span> Gentoo {#gentoo}
+
+-   Установите пакет `sys-libs/libxcrypt` с флагом `compat`:
+
+<!--listend-->
+
+```shell
+echo "sys-libs/libxcrypt compat" >> /etc/portage/package.use/libxcrypt
+emerge sys-libs/libxcrypt
+```

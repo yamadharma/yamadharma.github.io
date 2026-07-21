@@ -2,7 +2,7 @@
 title: "Физика"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-01-07T17:27:00+03:00
-lastmod: 2026-02-04T13:09:00+03:00
+lastmod: 2026-07-14T22:21:00+03:00
 tags: ["MOC"]
 categories: ["science", "physics"]
 draft: false
@@ -27,3 +27,8 @@ slug: "physics"
 ### <span class="section-num">1.2</span> Квантовая теория {#квантовая-теория}
 
 -   [Старая квантовая механика]({{< relref "2026-02-04--old-quantum-theory" >}})
+
+
+### <span class="section-num">1.3</span> Геометризация {#геометризация}
+
+-   [Геометризация]({{< relref "2024-01-08-geometrization" >}})

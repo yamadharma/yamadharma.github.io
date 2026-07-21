@@ -2,7 +2,7 @@
 title: "Научно-исследовательская деятельность"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-02-01T20:18:00+03:00
-lastmod: 2026-07-01T20:42:00+03:00
+lastmod: 2026-07-21T21:08:00+03:00
 tags: ["MOC", "research"]
 categories: ["science"]
 draft: false
@@ -78,6 +78,11 @@ slug: "research"
 ### <span class="section-num">1.12</span> Кватернионы {#кватернионы}
 
 -   [Винтовое исчисление]({{< relref "2026-07-01--screw-theory" >}})
+
+
+### <span class="section-num">1.13</span> Не занимаюсь, но просмотрел {#не-занимаюсь-но-просмотрел}
+
+-   [Вещественная квантовая механика]({{< relref "2026-07-03--real-quantum-mechanics" >}})
 
 
 ## <span class="section-num">2</span> Публикации {#публикации}
@@ -274,7 +279,20 @@ slug: "research"
 -   Google Scholar: <https://scholar.google.com/citations?user=D5XLDn4AAAAJ>
 -   ResearchGate: <https://www.researchgate.net/profile/Dmitry_Kulyabov>
 -   Academia.edu: <https://rudn.academia.edu/DmitryKulyabov>
+
+
+### <span class="section-num">14.1</span> arXiv.org {#arxiv-dot-org}
+
+-   [Репозиторий препринтов arXiv.org]({{< relref "2026-07-21--preprint-repository-arxiv-org" >}})
 -   arXiv: <http://arxiv.org/a/kulyabov_d_1>
+-   Мои категорий arXiv (разрешено поручительство).
+    -   cs.MS (Mathematical Software) --- Математическое программное обеспечение.
+    -   cs.SC (Symbolic Computation) --- Символьные (алгебраические) вычисления.
+    -   cs.NI (Networking and Internet Architecture) --- Сетевая архитектура и интернет.
+    -   cs.PF (Performance) --- Производительность систем.
+    -   cs.CE (Computational Engineering, Finance, and Science) --- Вычислительная инженерия, финансы и наука.
+    -   cs.OH (Other Computer Science) --- Другие направления компьютерных наук.
+    -   cs.GR (Computer Graphics) --- Компьютерная графика.
 
 
 ## <span class="section-num">15</span> Социальные сети {#социальные-сети}

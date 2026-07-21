@@ -2,7 +2,7 @@
 title: "Французские короли"
 author: ["Dmitry S. Kulyabov"]
 date: 2026-07-02T20:34:00+03:00
-lastmod: 2026-07-02T21:05:00+03:00
+lastmod: 2026-07-03T18:37:00+03:00
 tags: ["history"]
 categories: ["thinking"]
 draft: false

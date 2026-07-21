@@ -2,7 +2,7 @@
 title: "Сети. Натурное моделирование"
 author: ["Dmitry S. Kulyabov"]
 date: 2025-07-20T18:19:00+03:00
-lastmod: 2025-07-28T18:04:00+03:00
+lastmod: 2026-07-10T21:42:00+03:00
 tags: ["network", "modeling"]
 categories: ["computer-science"]
 draft: false
@@ -316,7 +316,7 @@ slug: "networks-natural-modeling"
 
 <div class="csl-bib-body">
   <div class="csl-entry"><a id="citeproc_bib_item_1"></a>1.	Welsh, C. GNS3 Network Simulation Guide / C. Welsh. – Packt Publishing, 2013. – 154 сс.</div>
-  <div class="csl-entry"><a id="citeproc_bib_item_2"></a>2.	Velieva, T.R. Designing Installations for Verification of the Model of Active Queue Management Discipline RED in the GNS3 / T.R. Velieva, A.V. Korolkova, D.S. Kulyabov. – [Электронный ресурс] // 6th International Congress on Ultra Modern Telecommunications and Control Systems and Workshops (ICUMT). – IEEE Computer Society, 2015. – Сс. 570–577. – Режим доступа: <a href="http://ieeexplore.ieee.org/lpdocs/epic03/wrapper.htm?arnumber=7002164">http://ieeexplore.ieee.org/lpdocs/epic03/wrapper.htm?arnumber=7002164</a> (дата обращения: 27.07.2025).</div>
+  <div class="csl-entry"><a id="citeproc_bib_item_2"></a>2.	Velieva, T.R. Designing Installations for Verification of the Model of Active Queue Management Discipline RED in the GNS3 / T.R. Velieva, A.V. Korolkova, D.S. Kulyabov. – [Электронный ресурс] // 6th International Congress on Ultra Modern Telecommunications and Control Systems and Workshops (ICUMT). – IEEE Computer Society, 2015. – Сс. 570–577. – Режим доступа: <a href="https://ieeexplore.ieee.org/document/7002164">https://ieeexplore.ieee.org/document/7002164</a> (дата обращения: 27.07.2025).</div>
   <div class="csl-entry"><a id="citeproc_bib_item_3"></a>3.	Lantz, B. <a href="https://doi.org/10.1145/1868447.1868466">A Network in a Laptop: Rapid Prototyping for Software-Defined Networks</a> / B. Lantz, B. Heller, N. McKeown // Proceedings of the 9th ACM SIGCOMM Workshop on Hot Topics in Networks : Hotnets-IX. – New York, NY, USA : Association for Computing Machinery, 2010. – A Network in a Laptop. – Сс. 1–6.</div>
   <div class="csl-entry"><a id="citeproc_bib_item_4"></a>4.	Lantz, B. <a href="https://doi.org/10.1145/2785956.2790030">A Mininet-based Virtual Testbed for Distributed SDN Development</a> / B. Lantz, B. O’Connor // Proceedings of the 2015 ACM Conference on Special Interest Group on Data Communication : SIGCOMM ’15. – ACM, 2015. – Сс. 365–366.</div>
   <div class="csl-entry"><a id="citeproc_bib_item_5"></a>5.	Oliveira, R.L.S. de. <a href="https://doi.org/10.1109/colcomcon.2014.6860404">Using Mininet for emulation and prototyping Software-Defined Networks</a> / R.L.S. de Oliveira, C.M. Schweitzer, A.A. Shinoda, L.R. Prete // 2014 IEEE Colombian Conference on Communications and Computing (COLCOM). – IEEE, 2014. – Сс. 1–6.</div>

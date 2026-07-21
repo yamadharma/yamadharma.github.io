@@ -2,7 +2,7 @@
 title: "Распознавание pdf. OCRmyPDF"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-06-07T21:07:00+03:00
-lastmod: 2025-10-11T16:53:00+03:00
+lastmod: 2026-07-05T21:23:00+03:00
 tags: ["pdf", "read"]
 categories: ["computer-science"]
 draft: false
@@ -71,17 +71,17 @@ slug: "pdf-ocr-ocrmypdf"
 
 ### <span class="section-num">2.2</span> Не распознавать pdf-файл {#не-распознавать-pdf-файл}
 
--   При установке параметра `--tesseract-timeout 0`  OCRmyPDF будет обрабатывать изображения без выполнения OCR.
+-   При установке параметра `--ocr-engine none`  OCRmyPDF будет обрабатывать изображения без выполнения OCR.
     ```shell
-    ocrmypdf --tesseract-timeout=0 --remove-background input.pdf output.pdf
+    ocrmypdf --ocr-engine none --remove-background input.pdf output.pdf
     ```
 -   Удалить весь распознанный текст из pdf-файла:
     ```shell
-    ocrmypdf --tesseract-timeout 0 --optimize 3 --force-ocr input.pdf output.pdf
+    ocrmypdf --ocr-engine none --optimize 3 --force-ocr input.pdf output.pdf
     ```
 -   Оптимизация изображений без выполнения распознавания:
     ```shell
-    ocrmypdf --tesseract-timeout=0 --optimize 3 --skip-text input.pdf output.pdf
+    ocrmypdf --ocr-engine none --optimize 3 --skip-text input.pdf output.pdf
     ```
 
 
@@ -110,9 +110,14 @@ ocrmypdf --tesseract-timeout 120 --tesseract-downsample-large-images --tesseract
 
 ### <span class="section-num">2.4</span> Используемые мной команды {#используемые-мной-команды}
 
+-   Удалить невидимый текстовый слой, полученный с помощью OCR, сохранив при этом исходные страницы в их первоначальном виде:
+    ```shell
+    ocrmypdf --mode strip input.pdf output.pdf
+    ```
+
 -   Удалить весь распознанный текст из pdf-файла (если текст кракозябрами):
     ```shell
-    ocrmypdf --tesseract-timeout 0 --optimize 3 --force-ocr input.pdf output.pdf
+    ocrmypdf --ocr-engine none --optimize 3 --force-ocr input.pdf output.pdf
     ```
 -   Распознать файл:
     ```shell

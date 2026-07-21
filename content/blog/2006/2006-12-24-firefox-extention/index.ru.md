@@ -2,7 +2,7 @@
 title: "Firefox. Расширения"
 author: ["Dmitry S. Kulyabov"]
 date: 2006-12-24T18:10:00+03:00
-lastmod: 2024-10-10T16:28:00+03:00
+lastmod: 2026-07-12T18:38:00+03:00
 tags: ["network", "sysadmin"]
 categories: ["computer-science"]
 draft: false
@@ -113,6 +113,16 @@ slug: "firefox-extention"
 -   Позволяет запускать пользовательские скрипты на JavaScript.
 -   Сайт: <https://www.tampermonkey.net/>
 -   Firefox: <https://addons.mozilla.org/en-US/firefox/addon/tampermonkey/>
+
+
+### <span class="section-num">1.7</span> Преобразования {#преобразования}
+
+
+#### <span class="section-num">1.7.1</span> Copy as Org-Mode {#copy-as-org-mode}
+
+-   Преобразовать в формат org.
+-   Репозиторий: <https://github.com/kuanyui/copy-as-org-mode>
+-   Firefox: <https://addons.mozilla.org/en-US/firefox/addon/copy-as-org-mode/>
 
 
 ## <span class="section-num">2</span> Архив {#архив}

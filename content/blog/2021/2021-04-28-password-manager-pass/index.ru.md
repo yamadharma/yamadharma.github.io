@@ -2,7 +2,7 @@
 title: "Менеджер паролей pass"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-04-28T18:50:00+03:00
-lastmod: 2025-08-19T16:38:00+03:00
+lastmod: 2026-07-05T21:47:00+03:00
 tags: ["security", "sysadmin"]
 categories: ["computer-science"]
 draft: false
@@ -105,7 +105,7 @@ slug: "password-manager-pass"
 
 <!--list-separator-->
 
-1.  android-password-store/Android-Password-Store
+1.  ~~android-password-store/Android-Password-Store~~
 
     -   URL: <https://play.google.com/store/apps/details?id=dev.msfjarvis.aps>
     -   Репозиторий с кодом: <https://github.com/android-password-store/Android-Password-Store>
@@ -118,15 +118,29 @@ slug: "password-manager-pass"
 
 <!--list-separator-->
 
-2.  buckley-w-david/Android-Password-Store
+2.  ~~buckley-w-david/Android-Password-Store~~
 
     -   Репозиторий с кодом: <https://github.com/buckley-w-david/Android-Password-Store>
     -   Форк от основного репозитория.
-    -   Выглядит живым.
+    -   Не выглядит живым.
 
 <!--list-separator-->
 
-3.  История
+3.  agrahn/Android-Password-Store
+
+    -   Репозиторий: <https://github.com/agrahn/Android-Password-Store>
+    -   Есть в F-Droid
+
+<!--list-separator-->
+
+4.  pando85/Android-Password-Store
+
+    -   Репозиторий: <https://github.com/pando85/Android-Password-Store>
+    -   Поддерживает технологию passkey (см. [Технология passkey. Реализация passless]({{< relref "2026-07-04--passkey-passless" >}})).
+
+<!--list-separator-->
+
+5.  История
 
     <!--list-separator-->
 

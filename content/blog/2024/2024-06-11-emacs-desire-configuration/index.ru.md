@@ -2,7 +2,7 @@
 title: "Emacs. Desire. Конфигурация"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-06-11T18:55:00+03:00
-lastmod: 2026-07-21T15:57:00+03:00
+lastmod: 2026-07-26T14:36:00+03:00
 tags: ["emacs"]
 categories: ["computer-science"]
 draft: false
@@ -6001,7 +6001,7 @@ slug: "emacs-desire-configuration"
         ;;;; Set GTD directory (defaults to ~/gtd/)
         (setopt org-gtd-directory org-directory-todo)
         ;;;; Add org-gtd files to your agenda
-        (add-to-list 'org-agenda-files org-gtd-directory)
+        ;; (add-to-list 'org-agenda-files org-gtd-directory)
 
         ;;;; Make org-gtd prompt for refile target instead of auto-refiling
         (setopt org-gtd-refile-to-any-target nil)
@@ -6790,7 +6790,312 @@ slug: "emacs-desire-configuration"
         ```
 
 
-### <span class="section-num">3.27</span> Инфраструктура Org-roam {#инфраструктура-org-roam}
+### <span class="section-num">3.27</span> Инфраструктура Vulpea {#инфраструктура-vulpea}
+
+
+#### <span class="section-num">3.27.1</span> vulpea-journal {#vulpea-journal}
+
+<!--list-separator-->
+
+1.  Подключение
+
+    -   Файл: `rc.packages.el`
+        ```emacs-lisp
+        (desire 'vulpea-journal)
+        ```
+
+<!--list-separator-->
+
+2.  Загрузка
+
+    -   Файл: `packages/vulpea/loaddefs.ecf`
+        ```emacs-lisp
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;; Modern daily journaling interface for Emacs with reactive sidebar widgets, built on vulpea
+        ;; https://github.com/d12frosted/vulpea-journal
+
+        ;;; Code:
+
+        (desire 'vulpea)
+        (desire 'vulpea-ui)
+
+        ;; (setopt org-directory-journal (concat org-directory "journal/"))
+        ;; (if (not (file-directory-p org-directory-journal))
+        ;;     (make-directory org-directory-journal t))
+
+        ;; (add-to-list 'vulpea-db-sync-directories org-directory-journal t)
+
+        ;;;
+        ```
+
+<!--list-separator-->
+
+3.  Настройка
+
+    -   Файл: `packages/vulpea-journal/desire.ecf`
+        ```emacs-lisp
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;; Modern daily journaling interface for Emacs with reactive sidebar widgets, built on vulpea
+        ;; https://github.com/d12frosted/vulpea-journal
+
+        ;;; Code:
+
+        (vulpea-journal-setup)
+
+        ;;;; Start week on Sunday (0) or Monday (1, default)
+        (setopt vulpea-journal-ui-calendar-week-start 1)
+
+        ;;;; Include journal notes in the "created today" list
+        (setq vulpea-journal-ui-created-today-exclude-journal nil)  ; default: t
+
+        ;;;; How many years to look back
+        (setq vulpea-journal-ui-previous-years-count 5)  ; default: 5
+
+        ;;;; Characters to show in preview
+        (setq vulpea-journal-ui-previous-years-preview-chars 256)
+
+        ;;;; Hide org drawers in preview
+        (setq vulpea-journal-ui-previous-years-hide-drawers t)  ; default: t
+
+        ;;;; Start with previews expanded
+        (setq vulpea-journal-ui-previous-years-expanded t)  ; default: t
+
+        ;;;
+        ```
+
+<!--list-separator-->
+
+4.  Персональные настройки
+
+    -   Файл: `packages/vulpea-journal/personal.ecf`
+        ```emacs-lisp
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;; Modern daily journaling interface for Emacs with reactive sidebar widgets, built on vulpea
+        ;; https://github.com/d12frosted/vulpea-journal
+
+        ;;; Code:
+
+        ;;;; Daily (one file per day, default)
+        ;; (setopt vulpea-journal-default-template
+        ;; 	(vulpea-journal-template-daily))
+
+        ;;;; Monthly (one file per month)
+        ;; (setopt vulpea-journal-default-template
+        ;; 	(vulpea-journal-template-monthly))
+
+        ;;;; Custom tempate
+        (setopt vulpea-journal-default-template
+                '(:file-name "daily/%Y-%m-%d.org"
+                 :title "%Y-%m-%d"
+                 :tags ("journal" "daily")
+                 :head "#+created: %<[%Y-%m-%d]>"
+                 :body ":SETUP_LOCAL:\n#+startup: overview num inlineimages latexpreview\n#+options: ^:{} num:t tex:t\n:END:\n\n"))
+
+        ;;;
+        ```
+
+<!--list-separator-->
+
+5.  Интеграция с vulpea
+
+    -   Файл: `packages/vulpea/vulpea-journal.ecf`
+        ```emacs-lisp
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;; Modern daily journaling interface for Emacs with reactive sidebar widgets, built on vulpea
+        ;; https://github.com/d12frosted/vulpea-journal
+
+        ;;; Code:
+
+        (require 'vulpea-journal)
+
+        ;;;
+        ```
+
+
+#### <span class="section-num">3.27.2</span> vulpea {#vulpea}
+
+<!--list-separator-->
+
+1.  Подключение
+
+    -   Файл: `rc.packages.el`
+        ```emacs-lisp
+        (desire 'vulpea)
+        ```
+
+<!--list-separator-->
+
+2.  Загрузка
+
+    -   Файл: `packages/vulpea/loaddefs.ecf`
+        ```emacs-lisp
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;; Database layer for org-mode notes with async indexing, rich queries, backlink discovery, and external change detection
+        ;; https://github.com/d12frosted/vulpea
+
+        ;;; Code:
+
+        (setopt org-roam-directory (file-truename "~/work/org/notes"))
+
+        (if (not (file-directory-p org-roam-directory))
+            (make-directory org-roam-directory t))
+
+        ;;;; Directories to index
+        (setopt vulpea-db-sync-directories (list org-roam-directory))
+
+        ;;;; Extra file extensions
+        (setopt vulpea-db-extra-extensions '(".org.age" ".org.gpg"))
+
+        ;;;
+        ```
+
+<!--list-separator-->
+
+3.  Настройка
+
+    -   Файл: `packages/vulpea/desire.ecf`
+        ```emacs-lisp
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;; Database layer for org-mode notes with async indexing, rich queries, backlink discovery, and external change detection
+        ;; https://github.com/d12frosted/vulpea
+
+        ;;; Code:
+
+        ;;;; Build database (first time only)
+        (vulpea-db-sync-full-scan)
+
+        ;;;; Enable auto-sync
+        (vulpea-db-autosync-mode +1)
+
+        ;;;; Parse and write in a background process
+        (setopt vulpea-db-async-extraction 'full)
+
+        ;;;; Skip org-mode-hook during indexing
+        (setopt vulpea-db-parse-method 'single-temp-buffer)
+
+        ;;;; Index only [[bracketed]] links
+        (setopt vulpea-db-index-plain-links nil)
+
+        ;;;; Excluding Notes
+        (setopt vulpea-db-exclude-property "ROAM_EXCLUDE")
+
+        ;;;; Parse Method
+        ;; (setopt vulpea-db-parse-method 'single-temp-buffer)  ; Fastest
+        ;; (setopt vulpea-db-parse-method 'temp-buffer)         ; Default, honors org-mode-hook
+        ;; (setopt vulpea-db-parse-method 'find-file)           ; Slowest, most compatible
+
+        ;;;; Detection Method
+        ;;;;; Auto-detect best method (recommended)
+        (setopt vulpea-db-sync-external-method 'auto)
+        ;;;;; Use fswatch (requires fswatch binary)
+        ;; (setopt vulpea-db-sync-external-method 'fswatch)
+        ;;;;; Use polling (no dependencies, works everywhere)
+        ;; (setopt vulpea-db-sync-external-method 'poll)
+        ;;;;; Disable external detection (only detect Emacs changes)
+        ;; (setopt vulpea-db-sync-external-method nil)
+
+        ;;;; Use "ROAM_ALIASES" for org-roam compatibility
+        (setopt vulpea-buffer-alias-property "ROAM_ALIASES")
+
+        ;;;
+        ```
+
+<!--list-separator-->
+
+4.  Интеграция: vulpea-ui
+
+    -   Файл: `packages/vulpea/desire.ecd/vulpea-ui.ecf`
+        ```emacs-lisp
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;; A widget-based sidebar for Emacs that displays contextual information for vulpea notes
+        ;; https://github.com/d12frosted/vulpea-ui
+
+        ;;; Code:
+
+        (desire 'vulpea-ui)
+
+        (require 'vulpea-ui)
+
+        ;;;; Open sidebar
+        (vulpea-ui-sidebar-open)
+
+        ;;;; Or toggle with a keybinding
+        (global-set-key (kbd "C-c v s") #'vulpea-ui-sidebar-toggle)
+
+        ;;;; Automatic sidebar
+        ;; (add-hook 'org-mode-hook #'vulpea-ui-sidebar-open)
+
+        ;;;; Position: 'right (default), 'left, 'top, 'bottom
+        (setopt vulpea-ui-sidebar-position 'right)
+
+        ;;;; Size of the sidebar
+        (setopt vulpea-ui-sidebar-size 0.33)
+
+        ;;;; Maximum heading depth (nil = unlimited)
+        (setopt vulpea-ui-outline-max-depth 3)
+
+        ;;;
+        ```
+
+<!--list-separator-->
+
+5.  Интеграция: consult
+
+    -   Файл: `packages/vulpea/consult.ecf`
+        ```emacs-lisp
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;; Use Consult in tandem with Vulpea
+        ;; https://github.com/fabcontigiani/consult-vulpea
+
+        ;;; Code:
+
+        (desire 'consult-vulpea)
+
+        (require 'consult-vulpea)
+
+        (consult-vulpea-mode 1)
+
+        ;;;
+        ```
+
+<!--list-separator-->
+
+6.  Интеграция: embark
+
+    -   Файл: `packages/vulpea/embark.ecf`
+        ```emacs-lisp
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;; Embark actions and export for Vulpea notes
+        ;; https://github.com/fabcontigiani/embark-vulpea
+
+        ;;; Code:
+
+        (desire 'embark-vulpea :recipe '(:fetcher github :repo "fabcontigiani/embark-vulpea" :branch "main"))
+
+        (require 'embark-vulpea)
+
+        ;;;
+        ```
+
+<!--list-separator-->
+
+7.  Интеграция с org-roam
+
+    -   Файл: `packages/org-roam/vulpea.ecf`
+        ```emacs-lisp
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;; Database layer for org-mode notes with async indexing, rich queries, backlink discovery, and external change detection
+        ;; https://github.com/d12frosted/vulpea
+
+        ;;; Code:
+
+        (require 'vulpea)
+
+        ;;;
+        ```
+
+
+### <span class="section-num">3.28</span> Инфраструктура Org-roam {#инфраструктура-org-roam}
 
 ```emacs-lisp
 ;;;;; Org-roam
@@ -6801,7 +7106,7 @@ slug: "emacs-desire-configuration"
 ```
 
 
-#### <span class="section-num">3.27.1</span> org-workbench {#org-workbench}
+#### <span class="section-num">3.28.1</span> org-workbench {#org-workbench}
 
 -   [Emacs. Пакет org-workbench]({{< relref "2026-02-28--emacs-org-workbench" >}})
 
@@ -6890,7 +7195,7 @@ slug: "emacs-desire-configuration"
         ```
 
 
-#### <span class="section-num">3.27.2</span> Zetteldesk {#zetteldesk}
+#### <span class="section-num">3.28.2</span> Zetteldesk {#zetteldesk}
 
 <!--list-separator-->
 
@@ -6969,7 +7274,7 @@ slug: "emacs-desire-configuration"
     ```
 
 
-#### <span class="section-num">3.27.3</span> Org-roam-ui {#org-roam-ui}
+#### <span class="section-num">3.28.3</span> Org-roam-ui {#org-roam-ui}
 
 <!--list-separator-->
 
@@ -6986,7 +7291,7 @@ slug: "emacs-desire-configuration"
     ```
 
 
-#### <span class="section-num">3.27.4</span> Org-roam {#org-roam}
+#### <span class="section-num">3.28.4</span> Org-roam {#org-roam}
 
 -   Файл: `rc.packages.el`
 
@@ -7086,7 +7391,7 @@ slug: "emacs-desire-configuration"
             ```
 
 
-#### <span class="section-num">3.27.5</span> Org-daily {#org-daily}
+#### <span class="section-num">3.28.5</span> Org-daily {#org-daily}
 
 -   [Org-roam. Daily notes]({{< relref "2025-06-08--org-roam-daily-notes" >}})
 -   Загрузка.
@@ -7160,7 +7465,7 @@ slug: "emacs-desire-configuration"
     ```
 
 
-#### <span class="section-num">3.27.6</span> org-daily-reflection {#org-daily-reflection}
+#### <span class="section-num">3.28.6</span> org-daily-reflection {#org-daily-reflection}
 
 -   [Emacs. Пакет org-daily-reflection]({{< relref "2025-06-06--emacs-org-daily-reflection" >}})
 -   Загрузка.
@@ -7182,7 +7487,7 @@ slug: "emacs-desire-configuration"
     </div>
 
 
-### <span class="section-num">3.28</span> Заметочники {#заметочники}
+### <span class="section-num">3.29</span> Заметочники {#заметочники}
 
 -   [Emacs. Персональная база знаний]({{< relref "2023-11-07-emacs-personal-knowledge-base" >}})
 -   Разные заметочники:
@@ -7195,7 +7500,7 @@ slug: "emacs-desire-configuration"
     </div>
 
 
-#### <span class="section-num">3.28.1</span> Denote {#denote}
+#### <span class="section-num">3.29.1</span> Denote {#denote}
 
 ```emacs-lisp
 
@@ -7208,10 +7513,10 @@ slug: "emacs-desire-configuration"
 ```
 
 
-### <span class="section-num">3.29</span> Диаграммы {#диаграммы}
+### <span class="section-num">3.30</span> Диаграммы {#диаграммы}
 
 
-#### <span class="section-num">3.29.1</span> Диаграммы Ганта {#диаграммы-ганта}
+#### <span class="section-num">3.30.1</span> Диаграммы Ганта {#диаграммы-ганта}
 
 -   [Emacs. Диаграммы Ганта]({{< relref "2024-12-10-emacs-gantt-charts" >}})
 
@@ -7491,21 +7796,21 @@ slug: "emacs-desire-configuration"
         </div>
 
 
-#### <span class="section-num">3.29.2</span> Mermaid {#mermaid}
+#### <span class="section-num">3.30.2</span> Mermaid {#mermaid}
 
 ```emacs-lisp
 (desire' mermaid-mode :precondition-system-executable "mmdc")
 ```
 
 
-#### <span class="section-num">3.29.3</span> Plantuml {#plantuml}
+#### <span class="section-num">3.30.3</span> Plantuml {#plantuml}
 
 ```emacs-lisp
 (desire 'plantuml-mode)
 ```
 
 
-### <span class="section-num">3.30</span> Разное {#разное}
+### <span class="section-num">3.31</span> Разное {#разное}
 
 ```emacs-lisp
 ;; XML, XHTML, HTML {{{
@@ -7522,14 +7827,14 @@ slug: "emacs-desire-configuration"
 ```
 
 
-### <span class="section-num">3.31</span> Управление сессиями {#управление-сессиями}
+### <span class="section-num">3.32</span> Управление сессиями {#управление-сессиями}
 
 ```emacs-lisp
 ;;; Desktop {{{
 ```
 
 
-### <span class="section-num">3.32</span> Сохранение состояния сессий {#сохранение-состояния-сессий}
+### <span class="section-num">3.33</span> Сохранение состояния сессий {#сохранение-состояния-сессий}
 
 ```emacs-lisp
 ;; (desire-conf 'desktop)
@@ -7538,12 +7843,12 @@ slug: "emacs-desire-configuration"
 ```
 
 
-### <span class="section-num">3.33</span> Организация рабочего пространства {#организация-рабочего-пространства}
+### <span class="section-num">3.34</span> Организация рабочего пространства {#организация-рабочего-пространства}
 
 -   [Emacs. Управление рабочим пространством]({{< relref "2026-02-20--emacs-managing-workspaces" >}})
 
 
-#### <span class="section-num">3.33.1</span> one-tab-per-project {#one-tab-per-project}
+#### <span class="section-num">3.34.1</span> one-tab-per-project {#one-tab-per-project}
 
 -   [Emacs. Пакет otpp]({{< relref "2025-02-03--emacs-otpp" >}})
 -   Автоматическое создание вкладки для каждого проекта, обеспечивающее управление рабочим пространством на основе панели вкладок для Emacs.
@@ -7625,7 +7930,7 @@ slug: "emacs-desire-configuration"
     </div>
 
 
-#### <span class="section-num">3.33.2</span> iBuffer {#ibuffer}
+#### <span class="section-num">3.34.2</span> iBuffer {#ibuffer}
 
 ```emacs-lisp
 (desire 'ibuffer)
@@ -7634,7 +7939,7 @@ slug: "emacs-desire-configuration"
 ```
 
 
-#### <span class="section-num">3.33.3</span> tabspaces {#tabspaces}
+#### <span class="section-num">3.34.3</span> tabspaces {#tabspaces}
 
 -   [Emacs. Пакет Tabspaces]({{< relref "2026-02-20--emacs-tabspaces" >}})
 
@@ -7743,7 +8048,7 @@ slug: "emacs-desire-configuration"
         ```
 
 
-#### <span class="section-num">3.33.4</span> bufler {#bufler}
+#### <span class="section-num">3.34.4</span> bufler {#bufler}
 
 <!--list-separator-->
 
@@ -7952,17 +8257,17 @@ slug: "emacs-desire-configuration"
         ```
 
 
-### <span class="section-num">3.34</span> Проекты {#проекты}
+### <span class="section-num">3.35</span> Проекты {#проекты}
 
 
-#### <span class="section-num">3.34.1</span> Начало {#начало}
+#### <span class="section-num">3.35.1</span> Начало {#начало}
 
 ```emacs-lisp
 ;;; Project management
 ```
 
 
-#### <span class="section-num">3.34.2</span> projection {#projection}
+#### <span class="section-num">3.35.2</span> projection {#projection}
 
 -   Projectile-подобная библиотека управления проектами для project.el
 -   <https://github.com/mohkale/projection>
@@ -8076,7 +8381,7 @@ slug: "emacs-desire-configuration"
         </div>
 
 
-#### <span class="section-num">3.34.3</span> project {#project}
+#### <span class="section-num">3.35.3</span> project {#project}
 
 -   Подключение:
     ```emacs-lisp
@@ -8088,14 +8393,14 @@ slug: "emacs-desire-configuration"
     </div>
 
 
-#### <span class="section-num">3.34.4</span> projectile {#projectile}
+#### <span class="section-num">3.35.4</span> projectile {#projectile}
 
 ```emacs-lisp
 ;; (desire 'projectile)
 ```
 
 
-### <span class="section-num">3.35</span> Календарь {#календарь}
+### <span class="section-num">3.36</span> Календарь {#календарь}
 
 ```emacs-lisp
 ;;; Appointments, diary, calendar {{{
@@ -8112,10 +8417,10 @@ slug: "emacs-desire-configuration"
 ```
 
 
-### <span class="section-num">3.36</span> Интеграция с десктопом {#интеграция-с-десктопом}
+### <span class="section-num">3.37</span> Интеграция с десктопом {#интеграция-с-десктопом}
 
 
-#### <span class="section-num">3.36.1</span> browse-url {#browse-url}
+#### <span class="section-num">3.37.1</span> browse-url {#browse-url}
 
 -   Настройка программы для открытия html.
 -   [Emacs. Поддержка броузеров]({{< relref "2026-05-15--emacs-browser-support" >}})
@@ -8162,10 +8467,10 @@ slug: "emacs-desire-configuration"
         ```
 
 
-### <span class="section-num">3.37</span> Почта {#почта}
+### <span class="section-num">3.38</span> Почта {#почта}
 
 
-#### <span class="section-num">3.37.1</span> Общие опции {#общие-опции}
+#### <span class="section-num">3.38.1</span> Общие опции {#общие-опции}
 
 ```emacs-lisp
 ;;; These provide options for the various message handling packages {{{
@@ -8178,7 +8483,7 @@ slug: "emacs-desire-configuration"
 ```
 
 
-#### <span class="section-num">3.37.2</span> Работа с почтой {#работа-с-почтой}
+#### <span class="section-num">3.38.2</span> Работа с почтой {#работа-с-почтой}
 
 ```emacs-lisp
 ;;; Message {{{
@@ -8192,7 +8497,7 @@ slug: "emacs-desire-configuration"
 ```
 
 
-#### <span class="section-num">3.37.3</span> mu4e {#mu4e}
+#### <span class="section-num">3.38.3</span> mu4e {#mu4e}
 
 -   Подключение:
     ```emacs-lisp
@@ -8222,7 +8527,7 @@ slug: "emacs-desire-configuration"
     </div>
 
 
-### <span class="section-num">3.38</span> Блоги {#блоги}
+### <span class="section-num">3.39</span> Блоги {#блоги}
 
 ```emacs-lisp
 ;;; Blogs {{{
@@ -8260,17 +8565,17 @@ slug: "emacs-desire-configuration"
 ```
 
 
-### <span class="section-num">3.39</span> Мессенджеры {#мессенджеры}
+### <span class="section-num">3.40</span> Мессенджеры {#мессенджеры}
 
 ```emacs-lisp
 (desire 'telega)
 ```
 
 
-### <span class="section-num">3.40</span> Отложенное чтение {#отложенное-чтение}
+### <span class="section-num">3.41</span> Отложенное чтение {#отложенное-чтение}
 
 
-#### <span class="section-num">3.40.1</span> Pocket reader {#pocket-reader}
+#### <span class="section-num">3.41.1</span> Pocket reader {#pocket-reader}
 
 -   [Emacs. Pocket reader]({{< relref "2023-09-06-emacs_pocket_reader" >}})
 
@@ -8281,7 +8586,7 @@ slug: "emacs-desire-configuration"
 ```
 
 
-#### <span class="section-num">3.40.2</span> Wallabag {#wallabag}
+#### <span class="section-num">3.41.2</span> Wallabag {#wallabag}
 
 -   Подключение пакета:
     ```emacs-lisp
@@ -8387,7 +8692,7 @@ slug: "emacs-desire-configuration"
     ```
 
 
-#### <span class="section-num">3.40.3</span> Elfeed {#elfeed}
+#### <span class="section-num">3.41.3</span> Elfeed {#elfeed}
 
 -   [Emacs. Чтение rss. Elfeed]({{< relref "2025-06-02--emacs-rss-elfeed" >}})
     Объявление:
@@ -8454,7 +8759,7 @@ slug: "emacs-desire-configuration"
     </div>
 
 
-#### <span class="section-num">3.40.4</span> Elfeed-protocol {#elfeed-protocol}
+#### <span class="section-num">3.41.4</span> Elfeed-protocol {#elfeed-protocol}
 
 -   Поддержка серверов rss:
 
@@ -8619,7 +8924,7 @@ slug: "emacs-desire-configuration"
     </div>
 
 
-### <span class="section-num">3.41</span> Dashboard {#dashboard}
+### <span class="section-num">3.42</span> Dashboard {#dashboard}
 
 ```emacs-lisp
 
@@ -8638,10 +8943,10 @@ slug: "emacs-desire-configuration"
 ```
 
 
-### <span class="section-num">3.42</span> Разные программные режимы {#разные-программные-режимы}
+### <span class="section-num">3.43</span> Разные программные режимы {#разные-программные-режимы}
 
 
-#### <span class="section-num">3.42.1</span> Начало {#начало}
+#### <span class="section-num">3.43.1</span> Начало {#начало}
 
 -   Файл `rc.packages.el`:
     ```emacs-lisp
@@ -8649,7 +8954,7 @@ slug: "emacs-desire-configuration"
     ```
 
 
-#### <span class="section-num">3.42.2</span> Пакет csv-mode {#пакет-csv-mode}
+#### <span class="section-num">3.43.2</span> Пакет csv-mode {#пакет-csv-mode}
 
 -   [Emacs. cvs-mode]({{< relref "2024-09-04-emacs-cvs-mode" >}})
 -   Файл `rc.packages.el`:
@@ -8692,7 +8997,7 @@ slug: "emacs-desire-configuration"
         ```
 
 
-#### <span class="section-num">3.42.3</span> Поддержка ebuild-файлов {#поддержка-ebuild-файлов}
+#### <span class="section-num">3.43.3</span> Поддержка ebuild-файлов {#поддержка-ebuild-файлов}
 
 -   Сайт: <https://wiki.gentoo.org/wiki/Project:Emacs>
 -   Файл `rc.packages.el`:
@@ -8751,7 +9056,7 @@ slug: "emacs-desire-configuration"
     </div>
 
 
-#### <span class="section-num">3.42.4</span> Asymptote {#asymptote}
+#### <span class="section-num">3.43.4</span> Asymptote {#asymptote}
 
 -   <https://asymptote.sourceforge.io/>
 
@@ -8812,7 +9117,7 @@ slug: "emacs-desire-configuration"
     </div>
 
 
-#### <span class="section-num">3.42.5</span> kmonad-файлы {#kmonad-файлы}
+#### <span class="section-num">3.43.5</span> kmonad-файлы {#kmonad-файлы}
 
 -   Поддержка синтаксиса конфигурационных файлов kmonad.
 -   Файл `rc.packages.el`:
@@ -8841,7 +9146,7 @@ slug: "emacs-desire-configuration"
     </div>
 
 
-#### <span class="section-num">3.42.6</span> Julia {#julia}
+#### <span class="section-num">3.43.6</span> Julia {#julia}
 
 ```emacs-lisp
 ;;;;; Julia
@@ -9108,7 +9413,7 @@ slug: "emacs-desire-configuration"
             ```
 
 
-#### <span class="section-num">3.42.7</span> Поддержка командной оболочки fish {#поддержка-командной-оболочки-fish}
+#### <span class="section-num">3.43.7</span> Поддержка командной оболочки fish {#поддержка-командной-оболочки-fish}
 
 -   Загрузка пакета:
     ```emacs-lisp
@@ -9137,7 +9442,7 @@ slug: "emacs-desire-configuration"
     </div>
 
 
-#### <span class="section-num">3.42.8</span> Разное {#разное}
+#### <span class="section-num">3.43.8</span> Разное {#разное}
 
 ```emacs-lisp
 (desire 'speedbar)
@@ -9166,7 +9471,7 @@ slug: "emacs-desire-configuration"
 ```
 
 
-#### <span class="section-num">3.42.9</span> Конец {#конец}
+#### <span class="section-num">3.43.9</span> Конец {#конец}
 
 -   Файл `rc.packages.el`:
     ```emacs-lisp
@@ -9174,12 +9479,12 @@ slug: "emacs-desire-configuration"
     ```
 
 
-### <span class="section-num">3.43</span> Редактирование текста в броузере {#редактирование-текста-в-броузере}
+### <span class="section-num">3.44</span> Редактирование текста в броузере {#редактирование-текста-в-броузере}
 
 -   [Emacs. Редактирование текста в броузере]({{< relref "2024-08-28-emacs-edit-text-area-browser" >}})
 
 
-#### <span class="section-num">3.43.1</span> Начало {#начало}
+#### <span class="section-num">3.44.1</span> Начало {#начало}
 
 -   Файл `rc.packages.el`:
     ```emacs-lisp
@@ -9187,7 +9492,7 @@ slug: "emacs-desire-configuration"
     ```
 
 
-#### <span class="section-num">3.43.2</span> Edit with Emacs {#edit-with-emacs}
+#### <span class="section-num">3.44.2</span> Edit with Emacs {#edit-with-emacs}
 
 -   Файл `rc.packages.el`:
     ```emacs-lisp
@@ -9211,7 +9516,7 @@ slug: "emacs-desire-configuration"
     ```
 
 
-#### <span class="section-num">3.43.3</span> Ghost Text {#ghost-text}
+#### <span class="section-num">3.44.3</span> Ghost Text {#ghost-text}
 
 -   Файл `rc.packages.el`:
     ```emacs-lisp
@@ -9247,7 +9552,7 @@ slug: "emacs-desire-configuration"
     ```
 
 
-#### <span class="section-num">3.43.4</span> Конец {#конец}
+#### <span class="section-num">3.44.4</span> Конец {#конец}
 
 -   Файл `rc.packages.el`:
     ```emacs-lisp
@@ -9255,12 +9560,12 @@ slug: "emacs-desire-configuration"
     ```
 
 
-### <span class="section-num">3.44</span> Навигация по файлам {#навигация-по-файлам}
+### <span class="section-num">3.45</span> Навигация по файлам {#навигация-по-файлам}
 
 -   [Emacs. Просмотр каталогов]({{< relref "2021-10-03-emacs-directory-browsing" >}})
 
 
-#### <span class="section-num">3.44.1</span> dired {#dired}
+#### <span class="section-num">3.45.1</span> dired {#dired}
 
 <!--list-separator-->
 
@@ -9299,7 +9604,7 @@ slug: "emacs-desire-configuration"
         </div>
 
 
-#### <span class="section-num">3.44.2</span> Neotree {#neotree}
+#### <span class="section-num">3.45.2</span> Neotree {#neotree}
 
 -   [Emacs. Neotree]({{< relref "2022-03-23-emacs-neotree" >}})
 -   Файл `rc.packages.el`:
@@ -9308,7 +9613,7 @@ slug: "emacs-desire-configuration"
     ```
 
 
-#### <span class="section-num">3.44.3</span> Treemacs {#treemacs}
+#### <span class="section-num">3.45.3</span> Treemacs {#treemacs}
 
 -   [Emacs. Пакет treemacs]({{< relref "2025-01-20--emacs-treemacs" >}})
 
@@ -9549,10 +9854,10 @@ slug: "emacs-desire-configuration"
         ```
 
 
-### <span class="section-num">3.45</span> Навигация по тексту {#навигация-по-тексту}
+### <span class="section-num">3.46</span> Навигация по тексту {#навигация-по-тексту}
 
 
-#### <span class="section-num">3.45.1</span> Начало {#начало}
+#### <span class="section-num">3.46.1</span> Начало {#начало}
 
 -   Файл `rc.packages.el`:
     ```emacs-lisp
@@ -9560,7 +9865,7 @@ slug: "emacs-desire-configuration"
     ```
 
 
-#### <span class="section-num">3.45.2</span> line-reminder {#line-reminder}
+#### <span class="section-num">3.46.2</span> line-reminder {#line-reminder}
 
 -   Line annotation for changed and saved lines: <https://github.com/emacs-vs/line-reminder>
 -   Файл `rc.packages.el`:
@@ -9588,7 +9893,7 @@ slug: "emacs-desire-configuration"
     ```
 
 
-#### <span class="section-num">3.45.3</span> Конец {#конец}
+#### <span class="section-num">3.46.3</span> Конец {#конец}
 
 -   Файл `rc.packages.el`:
     ```emacs-lisp
@@ -9596,10 +9901,10 @@ slug: "emacs-desire-configuration"
     ```
 
 
-### <span class="section-num">3.46</span> Перевод {#перевод}
+### <span class="section-num">3.47</span> Перевод {#перевод}
 
 
-#### <span class="section-num">3.46.1</span> gt {#gt}
+#### <span class="section-num">3.47.1</span> gt {#gt}
 
 -   Подключаем:
     ```emacs-lisp
@@ -9655,7 +9960,7 @@ slug: "emacs-desire-configuration"
     </div>
 
 
-### <span class="section-num">3.47</span> UI {#ui}
+### <span class="section-num">3.48</span> UI {#ui}
 
 -   Раздел:
     ```emacs-lisp
@@ -9667,7 +9972,7 @@ slug: "emacs-desire-configuration"
     </div>
 
 
-#### <span class="section-num">3.47.1</span> Шрифты {#шрифты}
+#### <span class="section-num">3.48.1</span> Шрифты {#шрифты}
 
 -   [Emacs. Шрифты]({{< relref "2025-04-01--emacs-fonts" >}})
 -   Раздел:
@@ -10057,7 +10362,7 @@ slug: "emacs-desire-configuration"
         </div>
 
 
-#### <span class="section-num">3.47.2</span> Modeline {#modeline}
+#### <span class="section-num">3.48.2</span> Modeline {#modeline}
 
 <!--list-separator-->
 
@@ -10141,7 +10446,7 @@ slug: "emacs-desire-configuration"
         </div>
 
 
-#### <span class="section-num">3.47.3</span> Темы {#темы}
+#### <span class="section-num">3.48.3</span> Темы {#темы}
 
 -   Подключаем темы в файле `rc.packages.el`:
     ```emacs-lisp
@@ -10413,7 +10718,7 @@ slug: "emacs-desire-configuration"
         </div>
 
 
-#### <span class="section-num">3.47.4</span> Внешний вид {#внешний-вид}
+#### <span class="section-num">3.48.4</span> Внешний вид {#внешний-вид}
 
 <!--list-separator-->
 
@@ -10587,7 +10892,7 @@ slug: "emacs-desire-configuration"
     ```
 
 
-### <span class="section-num">3.48</span> Финализирование {#финализирование}
+### <span class="section-num">3.49</span> Финализирование {#финализирование}
 
 -   Финализируем файл `rc.packages.el`:
     ```emacs-lisp

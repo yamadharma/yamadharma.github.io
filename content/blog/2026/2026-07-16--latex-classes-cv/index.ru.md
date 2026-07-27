@@ -2,12 +2,12 @@
 title: "LaTeX. Классы для резюме"
 author: ["Dmitry S. Kulyabov"]
 date: 2026-07-16T21:05:00+03:00
-lastmod: 2026-07-16T21:58:00+03:00
+lastmod: 2026-07-24T18:27:00+03:00
 draft: false
 slug: "latex-classes-cv"
 ---
 
-LaTeX. Классы для резюме
+LaTeX. Классы для резюме.
 
 <!--more-->
 
@@ -130,9 +130,24 @@ LaTeX. Классы для резюме
     -   `komacv-multilang` : упрощает создание и поддержку версий резюме на нескольких языках.
 
 
+### <span class="section-num">2.9</span> Несколько языков {#несколько-языков}
+
+
+#### <span class="section-num">2.9.1</span> cv-latex {#cv-latex}
+
+-   Репозиторий: <https://github.com/jan-moravec/cv-latex>
+
+
+#### <span class="section-num">2.9.2</span> MultiLangCV {#multilangcv}
+
+-   Репозиторий: <https://github.com/andywiecko/MultiLangCV>
+
+
 ## <span class="section-num">3</span> Какой класс выбрать {#какой-класс-выбрать}
 
--   Начать проще всего: moderncv даст отличный результат с минимальными усилиями.
--   Для технических специалистов (IT, инженерия): Deedy-Resume или Awesome-CV.
--   Для академической сферы (с публикациями): Awesome-CV. Хорошо подходят для длинных CV с большим списком публикаций.
--   Для работы в Европе: europecv, europasscv, europasscv2025. Это стандартизированный формат, который могут ожидать увидеть работодатели.
+-   Начать проще всего: moderncv даёт хороший результат.
+-   Для технических специалистов (IT, инженерия): Deedy-Resume, Awesome-CV.
+-   Для академической сферы (с публикациями): Awesome-CV.
+    -   Хорошо подходит для длинных CV с большим списком публикаций.
+-   Для работы в Европе: europecv, europasscv, europasscv2025.
+    -   Это стандартизированный формат, который могут ожидать увидеть работодатели.

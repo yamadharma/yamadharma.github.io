@@ -2,7 +2,7 @@
 title: "Бытовая техника"
 author: ["Dmitry S. Kulyabov"]
 date: 2023-05-14T19:44:00+03:00
-lastmod: 2025-10-17T20:28:00+03:00
+lastmod: 2026-07-22T21:30:00+03:00
 tags: ["appliance"]
 categories: ["life"]
 draft: false
@@ -122,24 +122,29 @@ slug: "household-appliances"
 ## <span class="section-num">5</span> Компьютерная техника {#компьютерная-техника}
 
 
-### <span class="section-num">5.1</span> Монитор {#монитор}
+### <span class="section-num">5.1</span> Компьютер {#компьютер}
+
+-   [Домашний компьютер]({{< relref "2026-07-22--home-computer" >}})
+
+
+### <span class="section-num">5.2</span> Монитор {#монитор}
 
 -   [Монитор]({{< relref "2024-05-18-monitor" >}})
 
 
-### <span class="section-num">5.2</span> Сетевое оборудование {#сетевое-оборудование}
+### <span class="section-num">5.3</span> Сетевое оборудование {#сетевое-оборудование}
 
 -   [Mesh-системы]({{< relref "2024-10-07-mesh-systems" >}})
 -   [Домашний маршрутизатор]({{< relref "2024-12-03-home-router" >}})
 
 
-### <span class="section-num">5.3</span> Хранение {#хранение}
+### <span class="section-num">5.4</span> Хранение {#хранение}
 
 -   [NAS. Synology]({{< relref "2024-11-01-nas-synology" >}})
 -   [NAS. TerraMaster]({{< relref "2024-11-10-nas-terramaster" >}})
 
 
-### <span class="section-num">5.4</span> Дополнительное оборудование {#дополнительное-оборудование}
+### <span class="section-num">5.5</span> Дополнительное оборудование {#дополнительное-оборудование}
 
 -   [Источник бесперебойного питания]({{< relref "2025-10-17--uninterruptible-power-supply" >}})
 

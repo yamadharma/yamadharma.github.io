@@ -2,7 +2,7 @@
 title: "Менеджер паролей gopass"
 author: ["Dmitry S. Kulyabov"]
 date: 2025-08-19T14:45:00+03:00
-lastmod: 2025-08-19T15:59:00+03:00
+lastmod: 2026-07-27T17:18:00+03:00
 tags: ["sysadmin"]
 categories: ["computer-science"]
 draft: false

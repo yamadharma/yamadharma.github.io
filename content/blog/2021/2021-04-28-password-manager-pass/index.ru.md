@@ -2,7 +2,7 @@
 title: "Менеджер паролей pass"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-04-28T18:50:00+03:00
-lastmod: 2026-07-05T21:47:00+03:00
+lastmod: 2026-07-27T21:28:00+03:00
 tags: ["security", "sysadmin"]
 categories: ["computer-science"]
 draft: false
@@ -534,3 +534,5 @@ slug: "password-manager-pass"
 ## <span class="section-num">9</span> Интеграция с другими программами {#интеграция-с-другими-программами}
 
 -   [Менеджер паролей pass. Интеграция с другими программами]({{< relref "2021-11-20-password-manager-pass-integration" >}})
+-   [pass. Хранение ключей ssh]({{< relref "2026-07-27--pass-storing-ssh-keys" >}})
+-   [pass. Хранение ключей gpg]({{< relref "2026-07-27--pass-storing-gpg-keys" >}})

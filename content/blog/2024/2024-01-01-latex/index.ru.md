@@ -2,7 +2,7 @@
 title: "Система LaTeX"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-01-01T20:52:00+03:00
-lastmod: 2026-07-16T21:09:00+03:00
+lastmod: 2026-07-25T21:28:00+03:00
 tags: ["MOC", "tex", "latex"]
 categories: ["computer-science"]
 draft: false
@@ -44,6 +44,8 @@ slug: "latex"
 -   [LaTeX. Пакет unicode-math]({{< relref "2025-07-11--latex-unicode-math" >}})
 -   [LaTeX. Примеры набора математики]({{< relref "2026-01-29--latex-examples-mathematical-typesetting" >}})
 -   [LaTeX. Пакет siunitx]({{< relref "2026-03-06--latex-siunitx" >}})
+-   [LaTeX. Пакет derivative]({{< relref "2026-07-25--latex-derivative-package" >}})
+-   [LaTeX. Пакет physics3]({{< relref "2026-07-25--latex-physics3-package" >}})
 
 
 ### <span class="section-num">3.4</span> Символы {#символы}

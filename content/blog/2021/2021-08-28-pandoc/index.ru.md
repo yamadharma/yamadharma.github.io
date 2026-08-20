@@ -2,8 +2,8 @@
 title: "Pandoc"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-08-28T19:55:00+03:00
-lastmod: 2023-07-14T17:56:00+03:00
-tags: ["pandoc"]
+lastmod: 2026-07-23T21:05:00+03:00
+tags: ["pandoc", "MOC"]
 categories: ["computer-science"]
 draft: false
 slug: "pandoc"
@@ -39,6 +39,20 @@ slug: "pandoc"
 -   Основной формат: Markdown.
 
 
-## <span class="section-num">2</span> Разное {#разное}
+## <span class="section-num">2</span> Реализации {#реализации}
+
+-   [Система Quarto]({{< relref "2025-03-22--quarto-system" >}})
+
+
+## <span class="section-num">3</span> Разное {#разное}
 
 -   [Фильтры pandoc]({{< relref "2021-08-28-pandoc-filters" >}})
+
+
+## <span class="section-num">4</span> Ресурсы {#ресурсы}
+
+
+### <span class="section-num">4.1</span> gostdown {#gostdown}
+
+-   Репозиторий: <https://gitlab.iaaras.ru/iaaras/gostdown>
+-   Набор шаблонов и скриптов для автоматической вёрстки документов по ГОСТ 19.xxx (ЕСПД) и ГОСТ 7.32 (отчёт о научно-исследовательской работе) в форматах docx из файлов текстовой разметки Markdown.

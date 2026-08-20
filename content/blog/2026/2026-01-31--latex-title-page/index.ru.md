@@ -2,7 +2,7 @@
 title: "LaTeX. Титульная страница"
 author: ["Dmitry S. Kulyabov"]
 date: 2026-01-31T16:39:00+03:00
-lastmod: 2026-01-31T16:48:00+03:00
+lastmod: 2026-08-19T21:10:00+03:00
 tags: ["latex"]
 categories: ["computer-science"]
 draft: false
@@ -68,3 +68,8 @@ LaTeX. Титульная страница.
 -   CTAN: <https://ctan.org/pkg/titlepages>
 -   Примеры титульных страниц.
 -   Проекты, основанные на ряде опубликованных книг и диссертаций.
+
+
+## <span class="section-num">5</span> KOMA-Script {#koma-script}
+
+-   [LaTeX. KOMA-Script. Титульные страницы]({{< relref "2026-08-19--latex-koma-script-title-page" >}})

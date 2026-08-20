@@ -2,7 +2,7 @@
 title: "Pdf. Просмотр. Zathura"
 author: ["Dmitry S. Kulyabov"]
 date: 2023-09-20T13:12:00+03:00
-lastmod: 2025-03-11T09:30:00+03:00
+lastmod: 2026-07-31T20:44:00+03:00
 tags: ["sysadmin"]
 categories: ["computer-science"]
 draft: false

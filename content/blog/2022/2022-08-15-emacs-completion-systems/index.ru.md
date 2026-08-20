@@ -2,8 +2,8 @@
 title: "Emacs. Completion systems"
 author: ["Dmitry S. Kulyabov"]
 date: 2022-08-15T14:34:00+03:00
-lastmod: 2023-07-08T16:26:00+03:00
-tags: ["emacs"]
+lastmod: 2026-08-16T20:53:00+03:00
+tags: ["MOC", "emacs"]
 categories: ["computer-science"]
 draft: false
 slug: "emacs-completion-systems"
@@ -62,17 +62,7 @@ slug: "emacs-completion-systems"
 -   Наиболее совместимый с API расширенный пользовательский интерфейс для завершения.
 
 
-### <span class="section-num">2.5</span> Vertico {#vertico}
-
--   Репозиторий: <https://github.com/minad/vertico>.
--   Минималистичная система, основанная на стандартном интерфейсе Emacs.
--   Расширяет систему завершения по умолчанию аналогично _Icomplete_ и поэтому полностью совместим со всеми функциями `completing-read` API.
--   Поддерживает как горизонтальное, так и вертикальное отображение.
--   Предоставляет быстрые клавиши и действия отображения в стиле _Avy_ для отображения завершений в буфере.
--   Поддерживает циклический перебор кандидатов.
-
-
-### <span class="section-num">2.6</span> Icicles {#icicles}
+### <span class="section-num">2.5</span> Icicles {#icicles}
 
 -   Информация: <https://www.emacswiki.org/emacs/Icicles>.
 -   Пакет, похожий на _Helm_.
@@ -80,34 +70,34 @@ slug: "emacs-completion-systems"
 -   Был удалён из MELPA из-за консенсуса сообщества о том, что этот механизм распространения имеет неприемлемые риски для безопасности.
 
 
-### <span class="section-num">2.7</span> Snails {#snails}
+### <span class="section-num">2.6</span> Snails {#snails}
 
 -   Репозиторий: <https://github.com/manateelazycat/snails>.
 -   Поддерживает нечёткий поиск из коробки.
 -   Как и _Ivy_, он идёт по пути переноса каждой возможной команды в бэкенд, а не использует существующие интерфейсы Emacs для обработки всех возможных команд.
 
 
-### <span class="section-num">2.8</span> Sallet {#sallet}
+### <span class="section-num">2.7</span> Sallet {#sallet}
 
 -   Репозиторий: <https://github.com/Fuco1/sallet>.
 -   Идёт по пути предоставления оболочек для всех возможных команд, а не реализует их все через существующий `completing-read` интерфейс.
 -   Отсутствует документация для пользователя.
 
 
-### <span class="section-num">2.9</span> Raven {#raven}
+### <span class="section-num">2.8</span> Raven {#raven}
 
 -   Репозиторий: <https://github.com/chameco/raven>.
 -   Использует вертикальную моду.
 -   Слабо разработан.
 
 
-### <span class="section-num">2.10</span> Swiper {#swiper}
+### <span class="section-num">2.9</span> Swiper {#swiper}
 
 -   Репозиторий: <https://github.com/abo-abo/swiper#swiper>.
 -   Пакет поиска в буфере, использующий интерфейс _Ivy_ и тесно связанный с реализацией _Ivy_.
 
 
-### <span class="section-num">2.11</span> Selectrum {#selectrum}
+### <span class="section-num">2.10</span> Selectrum {#selectrum}
 
 -   Репозиторий: <https://github.com/radian-software/selectrum>.
 -   Кодовая база Selectrum проста и лаконична.
@@ -116,13 +106,48 @@ slug: "emacs-completion-systems"
 -   Selectrum не поддерживает функции, которые нарушают работу `completing-read` API.
 
 
-### <span class="section-num">2.12</span> CTRLF {#ctrlf}
+### <span class="section-num">2.11</span> CTRLF {#ctrlf}
 
 -   Репозиторий: <https://github.com/radian-software/ctrlf>.
 -   Переработанный с нуля интерфейс поиска в буфере.
 
 
-### <span class="section-num">2.13</span> Consult {#consult}
+### <span class="section-num">2.12</span> Экосистема Vertico + Consult + Embark + Marginalia {#экосистема-vertico-plus-consult-plus-embark-plus-marginalia}
+
+
+#### <span class="section-num">2.12.1</span> Vertico {#vertico}
+
+-   Репозиторий: <https://github.com/minad/vertico>.
+-   Интерфейс для минибуфера.
+-   Делает список завершений вертикальным, отображая его прямо под строкой ввода.
+-   Минималистичная система, основанная на стандартном интерфейсе Emacs.
+-   Расширяет систему завершения по умолчанию аналогично _Icomplete_ и поэтому полностью совместим со всеми функциями `completing-read` API.
+-   Поддерживает как горизонтальное, так и вертикальное отображение.
+-   Предоставляет быстрые клавиши и действия отображения в стиле _Avy_ для отображения завершений в буфере.
+-   Поддерживает циклический перебор кандидатов.
+
+
+#### <span class="section-num">2.12.2</span> Consult {#consult}
 
 -   Репозиторий: <https://github.com/minad/consult>.
+-   Редоставляет набор улучшенных команд, которые используют стандартный API завершения Emacs.
+-   Даёт предпросмотр результата в другом окне прямо во время ввода.
 -   Предоставляет команду `consult-line`, которая ведет себя аналогично Swiper.
+
+
+#### <span class="section-num">2.12.3</span> Embark {#embark}
+
+-   [Emacs. Пакет embark]({{< relref "2026-08-16--emacs-embark" >}})
+-   Контекстное меню, управляемое с клавиатуры.
+-   Позволяет выполнять действия над объектом под курсором или над выбранными кандидатами в минибуфере.
+
+
+#### <span class="section-num">2.12.4</span> Marginalia {#marginalia}
+
+-   Добавляет полезные аннотации к кандидатам в минибуфере.
+
+
+#### <span class="section-num">2.12.5</span> Orderless {#orderless}
+
+-   Стиль сопоставления (фильтрации).
+-   Позволяет искать кандидатов по нескольким словам в любом порядке.

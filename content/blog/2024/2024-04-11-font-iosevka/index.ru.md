@@ -2,7 +2,7 @@
 title: "Шрифт. Iosevka"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-04-11T19:15:00+03:00
-lastmod: 2026-03-09T13:44:00+03:00
+lastmod: 2026-08-14T16:03:00+03:00
 tags: ["font"]
 categories: ["computer-science"]
 draft: false
@@ -38,9 +38,11 @@ slug: "font-iosevka"
 
 -   Для всех вариантов пакеты содержат три варианта интервалов.
     -   _Default_: вариант по умолчанию с лигатурами. Также содержит широкие (2 столбца) символы (например, стрелки).
-    -   _Terminal (Term)_: более узкий вариант для терминала. Стрелки и геометрические символы будут узкими.
+    -   _Terminal (Term)_: более узкий вариант для терминала. Стрелки и геометрические символы будут узкими (1 столбец).
     -   _Fixed_: моноширинный шрифт без лигатур и широких глифов.
         -   Некоторые среды не воспринимают _Iosevka_ или _Iosevka Term_ как моноширинные шрифты и не могут работать с лигатурами.
+        -   Применять для подобных сред.
+    -   _Slab_: С небольшими засечками (slab serif).
 
 
 ## <span class="section-num">3</span> Начертания {#начертания}
@@ -55,10 +57,26 @@ slug: "font-iosevka"
 
 ## <span class="section-num">4</span> Установка {#установка}
 
--   Gentoo:
-    ```shell
-    emerge media-fonts/iosevka
-    ```
+
+### <span class="section-num">4.1</span> Gentoo {#gentoo}
+
+```shell
+sudo emerge media-fonts/iosevka
+```
+
+
+### <span class="section-num">4.2</span> Arch Linux {#arch-linux}
+
+```shell
+sudo pacman -S ttc-iosevka
+```
+
+
+### <span class="section-num">4.3</span> macOS {#macos}
+
+```shell
+brew install --cask font-iosevka
+```
 
 
 ## <span class="section-num">5</span> Деривативы {#деривативы}

@@ -2,7 +2,7 @@
 title: "Система LaTeX"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-01-01T20:52:00+03:00
-lastmod: 2026-07-25T21:28:00+03:00
+lastmod: 2026-08-19T21:26:00+03:00
 tags: ["MOC", "tex", "latex"]
 categories: ["computer-science"]
 draft: false

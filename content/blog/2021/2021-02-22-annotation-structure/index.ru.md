@@ -2,8 +2,8 @@
 title: "Структура аннотации"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-02-22T16:38:00+03:00
-lastmod: 2025-06-01T20:44:00+03:00
-tags: ["research"]
+lastmod: 2026-08-19T18:19:00+03:00
+tags: ["science-writing", "research"]
 categories: ["science"]
 draft: false
 slug: "annotation-structure"
@@ -49,7 +49,7 @@ slug: "annotation-structure"
 
 ## <span class="section-num">3</span> Структура аннотации {#структура-аннотации}
 
--   Аннотация следует определённой структуре [1] (см. [Gibson, B. F. (2011) Editorial: Structured abstracts: A key to enhanced information transfer]({{< relref "2025-02-22--gibson_2011_structured-abstracts_en" >}})):
+-   Аннотация следует определённой структуре [<a href="#citeproc_bib_item_1">1</a>; <a href="#citeproc_bib_item_2">2</a>] (см. [Gibson, B. F. (2011) Editorial: Structured abstracts: A key to enhanced information transfer]({{< relref "2025-02-22--gibson_2011_structured-abstracts_en" >}})):
     -   Background (Предпосылки);
     -   Purpose (Цель);
     -   Method (Методы);
@@ -142,3 +142,13 @@ slug: "annotation-structure"
 -   It has been demonstrated/shown/found that…
 -   The findings suggest that this approach could also be useful for…
 -   The findings are of direct practical relevance.
+
+
+## <span class="section-num">6</span> Библиография {#библиография}
+
+## Литература
+
+<div class="csl-bib-body">
+  <div class="csl-entry"><a id="citeproc_bib_item_1"></a>1.	Gibson, B.F. Editorial: Structured abstracts: A key to enhanced information transfer / B.F. Gibson // Physical Review C. – 2011. – Т. 84. – Editorial. – № 3. – Сс. 030001–1. DOI: <a href="https://doi.org/10.1103/physrevc.84.030001">10.1103/physrevc.84.030001</a>.</div>
+  <div class="csl-entry"><a id="citeproc_bib_item_2"></a>2.	Kulyabov, D.S. Abstract structure / D.S. Kulyabov, L.A. Sevastianov. – [Электронный ресурс] // Discrete and Continuous Models and Applied Computational Science. – 2025. – Т. 33. – № 1. – Сс. 5–9. – Режим доступа: <a href="https://journals.rudn.ru/miph/article/download/44729/24873">https://journals.rudn.ru/miph/article/download/44729/24873</a> (дата обращения: 27.07.2025).</div>
+</div>

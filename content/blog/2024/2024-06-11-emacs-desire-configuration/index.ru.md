@@ -2,7 +2,7 @@
 title: "Emacs. Desire. Конфигурация"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-06-11T18:55:00+03:00
-lastmod: 2026-07-26T14:36:00+03:00
+lastmod: 2026-08-18T11:43:00+03:00
 tags: ["emacs"]
 categories: ["computer-science"]
 draft: false
@@ -22,10 +22,7 @@ slug: "emacs-desire-configuration"
 ## <span class="section-num">2</span> Установка переменных {#установка-переменных}
 
 
-## <span class="section-num">3</span> Конфигурационные файлы {#конфигурационные-файлы}
-
-
-### <span class="section-num">3.1</span> Верхняя строка {#верхняя-строка}
+## <span class="section-num">3</span> Верхняя строка {#верхняя-строка}
 
 -   В строке задаём язык программирования, режимы.
     <a id="code-snippet--line-mode"></a>
@@ -34,7 +31,7 @@ slug: "emacs-desire-configuration"
     ```
 
 
-### <span class="section-num">3.2</span> Заголовок {#заголовок}
+## <span class="section-num">4</span> Заголовок {#заголовок}
 
 -   В файле `rc.packages.el` находится список используемых пакетов.
 -   Заголовок файла:
@@ -47,7 +44,7 @@ slug: "emacs-desire-configuration"
     ;;
     ;;  File id
     ;;
-    ;;      Copyright (C)  2002-2025 Dmitry S. Kulyabov
+    ;;      Copyright (C)  2002-2026 Dmitry S. Kulyabov
     ;;      Keywords:      rc.packages
     ;;      Author:        Dmitry S. Kulyabov <yamadharma@gmail.com>
     ;;      Maintainer:    Dmitry S. Kulyabov <yamadharma@gmail.com>
@@ -90,7 +87,7 @@ slug: "emacs-desire-configuration"
 ```
 
 
-### <span class="section-num">3.3</span> Управление пакетами {#управление-пакетами}
+## <span class="section-num">5</span> Управление пакетами {#управление-пакетами}
 
 -   [Emacs. Управление пакетами]({{< relref "2023-12-18-emacs-package-management" >}})
 
@@ -101,147 +98,141 @@ slug: "emacs-desire-configuration"
 ```
 
 
-#### <span class="section-num">3.3.1</span> Встроенный пакетный менеджер {#встроенный-пакетный-менеджер}
+### <span class="section-num">5.1</span> Встроенный пакетный менеджер {#встроенный-пакетный-менеджер}
 
 -   [Emacs. Управление пакетами. package]({{< relref "2025-01-25--emacs-package-management-package" >}})
 
-<!--list-separator-->
 
-1.  Подключение
+#### <span class="section-num">5.1.1</span> Подключение {#подключение}
 
-    -   Файл: `rc.packages.el`
+-   Файл: `rc.packages.el`
 
-    <!--listend-->
+<!--listend-->
 
+```emacs-lisp
+;;;; Packaging
+(desire 'package)
+```
+
+
+#### <span class="section-num">5.1.2</span> Загрузка {#загрузка}
+
+-   Файл: `packages/package/loaddefs.ecf`
     ```emacs-lisp
-    ;;;; Packaging
-    (desire 'package)
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Set up the package
+
+    ;;; Code:
+
+    (setopt warning-suppress-log-types '((package reinitialization)))
+
+    (setopt package-enable-at-startup nil
+          package-user-dir (concat home-data-path "elpa/")
+          package-gnupghome-dir (expand-file-name "gpg" package-user-dir))
+
+    (require 'package)
+
+    ;;;
     ```
 
-<!--list-separator-->
 
-2.  Загрузка
+#### <span class="section-num">5.1.3</span> Настройка {#настройка}
 
-    -   Файл: `packages/package/loaddefs.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Set up the package
+-   Файл: `packages/package/desire.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
 
-        ;;; Code:
+    ;;; Code:
 
-        (setopt warning-suppress-log-types '((package reinitialization)))
-
-        (setopt package-enable-at-startup nil
-              package-user-dir (concat home-data-path "elpa/")
-              package-gnupghome-dir (expand-file-name "gpg" package-user-dir))
-
-        (require 'package)
-
-        ;;;
-        ```
-
-<!--list-separator-->
-
-3.  Настройка
-
-    -   Файл: `packages/package/desire.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-
-        ;;; Code:
-
-        ;;;
-        ```
-
-<!--list-separator-->
-
-4.  Компиляция пакетов
-
-    -   Файл: `packages/package/desire.ecd/native-compile.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Set up the package
-
-        ;;; Code:
-
-        ;;;; Supports ahead-of-time native compilation when installing a package
-        (setopt package-native-compile t)
-
-        ;;;
-        ```
-
-<!--list-separator-->
-
-5.  Обновлять встроенные пакеты
-
-    -   Файл: `packages/`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Set up the package
-
-        ;;; Code:
-
-        ;;;; Upgrade built-in packages
-        (setopt package-install-upgrade-built-in t)
-
-        ;;;
-        ```
-
-<!--list-separator-->
-
-6.  Репозитории
-
-    -   Файл: `packages/package/desire.ecd/repos.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Set up repos
-
-        ;;; Code:
-
-        ;;;; Repos
-        ;;;; Comment/uncomment these two lines to enable/disable MELPA and MELPA Stable as desired
-
-        (setopt package-archives
-              '(("gnu" . "https://elpa.gnu.org/packages/")
-                ("nongnu" . "https://elpa.nongnu.org/nongnu/")
-                ("gnu-devel" . "https://elpa.gnu.org/devel/")
-                ("melpa" . "https://melpa.org/packages/")
-                ("melpa-stable" . "https://stable.melpa.org/packages/")))
-
-        ;;;; Mirror for some Emacs package archives
-        ;;;; https://github.com/d12frosted/elpa-mirror
-        ;; (setopt package-archives
-        ;;       '(("melpa" . "https://raw.githubusercontent.com/d12frosted/elpa-mirror/master/melpa/")
-        ;; 	("melpa-stable" . "https://raw.githubusercontent.com/d12frosted/elpa-mirror/master/stable-melpa")
-        ;;         ("gnu" . "https://raw.githubusercontent.com/d12frosted/elpa-mirror/master/gnu/")
-        ;; 	("nongnu" . "https://raw.githubusercontent.com/d12frosted/elpa-mirror/master/nongnu")))
-
-        ;;;; https://gitlab.com/d12frosted/elpa-mirror/
-        ;; (setopt package-archives
-        ;;       '(("melpa" . "https://gitlab.com/d12frosted/elpa-mirror/-/tree/master/melpa")
-        ;; 	("melpa-stable" . "https://gitlab.com/d12frosted/elpa-mirror/-/tree/master/stable-melpa")
-        ;;         ("gnu" . "https://gitlab.com/d12frosted/elpa-mirror/-/tree/master/gnu")
-        ;; 	("nongnu" . "https://gitlab.com/d12frosted/elpa-mirror/-/tree/master/nongnu")))
-
-        (unless package--initialized
-          (package-initialize))
-
-        ;;;; Refreshing the content or the list-packages in case it is empty
-        (when (not package-archive-contents)
-          (package-refresh-contents))
-
-        ;;;; Dirty hack
-        (setopt package-check-signature nil)
-        ;;;; Network timeout
-        (setopt url-request-timeout 10)  ; 10 секунд
-
-        (desire 'gnu-elpa-keyring-update)
-
-        ;;;
-        ```
+    ;;;
+    ```
 
 
-#### <span class="section-num">3.3.2</span> Пакетный менеджер quelpa {#пакетный-менеджер-quelpa}
+#### <span class="section-num">5.1.4</span> Компиляция пакетов {#компиляция-пакетов}
+
+-   Файл: `packages/package/desire.ecd/native-compile.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Set up the package
+
+    ;;; Code:
+
+    ;;;; Supports ahead-of-time native compilation when installing a package
+    (setopt package-native-compile t)
+
+    ;;;
+    ```
+
+
+#### <span class="section-num">5.1.5</span> Обновлять встроенные пакеты {#обновлять-встроенные-пакеты}
+
+-   Файл: `packages/`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Set up the package
+
+    ;;; Code:
+
+    ;;;; Upgrade built-in packages
+    (setopt package-install-upgrade-built-in t)
+
+    ;;;
+    ```
+
+
+#### <span class="section-num">5.1.6</span> Репозитории {#репозитории}
+
+-   Файл: `packages/package/desire.ecd/repos.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Set up repos
+
+    ;;; Code:
+
+    ;;;; Repos
+    ;;;; Comment/uncomment these two lines to enable/disable MELPA and MELPA Stable as desired
+
+    (setopt package-archives
+          '(("gnu" . "https://elpa.gnu.org/packages/")
+            ("nongnu" . "https://elpa.nongnu.org/nongnu/")
+            ("gnu-devel" . "https://elpa.gnu.org/devel/")
+            ("melpa" . "https://melpa.org/packages/")
+            ("melpa-stable" . "https://stable.melpa.org/packages/")))
+
+    ;;;; Mirror for some Emacs package archives
+    ;;;; https://github.com/d12frosted/elpa-mirror
+    ;; (setopt package-archives
+    ;;       '(("melpa" . "https://raw.githubusercontent.com/d12frosted/elpa-mirror/master/melpa/")
+    ;; 	("melpa-stable" . "https://raw.githubusercontent.com/d12frosted/elpa-mirror/master/stable-melpa")
+    ;;         ("gnu" . "https://raw.githubusercontent.com/d12frosted/elpa-mirror/master/gnu/")
+    ;; 	("nongnu" . "https://raw.githubusercontent.com/d12frosted/elpa-mirror/master/nongnu")))
+
+    ;;;; https://gitlab.com/d12frosted/elpa-mirror/
+    ;; (setopt package-archives
+    ;;       '(("melpa" . "https://gitlab.com/d12frosted/elpa-mirror/-/tree/master/melpa")
+    ;; 	("melpa-stable" . "https://gitlab.com/d12frosted/elpa-mirror/-/tree/master/stable-melpa")
+    ;;         ("gnu" . "https://gitlab.com/d12frosted/elpa-mirror/-/tree/master/gnu")
+    ;; 	("nongnu" . "https://gitlab.com/d12frosted/elpa-mirror/-/tree/master/nongnu")))
+
+    (unless package--initialized
+      (package-initialize))
+
+    ;;;; Refreshing the content or the list-packages in case it is empty
+    (when (not package-archive-contents)
+      (package-refresh-contents))
+
+    ;;;; Dirty hack
+    (setopt package-check-signature nil)
+    ;;;; Network timeout
+    (setopt url-request-timeout 10)  ; 10 секунд
+
+    (desire 'gnu-elpa-keyring-update)
+
+    ;;;
+    ```
+
+
+### <span class="section-num">5.2</span> Пакетный менеджер quelpa {#пакетный-менеджер-quelpa}
 
 -   Необходим для emacs-29 и старше.
 -   Начиная с emacs-30 можно использовать `package-vc.`
@@ -301,7 +292,7 @@ slug: "emacs-desire-configuration"
     </div>
 
 
-#### <span class="section-num">3.3.3</span> Пакетный менеджер straight {#пакетный-менеджер-straight}
+### <span class="section-num">5.3</span> Пакетный менеджер straight {#пакетный-менеджер-straight}
 
 ```emacs-lisp
 ;;; A declarative package management system with a command line interface
@@ -309,7 +300,7 @@ slug: "emacs-desire-configuration"
 ```
 
 
-#### <span class="section-num">3.3.4</span> Автообновление пакетов {#автообновление-пакетов}
+### <span class="section-num">5.4</span> Автообновление пакетов {#автообновление-пакетов}
 
 ```emacs-lisp
 ;;; Auto update packages
@@ -319,10 +310,10 @@ slug: "emacs-desire-configuration"
 ```
 
 
-### <span class="section-num">3.4</span> Компиляция файлов {#компиляция-файлов}
+## <span class="section-num">6</span> Компиляция файлов {#компиляция-файлов}
 
 
-#### <span class="section-num">3.4.1</span> compile-angel {#compile-angel}
+### <span class="section-num">6.1</span> compile-angel {#compile-angel}
 
 -   Подключим пакет:
     ```emacs-lisp
@@ -418,7 +409,7 @@ slug: "emacs-desire-configuration"
     </div>
 
 
-### <span class="section-num">3.5</span> Системные настройки {#системные-настройки}
+## <span class="section-num">7</span> Системные настройки {#системные-настройки}
 
 ```emacs-lisp
 
@@ -426,7 +417,7 @@ slug: "emacs-desire-configuration"
 ```
 
 
-#### <span class="section-num">3.5.1</span> Разные настройки {#разные-настройки}
+### <span class="section-num">7.1</span> Разные настройки {#разные-настройки}
 
 -   Покидал сюда разные настройки, которые не знаю, куда разместить.
 -   Подключение:
@@ -580,7 +571,7 @@ slug: "emacs-desire-configuration"
 ```
 
 
-#### <span class="section-num">3.5.2</span> Разное {#разное}
+### <span class="section-num">7.2</span> Разное {#разное}
 
 ```emacs-lisp
 
@@ -648,7 +639,7 @@ slug: "emacs-desire-configuration"
 ```
 
 
-#### <span class="section-num">3.5.3</span> Тьюнинг сборщика мусора {#тьюнинг-сборщика-мусора}
+### <span class="section-num">7.3</span> Тьюнинг сборщика мусора {#тьюнинг-сборщика-мусора}
 
 -   Подключение:
     ```emacs-lisp
@@ -681,15 +672,15 @@ slug: "emacs-desire-configuration"
     </div>
 
 
-### <span class="section-num">3.6</span> Общие настройки мод {#общие-настройки-мод}
+## <span class="section-num">8</span> Общие настройки мод {#общие-настройки-мод}
 
 
-### <span class="section-num">3.7</span> Поддержка LSP {#поддержка-lsp}
+## <span class="section-num">9</span> Поддержка LSP {#поддержка-lsp}
 
 -   [Emacs. Поддержка LSP]({{< relref "2024-01-14-emacs-lsp" >}})
 
 
-#### <span class="section-num">3.7.1</span> Начало {#начало}
+### <span class="section-num">9.1</span> Начало {#начало}
 
 -   Файл `rc.packages.el`:
     ```emacs-lisp
@@ -701,7 +692,7 @@ slug: "emacs-desire-configuration"
     </div>
 
 
-#### <span class="section-num">3.7.2</span> emacs-lsp-booster {#emacs-lsp-booster}
+### <span class="section-num">9.2</span> emacs-lsp-booster {#emacs-lsp-booster}
 
 -   Включаем поддержку `emacs-lsp-booster`:
     ```emacs-lisp
@@ -713,33 +704,83 @@ slug: "emacs-desire-configuration"
     </div>
 
 
-#### <span class="section-num">3.7.3</span> Eglog {#eglog}
+### <span class="section-num">9.3</span> Eglog {#eglog}
+
+
+#### <span class="section-num">9.3.1</span> Eglot {#eglot}
+
+-   Файл `rc.packages.el`:
+    ```emacs-lisp
+    (desire 'eglot)
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 17:</span>
+      rc.packages.el
+    </div>
+-   Начальная загрузка:
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; A client for Language Server Protocol servers
+    ;;; https://github.com/joaotavora/eglot
+
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 18:</span>
+      packages/eglot/loaddefs.ecf
+    </div>
+-   Загрузка самого пакета:
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; A client for Language Server Protocol servers
+    ;;; https://github.com/joaotavora/eglot
+
+    (require 'eglot)
+
+    ;;; Control blocking of LSP connection attempts
+    (setopt eglot-sync-connect nil)
+
+    (setopt eglot-connect-timeout 10)
+    (setopt eglot-autoshutdown t)
+    (setopt eglot-send-changes-idle-time 0.5)
+
+    ;;; Disable `eglot-auto-display-help-buffer` because :select t in its popup rule causes eglot to steal focus too often.
+    (setopt eglot-auto-display-help-buffer nil)
+
+    ;;; Disable any debug logging and may speed things up
+    (setopt eglot-events-buffer-size 0)
+
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 19:</span>
+      packages/eglot/desire.ecf
+    </div>
+-   Загрузка `emacs-lsp-booster`:
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Boost eglot using lsp-booster
+    ;;; https://github.com/jdtsmith/eglot-booster
+
+    (desire 'eglot-booster :recipe '(:fetcher github :repo "jdtsmith/eglot-booster" :branch "main" :files ("*.el")))
+    (require 'eglot-booster)
+    (eglot-booster-mode)
+
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 20:</span>
+      packages/eglot/emacs-lsp-booster.ecf
+    </div>
+
+
+#### <span class="section-num">9.3.2</span> Дополнительные пакеты {#дополнительные-пакеты}
 
 <!--list-separator-->
 
-1.  Сам Eglot
+1.  LaTeX
 
-    -   Файл `rc.packages.el`:
-        ```emacs-lisp
-        (desire 'eglot)
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 17:</span>
-          rc.packages.el
-        </div>
-    -   Начальная загрузка:
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; A client for Language Server Protocol servers
-        ;;; https://github.com/joaotavora/eglot
-
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 18:</span>
-          packages/eglot/loaddefs.ecf
-        </div>
-    -   Загрузка самого пакета:
+    -   Загрузим поддержку LSP для LaTeX:
         ```emacs-lisp
         ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
         ;;; A client for Language Server Protocol servers
@@ -747,246 +788,198 @@ slug: "emacs-desire-configuration"
 
         (require 'eglot)
 
-        ;;; Control blocking of LSP connection attempts
-        (setopt eglot-sync-connect nil)
+        ;;; Switch to texlab
+        (when (executable-find "texlab")
+          (setf (alist-get '(latex-mode plain-tex-mode context-mode texinfo-mode bibtex-mode tex-mode)
+                           eglot-server-programs
+                           nil nil #'equal)
+                '("texlab")))
 
-        (setopt eglot-connect-timeout 10)
-        (setopt eglot-autoshutdown t)
-        (setopt eglot-send-changes-idle-time 0.5)
-
-        ;;; Disable `eglot-auto-display-help-buffer` because :select t in its popup rule causes eglot to steal focus too often.
-        (setopt eglot-auto-display-help-buffer nil)
-
-        ;;; Disable any debug logging and may speed things up
-        (setopt eglot-events-buffer-size 0)
+        (add-hook 'tex-mode-hook #'eglot-ensure)
+        (add-hook 'latex-mode-hook #'eglot-ensure)
+        (add-hook 'LaTeX-mode-hook #'eglot-ensure)
+        (add-hook 'bibtex-mode-hook #'eglot-ensure)
+        (add-hook 'plain-tex-mode-hook #'eglot-ensure)
+        (add-hook 'context-mode-hook #'eglot-ensure)
+        (add-hook 'texinfo-mode-hook #'eglot-ensure)
 
         ;;;
         ```
         <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 19:</span>
-          packages/eglot/desire.ecf
+          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 21:</span>
+          packages/auctex/eglot.ecf
         </div>
-    -   Загрузка `emacs-lsp-booster`:
+
+
+### <span class="section-num">9.4</span> Lsp-mode {#lsp-mode}
+
+
+#### <span class="section-num">9.4.1</span> Собственно lsp-mode {#собственно-lsp-mode}
+
+-   Подключим `lsp-mode`:
+    ```emacs-lisp
+    ;; (desire 'lsp-mode)
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 22:</span>
+      rc.packages.el
+    </div>
+-   Первоначальная конфигурация:
+    ```emacs-lisp
+    ;;; Language Server Protocol support for Emacs  -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;; https://emacs-lsp.github.io/
+    ;; https://github.com/emacs-lsp/lsp-mode
+
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 23:</span>
+      packages/lsp-mode/loaddefs.ecf
+    </div>
+-   Конфигурация:
+    ```emacs-lisp
+    ;;; Language Server Protocol support for Emacs  -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;; https://emacs-lsp.github.io/
+    ;; https://github.com/emacs-lsp/lsp-mode
+
+    (require 'lsp-mode)
+
+    ;;; https://emacs-lsp.github.io/lsp-ui/
+    (desire 'lsp-ui)
+
+    ;;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+    (setopt lsp-keymap-prefix "C-l")
+
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 24:</span>
+      packages/lsp-mode/desire.ecf
+    </div>
+
+
+#### <span class="section-num">9.4.2</span> Дополнительные пакеты {#дополнительные-пакеты}
+
+<!--list-separator-->
+
+1.  LaTeX (texlab)
+
+    -   Загрузим поддержку LSP для LaTeX:
         ```emacs-lisp
         ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Boost eglot using lsp-booster
-        ;;; https://github.com/jdtsmith/eglot-booster
+        ;;; Emacs lsp-mode client for LaTeX, on texlab
+        ;; https://github.com/ROCKTAKEY/lsp-latex
 
-        (desire 'eglot-booster :recipe '(:fetcher github :repo "jdtsmith/eglot-booster" :branch "main" :files ("*.el")))
-        (require 'eglot-booster)
-        (eglot-booster-mode)
+        ;;; Code:
 
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 20:</span>
-          packages/eglot/emacs-lsp-booster.ecf
-        </div>
-
-<!--list-separator-->
-
-2.  Дополнительные пакеты
-
-    <!--list-separator-->
-
-    1.  LaTeX
-
-        -   Загрузим поддержку LSP для LaTeX:
-            ```emacs-lisp
-            ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-            ;;; A client for Language Server Protocol servers
-            ;;; https://github.com/joaotavora/eglot
-
-            (require 'eglot)
-
-            ;;; Change order
-            (let ((item (assoc '(tex-mode context-mode texinfo-mode bibtex-mode) eglot-server-programs)))
-              ;; (setf (car item) '(tex-mode context-mode texinfo-mode bibtex-mode))
-              (setf (cdr item) '("texlab")))
-
-            (add-hook 'tex-mode-hook #'eglot-ensure)
-            (add-hook 'latex-mode-hook #'eglot-ensure)
-            (add-hook 'LaTeX-mode-hook #'eglot-ensure)
-
-            ;;;
-            ```
-            <div class="src-block-caption">
-              <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 21:</span>
-              packages/auctex/eglot.ecf
-            </div>
-
-
-#### <span class="section-num">3.7.4</span> Lsp-mode {#lsp-mode}
-
-<!--list-separator-->
-
-1.  Собственно lsp-mode
-
-    -   Подключим `lsp-mode`:
-        ```emacs-lisp
-        ;; (desire 'lsp-mode)
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 22:</span>
-          rc.packages.el
-        </div>
-    -   Первоначальная конфигурация:
-        ```emacs-lisp
-        ;;; Language Server Protocol support for Emacs  -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;; https://emacs-lsp.github.io/
-        ;; https://github.com/emacs-lsp/lsp-mode
+        (require 'lsp-mode)
+        (desire 'lsp-latex :precondition-system-executable "texlab")
 
         ;;;
         ```
         <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 23:</span>
-          packages/lsp-mode/loaddefs.ecf
+          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 25:</span>
+          packages/auctex/lsp-mode.ecf
         </div>
-    -   Конфигурация:
+    -   Загрузка lsp-latex:
         ```emacs-lisp
-        ;;; Language Server Protocol support for Emacs  -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;; https://emacs-lsp.github.io/
-        ;; https://github.com/emacs-lsp/lsp-mode
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;; Emacs lsp-mode client for LaTeX, on texlab
+        ;; https://github.com/ROCKTAKEY/lsp-latex
+
+        ;;; Code:
+
+        (require 'lsp-latex)
+
+        ;;;; "texlab" executable must be located at a directory contained in `exec-path'.
+        ;;;; If you want to put "texlab" somewhere else, you can specify the path to "texlab" as follows:
+        ;; (setopt lsp-latex-texlab-executable "/path/to/texlab")
+
+        ;;;
+        ```
+        <div class="src-block-caption">
+          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 26:</span>
+          packages/lsp-latex/loaddefs.ecf
+        </div>
+    -   Настройка lsp-latex:
+        ```emacs-lisp
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;; Emacs lsp-mode client for LaTeX, on texlab
+        ;;; https://github.com/ROCKTAKEY/lsp-latex
+
+        ;;; Code:
+
+        (add-hook 'tex-mode-hook #'lsp)
+        (add-hook 'latex-mode-hook #'lsp)
+        (add-hook 'LaTeX-mode-hook #'lsp)
+        (add-hook 'LaTeX-mode-hook #'lsp)
+
+        ;;;; For YaTeX
+        (with-eval-after-load "yatex"
+          (add-hook 'yatex-mode-hook #'lsp))
+
+        ;;;; For bibtex
+        (with-eval-after-load "bibtex"
+          (add-hook 'bibtex-mode-hook #'lsp))
+
+        ;;;
+        ```
+        <div class="src-block-caption">
+          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 27:</span>
+          packages/lsp-latex/desire.ecf
+        </div>
+
+<!--list-separator-->
+
+2.  lsp-treemacs
+
+    -   Подключение интеграции treemacs и lsp-mode:
+        ```emacs-lisp
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;; lsp-mode ❤️ treemacs
+        ;;; https://github.com/emacs-lsp/lsp-treemacs
+
+        ;;; Code:
 
         (require 'lsp-mode)
 
-        ;;; https://emacs-lsp.github.io/lsp-ui/
-        (desire 'lsp-ui)
+        (desire 'lsp-treemacs)
+        (require 'lsp-treemacs)
 
-        ;;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
-        (setopt lsp-keymap-prefix "C-l")
+        ;;; Enable bidirectional synchronization of lsp workspace folders and treemacs projects
+        (lsp-treemacs-sync-mode 1)
 
         ;;;
         ```
         <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 24:</span>
-          packages/lsp-mode/desire.ecf
+          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 28:</span>
+          packages/treemacs/lsp-mode.ecf
         </div>
 
 <!--list-separator-->
 
-2.  Дополнительные пакеты
+3.  which-key
 
-    <!--list-separator-->
+    -   Подключение интеграции treemacs и lsp-mode:
+        ```emacs-lisp
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;; lsp which-key integration
+        ;; https://emacs-lsp.github.io/lsp-mode/page/keybindings/
 
-    1.  LaTeX (texlab)
+        ;;; Code:
 
-        -   Загрузим поддержку LSP для LaTeX:
-            ```emacs-lisp
-            ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-            ;;; Emacs lsp-mode client for LaTeX, on texlab
-            ;; https://github.com/ROCKTAKEY/lsp-latex
+        (with-eval-after-load 'lsp-mode
+          (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration))
 
-            ;;; Code:
-
-            (require 'lsp-mode)
-            (desire 'lsp-latex :precondition-system-executable "texlab")
-
-            ;;;
-            ```
-            <div class="src-block-caption">
-              <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 25:</span>
-              packages/auctex/lsp-mode.ecf
-            </div>
-        -   Загрузка lsp-latex:
-            ```emacs-lisp
-            ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-            ;;; Emacs lsp-mode client for LaTeX, on texlab
-            ;; https://github.com/ROCKTAKEY/lsp-latex
-
-            ;;; Code:
-
-            (require 'lsp-latex)
-
-            ;;;; "texlab" executable must be located at a directory contained in `exec-path'.
-            ;;;; If you want to put "texlab" somewhere else, you can specify the path to "texlab" as follows:
-            ;; (setopt lsp-latex-texlab-executable "/path/to/texlab")
-
-            ;;;
-            ```
-            <div class="src-block-caption">
-              <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 26:</span>
-              packages/lsp-latex/loaddefs.ecf
-            </div>
-        -   Настройка lsp-latex:
-            ```emacs-lisp
-            ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-            ;;; Emacs lsp-mode client for LaTeX, on texlab
-            ;;; https://github.com/ROCKTAKEY/lsp-latex
-
-            ;;; Code:
-
-            (add-hook 'tex-mode-hook #'lsp)
-            (add-hook 'latex-mode-hook #'lsp)
-            (add-hook 'LaTeX-mode-hook #'lsp)
-            (add-hook 'LaTeX-mode-hook #'lsp)
-
-            ;;;; For YaTeX
-            (with-eval-after-load "yatex"
-              (add-hook 'yatex-mode-hook #'lsp))
-
-            ;;;; For bibtex
-            (with-eval-after-load "bibtex"
-              (add-hook 'bibtex-mode-hook #'lsp))
-
-            ;;;
-            ```
-            <div class="src-block-caption">
-              <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 27:</span>
-              packages/lsp-latex/desire.ecf
-            </div>
-
-    <!--list-separator-->
-
-    2.  lsp-treemacs
-
-        -   Подключение интеграции treemacs и lsp-mode:
-            ```emacs-lisp
-            ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-            ;;; lsp-mode ❤️ treemacs
-            ;;; https://github.com/emacs-lsp/lsp-treemacs
-
-            ;;; Code:
-
-            (require 'lsp-mode)
-
-            (desire 'lsp-treemacs)
-            (require 'lsp-treemacs)
-
-            ;;; Enable bidirectional synchronization of lsp workspace folders and treemacs projects
-            (lsp-treemacs-sync-mode 1)
-
-            ;;;
-            ```
-            <div class="src-block-caption">
-              <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 28:</span>
-              packages/treemacs/lsp-mode.ecf
-            </div>
-
-    <!--list-separator-->
-
-    3.  which-key
-
-        -   Подключение интеграции treemacs и lsp-mode:
-            ```emacs-lisp
-            ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-            ;;; lsp which-key integration
-            ;; https://emacs-lsp.github.io/lsp-mode/page/keybindings/
-
-            ;;; Code:
-
-            (with-eval-after-load 'lsp-mode
-              (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration))
-
-            ;;;
-            ```
-            <div class="src-block-caption">
-              <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 29:</span>
-              packages/which-key/lsp-mode.ecf
-            </div>
+        ;;;
+        ```
+        <div class="src-block-caption">
+          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 29:</span>
+          packages/which-key/lsp-mode.ecf
+        </div>
 
 
-### <span class="section-num">3.8</span> Сессии {#сессии}
+## <span class="section-num">10</span> Сессии {#сессии}
 
 ```emacs-lisp
 ;;{{{ Session Management
@@ -997,7 +990,7 @@ slug: "emacs-desire-configuration"
 ```
 
 
-### <span class="section-num">3.9</span> Утилиты {#утилиты}
+## <span class="section-num">11</span> Утилиты {#утилиты}
 
 ```emacs-lisp
 (desire 'uniquify)
@@ -1008,7 +1001,7 @@ slug: "emacs-desire-configuration"
 ```
 
 
-#### <span class="section-num">3.9.1</span> xclip {#xclip}
+### <span class="section-num">11.1</span> xclip {#xclip}
 
 -   [Emacs. xclip]({{< relref "2025-03-12--emacs-xclip" >}})
 -   Подключение:
@@ -1080,7 +1073,7 @@ slug: "emacs-desire-configuration"
     </div>
 
 
-#### <span class="section-num">3.9.2</span> which-key {#which-key}
+### <span class="section-num">11.2</span> which-key {#which-key}
 
 -   Подключение:
     ```emacs-lisp
@@ -1195,7 +1188,7 @@ slug: "emacs-desire-configuration"
     </div>
 
 
-#### <span class="section-num">3.9.3</span> Разное {#разное}
+### <span class="section-num">11.3</span> Разное {#разное}
 
 ```emacs-lisp
 ;; (desire 'keycast)
@@ -1213,7 +1206,7 @@ slug: "emacs-desire-configuration"
 -   В файле используется фолдинг по тройной скобке.
 
 
-### <span class="section-num">3.10</span> Оформление интерфейса {#оформление-интерфейса}
+## <span class="section-num">12</span> Оформление интерфейса {#оформление-интерфейса}
 
 -   Файл `rc.packages.el`:
 
@@ -1228,242 +1221,555 @@ slug: "emacs-desire-configuration"
 </div>
 
 
-#### <span class="section-num">3.10.1</span> Наборы иконок {#наборы-иконок}
+### <span class="section-num">12.1</span> Шрифты {#шрифты}
+
+-   [Emacs. Шрифты]({{< relref "2025-04-01--emacs-fonts" >}})
+
+
+#### <span class="section-num">12.1.1</span> Идентификатор раздела {#идентификатор-раздела}
+
+-   Файл: `rc.packages.el`
+    ```emacs-lisp
+    ;;;;; Fonts
+    ```
+
+
+#### <span class="section-num">12.1.2</span> Шрифт Iosevka {#шрифт-iosevka}
+
+-   [Шрифт. Iosevka]({{< relref "2024-04-11-font-iosevka" >}})
+
+<!--list-separator-->
+
+1.  Подключение
+
+    -   Файл: `rc.packages.el`
+        ```emacs-lisp
+        (desired 'iosevka)
+        ```
+
+<!--list-separator-->
+
+2.  Интеграция: fontset
+
+    -   Файл: `packages/fontset/iosevka.ecf`
+        ```emacs-lisp
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;; Set Iosevka font
+        ;; https://be5invis.github.io/Iosevka/
+
+        ;;; Code:
+
+        (add-to-list 'default-frame-alist '(font . "Iosevka Nerd Font-12" ))
+        (add-to-list 'initial-frame-alist '(font . "Iosevka Nerd Font-12" ))
+
+        (set-face-attribute 'default nil
+                            :font "Iosevka Nerd Font"
+                            :height 120)
+
+        (set-face-attribute 'fixed-pitch nil
+                            :font "Iosevka Nerd Font"
+                            :height 120)
+
+        (set-face-attribute 'variable-pitch nil
+                            :font "Iosevka Aile"
+                            :height 120)
+
+        (dolist (charset '(latin cyrillic greek))
+          (set-fontset-font 't charset
+                            (font-spec :family "Iosevka Nerd Font" :size 12.0)))
+
+        ;;;
+        ```
+
+<!--list-separator-->
+
+3.  Интеграция: fontaine
+
+    -   Файл: `packages/fontaine/iosevka.ecf`
+        ```emacs-lisp
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;; Set Iosevka font
+        ;; https://be5invis.github.io/Iosevka/
+
+        ;;; Code:
+
+        (setopt fontaine-presets
+                '((regular-editing
+                   :default-family "Iosevka Nerd Font"
+                   :default-weight normal
+                   :default-height 120
+                   :fixed-pitch-family "Iosevka Nerd Font"
+                   :fixed-pitch-height 1.0
+                   :variable-pitch-family "Iosevka Aile"
+                   :variable-pitch-height 1.0
+                   :bold-weight bold
+                   :italic-slant italic
+                   :line-spacing 1)
+
+                  (presentation
+                   :inherit regular-editing
+                   :default-height 180)
+
+                  (compact
+                   :inherit regular-editing
+                   :default-height 90
+                   :line-spacing 0)))
+
+        ;;;; Apply
+        (fontaine-set-preset 'regular-editing)
+        (fontaine-mode 1)
+
+        ;;;
+        ```
+
+<!--list-separator-->
+
+4.  Интеграция: ligature
+
+    -   Файл: `packages/ligature/iosevka.ecf`
+        ```emacs-lisp
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;; Set Iosevka font
+        ;; https://be5invis.github.io/Iosevka/
+
+        ;;; Code:
+
+        (ligature-set-ligatures
+         '(prog-mode org-mode)
+         '("<---" "<--"  "<<-" "<-" "->" "-->" "--->" "<->" "<-->" "<--->" "<---->" "<!--"
+           "<==" "<===" "<=" "=>" "=>>" "==>" "===>" ">=" "<=>" "<==>" "<===>" "<====>" "<!---"
+           "<~~" "<~" "~>" "~~>" "::" ":::" "==" "!=" "===" "!=="
+           ":=" ":-" ":+" "<*" "<*>" "*>" "<|" "<|>" "|>" "+:" "-:" "=:" "<******>" "++" "+++"))
+
+        ;;; Enables ligature checks globally in all buffers. You can also do it per mode with `ligature-mode'.
+        (global-ligature-mode t)
+
+        ;; (global-ligature-mode -1)  ; отключить
+        ;; (global-ligature-mode 1)   ; включить заново
+
+        ;;;
+        ```
+
+<!--list-separator-->
+
+5.  Интеграция: org-modern
+
+    -   Файл: `packages/org-modern/iosevka.ecf`
+        ```emacs-lisp
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;; Set Iosevka font
+        ;; https://be5invis.github.io/Iosevka/
+
+        ;;; Code:
+
+        ;;;; Choose fonts
+
+        (set-face-attribute 'org-modern-symbol nil
+                            :family "Iosevka Nerd Font")
+
+        ;;;
+        ```
+
+
+#### <span class="section-num">12.1.3</span> Лигатуры {#лигатуры}
+
+<!--list-separator-->
+
+1.  Подключение
+
+    -   Файл: `rc.packages.el`
+        ```emacs-lisp
+        (desire 'ligature)
+        ```
+
+<!--list-separator-->
+
+2.  Загрузка
+
+    -   Файл: `packages/ligature/loaddefs.ecf`
+        ```emacs-lisp
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;; Display typographical ligatures in Emacs
+        ;; https://github.com/mickeynp/ligature.el
+
+        ;;; Code:
+
+        (require 'ligature)
+
+        ;;;; For every mode
+        (ligature-set-ligatures
+         't
+         '("www" "**" "***" "**/" "*>" "*/" "\\\\" "\\\\\\"
+           "{-" "::" ":::" ":=" "!!" "!=" "!==" "-}"
+           "-->"
+           <!-- ... -->
+           ))
+
+        ;;; Enable traditional ligature support in eww-mode, if the `variable-pitch' face supports it
+        (ligature-set-ligatures 'eww-mode '("ff" "fi" "ffi"))
+
+        (ligature-set-ligatures '(prog-mode org-mode) '("->" "=>" "!=" "==" ">=" "<="))
+
+        ;;; Enables ligature checks globally in all buffers. You can also do it per mode with `ligature-mode'.
+        ;; (global-ligature-mode t)
+
+        ;;;
+
+        ```
+
+
+#### <span class="section-num">12.1.4</span> Разное {#разное}
+
+```emacs-lisp
+;; (desire-conf 'font-lock)
+;; (desire-conf 'font-lock-jit)
+;; (desire-conf 'font-lock-lazy)
+;; (desire-conf 'font-lock-fast)
+;; (desire-conf 'faces)
+;; (desire-conf 'color-theme nil "color-theme")
+;; (desire-conf 'fira-code-mode nil "fira-code-mode" t) ;; Simple minor mode for Fira Code ligatures
+```
+
+
+#### <span class="section-num">12.1.5</span> unicode-fonts {#unicode-fonts}
+
+```emacs-lisp
+(desire 'unicode-fonts)
+```
+
+-   Загрузка:
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Configure Unicode fonts for Emacs
+    ;; https://github.com/rolandwalker/unicode-fonts
+
+    ;;; Code:
+
+    ;;;; Requires font-utils
+    (desire 'font-utils)
+
+    ;;;; Requires ucs-utils
+    (desire 'ucs-utils)
+
+    ;;;; Uses if present
+    (desire 'persistent-soft)
+
+    ;;;; Load package
+    (require 'unicode-fonts)
+
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 39:</span>
+      packages/unicode-fonts/loaddefs.ecf
+    </div>
+-   Настройка:
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Configure Unicode fonts for Emacs
+    ;; https://github.com/rolandwalker/unicode-fonts
+
+    ;;; Code:
+
+    ;;; ligature support
+    (setopt unicode-fonts-enable-ligatures t)
+
+    ;;; By default ligatures will be enabled in all programing modes.
+    (setopt unicode-fonts-ligature-modes '(prog-mode))
+
+    ;;; You can enable ligatures for specific modes.
+    ;; (setopt unicode-fonts-ligature-modes '(php-mode js-mode))
+
+    ;;; To enable only for text modes you can use text-mode
+    ;; (setopt unicode-fonts-ligature-modes '(text-mode))
+
+    ;;; Configure the ligature set
+    ;; (setopt unicode-fonts-ligature-set '("|||>" "<|||" "<==>" "<!--" "####" "~~>" "***" "||=" "||>"
+    ;; 				   ":::" "::=" "=:=" "===" "==>" "=!=" "=>>" "=<<" "=/=" "!=="
+    ;; 				   "!!." ">=>" ">>=" ">>>" ">>-" ">->" "->>" "-->" "---" "-<<"
+    ;; 				   "<~~" "<~>" "<*>" "<||" "<|>" "<$>" "<==" "<=>" "<=<" "<->"
+    ;; 				   "<--" "<-<" "<<=" "<<-" "<<<" "<+>" "</>" "###" "#_(" "..<"
+    ;; 				   "..." "+++" "/==" "///" "_|_" "www" "&&" "^=" "~~" "~@" "~="
+    ;; 				   "~>" "~-" "**" "*>" "*/" "||" "|}" "|]" "|=" "|>" "|-" "{|"
+    ;; 				   "[|" "]#" "::" ":=" ":>" ":<" "$>" "==" "=>" "!=" "!!" ">:"
+    ;; 				   ">=" ">>" ">-" "-~" "-|" "->" "-<" "<~" "<*" "<|" "<:" "<$"
+    ;; 				   "<=" "<>" "<-" "<<" "<+" "</" "#{" "#[" "#:" "#=" "#!" "##"
+    ;; 				   "#(" "#?" "#_" "%%" ".=" ".-" ".." ".?" "+>" "++" "?:" "?="
+    ;; 				   "?." "??" ";;" "/*" "/**" "/=" "/>" "__" "~~" "(*" "*)"
+    ;; 				   "://"))
+
+    ;; (setopt ecf-unicode-font (font-spec :family "Iosevka" :size 12))
+
+    ;; (when ecf-unicode-font
+    ;;   (let ((ecf-unicode-font-family (plist-get (font-face-attributes ecf-unicode-font) :family)))
+    ;;     (dolist (unicode-block unicode-fonts-block-font-mapping)
+    ;;       (push ecf-unicode-font-family (cadr unicode-block)))))
+
+    (unicode-fonts-setup)
+
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 40:</span>
+      packages/unicode-fonts/desire.ecf
+    </div>
+
+
+### <span class="section-num">12.2</span> Наборы иконок {#наборы-иконок}
 
 ```emacs-lisp
 ;;;;; Icons
 ```
 <div class="src-block-caption">
-  <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 39:</span>
+  <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 41:</span>
   rc.packages.el
 </div>
 
+
+#### <span class="section-num">12.2.1</span> all-the-icons {#all-the-icons}
+
+```emacs-lisp
+;; (desire 'all-the-icons)
+```
+
 <!--list-separator-->
 
-1.  all-the-icons
-
-    ```emacs-lisp
-    ;; (desire 'all-the-icons)
-    ```
+1.  Интеграция
 
     <!--list-separator-->
 
-    1.  Интеграция
+    1.  treemacs
 
-        <!--list-separator-->
+        -   Файл: `packages/treemacs/all-the-icons.ecf`
 
-        1.  treemacs
+        <!--listend-->
 
-            -   Файл: `packages/treemacs/all-the-icons.ecf`
-
-            <!--listend-->
-
-            ```emacs-lisp
-            ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-            ;;; all-the-icons integration for treemacs
-
-            ;;; Code:
-
-            (desire 'treemacs-all-the-icons)
-            (require 'treemacs-all-the-icons)
-
-            ;;;
-            ```
-
-<!--list-separator-->
-
-2.  nerd-icons
-
-    -   Загрузка пакета:
         ```emacs-lisp
-        (desire 'nerd-icons)
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;; all-the-icons integration for treemacs
+
+        ;;; Code:
+
+        (desire 'treemacs-all-the-icons)
+        (require 'treemacs-all-the-icons)
+
+        ;;;
         ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 40:</span>
-          rc.packages.el
-        </div>
+
+
+#### <span class="section-num">12.2.2</span> nerd-icons {#nerd-icons}
+
+-   Загрузка пакета:
+    ```emacs-lisp
+    (desire 'nerd-icons)
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 42:</span>
+      rc.packages.el
+    </div>
+
+<!--list-separator-->
+
+1.  Интеграция
 
     <!--list-separator-->
 
-    1.  Интеграция
+    1.  tab-line
 
-        <!--list-separator-->
-
-        1.  tab-line
-
-            -   [Emacs. Пакет tab-line]({{< relref "2024-01-08-emacs-tab-line" >}})
-            -   Поддержка `nerd-icons` в `tab-line`:
-                -   <https://github.com/lucius-martius/tab-line-nerd-icons>
-            -   Пакет применяет иконки из `nerd-icons` к вкладкам `tab-line`.
-            -   Минорный режим `tab-line-nerd-icons-global-mode` добавляет к функции по умолчанию `tab-line-tab-name-format-default` иконки для форматирования имён вкладок.
-                ```emacs-lisp
-                ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-                ;;; Emacs package that uses the nerd-icons package to apply appropriate icons to tab-line tabs
-                ;;;; https://github.com/lucius-martius/tab-line-nerd-icons
-
-                ;;; Code:
-
-                (desire 'tab-line-nerd-icons)
-                (require 'tab-line-nerd-icons)
-
-                ;;;; Enable
-                (tab-line-nerd-icons-global-mode)
-
-                ;;;
-                ```
-                <div class="src-block-caption">
-                  <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 41:</span>
-                  packages/tab-line/nerd-icons.ecf
-                </div>
-
-        <!--list-separator-->
-
-        2.  corfu
-
-            -   Nerd-icon для corfu
-            -   <https://github.com/LuigiPiucco/nerd-icons-corfu>
-                ```emacs-lisp
-                ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-                ;;; Icons for corfu via nerd-icons
-                ;;;; https://github.com/LuigiPiucco/nerd-icons-corfu
-
-                ;;; Code:
-
-                (desire 'nerd-icons-corfu)
-                (require 'nerd-icons-corfu)
-
-                (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter)
-
-                ;;;; Tuning
-                (setopt nerd-icons-corfu-mapping
-                      '((array :style "cod" :icon "symbol_array" :face font-lock-type-face)
-                        (boolean :style "cod" :icon "symbol_boolean" :face font-lock-builtin-face)
-                     ;; Remember to add an entry for `t', the library uses that as default.
-                        (t :style "cod" :icon "code" :face font-lock-warning-face)))
-
-                ;;;
-                ```
-                <div class="src-block-caption">
-                  <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 42:</span>
-                  packages/corfu/nerd-icons.ecf
-                </div>
-
-        <!--list-separator-->
-
-        3.  marginalia
-
-            -   Nerd-icon для дополнения
-            -   <https://github.com/LuigiPiucco/nerd-icons-corfu>
-                ```emacs-lisp
-                ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-                ;;; Use nerd-icons for completion
-                ;;;; https://github.com/rainstormstudio/nerd-icons-completion
-
-                ;;; Code:
-
-                (desire 'nerd-icons-completion)
-                (require 'nerd-icons-completion)
-
-                (nerd-icons-completion-mode)
-                (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup)
-
-                ;;;
-                ```
-                <div class="src-block-caption">
-                  <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 43:</span>
-                  packages/marginalia/nerd-icons.ecf
-                </div>
-
-        <!--list-separator-->
-
-        4.  dired
-
-            -   Nerd-icon для dired
-            -   <https://github.com/rainstormstudio/nerd-icons-dired>
-                ```emacs-lisp
-                ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-                ;;; Use nerd-icons for Dired
-                ;;;; https://github.com/rainstormstudio/nerd-icons-dired
-
-                (desire 'nerd-icons-dired)
-                (require 'nerd-icons-dired)
-
-                (add-hook 'dired-mode-hook 'nerd-icons-dired-mode)
-
-                ;;;
-                ```
-                <div class="src-block-caption">
-                  <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 44:</span>
-                  packages/dired/nerd-icons.ecf
-                </div>
-
-        <!--list-separator-->
-
-        5.  treemacs
-
-            -   Файл: `packages/treemacs/nerd-icons.ecf`
-
-            <!--listend-->
-
+        -   [Emacs. Пакет tab-line]({{< relref "2024-01-08-emacs-tab-line" >}})
+        -   Поддержка `nerd-icons` в `tab-line`:
+            -   <https://github.com/lucius-martius/tab-line-nerd-icons>
+        -   Пакет применяет иконки из `nerd-icons` к вкладкам `tab-line`.
+        -   Минорный режим `tab-line-nerd-icons-global-mode` добавляет к функции по умолчанию `tab-line-tab-name-format-default` иконки для форматирования имён вкладок.
             ```emacs-lisp
             ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-            ;;; Nerd-icons theme for treemacs
-            ;;; https://github.com/rainstormstudio/treemacs-nerd-icons
+            ;;; Emacs package that uses the nerd-icons package to apply appropriate icons to tab-line tabs
+            ;;;; https://github.com/lucius-martius/tab-line-nerd-icons
 
             ;;; Code:
 
-            (desire 'treemacs-nerd-icons)
-            (require 'treemacs-nerd-icons)
-            (treemacs-load-theme "nerd-icons")
+            (desire 'tab-line-nerd-icons)
+            (require 'tab-line-nerd-icons)
+
+            ;;;; Enable
+            (tab-line-nerd-icons-global-mode)
 
             ;;;
             ```
+            <div class="src-block-caption">
+              <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 43:</span>
+              packages/tab-line/nerd-icons.ecf
+            </div>
+
+    <!--list-separator-->
+
+    2.  corfu
+
+        -   Nerd-icon для corfu
+        -   <https://github.com/LuigiPiucco/nerd-icons-corfu>
+            ```emacs-lisp
+            ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+            ;;; Icons for corfu via nerd-icons
+            ;;;; https://github.com/LuigiPiucco/nerd-icons-corfu
+
+            ;;; Code:
+
+            (desire 'nerd-icons-corfu)
+            (require 'nerd-icons-corfu)
+
+            (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter)
+
+            ;;;; Tuning
+            (setopt nerd-icons-corfu-mapping
+                  '((array :style "cod" :icon "symbol_array" :face font-lock-type-face)
+                    (boolean :style "cod" :icon "symbol_boolean" :face font-lock-builtin-face)
+                 ;; Remember to add an entry for `t', the library uses that as default.
+                    (t :style "cod" :icon "code" :face font-lock-warning-face)))
+
+            ;;;
+            ```
+            <div class="src-block-caption">
+              <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 44:</span>
+              packages/corfu/nerd-icons.ecf
+            </div>
+
+    <!--list-separator-->
+
+    3.  marginalia
+
+        -   Nerd-icon для дополнения
+        -   <https://github.com/LuigiPiucco/nerd-icons-corfu>
+            ```emacs-lisp
+            ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+            ;;; Use nerd-icons for completion
+            ;;;; https://github.com/rainstormstudio/nerd-icons-completion
+
+            ;;; Code:
+
+            (desire 'nerd-icons-completion)
+            (require 'nerd-icons-completion)
+
+            (nerd-icons-completion-mode)
+            (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup)
+
+            ;;;
+            ```
+            <div class="src-block-caption">
+              <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 45:</span>
+              packages/marginalia/nerd-icons.ecf
+            </div>
+
+    <!--list-separator-->
+
+    4.  dired
+
+        -   Nerd-icon для dired
+        -   <https://github.com/rainstormstudio/nerd-icons-dired>
+            ```emacs-lisp
+            ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+            ;;; Use nerd-icons for Dired
+            ;;;; https://github.com/rainstormstudio/nerd-icons-dired
+
+            (desire 'nerd-icons-dired)
+            (require 'nerd-icons-dired)
+
+            (add-hook 'dired-mode-hook 'nerd-icons-dired-mode)
+
+            ;;;
+            ```
+            <div class="src-block-caption">
+              <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 46:</span>
+              packages/dired/nerd-icons.ecf
+            </div>
+
+    <!--list-separator-->
+
+    5.  treemacs
+
+        -   Файл: `packages/treemacs/nerd-icons.ecf`
+
+        <!--listend-->
+
+        ```emacs-lisp
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;; Nerd-icons theme for treemacs
+        ;;; https://github.com/rainstormstudio/treemacs-nerd-icons
+
+        ;;; Code:
+
+        (desire 'treemacs-nerd-icons)
+        (require 'treemacs-nerd-icons)
+        (treemacs-load-theme "nerd-icons")
+
+        ;;;
+        ```
 
 
-#### <span class="section-num">3.10.2</span> Табы {#табы}
+### <span class="section-num">12.3</span> Табы {#табы}
 
 ```emacs-lisp
 ;;; Tabs
 ```
 <div class="src-block-caption">
-  <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 45:</span>
+  <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 47:</span>
   rc.packages.el
 </div>
 
+
+#### <span class="section-num">12.3.1</span> centaur-tabs {#centaur-tabs}
+
+-   [Emacs. Пакет Centaur tabs]({{< relref "2024-01-08-emacs-centaur-tabs" >}})
+-   Подключение:
+    ```emacs-lisp
+    ;; (desire 'centaur-tabs)
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 48:</span>
+      rc.packages.el
+    </div>
+
+
+#### <span class="section-num">12.3.2</span> tab-bar {#tab-bar}
+
+-   [Emacs. Пакет tab-bar]({{< relref "2025-07-14--emacs-tab-bar" >}})
+
 <!--list-separator-->
 
-1.  centaur-tabs
+1.  Подключение
 
-    -   [Emacs. Пакет Centaur tabs]({{< relref "2024-01-08-emacs-centaur-tabs" >}})
-    -   Подключение:
+    -   Файл: `rc.packages.el`
         ```emacs-lisp
-        ;; (desire 'centaur-tabs)
+        (desire 'tab-bar)
         ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 46:</span>
-          rc.packages.el
-        </div>
 
 <!--list-separator-->
 
-2.  tab-bar
+2.  Загрузка
 
-    -   [Emacs. Пакет tab-bar]({{< relref "2025-07-14--emacs-tab-bar" >}})
+    -   Файл: `packages/tab-bar/loaddefs.ecf`
+
+    <!--listend-->
+
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Emacs Tab Bar
+
+    ;;; Code:
+
+    (require 'tab-bar)
+
+    ;;;
+    ```
+
+<!--list-separator-->
+
+3.  Настройка
 
     <!--list-separator-->
 
-    1.  Подключение
+    1.  Основная
 
-        -   Файл: `rc.packages.el`
-            ```emacs-lisp
-            (desire 'tab-bar)
-            ```
-
-    <!--list-separator-->
-
-    2.  Загрузка
-
-        -   Файл: `packages/tab-bar/loaddefs.ecf`
+        -   Файл: `packages/tab-bar/desire.ecf`
 
         <!--listend-->
 
@@ -1473,402 +1779,376 @@ slug: "emacs-desire-configuration"
 
         ;;; Code:
 
-        (require 'tab-bar)
+        (tab-bar-mode 1)
+        (setopt tab-bar-show 1)
+
+        (setopt tab-bar-new-tab-to 'right)
+
+        ;; (setopt tab-bar-new-tab-choice "*dashboard*")
+        ;; (setopt tab-bar-new-tab-choice #'ibuffer)
+
+        (setopt tab-bar-tab-hints t)
+        ;; (setq tab-bar-select-tab-modifiers "super") ;; FIXME
+
+        (setopt tab-bar-format '(tab-bar-format-history tab-bar-format-tabs tab-bar-separator))
 
         ;;;
         ```
 
     <!--list-separator-->
 
-    3.  Настройка
+    2.  Заголовки
 
-        <!--list-separator-->
-
-        1.  Основная
-
-            -   Файл: `packages/tab-bar/desire.ecf`
-
-            <!--listend-->
-
-            ```emacs-lisp
-            ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-            ;;; Emacs Tab Bar
-
-            ;;; Code:
-
-            (tab-bar-mode 1)
-            (setopt tab-bar-show 1)
-
-            (setopt tab-bar-new-tab-to 'right)
-
-            ;; (setopt tab-bar-new-tab-choice "*dashboard*")
-            ;; (setopt tab-bar-new-tab-choice #'ibuffer)
-
-            (setopt tab-bar-tab-hints t)
-            ;; (setq tab-bar-select-tab-modifiers "super") ;; FIXME
-
-            (setopt tab-bar-format '(tab-bar-format-history tab-bar-format-tabs tab-bar-separator))
-
-            ;;;
-            ```
-
-        <!--list-separator-->
-
-        2.  Заголовки
-
-            -   Файл: `packages/tab-bar/desire.ecd/title.ecf`
-
-            <!--listend-->
-
-            ```emacs-lisp
-            ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-            ;;; Emacs Tab Bar
-
-            ;;; Code:
-
-            (setopt tab-bar-close-button-show t)
-
-            (setopt tab-bar-tab-hints t)
-
-            (defvar ecf/circle-numbers-alist
-              '((0 . "⓪")
-                (1 . "①")
-                (2 . "②")
-                (3 . "③")
-                (4 . "④")
-                (5 . "⑤")
-                (6 . "⑥")
-                (7 . "⑦")
-                (8 . "⑧")
-                (9 . "⑨"))
-              "Alist of integers to strings of circled unicode numbers.")
-
-            (defun ecf/tab-bar-tab-name-format-default (tab i)
-              (let ((current-p (eq (car tab) 'current-tab))
-                    (tab-num (if (and tab-bar-tab-hints (< i 10))
-                                 (alist-get i ecf/circle-numbers-alist) "")))
-                (propertize
-                 (concat tab-num
-                         " "
-                         (alist-get 'name tab)
-                         (or (and tab-bar-close-button-show
-                                  (not (eq tab-bar-close-button-show
-                                           (if current-p 'non-selected 'selected)))
-                                  tab-bar-close-button)
-                             "")
-                         " ")
-                 'face (funcall tab-bar-tab-face-function tab))))
-            (setopt tab-bar-tab-name-format-function #'ecf/tab-bar-tab-name-format-default)
-
-            ;;;
-            ```
-
-    <!--list-separator-->
-
-    4.  Клавиатурные сочетания
-
-        -   Файл: `packages/tab-bar/desire.ecd/keybinding.ecf`
+        -   Файл: `packages/tab-bar/desire.ecd/title.ecf`
 
         <!--listend-->
 
         ```emacs-lisp
         ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Emacs Tab Bar key bindings
+        ;;; Emacs Tab Bar
 
         ;;; Code:
 
-        (general-define-key
-         ;;;; Select the previous available tab
-         ;; "C-{"  'tab-bar-switch-to-prev-tab
-         "s-{" 'tab-bar-switch-to-prev-tab
-        ;;;; Select the next available tab
-         ;; "C-}" 'tab-bar-switch-to-next-tab
-         "s-}" 'tab-bar-switch-to-next-tab)
+        (setopt tab-bar-close-button-show t)
 
-         ;; "s-t" 'tab-bar-new-tab
-         ;; "s-w" 'tab-bar-close-tab
+        (setopt tab-bar-tab-hints t)
+
+        (defvar ecf/circle-numbers-alist
+          '((0 . "⓪")
+            (1 . "①")
+            (2 . "②")
+            (3 . "③")
+            (4 . "④")
+            (5 . "⑤")
+            (6 . "⑥")
+            (7 . "⑦")
+            (8 . "⑧")
+            (9 . "⑨"))
+          "Alist of integers to strings of circled unicode numbers.")
+
+        (defun ecf/tab-bar-tab-name-format-default (tab i)
+          (let ((current-p (eq (car tab) 'current-tab))
+                (tab-num (if (and tab-bar-tab-hints (< i 10))
+                             (alist-get i ecf/circle-numbers-alist) "")))
+            (propertize
+             (concat tab-num
+                     " "
+                     (alist-get 'name tab)
+                     (or (and tab-bar-close-button-show
+                              (not (eq tab-bar-close-button-show
+                                       (if current-p 'non-selected 'selected)))
+                              tab-bar-close-button)
+                         "")
+                     " ")
+             'face (funcall tab-bar-tab-face-function tab))))
+        (setopt tab-bar-tab-name-format-function #'ecf/tab-bar-tab-name-format-default)
 
         ;;;
         ```
 
-    <!--list-separator-->
+<!--list-separator-->
 
-    5.  Интеграция
+4.  Клавиатурные сочетания
 
-        <!--list-separator-->
+    -   Файл: `packages/tab-bar/desire.ecd/keybinding.ecf`
 
-        1.  tab-bar-lost-commands
+    <!--listend-->
 
-            -   [Emacs. tab-bar. Пакет tab-bar-lost-commands]({{< relref "2025-10-18--emacs-tab-bar-lost-commands" >}})
-            -   Файл: `packages/tab-bar/desire.ecd/tab-bar-lost-commands.ecf`
-                ```emacs-lisp
-                ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-                ;;; The "lost commands" of the tab bar
-                ;; https://github.com/fritzgrabo/tab-bar-lost-commands
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Emacs Tab Bar key bindings
 
-                ;;; Code:
+    ;;; Code:
 
-                (general-define-key
-                 "M-s-{" 'tab-bar-lost-commands-switch-to-first-tab
-                 "M-s-}" 'tab-bar-lost-commands-switch-to-last-tab
-                 "C-s-{" 'tab-bar-lost-commands-move-tab-backward
-                 "C-s-}" 'tab-bar-lost-commands-move-tab-forward
-                 "C-M-s-{" 'tab-bar-lost-commands-move-tab-first
-                 "C-M-s-}" 'tab-bar-lost-commands-move-tab-last)
+    (general-define-key
+     ;;;; Select the previous available tab
+     ;; "C-{"  'tab-bar-switch-to-prev-tab
+     "s-{" 'tab-bar-switch-to-prev-tab
+    ;;;; Select the next available tab
+     ;; "C-}" 'tab-bar-switch-to-next-tab
+     "s-}" 'tab-bar-switch-to-next-tab)
 
-                (general-define-key
-                 :keymaps 'tab-prefix-map
-                 "<return>" 'tab-bar-lost-commands-switch-to-or-create-tab)
+     ;; "s-t" 'tab-bar-new-tab
+     ;; "s-w" 'tab-bar-close-tab
 
-                ;;;
-                ```
-
-        <!--list-separator-->
-
-        2.  vim-tab-bar
-
-            -   Файл: `packages/tab-bar/desire.ecd/vim-tab-bar.ecf`
-
-            <!--listend-->
-
-            ```emacs-lisp
-            ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-            ;;; A Vim-Inspired Tab-Bar That Automatically Adapts to Any Emacs Theme
-            ;; https://github.com/jamescherti/vim-tab-bar.el
-
-            ;;; Code
-
-            (desire 'vim-tab-bar)
-            (vim-tab-bar-mode)
-
-            ;;;; Show the tab groups
-            (setq vim-tab-bar-show-groups t)
-
-            ;;;
-            ```
+    ;;;
+    ```
 
 <!--list-separator-->
 
-3.  tab-line
-
-    -   [Emacs. Пакет tab-line]({{< relref "2024-01-08-emacs-tab-line" >}})
+5.  Интеграция
 
     <!--list-separator-->
 
-    1.  Подключение
+    1.  tab-bar-lost-commands
 
-        -   Файл: `rc.packages.el`
-            ```emacs-lisp
-            (desire 'tab-line)
-            ```
-
-    <!--list-separator-->
-
-    2.  Загрузка
-
-        -   Файл: `packages/tab-line/loaddefs.ecf`
+        -   [Emacs. tab-bar. Пакет tab-bar-lost-commands]({{< relref "2025-10-18--emacs-tab-bar-lost-commands" >}})
+        -   Файл: `packages/tab-bar/desire.ecd/tab-bar-lost-commands.ecf`
             ```emacs-lisp
             ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-            ;;; Emacs Tab Line
+            ;;; The "lost commands" of the tab bar
+            ;; https://github.com/fritzgrabo/tab-bar-lost-commands
 
             ;;; Code:
 
-            (require 'tab-line)
+            (general-define-key
+             "M-s-{" 'tab-bar-lost-commands-switch-to-first-tab
+             "M-s-}" 'tab-bar-lost-commands-switch-to-last-tab
+             "C-s-{" 'tab-bar-lost-commands-move-tab-backward
+             "C-s-}" 'tab-bar-lost-commands-move-tab-forward
+             "C-M-s-{" 'tab-bar-lost-commands-move-tab-first
+             "C-M-s-}" 'tab-bar-lost-commands-move-tab-last)
+
+            (general-define-key
+             :keymaps 'tab-prefix-map
+             "<return>" 'tab-bar-lost-commands-switch-to-or-create-tab)
 
             ;;;
             ```
 
     <!--list-separator-->
 
-    3.  Настройка
+    2.  vim-tab-bar
 
-        -   Файл: `packages/tab-line/desire.ecf`
-            ```emacs-lisp
-            ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-            ;;; Emacs Tab Line
+        -   Файл: `packages/tab-bar/desire.ecd/vim-tab-bar.ecf`
 
-            ;;; Code:
+        <!--listend-->
 
-            ;;; Show the tabline in the top of the frame
-            (global-tab-line-mode t)
+        ```emacs-lisp
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;; A Vim-Inspired Tab-Bar That Automatically Adapts to Any Emacs Theme
+        ;; https://github.com/jamescherti/vim-tab-bar.el
 
-            ;;; Do not show add-new button
-            (setopt tab-line-new-button-show nil)
+        ;;; Code
 
-            ;;; Do not show close button
-            (setopt tab-line-close-button-show nil)
+        (desire 'vim-tab-bar)
+        (vim-tab-bar-mode)
 
-            ;;; Change the separator between tabs
-            (setopt tab-line-separator "")
+        ;;;; Show the tab groups
+        (setq vim-tab-bar-show-groups t)
 
-            ;;;
-            ```
-
-    <!--list-separator-->
-
-    4.  Клавиатурные сочетания
-
-        -   Файл: `packages/tab-line/desire.ecd/keybinding.ecf`
-            ```emacs-lisp
-            ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-            ;;; Emacs Tab Line
-
-            ;;; Code
-
-            (general-define-key
-             "C-<prior>" 'tab-line-switch-to-prev-tab
-             "C-<iso-lefttab>" 'tab-line-switch-to-prev-tab
-             "s-[" 'tab-line-switch-to-prev-tab
-             "C-<next>" 'tab-line-switch-to-next-tab
-             "C-<tab>" 'tab-line-switch-to-next-tab
-             "s-]" 'tab-line-switch-to-next-tab)
-
-             ;;;
-            ```
-
-    <!--list-separator-->
-
-    5.  Intuitive Tabs in Emacs
-
-        -   [Emacs. tab-line. Пакет intuitive-tab-line-mode]({{< relref "2025-10-16--emacs-intuitive-tab-line-mode" >}})
-        -   Файл: `packages/tab-line/desire.ecd/intuitive-tab-line.ecf`
-            ```emacs-lisp
-            ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-            ;;; Intuitive Tabs in Emacs
-            ;; https://github.com/thread314/intuitive-tab-line-mode
-
-            ;;; Code:
-
-            (desire 'intuitive-tab-line :recipe '(:fetcher github :repo "thread314/intuitive-tab-line-mode" :branch "master"))
-            (require 'intuitive-tab-line)
-
-            ;;;; Show all user-created buffers as tabs
-            ;; (setopt tab-line-tabs-function 'intuitive-tab-line-buffers-list)
-
-            (setopt tab-line-switch-cycling t)
-
-            (general-define-key
-             ;; "C-S-<prior>" 'intuitive-tab-line-shift-tab-left
-             ;; "C-S-<next>" 'intuitive-tab-line-shift-tab-right
-             "C-s-[" 'intuitive-tab-line-shift-tab-left
-             "C-s-]" 'intuitive-tab-line-shift-tab-right
-             )
-
-            (recentf-mode 1)
-            (general-define-key
-             "C-S-t" 'recentf-open-most-recent-file)
-
-            ;;;;
-            ```
+        ;;;
+        ```
 
 
-#### <span class="section-num">3.10.3</span> Нумерация строк {#нумерация-строк}
+#### <span class="section-num">12.3.3</span> tab-line {#tab-line}
+
+-   [Emacs. Пакет tab-line]({{< relref "2024-01-08-emacs-tab-line" >}})
+
+<!--list-separator-->
+
+1.  Подключение
+
+    -   Файл: `rc.packages.el`
+        ```emacs-lisp
+        (desire 'tab-line)
+        ```
+
+<!--list-separator-->
+
+2.  Загрузка
+
+    -   Файл: `packages/tab-line/loaddefs.ecf`
+        ```emacs-lisp
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;; Emacs Tab Line
+
+        ;;; Code:
+
+        (require 'tab-line)
+
+        ;;;
+        ```
+
+<!--list-separator-->
+
+3.  Настройка
+
+    -   Файл: `packages/tab-line/desire.ecf`
+        ```emacs-lisp
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;; Emacs Tab Line
+
+        ;;; Code:
+
+        ;;; Show the tabline in the top of the frame
+        (global-tab-line-mode t)
+
+        ;;; Do not show add-new button
+        (setopt tab-line-new-button-show nil)
+
+        ;;; Do not show close button
+        (setopt tab-line-close-button-show nil)
+
+        ;;; Change the separator between tabs
+        (setopt tab-line-separator "")
+
+        ;;;
+        ```
+
+<!--list-separator-->
+
+4.  Клавиатурные сочетания
+
+    -   Файл: `packages/tab-line/desire.ecd/keybinding.ecf`
+        ```emacs-lisp
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;; Emacs Tab Line
+
+        ;;; Code
+
+        (general-define-key
+         "C-<prior>" 'tab-line-switch-to-prev-tab
+         "C-<iso-lefttab>" 'tab-line-switch-to-prev-tab
+         "s-[" 'tab-line-switch-to-prev-tab
+         "C-<next>" 'tab-line-switch-to-next-tab
+         "C-<tab>" 'tab-line-switch-to-next-tab
+         "s-]" 'tab-line-switch-to-next-tab)
+
+         ;;;
+        ```
+
+<!--list-separator-->
+
+5.  Intuitive Tabs in Emacs
+
+    -   [Emacs. tab-line. Пакет intuitive-tab-line-mode]({{< relref "2025-10-16--emacs-intuitive-tab-line-mode" >}})
+    -   Файл: `packages/tab-line/desire.ecd/intuitive-tab-line.ecf`
+        ```emacs-lisp
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;; Intuitive Tabs in Emacs
+        ;; https://github.com/thread314/intuitive-tab-line-mode
+
+        ;;; Code:
+
+        (desire 'intuitive-tab-line :recipe '(:fetcher github :repo "thread314/intuitive-tab-line-mode" :branch "master"))
+        (require 'intuitive-tab-line)
+
+        ;;;; Show all user-created buffers as tabs
+        ;; (setopt tab-line-tabs-function 'intuitive-tab-line-buffers-list)
+
+        (setopt tab-line-switch-cycling t)
+
+        (general-define-key
+         ;; "C-S-<prior>" 'intuitive-tab-line-shift-tab-left
+         ;; "C-S-<next>" 'intuitive-tab-line-shift-tab-right
+         "C-s-[" 'intuitive-tab-line-shift-tab-left
+         "C-s-]" 'intuitive-tab-line-shift-tab-right
+         )
+
+        (recentf-mode 1)
+        (general-define-key
+         "C-S-t" 'recentf-open-most-recent-file)
+
+        ;;;;
+        ```
+
+
+### <span class="section-num">12.4</span> Нумерация строк {#нумерация-строк}
 
 -   [Emacs. Нумерация строк]({{< relref "2024-11-28-emacs-line-numbering" >}})
 
-<!--list-separator-->
 
-1.  display-line-numbers
+#### <span class="section-num">12.4.1</span> display-line-numbers {#display-line-numbers}
 
-    -   Подключаем моду:
-        ```emacs-lisp
-        (desire 'display-line-numbers)
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 47:</span>
-          rc.packages.el
-        </div>
-    -   Файл настройки:
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Interface for display-line-numbers
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 48:</span>
-          packages/display-line-numbers.ecf
-        </div>
-    -   Глобальная настройка:
-        ```emacs-lisp
-        ;;; Global
-        ;; (global-display-line-numbers-mode 1)
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 49:</span>
-          packages/display-line-numbers.ecf
-        </div>
-    -   Глобальная настройка:
-        ```emacs-lisp
-        ;;; Per mode
-        (add-hook 'prog-mode-hook #'display-line-numbers-mode)
-        (add-hook 'text-mode-hook #'display-line-numbers-mode)
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 50:</span>
-          packages/display-line-numbers.ecf
-        </div>
-    -   Завершение:
-        ```emacs-lisp
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 51:</span>
-          packages/display-line-numbers.ecf
-        </div>
-
-<!--list-separator-->
-
-2.  nlinum
-
-    -   Подключаем моду:
-        ```emacs-lisp
-        ;; (desire 'nlinum)
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 52:</span>
-          rc.packages.el
-        </div>
-    -   Загрузка пакета:
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Show line numbers in the margin
-        ;;; https://elpa.gnu.org/packages/nlinum.html
-
-        (require 'nlinum)
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 53:</span>
-          packages/nlinum.ecf
-        </div>
-    -   Глобальная настройка:
-        ```emacs-lisp
-        ;;; Global settings
-        ;; (global-nlinum-mode 1)
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 54:</span>
-          packages/nlinum.ecf
-        </div>
-    -   Настройка по модам:
-        ```emacs-lisp
-        ;;; Per mode configuration
-        (add-hook 'prog-mode-hook #'nlinum-mode)
-        (add-hook 'text-mode-hook #'nlinum-mode)
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 55:</span>
-          packages/nlinum.ecf
-        </div>
-    -   Завершение:
-        ```emacs-lisp
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 56:</span>
-          packages/nlinum.ecf
-        </div>
+-   Подключаем моду:
+    ```emacs-lisp
+    (desire 'display-line-numbers)
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 49:</span>
+      rc.packages.el
+    </div>
+-   Файл настройки:
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Interface for display-line-numbers
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 50:</span>
+      packages/display-line-numbers.ecf
+    </div>
+-   Глобальная настройка:
+    ```emacs-lisp
+    ;;; Global
+    ;; (global-display-line-numbers-mode 1)
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 51:</span>
+      packages/display-line-numbers.ecf
+    </div>
+-   Глобальная настройка:
+    ```emacs-lisp
+    ;;; Per mode
+    (add-hook 'prog-mode-hook #'display-line-numbers-mode)
+    (add-hook 'text-mode-hook #'display-line-numbers-mode)
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 52:</span>
+      packages/display-line-numbers.ecf
+    </div>
+-   Завершение:
+    ```emacs-lisp
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 53:</span>
+      packages/display-line-numbers.ecf
+    </div>
 
 
-#### <span class="section-num">3.10.4</span> shr-tag-pre-highlight : раскрашивание eww {#shr-tag-pre-highlight-раскрашивание-eww}
+#### <span class="section-num">12.4.2</span> nlinum {#nlinum}
+
+-   Подключаем моду:
+    ```emacs-lisp
+    ;; (desire 'nlinum)
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 54:</span>
+      rc.packages.el
+    </div>
+-   Загрузка пакета:
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Show line numbers in the margin
+    ;;; https://elpa.gnu.org/packages/nlinum.html
+
+    (require 'nlinum)
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 55:</span>
+      packages/nlinum.ecf
+    </div>
+-   Глобальная настройка:
+    ```emacs-lisp
+    ;;; Global settings
+    ;; (global-nlinum-mode 1)
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 56:</span>
+      packages/nlinum.ecf
+    </div>
+-   Настройка по модам:
+    ```emacs-lisp
+    ;;; Per mode configuration
+    (add-hook 'prog-mode-hook #'nlinum-mode)
+    (add-hook 'text-mode-hook #'nlinum-mode)
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 57:</span>
+      packages/nlinum.ecf
+    </div>
+-   Завершение:
+    ```emacs-lisp
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 58:</span>
+      packages/nlinum.ecf
+    </div>
+
+
+### <span class="section-num">12.5</span> shr-tag-pre-highlight : раскрашивание eww {#shr-tag-pre-highlight-раскрашивание-eww}
 
 -   Загрузка.
     ```emacs-lisp
@@ -1885,603 +2165,592 @@ slug: "emacs-desire-configuration"
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 57:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 59:</span>
       packages/shr-tag-pre-highlight.ecf
     </div>
 
 
-#### <span class="section-num">3.10.5</span> shrface : функциональность Org-mode для eww {#shrface-функциональность-org-mode-для-eww}
+### <span class="section-num">12.6</span> shrface : функциональность Org-mode для eww {#shrface-функциональность-org-mode-для-eww}
 
 -   [Emacs. Пакет shrface]({{< relref "2025-06-05--emacs-shrface" >}})
 
-<!--list-separator-->
-
-1.  Основной пакет : shrface
-
-    -   Подключение.
-        ```emacs-lisp
-        (desire 'shrface)
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 58:</span>
-          rc.packages.el
-        </div>
-    -   Объявления.
-        ```emacs-lisp
-        ;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Extend eww/nov with org-mode features, archive web pages to org files with shr
-        ;; https://github.com/chenyanming/shrface
-
-        ;;; Code:
-
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 59:</span>
-          packages/shrface/loaddefs.ecf
-        </div>
-    -   Загрузка.
-        ```emacs-lisp
-        ;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Extend eww/nov with org-mode features, archive web pages to org files with shr
-        ;; https://github.com/chenyanming/shrface
-
-        ;;; Code:
-
-        (require 'shrface)
-
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 60:</span>
-          packages/shrface/desire.ecf
-        </div>
-    -   Настройка.
-        ```emacs-lisp
-        ;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Extend eww/nov with org-mode features, archive web pages to org files with shr
-        ;; https://github.com/chenyanming/shrface
-
-        ;;; Code:
-
-        (defvar shrface-general-rendering-functions
-          (append '((title . eww-tag-title)
-                    (form . eww-tag-form)
-                    (input . eww-tag-input)
-                    (button . eww-form-submit)
-                    (textarea . eww-tag-textarea)
-                    (select . eww-tag-select)
-                    (link . eww-tag-link)
-                    (meta . eww-tag-meta)
-                    (code . shrface-tag-code)
-                    (pre . shrface-shr-tag-pre-highlight))
-                  shrface-supported-faces-alist))
-
-        (defvar shrface-nov-rendering-functions
-          (append '((img . nov-render-img)
-                    (svg . nov-render-svg)
-                    (title . nov-render-title)
-                    (pre . shrface-shr-tag-pre-highlight)
-                    (code . shrface-tag-code)
-                    (form . eww-tag-form)
-                    (input . eww-tag-input)
-                    (button . eww-form-submit)
-                    (textarea . eww-tag-textarea)
-                    (select . eww-tag-select)
-                    (link . eww-tag-link)
-                    (meta . eww-tag-meta))
-                  shrface-supported-faces-alist))
-
-        (defvar shrface-anki-rendering-functions
-          (append '((img . anki-render-img)
-                    (pre . shrface-shr-tag-pre-highlight)
-                    (code . shrface-tag-code)
-                    (form . eww-tag-form)
-                    (input . eww-tag-input)
-                    (button . eww-form-submit)
-                    (textarea . eww-tag-textarea)
-                    (select . eww-tag-select)
-                    (link . eww-tag-link)
-                    (meta . eww-tag-meta))
-                  shrface-supported-faces-alist))
-
-        (setq shr-cookie-policy nil)
-        (if (string-equal system-type "android")
-            (setq shrface-bullets-bullet-list '("▼" "▽" "▿" "▾"))
-          (setq shrface-bullets-bullet-list '("▼" "▽" "▿" "▾")))
-        (add-hook 'outline-view-change-hook 'shrface-outline-visibility-changed)
-
-        (desire 'shr-tag-pre-highlight)
-        (require 'shr-tag-pre-highlight)
-
-        (setq shr-tag-pre-highlight-lang-modes
-              '(("ocaml" . tuareg) ("elisp" . emacs-lisp) ("ditaa" . artist)
-                ("asymptote" . asy) ("dot" . fundamental) ("sqlite" . sql)
-                ("calc" . fundamental) ("C" . c) ("cpp" . c++) ("C++" . c++)
-                ("screen" . shell-script) ("shell" . sh) ("bash" . sh)
-                ("rust" . rustic)
-                ("rust" . rustic)
-                ("awk" . bash)
-                ("json" . "js")
-                ;; Used by language-detection.el
-                ("emacslisp" . emacs-lisp)
-                ;; Used by Google Code Prettify
-                ("el" . emacs-lisp)))
-
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 61:</span>
-          packages/shrface/desire.ecd/config.ecf
-        </div>
-
-    -   Функции.
-        ```emacs-lisp
-        ;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Extend eww/nov with org-mode features, archive web pages to org files with shr
-        ;; https://github.com/chenyanming/shrface
-
-        ;;; Code:
-
-        (defun shrface-eww-setup ()
-          (unless shrface-toggle-bullets
-            (shrface-regexp)
-            (setq-local imenu-create-index-function #'shrface-imenu-get-tree))
-          ;; workaround to show annotations in eww
-          (shrface-show-all-annotations))
-
-        (defun shrface-anki-setup ()
-          (unless shrface-toggle-bullets
-            (shrface-regexp)
-            (setq-local imenu-create-index-function #'shrface-imenu-get-tree)))
-
-        (defun shrface-anki-advice (orig-fun &rest args)
-          (require 'eww)
-          (let ((shrface-org nil)
-                (shr-bullet (concat (char-to-string shrface-item-bullet) " "))
-                (shr-table-vertical-line "")
-                (shr-width 90)
-                (shr-indentation 3)
-                (anki-shr-rendering-functions shrface-anki-rendering-functions)
-                (shrface-toggle-bullets nil)
-                (shrface-href-versatile t))
-            (apply orig-fun args)))
-
-        (defun shrface-shr-tag-pre-highlight (pre)
-          "Highlighting code in PRE."
-          (let* ((shr-folding-mode 'none)
-                 (shr-current-font 'default)
-                 (code (with-temp-buffer
-                         (shr-generic pre)
-                         ;; (indent-rigidly (point-min) (point-max) 2)
-                         (buffer-string)))
-                 (lang (or (shr-tag-pre-highlight-guess-language-attr pre)
-                           (let ((sym (language-detection-string code)))
-                             (and sym (symbol-name sym)))))
-                 (mode (and lang
-                            (shr-tag-pre-highlight--get-lang-mode lang))))
-            (shr-ensure-newline)
-            (shr-ensure-newline)
-            (setq start (point))
-            (insert
-             ;; (propertize (concat "#+BEGIN_SRC " lang "\n") 'face 'org-block-begin-line)
-             (or (and (fboundp mode)
-                      (with-demoted-errors "Error while fontifying: %S"
-                        (shr-tag-pre-highlight-fontify code mode)))
-                 code)
-             ;; (propertize "#+END_SRC" 'face 'org-block-end-line )
-             )
-            (shr-ensure-newline)
-            (setq end (point))
-            (pcase (frame-parameter nil 'background-mode)
-              ('light
-               (add-face-text-property start end '(:background "#D8DEE9" :extend t)))
-              ('dark
-               (add-face-text-property start end '(:background "#292b2e" :extend t))))
-            (shr-ensure-newline)
-            (insert "\n")))
-
-        (defun shrface-nov-render-html ()
-          (require 'eww)
-          (let ((shrface-org nil)
-                (shr-bullet (concat (char-to-string shrface-item-bullet) " "))
-                (shr-table-vertical-line "|")
-                (shr-width 7000) ;; make it large enough, it would not fill the column (use visual-line-mode/writeroom-mode instead)
-                (shr-indentation 0) ;; remove all unnecessary indentation
-                (tab-width 8)
-                (shr-external-rendering-functions shrface-nov-rendering-functions)
-                (shrface-toggle-bullets nil)
-                (shrface-href-versatile t)
-                (shr-use-fonts nil)           ; nil to use default font
-                (shr-map nov-mode-map))
-
-            ;; HACK: `shr-external-rendering-functions' doesn't cover
-            ;; every usage of `shr-tag-img'
-            (cl-letf (((symbol-function 'shr-tag-img) 'nov-render-img))
-              (shr-render-region (point-min) (point-max)))
-            ;; workaround, need a delay to update the header line
-            (run-with-timer 0.01 nil 'shrface-update-header-line)
-            ;; workaround, show annotations when document updates
-            (shrface-show-all-annotations)))
-
-        (defun shrface-remove-blank-lines-at-the-end (start end)
-          "A fix for `shr--remove-blank-lines-at-the-end' which will remove image at the end of the document."
-          (save-restriction
-            (save-excursion
-              (narrow-to-region start end)
-              (goto-char end)
-              (when (and (re-search-backward "[^ \n]" nil t)
-                         (not (eobp)))
-                (forward-line 1)
-                (delete-region (point) (min (1+ (point)) (point-max)))))))
-
-        (defun shrface-nov-setup ()
-          (unless shrface-toggle-bullets
-            (shrface-regexp))
-          (set-visited-file-name nil t)
-          (setq tab-width 8)
-          (if (string-equal system-type "android")
-              (setq-local touch-screen-enable-hscroll nil)))
-
-        (defun shrface-wallabag-setup ()
-          (unless shrface-toggle-bullets
-            (shrface-regexp)
-            (setq-local imenu-create-index-function #'shrface-imenu-get-tree))
-          (if (string-equal system-type "android")
-              (setq-local touch-screen-enable-hscroll nil)))
-
-        (defun shrface-wallabag-render-html (beg end)
-          ;; workaround, show annotations when document updates
-          (shrface-render-region beg end)
-          (shrface-update-header-line)
-          (paw-annotation-mode 1)
-          (visual-line-mode 1))
-
-        (defun shrface-render-region (beg end)
-          (require 'eww)
-          (let ((shrface-org nil)
-                (shr-bullet (concat (char-to-string shrface-item-bullet) " "))
-                ;; make it large enough, it would not fill the column
-                ;; I uses visual-line-mode, writeroom-mode for improving the reading experience instead
-                (shr-width 7000)
-                (shr-indentation (if (string-equal system-type "android") 0 0))
-                (shr-table-vertical-line "|")
-                (shr-external-rendering-functions shrface-general-rendering-functions)
-                (shrface-toggle-bullets nil)
-                (shrface-href-versatile t)
-                (shr-use-fonts nil))
-            (shr-render-region beg end)))
-
-        (defun shrface-render-advice (orig-fun &rest args)
-          (require 'eww)
-          (let ((shrface-org nil)
-                (shr-bullet (concat (char-to-string shrface-item-bullet) " "))
-                (shr-table-vertical-line "|")
-                (shr-width 65)
-                (shr-indentation 0)
-                (shr-external-rendering-functions shrface-general-rendering-functions)
-                (shrface-toggle-bullets nil)
-                (shrface-href-versatile t)
-                (shr-use-fonts nil))
-            ;; workaround, need a delay to update the header line
-            (run-with-timer 0.01 nil 'shrface-update-header-line)
-            (apply orig-fun args)))
-
-        (defun shrface-elfeed-advice (orig-fun &rest args)
-          (require 'eww)
-          (let ((shrface-org nil)
-                (shr-bullet (concat (char-to-string shrface-item-bullet) " "))
-                ;; make it large enough, it would not fill the column
-                ;; I uses visual-line-mode, writeroom-mode for improving the reading experience instead
-                (shr-width 7000)
-                (shr-indentation 0)
-                (shr-table-vertical-line "|")
-                (shr-external-rendering-functions shrface-general-rendering-functions)
-                (shrface-toggle-bullets nil)
-                (shrface-href-versatile t)
-                (shr-use-fonts nil))
-            (apply orig-fun args)
-            (with-current-buffer "*elfeed-entry*"
-              (shrface-show-all-annotations))))
-
-        (defun shrface-show-all-annotations()
-          (when (bound-and-true-p paw-annotation-mode)
-            (paw-clear-annotation-overlay)
-            (paw-show-all-annotations)
-            (if paw-annotation-show-wordlists-words-p
-                (paw-focus-find-words :wordlist t))
-            (if paw-annotation-show-unknown-words-p
-                (paw-focus-find-words))))
-
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 62:</span>
-          packages/shrface/desire.ecd/advice.ecf
-        </div>
-
-<!--list-separator-->
-
-2.  Поддержка nov
-
-    -   Настройка:
-        ```emacs-lisp
-        ;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Extend eww/nov with org-mode features, archive web pages to org files with shr
-        ;; https://github.com/chenyanming/shrface
-
-        ;;; Code:
-
-        (require 'shrface)
-
-        (add-hook 'nov-mode-hook #'eldoc-mode)
-        (add-hook 'nov-mode-hook #'org-indent-mode)
-        (add-hook 'nov-mode-hook #'eldoc-box-hover-mode)
-        (add-hook 'nov-mode-hook #'shrface-nov-setup)
-
-        (setopt nov-render-html-function #'shrface-nov-render-html)
-        (advice-add 'shr--remove-blank-lines-at-the-end :override #'shrface-remove-blank-lines-at-the-end)
-
-        (define-key nov-mode-map (kbd "<tab>") 'shrface-outline-cycle)
-        (define-key nov-mode-map (kbd "S-<tab>") 'shrface-outline-cycle-buffer)
-        (define-key nov-mode-map (kbd "C-t") 'shrface-toggle-bullets)
-        (define-key nov-mode-map (kbd "C-j") 'shrface-next-headline)
-        (define-key nov-mode-map (kbd "C-k") 'shrface-previous-headline)
-        (define-key nov-mode-map (kbd "M-l") 'shrface-links-consult) ; or 'shrface-links-helm or 'shrface-links-counsel
-        (define-key nov-mode-map (kbd "M-h") 'shrface-headline-consult) ; or 'shrface-headline-helm or 'shrface-headline-counsel
-
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 63:</span>
-          packages/nov/shrface.ecf
-        </div>
-
-<!--list-separator-->
-
-3.  Поддержка eww
-
-    -   Настройка:
-        ```emacs-lisp
-        ;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Extend eww/nov with org-mode features, archive web pages to org files with shr
-        ;; https://github.com/chenyanming/shrface
-
-        ;;; Code:
-
-        (require 'shrface)
-
-        (advice-add 'eww-display-html :around #'shrface-render-advice)
-        (add-hook 'eww-after-render-hook #'org-indent-mode)
-        (add-hook 'eww-after-render-hook #'eldoc-mode)
-        (add-hook 'eww-after-render-hook #'eldoc-box-hover-mode)
-        (add-hook 'eww-after-render-hook #'shrface-eww-setup)
-
-        (define-key eww-mode-map (kbd "<tab>") 'shrface-outline-cycle)
-        (define-key eww-mode-map (kbd "S-<tab>") 'shrface-outline-cycle-buffer)
-        (define-key eww-mode-map (kbd "C-t") 'shrface-toggle-bullets)
-        (define-key eww-mode-map (kbd "C-j") 'shrface-next-headline)
-        (define-key eww-mode-map (kbd "C-k") 'shrface-previous-headline)
-        (define-key eww-mode-map (kbd "M-l") 'shrface-links-consult) ; or 'shrface-links-helm or 'shrface-links-counsel
-        (define-key eww-mode-map (kbd "M-h") 'shrface-headline-consult) ; or 'shrface-headline-helm or 'shrface-headline-counsel
-
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 64:</span>
-          packages/eww/shrface.ecf
-        </div>
-
-<!--list-separator-->
-
-4.  Поддержка anki
-
-    -   Настройка:
-        ```emacs-lisp
-        ;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Extend eww/nov with org-mode features, archive web pages to org files with shr
-        ;; https://github.com/chenyanming/shrface
-
-        ;;; Code:
-
-        (require 'shrface)
-
-        (add-hook 'anki-mode-hook #'org-indent-mode)
-        (advice-add 'anki-render-html :around #'shrface-anki-advice)
-        (advice-add 'anki-render-region :around #'shrface-anki-advice)
-        (add-hook 'anki-mode-hook #'eldoc-mode)
-        (add-hook 'anki-mode-hook #'eldoc-box-hover-mode)
-        (add-hook 'anki-mode-hook #'shrface-anki-setup)
-
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 65:</span>
-          packages/anki/shrface.ecf
-        </div>
-
-<!--list-separator-->
-
-5.  Поддержка calibredb
-
-    -   Настройка:
-        ```emacs-lisp
-        ;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Extend eww/nov with org-mode features, archive web pages to org files with shr
-        ;; https://github.com/chenyanming/shrface
-
-        ;;; Code:
-
-        (require 'shrface)
-
-        (advice-add 'calibredb-show-entry :around #'shrface-render-advice)
-
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 66:</span>
-          packages/calibredb/shrface.ecf
-        </div>
-
-<!--list-separator-->
-
-6.  Поддержка wallabag
-
-    -   Настройка:
-        ```emacs-lisp
-        ;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Extend eww/nov with org-mode features, archive web pages to org files with shr
-        ;; https://github.com/chenyanming/shrface
-
-        ;;; Code:
-
-        (require 'shrface)
-
-        ;; (add-hook 'wallabag-entry-mode-hook #'org-indent-mode)
-        (add-hook 'wallabag-entry-mode-hook #'eldoc-mode)
-        (add-hook 'wallabag-entry-mode-hook #'eldoc-box-hover-mode)
-        (add-hook 'wallabag-entry-mode-hook #'shrface-wallabag-setup)
-        (advice-add 'wallabag-entry-quit :after #'(lambda (&rest args)
-                                                    (interactive)
-                                                    (if (get-buffer "*Ilist*")
-                                                        (kill-buffer "*Ilist*"))))
-
-        (setq wallabag-render-html-function #'shrface-wallabag-render-html)
-
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 67:</span>
-          packages/wallabag/shrface.ecf
-        </div>
-
-<!--list-separator-->
-
-7.  Поддержка mu4e
-
-    -   Настройка:
-        ```emacs-lisp
-        ;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Extend eww/nov with org-mode features, archive web pages to org files with shr
-        ;; https://github.com/chenyanming/shrface
-
-        ;;; Code:
-
-        (require 'shrface)
-
-        (advice-add 'mu4e-shr2text :around #'shrface-render-advice)
-
-        (define-key mu4e-view-mode-map (kbd "<tab>") 'shrface-outline-cycle)
-        (define-key mu4e-view-mode-map (kbd "S-<tab>") 'shrface-outline-cycle-buffer)
-        (define-key mu4e-view-mode-map (kbd "C-t") 'shrface-toggle-bullets)
-        (define-key mu4e-view-mode-map (kbd "C-j") 'shrface-next-headline)
-        (define-key mu4e-view-mode-map (kbd "C-k") 'shrface-previous-headline)
-        (define-key mu4e-view-mode-map (kbd "M-l") 'shrface-links-consult) ; or 'shrface-links-helm or 'shrface-links-counsel
-        (define-key mu4e-view-mode-map (kbd "M-h") 'shrface-headline-consult) ; or 'shrface-headline-helm or 'shrface-headline-counsel
-
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 68:</span>
-          packages/mu4e/shrface.ecf
-        </div>
-
-<!--list-separator-->
-
-8.  Поддержка elfeed
-
-    -   Настройка:
-        ```emacs-lisp
-        ;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Extend eww/nov with org-mode features, archive web pages to org files with shr
-        ;; https://github.com/chenyanming/shrface
-
-        ;;; Code:
-
-        (require 'shrface)
-
-        (add-hook 'elfeed-show-mode-hook #'org-indent-mode)
-        (add-hook 'elfeed-show-mode-hook #'eldoc-mode)
-        (add-hook 'elfeed-show-mode-hook #'eldoc-box-hover-mode)
-        (add-hook 'elfeed-show-mode-hook #'shrface-wallabag-setup)
-        (advice-add 'elfeed-insert-html :around #'shrface-elfeed-advice)
-
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 69:</span>
-          packages/elfeed/shrface.ecf
-        </div>
-
-
-#### <span class="section-num">3.10.6</span> Universal Sidecar {#universal-sidecar}
-
-<!--list-separator-->
-
-1.  Подключение
-
-    -   Файл: `rc.packages.el`
-        ```emacs-lisp
-        ;; (desire 'universal-sidecar)
-        ```
-
-<!--list-separator-->
-
-2.  Загрузка
-
-    -   Файл: `packages/universal-sidecar/loaddefs.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; A universal "sidecar" buffer for emacs, inspired by the `org-roam-mode` buffer
-        ;; https://git.sr.ht/~swflint/emacs-universal-sidecar
-
-        ;;; Code:
-
-        (require 'universal-sidecar)
-
-        ;;;
-        ```
-
-<!--list-separator-->
-
-3.  Конфигурация
-
-    -   Файл: `packages/universal-sidecar/desire.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; A universal "sidecar" buffer for emacs, inspired by the `org-roam-mode` buffer
-        ;; https://git.sr.ht/~swflint/emacs-universal-sidecar
-
-        ;;; Code:
-
-        ;;;; Enable universal-sidecar globally or in specific modes
-        ;; (universal-sidecar-global-mode t)
-
-        ;;;; Enable universal-sidecar in specific modes
-        (add-hook 'prog-mode-hook #'universal-sidecar-mode)
-
-        ;;;; Configure the sections to display in the sidecar
-        (setopt universal-sidecar-sections
-              '(
-                buffer-git-status ; Shows Git status for the current buffer
-                buffer-info-section ; Displays basic buffer information
-                ;; Add other sections as needed, e.g.,
-                ;; org-cite-overlay-sidecar ; For Org-cite citations if using org-cite-overlay
-                ))
-
-        ;;;; Insinuate universal-sidecar to automatically refresh
-        ;;;; This advises relevant functions to update the sidecar
-         (universal-sidecar-insinuate)
-
-        ;;;; Optionally, configure refresh behavior
-        ;; (setopt universal-sidecar-enable-timer t) ; Enable idle timer for refreshing
-        ;; (setopt universal-sidecar-refresh-time 5) ; Set refresh time in seconds
-
-        ;;;
-        ```
-
-
-### <span class="section-num">3.11</span> Автодополнение {#автодополнение}
+
+#### <span class="section-num">12.6.1</span> Основной пакет : shrface {#основной-пакет-shrface}
+
+-   Подключение.
+    ```emacs-lisp
+    (desire 'shrface)
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 60:</span>
+      rc.packages.el
+    </div>
+-   Объявления.
+    ```emacs-lisp
+    ;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Extend eww/nov with org-mode features, archive web pages to org files with shr
+    ;; https://github.com/chenyanming/shrface
+
+    ;;; Code:
+
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 61:</span>
+      packages/shrface/loaddefs.ecf
+    </div>
+-   Загрузка.
+    ```emacs-lisp
+    ;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Extend eww/nov with org-mode features, archive web pages to org files with shr
+    ;; https://github.com/chenyanming/shrface
+
+    ;;; Code:
+
+    (require 'shrface)
+
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 62:</span>
+      packages/shrface/desire.ecf
+    </div>
+-   Настройка.
+    ```emacs-lisp
+    ;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Extend eww/nov with org-mode features, archive web pages to org files with shr
+    ;; https://github.com/chenyanming/shrface
+
+    ;;; Code:
+
+    (defvar shrface-general-rendering-functions
+      (append '((title . eww-tag-title)
+                (form . eww-tag-form)
+                (input . eww-tag-input)
+                (button . eww-form-submit)
+                (textarea . eww-tag-textarea)
+                (select . eww-tag-select)
+                (link . eww-tag-link)
+                (meta . eww-tag-meta)
+                (code . shrface-tag-code)
+                (pre . shrface-shr-tag-pre-highlight))
+              shrface-supported-faces-alist))
+
+    (defvar shrface-nov-rendering-functions
+      (append '((img . nov-render-img)
+                (svg . nov-render-svg)
+                (title . nov-render-title)
+                (pre . shrface-shr-tag-pre-highlight)
+                (code . shrface-tag-code)
+                (form . eww-tag-form)
+                (input . eww-tag-input)
+                (button . eww-form-submit)
+                (textarea . eww-tag-textarea)
+                (select . eww-tag-select)
+                (link . eww-tag-link)
+                (meta . eww-tag-meta))
+              shrface-supported-faces-alist))
+
+    (defvar shrface-anki-rendering-functions
+      (append '((img . anki-render-img)
+                (pre . shrface-shr-tag-pre-highlight)
+                (code . shrface-tag-code)
+                (form . eww-tag-form)
+                (input . eww-tag-input)
+                (button . eww-form-submit)
+                (textarea . eww-tag-textarea)
+                (select . eww-tag-select)
+                (link . eww-tag-link)
+                (meta . eww-tag-meta))
+              shrface-supported-faces-alist))
+
+    (setq shr-cookie-policy nil)
+    (if (string-equal system-type "android")
+        (setq shrface-bullets-bullet-list '("▼" "▽" "▿" "▾"))
+      (setq shrface-bullets-bullet-list '("▼" "▽" "▿" "▾")))
+    (add-hook 'outline-view-change-hook 'shrface-outline-visibility-changed)
+
+    (desire 'shr-tag-pre-highlight)
+    (require 'shr-tag-pre-highlight)
+
+    (setq shr-tag-pre-highlight-lang-modes
+          '(("ocaml" . tuareg) ("elisp" . emacs-lisp) ("ditaa" . artist)
+            ("asymptote" . asy) ("dot" . fundamental) ("sqlite" . sql)
+            ("calc" . fundamental) ("C" . c) ("cpp" . c++) ("C++" . c++)
+            ("screen" . shell-script) ("shell" . sh) ("bash" . sh)
+            ("rust" . rustic)
+            ("rust" . rustic)
+            ("awk" . bash)
+            ("json" . "js")
+            ;; Used by language-detection.el
+            ("emacslisp" . emacs-lisp)
+            ;; Used by Google Code Prettify
+            ("el" . emacs-lisp)))
+
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 63:</span>
+      packages/shrface/desire.ecd/config.ecf
+    </div>
+
+-   Функции.
+    ```emacs-lisp
+    ;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Extend eww/nov with org-mode features, archive web pages to org files with shr
+    ;; https://github.com/chenyanming/shrface
+
+    ;;; Code:
+
+    (defun shrface-eww-setup ()
+      (unless shrface-toggle-bullets
+        (shrface-regexp)
+        (setq-local imenu-create-index-function #'shrface-imenu-get-tree))
+      ;; workaround to show annotations in eww
+      (shrface-show-all-annotations))
+
+    (defun shrface-anki-setup ()
+      (unless shrface-toggle-bullets
+        (shrface-regexp)
+        (setq-local imenu-create-index-function #'shrface-imenu-get-tree)))
+
+    (defun shrface-anki-advice (orig-fun &rest args)
+      (require 'eww)
+      (let ((shrface-org nil)
+            (shr-bullet (concat (char-to-string shrface-item-bullet) " "))
+            (shr-table-vertical-line "")
+            (shr-width 90)
+            (shr-indentation 3)
+            (anki-shr-rendering-functions shrface-anki-rendering-functions)
+            (shrface-toggle-bullets nil)
+            (shrface-href-versatile t))
+        (apply orig-fun args)))
+
+    (defun shrface-shr-tag-pre-highlight (pre)
+      "Highlighting code in PRE."
+      (let* ((shr-folding-mode 'none)
+             (shr-current-font 'default)
+             (code (with-temp-buffer
+                     (shr-generic pre)
+                     ;; (indent-rigidly (point-min) (point-max) 2)
+                     (buffer-string)))
+             (lang (or (shr-tag-pre-highlight-guess-language-attr pre)
+                       (let ((sym (language-detection-string code)))
+                         (and sym (symbol-name sym)))))
+             (mode (and lang
+                        (shr-tag-pre-highlight--get-lang-mode lang))))
+        (shr-ensure-newline)
+        (shr-ensure-newline)
+        (setq start (point))
+        (insert
+         ;; (propertize (concat "#+BEGIN_SRC " lang "\n") 'face 'org-block-begin-line)
+         (or (and (fboundp mode)
+                  (with-demoted-errors "Error while fontifying: %S"
+                    (shr-tag-pre-highlight-fontify code mode)))
+             code)
+         ;; (propertize "#+END_SRC" 'face 'org-block-end-line )
+         )
+        (shr-ensure-newline)
+        (setq end (point))
+        (pcase (frame-parameter nil 'background-mode)
+          ('light
+           (add-face-text-property start end '(:background "#D8DEE9" :extend t)))
+          ('dark
+           (add-face-text-property start end '(:background "#292b2e" :extend t))))
+        (shr-ensure-newline)
+        (insert "\n")))
+
+    (defun shrface-nov-render-html ()
+      (require 'eww)
+      (let ((shrface-org nil)
+            (shr-bullet (concat (char-to-string shrface-item-bullet) " "))
+            (shr-table-vertical-line "|")
+            (shr-width 7000) ;; make it large enough, it would not fill the column (use visual-line-mode/writeroom-mode instead)
+            (shr-indentation 0) ;; remove all unnecessary indentation
+            (tab-width 8)
+            (shr-external-rendering-functions shrface-nov-rendering-functions)
+            (shrface-toggle-bullets nil)
+            (shrface-href-versatile t)
+            (shr-use-fonts nil)           ; nil to use default font
+            (shr-map nov-mode-map))
+
+        ;; HACK: `shr-external-rendering-functions' doesn't cover
+        ;; every usage of `shr-tag-img'
+        (cl-letf (((symbol-function 'shr-tag-img) 'nov-render-img))
+          (shr-render-region (point-min) (point-max)))
+        ;; workaround, need a delay to update the header line
+        (run-with-timer 0.01 nil 'shrface-update-header-line)
+        ;; workaround, show annotations when document updates
+        (shrface-show-all-annotations)))
+
+    (defun shrface-remove-blank-lines-at-the-end (start end)
+      "A fix for `shr--remove-blank-lines-at-the-end' which will remove image at the end of the document."
+      (save-restriction
+        (save-excursion
+          (narrow-to-region start end)
+          (goto-char end)
+          (when (and (re-search-backward "[^ \n]" nil t)
+                     (not (eobp)))
+            (forward-line 1)
+            (delete-region (point) (min (1+ (point)) (point-max)))))))
+
+    (defun shrface-nov-setup ()
+      (unless shrface-toggle-bullets
+        (shrface-regexp))
+      (set-visited-file-name nil t)
+      (setq tab-width 8)
+      (if (string-equal system-type "android")
+          (setq-local touch-screen-enable-hscroll nil)))
+
+    (defun shrface-wallabag-setup ()
+      (unless shrface-toggle-bullets
+        (shrface-regexp)
+        (setq-local imenu-create-index-function #'shrface-imenu-get-tree))
+      (if (string-equal system-type "android")
+          (setq-local touch-screen-enable-hscroll nil)))
+
+    (defun shrface-wallabag-render-html (beg end)
+      ;; workaround, show annotations when document updates
+      (shrface-render-region beg end)
+      (shrface-update-header-line)
+      (paw-annotation-mode 1)
+      (visual-line-mode 1))
+
+    (defun shrface-render-region (beg end)
+      (require 'eww)
+      (let ((shrface-org nil)
+            (shr-bullet (concat (char-to-string shrface-item-bullet) " "))
+            ;; make it large enough, it would not fill the column
+            ;; I uses visual-line-mode, writeroom-mode for improving the reading experience instead
+            (shr-width 7000)
+            (shr-indentation (if (string-equal system-type "android") 0 0))
+            (shr-table-vertical-line "|")
+            (shr-external-rendering-functions shrface-general-rendering-functions)
+            (shrface-toggle-bullets nil)
+            (shrface-href-versatile t)
+            (shr-use-fonts nil))
+        (shr-render-region beg end)))
+
+    (defun shrface-render-advice (orig-fun &rest args)
+      (require 'eww)
+      (let ((shrface-org nil)
+            (shr-bullet (concat (char-to-string shrface-item-bullet) " "))
+            (shr-table-vertical-line "|")
+            (shr-width 65)
+            (shr-indentation 0)
+            (shr-external-rendering-functions shrface-general-rendering-functions)
+            (shrface-toggle-bullets nil)
+            (shrface-href-versatile t)
+            (shr-use-fonts nil))
+        ;; workaround, need a delay to update the header line
+        (run-with-timer 0.01 nil 'shrface-update-header-line)
+        (apply orig-fun args)))
+
+    (defun shrface-elfeed-advice (orig-fun &rest args)
+      (require 'eww)
+      (let ((shrface-org nil)
+            (shr-bullet (concat (char-to-string shrface-item-bullet) " "))
+            ;; make it large enough, it would not fill the column
+            ;; I uses visual-line-mode, writeroom-mode for improving the reading experience instead
+            (shr-width 7000)
+            (shr-indentation 0)
+            (shr-table-vertical-line "|")
+            (shr-external-rendering-functions shrface-general-rendering-functions)
+            (shrface-toggle-bullets nil)
+            (shrface-href-versatile t)
+            (shr-use-fonts nil))
+        (apply orig-fun args)
+        (with-current-buffer "*elfeed-entry*"
+          (shrface-show-all-annotations))))
+
+    (defun shrface-show-all-annotations()
+      (when (bound-and-true-p paw-annotation-mode)
+        (paw-clear-annotation-overlay)
+        (paw-show-all-annotations)
+        (if paw-annotation-show-wordlists-words-p
+            (paw-focus-find-words :wordlist t))
+        (if paw-annotation-show-unknown-words-p
+            (paw-focus-find-words))))
+
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 64:</span>
+      packages/shrface/desire.ecd/advice.ecf
+    </div>
+
+
+#### <span class="section-num">12.6.2</span> Поддержка nov {#поддержка-nov}
+
+-   Настройка:
+    ```emacs-lisp
+    ;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Extend eww/nov with org-mode features, archive web pages to org files with shr
+    ;; https://github.com/chenyanming/shrface
+
+    ;;; Code:
+
+    (require 'shrface)
+
+    (add-hook 'nov-mode-hook #'eldoc-mode)
+    (add-hook 'nov-mode-hook #'org-indent-mode)
+    (add-hook 'nov-mode-hook #'eldoc-box-hover-mode)
+    (add-hook 'nov-mode-hook #'shrface-nov-setup)
+
+    (setopt nov-render-html-function #'shrface-nov-render-html)
+    (advice-add 'shr--remove-blank-lines-at-the-end :override #'shrface-remove-blank-lines-at-the-end)
+
+    (define-key nov-mode-map (kbd "<tab>") 'shrface-outline-cycle)
+    (define-key nov-mode-map (kbd "S-<tab>") 'shrface-outline-cycle-buffer)
+    (define-key nov-mode-map (kbd "C-t") 'shrface-toggle-bullets)
+    (define-key nov-mode-map (kbd "C-j") 'shrface-next-headline)
+    (define-key nov-mode-map (kbd "C-k") 'shrface-previous-headline)
+    (define-key nov-mode-map (kbd "M-l") 'shrface-links-consult) ; or 'shrface-links-helm or 'shrface-links-counsel
+    (define-key nov-mode-map (kbd "M-h") 'shrface-headline-consult) ; or 'shrface-headline-helm or 'shrface-headline-counsel
+
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 65:</span>
+      packages/nov/shrface.ecf
+    </div>
+
+
+#### <span class="section-num">12.6.3</span> Поддержка eww {#поддержка-eww}
+
+-   Настройка:
+    ```emacs-lisp
+    ;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Extend eww/nov with org-mode features, archive web pages to org files with shr
+    ;; https://github.com/chenyanming/shrface
+
+    ;;; Code:
+
+    (require 'shrface)
+
+    (advice-add 'eww-display-html :around #'shrface-render-advice)
+    (add-hook 'eww-after-render-hook #'org-indent-mode)
+    (add-hook 'eww-after-render-hook #'eldoc-mode)
+    (add-hook 'eww-after-render-hook #'eldoc-box-hover-mode)
+    (add-hook 'eww-after-render-hook #'shrface-eww-setup)
+
+    (define-key eww-mode-map (kbd "<tab>") 'shrface-outline-cycle)
+    (define-key eww-mode-map (kbd "S-<tab>") 'shrface-outline-cycle-buffer)
+    (define-key eww-mode-map (kbd "C-t") 'shrface-toggle-bullets)
+    (define-key eww-mode-map (kbd "C-j") 'shrface-next-headline)
+    (define-key eww-mode-map (kbd "C-k") 'shrface-previous-headline)
+    (define-key eww-mode-map (kbd "M-l") 'shrface-links-consult) ; or 'shrface-links-helm or 'shrface-links-counsel
+    (define-key eww-mode-map (kbd "M-h") 'shrface-headline-consult) ; or 'shrface-headline-helm or 'shrface-headline-counsel
+
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 66:</span>
+      packages/eww/shrface.ecf
+    </div>
+
+
+#### <span class="section-num">12.6.4</span> Поддержка anki {#поддержка-anki}
+
+-   Настройка:
+    ```emacs-lisp
+    ;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Extend eww/nov with org-mode features, archive web pages to org files with shr
+    ;; https://github.com/chenyanming/shrface
+
+    ;;; Code:
+
+    (require 'shrface)
+
+    (add-hook 'anki-mode-hook #'org-indent-mode)
+    (advice-add 'anki-render-html :around #'shrface-anki-advice)
+    (advice-add 'anki-render-region :around #'shrface-anki-advice)
+    (add-hook 'anki-mode-hook #'eldoc-mode)
+    (add-hook 'anki-mode-hook #'eldoc-box-hover-mode)
+    (add-hook 'anki-mode-hook #'shrface-anki-setup)
+
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 67:</span>
+      packages/anki/shrface.ecf
+    </div>
+
+
+#### <span class="section-num">12.6.5</span> Поддержка calibredb {#поддержка-calibredb}
+
+-   Настройка:
+    ```emacs-lisp
+    ;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Extend eww/nov with org-mode features, archive web pages to org files with shr
+    ;; https://github.com/chenyanming/shrface
+
+    ;;; Code:
+
+    (require 'shrface)
+
+    (advice-add 'calibredb-show-entry :around #'shrface-render-advice)
+
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 68:</span>
+      packages/calibredb/shrface.ecf
+    </div>
+
+
+#### <span class="section-num">12.6.6</span> Поддержка wallabag {#поддержка-wallabag}
+
+-   Настройка:
+    ```emacs-lisp
+    ;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Extend eww/nov with org-mode features, archive web pages to org files with shr
+    ;; https://github.com/chenyanming/shrface
+
+    ;;; Code:
+
+    (require 'shrface)
+
+    ;; (add-hook 'wallabag-entry-mode-hook #'org-indent-mode)
+    (add-hook 'wallabag-entry-mode-hook #'eldoc-mode)
+    (add-hook 'wallabag-entry-mode-hook #'eldoc-box-hover-mode)
+    (add-hook 'wallabag-entry-mode-hook #'shrface-wallabag-setup)
+    (advice-add 'wallabag-entry-quit :after #'(lambda (&rest args)
+                                                (interactive)
+                                                (if (get-buffer "*Ilist*")
+                                                    (kill-buffer "*Ilist*"))))
+
+    (setq wallabag-render-html-function #'shrface-wallabag-render-html)
+
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 69:</span>
+      packages/wallabag/shrface.ecf
+    </div>
+
+
+#### <span class="section-num">12.6.7</span> Поддержка mu4e {#поддержка-mu4e}
+
+-   Настройка:
+    ```emacs-lisp
+    ;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Extend eww/nov with org-mode features, archive web pages to org files with shr
+    ;; https://github.com/chenyanming/shrface
+
+    ;;; Code:
+
+    (require 'shrface)
+
+    (advice-add 'mu4e-shr2text :around #'shrface-render-advice)
+
+    (define-key mu4e-view-mode-map (kbd "<tab>") 'shrface-outline-cycle)
+    (define-key mu4e-view-mode-map (kbd "S-<tab>") 'shrface-outline-cycle-buffer)
+    (define-key mu4e-view-mode-map (kbd "C-t") 'shrface-toggle-bullets)
+    (define-key mu4e-view-mode-map (kbd "C-j") 'shrface-next-headline)
+    (define-key mu4e-view-mode-map (kbd "C-k") 'shrface-previous-headline)
+    (define-key mu4e-view-mode-map (kbd "M-l") 'shrface-links-consult) ; or 'shrface-links-helm or 'shrface-links-counsel
+    (define-key mu4e-view-mode-map (kbd "M-h") 'shrface-headline-consult) ; or 'shrface-headline-helm or 'shrface-headline-counsel
+
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 70:</span>
+      packages/mu4e/shrface.ecf
+    </div>
+
+
+#### <span class="section-num">12.6.8</span> Поддержка elfeed {#поддержка-elfeed}
+
+-   Настройка:
+    ```emacs-lisp
+    ;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Extend eww/nov with org-mode features, archive web pages to org files with shr
+    ;; https://github.com/chenyanming/shrface
+
+    ;;; Code:
+
+    (require 'shrface)
+
+    (add-hook 'elfeed-show-mode-hook #'org-indent-mode)
+    (add-hook 'elfeed-show-mode-hook #'eldoc-mode)
+    (add-hook 'elfeed-show-mode-hook #'eldoc-box-hover-mode)
+    (add-hook 'elfeed-show-mode-hook #'shrface-wallabag-setup)
+    (advice-add 'elfeed-insert-html :around #'shrface-elfeed-advice)
+
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 71:</span>
+      packages/elfeed/shrface.ecf
+    </div>
+
+
+### <span class="section-num">12.7</span> Universal Sidecar {#universal-sidecar}
+
+
+#### <span class="section-num">12.7.1</span> Подключение {#подключение}
+
+-   Файл: `rc.packages.el`
+    ```emacs-lisp
+    ;; (desire 'universal-sidecar)
+    ```
+
+
+#### <span class="section-num">12.7.2</span> Загрузка {#загрузка}
+
+-   Файл: `packages/universal-sidecar/loaddefs.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; A universal "sidecar" buffer for emacs, inspired by the `org-roam-mode` buffer
+    ;; https://git.sr.ht/~swflint/emacs-universal-sidecar
+
+    ;;; Code:
+
+    (require 'universal-sidecar)
+
+    ;;;
+    ```
+
+
+#### <span class="section-num">12.7.3</span> Конфигурация {#конфигурация}
+
+-   Файл: `packages/universal-sidecar/desire.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; A universal "sidecar" buffer for emacs, inspired by the `org-roam-mode` buffer
+    ;; https://git.sr.ht/~swflint/emacs-universal-sidecar
+
+    ;;; Code:
+
+    ;;;; Enable universal-sidecar globally or in specific modes
+    ;; (universal-sidecar-global-mode t)
+
+    ;;;; Enable universal-sidecar in specific modes
+    (add-hook 'prog-mode-hook #'universal-sidecar-mode)
+
+    ;;;; Configure the sections to display in the sidecar
+    (setopt universal-sidecar-sections
+          '(
+            buffer-git-status ; Shows Git status for the current buffer
+            buffer-info-section ; Displays basic buffer information
+            ;; Add other sections as needed, e.g.,
+            ;; org-cite-overlay-sidecar ; For Org-cite citations if using org-cite-overlay
+            ))
+
+    ;;;; Insinuate universal-sidecar to automatically refresh
+    ;;;; This advises relevant functions to update the sidecar
+     (universal-sidecar-insinuate)
+
+    ;;;; Optionally, configure refresh behavior
+    ;; (setopt universal-sidecar-enable-timer t) ; Enable idle timer for refreshing
+    ;; (setopt universal-sidecar-refresh-time 5) ; Set refresh time in seconds
+
+    ;;;
+    ```
+
+
+## <span class="section-num">13</span> Автодополнение {#автодополнение}
 
 -   Файл `rc.packages.el`:
     ```emacs-lisp
@@ -2492,10 +2761,10 @@ slug: "emacs-desire-configuration"
     ```
 
 
-### <span class="section-num">3.12</span> Автодополнение в минибуфере {#автодополнение-в-минибуфере}
+## <span class="section-num">14</span> Автодополнение в минибуфере {#автодополнение-в-минибуфере}
 
 
-#### <span class="section-num">3.12.1</span> Начало {#начало}
+### <span class="section-num">14.1</span> Начало {#начало}
 
 -   Файл `rc.packages.el`:
     ```emacs-lisp
@@ -2503,7 +2772,7 @@ slug: "emacs-desire-configuration"
     ```
 
 
-#### <span class="section-num">3.12.2</span> Ido {#ido}
+### <span class="section-num">14.2</span> Ido {#ido}
 
 -   Файл `rc.packages.el`:
     ```emacs-lisp
@@ -2511,7 +2780,7 @@ slug: "emacs-desire-configuration"
     ```
 
 
-#### <span class="section-num">3.12.3</span> Helm {#helm}
+### <span class="section-num">14.3</span> Helm {#helm}
 
 -   Файл `rc.packages.el`:
     ```emacs-lisp
@@ -2520,7 +2789,7 @@ slug: "emacs-desire-configuration"
     ```
 
 
-#### <span class="section-num">3.12.4</span> Ivy {#ivy}
+### <span class="section-num">14.4</span> Ivy {#ivy}
 
 -   Файл `rc.packages.el`:
     ```emacs-lisp
@@ -2528,7 +2797,7 @@ slug: "emacs-desire-configuration"
     ```
 
 
-#### <span class="section-num">3.12.5</span> Selectrum {#selectrum}
+### <span class="section-num">14.5</span> Selectrum {#selectrum}
 
 -   Файл `rc.packages.el`:
     ```emacs-lisp
@@ -2536,7 +2805,7 @@ slug: "emacs-desire-configuration"
     ```
 
 
-#### <span class="section-num">3.12.6</span> Vertico {#vertico}
+### <span class="section-num">14.6</span> Vertico {#vertico}
 
 -   Файл `rc.packages.el`:
     ```emacs-lisp
@@ -2544,10 +2813,10 @@ slug: "emacs-desire-configuration"
     ```
 
 
-### <span class="section-num">3.13</span> Transient {#transient}
+## <span class="section-num">15</span> Transient {#transient}
 
 
-#### <span class="section-num">3.13.1</span> transient {#transient}
+### <span class="section-num">15.1</span> transient {#transient}
 
 -   [Emacs. Пакет transient]({{< relref "2024-10-26-emacs-transient" >}})
 -   Подключение:
@@ -2556,7 +2825,7 @@ slug: "emacs-desire-configuration"
     (desire 'transient)
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 70:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 72:</span>
       rc.packages.el
     </div>
 -   Дополнительные объявления:
@@ -2570,7 +2839,7 @@ slug: "emacs-desire-configuration"
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 71:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 73:</span>
       packages/transient/loaddefs.ecf
     </div>
 -   Загрузка:
@@ -2586,183 +2855,178 @@ slug: "emacs-desire-configuration"
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 72:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 74:</span>
       packages/transient/desire.ecf
     </div>
 
 
-#### <span class="section-num">3.13.2</span> Casual Suite {#casual-suite}
+### <span class="section-num">15.2</span> Casual Suite {#casual-suite}
 
 -   [Emacs. Пакет casual]({{< relref "2024-10-26-emacs-casual" >}})
 
-<!--list-separator-->
 
-1.  Начало
+#### <span class="section-num">15.2.1</span> Начало {#начало}
 
-    -   Подключение:
-        ```emacs-lisp
-        ;;;;; Casual Suite
-        (desire 'casual)
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 73:</span>
-          rc.packages.el
-        </div>
-
-<!--list-separator-->
-
-2.  Основная библиотека
-
-    -   Файл `packages/casual/loaddefs.ecf`:
-        ```emacs-lisp
-        ;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; A collection of opinionated keyboard-driven user interfaces for various built-in Emacs modes
-        ;;; https://github.com/kickingvegas/casual
-
-        (require 'casual)
-
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 74:</span>
-          packages/casual/loaddefs.ecf
-        </div>
-    -   Файл `packages/casual/desire.ecf`:
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; A collection of opinionated keyboard-driven user interfaces for various built-in Emacs modes
-        ;; https://github.com/kickingvegas/casual
-
-        ;;; Code:
-
-        (require 'casual-calc)
-        (keymap-set calc-mode-map "C-o" #'casual-calc-tmenu)
-        (keymap-set calc-alg-map "C-o" #'casual-calc-tmenu)
-
-        (require 'casual-dired)
-        (keymap-set dired-mode-map "C-o" #'casual-dired-tmenu)
-        (keymap-set dired-mode-map "s" #'casual-dired-sort-by-tmenu) ; optional
-        (keymap-set dired-mode-map "/" #'casual-dired-search-replace-tmenu) ; optional
-
-        (require 'casual-isearch)
-        (keymap-set isearch-mode-map "C-o" #'casual-isearch-tmenu)
-
-        (require 'casual-ibuffer)
-        (keymap-set ibuffer-mode-map "C-o" #'casual-ibuffer-tmenu)
-        (keymap-set ibuffer-mode-map "F" #'casual-ibuffer-filter-tmenu)
-        (keymap-set ibuffer-mode-map "s" #'casual-ibuffer-sortby-tmenu)
-
-        (require 'casual-image)
-        (keymap-set image-mode-map "C-o" #'casual-image-tmenu)
-
-        (require 'casual-info)
-        (keymap-set Info-mode-map "C-o" #'casual-info-tmenu)
-
-        (require 'casual-re-builder)
-        (keymap-set reb-mode-map "C-o" #'casual-re-builder-tmenu)
-        (keymap-set reb-lisp-mode-map "C-o" #'casual-re-builder-tmenu)
-
-        (require 'casual-bookmarks)
-        (keymap-set bookmark-bmenu-mode-map "C-o" #'casual-bookmarks-tmenu)
-
-        (require 'casual-editkit)
-        (keymap-global-set "C-o" #'casual-editkit-main-tmenu)
-
-        (require 'casual-make)
-        (keymap-set makefile-mode-map "M-m" #'casual-make-tmenu)
-
-        ;;;; Use Unicode symbols whenever appropriate for labels
-        (setopt casual-lib-use-unicode t)
-
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 75:</span>
-          packages/casual/desire.ecf
-        </div>
-    -   Файл сделан под все элементы пакета.
-    -   Необходимо будет разделить всё это по разным пакетам.
-
-<!--list-separator-->
-
-3.  Поддержка Avy
-
-    -   Файл `packages/avy/casual.ecf`:
-        ```emacs-lisp
-        ;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; An opinionated Transient menu for Avy.
-        ;;; https://github.com/kickingvegas/casual-avy
-
-        (desire 'casual-avy)
-        (require 'casual-avy)
-
-        (keymap-global-set "M-g" #'casual-avy-tmenu)
-
-        ;;; Imenu (index) Support
-        (add-hook 'markdown-mode-hook #'imenu-add-menubar-index)
-        (add-hook 'makefile-mode-hook #'imenu-add-menubar-index)
-        (add-hook 'prog-mode-hook #'imenu-add-menubar-index)
-        (add-hook 'org-mode-hook #'imenu-add-menubar-index)
-
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 76:</span>
-          packages/avy/casual.ecf
-        </div>
-
-<!--list-separator-->
-
-4.  Поддержка Symbol Overlay
-
-    -   Файл `packages/casual/symbol-overlay.ecf`:
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; An opinionated Transient user interface for the Emacs package Symbol Overlay.
-        ;;; https://github.com/kickingvegas/casual-symbol-overlay
-
-        (desire 'casual-symbol-overlay)
-        (require 'casual-symbol-overlay)
-
-        (keymap-set symbol-overlay-map "C-o" #'casual-symbol-overlay-tmenu)
-
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 77:</span>
-          packages/casual/symbol-overlay.ecf
-        </div>
-
-<!--list-separator-->
-
-5.  Поддержка Org-agenda
-
-    -   Файл `packages/org/casual.ecf`:
-        ```emacs-lisp
-        ;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; A collection of opinionated keyboard-driven user interfaces for various built-in Emacs modes
-        ;; https://github.com/kickingvegas/casual
-
-        ;;; Code:
-
-        (require 'casual-agenda)
-
-        ;;;; Load menu
-        (keymap-set org-agenda-mode-map "C-o" #'casual-agenda-tmenu)
-
-        ;;;; Configure Org Agenda to be consistent with bindings used by Casual Agenda
-        (keymap-set org-agenda-mode-map "M-j" #'org-agenda-clock-goto)
-        (keymap-set org-agenda-mode-map "J" #'bookmark-jump)
-
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 78:</span>
-          packages/org/casual.ecf
-        </div>
+-   Подключение:
+    ```emacs-lisp
+    ;;;;; Casual Suite
+    (desire 'casual)
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 75:</span>
+      rc.packages.el
+    </div>
 
 
-### <span class="section-num">3.14</span> Разное {#разное}
+#### <span class="section-num">15.2.2</span> Основная библиотека {#основная-библиотека}
+
+-   Файл `packages/casual/loaddefs.ecf`:
+    ```emacs-lisp
+    ;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; A collection of opinionated keyboard-driven user interfaces for various built-in Emacs modes
+    ;;; https://github.com/kickingvegas/casual
+
+    (require 'casual)
+
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 76:</span>
+      packages/casual/loaddefs.ecf
+    </div>
+-   Файл `packages/casual/desire.ecf`:
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; A collection of opinionated keyboard-driven user interfaces for various built-in Emacs modes
+    ;; https://github.com/kickingvegas/casual
+
+    ;;; Code:
+
+    (require 'casual-calc)
+    (keymap-set calc-mode-map "C-o" #'casual-calc-tmenu)
+    (keymap-set calc-alg-map "C-o" #'casual-calc-tmenu)
+
+    (require 'casual-dired)
+    (keymap-set dired-mode-map "C-o" #'casual-dired-tmenu)
+    (keymap-set dired-mode-map "s" #'casual-dired-sort-by-tmenu) ; optional
+    (keymap-set dired-mode-map "/" #'casual-dired-search-replace-tmenu) ; optional
+
+    (require 'casual-isearch)
+    (keymap-set isearch-mode-map "C-o" #'casual-isearch-tmenu)
+
+    (require 'casual-ibuffer)
+    (keymap-set ibuffer-mode-map "C-o" #'casual-ibuffer-tmenu)
+    (keymap-set ibuffer-mode-map "F" #'casual-ibuffer-filter-tmenu)
+    (keymap-set ibuffer-mode-map "s" #'casual-ibuffer-sortby-tmenu)
+
+    (require 'casual-image)
+    (keymap-set image-mode-map "C-o" #'casual-image-tmenu)
+
+    (require 'casual-info)
+    (keymap-set Info-mode-map "C-o" #'casual-info-tmenu)
+
+    (require 'casual-re-builder)
+    (keymap-set reb-mode-map "C-o" #'casual-re-builder-tmenu)
+    (keymap-set reb-lisp-mode-map "C-o" #'casual-re-builder-tmenu)
+
+    (require 'casual-bookmarks)
+    (keymap-set bookmark-bmenu-mode-map "C-o" #'casual-bookmarks-tmenu)
+
+    (require 'casual-editkit)
+    (keymap-global-set "C-o" #'casual-editkit-main-tmenu)
+
+    (require 'casual-make)
+    (keymap-set makefile-mode-map "M-m" #'casual-make-tmenu)
+
+    ;;;; Use Unicode symbols whenever appropriate for labels
+    (setopt casual-lib-use-unicode t)
+
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 77:</span>
+      packages/casual/desire.ecf
+    </div>
+-   Файл сделан под все элементы пакета.
+-   Необходимо будет разделить всё это по разным пакетам.
+
+
+#### <span class="section-num">15.2.3</span> Поддержка Avy {#поддержка-avy}
+
+-   Файл `packages/avy/casual.ecf`:
+    ```emacs-lisp
+    ;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; An opinionated Transient menu for Avy.
+    ;;; https://github.com/kickingvegas/casual-avy
+
+    (desire 'casual-avy)
+    (require 'casual-avy)
+
+    (keymap-global-set "M-g" #'casual-avy-tmenu)
+
+    ;;; Imenu (index) Support
+    (add-hook 'markdown-mode-hook #'imenu-add-menubar-index)
+    (add-hook 'makefile-mode-hook #'imenu-add-menubar-index)
+    (add-hook 'prog-mode-hook #'imenu-add-menubar-index)
+    (add-hook 'org-mode-hook #'imenu-add-menubar-index)
+
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 78:</span>
+      packages/avy/casual.ecf
+    </div>
+
+
+#### <span class="section-num">15.2.4</span> Поддержка Symbol Overlay {#поддержка-symbol-overlay}
+
+-   Файл `packages/casual/symbol-overlay.ecf`:
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; An opinionated Transient user interface for the Emacs package Symbol Overlay.
+    ;;; https://github.com/kickingvegas/casual-symbol-overlay
+
+    (desire 'casual-symbol-overlay)
+    (require 'casual-symbol-overlay)
+
+    (keymap-set symbol-overlay-map "C-o" #'casual-symbol-overlay-tmenu)
+
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 79:</span>
+      packages/casual/symbol-overlay.ecf
+    </div>
+
+
+#### <span class="section-num">15.2.5</span> Поддержка Org-agenda {#поддержка-org-agenda}
+
+-   Файл `packages/org/casual.ecf`:
+    ```emacs-lisp
+    ;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; A collection of opinionated keyboard-driven user interfaces for various built-in Emacs modes
+    ;; https://github.com/kickingvegas/casual
+
+    ;;; Code:
+
+    (require 'casual-agenda)
+
+    ;;;; Load menu
+    (keymap-set org-agenda-mode-map "C-o" #'casual-agenda-tmenu)
+
+    ;;;; Configure Org Agenda to be consistent with bindings used by Casual Agenda
+    (keymap-set org-agenda-mode-map "M-j" #'org-agenda-clock-goto)
+    (keymap-set org-agenda-mode-map "J" #'bookmark-jump)
+
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 80:</span>
+      packages/org/casual.ecf
+    </div>
+
+
+## <span class="section-num">16</span> Разное {#разное}
 
 -   Файл `rc.packages.el`:
 
@@ -2789,26 +3053,26 @@ slug: "emacs-desire-configuration"
 ```
 
 
-### <span class="section-num">3.15</span> Навигация {#навигация}
+## <span class="section-num">17</span> Навигация {#навигация}
 
 -   Заголовок:
     ```emacs-lisp
     ;;;; Navigation
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 79:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 81:</span>
       rc.packages.el
     </div>
 
 
-#### <span class="section-num">3.15.1</span> Avy {#avy}
+### <span class="section-num">17.1</span> Avy {#avy}
 
 -   Подключение:
     ```emacs-lisp
     (desire 'avy)
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 80:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 82:</span>
       rc.packages.el
     </div>
 -   Загрузка:
@@ -2824,7 +3088,7 @@ slug: "emacs-desire-configuration"
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 81:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 83:</span>
       packages/avy/loaddefs.ecf
     </div>
 -   Настройка клавиатуры:
@@ -2858,29 +3122,29 @@ slug: "emacs-desire-configuration"
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 82:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 84:</span>
       packages/avy/desire.ecd/keybinding.ecf
     </div>
 
 
-### <span class="section-num">3.16</span> Навигация по окнам {#навигация-по-окнам}
+## <span class="section-num">18</span> Навигация по окнам {#навигация-по-окнам}
 
 -   [Emacs. Окна]({{< relref "2024-10-15-emacs-window" >}})
 
 
-#### <span class="section-num">3.16.1</span> Начало {#начало}
+### <span class="section-num">18.1</span> Начало {#начало}
 
 -   Файл `rc.packages.el`:
     ```emacs-lisp
     ;;; Window navigation {{{
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 83:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 85:</span>
       rc.packages.el
     </div>
 
 
-#### <span class="section-num">3.16.2</span> Windmove {#windmove}
+### <span class="section-num">18.2</span> Windmove {#windmove}
 
 -   [Emacs. Окна. Windmove]({{< relref "2024-10-20-emacs-window-windmove" >}})
 -   Файл `rc.packages.el`:
@@ -2888,7 +3152,7 @@ slug: "emacs-desire-configuration"
     (desire 'windmove)
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 84:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 86:</span>
       rc.packages.el
     </div>
 -   Настройка пакета:
@@ -2898,7 +3162,7 @@ slug: "emacs-desire-configuration"
     ;;; https://www.emacswiki.org/emacs/WindMove
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 85:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 87:</span>
       packages/windmove.ecf
     </div>
 
@@ -2908,7 +3172,7 @@ slug: "emacs-desire-configuration"
     ;; (windmove-default-keybindings)
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 86:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 88:</span>
       packages/windmove.ecf
     </div>
 -   Будем использовать  `Ctrl` + стрелки:
@@ -2917,7 +3181,7 @@ slug: "emacs-desire-configuration"
     (windmove-default-keybindings 'ctrl)
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 87:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 89:</span>
       packages/windmove.ecf
     </div>
 
@@ -2927,7 +3191,7 @@ slug: "emacs-desire-configuration"
     (setopt windmove-wrap-around t)
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 88:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 90:</span>
       packages/windmove.ecf
     </div>
 
@@ -2936,211 +3200,202 @@ slug: "emacs-desire-configuration"
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 89:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 91:</span>
       packages/windmove.ecf
     </div>
 
 
-#### <span class="section-num">3.16.3</span> Конец {#конец}
+### <span class="section-num">18.3</span> Конец {#конец}
 
 -   Файл `rc.packages.el`:
     ```emacs-lisp
     ;;;}}}
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 90:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 92:</span>
       rc.packages.el
     </div>
 
 
-### <span class="section-num">3.17</span> Форматирование {#форматирование}
+## <span class="section-num">19</span> Форматирование {#форматирование}
 
 
-#### <span class="section-num">3.17.1</span> Apheleia {#apheleia}
+### <span class="section-num">19.1</span> Apheleia {#apheleia}
 
 -   [Emacs. Автоформатирование. apheleia]({{< relref "2025-11-15--emacs-autoformatting-apheleia" >}})
 
-<!--list-separator-->
 
-1.  Подключение
+#### <span class="section-num">19.1.1</span> Подключение {#подключение}
 
-    -   Файл: `rc.packages.el`
-        ```emacs-lisp
-        (desire 'apheleia)
-        ```
-
-<!--list-separator-->
-
-2.  Загрузка
-
-    -   Файл: `packages/apheleia/loaddefs.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Run code formatter on buffer contents without moving point
-        ;; https://github.com/radian-software/apheleia
-
-        ;;; Code:
-
-        (require 'apheleia)
-
-        ;;;
-        ```
-
-<!--list-separator-->
-
-3.  Конфигурация
-
-    -   Файл: `packages/apheleia/desire.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Run code formatter on buffer contents without moving point
-        ;; https://github.com/radian-software/apheleia
-
-        ;;; Code:
-
-        (apheleia-global-mode +1)
-
-        ;;;
-        ```
-
-<!--list-separator-->
-
-4.  Форматер latex
-
-    -   [Форматирование. LaTeX. tex-fmt]({{< relref "2025-11-15--formatting-latex-tex-fmt" >}})
-    -   Файл: `packages/apheleia/desire.ecd/latex.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; An extremely fast LaTeX formatter written in Rust
-        ;; https://github.com/WGUNDERWOOD/tex-fmt
-
-        ;;; Code:
-
-        ;;;; Define tex-fmt as an Apheleia formatter
-        (add-to-list 'apheleia-formatters '(tex-fmt "tex-fmt" "--stdin"))
-
-        ;;;; Associate tex-fmt with LaTeX modes
-        (if (executable-find "tex-fmt")
-            (progn
-              (setf (alist-get 'latex-mode apheleia-mode-alist) 'tex-fmt)
-              (setf (alist-get 'LaTeX-mode apheleia-mode-alist) 'tex-fmt)
-                 (setf (alist-get 'TeX-latex-mode apheleia-mode-alist) 'tex-fmt)
-                 (setf (alist-get 'TeX-mode apheleia-mode-alist) 'tex-fmt))
-          nil)
-
-        ;;;
-        ```
-
-<!--list-separator-->
-
-5.  Форматер markdown
-
-    -   Файл: `packages/apheleia/desire.ecd/markdown.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Modern Markdown formatter with smart typography and paragraph wrapping
-        ;; https://github.com/jlevy/flowmark
-
-        ;;; Code:
-
-        ;;;; Define flowmark as an Apheleia formatter
-        (add-to-list 'apheleia-formatters '(flowmark "flowmark" "--semantic" "--cleanups" "--smartquotes" "--ellipses" "--output" "-" "-"))
-
-        ;;;; Associate flowmark with markdown
-        ;; (if (executable-find "flowmark")
-        ;;     (setf (alist-get 'markdown-mode apheleia-mode-alist) 'flowmark)
-        ;;   nil)
-
-        ;;;
-        ```
+-   Файл: `rc.packages.el`
+    ```emacs-lisp
+    (desire 'apheleia)
+    ```
 
 
-#### <span class="section-num">3.17.2</span> Tree-sitter {#tree-sitter}
+#### <span class="section-num">19.1.2</span> Загрузка {#загрузка}
+
+-   Файл: `packages/apheleia/loaddefs.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Run code formatter on buffer contents without moving point
+    ;; https://github.com/radian-software/apheleia
+
+    ;;; Code:
+
+    (require 'apheleia)
+
+    ;;;
+    ```
+
+
+#### <span class="section-num">19.1.3</span> Конфигурация {#конфигурация}
+
+-   Файл: `packages/apheleia/desire.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Run code formatter on buffer contents without moving point
+    ;; https://github.com/radian-software/apheleia
+
+    ;;; Code:
+
+    (apheleia-global-mode +1)
+
+    ;;;
+    ```
+
+
+#### <span class="section-num">19.1.4</span> Форматер latex {#форматер-latex}
+
+-   [Форматирование. LaTeX. tex-fmt]({{< relref "2025-11-15--formatting-latex-tex-fmt" >}})
+-   Файл: `packages/apheleia/desire.ecd/latex.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; An extremely fast LaTeX formatter written in Rust
+    ;; https://github.com/WGUNDERWOOD/tex-fmt
+
+    ;;; Code:
+
+    ;;;; Define tex-fmt as an Apheleia formatter
+    (add-to-list 'apheleia-formatters '(tex-fmt "tex-fmt" "--stdin"))
+
+    ;;;; Associate tex-fmt with LaTeX modes
+    (if (executable-find "tex-fmt")
+        (progn
+          (setf (alist-get 'latex-mode apheleia-mode-alist) 'tex-fmt)
+          (setf (alist-get 'LaTeX-mode apheleia-mode-alist) 'tex-fmt)
+             (setf (alist-get 'TeX-latex-mode apheleia-mode-alist) 'tex-fmt)
+             (setf (alist-get 'TeX-mode apheleia-mode-alist) 'tex-fmt))
+      nil)
+
+    ;;;
+    ```
+
+
+#### <span class="section-num">19.1.5</span> Форматер markdown {#форматер-markdown}
+
+-   Файл: `packages/apheleia/desire.ecd/markdown.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Modern Markdown formatter with smart typography and paragraph wrapping
+    ;; https://github.com/jlevy/flowmark
+
+    ;;; Code:
+
+    ;;;; Define flowmark as an Apheleia formatter
+    (add-to-list 'apheleia-formatters '(flowmark "flowmark" "--semantic" "--cleanups" "--smartquotes" "--ellipses" "--output" "-" "-"))
+
+    ;;;; Associate flowmark with markdown
+    ;; (if (executable-find "flowmark")
+    ;;     (setf (alist-get 'markdown-mode apheleia-mode-alist) 'flowmark)
+    ;;   nil)
+
+    ;;;
+    ```
+
+
+### <span class="section-num">19.2</span> Tree-sitter {#tree-sitter}
 
 -   [Emacs. Инкрементальный парсер tree-sitter]({{< relref "2025-11-27--emacs-tree-sitter" >}})
 
-<!--list-separator-->
 
-1.  Подключение
+#### <span class="section-num">19.2.1</span> Подключение {#подключение}
 
-    -   Файл: `rc.packages.el`
-        ```emacs-lisp
-        (desire 'tree-sitter)
-        ```
-
-<!--list-separator-->
-
-2.  Загрузка
-
-    -   Файл: `packages/tree-sitter/loaddefs.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Tree-sitter bindings for Emacs Lisp
-        ;; https://github.com/emacs-tree-sitter/elisp-tree-sitter
-
-        (require 'tree-sitter)
-
-        ;;;
-        ```
-
-<!--list-separator-->
-
-3.  Конфигурация
-
-    -   Файл: `packages/tree-sitter/desire.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Tree-sitter bindings for Emacs Lisp
-        ;; https://github.com/emacs-tree-sitter/elisp-tree-sitter
-
-        (desire 'tree-sitter-langs)
-        (require 'tree-sitter-langs)
-
-        (desire 'tree-sitter-hl)
-        (require 'tree-sitter-hl)
-
-        (desire 'tree-sitter-debug)
-        (require 'tree-sitter-debug)
-
-        (desire 'tree-sitter-query)
-        (require 'tree-sitter-query)
-
-        (setopt tree-sitter-syntax-highlight-enable t)
-        (setopt tree-sitter-fold-enable t)
-        (setopt tree-sitter-fold-indicators-enable t)
-
-        (global-tree-sitter-mode)
-
-        (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode)
-
-        ;;;
-        ```
-
-<!--list-separator-->
-
-4.  treesit-auto
-
-    -   Файл: `packages/tree-sitter/desire.ecd/treesit-auto.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Automatic installation, usage, and fallback for tree-sitter major modes
-        ;;; https://github.com/renzmann/treesit-auto
-
-        (desire 'treesit-auto)
-        (require 'treesit-auto)
-
-        (setopt treesit-auto-install 'prompt)
-        (treesit-auto-add-to-auto-mode-alist 'all)
-
-        (customize-set-variable 'treesit-font-lock-level 3)
-
-        (global-treesit-auto-mode)
-
-        ;;;
-        ```
+-   Файл: `rc.packages.el`
+    ```emacs-lisp
+    (desire 'tree-sitter)
+    ```
 
 
-#### <span class="section-num">3.17.3</span> Пробелы {#пробелы}
+#### <span class="section-num">19.2.2</span> Загрузка {#загрузка}
+
+-   Файл: `packages/tree-sitter/loaddefs.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Tree-sitter bindings for Emacs Lisp
+    ;; https://github.com/emacs-tree-sitter/elisp-tree-sitter
+
+    (require 'tree-sitter)
+
+    ;;;
+    ```
+
+
+#### <span class="section-num">19.2.3</span> Конфигурация {#конфигурация}
+
+-   Файл: `packages/tree-sitter/desire.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Tree-sitter bindings for Emacs Lisp
+    ;; https://github.com/emacs-tree-sitter/elisp-tree-sitter
+
+    (desire 'tree-sitter-langs)
+    (require 'tree-sitter-langs)
+
+    (desire 'tree-sitter-hl)
+    (require 'tree-sitter-hl)
+
+    (desire 'tree-sitter-debug)
+    (require 'tree-sitter-debug)
+
+    (desire 'tree-sitter-query)
+    (require 'tree-sitter-query)
+
+    (setopt tree-sitter-syntax-highlight-enable t)
+    (setopt tree-sitter-fold-enable t)
+    (setopt tree-sitter-fold-indicators-enable t)
+
+    (global-tree-sitter-mode)
+
+    (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode)
+
+    ;;;
+    ```
+
+
+#### <span class="section-num">19.2.4</span> treesit-auto {#treesit-auto}
+
+-   Файл: `packages/tree-sitter/desire.ecd/treesit-auto.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Automatic installation, usage, and fallback for tree-sitter major modes
+    ;;; https://github.com/renzmann/treesit-auto
+
+    (desire 'treesit-auto)
+    (require 'treesit-auto)
+
+    (setopt treesit-auto-install 'prompt)
+    (treesit-auto-add-to-auto-mode-alist 'all)
+
+    (customize-set-variable 'treesit-font-lock-level 3)
+
+    (global-treesit-auto-mode)
+
+    ;;;
+    ```
+
+
+### <span class="section-num">19.3</span> Пробелы {#пробелы}
 
 -   [Emacs. Пробелы]({{< relref "2025-04-11--emacs-space" >}})
 -   Секция:
@@ -3148,414 +3403,400 @@ slug: "emacs-desire-configuration"
     ;;;; Spaces
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 91:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 93:</span>
       rc.packages.el
     </div>
 
-<!--list-separator-->
 
-1.  stripspace
+#### <span class="section-num">19.3.1</span> stripspace {#stripspace}
 
-    -   Подключение:
-        ```emacs-lisp
-        (desire 'stripspace)
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 92:</span>
-          rc.packages.el
-        </div>
-    -   Подключение:
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Automatically removes trailing whitespace before saving a buffer
-        ;; https://github.com/jamescherti/stripspace.el
+-   Подключение:
+    ```emacs-lisp
+    (desire 'stripspace)
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 94:</span>
+      rc.packages.el
+    </div>
+-   Подключение:
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Automatically removes trailing whitespace before saving a buffer
+    ;; https://github.com/jamescherti/stripspace.el
 
-        ;;; Code:
+    ;;; Code:
 
-        ;;;; Enable for prog-mode-hook, text-mode-hook, conf-mode-hook
-        (add-hook 'prog-mode-hook 'stripspace-local-mode)
-        (add-hook 'text-mode-hook 'stripspace-local-mode)
-        (add-hook 'conf-mode-hook 'stripspace-local-mode)
+    ;;;; Enable for prog-mode-hook, text-mode-hook, conf-mode-hook
+    (add-hook 'prog-mode-hook 'stripspace-local-mode)
+    (add-hook 'text-mode-hook 'stripspace-local-mode)
+    (add-hook 'conf-mode-hook 'stripspace-local-mode)
 
-        ;;;; The `stripspace-only-if-initially-clean' option:
-        ;;;; - nil to always delete trailing whitespace.
-        ;;;; - Non-nil to only delete whitespace when the buffer is clean initially.
-        ;;;; (The initial cleanliness check is performed when `stripspace-local-mode' is enabled.)
-        (custom-set-variables '(stripspace-only-if-initially-clean nil))
+    ;;;; The `stripspace-only-if-initially-clean' option:
+    ;;;; - nil to always delete trailing whitespace.
+    ;;;; - Non-nil to only delete whitespace when the buffer is clean initially.
+    ;;;; (The initial cleanliness check is performed when `stripspace-local-mode' is enabled.)
+    (custom-set-variables '(stripspace-only-if-initially-clean nil))
 
-        ;;;; Enabling `stripspace-restore-column' preserves the cursor's column position
-        ;;;; even after stripping spaces. This is useful in scenarios where you add
-        ;;;; extra spaces and then save the file. Although the spaces are removed in the
-        ;;;; saved file, the cursor remains in the same position, ensuring a consistent editing experience without affecting cursor placement.
-        (custom-set-variables '(stripspace-restore-column t))
+    ;;;; Enabling `stripspace-restore-column' preserves the cursor's column position
+    ;;;; even after stripping spaces. This is useful in scenarios where you add
+    ;;;; extra spaces and then save the file. Although the spaces are removed in the
+    ;;;; saved file, the cursor remains in the same position, ensuring a consistent editing experience without affecting cursor placement.
+    (custom-set-variables '(stripspace-restore-column t))
 
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 93:</span>
-          packages/stripspace.ecf
-        </div>
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 95:</span>
+      packages/stripspace.ecf
+    </div>
 
 
-#### <span class="section-num">3.17.4</span> julia-formatter {#julia-formatter}
+### <span class="section-num">19.4</span> julia-formatter {#julia-formatter}
 
 -   [Emacs. Пакет julia-formatter]({{< relref "2026-03-21--emacs-julia-formatter" >}})
 
-<!--list-separator-->
 
-1.  Подключение
+#### <span class="section-num">19.4.1</span> Подключение {#подключение}
 
-    -   Файл: `rc.packages.el`
-        ```emacs-lisp
-        ;; (desire 'julia-formatter)
-        ```
-
-<!--list-separator-->
-
-2.  Загрузка
-
-    -   Файл: `packages/julia-formatter/loaddefs.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Use JuliaFormatter.jl to format julia code in Emacs
-        ;; https://codeberg.org/FelipeLema/julia-formatter.el
-
-        ;;; Code:
+-   Файл: `rc.packages.el`
+    ```emacs-lisp
+    ;; (desire 'julia-formatter)
+    ```
 
 
-        ;;;
-        ```
+#### <span class="section-num">19.4.2</span> Загрузка {#загрузка}
 
-<!--list-separator-->
+-   Файл: `packages/julia-formatter/loaddefs.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Use JuliaFormatter.jl to format julia code in Emacs
+    ;; https://codeberg.org/FelipeLema/julia-formatter.el
 
-3.  Конфигурация
-
-    -   Файл: `packages/julia-formatter/desire.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Use JuliaFormatter.jl to format julia code in Emacs
-        ;; https://codeberg.org/FelipeLema/julia-formatter.el
-
-        ;;; Code:
-
-        (require 'julia-formatter)
-
-        ;;;; Julia Image compilation prompt
-        (setopt julia-formatter-should-compile-julia-image 'always-compile)
-
-        (add-hook 'julia-mode-hook #'julia-formatter-mode)
-
-        ;;;
-        ```
-
-<!--list-separator-->
-
-4.  Интеграция с aggressive-indent
-
-    -   Файл: `packages/julia-formatter/aggressive-indent.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Use JuliaFormatter.jl to format julia code in Emacs
-        ;; https://codeberg.org/FelipeLema/julia-formatter.el
-
-        ;;; Code:
-
-        (add-hook 'julia-formatter-mode-hook #'aggressive-indent)
-
-        ;;;
-        ```
-
-<!--list-separator-->
-
-5.  Интеграция с julia-mode
-
-    -   Файл: `packages/julia-mode/julia-formatter.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Use JuliaFormatter.jl to format julia code in Emacs
-        ;; https://codeberg.org/FelipeLema/julia-formatter.el
-
-        ;;; Code:
-
-        (require 'julia-formatter)
-
-        ;;;
-        ```
+    ;;; Code:
 
 
-### <span class="section-num">3.18</span> Сворачивание {#сворачивание}
+    ;;;
+    ```
 
 
-#### <span class="section-num">3.18.1</span> outline {#outline}
+#### <span class="section-num">19.4.3</span> Конфигурация {#конфигурация}
+
+-   Файл: `packages/julia-formatter/desire.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Use JuliaFormatter.jl to format julia code in Emacs
+    ;; https://codeberg.org/FelipeLema/julia-formatter.el
+
+    ;;; Code:
+
+    (require 'julia-formatter)
+
+    ;;;; Julia Image compilation prompt
+    (setopt julia-formatter-should-compile-julia-image 'always-compile)
+
+    (add-hook 'julia-mode-hook #'julia-formatter-mode)
+
+    ;;;
+    ```
+
+
+#### <span class="section-num">19.4.4</span> Интеграция с aggressive-indent {#интеграция-с-aggressive-indent}
+
+-   Файл: `packages/julia-formatter/aggressive-indent.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Use JuliaFormatter.jl to format julia code in Emacs
+    ;; https://codeberg.org/FelipeLema/julia-formatter.el
+
+    ;;; Code:
+
+    (add-hook 'julia-formatter-mode-hook #'aggressive-indent)
+
+    ;;;
+    ```
+
+
+#### <span class="section-num">19.4.5</span> Интеграция с julia-mode {#интеграция-с-julia-mode}
+
+-   Файл: `packages/julia-mode/julia-formatter.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Use JuliaFormatter.jl to format julia code in Emacs
+    ;; https://codeberg.org/FelipeLema/julia-formatter.el
+
+    ;;; Code:
+
+    (require 'julia-formatter)
+
+    ;;;
+    ```
+
+
+## <span class="section-num">20</span> Сворачивание {#сворачивание}
+
+
+### <span class="section-num">20.1</span> outline {#outline}
 
 -   [Emacs. Пакет outline-mode]({{< relref "2025-01-28--emacs-outline-mode" >}})
 
-<!--list-separator-->
 
-1.  Подключение
+#### <span class="section-num">20.1.1</span> Подключение {#подключение}
 
-    -   Файл: `rc.packages.el`
-        ```emacs-lisp
-        ;; (desire 'outline)
-        ```
+-   Файл: `rc.packages.el`
+    ```emacs-lisp
+    ;; (desire 'outline)
+    ```
 
-<!--list-separator-->
 
-2.  Загрузка
+#### <span class="section-num">20.1.2</span> Загрузка {#загрузка}
 
-    -   Файл: `packages/outline/loaddefs.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Outline mode commands for Emacs
+-   Файл: `packages/outline/loaddefs.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Outline mode commands for Emacs
 
-        ;;; Code:
+    ;;; Code:
 
-        (require 'outline)
+    (require 'outline)
 
-        ;;;
-        ```
+    ;;;
+    ```
 
-<!--list-separator-->
 
-3.  Конфигурация
+#### <span class="section-num">20.1.3</span> Конфигурация {#конфигурация}
 
-    -   Файл: `packages/outline/desire.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Outline mode commands for Emacs
+-   Файл: `packages/outline/desire.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Outline mode commands for Emacs
 
-        ;;; Code:
+    ;;; Code:
 
-        ;;;
-        ```
+    ;;;
+    ```
 
-<!--list-separator-->
 
-4.  Хуки
+#### <span class="section-num">20.1.4</span> Хуки {#хуки}
 
-    -   Файл: `packages/outline/desire.ecd/hook.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Outline mode commands for Emacs
+-   Файл: `packages/outline/desire.ecd/hook.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Outline mode commands for Emacs
 
-        ;;; Code:
+    ;;; Code:
 
-        ;;;; Автоматическое включение для режимов программирования
-        ;; (defun ecf/turn-on-outline-minor-mode ()
-        ;;   "Включить outline-minor-mode для режимов программирования."
-        ;;   (when (derived-mode-p 'prog-mode)
-        ;;     (outline-minor-mode 1)))
+    ;;;; Автоматическое включение для режимов программирования
+    ;; (defun ecf/turn-on-outline-minor-mode ()
+    ;;   "Включить outline-minor-mode для режимов программирования."
+    ;;   (when (derived-mode-p 'prog-mode)
+    ;;     (outline-minor-mode 1)))
 
-        ;; (add-hook 'prog-mode-hook 'ecf/turn-on-outline-minor-mode)
+    ;; (add-hook 'prog-mode-hook 'ecf/turn-on-outline-minor-mode)
 
-        ;;;; Или для конкретных режимов
-        (add-hook 'emacs-lisp-mode-hook 'outline-minor-mode)
-        (add-hook 'python-mode-hook 'outline-minor-mode)
-        (add-hook 'js-mode-hook 'outline-minor-mode)
-        (add-hook 'java-mode-hook 'outline-minor-mode)
-        (add-hook 'c-mode-hook 'outline-minor-mode)
-        (add-hook 'c++-mode-hook 'outline-minor-mode)
-        (add-hook 'web-mode-hook 'outline-minor-mode)
+    ;;;; Или для конкретных режимов
+    (add-hook 'emacs-lisp-mode-hook 'outline-minor-mode)
+    (add-hook 'python-mode-hook 'outline-minor-mode)
+    (add-hook 'js-mode-hook 'outline-minor-mode)
+    (add-hook 'java-mode-hook 'outline-minor-mode)
+    (add-hook 'c-mode-hook 'outline-minor-mode)
+    (add-hook 'c++-mode-hook 'outline-minor-mode)
+    (add-hook 'web-mode-hook 'outline-minor-mode)
 
-        ;;;
-        ```
+    ;;;
+    ```
 
-<!--list-separator-->
 
-5.  Настройка outline-regexp для разных языков
+#### <span class="section-num">20.1.5</span> Настройка outline-regexp для разных языков {#настройка-outline-regexp-для-разных-языков}
 
-    -   Файл: `packages/outline/desire.ecd/regexp.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Outline mode commands for Emacs
+-   Файл: `packages/outline/desire.ecd/regexp.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Outline mode commands for Emacs
 
-        ;;; Code:
+    ;;; Code:
 
-        ;;;; Универсальная настройка outline-regexp
-        (defun ecf/set-outline-regexp ()
-          "Установить outline-regexp в зависимости от режима."
-          (cond
-           ;; Emacs Lisp
-           ((derived-mode-p 'emacs-lisp-mode 'lisp-mode 'lisp-interaction-mode)
-            (setq-local outline-regexp ";;;+ \\|(def\\(un\\|subst\\|macro\\|advice\\|struct\\|class\\|method\\|generic\\)"))
+    ;;;; Универсальная настройка outline-regexp
+    (defun ecf/set-outline-regexp ()
+      "Установить outline-regexp в зависимости от режима."
+      (cond
+       ;; Emacs Lisp
+       ((derived-mode-p 'emacs-lisp-mode 'lisp-mode 'lisp-interaction-mode)
+        (setq-local outline-regexp ";;;+ \\|(def\\(un\\|subst\\|macro\\|advice\\|struct\\|class\\|method\\|generic\\)"))
 
-           ;; Python
-           ((derived-mode-p 'python-mode)
-            (setq-local outline-regexp "def \\|class \\|# "))
+       ;; Python
+       ((derived-mode-p 'python-mode)
+        (setq-local outline-regexp "def \\|class \\|# "))
 
-           ;; JavaScript/TypeScript
-           ((derived-mode-p 'js-mode 'js2-mode 'javascript-mode 'typescript-mode)
-            (setq-local outline-regexp "function\\|class\\|const\\|let\\|var\\|// "))
+       ;; JavaScript/TypeScript
+       ((derived-mode-p 'js-mode 'js2-mode 'javascript-mode 'typescript-mode)
+        (setq-local outline-regexp "function\\|class\\|const\\|let\\|var\\|// "))
 
-           ;; Java
-           ((derived-mode-p 'java-mode)
-            (setq-local outline-regexp "class\\|interface\\|enum\\|@interface\\|public\\|protected\\|private\\|// "))
+       ;; Java
+       ((derived-mode-p 'java-mode)
+        (setq-local outline-regexp "class\\|interface\\|enum\\|@interface\\|public\\|protected\\|private\\|// "))
 
-           ;; C/C++
-           ((derived-mode-p 'c-mode 'c++-mode)
-            (setq-local outline-regexp "^[ \t]*#[ \t]*\\(if\\|else\\|elif\\|endif\\|define\\|include\\)\\|// "))
-
-           ;; Web (HTML/CSS)
-           ((derived-mode-p 'web-mode)
-            (setq-local outline-regexp "</?[a-z]+\\|^[ \t]*//\\|^[ \t]*/\\*\\|^[ \t]*\\*"))
-
-           ;; Ruby
-           ((derived-mode-p 'ruby-mode)
-            (setq-local outline-regexp "def \\|class \\|module \\|# "))
-
-           ;; Go
-           ((derived-mode-p 'go-mode)
-            (setq-local outline-regexp "func \\|type \\|struct \\|interface \\|// "))
-
-           ;; Rust
-           ((derived-mode-p 'rust-mode)
-            (setq-local outline-regexp "fn \\|struct \\|enum \\|impl \\|trait \\|mod \\|// "))
-
-           ;; PHP
-           ((derived-mode-p 'php-mode)
-            (setq-local outline-regexp "function\\|class\\|trait\\|interface\\|//\\|/\\*"))
-
-           ;; Shell script
-           ((derived-mode-p 'sh-mode 'bash-mode)
-            (setq-local outline-regexp "function\\|# "))
-
-           ;; Общий случай для других языков
-           (t
-            (setq-local outline-regexp "^[ \t]*[A-Za-z0-9]"))))
-
-        ;; Хук для установки regexp при включении outline-minor-mode
-        (add-hook 'outline-minor-mode-hook 'ecf/set-outline-regexp)
-
-        ;;;
-        ```
-
-<!--list-separator-->
-
-6.  Сочетания клавиш
-
-    -   Файл: `packages/outline/desire.ecd/keybinding.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Outline mode commands for Emacs
-
-        ;;; Code:
-
-        ;;;; Глобальные привязки клавиш
-        (global-set-key (kbd "C-c @ C-o") 'outline-minor-mode)
-        (global-set-key (kbd "C-c @ C-t") 'outline-toggle-children)
-
-        ;;;; Локальные привязки при включении outline-minor-mode
-        (defun ecf/outline-minor-mode-keys ()
-          "Установить ключи для outline-minor-mode."
-          (when outline-minor-mode
-            ;;;; Навигация
-            (local-set-key (kbd "C-c @ C-n") 'outline-next-visible-heading)
-            (local-set-key (kbd "C-c @ C-p") 'outline-previous-visible-heading)
-            (local-set-key (kbd "C-c @ C-f") 'outline-forward-same-level)
-            (local-set-key (kbd "C-c @ C-b") 'outline-backward-same-level)
-            (local-set-key (kbd "C-c @ C-u") 'outline-up-heading)
-
-            ;;;; Скрытие/показ
-            (local-set-key (kbd "C-c @ C-t") 'outline-hide-body)
-            (local-set-key (kbd "C-c @ C-a") 'outline-show-all)
-            (local-set-key (kbd "C-c @ C-q") 'outline-hide-sublevels)
-            (local-set-key (kbd "C-c @ C-e") 'outline-hide-entry)
-            (local-set-key (kbd "C-c @ C-i") 'outline-show-entry)
-            (local-set-key (kbd "C-c @ C-k") 'outline-show-branches)
-            (local-set-key (kbd "C-c @ C-l") 'outline-hide-leaves)
-            (local-set-key (kbd "C-c @ C-s") 'outline-show-subtree)
-            (local-set-key (kbd "C-c @ C-d") 'outline-hide-subtree)
-
-            ;;;; Использование стандартных Org-mode клавиш (если Org не используется)
-            ;; (local-set-key (kbd "TAB") 'outline-cycle)
-            ;; (local-set-key (kbd "<S-TAB>") 'outline-cycle-buffer)
-            ;; (local-set-key (kbd "C-c C-n") 'outline-next-visible-heading)
-            ;; (local-set-key (kbd "C-c C-p") 'outline-previous-visible-heading)
-            (local-set-key (kbd "C-c C-f") 'outline-forward-same-level)
-            (local-set-key (kbd "C-c C-b") 'outline-backward-same-level)
-            (local-set-key (kbd "C-c C-u") 'outline-up-heading)
-            (local-set-key (kbd "C-c C-t") 'outline-toggle-children)))
-
-        (add-hook 'outline-minor-mode-hook 'ecf/outline-minor-mode-keys)
-
-        ;;;
-        ```
-
-<!--list-separator-->
-
-7.  Настройка outline-level
-
-    -   Файл: `packages/outline/desire.ecd/level.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Outline mode commands for Emacs
-
-        ;;; Code:
-
-        ;;;; Функция для определения уровня заголовка
-        (defun ecf/outline-level ()
-          "Определить уровень заголовка для текущего режима."
-          (save-excursion
-            (cond
-             ;;;; Для Emacs Lisp: уровень определяется количеством точек ввода
-             ((derived-mode-p 'emacs-lisp-mode)
-              (let ((count 0))
-                (while (re-search-forward "[(]" nil t)
-                  (setq count (1+ count)))
-                count))
-
-             ;;;; Для языков с отступами (Python)
-             ((derived-mode-p 'python-mode)
-              (/ (current-indentation) python-indent-offset))
-
-             ;;;; Общий случай: уровень по отступам
-             (t
-              (1+ (/ (current-indentation) tab-width))))))
-
-        ;; Установка outline-level
-        (defun ecf/set-outline-level ()
-          "Установить outline-level функцию."
-          (setq-local outline-level 'ecf/outline-level))
-
-        (add-hook 'outline-minor-mode-hook 'ecf/set-outline-level)
-
-        ;;;
-        ```
-
-<!--list-separator-->
-
-8.  Интеграция с imenu
-
-    -   Файл: `packages/outline/imenu.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Outline mode commands for Emacs
-
-        ;;; Code:
-
-        ;;;; Использовать outline для навигации через imenu
-        (defun ecf/outline-imenu-setup ()
-          "Настроить imenu для использования outline."
-          (when outline-minor-mode
-            (setq-local imenu-create-index-function
-                        'imenu-default-create-index-function)
-            (setq-local imenu-generic-expression
-                        (list
-                         (list nil outline-regexp 0)))))
-
-        (add-hook 'outline-minor-mode-hook 'ecf/outline-imenu-setup)
-
-        ;;;; Автоматическое обновление imenu при изменениях
-        (defadvice outline-minor-mode (after update-imenu activate)
-          "Обновить imenu при включении/выключении outline-minor-mode."
-          (when (featurep 'imenu)
-            (imenu-update-menubar)))
-
-        ;;;
-        ```
-
-
-#### <span class="section-num">3.18.2</span> origami {#origami}
+       ;; C/C++
+       ((derived-mode-p 'c-mode 'c++-mode)
+        (setq-local outline-regexp "^[ \t]*#[ \t]*\\(if\\|else\\|elif\\|endif\\|define\\|include\\)\\|// "))
+
+       ;; Web (HTML/CSS)
+       ((derived-mode-p 'web-mode)
+        (setq-local outline-regexp "</?[a-z]+\\|^[ \t]*//\\|^[ \t]*/\\*\\|^[ \t]*\\*"))
+
+       ;; Ruby
+       ((derived-mode-p 'ruby-mode)
+        (setq-local outline-regexp "def \\|class \\|module \\|# "))
+
+       ;; Go
+       ((derived-mode-p 'go-mode)
+        (setq-local outline-regexp "func \\|type \\|struct \\|interface \\|// "))
+
+       ;; Rust
+       ((derived-mode-p 'rust-mode)
+        (setq-local outline-regexp "fn \\|struct \\|enum \\|impl \\|trait \\|mod \\|// "))
+
+       ;; PHP
+       ((derived-mode-p 'php-mode)
+        (setq-local outline-regexp "function\\|class\\|trait\\|interface\\|//\\|/\\*"))
+
+       ;; Shell script
+       ((derived-mode-p 'sh-mode 'bash-mode)
+        (setq-local outline-regexp "function\\|# "))
+
+       ;; Общий случай для других языков
+       (t
+        (setq-local outline-regexp "^[ \t]*[A-Za-z0-9]"))))
+
+    ;; Хук для установки regexp при включении outline-minor-mode
+    (add-hook 'outline-minor-mode-hook 'ecf/set-outline-regexp)
+
+    ;;;
+    ```
+
+
+#### <span class="section-num">20.1.6</span> Сочетания клавиш {#сочетания-клавиш}
+
+-   Файл: `packages/outline/desire.ecd/keybinding.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Outline mode commands for Emacs
+
+    ;;; Code:
+
+    ;;;; Глобальные привязки клавиш
+    (global-set-key (kbd "C-c @ C-o") 'outline-minor-mode)
+    (global-set-key (kbd "C-c @ C-t") 'outline-toggle-children)
+
+    ;;;; Локальные привязки при включении outline-minor-mode
+    (defun ecf/outline-minor-mode-keys ()
+      "Установить ключи для outline-minor-mode."
+      (when outline-minor-mode
+        ;;;; Навигация
+        (local-set-key (kbd "C-c @ C-n") 'outline-next-visible-heading)
+        (local-set-key (kbd "C-c @ C-p") 'outline-previous-visible-heading)
+        (local-set-key (kbd "C-c @ C-f") 'outline-forward-same-level)
+        (local-set-key (kbd "C-c @ C-b") 'outline-backward-same-level)
+        (local-set-key (kbd "C-c @ C-u") 'outline-up-heading)
+
+        ;;;; Скрытие/показ
+        (local-set-key (kbd "C-c @ C-t") 'outline-hide-body)
+        (local-set-key (kbd "C-c @ C-a") 'outline-show-all)
+        (local-set-key (kbd "C-c @ C-q") 'outline-hide-sublevels)
+        (local-set-key (kbd "C-c @ C-e") 'outline-hide-entry)
+        (local-set-key (kbd "C-c @ C-i") 'outline-show-entry)
+        (local-set-key (kbd "C-c @ C-k") 'outline-show-branches)
+        (local-set-key (kbd "C-c @ C-l") 'outline-hide-leaves)
+        (local-set-key (kbd "C-c @ C-s") 'outline-show-subtree)
+        (local-set-key (kbd "C-c @ C-d") 'outline-hide-subtree)
+
+        ;;;; Использование стандартных Org-mode клавиш (если Org не используется)
+        ;; (local-set-key (kbd "TAB") 'outline-cycle)
+        ;; (local-set-key (kbd "<S-TAB>") 'outline-cycle-buffer)
+        ;; (local-set-key (kbd "C-c C-n") 'outline-next-visible-heading)
+        ;; (local-set-key (kbd "C-c C-p") 'outline-previous-visible-heading)
+        (local-set-key (kbd "C-c C-f") 'outline-forward-same-level)
+        (local-set-key (kbd "C-c C-b") 'outline-backward-same-level)
+        (local-set-key (kbd "C-c C-u") 'outline-up-heading)
+        (local-set-key (kbd "C-c C-t") 'outline-toggle-children)))
+
+    (add-hook 'outline-minor-mode-hook 'ecf/outline-minor-mode-keys)
+
+    ;;;
+    ```
+
+
+#### <span class="section-num">20.1.7</span> Настройка outline-level {#настройка-outline-level}
+
+-   Файл: `packages/outline/desire.ecd/level.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Outline mode commands for Emacs
+
+    ;;; Code:
+
+    ;;;; Функция для определения уровня заголовка
+    (defun ecf/outline-level ()
+      "Определить уровень заголовка для текущего режима."
+      (save-excursion
+        (cond
+         ;;;; Для Emacs Lisp: уровень определяется количеством точек ввода
+         ((derived-mode-p 'emacs-lisp-mode)
+          (let ((count 0))
+            (while (re-search-forward "[(]" nil t)
+              (setq count (1+ count)))
+            count))
+
+         ;;;; Для языков с отступами (Python)
+         ((derived-mode-p 'python-mode)
+          (/ (current-indentation) python-indent-offset))
+
+         ;;;; Общий случай: уровень по отступам
+         (t
+          (1+ (/ (current-indentation) tab-width))))))
+
+    ;; Установка outline-level
+    (defun ecf/set-outline-level ()
+      "Установить outline-level функцию."
+      (setq-local outline-level 'ecf/outline-level))
+
+    (add-hook 'outline-minor-mode-hook 'ecf/set-outline-level)
+
+    ;;;
+    ```
+
+
+#### <span class="section-num">20.1.8</span> Интеграция с imenu {#интеграция-с-imenu}
+
+-   Файл: `packages/outline/imenu.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Outline mode commands for Emacs
+
+    ;;; Code:
+
+    ;;;; Использовать outline для навигации через imenu
+    (defun ecf/outline-imenu-setup ()
+      "Настроить imenu для использования outline."
+      (when outline-minor-mode
+        (setq-local imenu-create-index-function
+                    'imenu-default-create-index-function)
+        (setq-local imenu-generic-expression
+                    (list
+                     (list nil outline-regexp 0)))))
+
+    (add-hook 'outline-minor-mode-hook 'ecf/outline-imenu-setup)
+
+    ;;;; Автоматическое обновление imenu при изменениях
+    (defadvice outline-minor-mode (after update-imenu activate)
+      "Обновить imenu при включении/выключении outline-minor-mode."
+      (when (featurep 'imenu)
+        (imenu-update-menubar)))
+
+    ;;;
+    ```
+
+
+### <span class="section-num">20.2</span> origami {#origami}
 
 -   [Emacs. Сворачивание (folding)]({{< relref "2025-01-28--emacs-folding" >}})
 -   Подключение:
@@ -3563,7 +3804,7 @@ slug: "emacs-desire-configuration"
     ;; (desire 'origami)
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 94:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 96:</span>
       rc.packages.el
     </div>
 -   Подключение:
@@ -3594,12 +3835,12 @@ slug: "emacs-desire-configuration"
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 95:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 97:</span>
       packages/origami.ecf
     </div>
 
 
-#### <span class="section-num">3.18.3</span> outli {#outli}
+### <span class="section-num">20.3</span> outli {#outli}
 
 -   [Emacs. Пакет outli]({{< relref "2025-01-28--emacs-outli" >}})
 -   Подключение:
@@ -3607,7 +3848,7 @@ slug: "emacs-desire-configuration"
     (desire 'outli :recipe '(:fetcher github :repo "jdtsmith/outli" :branch "main"))
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 96:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 98:</span>
       rc.packages.el
     </div>
 -   Загрузка:
@@ -3621,7 +3862,7 @@ slug: "emacs-desire-configuration"
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 97:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 99:</span>
       packages/outli/loaddefs.ecf
     </div>
 -   Настройка:
@@ -3641,50 +3882,79 @@ slug: "emacs-desire-configuration"
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 98:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 100:</span>
       packages/outli/desire.ecf
     </div>
 
 
-#### <span class="section-num">3.18.4</span> hideshow {#hideshow}
+### <span class="section-num">20.4</span> hideshow {#hideshow}
 
-<!--list-separator-->
 
-1.  Подключение
+#### <span class="section-num">20.4.1</span> Подключение {#подключение}
 
-    ```emacs-lisp
-    (desire 'hideshow)
-    ```
-    <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 99:</span>
-      rc.packages.el
-    </div>
+```emacs-lisp
+(desire 'hideshow)
+```
+<div class="src-block-caption">
+  <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 101:</span>
+  rc.packages.el
+</div>
 
-<!--list-separator-->
 
-2.  Загрузка
+#### <span class="section-num">20.4.2</span> Загрузка {#загрузка}
 
-    ```emacs-lisp
-    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-    ;;; Hideshow minor mode
-    ;;;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Hideshow.html
-    ;;;; https://www.emacswiki.org/emacs/HideShow
+```emacs-lisp
+;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+;;; Hideshow minor mode
+;;;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Hideshow.html
+;;;; https://www.emacswiki.org/emacs/HideShow
 
-    ;;; Code:
+;;; Code:
 
-    (require 'hideshow)
+(require 'hideshow)
 
-    ;;;
-    ```
-    <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 100:</span>
-      packages/hideshow/loaddefs.ecf
-    </div>
+;;;
+```
+<div class="src-block-caption">
+  <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 102:</span>
+  packages/hideshow/loaddefs.ecf
+</div>
 
-<!--list-separator-->
 
-3.  Настройка
+#### <span class="section-num">20.4.3</span> Настройка {#настройка}
 
+```emacs-lisp
+;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+;;; Hideshow minor mode
+;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Hideshow.html
+;; https://www.emacswiki.org/emacs/HideShow
+
+;;; Code:
+
+(add-hook 'prog-mode-hook #'hs-minor-mode)
+(add-hook 'c-mode-common-hook #'hs-minor-mode)
+(add-hook 'emacs-lisp-mode-hook #'hs-minor-mode)
+(add-hook 'java-mode-hook #'hs-minor-mode)
+(add-hook 'lisp-mode-hook #'hs-minor-mode)
+(add-hook 'perl-mode-hook #'hs-minor-mode)
+(add-hook 'sh-mode-hook #'hs-minor-mode)
+
+;;;; Hide the comments too when you do a 'hs-hide-all'
+(setopt hs-hide-comments nil)
+;;;; Set whether isearch opens folded comments, code, or both code, comments, t (both), or nil (neither)
+(setopt hs-isearch-open 'code)
+
+;;;
+```
+<div class="src-block-caption">
+  <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 103:</span>
+  packages/hideshow/desire.ecf
+</div>
+
+
+#### <span class="section-num">20.4.4</span> Интеграция с outline {#интеграция-с-outline}
+
+-   Файл: `packages/hideshow/outline.ecf`
     ```emacs-lisp
     ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
     ;;; Hideshow minor mode
@@ -3693,55 +3963,22 @@ slug: "emacs-desire-configuration"
 
     ;;; Code:
 
-    (add-hook 'prog-mode-hook #'hs-minor-mode)
-    (add-hook 'c-mode-common-hook #'hs-minor-mode)
-    (add-hook 'emacs-lisp-mode-hook #'hs-minor-mode)
-    (add-hook 'java-mode-hook #'hs-minor-mode)
-    (add-hook 'lisp-mode-hook #'hs-minor-mode)
-    (add-hook 'perl-mode-hook #'hs-minor-mode)
-    (add-hook 'sh-mode-hook #'hs-minor-mode)
+    (defun ecf/outline-hideshow-integration ()
+      "Интеграция outline-minor-mode и hideshow."
+      (when outline-minor-mode
+        ;; Использовать outline для навигации, hideshow для сворачивания блоков
+        (hs-minor-mode 1)
+        (local-set-key (kbd "C-c @ C-h") 'hs-hide-block)
+        (local-set-key (kbd "C-c @ C-s") 'hs-show-block)
+        (local-set-key (kbd "C-c @ C-c") 'hs-toggle-hiding)))
 
-    ;;;; Hide the comments too when you do a 'hs-hide-all'
-    (setopt hs-hide-comments nil)
-    ;;;; Set whether isearch opens folded comments, code, or both code, comments, t (both), or nil (neither)
-    (setopt hs-isearch-open 'code)
+    (add-hook 'outline-minor-mode-hook 'ecf/outline-hideshow-integration)
 
     ;;;
     ```
-    <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 101:</span>
-      packages/hideshow/desire.ecf
-    </div>
-
-<!--list-separator-->
-
-4.  Интеграция с outline
-
-    -   Файл: `packages/hideshow/outline.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Hideshow minor mode
-        ;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Hideshow.html
-        ;; https://www.emacswiki.org/emacs/HideShow
-
-        ;;; Code:
-
-        (defun ecf/outline-hideshow-integration ()
-          "Интеграция outline-minor-mode и hideshow."
-          (when outline-minor-mode
-            ;; Использовать outline для навигации, hideshow для сворачивания блоков
-            (hs-minor-mode 1)
-            (local-set-key (kbd "C-c @ C-h") 'hs-hide-block)
-            (local-set-key (kbd "C-c @ C-s") 'hs-show-block)
-            (local-set-key (kbd "C-c @ C-c") 'hs-toggle-hiding)))
-
-        (add-hook 'outline-minor-mode-hook 'ecf/outline-hideshow-integration)
-
-        ;;;
-        ```
 
 
-#### <span class="section-num">3.18.5</span> bicycle {#bicycle}
+### <span class="section-num">20.5</span> bicycle {#bicycle}
 
 -   Переключение режима структуры.
 -   <https://github.com/tarsius/bicycle>
@@ -3750,7 +3987,7 @@ slug: "emacs-desire-configuration"
     (desire 'bicycle)
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 102:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 104:</span>
       rc.packages.el
     </div>
 -   Загрузка:
@@ -3766,7 +4003,7 @@ slug: "emacs-desire-configuration"
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 103:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 105:</span>
       packages/bicycle/loaddefs.ecf
     </div>
 -   Настройка:
@@ -3797,499 +4034,483 @@ slug: "emacs-desire-configuration"
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 104:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 106:</span>
       packages/bicycle/desire.ecf
     </div>
 
 
-#### <span class="section-num">3.18.6</span> indent-bars {#indent-bars}
-
-<!--list-separator-->
-
-1.  Подключение
-
-    -   Файл: `rc.packages.el`
-        ```emacs-lisp
-        (desire 'indent-bars)
-        ```
-
-<!--list-separator-->
-
-2.  Загрузка
-
-    -   Файл: `packages/indent-bars/loaddefs.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Fast, configurable indentation guide-bars for Emacs
-        ;; https://github.com/jdtsmith/indent-bars
-
-        ;;; Code:
-
-        (require 'indent-bars)
-
-        ;;;
-        ```
-
-<!--list-separator-->
-
-3.  Конфигурация
-
-    -   Файл: `packages/indent-bars/desire.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Fast, configurable indentation guide-bars for Emacs
-        ;; https://github.com/jdtsmith/indent-bars
-
-        ;;; Code:
-
-        (setq indent-bars-width 1)              ;; Толщина линий
-        (setq indent-bars-color "gray50")       ;; Цвет линий
-        (setq indent-bars-pad-frac 0.1)         ;; Отступ от текста
-        (setq indent-bars-pattern "..")         ;; Паттерн для терминала
-        (setq indent-bars-display-on-blank-lines nil)  ;; Не показывать на пустых строках
-        (setq indent-bars-zigzag nil)           ;; Без зигзагов
-        (setq indent-bars-first-indent t)       ;; Показывать первую линию
-        (setq indent-bars-auto-update-delay 0.2) ;; Задержка обновления
-
-        ;;;
-        ```
-
-<!--list-separator-->
-
-4.  Хуки
-
-    -   Файл: `packages/indent-bars/desire.ecd/hook.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Fast, configurable indentation guide-bars for Emacs
-        ;; https://github.com/jdtsmith/indent-bars
-
-        ;;; Code:
-
-        ;;;; Включить для всех языков программирования
-        ;; (add-hook 'prog-mode-hook 'indent-bars-mode)
-
-        ;;;; Черный список режимов
-        ;; (defun my-disable-indent-bars ()
-        ;;   (indent-bars-mode -1))
-
-        ;; (add-hook 'org-mode-hook 'my-disable-indent-bars)
-        ;; (add-hook 'markdown-mode-hook 'my-disable-indent-bars)
-        ;; (add-hook 'text-mode-hook 'my-disable-indent-bars)
-        ;; (add-hook 'fundamental-mode-hook 'my-disable-indent-bars)
-
-        ;;;; Для конкретных режимов
-        (add-hook 'python-mode-hook 'indent-bars-mode)
-        (add-hook 'js-mode-hook 'indent-bars-mode)
-        (add-hook 'web-mode-hook 'indent-bars-mode)
-        (add-hook 'java-mode-hook 'indent-bars-mode)
-        (add-hook 'c-mode-hook 'indent-bars-mode)
-        (add-hook 'c++-mode-hook 'indent-bars-mode)
-        (add-hook 'ruby-mode-hook 'indent-bars-mode)
-        (add-hook 'go-mode-hook 'indent-bars-mode)
-
-        ;;;
-        ```
-
-<!--list-separator-->
-
-5.  Цвет
-
-    -   Файл: `packages/indent-bars/desire.ecd/color.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Fast, configurable indentation guide-bars for Emacs
-        ;; https://github.com/jdtsmith/indent-bars
-
-        ;;; Code:
-
-        ;;;; Автоматический подбор цвета под тему
-        ;; (setq indent-bars-color '(highlight :face-bg t :blend 0.2))
-
-        ;;;; Или установить цвета вручную
-        ;; (defun my-set-indent-bars-colors ()
-        ;;   "Установить цвета indent-bars в зависимости от темы."
-        ;;   (cond
-        ;;    ((eq (frame-parameter nil 'background-mode) 'dark)
-        ;;     (setq indent-bars-color "gray40"))
-        ;;    (t
-        ;;     (setq indent-bars-color "gray60"))))
-
-        ;; (add-hook 'after-init-hook 'my-set-indent-bars-colors)
-        ;; (add-hook 'enable-theme-functions
-        ;;           (lambda (_theme) (my-set-indent-bars-colors)))
-
-        ;;;
-        ```
-
-<!--list-separator-->
-
-6.  Производительность
-
-    -   Файл: `packages/indent-bars/desire.ecd/performance.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Fast, configurable indentation guide-bars for Emacs
-        ;; https://github.com/jdtsmith/indent-bars
-
-        ;;; Code:
-
-        ;;;; Не рисовать внутри строк и комментариев
-        ;; (setq indent-bars-no-draw-line-func
-        ;;       (lambda (beg end)
-        ;;         (or (nth 4 (syntax-ppss))      ;; Внутри строк
-        ;;             (nth 3 (syntax-ppss)))))   ;; Внутри комментариев
-
-        ;; ;;;; Отключить для больших файлов
-        ;; (defun ecf/indent-bars-maybe ()
-        ;;   "Включить indent-bars только для файлов разумного размера."
-        ;;   (when (< (buffer-size) 100000)  ;; 100KB
-        ;;     (indent-bars-mode 1)))
-
-        ;; (add-hook 'prog-mode-hook 'ecf/indent-bars-maybe)
-
-        ;;;
-        ```
-
-<!--list-separator-->
-
-7.  Интеграция с tree-sitter
-
-    -   Файл: `packages/indent-bars/tree-sitter.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Fast, configurable indentation guide-bars for Emacs
-        ;; https://github.com/jdtsmith/indent-bars
-
-        ;;; Code:
-
-        ;;;; Для лучшей поддержки tree-sitter
-        (when (boundp 'tree-sitter-indent)
-          (setq indent-bars-tree-sitter-support t))
-
-        ;;;
-        ```
+### <span class="section-num">20.6</span> indent-bars {#indent-bars}
 
 
-#### <span class="section-num">3.18.7</span> outline-indent {#outline-indent}
+#### <span class="section-num">20.6.1</span> Подключение {#подключение}
+
+-   Файл: `rc.packages.el`
+    ```emacs-lisp
+    (desire 'indent-bars)
+    ```
+
+
+#### <span class="section-num">20.6.2</span> Загрузка {#загрузка}
+
+-   Файл: `packages/indent-bars/loaddefs.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Fast, configurable indentation guide-bars for Emacs
+    ;; https://github.com/jdtsmith/indent-bars
+
+    ;;; Code:
+
+    (require 'indent-bars)
+
+    ;;;
+    ```
+
+
+#### <span class="section-num">20.6.3</span> Конфигурация {#конфигурация}
+
+-   Файл: `packages/indent-bars/desire.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Fast, configurable indentation guide-bars for Emacs
+    ;; https://github.com/jdtsmith/indent-bars
+
+    ;;; Code:
+
+    (setq indent-bars-width 1)              ;; Толщина линий
+    (setq indent-bars-color "gray50")       ;; Цвет линий
+    (setq indent-bars-pad-frac 0.1)         ;; Отступ от текста
+    (setq indent-bars-pattern "..")         ;; Паттерн для терминала
+    (setq indent-bars-display-on-blank-lines nil)  ;; Не показывать на пустых строках
+    (setq indent-bars-zigzag nil)           ;; Без зигзагов
+    (setq indent-bars-first-indent t)       ;; Показывать первую линию
+    (setq indent-bars-auto-update-delay 0.2) ;; Задержка обновления
+
+    ;;;
+    ```
+
+
+#### <span class="section-num">20.6.4</span> Хуки {#хуки}
+
+-   Файл: `packages/indent-bars/desire.ecd/hook.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Fast, configurable indentation guide-bars for Emacs
+    ;; https://github.com/jdtsmith/indent-bars
+
+    ;;; Code:
+
+    ;;;; Включить для всех языков программирования
+    ;; (add-hook 'prog-mode-hook 'indent-bars-mode)
+
+    ;;;; Черный список режимов
+    ;; (defun my-disable-indent-bars ()
+    ;;   (indent-bars-mode -1))
+
+    ;; (add-hook 'org-mode-hook 'my-disable-indent-bars)
+    ;; (add-hook 'markdown-mode-hook 'my-disable-indent-bars)
+    ;; (add-hook 'text-mode-hook 'my-disable-indent-bars)
+    ;; (add-hook 'fundamental-mode-hook 'my-disable-indent-bars)
+
+    ;;;; Для конкретных режимов
+    (add-hook 'python-mode-hook 'indent-bars-mode)
+    (add-hook 'js-mode-hook 'indent-bars-mode)
+    (add-hook 'web-mode-hook 'indent-bars-mode)
+    (add-hook 'java-mode-hook 'indent-bars-mode)
+    (add-hook 'c-mode-hook 'indent-bars-mode)
+    (add-hook 'c++-mode-hook 'indent-bars-mode)
+    (add-hook 'ruby-mode-hook 'indent-bars-mode)
+    (add-hook 'go-mode-hook 'indent-bars-mode)
+
+    ;;;
+    ```
+
+
+#### <span class="section-num">20.6.5</span> Цвет {#цвет}
+
+-   Файл: `packages/indent-bars/desire.ecd/color.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Fast, configurable indentation guide-bars for Emacs
+    ;; https://github.com/jdtsmith/indent-bars
+
+    ;;; Code:
+
+    ;;;; Автоматический подбор цвета под тему
+    ;; (setq indent-bars-color '(highlight :face-bg t :blend 0.2))
+
+    ;;;; Или установить цвета вручную
+    ;; (defun my-set-indent-bars-colors ()
+    ;;   "Установить цвета indent-bars в зависимости от темы."
+    ;;   (cond
+    ;;    ((eq (frame-parameter nil 'background-mode) 'dark)
+    ;;     (setq indent-bars-color "gray40"))
+    ;;    (t
+    ;;     (setq indent-bars-color "gray60"))))
+
+    ;; (add-hook 'after-init-hook 'my-set-indent-bars-colors)
+    ;; (add-hook 'enable-theme-functions
+    ;;           (lambda (_theme) (my-set-indent-bars-colors)))
+
+    ;;;
+    ```
+
+
+#### <span class="section-num">20.6.6</span> Производительность {#производительность}
+
+-   Файл: `packages/indent-bars/desire.ecd/performance.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Fast, configurable indentation guide-bars for Emacs
+    ;; https://github.com/jdtsmith/indent-bars
+
+    ;;; Code:
+
+    ;;;; Не рисовать внутри строк и комментариев
+    ;; (setq indent-bars-no-draw-line-func
+    ;;       (lambda (beg end)
+    ;;         (or (nth 4 (syntax-ppss))      ;; Внутри строк
+    ;;             (nth 3 (syntax-ppss)))))   ;; Внутри комментариев
+
+    ;; ;;;; Отключить для больших файлов
+    ;; (defun ecf/indent-bars-maybe ()
+    ;;   "Включить indent-bars только для файлов разумного размера."
+    ;;   (when (< (buffer-size) 100000)  ;; 100KB
+    ;;     (indent-bars-mode 1)))
+
+    ;; (add-hook 'prog-mode-hook 'ecf/indent-bars-maybe)
+
+    ;;;
+    ```
+
+
+#### <span class="section-num">20.6.7</span> Интеграция с tree-sitter {#интеграция-с-tree-sitter}
+
+-   Файл: `packages/indent-bars/tree-sitter.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Fast, configurable indentation guide-bars for Emacs
+    ;; https://github.com/jdtsmith/indent-bars
+
+    ;;; Code:
+
+    ;;;; Для лучшей поддержки tree-sitter
+    (when (boundp 'tree-sitter-indent)
+      (setq indent-bars-tree-sitter-support t))
+
+    ;;;
+    ```
+
+
+### <span class="section-num">20.7</span> outline-indent {#outline-indent}
 
 -   Сворачивание и разворачивание разделов кода в зависимости от уровня отступа.
 -   [Emacs. Пакет outline-indent]({{< relref "2026-02-11--emacs-outline-indent" >}})
 
-<!--list-separator-->
-
-1.  Подключение
-
-    -   Файл: `rc.packages.el`
-        ```emacs-lisp
-        ;; (desire 'outline-indent)
-        ```
-
-<!--list-separator-->
-
-2.  Загрузка
-
-    -   Файл: `packages/outline-indent/loaddefs.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Folding text based on indentation
-        ;; https://github.com/jamescherti/outline-indent.el
-
-        ;;; Code:
-
-        (require 'outline-indent)
-
-        ;;;
-        ```
-
-<!--list-separator-->
-
-3.  Конфигурация
-
-    -   Файл: `packages/outline-indent/desire.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Folding text based on indentation
-        ;; https://github.com/jamescherti/outline-indent.el
-
-        ;;; Code:
-
-        ;; Основные настройки
-        ;; (setopt outline-indent-alist
-        ;;       '((emacs-lisp-mode . 2)
-        ;;         (lisp-mode . 2)
-        ;;         (lisp-interaction-mode . 2)
-        ;;         (scheme-mode . 2)
-        ;;         (clojure-mode . 2)
-        ;;         (common-lisp-mode . 2)
-        ;;         (python-mode . 4)
-        ;;         (ruby-mode . 2)
-        ;;         (js-mode . 2)
-        ;;         (js2-mode . 2)
-        ;;         (javascript-mode . 2)
-        ;;         (typescript-mode . 2)
-        ;;         (c-mode . 2)
-        ;;         (c++-mode . 2)
-        ;;         (java-mode . 4)
-        ;;         (php-mode . 4)
-        ;;         (perl-mode . 4)
-        ;;         (cperl-mode . 4)
-        ;;         (tcl-mode . 4)
-        ;;         (sh-mode . 2)
-        ;;         (bash-mode . 2)
-        ;;         (css-mode . 2)
-        ;;         (scss-mode . 2)
-        ;;         (yaml-mode . 2)
-        ;;         (json-mode . 2)
-        ;;         (go-mode . 4)
-        ;;         (rust-mode . 4)
-        ;;         (swift-mode . 4)
-        ;;         (kotlin-mode . 4)
-        ;;         (scala-mode . 2)
-        ;;         (haskell-mode . 2)
-        ;;         (ocaml-mode . 2)
-        ;;         (erlang-mode . 2)
-        ;;         (elixir-mode . 2)))
-
-        (setopt outline-indent-ellipsis " ▼")
-
-        ;;;; Maintaining blank lines between folded sections
-        (setopt outline-blank-line t)
-
-        ;;;; Prevent Emacs from Searching Folded Sections
-        ;; (setopt search-invisible nil)
-
-        ;;;
-        ```
-
-<!--list-separator-->
-
-4.  Хуки
-
-    -   Файл: `packages/outline-indent/desire.ecd/hook.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Folding text based on indentation
-        ;; https://github.com/jamescherti/outline-indent.el
-
-        ;;; Code:
-
-        ;;;; Включить для всех режимов программирования
-        ;; (defun ecf/turn-on-outline-indent ()
-        ;;   "Включить outline-indent для режимов программирования."
-        ;;   (when (and (derived-mode-p 'prog-mode)
-        ;;              (< (buffer-size) 100000))  ;; 100KB
-        ;;     (outline-indent-mode 1)))
-
-        ;; (add-hook 'prog-mode-hook 'ecf/turn-on-outline-indent)
-
-        ;;;; Или для конкретных режимов
-        ;; (add-hook 'emacs-lisp-mode-hook 'outline-indent-mode)
-        ;; (add-hook 'python-mode-hook 'outline-indent-mode)
-        ;; (add-hook 'js-mode-hook 'outline-indent-mode)
-        ;; (add-hook 'java-mode-hook 'outline-indent-mode)
-        ;; (add-hook 'c-mode-hook 'outline-indent-mode)
-
-        ;;;; Черный список режимов
-        ;; (defun ecf/disable-outline-indent ()
-        ;;   "Отключить outline-indent для определенных режимов."
-        ;;   (when (or (derived-mode-p 'org-mode)
-        ;;             (derived-mode-p 'markdown-mode)
-        ;;             (derived-mode-p 'text-mode)
-        ;;             (derived-mode-p 'fundamental-mode))
-        ;;     (outline-indent-mode -1)))
 
-        ;; (add-hook 'outline-indent-mode-hook 'ecf/disable-outline-indent)
+#### <span class="section-num">20.7.1</span> Подключение {#подключение}
+
+-   Файл: `rc.packages.el`
+    ```emacs-lisp
+    ;; (desire 'outline-indent)
+    ```
+
+
+#### <span class="section-num">20.7.2</span> Загрузка {#загрузка}
+
+-   Файл: `packages/outline-indent/loaddefs.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Folding text based on indentation
+    ;; https://github.com/jamescherti/outline-indent.el
+
+    ;;; Code:
+
+    (require 'outline-indent)
+
+    ;;;
+    ```
+
+
+#### <span class="section-num">20.7.3</span> Конфигурация {#конфигурация}
+
+-   Файл: `packages/outline-indent/desire.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Folding text based on indentation
+    ;; https://github.com/jamescherti/outline-indent.el
+
+    ;;; Code:
+
+    ;; Основные настройки
+    ;; (setopt outline-indent-alist
+    ;;       '((emacs-lisp-mode . 2)
+    ;;         (lisp-mode . 2)
+    ;;         (lisp-interaction-mode . 2)
+    ;;         (scheme-mode . 2)
+    ;;         (clojure-mode . 2)
+    ;;         (common-lisp-mode . 2)
+    ;;         (python-mode . 4)
+    ;;         (ruby-mode . 2)
+    ;;         (js-mode . 2)
+    ;;         (js2-mode . 2)
+    ;;         (javascript-mode . 2)
+    ;;         (typescript-mode . 2)
+    ;;         (c-mode . 2)
+    ;;         (c++-mode . 2)
+    ;;         (java-mode . 4)
+    ;;         (php-mode . 4)
+    ;;         (perl-mode . 4)
+    ;;         (cperl-mode . 4)
+    ;;         (tcl-mode . 4)
+    ;;         (sh-mode . 2)
+    ;;         (bash-mode . 2)
+    ;;         (css-mode . 2)
+    ;;         (scss-mode . 2)
+    ;;         (yaml-mode . 2)
+    ;;         (json-mode . 2)
+    ;;         (go-mode . 4)
+    ;;         (rust-mode . 4)
+    ;;         (swift-mode . 4)
+    ;;         (kotlin-mode . 4)
+    ;;         (scala-mode . 2)
+    ;;         (haskell-mode . 2)
+    ;;         (ocaml-mode . 2)
+    ;;         (erlang-mode . 2)
+    ;;         (elixir-mode . 2)))
 
-        ;;;; Python
-        (add-hook 'python-mode-hook #'outline-indent-minor-mode)
-        (add-hook 'python-ts-mode-hook #'outline-indent-minor-mode)
+    (setopt outline-indent-ellipsis " ▼")
+
+    ;;;; Maintaining blank lines between folded sections
+    (setopt outline-blank-line t)
+
+    ;;;; Prevent Emacs from Searching Folded Sections
+    ;; (setopt search-invisible nil)
+
+    ;;;
+    ```
+
+
+#### <span class="section-num">20.7.4</span> Хуки {#хуки}
+
+-   Файл: `packages/outline-indent/desire.ecd/hook.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Folding text based on indentation
+    ;; https://github.com/jamescherti/outline-indent.el
+
+    ;;; Code:
+
+    ;;;; Включить для всех режимов программирования
+    ;; (defun ecf/turn-on-outline-indent ()
+    ;;   "Включить outline-indent для режимов программирования."
+    ;;   (when (and (derived-mode-p 'prog-mode)
+    ;;              (< (buffer-size) 100000))  ;; 100KB
+    ;;     (outline-indent-mode 1)))
+
+    ;; (add-hook 'prog-mode-hook 'ecf/turn-on-outline-indent)
 
-        ;;;; YAML
-        (add-hook 'yaml-mode-hook #'outline-indent-minor-mode)
-        (add-hook 'yaml-ts-mode-hook #'outline-indent-minor-mode)
+    ;;;; Или для конкретных режимов
+    ;; (add-hook 'emacs-lisp-mode-hook 'outline-indent-mode)
+    ;; (add-hook 'python-mode-hook 'outline-indent-mode)
+    ;; (add-hook 'js-mode-hook 'outline-indent-mode)
+    ;; (add-hook 'java-mode-hook 'outline-indent-mode)
+    ;; (add-hook 'c-mode-hook 'outline-indent-mode)
 
-        ;;;; Automatically Folding All Folds on Mode Activation
-        (add-hook 'outline-indent-minor-mode-hook
-                  #'(lambda()
-                      (outline-indent-close-folds)))
+    ;;;; Черный список режимов
+    ;; (defun ecf/disable-outline-indent ()
+    ;;   "Отключить outline-indent для определенных режимов."
+    ;;   (when (or (derived-mode-p 'org-mode)
+    ;;             (derived-mode-p 'markdown-mode)
+    ;;             (derived-mode-p 'text-mode)
+    ;;             (derived-mode-p 'fundamental-mode))
+    ;;     (outline-indent-mode -1)))
 
-        ;;;
-        ```
+    ;; (add-hook 'outline-indent-mode-hook 'ecf/disable-outline-indent)
 
-<!--list-separator-->
+    ;;;; Python
+    (add-hook 'python-mode-hook #'outline-indent-minor-mode)
+    (add-hook 'python-ts-mode-hook #'outline-indent-minor-mode)
 
-5.  Производительность
+    ;;;; YAML
+    (add-hook 'yaml-mode-hook #'outline-indent-minor-mode)
+    (add-hook 'yaml-ts-mode-hook #'outline-indent-minor-mode)
 
-    -   Файл: `packages/outline-indent/desire.ecd/performance.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Folding text based on indentation
-        ;; https://github.com/jamescherti/outline-indent.el
+    ;;;; Automatically Folding All Folds on Mode Activation
+    (add-hook 'outline-indent-minor-mode-hook
+              #'(lambda()
+                  (outline-indent-close-folds)))
 
-        ;;; Code:
+    ;;;
+    ```
 
-        ;;;; Оптимизация перерисовки
-        (setopt outline-indent-delay 0.1)  ;; Задержка перед обновлением
 
-        ;;;; Не показывать на пустых строках
-        (setopt outline-indent-blank-lines nil)
+#### <span class="section-num">20.7.5</span> Производительность {#производительность}
 
-        ;;;; Минимальная ширина отступа
-        (setopt outline-indent-min-width 2)
+-   Файл: `packages/outline-indent/desire.ecd/performance.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Folding text based on indentation
+    ;; https://github.com/jamescherti/outline-indent.el
 
-        ;;;
-        ```
+    ;;; Code:
 
-<!--list-separator-->
+    ;;;; Оптимизация перерисовки
+    (setopt outline-indent-delay 0.1)  ;; Задержка перед обновлением
 
-6.  Сочетания клавиш
+    ;;;; Не показывать на пустых строках
+    (setopt outline-indent-blank-lines nil)
 
-    -   Файл: `packages/outline-indent/desire.ecd/keybinding.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Folding text based on indentation
-        ;; https://github.com/jamescherti/outline-indent.el
+    ;;;; Минимальная ширина отступа
+    (setopt outline-indent-min-width 2)
 
-        ;;; Code:
+    ;;;
+    ```
 
-        ;;;; Глобальные клавиши для управления outline-indent
-        ;; (global-set-key (kbd "C-c o i") 'outline-indent-mode)
-        ;; (global-set-key (kbd "C-c o +") 'outline-indent-increase)
-        ;; (global-set-key (kbd "C-c o -") 'outline-indent-decrease)
-        ;; (global-set-key (kbd "C-c o r") 'outline-indent-refresh)
-        ;; (global-set-key (kbd "C-c o c") 'outline-indent-cycle)
 
-        ;;;; Локальные команды для работы с outline
-        ;; (defun ecf/outline-indent-commands ()
-        ;;   "Установить локальные команды для outline-indent."
-        ;;   (when outline-indent-mode
-        ;;     (local-set-key (kbd "TAB") 'outline-indent-cycle)
-        ;;     (local-set-key (kbd "<backtab>") 'outline-indent-shift-left)
-        ;;     (local-set-key (kbd "C-c TAB") 'outline-indent-refresh)))
+#### <span class="section-num">20.7.6</span> Сочетания клавиш {#сочетания-клавиш}
 
-        ;; (add-hook 'outline-indent-mode-hook 'ecf/outline-indent-commands)
+-   Файл: `packages/outline-indent/desire.ecd/keybinding.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Folding text based on indentation
+    ;; https://github.com/jamescherti/outline-indent.el
 
-        ;;;; Fold management
-        (define-key outline-indent-minor-mode-map (kbd "C-c o o") 'outline-indent-open-fold)     ; Open fold at point
-        (define-key outline-indent-minor-mode-map (kbd "C-c o c") 'outline-indent-close-fold)    ; Close fold at point
-        (define-key outline-indent-minor-mode-map (kbd "C-c o m") 'outline-indent-close-folds)   ; Close all folds
-        (define-key outline-indent-minor-mode-map (kbd "C-c o r") 'outline-indent-open-folds)    ; Open all folds
-        (define-key outline-indent-minor-mode-map (kbd "C-c o O") 'outline-indent-open-fold-rec) ; Open fold recursively
-        (define-key outline-indent-minor-mode-map (kbd "C-c o TAB") 'outline-indent-toggle-fold) ; Toggle fold at point
-        (define-key outline-indent-minor-mode-map (kbd "C-c o t") 'outline-indent-toggle-level-at-point) ; Toggle level at point
+    ;;; Code:
 
-        ;;;; Selection
-        (define-key outline-indent-minor-mode-map (kbd "C-c o v") 'outline-indent-select) ; Select current indented block
+    ;;;; Глобальные клавиши для управления outline-indent
+    ;; (global-set-key (kbd "C-c o i") 'outline-indent-mode)
+    ;; (global-set-key (kbd "C-c o +") 'outline-indent-increase)
+    ;; (global-set-key (kbd "C-c o -") 'outline-indent-decrease)
+    ;; (global-set-key (kbd "C-c o r") 'outline-indent-refresh)
+    ;; (global-set-key (kbd "C-c o c") 'outline-indent-cycle)
 
-        ;;;; Navigation at same indentation level
-        (define-key outline-indent-minor-mode-map (kbd "C-c o n") 'outline-indent-forward-same-level) ; Next heading at same level
-        (define-key outline-indent-minor-mode-map (kbd "C-c o p") 'outline-indent-backward-same-level) ; Previous heading at same level
+    ;;;; Локальные команды для работы с outline
+    ;; (defun ecf/outline-indent-commands ()
+    ;;   "Установить локальные команды для outline-indent."
+    ;;   (when outline-indent-mode
+    ;;     (local-set-key (kbd "TAB") 'outline-indent-cycle)
+    ;;     (local-set-key (kbd "<backtab>") 'outline-indent-shift-left)
+    ;;     (local-set-key (kbd "C-c TAB") 'outline-indent-refresh)))
 
-        ;;;; Shift left or right
-        (define-key outline-indent-minor-mode-map (kbd "C-c o <right>") 'outline-indent-shift-right)
-        (define-key outline-indent-minor-mode-map (kbd "C-c o <left>") 'outline-indent-shift-left)
+    ;; (add-hook 'outline-indent-mode-hook 'ecf/outline-indent-commands)
 
-        ;;;; Insert heading
-        (define-key outline-indent-minor-mode-map (kbd "C-c o i") 'outline-indent-insert-heading)
+    ;;;; Fold management
+    (define-key outline-indent-minor-mode-map (kbd "C-c o o") 'outline-indent-open-fold)     ; Open fold at point
+    (define-key outline-indent-minor-mode-map (kbd "C-c o c") 'outline-indent-close-fold)    ; Close fold at point
+    (define-key outline-indent-minor-mode-map (kbd "C-c o m") 'outline-indent-close-folds)   ; Close all folds
+    (define-key outline-indent-minor-mode-map (kbd "C-c o r") 'outline-indent-open-folds)    ; Open all folds
+    (define-key outline-indent-minor-mode-map (kbd "C-c o O") 'outline-indent-open-fold-rec) ; Open fold recursively
+    (define-key outline-indent-minor-mode-map (kbd "C-c o TAB") 'outline-indent-toggle-fold) ; Toggle fold at point
+    (define-key outline-indent-minor-mode-map (kbd "C-c o t") 'outline-indent-toggle-level-at-point) ; Toggle level at point
 
-        ;;;
-        ```
+    ;;;; Selection
+    (define-key outline-indent-minor-mode-map (kbd "C-c o v") 'outline-indent-select) ; Select current indented block
 
-<!--list-separator-->
+    ;;;; Navigation at same indentation level
+    (define-key outline-indent-minor-mode-map (kbd "C-c o n") 'outline-indent-forward-same-level) ; Next heading at same level
+    (define-key outline-indent-minor-mode-map (kbd "C-c o p") 'outline-indent-backward-same-level) ; Previous heading at same level
 
-7.  Оформление
+    ;;;; Shift left or right
+    (define-key outline-indent-minor-mode-map (kbd "C-c o <right>") 'outline-indent-shift-right)
+    (define-key outline-indent-minor-mode-map (kbd "C-c o <left>") 'outline-indent-shift-left)
 
-    -   Файл: `packages/outline-indent/desire.ecd/decor.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Folding text based on indentation
-        ;; https://github.com/jamescherti/outline-indent.el
+    ;;;; Insert heading
+    (define-key outline-indent-minor-mode-map (kbd "C-c o i") 'outline-indent-insert-heading)
 
-        ;;; Code:
+    ;;;
+    ```
 
-        ;;;; Символы для разных уровней отступа
-        ;; (setopt outline-indent-chars
-        ;;       '(?│ ?┃ ?┆ ?┇ ?┊ ?┋ ?╎ ?╏ ?┌ ?┐ ?└ ?┘ ?├ ?┤ ?┬ ?┴ ?┼))
 
-        ;;;; Или простые символы
-        ;; (setopt outline-indent-chars '(?| ?| ?| ?| ?|))  ;; Все одинаковые
+#### <span class="section-num">20.7.7</span> Оформление {#оформление}
 
-        ;;;; Специальные символы для терминала
-        ;; (setq outline-indent-chars '(?\u2502 ?\u2503 ?\u2506 ?\u2507))
+-   Файл: `packages/outline-indent/desire.ecd/decor.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Folding text based on indentation
+    ;; https://github.com/jamescherti/outline-indent.el
 
-        ;;;; Цвета для разных уровней отступов
-        ;; (setq outline-indent-colors
-        ;;       '("gray50" "gray55" "gray60" "gray65" "gray70" "gray75"))
+    ;;; Code:
 
-        ;;;
-        ```
+    ;;;; Символы для разных уровней отступа
+    ;; (setopt outline-indent-chars
+    ;;       '(?│ ?┃ ?┆ ?┇ ?┊ ?┋ ?╎ ?╏ ?┌ ?┐ ?└ ?┘ ?├ ?┤ ?┬ ?┴ ?┼))
 
-<!--list-separator-->
+    ;;;; Или простые символы
+    ;; (setopt outline-indent-chars '(?| ?| ?| ?| ?|))  ;; Все одинаковые
 
-8.  Интеграция с outline-minor-mode
+    ;;;; Специальные символы для терминала
+    ;; (setq outline-indent-chars '(?\u2502 ?\u2503 ?\u2506 ?\u2507))
 
-    -   Файл: `packages/outline-indent/outline.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Folding text based on indentation
-        ;; https://github.com/jamescherti/outline-indent.el
+    ;;;; Цвета для разных уровней отступов
+    ;; (setq outline-indent-colors
+    ;;       '("gray50" "gray55" "gray60" "gray65" "gray70" "gray75"))
 
-        ;;; Code:
+    ;;;
+    ```
 
-        ;;;; Автоматическое включение outline-minor-mode с outline-indent
-        (defun my-outline-minor-with-indent ()
-          "Включить outline-minor-mode и outline-indent-mode вместе."
-          (outline-minor-mode 1)
-          (when (derived-mode-p 'prog-mode)
-            (outline-indent-mode 1)))
 
-        ;;;; Настройка outline-regexp для разных языков
-        (defun ecf/set-outline-regexp ()
-          "Установить outline-regexp для текущего режима."
-          (cond
-           ((derived-mode-p 'emacs-lisp-mode 'lisp-mode)
-            (setq-local outline-regexp ";;;+ "))
-           ((derived-mode-p 'python-mode)
-            (setq-local outline-regexp "def \\|class \\|# "))
-           ((derived-mode-p 'js-mode 'typescript-mode)
-            (setq-local outline-regexp "function \\|class \\|const \\|let \\|var \\|// "))
-           (t
-            (setq-local outline-regexp "^[ \t]*[A-Za-z0-9]"))))
+#### <span class="section-num">20.7.8</span> Интеграция с outline-minor-mode {#интеграция-с-outline-minor-mode}
 
-        (add-hook 'outline-minor-mode-hook 'ecf/set-outline-regexp)
+-   Файл: `packages/outline-indent/outline.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Folding text based on indentation
+    ;; https://github.com/jamescherti/outline-indent.el
 
-        ;;;
-        ```
+    ;;; Code:
 
-<!--list-separator-->
+    ;;;; Автоматическое включение outline-minor-mode с outline-indent
+    (defun my-outline-minor-with-indent ()
+      "Включить outline-minor-mode и outline-indent-mode вместе."
+      (outline-minor-mode 1)
+      (when (derived-mode-p 'prog-mode)
+        (outline-indent-mode 1)))
 
-9.  Интеграция с indent-bars
+    ;;;; Настройка outline-regexp для разных языков
+    (defun ecf/set-outline-regexp ()
+      "Установить outline-regexp для текущего режима."
+      (cond
+       ((derived-mode-p 'emacs-lisp-mode 'lisp-mode)
+        (setq-local outline-regexp ";;;+ "))
+       ((derived-mode-p 'python-mode)
+        (setq-local outline-regexp "def \\|class \\|# "))
+       ((derived-mode-p 'js-mode 'typescript-mode)
+        (setq-local outline-regexp "function \\|class \\|const \\|let \\|var \\|// "))
+       (t
+        (setq-local outline-regexp "^[ \t]*[A-Za-z0-9]"))))
 
-    -   Файл: `packages/outline-indent/indent-bars.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Folding text based on indentation
-        ;; https://github.com/jamescherti/outline-indent.el
+    (add-hook 'outline-minor-mode-hook 'ecf/set-outline-regexp)
 
-        ;;; Code:
+    ;;;
+    ```
 
-        (require 'indent-bars)
 
-        ;;;; Setting this to nil is not reliable enough
-        ;; https://github.com/jdtsmith/indent-bars?tab=readme-ov-file#stipples
-        (setopt indent-bars-prefer-character t)
+#### <span class="section-num">20.7.9</span> Интеграция с indent-bars {#интеграция-с-indent-bars}
 
-        ;;;; When `indent-bars-prefer-character' is set to t, displaying indent bars on
-        ;;;; blank lines causes cursor movement issues when moving downward, resulting
-        ;;;; in abrupt shifts of the window start or cursor position.
-        (setopt indent-bars-display-on-blank-lines nil)
+-   Файл: `packages/outline-indent/indent-bars.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Folding text based on indentation
+    ;; https://github.com/jamescherti/outline-indent.el
 
-        ;;;
-        ```
+    ;;; Code:
 
+    (require 'indent-bars)
 
-### <span class="section-num">3.19</span> Проверка правописания {#проверка-правописания}
+    ;;;; Setting this to nil is not reliable enough
+    ;; https://github.com/jdtsmith/indent-bars?tab=readme-ov-file#stipples
+    (setopt indent-bars-prefer-character t)
+
+    ;;;; When `indent-bars-prefer-character' is set to t, displaying indent bars on
+    ;;;; blank lines causes cursor movement issues when moving downward, resulting
+    ;;;; in abrupt shifts of the window start or cursor position.
+    (setopt indent-bars-display-on-blank-lines nil)
+
+    ;;;
+    ```
+
+
+## <span class="section-num">21</span> Проверка правописания {#проверка-правописания}
 
 ```emacs-lisp
 ;;; Spell {{{
@@ -4302,7 +4523,7 @@ slug: "emacs-desire-configuration"
 ```
 
 
-#### <span class="section-num">3.19.1</span> jinx {#jinx}
+### <span class="section-num">21.1</span> jinx {#jinx}
 
 -   <https://github.com/minad/jinx>
 -   Подключение:
@@ -4310,7 +4531,7 @@ slug: "emacs-desire-configuration"
     (desire 'jinx)
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 105:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 107:</span>
       rc.packages.el
     </div>
 -   Начальная загрузка:
@@ -4331,7 +4552,7 @@ slug: "emacs-desire-configuration"
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 106:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 108:</span>
       packages/jinx/loaddefs.ecf
     </div>
 -   Настройки:
@@ -4350,7 +4571,7 @@ slug: "emacs-desire-configuration"
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 107:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 109:</span>
       packages/jinx/desire.ecf
     </div>
 -   Поддержка vertico:
@@ -4368,12 +4589,12 @@ slug: "emacs-desire-configuration"
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 108:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 110:</span>
       packages/jinx/vertico.ecf
     </div>
 
 
-#### <span class="section-num">3.19.2</span> Langtool {#langtool}
+### <span class="section-num">21.2</span> Langtool {#langtool}
 
 ```emacs-lisp
 ;; (desire 'langtool)
@@ -4383,14 +4604,14 @@ slug: "emacs-desire-configuration"
 ```
 
 
-#### <span class="section-num">3.19.3</span> Завершение {#завершение}
+### <span class="section-num">21.3</span> Завершение {#завершение}
 
 ```emacs-lisp
 ;;;}}}
 ```
 
 
-### <span class="section-num">3.20</span> Адресная книга {#адресная-книга}
+## <span class="section-num">22</span> Адресная книга {#адресная-книга}
 
 ```emacs-lisp
 ;;; Adress book {{{
@@ -4406,17 +4627,17 @@ slug: "emacs-desire-configuration"
 ```
 
 
-### <span class="section-num">3.21</span> Библиография {#библиография}
+## <span class="section-num">23</span> Библиография {#библиография}
 
 
-#### <span class="section-num">3.21.1</span> Начало {#начало}
+### <span class="section-num">23.1</span> Начало {#начало}
 
 ```emacs-lisp
 ;;; Bibliography {{{
 ```
 
 
-#### <span class="section-num">3.21.2</span> Доступ к библиографическим базам данных {#доступ-к-библиографическим-базам-данных}
+### <span class="section-num">23.2</span> Доступ к библиографическим базам данных {#доступ-к-библиографическим-базам-данных}
 
 -   Пакет _biblio_.
 -   Подключение:
@@ -4424,7 +4645,7 @@ slug: "emacs-desire-configuration"
     (desire 'biblio)
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 109:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 111:</span>
       rc.packages.el
     </div>
 -   Настройка:
@@ -4445,81 +4666,80 @@ slug: "emacs-desire-configuration"
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 110:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 112:</span>
       packages/biblio.ecf
     </div>
 
 
-#### <span class="section-num">3.21.3</span> Настройки bibtex {#настройки-bibtex}
+### <span class="section-num">23.3</span> Настройки bibtex {#настройки-bibtex}
 
 -   Подключение:
     ```emacs-lisp
     (desire 'bibtex)
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 111:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 113:</span>
       rc.packages.el
     </div>
 
-<!--list-separator-->
 
-1.  Расположение файлов
+#### <span class="section-num">23.3.1</span> Расположение файлов {#расположение-файлов}
 
-    -   Персональные настройки расположения файлов.
-    -   [Организация рабочего каталога]({{< relref "2021-08-01-organization-working-directory" >}})
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 112:</span>
-          packages/bibtex/personal.ecf
-        </div>
-    -   Основной файл библиографии:
-        ```emacs-lisp
-        ;;; Where bibliographies can be found
-        (setq personal-bibliography '("~/work/bib/bib/main.bib"))
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 113:</span>
-          packages/bibtex/personal.ecf
-        </div>
-    -   Файлы книг и статей:
-        ```emacs-lisp
-        ;;; Where PDFs can be found
-        ;; (setopt bibtex-completion-library-path (directory-files-recursively "~/data/bib/pdf" "\\`[^.]*\\'" 't))
-        (setq personal-library-path '("~/work/bib/data/pdf"))
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 114:</span>
-          packages/bibtex/personal.ecf
-        </div>
-    -   Расположение литературных заметок:
-        ```emacs-lisp
-        ;;; Notes
-        ;;; Store all notes in one file
-        ;; (setopt personal-notes-path "/path/to/notes.org")
-        ;;; Store notes in multiple files, one file per publication
-        ;; (setopt personal-notes-path (expand-file-name "~/work/org/notes/literature"))
-        (setq personal-notes-path '())
-        (add-to-list 'personal-notes-path (expand-file-name "~/work/org/notes/literature"))
+-   Персональные настройки расположения файлов.
+-   [Организация рабочего каталога]({{< relref "2021-08-01-organization-working-directory" >}})
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 114:</span>
+      packages/bibtex/personal.ecf
+    </div>
+-   Основной файл библиографии:
+    ```emacs-lisp
+    ;;; Where bibliographies can be found
+    (setq personal-bibliography '("~/work/bib/bib/main.bib"))
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 115:</span>
+      packages/bibtex/personal.ecf
+    </div>
+-   Файлы книг и статей:
+    ```emacs-lisp
+    ;;; Where PDFs can be found
+    ;; (setopt bibtex-completion-library-path (directory-files-recursively "~/data/bib/pdf" "\\`[^.]*\\'" 't))
+    (setq personal-library-path '("~/work/bib/data/pdf"))
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 116:</span>
+      packages/bibtex/personal.ecf
+    </div>
+-   Расположение литературных заметок:
+    ```emacs-lisp
+    ;;; Notes
+    ;;; Store all notes in one file
+    ;; (setopt personal-notes-path "/path/to/notes.org")
+    ;;; Store notes in multiple files, one file per publication
+    ;; (setopt personal-notes-path (expand-file-name "~/work/org/notes/literature"))
+    (setq personal-notes-path '())
+    (add-to-list 'personal-notes-path (expand-file-name "~/work/org/notes/literature"))
 
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 115:</span>
-          packages/bibtex/personal.ecf
-        </div>
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 117:</span>
+      packages/bibtex/personal.ecf
+    </div>
 
 
-#### <span class="section-num">3.21.4</span> Завершение {#завершение}
+### <span class="section-num">23.4</span> Завершение {#завершение}
 
 ```emacs-lisp
 ;;;}}}
 ```
 
 
-### <span class="section-num">3.22</span> Сниппеты {#сниппеты}
+## <span class="section-num">24</span> Сниппеты {#сниппеты}
 
 ```emacs-lisp
 
@@ -4527,95 +4747,94 @@ slug: "emacs-desire-configuration"
 ```
 
 
-### <span class="section-num">3.23</span> Текстовые режимы {#текстовые-режимы}
+## <span class="section-num">25</span> Текстовые режимы {#текстовые-режимы}
 
 -   Декларация секции:
     ```emacs-lisp
     ;;;; Work with text
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 116:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 118:</span>
       rc.packages.el
     </div>
 
 
-#### <span class="section-num">3.23.1</span> Таблицы {#таблицы}
+### <span class="section-num">25.1</span> Таблицы {#таблицы}
 
 -   Декларация секции:
     ```emacs-lisp
     ;;;;; Tables
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 117:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 119:</span>
       rc.packages.el
     </div>
 
-<!--list-separator-->
 
-1.  lte.el
+#### <span class="section-num">25.1.1</span> lte.el {#lte-dot-el}
 
-    -   Large Table Edition in Org and Markdown buffers
-    -   <https://github.com/fredericgiquel/lte.el>
-    -   Подключение:
-        ```emacs-lisp
-        (desire 'lte)
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 118:</span>
-          rc.packages.el
-        </div>
-    -   Настройка:
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Large Table Edition in Org and Markdown buffers for Emacs
-        ;;; https://github.com/fredericgiquel/lte.el
+-   Large Table Edition in Org and Markdown buffers
+-   <https://github.com/fredericgiquel/lte.el>
+-   Подключение:
+    ```emacs-lisp
+    (desire 'lte)
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 120:</span>
+      rc.packages.el
+    </div>
+-   Настройка:
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Large Table Edition in Org and Markdown buffers for Emacs
+    ;;; https://github.com/fredericgiquel/lte.el
 
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 119:</span>
-          packages/lte.ecf
-        </div>
-    -   Поддержка markdown-mode:
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Large Table Edition in Org and Markdown buffers for Emacs
-        ;;; https://github.com/fredericgiquel/lte.el
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 121:</span>
+      packages/lte.ecf
+    </div>
+-   Поддержка markdown-mode:
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Large Table Edition in Org and Markdown buffers for Emacs
+    ;;; https://github.com/fredericgiquel/lte.el
 
-        (require 'lte)
-        (add-hook 'markdown-mode-hook #'lte-truncate-table-mode)
+    (require 'lte)
+    (add-hook 'markdown-mode-hook #'lte-truncate-table-mode)
 
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 120:</span>
-          packages/markdown-mode/lte.ecf
-        </div>
-    -   Поддержка org-mode:
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Large Table Edition in Org and Markdown buffers for Emacs
-        ;;; https://github.com/fredericgiquel/lte.el
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 122:</span>
+      packages/markdown-mode/lte.ecf
+    </div>
+-   Поддержка org-mode:
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Large Table Edition in Org and Markdown buffers for Emacs
+    ;;; https://github.com/fredericgiquel/lte.el
 
-        (require 'lte)
-        (add-hook 'org-mode-hook #'lte-truncate-table-mode)
+    (require 'lte)
+    (add-hook 'org-mode-hook #'lte-truncate-table-mode)
 
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 121:</span>
-          packages/org/lte.ecf
-        </div>
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 123:</span>
+      packages/org/lte.ecf
+    </div>
 
 
-#### <span class="section-num">3.23.2</span> Отображение текста {#отображение-текста}
+### <span class="section-num">25.2</span> Отображение текста {#отображение-текста}
 
 -   Декларация секции:
     ```emacs-lisp
     ;;;;; Text view
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 122:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 124:</span>
       rc.packages.el
     </div>
 
@@ -4638,7 +4857,7 @@ slug: "emacs-desire-configuration"
 ```
 
 
-#### <span class="section-num">3.23.3</span> move-text {#move-text}
+### <span class="section-num">25.3</span> move-text {#move-text}
 
 -   [Emacs. Работа с текстом]({{< relref "2025-01-27--emacs-working-text" >}})
 -   Позволяет перемещать строки текста.
@@ -4647,7 +4866,7 @@ slug: "emacs-desire-configuration"
     (desire 'move-text)
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 123:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 125:</span>
       rc.packages.el
     </div>
 -   Загрузка:
@@ -4661,7 +4880,7 @@ slug: "emacs-desire-configuration"
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 124:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 126:</span>
       packages/move-text/loaddefs.ecf
     </div>
 -   Настройка:
@@ -4676,7 +4895,7 @@ slug: "emacs-desire-configuration"
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 125:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 127:</span>
       packages/move-text/desire.ecf
     </div>
 -   Перестройка отступов:
@@ -4700,12 +4919,12 @@ slug: "emacs-desire-configuration"
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 126:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 128:</span>
       packages/move-text/desire.ecd/reindent.ecf
     </div>
 
 
-#### <span class="section-num">3.23.4</span> delsel {#delsel}
+### <span class="section-num">25.4</span> delsel {#delsel}
 
 -   В дереве emacs.
 -   При вставке текста в выделенную область вставленный текст заменяет исходный.
@@ -4714,7 +4933,7 @@ slug: "emacs-desire-configuration"
     (desire 'delsel)
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 127:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 129:</span>
       rc.packages.el
     </div>
 -   Загрузка:
@@ -4730,302 +4949,292 @@ slug: "emacs-desire-configuration"
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 128:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 130:</span>
       packages/delsel.ecf
     </div>
 
 
-#### <span class="section-num">3.23.5</span> pandoc {#pandoc}
+### <span class="section-num">25.5</span> pandoc {#pandoc}
 
 ```emacs-lisp
 (desire 'pandoc-mode)
 ```
 
 
-#### <span class="section-num">3.23.6</span> markdown {#markdown}
-
-<!--list-separator-->
-
-1.  Подключение
-
-    -   Файл: `rc.packages.el`
-        ```emacs-lisp
-        (desire 'markdown-mode)
-        ```
-
-<!--list-separator-->
-
-2.  Интеграция
-
-    <!--list-separator-->
-
-    1.  lsp-mode
-
-        -   [Emacs. LSP для Markdown]({{< relref "2025-08-11--emacs-lsp-markdown" >}})
-        -   Файл: `packages/markdown-mode/lsp-mode.ecf`
-            ```emacs-lisp
-            ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-            ;;; Emacs lsp-mode client for markdown
-            ;; https://emacs-lsp.github.io/lsp-mode/page/lsp-marksman/
-
-            ;;; Code:
-
-            (require 'lsp-mode)
-            (add-hook 'markdown-mode #'lsp)
-
-            ;;;; Marksman
-            (require 'lsp-marksman)
-
-            ;;;
-            ```
-
-    <!--list-separator-->
-
-    2.  eglot
-
-        -   [Emacs. LSP для Markdown]({{< relref "2025-08-11--emacs-lsp-markdown" >}})
-        -   Файл: `packages/markdown-mode/eglot.ecf`
-            ```emacs-lisp
-            ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-            ;;; A client for Language Server Protocol servers
-            ;; https://github.com/joaotavora/eglot
-
-            ;;; Code
-
-            (require 'eglot)
-
-            (add-hook 'markdown-mode-hook #'eglot-ensure)
-
-            ;;;
-            ```
+### <span class="section-num">25.6</span> markdown {#markdown}
 
 
-#### <span class="section-num">3.23.7</span> Форматы документов {#форматы-документов}
+#### <span class="section-num">25.6.1</span> Подключение {#подключение}
 
-<!--list-separator-->
-
-1.  Оглавление pdf
-
-    -   [Emacs. Пакет doc-toc]({{< relref "2025-05-10--emacs-package-doc-toc" >}})
-    -   Подключение:
-        ```emacs-lisp
-        (desire 'doc-toc)
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 129:</span>
-          rc.packages.el
-        </div>
-    -   Предварительные настройки:
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Create, cleanup, add and manage Table Of Contents (TOC) of pdf and djvu documents with Emacs
-        ;; https://github.com/dalanicolai/doc-tools-toc
-
-        ;;; Code:
-
-        (desire 'pdf-tools)
-        (desire 'djvu)
-
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 130:</span>
-          packages/doc-toc/loaddefs.ecf
-        </div>
-    -   Загрузка пакета:
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Create, cleanup, add and manage Table Of Contents (TOC) of pdf and djvu documents with Emacs
-        ;; https://github.com/dalanicolai/doc-tools-toc
-
-        ;;; Code:
-
-        (require 'doc-toc)
-
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 131:</span>
-          packages/doc-toc/desire.ecf
-        </div>
-
-<!--list-separator-->
-
-2.  Метаданные pdf
-
-    -   [Emacs. Пакет pdf-meta-edit]({{< relref "2025-06-15--emacs-pdf-meta-edit" >}})
-    -   Подключение:
-        ```emacs-lisp
-        (desire 'pdf-meta-edit)
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 132:</span>
-          rc.packages.el
-        </div>
-    -   Предварительные настройки:
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Emacs code for editing a PDF's metadata, labels, and bookmarks
-        ;; https://github.com/krisbalintona/pdf-meta-edit
-
-        ;;; Code:
-
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 133:</span>
-          packages/pdf-meta-edit/loaddefs.ecf
-        </div>
-    -   Загрузка пакета:
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Emacs code for editing a PDF's metadata, labels, and bookmarks
-        ;; https://github.com/krisbalintona/pdf-meta-edit
-
-        ;;; Code:
-
-        (require 'pdf-meta-edit)
-
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 134:</span>
-          packages/pdf-meta-edit/desire.ecf
-        </div>
-
-<!--list-separator-->
-
-3.  Формат pdf
-
-    -   Подключение:
-        ```emacs-lisp
-        (desire 'pdf-tools)
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 135:</span>
-          rc.packages.el
-        </div>
-
-    -   Подключение doc-toc:
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Create, cleanup, add and manage Table Of Contents (TOC) of pdf and djvu documents with Emacs
-        ;; https://github.com/dalanicolai/doc-tools-toc
-
-        ;;; Code:
-
-        (require 'doc-toc)
-
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 136:</span>
-          packages/pdf-tools/doc-toc.ecf
-        </div>
-
-<!--list-separator-->
-
-4.  Формат epub
-
+-   Файл: `rc.packages.el`
     ```emacs-lisp
-    (desire 'nov)
-    ```
-
-<!--list-separator-->
-
-5.  Формат fb2
-
-    ```emacs-lisp
-    (desire 'fb2-reader)
-
-    ;; (desire 'valign)
+    (desire 'markdown-mode)
     ```
 
 
-#### <span class="section-num">3.23.8</span> quarto {#quarto}
+#### <span class="section-num">25.6.2</span> Интеграция {#интеграция}
+
+<!--list-separator-->
+
+1.  lsp-mode
+
+    -   [Emacs. LSP для Markdown]({{< relref "2025-08-11--emacs-lsp-markdown" >}})
+    -   Файл: `packages/markdown-mode/lsp-mode.ecf`
+        ```emacs-lisp
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;; Emacs lsp-mode client for markdown
+        ;; https://emacs-lsp.github.io/lsp-mode/page/lsp-marksman/
+
+        ;;; Code:
+
+        (require 'lsp-mode)
+        (add-hook 'markdown-mode #'lsp)
+
+        ;;;; Marksman
+        (require 'lsp-marksman)
+
+        ;;;
+        ```
+
+<!--list-separator-->
+
+2.  eglot
+
+    -   [Emacs. LSP для Markdown]({{< relref "2025-08-11--emacs-lsp-markdown" >}})
+    -   Файл: `packages/markdown-mode/eglot.ecf`
+        ```emacs-lisp
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;; A client for Language Server Protocol servers
+        ;; https://github.com/joaotavora/eglot
+
+        ;;; Code
+
+        (require 'eglot)
+
+        (add-hook 'markdown-mode-hook #'eglot-ensure)
+
+        ;;;
+        ```
+
+
+### <span class="section-num">25.7</span> Форматы документов {#форматы-документов}
+
+
+#### <span class="section-num">25.7.1</span> Оглавление pdf {#оглавление-pdf}
+
+-   [Emacs. Пакет doc-toc]({{< relref "2025-05-10--emacs-package-doc-toc" >}})
+-   Подключение:
+    ```emacs-lisp
+    (desire 'doc-toc)
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 131:</span>
+      rc.packages.el
+    </div>
+-   Предварительные настройки:
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Create, cleanup, add and manage Table Of Contents (TOC) of pdf and djvu documents with Emacs
+    ;; https://github.com/dalanicolai/doc-tools-toc
+
+    ;;; Code:
+
+    (desire 'pdf-tools)
+    (desire 'djvu)
+
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 132:</span>
+      packages/doc-toc/loaddefs.ecf
+    </div>
+-   Загрузка пакета:
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Create, cleanup, add and manage Table Of Contents (TOC) of pdf and djvu documents with Emacs
+    ;; https://github.com/dalanicolai/doc-tools-toc
+
+    ;;; Code:
+
+    (require 'doc-toc)
+
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 133:</span>
+      packages/doc-toc/desire.ecf
+    </div>
+
+
+#### <span class="section-num">25.7.2</span> Метаданные pdf {#метаданные-pdf}
+
+-   [Emacs. Пакет pdf-meta-edit]({{< relref "2025-06-15--emacs-pdf-meta-edit" >}})
+-   Подключение:
+    ```emacs-lisp
+    (desire 'pdf-meta-edit)
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 134:</span>
+      rc.packages.el
+    </div>
+-   Предварительные настройки:
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Emacs code for editing a PDF's metadata, labels, and bookmarks
+    ;; https://github.com/krisbalintona/pdf-meta-edit
+
+    ;;; Code:
+
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 135:</span>
+      packages/pdf-meta-edit/loaddefs.ecf
+    </div>
+-   Загрузка пакета:
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Emacs code for editing a PDF's metadata, labels, and bookmarks
+    ;; https://github.com/krisbalintona/pdf-meta-edit
+
+    ;;; Code:
+
+    (require 'pdf-meta-edit)
+
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 136:</span>
+      packages/pdf-meta-edit/desire.ecf
+    </div>
+
+
+#### <span class="section-num">25.7.3</span> Формат pdf {#формат-pdf}
+
+-   Подключение:
+    ```emacs-lisp
+    (desire 'pdf-tools)
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 137:</span>
+      rc.packages.el
+    </div>
+
+-   Подключение doc-toc:
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Create, cleanup, add and manage Table Of Contents (TOC) of pdf and djvu documents with Emacs
+    ;; https://github.com/dalanicolai/doc-tools-toc
+
+    ;;; Code:
+
+    (require 'doc-toc)
+
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 138:</span>
+      packages/pdf-tools/doc-toc.ecf
+    </div>
+
+
+#### <span class="section-num">25.7.4</span> Формат epub {#формат-epub}
+
+```emacs-lisp
+(desire 'nov)
+```
+
+
+#### <span class="section-num">25.7.5</span> Формат fb2 {#формат-fb2}
+
+```emacs-lisp
+(desire 'fb2-reader)
+
+;; (desire 'valign)
+```
+
+
+### <span class="section-num">25.8</span> quarto {#quarto}
 
 -   Поддержка quarto.
 
+
+#### <span class="section-num">25.8.1</span> Подключение {#подключение}
+
+-   Файл: `rc.packages.el`
+    ```emacs-lisp
+    ;;;; Quarto mode
+    (desire 'quarto-mode)
+    ```
+
+
+#### <span class="section-num">25.8.2</span> Загрузка {#загрузка}
+
+-   Файл: `packages/quarto-mode/desire.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; An emacs mode for quarto
+    ;; https://github.com/quarto-dev/quarto-emacs
+
+    ;;; Code:
+
+    (desire' polymode)
+    (desire 'poly-markdown)
+
+    (require 'quarto-mode)
+
+    ;;;
+    ```
+
+
+#### <span class="section-num">25.8.3</span> Интеграция {#интеграция}
+
 <!--list-separator-->
 
-1.  Подключение
+1.  lsp-mode
 
-    -   Файл: `rc.packages.el`
-        ```emacs-lisp
-        ;;;; Quarto mode
-        (desire 'quarto-mode)
-        ```
-
-<!--list-separator-->
-
-2.  Загрузка
-
-    -   Файл: `packages/quarto-mode/desire.ecf`
+    -   [Emacs. LSP для Markdown]({{< relref "2025-08-11--emacs-lsp-markdown" >}})
+    -   Файл: `packages/quarto-mode/lsp-mode.ecf`
         ```emacs-lisp
         ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; An emacs mode for quarto
-        ;; https://github.com/quarto-dev/quarto-emacs
+        ;;; Emacs lsp-mode client for markdown
+        ;; https://emacs-lsp.github.io/lsp-mode/page/lsp-marksman/
 
         ;;; Code:
 
-        (desire' polymode)
-        (desire 'poly-markdown)
+        (require 'lsp-mode)
+        (add-hook 'quarto-mode #'lsp)
 
-        (require 'quarto-mode)
+        ;;;; Marksman
+        (require 'lsp-marksman)
 
         ;;;
         ```
 
 <!--list-separator-->
 
-3.  Интеграция
+2.  eglot
 
-    <!--list-separator-->
+    -   [Emacs. LSP для Markdown]({{< relref "2025-08-11--emacs-lsp-markdown" >}})
+    -   Файл: `packages/markdown-mode/eglot.ecf`
+        ```emacs-lisp
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;; A client for Language Server Protocol servers
+        ;; https://github.com/joaotavora/eglot
 
-    1.  lsp-mode
+        ;;; Code
 
-        -   [Emacs. LSP для Markdown]({{< relref "2025-08-11--emacs-lsp-markdown" >}})
-        -   Файл: `packages/quarto-mode/lsp-mode.ecf`
-            ```emacs-lisp
-            ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-            ;;; Emacs lsp-mode client for markdown
-            ;; https://emacs-lsp.github.io/lsp-mode/page/lsp-marksman/
+        (require 'eglot)
 
-            ;;; Code:
+        (add-hook 'quarto-mode-hook #'eglot-ensure)
 
-            (require 'lsp-mode)
-            (add-hook 'quarto-mode #'lsp)
-
-            ;;;; Marksman
-            (require 'lsp-marksman)
-
-            ;;;
-            ```
-
-    <!--list-separator-->
-
-    2.  eglot
-
-        -   [Emacs. LSP для Markdown]({{< relref "2025-08-11--emacs-lsp-markdown" >}})
-        -   Файл: `packages/markdown-mode/eglot.ecf`
-            ```emacs-lisp
-            ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-            ;;; A client for Language Server Protocol servers
-            ;; https://github.com/joaotavora/eglot
-
-            ;;; Code
-
-            (require 'eglot)
-
-            (add-hook 'quarto-mode-hook #'eglot-ensure)
-
-            ;;;
-            ```
+        ;;;
+        ```
 
 
-#### <span class="section-num">3.23.9</span> calibredb {#calibredb}
+### <span class="section-num">25.9</span> calibredb {#calibredb}
 
 -   Клиент для Calibre (см. [Каталогизатор книг Calibre]({{< relref "2025-02-04--calibre-book-cataloger" >}})).
 -   <https://github.com/chenyanming/calibredb.el>
@@ -5034,7 +5243,7 @@ slug: "emacs-desire-configuration"
     (desire 'calibredb)
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 137:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 139:</span>
       rc.packages.el
     </div>
 -   Загрузка:
@@ -5048,7 +5257,7 @@ slug: "emacs-desire-configuration"
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 138:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 140:</span>
       packages/calibredb/loaddefs.ecf
     </div>
 -   Конфигурация:
@@ -5067,7 +5276,7 @@ slug: "emacs-desire-configuration"
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 139:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 141:</span>
       packages/calibredb/desire.ecf
     </div>
 -   Персональные настройки:
@@ -5091,7 +5300,7 @@ slug: "emacs-desire-configuration"
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 140:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 142:</span>
       packages/calibredb/personal.ecf
     </div>
 -   Поддержка `nerd-icons`:
@@ -5107,7 +5316,7 @@ slug: "emacs-desire-configuration"
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 141:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 143:</span>
       packages/calibredb/nerd-icons.ecf
     </div>
 -   Поддержка `all-the-icons`:
@@ -5123,168 +5332,161 @@ slug: "emacs-desire-configuration"
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 142:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 144:</span>
       packages/calibredb/all-the-icons.ecf
     </div>
 
 
-### <span class="section-num">3.24</span> Управление временем {#управление-временем}
+## <span class="section-num">26</span> Управление временем {#управление-временем}
 
 -   Разделитель:
     ```emacs-lisp
     ;;;; Time management
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 143:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 145:</span>
       rc.packages.el
     </div>
 
 
-#### <span class="section-num">3.24.1</span> pomm {#pomm}
+### <span class="section-num">26.1</span> pomm {#pomm}
 
 -   [Emacs. Метод pomodoro]({{< relref "2025-01-16--emacs-pomodoro-method" >}})
 
-<!--list-separator-->
 
-1.  Подключение
+#### <span class="section-num">26.1.1</span> Подключение {#подключение}
 
-    -   Файл: `rc.packages.el`
-        ```emacs-lisp
-        (desire 'pomm)
-        ```
-
-<!--list-separator-->
-
-2.  Загрузка
-
-    -   Файл: `packages/pomm/loaddefs.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Implementation of Pomodoro and Third Time techniques for Emacs
-        ;; https://github.com/SqrtMinusOne/pomm.el
-
-        ;;; Code:
-
-        (require 'pomm)
-
-        ;;;
-        ```
-
-<!--list-separator-->
-
-3.  Настройка
-
-    -   Файл: `packages/pomm/desire.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Implementation of Pomodoro and Third Time techniques for Emacs
-        ;; https://github.com/SqrtMinusOne/pomm.el
-
-        ;;; Code:
-
-        ;;;; If you want an actual notification
-        (setopt alert-default-style 'libnotify)
-
-        ;;;; Display in the modeline
-        (pomm-mode-line-mode)
-
-        ;;;; By default sounds are disabled
-        (setopt pomm-audio-enabled t)
-
-        ;;;; Ticking sound
-        ;; (setopt pomm-audio-tick-enabled t)
-
-        ;;;
-        ```
-
-<!--list-separator-->
-
-4.  Интерфейс к polybar (разным реализациям)
-
-    -   Файл: `packages/pomm/desire.ecd/polybar.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Implementation of Pomodoro and Third Time techniques for Emacs
-        ;; https://github.com/SqrtMinusOne/pomm.el
-
-        ;;; Code:
-
-        (add-hook 'pomm-on-tick-hook 'pomm-update-mode-line-string)
-        (add-hook 'pomm-on-status-changed-hook 'pomm-update-mode-line-string)
-
-        ;;;
-        ```
-
-<!--list-separator-->
-
-5.  Сохранение истории
-
-    -   Файл: `packages/pomm/desire.ecd/history.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Log history in CSV format
-        ;; https://github.com/SqrtMinusOne/pomm.el
+-   Файл: `rc.packages.el`
+    ```emacs-lisp
+    (desire 'pomm)
+    ```
 
 
-        ;;; Code:
+#### <span class="section-num">26.1.2</span> Загрузка {#загрузка}
 
-        ;;;; Save timer history in a CSV format
-        (setopt pomm-csv-history-file (expand-file-name "pomm.csv" user-emacs-directory))
+-   Файл: `packages/pomm/loaddefs.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Implementation of Pomodoro and Third Time techniques for Emacs
+    ;; https://github.com/SqrtMinusOne/pomm.el
 
-        ;;;; Customize timestamp (for traditional YYYY-MM-DD HH:mm:ss)
-        (setopt pomm-csv-history-file-timestamp-format "%F %T")
+    ;;; Code:
 
-        ;;;
-        ```
+    (require 'pomm)
 
-<!--list-separator-->
-
-6.  pomm-dwim
-
-    -   <https://github.com/SqrtMinusOne/pomm.el/issues/18>
-    -   Файл: `packages/pomm/desire.ecd/pomm-dwim.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; pomm-dwim: Like pomm-start but pauses if running
-        ;; https://github.com/SqrtMinusOne/pomm.el/issues/18
-
-        ;;; Code:
-
-        (defun pomm-dwim (arg)
-          "Like `pomm-start' but will also pause the timer if it is already running.
-        Alternatively if prefixed with \\[universal-argument], the timer state will be reset."
-          (interactive "p")
-          (if (eq arg 4)
-              (pomm--do-reset)
-            (if (eq 'running (alist-get 'status pomm--state))
-                (pomm-pause)
-              (pomm-start))))
-
-        ;;;
-        ```
-
-<!--list-separator-->
-
-7.  Интеграция org-mode
-
-    -   Файл: `packages/org/pomm.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Log history in CSV format
-        ;; https://github.com/SqrtMinusOne/pomm.el
-
-        ;;; Code:
-
-        (require 'pomm)
-
-        (add-hook 'pomm-on-status-changed-hook #'pomm--sync-org-clock)
-        (add-hook 'pomm-third-time-on-status-changed-hook #'pomm-third-time--sync-org-clock)
-
-        ;;;
-        ```
+    ;;;
+    ```
 
 
-#### <span class="section-num">3.24.2</span> org-pomodoro {#org-pomodoro}
+#### <span class="section-num">26.1.3</span> Настройка {#настройка}
+
+-   Файл: `packages/pomm/desire.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Implementation of Pomodoro and Third Time techniques for Emacs
+    ;; https://github.com/SqrtMinusOne/pomm.el
+
+    ;;; Code:
+
+    ;;;; If you want an actual notification
+    (setopt alert-default-style 'libnotify)
+
+    ;;;; Display in the modeline
+    (pomm-mode-line-mode)
+
+    ;;;; By default sounds are disabled
+    (setopt pomm-audio-enabled t)
+
+    ;;;; Ticking sound
+    ;; (setopt pomm-audio-tick-enabled t)
+
+    ;;;
+    ```
+
+
+#### <span class="section-num">26.1.4</span> Интерфейс к polybar (разным реализациям) {#интерфейс-к-polybar--разным-реализациям}
+
+-   Файл: `packages/pomm/desire.ecd/polybar.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Implementation of Pomodoro and Third Time techniques for Emacs
+    ;; https://github.com/SqrtMinusOne/pomm.el
+
+    ;;; Code:
+
+    (add-hook 'pomm-on-tick-hook 'pomm-update-mode-line-string)
+    (add-hook 'pomm-on-status-changed-hook 'pomm-update-mode-line-string)
+
+    ;;;
+    ```
+
+
+#### <span class="section-num">26.1.5</span> Сохранение истории {#сохранение-истории}
+
+-   Файл: `packages/pomm/desire.ecd/history.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Log history in CSV format
+    ;; https://github.com/SqrtMinusOne/pomm.el
+
+
+    ;;; Code:
+
+    ;;;; Save timer history in a CSV format
+    (setopt pomm-csv-history-file (expand-file-name "pomm.csv" user-emacs-directory))
+
+    ;;;; Customize timestamp (for traditional YYYY-MM-DD HH:mm:ss)
+    (setopt pomm-csv-history-file-timestamp-format "%F %T")
+
+    ;;;
+    ```
+
+
+#### <span class="section-num">26.1.6</span> pomm-dwim {#pomm-dwim}
+
+-   <https://github.com/SqrtMinusOne/pomm.el/issues/18>
+-   Файл: `packages/pomm/desire.ecd/pomm-dwim.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; pomm-dwim: Like pomm-start but pauses if running
+    ;; https://github.com/SqrtMinusOne/pomm.el/issues/18
+
+    ;;; Code:
+
+    (defun pomm-dwim (arg)
+      "Like `pomm-start' but will also pause the timer if it is already running.
+    Alternatively if prefixed with \\[universal-argument], the timer state will be reset."
+      (interactive "p")
+      (if (eq arg 4)
+          (pomm--do-reset)
+        (if (eq 'running (alist-get 'status pomm--state))
+            (pomm-pause)
+          (pomm-start))))
+
+    ;;;
+    ```
+
+
+#### <span class="section-num">26.1.7</span> Интеграция org-mode {#интеграция-org-mode}
+
+-   Файл: `packages/org/pomm.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Log history in CSV format
+    ;; https://github.com/SqrtMinusOne/pomm.el
+
+    ;;; Code:
+
+    (require 'pomm)
+
+    (add-hook 'pomm-on-status-changed-hook #'pomm--sync-org-clock)
+    (add-hook 'pomm-third-time-on-status-changed-hook #'pomm-third-time--sync-org-clock)
+
+    ;;;
+    ```
+
+
+### <span class="section-num">26.2</span> org-pomodoro {#org-pomodoro}
 
 ```emacs-lisp
 (desire 'org-pomodoro)
@@ -5292,7 +5494,7 @@ slug: "emacs-desire-configuration"
 ```
 
 
-### <span class="section-num">3.25</span> LaTeX {#latex}
+## <span class="section-num">27</span> LaTeX {#latex}
 
 ```emacs-lisp
 ;;; LaTeX
@@ -5308,63 +5510,62 @@ slug: "emacs-desire-configuration"
 ```
 
 
-#### <span class="section-num">3.25.1</span> Auctex {#auctex}
+### <span class="section-num">27.1</span> Auctex {#auctex}
 
 -   Подключение
     ```emacs-lisp
     (desire 'auctex)
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 144:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 146:</span>
       rc.packages.el
     </div>
 
-<!--list-separator-->
 
-1.  Парсинг файлов TeX
+#### <span class="section-num">27.1.1</span> Парсинг файлов TeX {#парсинг-файлов-tex}
 
-    -   Заголовок:
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Automatic Parsing of TeX Files
-        ;; http://www.gnu.org/software/auctex/
+-   Заголовок:
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Automatic Parsing of TeX Files
+    ;; http://www.gnu.org/software/auctex/
 
-        ;;; Code:
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 145:</span>
-          packages/auctex/desire.ecd/parsing.ecf
-        </div>
-    -   Автопарсинг:
-        ```emacs-lisp
-        ;;;; Automatic Parsing of TeX Files
-        (setopt TeX-parse-self t)                 ; Enable parse on load
-        (setopt TeX-auto-save t)                  ; Enable parse on save
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 146:</span>
-          packages/auctex/desire.ecd/parsing.ecf
-        </div>
-    -   Убрать символы табуляции:
-        ```emacs-lisp
-        ;;;; Automatically remove all tabs from a file before saving it
-        (setopt TeX-auto-untabify t)
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 147:</span>
-          packages/auctex/desire.ecd/parsing.ecf
-        </div>
-    -   Финал:
-        ```emacs-lisp
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 148:</span>
-          packages/auctex/desire.ecd/parsing.ecf
-        </div>
+    ;;; Code:
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 147:</span>
+      packages/auctex/desire.ecd/parsing.ecf
+    </div>
+-   Автопарсинг:
+    ```emacs-lisp
+    ;;;; Automatic Parsing of TeX Files
+    (setopt TeX-parse-self t)                 ; Enable parse on load
+    (setopt TeX-auto-save t)                  ; Enable parse on save
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 148:</span>
+      packages/auctex/desire.ecd/parsing.ecf
+    </div>
+-   Убрать символы табуляции:
+    ```emacs-lisp
+    ;;;; Automatically remove all tabs from a file before saving it
+    (setopt TeX-auto-untabify t)
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 149:</span>
+      packages/auctex/desire.ecd/parsing.ecf
+    </div>
+-   Финал:
+    ```emacs-lisp
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 150:</span>
+      packages/auctex/desire.ecd/parsing.ecf
+    </div>
 
 
-### <span class="section-num">3.26</span> Инфраструктура Org-mode {#инфраструктура-org-mode}
+## <span class="section-num">28</span> Инфраструктура Org-mode {#инфраструктура-org-mode}
 
 -   [Org-mode]({{< relref "2021-10-14-org-mode" >}})
 -   Конфигурация для `org-mode`:
@@ -5372,12 +5573,12 @@ slug: "emacs-desire-configuration"
     ;;;; Org-mode
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 149:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 151:</span>
       rc.packages.el
     </div>
 
 
-#### <span class="section-num">3.26.1</span> Babel {#babel}
+### <span class="section-num">28.1</span> Babel {#babel}
 
 -   [Emacs. Org Babel]({{< relref "2022-10-15-emacs-org-babel" >}})
 -   Общие настройки babel:
@@ -5388,7 +5589,7 @@ slug: "emacs-desire-configuration"
     ;;; Code:
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 150:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 152:</span>
       packages/org/desire.ecd/babel.ecf
     </div>
 -   Сохраняем отступы:
@@ -5397,7 +5598,7 @@ slug: "emacs-desire-configuration"
     ;; (setopt org-src-preserve-indentation t)
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 151:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 153:</span>
       packages/org/desire.ecd/babel.ecf
     </div>
 -   Отключим подтверждение запутывания:
@@ -5406,106 +5607,24 @@ slug: "emacs-desire-configuration"
     (setopt org-confirm-babel-evaluate nil)
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 152:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 154:</span>
       packages/org/desire.ecd/babel.ecf
     </div>
 
-<!--list-separator-->
 
-1.  org-auto-tangle
+#### <span class="section-num">28.1.1</span> org-auto-tangle {#org-auto-tangle}
 
-    -   Репозиторий: <https://github.com/yilkalargaw/org-auto-tangle/>
-    -   Подключим org-auto-tangle:
-        ```emacs-lisp
-        ;;;; A simple emacs package to allow org file tangling upon save
-        ;;;; https://github.com/yilkalargaw/org-auto-tangle/
-        (desire 'org-auto-tangle)
-        (require 'org-auto-tangle)
-        (add-hook 'org-mode-hook 'org-auto-tangle-mode)
-
-        ;;;; Auto-tangle as the default behavior for all org buffers
-        ;; (setopt org-auto-tangle-default t)
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 153:</span>
-          packages/org/desire.ecd/babel.ecf
-        </div>
-
-<!--list-separator-->
-
-2.  Поддержка языков
-
-    -   Включим поддержку разных языков программирования:
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-
-        ;;; Scripts
-        (require 'ob-awk)
-        (require 'ob-eshell)
-        (require 'ob-sed)
-        (require 'ob-shell)
-
-        ;;; Diagrams
-        (require 'ob-ditaa)
-        (require 'ob-dot)
-        (require 'ob-plantuml)
-
-        ;;; Programming languages
-        (require 'ob-calc)
-        (require 'ob-C)
-        (require 'ob-clojure)
-        (require 'ob-comint)
-        (require 'ob-core)
-        (require 'ob-css)
-        (require 'ob-emacs-lisp)
-        (require 'ob-eval)
-        (require 'ob-exp)
-        (require 'ob-forth)
-        (require 'ob-fortran)
-        (require 'ob-gnuplot)
-        (require 'ob-groovy)
-        (require 'ob-haskell)
-        (require 'ob-java)
-        (require 'ob-js)
-        (require 'ob-julia)
-        (require 'ob-latex)
-        (require 'ob-lilypond)
-        (require 'ob-lisp)
-        (require 'ob-lob)
-        (require 'ob-lua)
-        (require 'ob-makefile)
-        (require 'ob-matlab)
-        (require 'ob-maxima)
-        (require 'ob-ocaml)
-        (require 'ob-octave)
-        (require 'ob-org)
-        (require 'ob-perl)
-        (require 'ob-processing)
-        (require 'ob-python)
-        (require 'ob-ref)
-        (require 'ob-R)
-        (require 'ob-ruby)
-        (require 'ob-sass)
-        (require 'ob-scheme)
-        (require 'ob-screen)
-        (require 'ob-sql)
-        (require 'ob-sqlite)
-        (require 'ob-table)
-        (require 'ob-tangle)
-
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 154:</span>
-          packages/org/desire.ecd/ob.ecf
-        </div>
-
-<!--list-separator-->
-
-3.  Конец
-
+-   Репозиторий: <https://github.com/yilkalargaw/org-auto-tangle/>
+-   Подключим org-auto-tangle:
     ```emacs-lisp
-    ;;;
+    ;;;; A simple emacs package to allow org file tangling upon save
+    ;;;; https://github.com/yilkalargaw/org-auto-tangle/
+    (desire 'org-auto-tangle)
+    (require 'org-auto-tangle)
+    (add-hook 'org-mode-hook 'org-auto-tangle-mode)
+
+    ;;;; Auto-tangle as the default behavior for all org buffers
+    ;; (setopt org-auto-tangle-default t)
     ```
     <div class="src-block-caption">
       <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 155:</span>
@@ -5513,35 +5632,113 @@ slug: "emacs-desire-configuration"
     </div>
 
 
-#### <span class="section-num">3.26.2</span> Оформление {#оформление}
+#### <span class="section-num">28.1.2</span> Поддержка языков {#поддержка-языков}
+
+-   Включим поддержку разных языков программирования:
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+
+    ;;; Scripts
+    (require 'ob-awk)
+    (require 'ob-eshell)
+    (require 'ob-sed)
+    (require 'ob-shell)
+
+    ;;; Diagrams
+    (require 'ob-ditaa)
+    (require 'ob-dot)
+    (require 'ob-plantuml)
+
+    ;;; Programming languages
+    (require 'ob-calc)
+    (require 'ob-C)
+    (require 'ob-clojure)
+    (require 'ob-comint)
+    (require 'ob-core)
+    (require 'ob-css)
+    (require 'ob-emacs-lisp)
+    (require 'ob-eval)
+    (require 'ob-exp)
+    (require 'ob-forth)
+    (require 'ob-fortran)
+    (require 'ob-gnuplot)
+    (require 'ob-groovy)
+    (require 'ob-haskell)
+    (require 'ob-java)
+    (require 'ob-js)
+    (require 'ob-julia)
+    (require 'ob-latex)
+    (require 'ob-lilypond)
+    (require 'ob-lisp)
+    (require 'ob-lob)
+    (require 'ob-lua)
+    (require 'ob-makefile)
+    (require 'ob-matlab)
+    (require 'ob-maxima)
+    (require 'ob-ocaml)
+    (require 'ob-octave)
+    (require 'ob-org)
+    (require 'ob-perl)
+    (require 'ob-processing)
+    (require 'ob-python)
+    (require 'ob-ref)
+    (require 'ob-R)
+    (require 'ob-ruby)
+    (require 'ob-sass)
+    (require 'ob-scheme)
+    (require 'ob-screen)
+    (require 'ob-sql)
+    (require 'ob-sqlite)
+    (require 'ob-table)
+    (require 'ob-tangle)
+
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 156:</span>
+      packages/org/desire.ecd/ob.ecf
+    </div>
+
+
+#### <span class="section-num">28.1.3</span> Конец {#конец}
+
+```emacs-lisp
+;;;
+```
+<div class="src-block-caption">
+  <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 157:</span>
+  packages/org/desire.ecd/babel.ecf
+</div>
+
+
+### <span class="section-num">28.2</span> Оформление {#оформление}
+
+
+#### <span class="section-num">28.2.1</span> org-superstar {#org-superstar}
 
 <!--list-separator-->
 
-1.  org-superstar
+1.  Подключение
 
-    <!--list-separator-->
+    -   Файл: `rc.packages.el`
+        ```emacs-lisp
+        ;; (desire 'org-superstar)
+        ```
 
-    1.  Подключение
+<!--list-separator-->
 
-        -   Файл: `rc.packages.el`
-            ```emacs-lisp
-            ;; (desire 'org-superstar)
-            ```
+2.  Загрузка
 
-    <!--list-separator-->
+<!--list-separator-->
 
-    2.  Загрузка
+3.  Настройка
 
-    <!--list-separator-->
+<!--list-separator-->
 
-    3.  Настройка
-
-    <!--list-separator-->
-
-    4.  Интеграция с org
+4.  Интеграция с org
 
 
-#### <span class="section-num">3.26.3</span> Разное {#разное}
+### <span class="section-num">28.3</span> Разное {#разное}
 
 ```emacs-lisp
 ;; (desire 'org-ql)
@@ -5559,111 +5756,106 @@ slug: "emacs-desire-configuration"
 (desire 'org-tree-slide)
 ```
 <div class="src-block-caption">
-  <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 156:</span>
+  <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 158:</span>
   rc.packages.el
 </div>
 
 
-#### <span class="section-num">3.26.4</span> org-transclusion {#org-transclusion}
+### <span class="section-num">28.4</span> org-transclusion {#org-transclusion}
 
 -   [Emacs. Org-transclusion]({{< relref "2025-12-30--emacs-org-transclusion" >}})
 
-<!--list-separator-->
 
-1.  Подключение
+#### <span class="section-num">28.4.1</span> Подключение {#подключение}
 
-    -   Файл: `rc.packages.el`
+-   Файл: `rc.packages.el`
 
-    <!--listend-->
+<!--listend-->
 
-    ```emacs-lisp
-    (desire 'org-transclusion)
-    ```
-
-<!--list-separator-->
-
-2.  Загрузка
-
-    -   Файл: `packages/org-transclusion/loaddefs.ecf`
-
-    <!--listend-->
-
-    ```emacs-lisp
-    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-    ;;; Emacs package to enable transclusion with Org Mode
-    ;; https://github.com/nobiot/org-transclusion
-
-    ;;; Code:
-
-    ;;;
-    ```
-
-<!--list-separator-->
-
-3.  Настройка
-
-    -   Файл: `packages/org-transclusion/desire.ecf`
-
-    <!--listend-->
-
-    ```emacs-lisp
-    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-    ;;; Emacs package to enable transclusion with Org Mode
-    ;; https://github.com/nobiot/org-transclusion
-
-    ;;; Code:
-
-    (require 'org-transclusion)
-
-    ;; (define-key global-map (kbd "<f12>") #'org-transclusion-add)
-    (define-key global-map (kbd "C-c n T") #'org-transclusion-mode)
-
-    ;;; Ignore tags when export
-    (with-eval-after-load 'ox-hugo
-      (add-to-list 'ecf/tags-categories-to-be-removed "transclude"))
-
-    ;;;
-    ```
-
-<!--list-separator-->
-
-4.  org-transclusion-power-pack
-
-    -   Файл: `packages/org-transclusion/desire.ecd/org-transclusion-power-pack.ecf`
-
-    <!--listend-->
-
-    ```emacs-lisp
-    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-    ;;; Enhancements for org-transclusion
-    ;; https://github.com/incandescentman/org-transclusion-power-pack
-
-    ;;; Code:
-
-    ;; (desire 'org-transclusion-power-pack :recipe '(:fetcher github :repo "incandescentman/org-transclusion-power-pack" :branch "main"))
-    ;; (require 'org-transclusion-power-pack)
-
-    ;;;
-    ```
-
-<!--list-separator-->
-
-5.  Интеграция
-
-    -   Файл: `packages/org/org-transclusion.ecf`
-
-    <!--listend-->
-
-    ```emacs-lisp
-    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-    ;;; Emacs package to enable transclusion with Org Mode
-    ;; https://github.com/nobiot/org-transclusion
-
-     (require 'org-transclusion)
-    ```
+```emacs-lisp
+(desire 'org-transclusion)
+```
 
 
-#### <span class="section-num">3.26.5</span> Повестка дня {#повестка-дня}
+#### <span class="section-num">28.4.2</span> Загрузка {#загрузка}
+
+-   Файл: `packages/org-transclusion/loaddefs.ecf`
+
+<!--listend-->
+
+```emacs-lisp
+;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+;;; Emacs package to enable transclusion with Org Mode
+;; https://github.com/nobiot/org-transclusion
+
+;;; Code:
+
+;;;
+```
+
+
+#### <span class="section-num">28.4.3</span> Настройка {#настройка}
+
+-   Файл: `packages/org-transclusion/desire.ecf`
+
+<!--listend-->
+
+```emacs-lisp
+;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+;;; Emacs package to enable transclusion with Org Mode
+;; https://github.com/nobiot/org-transclusion
+
+;;; Code:
+
+(require 'org-transclusion)
+
+;; (define-key global-map (kbd "<f12>") #'org-transclusion-add)
+(define-key global-map (kbd "C-c n T") #'org-transclusion-mode)
+
+;;; Ignore tags when export
+(with-eval-after-load 'ox-hugo
+  (add-to-list 'ecf/tags-categories-to-be-removed "transclude"))
+
+;;;
+```
+
+
+#### <span class="section-num">28.4.4</span> org-transclusion-power-pack {#org-transclusion-power-pack}
+
+-   Файл: `packages/org-transclusion/desire.ecd/org-transclusion-power-pack.ecf`
+
+<!--listend-->
+
+```emacs-lisp
+;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+;;; Enhancements for org-transclusion
+;; https://github.com/incandescentman/org-transclusion-power-pack
+
+;;; Code:
+
+;; (desire 'org-transclusion-power-pack :recipe '(:fetcher github :repo "incandescentman/org-transclusion-power-pack" :branch "main"))
+;; (require 'org-transclusion-power-pack)
+
+;;;
+```
+
+
+#### <span class="section-num">28.4.5</span> Интеграция {#интеграция}
+
+-   Файл: `packages/org/org-transclusion.ecf`
+
+<!--listend-->
+
+```emacs-lisp
+;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+;;; Emacs package to enable transclusion with Org Mode
+;; https://github.com/nobiot/org-transclusion
+
+ (require 'org-transclusion)
+```
+
+
+### <span class="section-num">28.5</span> Повестка дня {#повестка-дня}
 
 -   Конфигурация повестки дня:
 
@@ -5695,19 +5887,19 @@ slug: "emacs-desire-configuration"
 ;; (desire 'org-transclusion)
 ```
 <div class="src-block-caption">
-  <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 157:</span>
+  <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 159:</span>
   rc.packages.el
 </div>
 
 
-#### <span class="section-num">3.26.6</span> org-node {#org-node}
+### <span class="section-num">28.6</span> org-node {#org-node}
 
 -   Подключение:
     ```emacs-lisp
     ;; (desire 'org-node)
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 158:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 160:</span>
       rc.packages.el
     </div>
 -   Загрузка:
@@ -5721,7 +5913,7 @@ slug: "emacs-desire-configuration"
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 159:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 161:</span>
       packages/org-node/loaddefs.ecf
     </div>
 
@@ -5754,7 +5946,7 @@ slug: "emacs-desire-configuration"
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 160:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 162:</span>
       packages/org-node/desire.ecf
     </div>
 -   Клавиатурные сочетания:
@@ -5772,508 +5964,492 @@ slug: "emacs-desire-configuration"
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 161:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 163:</span>
       packages/org-node/desire.ecd/key.ecf
     </div>
 
-<!--list-separator-->
 
-1.  Интеграция с org-roam
+#### <span class="section-num">28.6.1</span> Интеграция с org-roam {#интеграция-с-org-roam}
 
-    -   Используем не отдельно, а как надстройку над org-roam:
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; A notetaking system like Roam using Emacs Org-mode
-        ;; https://github.com/meedstrom/org-node
+-   Используем не отдельно, а как надстройку над org-roam:
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; A notetaking system like Roam using Emacs Org-mode
+    ;; https://github.com/meedstrom/org-node
 
-        ;;; Code:
+    ;;; Code:
 
-        (require 'org-node)
+    (require 'org-node)
 
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 162:</span>
-          packages/org-roam/org-node.ecf
-        </div>
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 164:</span>
+      packages/org-roam/org-node.ecf
+    </div>
 
 
-#### <span class="section-num">3.26.7</span> org-habit-ng {#org-habit-ng}
+### <span class="section-num">28.7</span> org-habit-ng {#org-habit-ng}
 
 -   [Org-mode. Пакет org-habit-ng]({{< relref "2026-01-28--org-mode-org-habit-ng" >}})
 
-<!--list-separator-->
 
-1.  Подключение
+#### <span class="section-num">28.7.1</span> Подключение {#подключение}
 
-    -   Файл: `rc.packages.el`
-        ```emacs-lisp
-        (desire 'org-habit-ng :recipe '(:fetcher codeberg :repo "Trevoke/org-habit-ng" :branch "congruence"))
-        ```
-
-<!--list-separator-->
-
-2.  Загрузка
-
-    -   Файл: `packages/org-habit-ng/loaddefs.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Org-habit-ng lets you schedule habits that org-mode's standard repeaters can't express
-        ;; https://codeberg.org/Trevoke/org-habit-ng
-
-        ;;; Code:
-
-        (desire 'transient)
-
-        ;;;
-        ```
-
-<!--list-separator-->
-
-3.  Настройка
-
-    -   Файл: `packages/org-habit-ng/desire.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Org-habit-ng lets you schedule habits that org-mode's standard repeaters can't express
-        ;; https://codeberg.org/Trevoke/org-habit-ng
-
-        ;;; Code:
-
-        (require 'transient)
-        (require 'org-habit-ng)
-        (org-habit-ng-mode 1)
-
-        ;;;
-        ```
-
-<!--list-separator-->
-
-4.  Интеграция с org-mode
-
-    -   Файл: `packages/org/org-habit-ng.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Org-habit-ng lets you schedule habits that org-mode's standard repeaters can't express
-        ;; https://codeberg.org/Trevoke/org-habit-ng
-
-        ;;; Code:
-
-        (require 'transient)
-        (require 'org-habit-ng)
-        (add-to-list 'org-modules 'org-habit)
-
-        (with-eval-after-load 'org-habit-ng
-          (define-key org-mode-map (kbd "C-c h r") #'org-habit-ng-set-recurrence)
-          (define-key org-mode-map (kbd "C-c h s") #'org-habit-ng-skip)
-          (define-key org-mode-map (kbd "C-c h c") #'org-habit-ng-show-score))
-
-        ;;;
-        ```
+-   Файл: `rc.packages.el`
+    ```emacs-lisp
+    (desire 'org-habit-ng)
+    ```
 
 
-#### <span class="section-num">3.26.8</span> org-window-habit {#org-window-habit}
+#### <span class="section-num">28.7.2</span> Загрузка {#загрузка}
+
+-   Файл: `packages/org-habit-ng/loaddefs.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Org-habit-ng lets you schedule habits that org-mode's standard repeaters can't express
+    ;; https://codeberg.org/Trevoke/org-habit-ng
+
+    ;;; Code:
+
+    (desire 'transient)
+
+    ;;;
+    ```
+
+
+#### <span class="section-num">28.7.3</span> Настройка {#настройка}
+
+-   Файл: `packages/org-habit-ng/desire.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Org-habit-ng lets you schedule habits that org-mode's standard repeaters can't express
+    ;; https://codeberg.org/Trevoke/org-habit-ng
+
+    ;;; Code:
+
+    (require 'transient)
+    (require 'org-habit-ng)
+    (org-habit-ng-mode 1)
+
+    ;;;
+    ```
+
+
+#### <span class="section-num">28.7.4</span> Интеграция с org-mode {#интеграция-с-org-mode}
+
+-   Файл: `packages/org/org-habit-ng.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Org-habit-ng lets you schedule habits that org-mode's standard repeaters can't express
+    ;; https://codeberg.org/Trevoke/org-habit-ng
+
+    ;;; Code:
+
+    (require 'transient)
+    (require 'org-habit-ng)
+    (add-to-list 'org-modules 'org-habit)
+
+    (with-eval-after-load 'org-habit-ng
+      (define-key org-mode-map (kbd "C-c h r") #'org-habit-ng-set-recurrence)
+      (define-key org-mode-map (kbd "C-c h s") #'org-habit-ng-skip)
+      (define-key org-mode-map (kbd "C-c h c") #'org-habit-ng-show-score))
+
+    ;;;
+    ```
+
+
+### <span class="section-num">28.8</span> org-window-habit {#org-window-habit}
 
 -   [Org-mode. Пакет org-window-habit]({{< relref "2026-03-01--org-mode-org-window-habit" >}})
 
-<!--list-separator-->
 
-1.  Подключение
+#### <span class="section-num">28.8.1</span> Подключение {#подключение}
 
-    -   Файл: `rc.packages.el`
-        ```emacs-lisp
-        ;; (desire 'org-window-habit)
-        ```
-
-<!--list-separator-->
-
-2.  Загрузка
-
-    -   Файл: `packages/org-window-habit/loaddefs.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Window-based habit tracking
-        ;; https://github.com/colonelpanic8/org-window-habit
-
-        ;;; Code:
-
-        ;;;
-        ```
-
-<!--list-separator-->
-
-3.  Настройка
-
-    -   Файл: `packages/org-window-habit/desire.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Window-based habit tracking
-        ;; https://github.com/colonelpanic8/org-window-habit
-
-        ;;; Code:
-
-        (require 'org-window-habit)
-        (org-window-habit-mode +1)
-
-        ;;;
-        ```
-
-<!--list-separator-->
-
-4.  Интеграция с org-mode
-
-    -   Файл: `packages/org/org-window-habit.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Window-based habit tracking
-        ;; https://github.com/colonelpanic8/org-window-habit
-
-        ;;; Code:
-
-        (require 'org-window-habit)
-
-        ;;;
-        ```
+-   Файл: `rc.packages.el`
+    ```emacs-lisp
+    ;; (desire 'org-window-habit)
+    ```
 
 
-#### <span class="section-num">3.26.9</span> org-gtd {#org-gtd}
+#### <span class="section-num">28.8.2</span> Загрузка {#загрузка}
+
+-   Файл: `packages/org-window-habit/loaddefs.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Window-based habit tracking
+    ;; https://github.com/colonelpanic8/org-window-habit
+
+    ;;; Code:
+
+    ;;;
+    ```
+
+
+#### <span class="section-num">28.8.3</span> Настройка {#настройка}
+
+-   Файл: `packages/org-window-habit/desire.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Window-based habit tracking
+    ;; https://github.com/colonelpanic8/org-window-habit
+
+    ;;; Code:
+
+    (require 'org-window-habit)
+    (org-window-habit-mode +1)
+
+    ;;;
+    ```
+
+
+#### <span class="section-num">28.8.4</span> Интеграция с org-mode {#интеграция-с-org-mode}
+
+-   Файл: `packages/org/org-window-habit.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Window-based habit tracking
+    ;; https://github.com/colonelpanic8/org-window-habit
+
+    ;;; Code:
+
+    (require 'org-window-habit)
+
+    ;;;
+    ```
+
+
+### <span class="section-num">28.9</span> org-gtd {#org-gtd}
 
 -   [Emacs. Пакеты. Org-gtd]({{< relref "2023-07-31-emacs-packages-org-gtd" >}})
 
-<!--list-separator-->
 
-1.  Подключение
+#### <span class="section-num">28.9.1</span> Подключение {#подключение}
 
-    -   Файл: `rc.packages.el`
-        ```emacs-lisp
-        ;;;; GTD
-        (desire 'org-gtd)
-        ```
-
-<!--list-separator-->
-
-2.  Загрузка
-
-    -   Файл: `packages/org-gtd/loaddefs.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; A package for using GTD with org-mode
-        ;; https://github.com/Trevoke/org-gtd.el
-
-        ;;; Code:
-
-        ;;;; Suppress upgrade warnings (set BEFORE org-gtd loads)
-        (setq org-gtd-update-ack "4.0.0")
-
-        ;;;
-        ```
-
-<!--list-separator-->
-
-3.  Настройка
-
-    -   Файл: `packages/org-gtd/desire.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; A package for using GTD with org-mode
-        ;; https://github.com/Trevoke/org-gtd.el
-
-        ;;; Code:
-
-        ;;;; Enable org-edna for project dependencies
-        (desire 'org-edna)
-        (require 'org-edna)
-        (setopt org-edna-use-inheritance t)
-        (org-edna-mode 1)
-
-        ;;;; Show properties in the agenda
-        ;; (desire 'org-agenda-property)
-        ;; (require 'org-agenda-property)
-
-        (setopt org-gtd-agenda-property-list '("LOCATION" "DELEGATED_TO"))
-        (setopt org-gtd-agenda-property-position 'where-it-fits)
-        (setopt org-gtd-agenda-property-column 60)
-        (setopt org-gtd-agenda-property-separator "|")
-
-        ;;;; Load org-gtd
-        (require 'org-gtd)
-
-        ;;;; Set GTD directory (defaults to ~/gtd/)
-        (setopt org-gtd-directory org-directory-todo)
-        ;;;; Add org-gtd files to your agenda
-        ;; (add-to-list 'org-agenda-files org-gtd-directory)
-
-        ;;;; Make org-gtd prompt for refile target instead of auto-refiling
-        (setopt org-gtd-refile-to-any-target nil)
-        ;;;; These types prompt for refile target
-        (setopt org-gtd-refile-prompt-for-types
-                '(single-action
-                  project-heading
-                  project-task
-                  calendar
-                  someday
-                  delegated
-                  tickler
-                  habit
-                  knowledge
-                  quick-action
-                  trash
-                  ))
-
-        ;;;
-        ```
-
-<!--list-separator-->
-
-4.  Клавиатурные сочетания
-
-    -   Файл: `packages/org-gtd/desire.ecd/keybinding.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; A package for using GTD with org-mode
-        ;;; Key bindings
-        ;; https://github.com/Trevoke/org-gtd.el
-
-        ;;; Code:
-
-        ;;;; Global keybindings (work anywhere in Emacs)
-        (general-define-key
-         :prefix "C-c d"
-         "c" #'("Capture" . org-gtd-capture)
-         "e" #'("Engage" . org-gtd-engage)
-         "p" #'("Process inbox" . org-gtd-process-inbox)
-         "n" #'("Show all next". org-gtd-show-all-next)
-         "s" #'("Stuck projects" . org-gtd-reflect-stuck-projects)
-         "." #'("Command Center" . org-gtd-command-center))
+-   Файл: `rc.packages.el`
+    ```emacs-lisp
+    ;;;; GTD
+    (desire 'org-gtd)
+    ```
 
 
-        ;;;; Keybinding for organizing items (only works in clarify buffers)
-        (with-eval-after-load 'org-gtd
-          (general-define-key
-           :keymaps 'org-gtd-clarify-map
-           :prefix "C-c"
-           "c" #'("Organize this item" . org-gtd-organize)))
+#### <span class="section-num">28.9.2</span> Загрузка {#загрузка}
 
-        ;;;; Quick actions on tasks in agenda views (optional but recommended)
-        (with-eval-after-load 'org-agenda
-          (general-define-key
-           :keymaps 'org-agenda-mode-map
-           :prefix "C-c"
-           "." #'("GTD quick actions" . org-gtd-agenda-transient)))
+-   Файл: `packages/org-gtd/loaddefs.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; A package for using GTD with org-mode
+    ;; https://github.com/Trevoke/org-gtd.el
 
-        ;;;
-        ```
+    ;;; Code:
 
-<!--list-separator-->
+    ;;;; Suppress upgrade warnings (set BEFORE org-gtd loads)
+    (setq org-gtd-update-ack "4.0.0")
 
-5.  Представления
-
-    -   Файл: `packages/org-gtd/desire.ecd/view.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; A package for using GTD with org-mode
-        ;;; Views
-        ;; https://github.com/Trevoke/org-gtd.el
-
-        ;;; Code:
-
-        (defun org-gtd-engage-view-spec ()
-          "Return GTD view specification for the engage view.
-        Shows:
-        ​- Calendar day view (Calendar + Habit items with timestamps for today)
-        ​- Tickler items due today
-        ​- Delegated items with check-ins due today
-        ​- All next actions
-        ​+ Other"
-          `((name . "GTD Engage View")
-            ;; (prefix . (project area-of-focus "—"))
-            (prefix-width . ,org-gtd-prefix-width)
-            (blocks . (
-                       ((name . "Weekly Agenda")
-                        (view-type . agenda)
-                        (agenda-span . 1))
-                       ;; ((name . "Today's Schedule")
-                       ;;  (block-type . calendar-day))
-                       ((name . "Overdue events")
-                        (type . calendar)
-                        (when . past))
-                       ((name . "Overdue habits")
-                        (type . habit)
-                        (when . past))
-                       ;; ((name . "Past")
-                       ;;	(type . next-action)
-                       ;;	(scheduled . past)
-                       ;;	(deadline . past))
-                       ;; ((name . "Daily Agenda")
-                       ;;	(view-type . agenda)
-                       ;;	(agenda-span . 1))
-                       ;; ((name . "Future Habits")
-                       ;;	(type . habit)
-                       ;;	(when . future))
-                       ;; ((name . "High Priority")
-                       ;;	(type . next-action)
-                       ;;	(priority . A))
-                       ((name . "Important Tasks")
-                        (type . next-action)
-                        (priority . (>= B)))
-                       ((name . "Quick Work")
-                        (type . next-action)
-                        (effort . (<= "30min")))
-                       ((name . "Science")
-                        (type . next-action)
-                        (area-of-focus . "Science"))
-                       ((name . "Sciadmin")
-                        (type . next-action)
-                        (area-of-focus . "Sciadmin"))
-                       ((name . "Teaching")
-                        (type . next-action)
-                        (area-of-focus . "Teaching"))
-                       ((name . "Sysadmin")
-                        (type . next-action)
-                        (area-of-focus . "Sysadmin"))
-                       ((name . "All actions ready to be executed")
-                        (type . next-action)
-                        (not-habit . t))
-                       ((name . "Read")
-                        (type . next-action)
-                        (area-of-focus . "Read"))
-                       ((name . "Deep in Progress")
-                        (type . next-action)
-                        (clocked . (> "1:00")))
-                       ((name . "Tickler items ready for today")
-                        (type . tickler)
-                        (when . today))
-                       ((name . "Delegated items to check in on today")
-                        (type . delegated)
-                        (when . today))
-                       ((name . "Missed Delegated")
-                        (type . delegated)
-                        (when . past))
-                       ((name . "Active Projects")
-                        (type . project))
-                       ((name . "Overdue Projects")
-                        (type . project)
-                        (deadline . past))
-                       ((name . "Incubated Projects")
-                        (type . incubated-project))
-                       ((name . "Stuck Projects")
-                        (type . stuck-project))
-                       ((name . "Someday/Maybe")
-                        (type . someday))
-                       ((name . "Completed This Week")
-                        (done . past-week))
-                       ((name . "Weekly Agenda")
-                        (view-type . agenda)
-                        (agenda-span . 7))
-                        ))))
-
-        ;;;
-        ```
-
-<!--list-separator-->
-
-6.  Хуки
-
-    -   Файл: `packages/org-gtd/desire.ecd/hook.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; A package for using GTD with org-mode
-        ;;; Custom hooks for org-gtd
-        ;; https://github.com/Trevoke/org-gtd.el
-
-        ;;; Code:
-
-        (defun ecf/add-effort ()
-          "Prompt for effort on single actions and projects."
-          (when (org-gtd-organize-type-member-p '(single-action project-heading))
-            (call-interactively #'org-set-effort)))
-
-        (defun ecf/add-priority ()
-          "Prompt for priority on single actions."
-          (when (org-gtd-organize-type-member-p '(single-action))
-            (call-interactively #'org-priority)))
-
-        (defun ecf/auto-tag-contexts ()
-          "Automatically suggest context tags based on heading keywords."
-          (when (org-gtd-organize-type-member-p '(single-action))
-            (let* ((heading (downcase (org-get-heading t t t t)))
-                   (suggested-tags '()))
-              (when (string-match-p "\\(phone\\|call\\)" heading)
-                (push "@phone" suggested-tags))
-              (when (string-match-p "\\(computer\\|code\\|write\\)" heading)
-                (push "@computer" suggested-tags))
-              (when (string-match-p "\\(store\\|buy\\|shop\\)" heading)
-                (push "@errands" suggested-tags))
-              (when suggested-tags
-                (message "Suggested contexts: %s" (string-join suggested-tags ", "))))))
-
-        (defun ecf/track-creation-date ()
-          "Add CREATED property with current timestamp."
-          (unless (org-gtd-organize-type-member-p '(trash quick-action))
-            (org-set-property "CREATED"
-                              (format-time-string "[%Y-%m-%d %a %H:%M]"))))
-
-        ;; Install hooks
-        (setopt org-gtd-organize-hooks
-                '(org-gtd-set-area-of-focus    ;; set area first
-                  org-set-tags-command         ;; then tags
-                  ecf/auto-tag-contexts        ;; suggest context tags
-                  ecf/add-effort               ;; estimate effort
-                  ;; ecf/add-priority             ;; set priority if needed
-                  ecf/track-creation-date))    ;; track when created
-
-        ;;;
-        ```
-
-<!--list-separator-->
-
-7.  Персональные настройки
-
-    -   Файл: `packages/org-gtd/personal.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; A package for using GTD with org-mode
-        ;; https://github.com/Trevoke/org-gtd.el
-
-        ;;; Code:
-
-        ;;;; Configure org-mode TODO keywords
-        ;; All GTD keywords must be in the same sequence
-        ;; Standard options like "TODO(t)" or "DONE(d!)" are fine - org-gtd ignores them
-        (setopt org-todo-keywords
-              '((sequence "TODO(t)" "NEXT(n)" "WAIT(w)" "|" "DONE(d)" "CNCL(c)")))
-
-        ;;;; Map GTD semantic states to your keywords
-        (setopt org-gtd-keyword-mapping
-              '((todo . "TODO")      ; tasks not ready to act on
-                (next . "NEXT")      ; tasks ready to act on immediately
-                (wait . "WAIT")      ; tasks blocked or delegated
-                (canceled . "CNCL"))) ; tasks that won't be completed
-
-        ;;;; List of strings representing your areas of focus (horizon 2 in GTD)
-        (add-to-list 'org-gtd-areas-of-focus "Science" t)
-        (add-to-list 'org-gtd-areas-of-focus "Sciadmin" t)
-        (add-to-list 'org-gtd-areas-of-focus "Teaching" t)
-        (add-to-list 'org-gtd-areas-of-focus "Study" t)
-        (add-to-list 'org-gtd-areas-of-focus "Sysadmin" t)
-        (add-to-list 'org-gtd-areas-of-focus "Read" t)
-
-        ;;;
-        ```
+    ;;;
+    ```
 
 
-#### <span class="section-num">3.26.10</span> mobileorg {#mobileorg}
+#### <span class="section-num">28.9.3</span> Настройка {#настройка}
+
+-   Файл: `packages/org-gtd/desire.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; A package for using GTD with org-mode
+    ;; https://github.com/Trevoke/org-gtd.el
+
+    ;;; Code:
+
+    ;;;; Enable org-edna for project dependencies
+    (desire 'org-edna)
+    (require 'org-edna)
+    (setopt org-edna-use-inheritance t)
+    (org-edna-mode 1)
+
+    ;;;; Show properties in the agenda
+    ;; (desire 'org-agenda-property)
+    ;; (require 'org-agenda-property)
+
+    (setopt org-gtd-agenda-property-list '("LOCATION" "DELEGATED_TO"))
+    (setopt org-gtd-agenda-property-position 'where-it-fits)
+    (setopt org-gtd-agenda-property-column 60)
+    (setopt org-gtd-agenda-property-separator "|")
+
+    ;;;; Load org-gtd
+    (require 'org-gtd)
+
+    ;;;; Set GTD directory (defaults to ~/gtd/)
+    (setopt org-gtd-directory org-directory-todo)
+    ;;;; Add org-gtd files to your agenda
+    ;; (add-to-list 'org-agenda-files org-gtd-directory)
+
+    ;;;; Make org-gtd prompt for refile target instead of auto-refiling
+    (setopt org-gtd-refile-to-any-target nil)
+    ;;;; These types prompt for refile target
+    (setopt org-gtd-refile-prompt-for-types
+            '(single-action
+              project-heading
+              project-task
+              calendar
+              someday
+              delegated
+              tickler
+              habit
+              knowledge
+              quick-action
+              trash
+              ))
+
+    ;;;
+    ```
+
+
+#### <span class="section-num">28.9.4</span> Клавиатурные сочетания {#клавиатурные-сочетания}
+
+-   Файл: `packages/org-gtd/desire.ecd/keybinding.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; A package for using GTD with org-mode
+    ;;; Key bindings
+    ;; https://github.com/Trevoke/org-gtd.el
+
+    ;;; Code:
+
+    ;;;; Global keybindings (work anywhere in Emacs)
+    (general-define-key
+     :prefix "C-c d"
+     "c" #'("Capture" . org-gtd-capture)
+     "e" #'("Engage" . org-gtd-engage)
+     "p" #'("Process inbox" . org-gtd-process-inbox)
+     "n" #'("Show all next". org-gtd-show-all-next)
+     "s" #'("Stuck projects" . org-gtd-reflect-stuck-projects)
+     "." #'("Command Center" . org-gtd-command-center))
+
+
+    ;;;; Keybinding for organizing items (only works in clarify buffers)
+    (with-eval-after-load 'org-gtd
+      (general-define-key
+       :keymaps 'org-gtd-clarify-map
+       :prefix "C-c"
+       "c" #'("Organize this item" . org-gtd-organize)))
+
+    ;;;; Quick actions on tasks in agenda views (optional but recommended)
+    (with-eval-after-load 'org-agenda
+      (general-define-key
+       :keymaps 'org-agenda-mode-map
+       :prefix "C-c"
+       "." #'("GTD quick actions" . org-gtd-agenda-transient)))
+
+    ;;;
+    ```
+
+
+#### <span class="section-num">28.9.5</span> Представления {#представления}
+
+-   Файл: `packages/org-gtd/desire.ecd/view.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; A package for using GTD with org-mode
+    ;;; Views
+    ;; https://github.com/Trevoke/org-gtd.el
+
+    ;;; Code:
+
+    (defun org-gtd-engage-view-spec ()
+      "Return GTD view specification for the engage view.
+    Shows:
+    ​- Calendar day view (Calendar + Habit items with timestamps for today)
+    ​- Tickler items due today
+    ​- Delegated items with check-ins due today
+    ​- All next actions
+    ​+ Other"
+      `((name . "GTD Engage View")
+        ;; (prefix . (project area-of-focus "—"))
+        (prefix-width . ,org-gtd-prefix-width)
+        (blocks . (
+                   ((name . "Weekly Agenda")
+                    (view-type . agenda)
+                    (agenda-span . 1))
+                   ;; ((name . "Today's Schedule")
+                   ;;  (block-type . calendar-day))
+                   ((name . "Overdue events")
+                    (type . calendar)
+                    (when . past))
+                   ((name . "Overdue habits")
+                    (type . habit)
+                    (when . past))
+                   ;; ((name . "Past")
+                   ;;	(type . next-action)
+                   ;;	(scheduled . past)
+                   ;;	(deadline . past))
+                   ;; ((name . "Daily Agenda")
+                   ;;	(view-type . agenda)
+                   ;;	(agenda-span . 1))
+                   ;; ((name . "Future Habits")
+                   ;;	(type . habit)
+                   ;;	(when . future))
+                   ;; ((name . "High Priority")
+                   ;;	(type . next-action)
+                   ;;	(priority . A))
+                   ((name . "Important Tasks")
+                    (type . next-action)
+                    (priority . (>= B)))
+                   ((name . "Quick Work")
+                    (type . next-action)
+                    (effort . (<= "30min")))
+                   ((name . "Science")
+                    (type . next-action)
+                    (area-of-focus . "Science"))
+                   ((name . "Sciadmin")
+                    (type . next-action)
+                    (area-of-focus . "Sciadmin"))
+                   ((name . "Teaching")
+                    (type . next-action)
+                    (area-of-focus . "Teaching"))
+                   ((name . "Sysadmin")
+                    (type . next-action)
+                    (area-of-focus . "Sysadmin"))
+                   ((name . "All actions ready to be executed")
+                    (type . next-action)
+                    (not-habit . t))
+                   ((name . "Read")
+                    (type . next-action)
+                    (area-of-focus . "Read"))
+                   ((name . "Deep in Progress")
+                    (type . next-action)
+                    (clocked . (> "1:00")))
+                   ((name . "Tickler items ready for today")
+                    (type . tickler)
+                    (when . today))
+                   ((name . "Delegated items to check in on today")
+                    (type . delegated)
+                    (when . today))
+                   ((name . "Missed Delegated")
+                    (type . delegated)
+                    (when . past))
+                   ((name . "Active Projects")
+                    (type . project))
+                   ((name . "Overdue Projects")
+                    (type . project)
+                    (deadline . past))
+                   ((name . "Incubated Projects")
+                    (type . incubated-project))
+                   ((name . "Stuck Projects")
+                    (type . stuck-project))
+                   ((name . "Someday/Maybe")
+                    (type . someday))
+                   ((name . "Completed This Week")
+                    (done . past-week))
+                   ((name . "Weekly Agenda")
+                    (view-type . agenda)
+                    (agenda-span . 7))
+                    ))))
+
+    ;;;
+    ```
+
+
+#### <span class="section-num">28.9.6</span> Хуки {#хуки}
+
+-   Файл: `packages/org-gtd/desire.ecd/hook.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; A package for using GTD with org-mode
+    ;;; Custom hooks for org-gtd
+    ;; https://github.com/Trevoke/org-gtd.el
+
+    ;;; Code:
+
+    (defun ecf/add-effort ()
+      "Prompt for effort on single actions and projects."
+      (when (org-gtd-organize-type-member-p '(single-action project-heading))
+        (call-interactively #'org-set-effort)))
+
+    (defun ecf/add-priority ()
+      "Prompt for priority on single actions."
+      (when (org-gtd-organize-type-member-p '(single-action))
+        (call-interactively #'org-priority)))
+
+    (defun ecf/auto-tag-contexts ()
+      "Automatically suggest context tags based on heading keywords."
+      (when (org-gtd-organize-type-member-p '(single-action))
+        (let* ((heading (downcase (org-get-heading t t t t)))
+               (suggested-tags '()))
+          (when (string-match-p "\\(phone\\|call\\)" heading)
+            (push "@phone" suggested-tags))
+          (when (string-match-p "\\(computer\\|code\\|write\\)" heading)
+            (push "@computer" suggested-tags))
+          (when (string-match-p "\\(store\\|buy\\|shop\\)" heading)
+            (push "@errands" suggested-tags))
+          (when suggested-tags
+            (message "Suggested contexts: %s" (string-join suggested-tags ", "))))))
+
+    (defun ecf/track-creation-date ()
+      "Add CREATED property with current timestamp."
+      (unless (org-gtd-organize-type-member-p '(trash quick-action))
+        (org-set-property "CREATED"
+                          (format-time-string "[%Y-%m-%d %a %H:%M]"))))
+
+    ;; Install hooks
+    (setopt org-gtd-organize-hooks
+            '(org-gtd-set-area-of-focus    ;; set area first
+              org-set-tags-command         ;; then tags
+              ecf/auto-tag-contexts        ;; suggest context tags
+              ecf/add-effort               ;; estimate effort
+              ;; ecf/add-priority             ;; set priority if needed
+              ecf/track-creation-date))    ;; track when created
+
+    ;;;
+    ```
+
+
+#### <span class="section-num">28.9.7</span> Персональные настройки {#персональные-настройки}
+
+-   Файл: `packages/org-gtd/personal.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; A package for using GTD with org-mode
+    ;; https://github.com/Trevoke/org-gtd.el
+
+    ;;; Code:
+
+    ;;;; Configure org-mode TODO keywords
+    ;; All GTD keywords must be in the same sequence
+    ;; Standard options like "TODO(t)" or "DONE(d!)" are fine - org-gtd ignores them
+    (setopt org-todo-keywords
+          '((sequence "TODO(t)" "NEXT(n)" "WAIT(w)" "|" "DONE(d)" "CNCL(c)")))
+
+    ;;;; Map GTD semantic states to your keywords
+    (setopt org-gtd-keyword-mapping
+          '((todo . "TODO")      ; tasks not ready to act on
+            (next . "NEXT")      ; tasks ready to act on immediately
+            (wait . "WAIT")      ; tasks blocked or delegated
+            (canceled . "CNCL"))) ; tasks that won't be completed
+
+    ;;;; List of strings representing your areas of focus (horizon 2 in GTD)
+    (add-to-list 'org-gtd-areas-of-focus "Science" t)
+    (add-to-list 'org-gtd-areas-of-focus "Sciadmin" t)
+    (add-to-list 'org-gtd-areas-of-focus "Teaching" t)
+    (add-to-list 'org-gtd-areas-of-focus "Study" t)
+    (add-to-list 'org-gtd-areas-of-focus "Sysadmin" t)
+    (add-to-list 'org-gtd-areas-of-focus "Read" t)
+
+    ;;;
+    ```
+
+
+### <span class="section-num">28.10</span> mobileorg {#mobileorg}
 
 ```emacs-lisp
 (desired 'mobileorg)
 ```
 <div class="src-block-caption">
-  <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 163:</span>
+  <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 165:</span>
   rc.packages.el
 </div>
 
 
-#### <span class="section-num">3.26.11</span> org-download {#org-download}
+### <span class="section-num">28.11</span> org-download {#org-download}
 
 -   [Emacs. Пакет org-download]({{< relref "2025-05-19--emacs-org-download" >}})
 -   Объявление пакета:
@@ -6281,7 +6457,7 @@ slug: "emacs-desire-configuration"
     (desire 'org-download)
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 164:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 166:</span>
       rc.packages.el
     </div>
 -   Подключение пакета:
@@ -6295,7 +6471,7 @@ slug: "emacs-desire-configuration"
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 165:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 167:</span>
       packages/org-download/loaddefs.ecf
     </div>
 -   Загрузка пакета:
@@ -6340,7 +6516,7 @@ slug: "emacs-desire-configuration"
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 166:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 168:</span>
       packages/org-download/desire.ecf
     </div>
 -   Настройка для скриншотов:
@@ -6363,739 +6539,761 @@ slug: "emacs-desire-configuration"
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 167:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 169:</span>
       packages/org-download/desire.ecd/screenshot.ecf
     </div>
 
-<!--list-separator-->
 
-1.  Org-mode
+#### <span class="section-num">28.11.1</span> Org-mode {#org-mode}
 
-    -   Настройки для org-mode:
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Drag and drop images to Emacs org-mode
-        ;; https://github.com/abo-abo/org-download
+-   Настройки для org-mode:
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Drag and drop images to Emacs org-mode
+    ;; https://github.com/abo-abo/org-download
 
-        ;;; Code:
+    ;;; Code:
 
-        (add-hook 'org-mode-hook 'org-download-enable)
+    (add-hook 'org-mode-hook 'org-download-enable)
 
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 168:</span>
-          packages/org/org-download.ecf
-        </div>
-
-<!--list-separator-->
-
-2.  Dired
-
-    -   Настройки для dired:
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Drag and drop images to Emacs org-mode
-        ;; https://github.com/abo-abo/org-download
-
-        ;;; Code:
-
-        ;;;; Drag-and-drop to `dired`
-        (add-hook 'dired-mode-hook 'org-download-enable)
-
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 169:</span>
-          packages/dired/org-download.ecf
-        </div>
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 170:</span>
+      packages/org/org-download.ecf
+    </div>
 
 
-#### <span class="section-num">3.26.12</span> org-mode {#org-mode}
+#### <span class="section-num">28.11.2</span> Dired {#dired}
+
+-   Настройки для dired:
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Drag and drop images to Emacs org-mode
+    ;; https://github.com/abo-abo/org-download
+
+    ;;; Code:
+
+    ;;;; Drag-and-drop to `dired`
+    (add-hook 'dired-mode-hook 'org-download-enable)
+
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 171:</span>
+      packages/dired/org-download.ecf
+    </div>
+
+
+### <span class="section-num">28.12</span> org-mode {#org-mode}
 
 -   Собственно org-mode.
 -   [Org-mode]({{< relref "2021-10-14-org-mode" >}})
 
-<!--list-separator-->
 
-1.  Подключение
+#### <span class="section-num">28.12.1</span> Подключение {#подключение}
 
+```emacs-lisp
+(desire 'org)
+
+;;; For messaging
+;; (desire 'org-msg)
+
+;;;}}}
+```
+<div class="src-block-caption">
+  <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 172:</span>
+  rc.packages.el
+</div>
+
+
+#### <span class="section-num">28.12.2</span> Загрузка {#загрузка}
+
+```emacs-lisp
+;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+;;; Org mode
+
+;;; Code:
+```
+<div class="src-block-caption">
+  <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 173:</span>
+  packages/org/loaddefs.ecf
+</div>
+
+-   Список расширений для моды:
     ```emacs-lisp
-    (desire 'org)
-
-    ;;; For messaging
-    ;; (desire 'org-msg)
-
-    ;;;}}}
+    (add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\|txt\\)$" . org-mode))
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 170:</span>
-      rc.packages.el
-    </div>
-
-<!--list-separator-->
-
-2.  Загрузка
-
-    ```emacs-lisp
-    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-    ;;; Org mode
-
-    ;;; Code:
-    ```
-    <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 171:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 174:</span>
       packages/org/loaddefs.ecf
     </div>
 
-    -   Список расширений для моды:
-        ```emacs-lisp
-        (add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\|txt\\)$" . org-mode))
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 172:</span>
-          packages/org/loaddefs.ecf
-        </div>
+-   Клавиатурные комбинации:
+    ```emacs-lisp
+    (global-set-key (kbd "C-c a") #'("Agenda" . org-agenda))
+    (global-set-key (kbd "C-c d e") #'("Engage" . org-gtd-engage))
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 175:</span>
+      packages/org/loaddefs.ecf
+    </div>
 
-    -   Клавиатурные комбинации:
-        ```emacs-lisp
-        (global-set-key (kbd "C-c a") #'("Agenda" . org-agenda))
-        (global-set-key (kbd "C-c d e") #'("Engage" . org-gtd-engage))
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 173:</span>
-          packages/org/loaddefs.ecf
-        </div>
+-   Завершение файла:
+    ```emacs-lisp
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 176:</span>
+      packages/org/loaddefs.ecf
+    </div>
 
-    -   Завершение файла:
-        ```emacs-lisp
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 174:</span>
-          packages/org/loaddefs.ecf
-        </div>
 
-<!--list-separator-->
+#### <span class="section-num">28.12.3</span> Экспорт {#экспорт}
 
-3.  Экспорт
+-   Экспорт из org-mode.
+-   Файл: `packages/org/desire.ecd/ox.ecf`
 
-    -   Экспорт из org-mode.
-    -   Файл: `packages/org/desire.ecd/ox.ecf`
+<!--listend-->
 
-    <!--listend-->
+```emacs-lisp
+;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
 
+
+;;; Code:
+
+;;;; Publishing and Exporting
+
+(setopt org-alphabetical-lists t)
+
+                                        ; Allow binding variables on export without confirmation
+(setopt org-export-allow-bind t)
+(setopt org-export-allow-bind-keywords t)
+
+;;;; Set the default export scope to subtree
+(setf org-export-initial-scope 'subtree)
+
+;;;; Toggle TeX-like syntax for sub- and superscripts
+(setopt org-export-with-sub-superscripts '{})
+
+;; Explicitly load required exporters
+
+;; HTML
+(desire 'htmlize)
+(require 'ox-html)
+                                        ; Export HTML without XML header
+(setopt org-html-xml-declaration (quote (("html" . "")
+                                         ("was-html" . "<?xml version=\"1.0\" encoding=\"%s\"?>")
+                                         ("php" . "<?php echo \"<?xml version=\\\"1.0\\\" encoding=\\\"%s\\\" ?>\"; ?>"))))
+
+;;
+(require 'ox)
+(require 'ox-ascii)
+(require 'ox-md)
+                                        ;(require 'ox-man)
+(require 'ox-odt)
+(require 'ox-publish)
+
+;;;; Allow exporting with 'allegedly' broken links
+(setopt org-export-with-broken-links t)
+
+;;(setopt org-export-with-entities nil)
+
+
+;;;; Set export directory
+;; (setopt exported-org-files-dir (concat org-directory "/export/"))
+;; (if (not (file-directory-p exported-org-files-dir))
+;;     (make-directory exported-org-files-dir t))
+
+;; (defun org-export-output-file-name-modified (orig-fun extension &optional subtreep pub-dir)
+;;   (unless pub-dir
+;;     (setopt pub-dir exported-org-files-dir)
+;;     (unless (file-directory-p pub-dir)
+;;       (make-directory pub-dir)))
+;;   (apply orig-fun extension subtreep pub-dir nil))
+;; (advice-add 'org-export-output-file-name :around #'org-export-output-file-name-modified)
+```
+
+-   [Org-mode. Экспорт ссылок на видео в Hugo]({{< relref "2025-07-03--org-mode-video-export-hugo" >}})
+
+<!--listend-->
+
+```emacs-lisp
+;;;; Export macros
+(setq org-export-global-macros
+      '(
+        ("youtube" . "(eval (cond ((org-export-derived-backend-p org-export-current-backend 'hugo) (concat \"@@hugo:{{</* youtube \" $1 \" */>}}@@\")) ((org-export-derived-backend-p org-export-current-backend (or 'md 'markdown 'gfm)) (concat \"@@html:[![Youtube](http://img.youtube.com/vi/\" $1 \"/0.jpg){width=560px}](http://www.youtube.com/watch?v=\" $1 \")@@\"))))")
+        ("rutube" . "(eval (cond ((org-export-derived-backend-p org-export-current-backend 'hugo) (concat \"@@hugo:{{</* rutube \" $1 \" */>}}@@\")) ((org-export-derived-backend-p org-export-current-backend (or 'md 'markdown 'gfm)) (concat \"@@html:[![RuTube](\" $2 \"){width=560px}](https://rutube.ru/video/\" $1 \"/)@@\"))))")
+        ("plvideo" . "(eval (cond ((org-export-derived-backend-p org-export-current-backend 'hugo) (concat \"@@hugo:{{</* plvideo \" $1 \" */>}}@@\")) ((org-export-derived-backend-p org-export-current-backend (or 'md 'markdown 'gfm)) (concat \"@@html:[![Платформа](\" $2 \"){width=560px}](https://plvideo.ru/watch?v=\" $1 \")@@\"))))")
+        ("vkvideo" . "(eval (cond ((org-export-derived-backend-p org-export-current-backend 'hugo) (concat \"@@hugo:{{</* vkvideo oid=\" $1 \" id=\" $2 \" hd=2 */>}}@@\")) ((org-export-derived-backend-p org-export-current-backend (or 'md 'markdown 'gfm)) (concat \"@@html:[![VKvideo](\" $3 \"){width=560px}](https://vkvideo.ru/video\" $1 \"_\" $2 \")@@\"))))")
+        ("begin_tabs" . "@@hugo:{{</* tabs $1 */>}}@@")
+        ("end_tabs" . "@@hugo:{{</* /tabs */>}}@@")
+        ("youtube-tab" . "@@hugo:{{</* tab \"Youtube\" */>}}@@{{{youtube($1)}}}@@hugo:{{</* /tab */>}}@@")
+        ("rutube-tab" . "@@hugo:{{</* tab \"RuTube\" */>}}@@{{{rutube($1,$2)}}}@@hugo:{{</* /tab */>}}@@")
+        ("plvideo-tab" . "@@hugo:{{</* tab \"Платформа\" */>}}@@{{{plvideo($1,$2)}}}@@hugo:{{</* /tab */>}}@@")
+        ("vkvideo-tab" . "@@hugo:{{</* tab \"VKvideo\" */>}}@@{{{vkvideo($1,$2,$3)}}}@@hugo:{{</* /tab */>}}@@")))
+
+;;;
+```
+
+
+#### <span class="section-num">28.12.4</span> org-imgtog {#org-imgtog}
+
+-   <https://github.com/gaoDean/org-imgtog>
+-   Отключение предпромотра избражения.
+-   Файл: `packages/org/desire.ecd/org-imgtog.ecf`
     ```emacs-lisp
     ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-
+    ;;; Automatic inline image toggling as the cursor enters and exits them
+    ;; https://github.com/gaoDean/org-imgtog
 
     ;;; Code:
 
-    ;;;; Publishing and Exporting
+    (desire 'org-imgtog :recipe '(:fetcher github :repo "gaoDean/org-imgtog" :branch "main"))
 
-    (setopt org-alphabetical-lists t)
+    ;;;; Wait 0.5 seconds before toggling
+    (setopt org-imgtog-preview-delay 0.5)
+    ;;;; Only delay for remote images
+    (setopt org-imgtog-preview-delay-only-remote t)
 
-                                            ; Allow binding variables on export without confirmation
-    (setopt org-export-allow-bind t)
-    (setopt org-export-allow-bind-keywords t)
-
-    ;;;; Set the default export scope to subtree
-    (setf org-export-initial-scope 'subtree)
-
-    ;;;; Toggle TeX-like syntax for sub- and superscripts
-    (setopt org-export-with-sub-superscripts '{})
-
-    ;; Explicitly load required exporters
-
-    ;; HTML
-    (desire 'htmlize)
-    (require 'ox-html)
-                                            ; Export HTML without XML header
-    (setopt org-html-xml-declaration (quote (("html" . "")
-                                             ("was-html" . "<?xml version=\"1.0\" encoding=\"%s\"?>")
-                                             ("php" . "<?php echo \"<?xml version=\\\"1.0\\\" encoding=\\\"%s\\\" ?>\"; ?>"))))
-
-    ;;
-    (require 'ox)
-    (require 'ox-ascii)
-    (require 'ox-md)
-                                            ;(require 'ox-man)
-    (require 'ox-odt)
-    (require 'ox-publish)
-
-    ;;;; Allow exporting with 'allegedly' broken links
-    (setopt org-export-with-broken-links t)
-
-    ;;(setopt org-export-with-entities nil)
-
-
-    ;;;; Set export directory
-    ;; (setopt exported-org-files-dir (concat org-directory "/export/"))
-    ;; (if (not (file-directory-p exported-org-files-dir))
-    ;;     (make-directory exported-org-files-dir t))
-
-    ;; (defun org-export-output-file-name-modified (orig-fun extension &optional subtreep pub-dir)
-    ;;   (unless pub-dir
-    ;;     (setopt pub-dir exported-org-files-dir)
-    ;;     (unless (file-directory-p pub-dir)
-    ;;       (make-directory pub-dir)))
-    ;;   (apply orig-fun extension subtreep pub-dir nil))
-    ;; (advice-add 'org-export-output-file-name :around #'org-export-output-file-name-modified)
-    ```
-
-    -   [Org-mode. Экспорт ссылок на видео в Hugo]({{< relref "2025-07-03--org-mode-video-export-hugo" >}})
-
-    <!--listend-->
-
-    ```emacs-lisp
-    ;;;; Export macros
-    (setq org-export-global-macros
-          '(
-            ("youtube" . "(eval (cond ((org-export-derived-backend-p org-export-current-backend 'hugo) (concat \"@@hugo:{{</* youtube \" $1 \" */>}}@@\")) ((org-export-derived-backend-p org-export-current-backend (or 'md 'markdown 'gfm)) (concat \"@@html:[![Youtube](http://img.youtube.com/vi/\" $1 \"/0.jpg){width=560px}](http://www.youtube.com/watch?v=\" $1 \")@@\"))))")
-            ("rutube" . "(eval (cond ((org-export-derived-backend-p org-export-current-backend 'hugo) (concat \"@@hugo:{{</* rutube \" $1 \" */>}}@@\")) ((org-export-derived-backend-p org-export-current-backend (or 'md 'markdown 'gfm)) (concat \"@@html:[![RuTube](\" $2 \"){width=560px}](https://rutube.ru/video/\" $1 \"/)@@\"))))")
-            ("plvideo" . "(eval (cond ((org-export-derived-backend-p org-export-current-backend 'hugo) (concat \"@@hugo:{{</* plvideo \" $1 \" */>}}@@\")) ((org-export-derived-backend-p org-export-current-backend (or 'md 'markdown 'gfm)) (concat \"@@html:[![Платформа](\" $2 \"){width=560px}](https://plvideo.ru/watch?v=\" $1 \")@@\"))))")
-            ("vkvideo" . "(eval (cond ((org-export-derived-backend-p org-export-current-backend 'hugo) (concat \"@@hugo:{{</* vkvideo oid=\" $1 \" id=\" $2 \" hd=2 */>}}@@\")) ((org-export-derived-backend-p org-export-current-backend (or 'md 'markdown 'gfm)) (concat \"@@html:[![VKvideo](\" $3 \"){width=560px}](https://vkvideo.ru/video\" $1 \"_\" $2 \")@@\"))))")
-            ("begin_tabs" . "@@hugo:{{</* tabs $1 */>}}@@")
-            ("end_tabs" . "@@hugo:{{</* /tabs */>}}@@")
-            ("youtube-tab" . "@@hugo:{{</* tab \"Youtube\" */>}}@@{{{youtube($1)}}}@@hugo:{{</* /tab */>}}@@")
-            ("rutube-tab" . "@@hugo:{{</* tab \"RuTube\" */>}}@@{{{rutube($1,$2)}}}@@hugo:{{</* /tab */>}}@@")
-            ("plvideo-tab" . "@@hugo:{{</* tab \"Платформа\" */>}}@@{{{plvideo($1,$2)}}}@@hugo:{{</* /tab */>}}@@")
-            ("vkvideo-tab" . "@@hugo:{{</* tab \"VKvideo\" */>}}@@{{{vkvideo($1,$2,$3)}}}@@hugo:{{</* /tab */>}}@@")))
+    (add-hook 'org-mode-hook 'org-imgtog-mode)
 
     ;;;
     ```
 
-<!--list-separator-->
 
-4.  org-imgtog
+#### <span class="section-num">28.12.5</span> org-remoteimg {#org-remoteimg}
 
-    -   <https://github.com/gaoDean/org-imgtog>
-    -   Отключение предпромотра избражения.
-    -   Файл: `packages/org/desire.ecd/org-imgtog.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Automatic inline image toggling as the cursor enters and exits them
-        ;; https://github.com/gaoDean/org-imgtog
+-   <https://github.com/gaoDean/org-remoteimg>
+-   Отображение удаленных встроенных изображений в org-режиме с автоматическим кэшированием.
+-   Файл: `packages/org/desire.ecd/org-remoteimg.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Display remote inline images in org-mode with automatic caching
+    ;; https://github.com/gaoDean/org-remoteimg
 
-        ;;; Code:
+    ;;; Code
 
-        (desire 'org-imgtog :recipe '(:fetcher github :repo "gaoDean/org-imgtog" :branch "main"))
+    (desire 'org-remoteimg :recipe '(:fetcher github :repo "gaoDean/org-remoteimg" :branch "main"))
 
-        ;;;; Wait 0.5 seconds before toggling
-        (setopt org-imgtog-preview-delay 0.5)
-        ;;;; Only delay for remote images
-        (setopt org-imgtog-preview-delay-only-remote t)
+    ;;;; Enable caching
+    (setopt org-display-remote-inline-images 'cache)
+    ;;;; or this if you don't want caching
+    ;; (setopt org-display-remote-inline-images 'download)
+    ;;;; or this if you want to disable this plugin
+    ;; (setopt org-display-remote-inline-images 'skip)
 
-        (add-hook 'org-mode-hook 'org-imgtog-mode)
+    ;;;
+    ```
 
-        ;;;
-        ```
 
-<!--list-separator-->
+#### <span class="section-num">28.12.6</span> Логирование {#логирование}
 
-5.  org-remoteimg
+-   Файл: `packages/org/desire.ecd/log.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Configuring Progress Logging
 
-    -   <https://github.com/gaoDean/org-remoteimg>
-    -   Отображение удаленных встроенных изображений в org-режиме с автоматическим кэшированием.
-    -   Файл: `packages/org/desire.ecd/org-remoteimg.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Display remote inline images in org-mode with automatic caching
-        ;; https://github.com/gaoDean/org-remoteimg
+    ;;; Code:
 
-        ;;; Code
+    ;;;; Record a timestamp when a task is completed
+    (setopt org-log-done 'time)
 
-        (desire 'org-remoteimg :recipe '(:fetcher github :repo "gaoDean/org-remoteimg" :branch "main"))
+    ;;;; Automatically leave a note when changing states
+    (setopt org-log-state-notes-insert-after-states t)
 
-        ;;;; Enable caching
-        (setopt org-display-remote-inline-images 'cache)
-        ;;;; or this if you don't want caching
-        ;; (setopt org-display-remote-inline-images 'download)
-        ;;;; or this if you want to disable this plugin
-        ;; (setopt org-display-remote-inline-images 'skip)
+    ;;;; Define what shows up in Log Mode (options can include 'clock, 'state, 'done)
+    (setq org-agenda-log-mode-items '(clock state))
 
-        ;;;
-        ```
+    ;;;; Where state changes, clock times, and note-taking logs are stored
+    ;;;; `t` : inside a folded :LOGBOOK: drawer
+    (setopt org-log-into-drawer t)
 
-<!--list-separator-->
+    ;;;; `t` : notes are inserted after the headline, any properties/drawers, and schedule/deadline lines
+    ;;;; `nil` : notes are potentially placing above existing drawers
+    (setopt org-log-state-notes-insert-after-drawers nil)
 
-6.  Логирование
+    ;;;
+    ```
 
-    -   Файл: `packages/org/desire.ecd/log.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Configuring Progress Logging
 
-        ;;; Code:
+#### <span class="section-num">28.12.7</span> Предпросмотр LaTeX {#предпросмотр-latex}
 
-        ;;;; Record a timestamp when a task is completed
-        (setopt org-log-done 'time)
+-   [Org-mode. Предпросмотр TeX]({{< relref "2024-01-06-org-mode-latex-preview" >}})
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Previewing LaTeX fragments
+    ;;; https://orgmode.org/manual/Previewing-LaTeX-fragments.html
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 177:</span>
+      packages/org/desire.ecd/preview-latex.ecf
+    </div>
+-   Зададим каталог для создаваемых изображений (по умолчанию они создаются в рабочем каталоге):
+    ```emacs-lisp
+    ;;; LaTeX image directory
+    (setopt org-preview-latex-image-directory (concat home-cache-path "org-latex/"))
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 178:</span>
+      packages/org/desire.ecd/preview-latex.ecf
+    </div>
+-   Зададим опции создания изображений:
+    ```emacs-lisp
+    ;;; Output format
+    (setopt org-format-latex-options (plist-put org-format-latex-options :scale 1.0))
+    (setopt org-format-latex-options (plist-put org-format-latex-options :density 600))
+    (setopt org-format-latex-options (plist-put org-format-latex-options :background "Transparent"))
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 179:</span>
+      packages/org/desire.ecd/preview-latex.ecf
+    </div>
+-   Зададим формат изображений. В данном случае это формат `svg`:
+    ```emacs-lisp
+    (setopt org-latex-create-formula-image-program 'dvisvgm)
 
-        ;;;; Automatically leave a note when changing states
-        (setopt org-log-state-notes-insert-after-states t)
-
-        ;;;; Define what shows up in Log Mode (options can include 'clock, 'state, 'done)
-        (setq org-agenda-log-mode-items '(clock state))
-
-        ;;;; Where state changes, clock times, and note-taking logs are stored
-        ;;;; `t` : inside a folded :LOGBOOK: drawer
-        (setopt org-log-into-drawer t)
-
-        ;;;; `t` : notes are inserted after the headline, any properties/drawers, and schedule/deadline lines
-        ;;;; `nil` : notes are potentially placing above existing drawers
-        (setopt org-log-state-notes-insert-after-drawers nil)
-
-        ;;;
-        ```
-
-<!--list-separator-->
-
-7.  Предпросмотр LaTeX
-
-    -   [Org-mode. Предпросмотр TeX]({{< relref "2024-01-06-org-mode-latex-preview" >}})
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Previewing LaTeX fragments
-        ;;; https://orgmode.org/manual/Previewing-LaTeX-fragments.html
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 175:</span>
-          packages/org/desire.ecd/preview-latex.ecf
-        </div>
-    -   Зададим каталог для создаваемых изображений (по умолчанию они создаются в рабочем каталоге):
-        ```emacs-lisp
-        ;;; LaTeX image directory
-        (setopt org-preview-latex-image-directory (concat home-cache-path "org-latex/"))
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 176:</span>
-          packages/org/desire.ecd/preview-latex.ecf
-        </div>
-    -   Зададим опции создания изображений:
-        ```emacs-lisp
-        ;;; Output format
-        (setopt org-format-latex-options (plist-put org-format-latex-options :scale 1.0))
-        (setopt org-format-latex-options (plist-put org-format-latex-options :density 600))
-        (setopt org-format-latex-options (plist-put org-format-latex-options :background "Transparent"))
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 177:</span>
-          packages/org/desire.ecd/preview-latex.ecf
-        </div>
-    -   Зададим формат изображений. В данном случае это формат `svg`:
-        ```emacs-lisp
-        (setopt org-latex-create-formula-image-program 'dvisvgm)
-
-        (setopt org-preview-latex-process-alist
-                '((dvipng :programs ("latex" "dvipng") :description "dvi > png"
-                          :message
-                          "you need to install the programs: latex and dvipng."
-                          :image-input-type "dvi" :image-output-type "png"
-                          :image-size-adjust (1.0 . 1.0) :latex-compiler
-                          ("latex -interaction nonstopmode -output-directory %o %f")
-                          :image-converter ("dvipng -D %D -T tight -o %O %f")
-                          :transparent-image-converter
-                          ("dvipng -D %D -T tight -bg Transparent -o %O %f"))
-                  (dvisvgm :programs ("xelatex" "dvisvgm") :description "xdv > svg"
+    (setopt org-preview-latex-process-alist
+            '((dvipng :programs ("latex" "dvipng") :description "dvi > png"
+                      :message
+                      "you need to install the programs: latex and dvipng."
+                      :image-input-type "dvi" :image-output-type "png"
+                      :image-size-adjust (1.0 . 1.0) :latex-compiler
+                      ("latex -interaction nonstopmode -output-directory %o %f")
+                      :image-converter ("dvipng -D %D -T tight -o %O %f")
+                      :transparent-image-converter
+                      ("dvipng -D %D -T tight -bg Transparent -o %O %f"))
+              (dvisvgm :programs ("xelatex" "dvisvgm") :description "xdv > svg"
+                       :message
+                       "you need to install the programs: latex and dvisvgm."
+                       :image-input-type "xdv" :image-output-type "svg"
+                       :image-size-adjust (1.7 . 1.5) :latex-compiler
+                       ("xelatex --no-pdf -interaction nonstopmode -output-directory %o %f")
+                       :image-converter
+                       ("dvisvgm %f --no-fonts --exact-bbox --scale=%S --output=%O"))
+              (imagemagick :programs ("xelatex" "convert") :description "pdf > png"
                            :message
-                           "you need to install the programs: latex and dvisvgm."
-                           :image-input-type "xdv" :image-output-type "svg"
-                           :image-size-adjust (1.7 . 1.5) :latex-compiler
-                           ("xelatex --no-pdf -interaction nonstopmode -output-directory %o %f")
+                           "you need to install the programs: latex and imagemagick."
+                           :image-input-type "pdf" :image-output-type "png"
+                           :image-size-adjust (1.0 . 1.0) :latex-compiler
+                           ("xelatex -interaction nonstopmode -output-directory %o %f")
                            :image-converter
-                           ("dvisvgm %f --no-fonts --exact-bbox --scale=%S --output=%O"))
-                  (imagemagick :programs ("xelatex" "convert") :description "pdf > png"
-                               :message
-                               "you need to install the programs: latex and imagemagick."
-                               :image-input-type "pdf" :image-output-type "png"
-                               :image-size-adjust (1.0 . 1.0) :latex-compiler
-                               ("xelatex -interaction nonstopmode -output-directory %o %f")
-                               :image-converter
-                               ("convert -density %D -trim -antialias %f -quality 100 %O"))))
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 178:</span>
-          packages/org/desire.ecd/preview-latex.ecf
-        </div>
-    -   Теперь зададим настройки для LaTeX:
-        ```emacs-lisp
-        ;;; Configure latex
-        (setopt org-latex-inputenc-alist '(("utf8" . "utf8x")))
-        ;;; Default position for LaTeX figures
-        (setopt org-latex-default-figure-position "!htbp")
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 179:</span>
-          packages/org/desire.ecd/preview-latex.ecf
-        </div>
-    -   Опишем используемые пакеты:
-        ```emacs-lisp
-        ;;; Unicode fonts
-        (add-to-list 'org-latex-packages-alist '("" "unicode-math") t)
-        ;;; Physics2 package
-        ;; (add-to-list 'org-latex-packages-alist '("" "physics2") t)
-        ;;; Math
-        (add-to-list 'org-latex-packages-alist '("" "amsmath") t)
-        (add-to-list 'org-latex-packages-alist '("" "mathtools") t)
-        ;;; Local definitions
-        ;; (add-to-list 'org-latex-packages-alist '("" "local-define") t)
-
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 180:</span>
-          packages/org/desire.ecd/preview-latex.ecf
-        </div>
-
-<!--list-separator-->
-
-8.  Преобразование markdown ←→ org через буфер обмена
-
-    -   [Emacs. Markdown в Org с помощью буфера обмена]({{< relref "2026-01-02--emacs-markdown-org-clipboard" >}})
-    -   Файл: `packages/org/desire.ecd/markdown-org-clipboard.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Import Markdown to Org with the Clipboard
-
-        ;;; Code:
-
-        (defun ecf/yank-markdown-as-org ()
-          "Yank Markdown text as Org.
-
-        This command will convert Markdown text in the top of the `kill-ring'
-        and convert it to Org using the pandoc utility."
-          (interactive)
-          (save-excursion
-            (with-temp-buffer
-              (yank)
-              (shell-command-on-region
-               (point-min) (point-max)
-               "pandoc -f gfm -t org --wrap=preserve" t t)
-              (kill-region (point-min) (point-max)))
-            (yank)))
-
-        (defun ecf/org-copy-region-as-markdown ()
-          "Copy the region (in Org) to the system clipboard as Markdown."
-          (interactive)
-          (if (use-region-p)
-              (let* ((region
-                      (buffer-substring-no-properties
-                              (region-beginning)
-                              (region-end)))
-                     (markdown
-                      (org-export-string-as region 'md t '(:with-toc nil))))
-                (gui-set-selection 'CLIPBOARD markdown))))
-
-        ;;;
-        ```
-
-
-### <span class="section-num">3.27</span> Инфраструктура Vulpea {#инфраструктура-vulpea}
-
-
-#### <span class="section-num">3.27.1</span> vulpea-journal {#vulpea-journal}
-
-<!--list-separator-->
-
-1.  Подключение
-
-    -   Файл: `rc.packages.el`
-        ```emacs-lisp
-        (desire 'vulpea-journal)
-        ```
-
-<!--list-separator-->
+                           ("convert -density %D -trim -antialias %f -quality 100 %O"))))
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 180:</span>
+      packages/org/desire.ecd/preview-latex.ecf
+    </div>
+-   Теперь зададим настройки для LaTeX:
+    ```emacs-lisp
+    ;;; Configure latex
+    (setopt org-latex-inputenc-alist '(("utf8" . "utf8x")))
+    ;;; Default position for LaTeX figures
+    (setopt org-latex-default-figure-position "!htbp")
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 181:</span>
+      packages/org/desire.ecd/preview-latex.ecf
+    </div>
+-   Опишем используемые пакеты:
+    ```emacs-lisp
+    ;;; Unicode fonts
+    (add-to-list 'org-latex-packages-alist '("" "unicode-math") t)
+    ;;; Physics2 package
+    ;; (add-to-list 'org-latex-packages-alist '("" "physics2") t)
+    ;;; Math
+    (add-to-list 'org-latex-packages-alist '("" "amsmath") t)
+    (add-to-list 'org-latex-packages-alist '("" "mathtools") t)
+    ;;; Local definitions
+    ;; (add-to-list 'org-latex-packages-alist '("" "local-define") t)
+
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 182:</span>
+      packages/org/desire.ecd/preview-latex.ecf
+    </div>
+
+
+#### <span class="section-num">28.12.8</span> Преобразование markdown ←→ org через буфер обмена {#преобразование-markdown-org-через-буфер-обмена}
+
+-   [Emacs. Markdown в Org с помощью буфера обмена]({{< relref "2026-01-02--emacs-markdown-org-clipboard" >}})
+-   Файл: `packages/org/desire.ecd/markdown-org-clipboard.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Import Markdown to Org with the Clipboard
+
+    ;;; Code:
+
+    (defun ecf/yank-markdown-as-org ()
+      "Yank Markdown text as Org.
 
-2.  Загрузка
+    This command will convert Markdown text in the top of the `kill-ring'
+    and convert it to Org using the pandoc utility."
+      (interactive)
+      (save-excursion
+        (with-temp-buffer
+          (yank)
+          (shell-command-on-region
+           (point-min) (point-max)
+           "pandoc -f gfm -t org --wrap=preserve" t t)
+          (kill-region (point-min) (point-max)))
+        (yank)))
 
-    -   Файл: `packages/vulpea/loaddefs.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Modern daily journaling interface for Emacs with reactive sidebar widgets, built on vulpea
-        ;; https://github.com/d12frosted/vulpea-journal
+    (defun ecf/org-copy-region-as-markdown ()
+      "Copy the region (in Org) to the system clipboard as Markdown."
+      (interactive)
+      (if (use-region-p)
+          (let* ((region
+                  (buffer-substring-no-properties
+                          (region-beginning)
+                          (region-end)))
+                 (markdown
+                  (org-export-string-as region 'md t '(:with-toc nil))))
+            (gui-set-selection 'CLIPBOARD markdown))))
+
+    ;;;
+    ```
 
-        ;;; Code:
 
-        (desire 'vulpea)
-        (desire 'vulpea-ui)
+## <span class="section-num">29</span> Инфраструктура Vulpea {#инфраструктура-vulpea}
 
-        ;; (setopt org-directory-journal (concat org-directory "journal/"))
-        ;; (if (not (file-directory-p org-directory-journal))
-        ;;     (make-directory org-directory-journal t))
 
-        ;; (add-to-list 'vulpea-db-sync-directories org-directory-journal t)
+### <span class="section-num">29.1</span> vulpea-journal {#vulpea-journal}
 
-        ;;;
-        ```
 
-<!--list-separator-->
+#### <span class="section-num">29.1.1</span> Подключение {#подключение}
 
-3.  Настройка
+-   Файл: `rc.packages.el`
+    ```emacs-lisp
+    (desire 'vulpea-journal)
+    ```
 
-    -   Файл: `packages/vulpea-journal/desire.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Modern daily journaling interface for Emacs with reactive sidebar widgets, built on vulpea
-        ;; https://github.com/d12frosted/vulpea-journal
 
-        ;;; Code:
+#### <span class="section-num">29.1.2</span> Загрузка {#загрузка}
 
-        (vulpea-journal-setup)
+-   Файл: `packages/vulpea/loaddefs.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Modern daily journaling interface for Emacs with reactive sidebar widgets, built on vulpea
+    ;; https://github.com/d12frosted/vulpea-journal
+
+    ;;; Code:
 
-        ;;;; Start week on Sunday (0) or Monday (1, default)
-        (setopt vulpea-journal-ui-calendar-week-start 1)
+    (desire 'vulpea)
+    (desire 'vulpea-ui)
 
-        ;;;; Include journal notes in the "created today" list
-        (setq vulpea-journal-ui-created-today-exclude-journal nil)  ; default: t
+    ;; (setopt org-directory-journal (concat org-directory "journal/"))
+    ;; (if (not (file-directory-p org-directory-journal))
+    ;;     (make-directory org-directory-journal t))
 
-        ;;;; How many years to look back
-        (setq vulpea-journal-ui-previous-years-count 5)  ; default: 5
+    ;; (add-to-list 'vulpea-db-sync-directories org-directory-journal t)
 
-        ;;;; Characters to show in preview
-        (setq vulpea-journal-ui-previous-years-preview-chars 256)
+    ;;;
+    ```
 
-        ;;;; Hide org drawers in preview
-        (setq vulpea-journal-ui-previous-years-hide-drawers t)  ; default: t
 
-        ;;;; Start with previews expanded
-        (setq vulpea-journal-ui-previous-years-expanded t)  ; default: t
+#### <span class="section-num">29.1.3</span> Настройка {#настройка}
 
-        ;;;
-        ```
+-   Файл: `packages/vulpea-journal/desire.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Modern daily journaling interface for Emacs with reactive sidebar widgets, built on vulpea
+    ;; https://github.com/d12frosted/vulpea-journal
 
-<!--list-separator-->
+    ;;; Code:
 
-4.  Персональные настройки
+    (vulpea-journal-setup)
 
-    -   Файл: `packages/vulpea-journal/personal.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Modern daily journaling interface for Emacs with reactive sidebar widgets, built on vulpea
-        ;; https://github.com/d12frosted/vulpea-journal
+    ;;;; Start week on Sunday (0) or Monday (1, default)
+    (setopt vulpea-journal-ui-calendar-week-start 1)
 
-        ;;; Code:
+    ;;;; Include journal notes in the "created today" list
+    (setq vulpea-journal-ui-created-today-exclude-journal t)  ; default: t
 
-        ;;;; Daily (one file per day, default)
-        ;; (setopt vulpea-journal-default-template
-        ;; 	(vulpea-journal-template-daily))
+    ;;;; How many years to look back
+    (setq vulpea-journal-ui-previous-years-count 10)  ; default: 5
 
-        ;;;; Monthly (one file per month)
-        ;; (setopt vulpea-journal-default-template
-        ;; 	(vulpea-journal-template-monthly))
+    ;;;; Characters to show in preview
+    (setq vulpea-journal-ui-previous-years-preview-chars 256)
 
-        ;;;; Custom tempate
-        (setopt vulpea-journal-default-template
-                '(:file-name "daily/%Y-%m-%d.org"
-                 :title "%Y-%m-%d"
-                 :tags ("journal" "daily")
-                 :head "#+created: %<[%Y-%m-%d]>"
-                 :body ":SETUP_LOCAL:\n#+startup: overview num inlineimages latexpreview\n#+options: ^:{} num:t tex:t\n:END:\n\n"))
+    ;;;; Hide org drawers in preview
+    (setq vulpea-journal-ui-previous-years-hide-drawers t)  ; default: t
 
-        ;;;
-        ```
+    ;;;; Start with previews expanded
+    (setq vulpea-journal-ui-previous-years-expanded t)  ; default: t
 
-<!--list-separator-->
+    ;;;
+    ```
 
-5.  Интеграция с vulpea
 
-    -   Файл: `packages/vulpea/vulpea-journal.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Modern daily journaling interface for Emacs with reactive sidebar widgets, built on vulpea
-        ;; https://github.com/d12frosted/vulpea-journal
+#### <span class="section-num">29.1.4</span> Клавиатурные сочетания {#клавиатурные-сочетания}
 
-        ;;; Code:
+-   Файл: `packages/vulpea-journal/desire.ecd/keybinding.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Modern daily journaling interface for Emacs with reactive sidebar widgets, built on vulpea
+    ;; https://github.com/d12frosted/vulpea-journal
 
-        (require 'vulpea-journal)
+    ;;; Code:
 
-        ;;;
-        ```
+    (general-define-key
+     :prefix "C-c v d"
+     ;;;;; Go to a note for today (C-c v d n)
+     "d" #'("Go to today" . vulpea-journal-today)
+     ;;;;; Capture a note for a specific date (C-c v d v)
+     "v" #'("Capture for a date" . vulpea-journal-date)
+     ;;;;; Go back one existing date (C-c v d b)
+     "b" #'("Go back one date" . vulpea-journal-previous)
+     ;;;;; Go forward one existing date (C-c v d f)
+     "f" #'("Go forward one date" . vulpea-journal-next))
 
+    ;;;
+    ```
 
-#### <span class="section-num">3.27.2</span> vulpea {#vulpea}
 
-<!--list-separator-->
+#### <span class="section-num">29.1.5</span> Персональные настройки {#персональные-настройки}
 
-1.  Подключение
+-   Файл: `packages/vulpea-journal/personal.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Modern daily journaling interface for Emacs with reactive sidebar widgets, built on vulpea
+    ;; https://github.com/d12frosted/vulpea-journal
 
-    -   Файл: `rc.packages.el`
-        ```emacs-lisp
-        (desire 'vulpea)
-        ```
+    ;;; Code:
 
-<!--list-separator-->
+    ;;;; Daily (one file per day, default)
+    ;; (setopt vulpea-journal-default-template
+    ;; 	(vulpea-journal-template-daily))
 
-2.  Загрузка
+    ;;;; Monthly (one file per month)
+    ;; (setopt vulpea-journal-default-template
+    ;; 	(vulpea-journal-template-monthly))
 
-    -   Файл: `packages/vulpea/loaddefs.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Database layer for org-mode notes with async indexing, rich queries, backlink discovery, and external change detection
-        ;; https://github.com/d12frosted/vulpea
+    ;;;; Custom tempate
+    (setopt vulpea-journal-default-template
+            '(:file-name "daily/%Y/%Y-%m-%d.org"
+             :title "%Y-%m-%d"
+             :tags ("journal" "daily")
+             :head "#+created: %<[%Y-%m-%d]>"
+             :body ":SETUP_LOCAL:\n#+startup: overview num inlineimages latexpreview\n#+options: ^:{} num:t tex:t\n:END:\n\n"))
 
-        ;;; Code:
+    ;;;
+    ```
 
-        (setopt org-roam-directory (file-truename "~/work/org/notes"))
 
-        (if (not (file-directory-p org-roam-directory))
-            (make-directory org-roam-directory t))
+#### <span class="section-num">29.1.6</span> Интеграция с vulpea {#интеграция-с-vulpea}
 
-        ;;;; Directories to index
-        (setopt vulpea-db-sync-directories (list org-roam-directory))
+-   Файл: `packages/vulpea/vulpea-journal.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Modern daily journaling interface for Emacs with reactive sidebar widgets, built on vulpea
+    ;; https://github.com/d12frosted/vulpea-journal
 
-        ;;;; Extra file extensions
-        (setopt vulpea-db-extra-extensions '(".org.age" ".org.gpg"))
+    ;;; Code:
 
-        ;;;
-        ```
+    (require 'vulpea-journal)
 
-<!--list-separator-->
+    ;;;
+    ```
 
-3.  Настройка
 
-    -   Файл: `packages/vulpea/desire.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Database layer for org-mode notes with async indexing, rich queries, backlink discovery, and external change detection
-        ;; https://github.com/d12frosted/vulpea
+### <span class="section-num">29.2</span> vulpea {#vulpea}
 
-        ;;; Code:
 
-        ;;;; Build database (first time only)
-        (vulpea-db-sync-full-scan)
+#### <span class="section-num">29.2.1</span> Подключение {#подключение}
 
-        ;;;; Enable auto-sync
-        (vulpea-db-autosync-mode +1)
+-   Файл: `rc.packages.el`
+    ```emacs-lisp
+    (desire 'vulpea)
+    ```
 
-        ;;;; Parse and write in a background process
-        (setopt vulpea-db-async-extraction 'full)
 
-        ;;;; Skip org-mode-hook during indexing
-        (setopt vulpea-db-parse-method 'single-temp-buffer)
+#### <span class="section-num">29.2.2</span> Загрузка {#загрузка}
 
-        ;;;; Index only [[bracketed]] links
-        (setopt vulpea-db-index-plain-links nil)
+-   Файл: `packages/vulpea/loaddefs.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Database layer for org-mode notes with async indexing, rich queries, backlink discovery, and external change detection
+    ;; https://github.com/d12frosted/vulpea
 
-        ;;;; Excluding Notes
-        (setopt vulpea-db-exclude-property "ROAM_EXCLUDE")
+    ;;; Code:
 
-        ;;;; Parse Method
-        ;; (setopt vulpea-db-parse-method 'single-temp-buffer)  ; Fastest
-        ;; (setopt vulpea-db-parse-method 'temp-buffer)         ; Default, honors org-mode-hook
-        ;; (setopt vulpea-db-parse-method 'find-file)           ; Slowest, most compatible
+    (setopt org-roam-directory (file-truename "~/work/org/notes"))
 
-        ;;;; Detection Method
-        ;;;;; Auto-detect best method (recommended)
-        (setopt vulpea-db-sync-external-method 'auto)
-        ;;;;; Use fswatch (requires fswatch binary)
-        ;; (setopt vulpea-db-sync-external-method 'fswatch)
-        ;;;;; Use polling (no dependencies, works everywhere)
-        ;; (setopt vulpea-db-sync-external-method 'poll)
-        ;;;;; Disable external detection (only detect Emacs changes)
-        ;; (setopt vulpea-db-sync-external-method nil)
+    (if (not (file-directory-p org-roam-directory))
+        (make-directory org-roam-directory t))
 
-        ;;;; Use "ROAM_ALIASES" for org-roam compatibility
-        (setopt vulpea-buffer-alias-property "ROAM_ALIASES")
+    ;;;; Directories to index
+    (setopt vulpea-db-sync-directories (list org-roam-directory))
 
-        ;;;
-        ```
+    ;;;; Extra file extensions
+    (setopt vulpea-db-extra-extensions '(".org.age" ".org.gpg"))
 
-<!--list-separator-->
+    ;;;
+    ```
 
-4.  Интеграция: vulpea-ui
 
-    -   Файл: `packages/vulpea/desire.ecd/vulpea-ui.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; A widget-based sidebar for Emacs that displays contextual information for vulpea notes
-        ;; https://github.com/d12frosted/vulpea-ui
+#### <span class="section-num">29.2.3</span> Настройка {#настройка}
 
-        ;;; Code:
+-   Файл: `packages/vulpea/desire.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Database layer for org-mode notes with async indexing, rich queries, backlink discovery, and external change detection
+    ;; https://github.com/d12frosted/vulpea
 
-        (desire 'vulpea-ui)
+    ;;; Code:
 
-        (require 'vulpea-ui)
+    ;;;; Build database (first time only)
+    (vulpea-db-sync-full-scan)
 
-        ;;;; Open sidebar
-        (vulpea-ui-sidebar-open)
+    ;;;; Enable auto-sync
+    (vulpea-db-autosync-mode +1)
 
-        ;;;; Or toggle with a keybinding
-        (global-set-key (kbd "C-c v s") #'vulpea-ui-sidebar-toggle)
+    ;;;; Parse and write in a background process
+    (setopt vulpea-db-async-extraction 'full)
 
-        ;;;; Automatic sidebar
-        ;; (add-hook 'org-mode-hook #'vulpea-ui-sidebar-open)
+    ;;;; Skip org-mode-hook during indexing
+    (setopt vulpea-db-parse-method 'single-temp-buffer)
 
-        ;;;; Position: 'right (default), 'left, 'top, 'bottom
-        (setopt vulpea-ui-sidebar-position 'right)
+    ;;;; Index only [[bracketed]] links
+    (setopt vulpea-db-index-plain-links nil)
 
-        ;;;; Size of the sidebar
-        (setopt vulpea-ui-sidebar-size 0.33)
+    ;;;; Excluding Notes
+    (setopt vulpea-db-exclude-property "ROAM_EXCLUDE")
 
-        ;;;; Maximum heading depth (nil = unlimited)
-        (setopt vulpea-ui-outline-max-depth 3)
+    ;;;; Parse Method
+    ;; (setopt vulpea-db-parse-method 'single-temp-buffer)  ; Fastest
+    ;; (setopt vulpea-db-parse-method 'temp-buffer)         ; Default, honors org-mode-hook
+    ;; (setopt vulpea-db-parse-method 'find-file)           ; Slowest, most compatible
 
-        ;;;
-        ```
+    ;;;; Detection Method
+    ;;;;; Auto-detect best method (recommended)
+    (setopt vulpea-db-sync-external-method 'auto)
+    ;;;;; Use fswatch (requires fswatch binary)
+    ;; (setopt vulpea-db-sync-external-method 'fswatch)
+    ;;;;; Use polling (no dependencies, works everywhere)
+    ;; (setopt vulpea-db-sync-external-method 'poll)
+    ;;;;; Disable external detection (only detect Emacs changes)
+    ;; (setopt vulpea-db-sync-external-method nil)
 
-<!--list-separator-->
+    ;;;; Use "ROAM_ALIASES" for org-roam compatibility
+    (setopt vulpea-buffer-alias-property "ROAM_ALIASES")
 
-5.  Интеграция: consult
+    ;;;
+    ```
 
-    -   Файл: `packages/vulpea/consult.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Use Consult in tandem with Vulpea
-        ;; https://github.com/fabcontigiani/consult-vulpea
 
-        ;;; Code:
+#### <span class="section-num">29.2.4</span> Клавиатурные сочетания {#клавиатурные-сочетания}
 
-        (desire 'consult-vulpea)
+-   Файл: `packages/vulpea/desire.ecd/keybinding.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Keybindings
 
-        (require 'consult-vulpea)
+    (general-define-key
+     :prefix "C-c v"
+     "f" '("Find node" . vulpea-find)
+     "i" '("Insert link" . vulpea-insert)
+     "c" '("Capture" . vulpea-capture)
+     "l" '("Toggle buffer" . vulpea-buffer-toggle)
+     "g" '("Graph" . vulpea-graph))
 
-        (consult-vulpea-mode 1)
+    ;;;
+    ```
 
-        ;;;
-        ```
 
-<!--list-separator-->
+#### <span class="section-num">29.2.5</span> Интеграция: vulpea-ui {#интеграция-vulpea-ui}
 
-6.  Интеграция: embark
+-   Файл: `packages/vulpea/desire.ecd/vulpea-ui.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; A widget-based sidebar for Emacs that displays contextual information for vulpea notes
+    ;; https://github.com/d12frosted/vulpea-ui
 
-    -   Файл: `packages/vulpea/embark.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Embark actions and export for Vulpea notes
-        ;; https://github.com/fabcontigiani/embark-vulpea
+    ;;; Code:
 
-        ;;; Code:
+    (desire 'vulpea-ui)
 
-        (desire 'embark-vulpea :recipe '(:fetcher github :repo "fabcontigiani/embark-vulpea" :branch "main"))
+    (require 'vulpea-ui)
 
-        (require 'embark-vulpea)
+    ;;;; Open sidebar
+    (vulpea-ui-sidebar-open)
 
-        ;;;
-        ```
+    ;;;; Or toggle with a keybinding
+    (global-set-key (kbd "C-c v s") #'("Toggle sidebar" . vulpea-ui-sidebar-toggle))
 
-<!--list-separator-->
+    ;;;; Automatic sidebar
+    ;; (add-hook 'org-mode-hook #'vulpea-ui-sidebar-open)
 
-7.  Интеграция с org-roam
+    ;;;; Position: 'right (default), 'left, 'top, 'bottom
+    (setopt vulpea-ui-sidebar-position 'right)
 
-    -   Файл: `packages/org-roam/vulpea.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Database layer for org-mode notes with async indexing, rich queries, backlink discovery, and external change detection
-        ;; https://github.com/d12frosted/vulpea
+    ;;;; Size of the sidebar
+    (setopt vulpea-ui-sidebar-size 0.33)
 
-        ;;; Code:
+    ;;;; Maximum heading depth (nil = unlimited)
+    (setopt vulpea-ui-outline-max-depth 3)
 
-        (require 'vulpea)
+    ;;;
+    ```
 
-        ;;;
-        ```
 
+#### <span class="section-num">29.2.6</span> Интеграция: consult {#интеграция-consult}
 
-### <span class="section-num">3.28</span> Инфраструктура Org-roam {#инфраструктура-org-roam}
+-   Файл: `packages/vulpea/consult.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Use Consult in tandem with Vulpea
+    ;; https://github.com/fabcontigiani/consult-vulpea
+
+    ;;; Code:
+
+    (desire 'consult-vulpea)
+
+    (require 'consult-vulpea)
+
+    (consult-vulpea-mode 1)
+
+    ;;;
+    ```
+
+
+#### <span class="section-num">29.2.7</span> Интеграция: embark {#интеграция-embark}
+
+-   Файл: `packages/vulpea/embark.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Embark actions and export for Vulpea notes
+    ;; https://github.com/fabcontigiani/embark-vulpea
+
+    ;;; Code:
+
+    (desire 'embark-vulpea :recipe '(:fetcher github :repo "fabcontigiani/embark-vulpea" :branch "main"))
+
+    (require 'embark-vulpea)
+
+    ;;;
+    ```
+
+
+#### <span class="section-num">29.2.8</span> Интеграция с org-roam {#интеграция-с-org-roam}
+
+-   Файл: `packages/org-roam/vulpea.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Database layer for org-mode notes with async indexing, rich queries, backlink discovery, and external change detection
+    ;; https://github.com/d12frosted/vulpea
+
+    ;;; Code:
+
+    (require 'vulpea)
+
+    ;;;
+    ```
+
+
+## <span class="section-num">30</span> Инфраструктура Org-roam {#инфраструктура-org-roam}
 
 ```emacs-lisp
 ;;;;; Org-roam
@@ -7106,292 +7304,314 @@ slug: "emacs-desire-configuration"
 ```
 
 
-#### <span class="section-num">3.28.1</span> org-workbench {#org-workbench}
+### <span class="section-num">30.1</span> org-workbench {#org-workbench}
 
 -   [Emacs. Пакет org-workbench]({{< relref "2026-02-28--emacs-org-workbench" >}})
 
-<!--list-separator-->
 
-1.  Подключение
+#### <span class="section-num">30.1.1</span> Подключение {#подключение}
 
-    -   Файл: `rc.packages.el`
-        ```emacs-lisp
-        (desire 'org-workbench :recipe '(:fetcher github :repo "yibie/org-workbench" :branch "main"))
-        ```
-
-<!--list-separator-->
-
-2.  Загрузка
-
-    -   Файл: `packages/org-workbench/loaddefs.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; A digital card workbench system for org-mode
-        ;; https://github.com/yibie/org-workbench
-
-        ;;; Code:
-
-        ;;;
-        ```
-
-<!--list-separator-->
-
-3.  Настройка
-
-    -   Файл: `packages/org-workbench/desire.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; A digital card workbench system for org-mode
-        ;; https://github.com/yibie/org-workbench
-
-        ;;; Code:
-
-        (require 'org-workbench)
-        (org-workbench-setup)
-
-        ;;;
-        ```
-
-<!--list-separator-->
-
-4.  Клавиатурные сочетания
-
-    -   Файл: `packages/org-workbench/desire.ecd/keybinding.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; A digital card workbench system for org-mode
-        ;; https://github.com/yibie/org-workbench
-
-        ;;; Code:
-
-        ;;;; Recommended Key Bindings
-        (general-define-key
-         :keymaps 'org-mode-map
-         :prefix "C-c w"
-         "a" #'("Add entire subtree" . org-workbench-add-subtree)
-         "h" #'("Add only the current heading" . org-workbench-add-heading)
-         "f" #'("Add entire file as card" . org-workbench-add-file)
-         "m" #'("Managing workbenches" . org-workbench-manage)
-         "s" #'("Show workbenches" . org-workbench-show))
-
-        ;;;
-        ```
-
-<!--list-separator-->
-
-5.  Интеграция с org-roam
-
-    -   Файл: `packages/org-roam/org-workbench.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; A digital card workbench system for org-mode
-        ;; https://github.com/yibie/org-workbench
-
-        ;;; Code:
-
-        (require 'org-workbench)
-
-        ;;;
-        ```
-
-
-#### <span class="section-num">3.28.2</span> Zetteldesk {#zetteldesk}
-
-<!--list-separator-->
-
-1.  Подключение
-
-    -   Файл: `rc.packages.el`
-
-    <!--listend-->
-
+-   Файл: `rc.packages.el`
     ```emacs-lisp
-    (desire 'zetteldesk)
+    (desire 'org-workbench :recipe '(:fetcher github :repo "yibie/org-workbench" :branch "main"))
     ```
 
-<!--list-separator-->
 
-2.  Включение
+#### <span class="section-num">30.1.2</span> Загрузка {#загрузка}
 
-    -   Файл: `packages/zetteldesk/loaddefs.ecf`
-
-    <!--listend-->
-
+-   Файл: `packages/org-workbench/loaddefs.ecf`
     ```emacs-lisp
     ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-    ;;; Zetteldesk.el is an emacs library built on top of org-roam with the purpose of easier revision on various subjects and a better outliner tool for emacs
-    ;; https://github.com/Vidianos-Giannitsis/zetteldesk.el
+    ;;; A digital card workbench system for org-mode
+    ;; https://github.com/yibie/org-workbench
 
     ;;; Code:
-
-    (desire 'zetteldesk-kb)
-    (desire 'zetteldesk-info)
-    (desire 'zetteldesk-ref)
-    (desire 'zetteldesk-kb)
-    (desire 'zetteldesk-remark)
-
-    ;;;
-    ```
-
-<!--list-separator-->
-
-3.  Загрузка
-
-    ```emacs-lisp
-    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-    ;;; Zetteldesk.el is an emacs library built on top of org-roam with the purpose of easier revision on various subjects and a better outliner tool for emacs
-    ;; https://github.com/Vidianos-Giannitsis/zetteldesk.el
-
-    ;;; Code:
-
-    (require 'zetteldesk)
-
-    (setopt zetteldesk-kb-hydra-prefix (kbd "C-c z"))
-
-    (zetteldesk-mode 1)
-
-    (require 'zetteldesk-ref)
-    (require 'zetteldesk-info)
-    (require 'zetteldesk-remark)
-
-    ;;;
-    ```
-
-<!--list-separator-->
-
-4.  Интеграция с org-roam
-
-    ```emacs-lisp
-    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-    ;;; Zetteldesk.el is an emacs library built on top of org-roam with the purpose of easier revision on various subjects and a better outliner tool for emacs
-    ;; https://github.com/Vidianos-Giannitsis/zetteldesk.el
-
-    ;;; Code:
-
-    (require 'zetteldesk)
 
     ;;;
     ```
 
 
-#### <span class="section-num">3.28.3</span> Org-roam-ui {#org-roam-ui}
+#### <span class="section-num">30.1.3</span> Настройка {#настройка}
 
-<!--list-separator-->
-
-1.  Подключение
-
-    -   Файл: `rc.packages.el`
-
-    <!--listend-->
-
+-   Файл: `packages/org-workbench/desire.ecf`
     ```emacs-lisp
-    (desire 'org-roam-ui :recipe '(:fetcher github :repo "lkarp-744/org-roam-ui"))
-    ;; (desire 'org-roam-ui :recipe '(:fetcher github :repo "lkarp-744/org-roam-ui" :files ("*.el" "public")))
-    ;; (desire 'org-roam-ui)
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; A digital card workbench system for org-mode
+    ;; https://github.com/yibie/org-workbench
+
+    ;;; Code:
+
+    (require 'org-workbench)
+    (org-workbench-setup)
+
+    ;;;
     ```
 
 
-#### <span class="section-num">3.28.4</span> Org-roam {#org-roam}
+#### <span class="section-num">30.1.4</span> Клавиатурные сочетания {#клавиатурные-сочетания}
+
+-   Файл: `packages/org-workbench/desire.ecd/keybinding.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; A digital card workbench system for org-mode
+    ;; https://github.com/yibie/org-workbench
+
+    ;;; Code:
+
+    ;;;; Recommended Key Bindings
+    (general-define-key
+     :keymaps 'org-mode-map
+     :prefix "C-c w"
+     "a" #'("Add entire subtree" . org-workbench-add-subtree)
+     "h" #'("Add only the current heading" . org-workbench-add-heading)
+     "f" #'("Add entire file as card" . org-workbench-add-file)
+     "m" #'("Managing workbenches" . org-workbench-manage)
+     "s" #'("Show workbenches" . org-workbench-show))
+
+    ;;;
+    ```
+
+
+#### <span class="section-num">30.1.5</span> Интеграция с org-roam {#интеграция-с-org-roam}
+
+-   Файл: `packages/org-roam/org-workbench.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; A digital card workbench system for org-mode
+    ;; https://github.com/yibie/org-workbench
+
+    ;;; Code:
+
+    (require 'org-workbench)
+
+    ;;;
+    ```
+
+
+### <span class="section-num">30.2</span> Zetteldesk {#zetteldesk}
+
+
+#### <span class="section-num">30.2.1</span> Подключение {#подключение}
 
 -   Файл: `rc.packages.el`
 
 <!--listend-->
 
 ```emacs-lisp
-(desire 'magit-section)
-(desire 'org-roam)
+(desire 'zetteldesk)
 ```
+
+
+#### <span class="section-num">30.2.2</span> Включение {#включение}
+
+-   Файл: `packages/zetteldesk/loaddefs.ecf`
+
+<!--listend-->
+
+```emacs-lisp
+;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+;;; Zetteldesk.el is an emacs library built on top of org-roam with the purpose of easier revision on various subjects and a better outliner tool for emacs
+;; https://github.com/Vidianos-Giannitsis/zetteldesk.el
+
+;;; Code:
+
+(desire 'zetteldesk-kb)
+(desire 'zetteldesk-info)
+(desire 'zetteldesk-ref)
+(desire 'zetteldesk-kb)
+(desire 'zetteldesk-remark)
+
+;;;
+```
+
+
+#### <span class="section-num">30.2.3</span> Загрузка {#загрузка}
+
+```emacs-lisp
+;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+;;; Zetteldesk.el is an emacs library built on top of org-roam with the purpose of easier revision on various subjects and a better outliner tool for emacs
+;; https://github.com/Vidianos-Giannitsis/zetteldesk.el
+
+;;; Code:
+
+(require 'zetteldesk)
+
+(setopt zetteldesk-kb-hydra-prefix (kbd "C-c z"))
+
+(zetteldesk-mode 1)
+
+(require 'zetteldesk-ref)
+(require 'zetteldesk-info)
+(require 'zetteldesk-remark)
+
+;;;
+```
+
+
+#### <span class="section-num">30.2.4</span> Интеграция с org-roam {#интеграция-с-org-roam}
+
+```emacs-lisp
+;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+;;; Zetteldesk.el is an emacs library built on top of org-roam with the purpose of easier revision on various subjects and a better outliner tool for emacs
+;; https://github.com/Vidianos-Giannitsis/zetteldesk.el
+
+;;; Code:
+
+(require 'zetteldesk)
+
+;;;
+```
+
+
+### <span class="section-num">30.3</span> Org-roam-ui {#org-roam-ui}
+
+
+#### <span class="section-num">30.3.1</span> Подключение {#подключение}
+
+-   Файл: `rc.packages.el`
+
+<!--listend-->
+
+```emacs-lisp
+(desire 'org-roam-ui :recipe '(:fetcher github :repo "lkarp-744/org-roam-ui"))
+;; (desire 'org-roam-ui :recipe '(:fetcher github :repo "lkarp-744/org-roam-ui" :files ("*.el" "public")))
+;; (desire 'org-roam-ui)
+```
+
+
+### <span class="section-num">30.4</span> Org-roam {#org-roam}
+
+
+#### <span class="section-num">30.4.1</span> Подключение {#подключение}
+
+-   Файл: `rc.packages.el`
+    ```emacs-lisp
+    (desire 'magit-section)
+    (desire 'org-roam)
+    ```
+
+
+#### <span class="section-num">30.4.2</span> Клавиатурные сочетания {#клавиатурные-сочетания}
+
+-   Файл: `packages/org-roam/desire.ecd/keybinding.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Keybindings
+
+    (general-define-key
+     :prefix "C-c n"
+     "f" '("Find note" . org-roam-node-find)
+     "i" '("Insert link" . org-roam-node-insert)
+     "l" '("Toggle buffer" . org-roam-buffer-toggle)
+     "c" '("Capture" . org-roam-capture)
+     "g" '("Graph" . org-roam-graph)
+     "o" '("Create ID" . org-id-get-create)
+     "t" '("Add tag" . org-roam-tag-add)
+     "a" '("Add alias" . org-roam-alias-add))
+
+    ;; (global-set-key (kbd "C-c n l") #'org-roam-buffer-toggle)
+    ;; (global-set-key (kbd "C-c n f") #'org-roam-node-find)
+    ;; (global-set-key (kbd "C-c n g") #'org-roam-graph)
+    ;; (global-set-key (kbd "C-c n i") #'org-roam-node-insert)
+    ;; (global-set-key (kbd "C-c n c") #'org-roam-capture)
+    ;; (global-set-key (kbd "C-c n o") #'org-id-get-create)
+    ;; (global-set-key (kbd "C-c n t") #'org-roam-tag-add)
+    ;; (global-set-key (kbd "C-c n a") #'org-roam-alias-add)
+
+    (define-key org-mode-map (kbd "C-M-i") #'completion-at-point)
+
+    ;;;
+    ```
+
+
+#### <span class="section-num">30.4.3</span> Дополнительные пакеты {#дополнительные-пакеты}
 
 <!--list-separator-->
 
-1.  Дополнительные пакеты
+1.  nursery
 
-    <!--list-separator-->
+    -   <https://github.com/chrisbarrett/nursery>
+    -   Файл: packages/org-roam/desire.ecd/nursery.ecf
+    -   Заголовок:
 
-    1.  nursery
+    <!--listend-->
 
-        -   <https://github.com/chrisbarrett/nursery>
-        -   Файл: packages/org-roam/desire.ecd/nursery.ecf
-        -   Заголовок:
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Small org-roam packages
+    ;; https://github.com/chrisbarrett/nursery
 
-        <!--listend-->
+    ;;; Code:
+    ```
 
+    -   org-roam-review
+
+    <!--listend-->
+
+    ```emacs-lisp
+    ;;;; Extends org-roam with spaced-repetition review of nodes
+    ;; https://github.com/chrisbarrett/nursery/blob/main/lisp/org-roam-review.el
+
+    (desire 'org-drill)
+
+    ;;;;; Provides commands to categorise and review org-roam nodes for Evergreen note-taking
+    (desire 'org-roam-review :pkgman 'straight :recipe '(:type git :host github :repo "chrisbarrett/nursery" :branch "main" :files ("lisp/org-roam-review.el" "lisp/org-tags-filter.el" "lisp/plisty.el")))
+
+    (require 'org-roam-review)
+
+    ;;;;; Tag all newly-created notes as seedlings
+    ;;;;; https://github.com/chrisbarrett/nursery/issues/7
+    (defun ecf/org-roam-review-set-seedling ()
+      (with-current-buffer (org-capture-get :buffer)
+        (org-roam-review-set-seedling)))
+    (add-hook 'org-capture-after-finalize-hook #'ecf/org-roam-review-set-seedling)
+
+    ;;;;; Keybindings for applying Evergreen note properties
+    (general-define-key
+     :prefix "C-c r"
+     "r" #'("accept" . org-roam-review-accept)
+     "f" #'("forgot" . org-roam-review-forgot)
+     "u" #'("bury" . org-roam-review-bury)
+     "m" #'("set memorise" . org-roam-review-set-memorise)
+     "x" #'("set excluded" . org-roam-review-set-excluded)
+     "b" #'("set budding" . org-roam-review-set-budding)
+     "s" #'("set seedling" . org-roam-review-set-seedling)
+     "e" #'("set evergreen" . org-roam-review-set-evergreen))
+
+    ;;;;; Ignore tags when export
+    (with-eval-after-load 'ox-hugo
+      (add-to-list 'ecf/tags-categories-to-be-removed "seedling")
+      (add-to-list 'ecf/tags-categories-to-be-removed "evergreen")
+      (add-to-list 'ecf/tags-categories-to-be-removed "budding"))
+    ```
+
+    -   Разные пакеты:
         ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Small org-roam packages
-        ;; https://github.com/chrisbarrett/nursery
+        ;;;;; Renaming nodes, rewriting links and deleting nodes with redirection
+        (desire 'org-transclusion)
 
-        ;;; Code:
+        (desire 'org-roam-rewrite :pkgman 'straight :recipe '(:type git :host github :repo "chrisbarrett/nursery" :branch "main" :files ("lisp/org-roam-rewrite.el" "lisp/plisty.el")))
+        (require 'org-roam-rewrite)
+
+        ;;;; Display a tree of backlinks and forward links up to a configurable depth
+        (desire 'org-roam-links :pkgman 'straight :recipe '(:type git :host github :repo "chrisbarrett/nursery" :branch "main" :files ("lisp/org-roam-links.el" "lisp/plisty.el")))
+        (require 'org-roam-links)
+
+        ;;;; Make previews in org-roam buffer lazy for better performance
+        (desire 'org-roam-lazy-previews :pkgman 'straight :recipe '(:type git :host github :repo "chrisbarrett/nursery" :branch "main" :files ("lisp/org-roam-lazy-previews.el")))
+        (require 'org-roam-lazy-previews)
+
+        ;;;; Refill org-roam backlink previews
+        (desire 'org-roam-refill-previews :pkgman 'straight :recipe '(:type git :host github :repo "chrisbarrett/nursery" :branch "main" :files ("lisp/org-roam-refill-previews.el")))
+        (require 'org-roam-refill-previews)
+
+        (add-hook 'org-roam-preview-postprocess-functions #'org-roam-refill-previews)
+
+        ;;;
         ```
 
-        -   org-roam-review
 
-        <!--listend-->
-
-        ```emacs-lisp
-        ;;;; Extends org-roam with spaced-repetition review of nodes
-        ;; https://github.com/chrisbarrett/nursery/blob/main/lisp/org-roam-review.el
-
-        (desire 'org-drill)
-
-        ;;;;; Provides commands to categorise and review org-roam nodes for Evergreen note-taking
-        (desire 'org-roam-review :pkgman 'straight :recipe '(:type git :host github :repo "chrisbarrett/nursery" :branch "main" :files ("lisp/org-roam-review.el" "lisp/org-tags-filter.el" "lisp/plisty.el")))
-
-        (require 'org-roam-review)
-
-        ;;;;; Tag all newly-created notes as seedlings
-        ;;;;; https://github.com/chrisbarrett/nursery/issues/7
-        (defun ecf/org-roam-review-set-seedling ()
-          (with-current-buffer (org-capture-get :buffer)
-            (org-roam-review-set-seedling)))
-        (add-hook 'org-capture-after-finalize-hook #'ecf/org-roam-review-set-seedling)
-
-        ;;;;; Keybindings for applying Evergreen note properties
-        (general-define-key
-         :prefix "C-c r"
-         "r" #'("accept" . org-roam-review-accept)
-         "f" #'("forgot" . org-roam-review-forgot)
-         "u" #'("bury" . org-roam-review-bury)
-         "m" #'("set memorise" . org-roam-review-set-memorise)
-         "x" #'("set excluded" . org-roam-review-set-excluded)
-         "b" #'("set budding" . org-roam-review-set-budding)
-         "s" #'("set seedling" . org-roam-review-set-seedling)
-         "e" #'("set evergreen" . org-roam-review-set-evergreen))
-
-        ;;;;; Ignore tags when export
-        (with-eval-after-load 'ox-hugo
-          (add-to-list 'ecf/tags-categories-to-be-removed "seedling")
-          (add-to-list 'ecf/tags-categories-to-be-removed "evergreen")
-          (add-to-list 'ecf/tags-categories-to-be-removed "budding"))
-        ```
-
-        -   Разные пакеты:
-            ```emacs-lisp
-            ;;;;; Renaming nodes, rewriting links and deleting nodes with redirection
-            (desire 'org-transclusion)
-
-            (desire 'org-roam-rewrite :pkgman 'straight :recipe '(:type git :host github :repo "chrisbarrett/nursery" :branch "main" :files ("lisp/org-roam-rewrite.el" "lisp/plisty.el")))
-            (require 'org-roam-rewrite)
-
-            ;;;; Display a tree of backlinks and forward links up to a configurable depth
-            (desire 'org-roam-links :pkgman 'straight :recipe '(:type git :host github :repo "chrisbarrett/nursery" :branch "main" :files ("lisp/org-roam-links.el" "lisp/plisty.el")))
-            (require 'org-roam-links)
-
-            ;;;; Make previews in org-roam buffer lazy for better performance
-            (desire 'org-roam-lazy-previews :pkgman 'straight :recipe '(:type git :host github :repo "chrisbarrett/nursery" :branch "main" :files ("lisp/org-roam-lazy-previews.el")))
-            (require 'org-roam-lazy-previews)
-
-            ;;;; Refill org-roam backlink previews
-            (desire 'org-roam-refill-previews :pkgman 'straight :recipe '(:type git :host github :repo "chrisbarrett/nursery" :branch "main" :files ("lisp/org-roam-refill-previews.el")))
-            (require 'org-roam-refill-previews)
-
-            (add-hook 'org-roam-preview-postprocess-functions #'org-roam-refill-previews)
-
-            ;;;
-            ```
-
-
-#### <span class="section-num">3.28.5</span> Org-daily {#org-daily}
+### <span class="section-num">30.5</span> Org-roam-dailies {#org-roam-dailies}
 
 -   [Org-roam. Daily notes]({{< relref "2025-06-08--org-roam-daily-notes" >}})
 -   Загрузка.
@@ -7420,7 +7640,7 @@ slug: "emacs-desire-configuration"
     (setopt org-roam-dailies-capture-templates
           '(("d" "default" entry
              "* %?"
-             :target (file+head "%<%Y-%m-%d>.org"
+             :target (file+head "%<%Y>/%<%Y-%m-%d>.org"
                                 "#+title: %<%Y-%m-%d>
     :SETUP_LOCAL:
     #+startup: overview num inlineimages latexpreview
@@ -7435,7 +7655,7 @@ slug: "emacs-desire-configuration"
 
     (general-define-key
      :keymaps 'org-roam-dailies-map
-    ;;;;; Go to a note for today (C-c n d n)
+    ;;;;; Go to a note for today (C-c n d d)
      "d" #'("Go to today" . org-roam-dailies-goto-today)
     ;;;;; Capture a note for today (C-c n d n)
      "n" #'("Capture for today" . org-roam-dailies-capture-today)
@@ -7452,9 +7672,9 @@ slug: "emacs-desire-configuration"
     ;;;;; Go to the file for a specific date (C-c n d c)
      "c" #'("Go to a date" . org-roam-dailies-goto-date)
     ;;;;; Go back one existing date (C-c n d b)
-     "b" #'("Go back one date" . org-roam-dailies-goto-next-note)
+     "b" #'("Go back one date" . org-roam-dailies-goto-previous-note)
     ;;;;; Go forward one existing date (C-c n d f)
-     "f" #'("Go forward one date" . org-roam-dailies-goto-previous-note))
+     "f" #'("Go forward one date" . org-roam-dailies-goto-next-note))
 
     (fset 'org-roam-dailies-map org-roam-dailies-map)
     (global-set-key (kbd "C-c n d") #'org-roam-dailies-map)
@@ -7465,7 +7685,7 @@ slug: "emacs-desire-configuration"
     ```
 
 
-#### <span class="section-num">3.28.6</span> org-daily-reflection {#org-daily-reflection}
+### <span class="section-num">30.6</span> org-daily-reflection {#org-daily-reflection}
 
 -   [Emacs. Пакет org-daily-reflection]({{< relref "2025-06-06--emacs-org-daily-reflection" >}})
 -   Загрузка.
@@ -7482,12 +7702,12 @@ slug: "emacs-desire-configuration"
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 181:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 183:</span>
       packages/org-roam/desire.ecd/org-daily-reflection.ecf
     </div>
 
 
-### <span class="section-num">3.29</span> Заметочники {#заметочники}
+## <span class="section-num">31</span> Заметочники {#заметочники}
 
 -   [Emacs. Персональная база знаний]({{< relref "2023-11-07-emacs-personal-knowledge-base" >}})
 -   Разные заметочники:
@@ -7495,12 +7715,12 @@ slug: "emacs-desire-configuration"
     ;;; Notes
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 182:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 184:</span>
       rc.packages.el
     </div>
 
 
-#### <span class="section-num">3.29.1</span> Denote {#denote}
+### <span class="section-num">31.1</span> Denote {#denote}
 
 ```emacs-lisp
 
@@ -7513,304 +7733,301 @@ slug: "emacs-desire-configuration"
 ```
 
 
-### <span class="section-num">3.30</span> Диаграммы {#диаграммы}
+## <span class="section-num">32</span> Диаграммы {#диаграммы}
 
 
-#### <span class="section-num">3.30.1</span> Диаграммы Ганта {#диаграммы-ганта}
+### <span class="section-num">32.1</span> Диаграммы Ганта {#диаграммы-ганта}
 
 -   [Emacs. Диаграммы Ганта]({{< relref "2024-12-10-emacs-gantt-charts" >}})
 
-<!--list-separator-->
 
-1.  org-gantt-mode
+#### <span class="section-num">32.1.1</span> org-gantt-mode {#org-gantt-mode}
 
-    -   Добавим пакет:
-        ```emacs-lisp
-        ;; (desire 'org-gantt-mode :recipe '(:fetcher gitlab :repo "joukeHijlkema/org-gantt-mode" :branch "master"))
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 183:</span>
-          rc.packages.el
-        </div>
-    -   Загрузка пакета:
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Create SVG gantt charts from an org-mode subtree
-        ;;; https://gitlab.com/joukeHijlkema/org-gantt-mode
+-   Добавим пакет:
+    ```emacs-lisp
+    ;; (desire 'org-gantt-mode :recipe '(:fetcher gitlab :repo "joukeHijlkema/org-gantt-mode" :branch "master"))
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 185:</span>
+      rc.packages.el
+    </div>
+-   Загрузка пакета:
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Create SVG gantt charts from an org-mode subtree
+    ;;; https://gitlab.com/joukeHijlkema/org-gantt-mode
 
-        (desire 'ts)
+    (desire 'ts)
 
-        (autoload 'org-gantt-mode "org-gantt-mode" "Create SVG gantt charts" t)
+    (autoload 'org-gantt-mode "org-gantt-mode" "Create SVG gantt charts" t)
 
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 184:</span>
-          packages/org-gantt-mode.ecf
-        </div>
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 186:</span>
+      packages/org-gantt-mode.ecf
+    </div>
 
-<!--list-separator-->
 
-2.  elgantt
+#### <span class="section-num">32.1.2</span> elgantt {#elgantt}
 
-    -   Добавим пакет:
-        ```emacs-lisp
-        (desire 'elgantt :recipe '(:fetcher github :repo "legalnonsense/elgantt" :branch "master"))
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 185:</span>
-          rc.packages.el
-        </div>
-    -   Загрузка пакета:
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;;  A Gantt Chart (Calendar) for Org Mode
-        ;;; https://github.com/legalnonsense/elgantt
+-   Добавим пакет:
+    ```emacs-lisp
+    (desire 'elgantt :recipe '(:fetcher github :repo "legalnonsense/elgantt" :branch "master"))
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 187:</span>
+      rc.packages.el
+    </div>
+-   Загрузка пакета:
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;;  A Gantt Chart (Calendar) for Org Mode
+    ;;; https://github.com/legalnonsense/elgantt
 
-        (require 'elgantt)
+    (require 'elgantt)
 
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 186:</span>
-          packages/elgantt/loaddefs.ecf
-        </div>
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 188:</span>
+      packages/elgantt/loaddefs.ecf
+    </div>
 
-<!--list-separator-->
 
-3.  taskjuggler
+#### <span class="section-num">32.1.3</span> taskjuggler {#taskjuggler}
 
-    -   Загрузка пакета:
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;;  Exporting Gantt charts with Taskjuggler
-        ;; https://github.com/h-oll/ox-taskjuggler
+-   Загрузка пакета:
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;;  Exporting Gantt charts with Taskjuggler
+    ;; https://github.com/h-oll/ox-taskjuggler
 
-        ;;; Code:
+    ;;; Code:
 
-        ;; (desire 'ox-taskjuggler :recipe '(:fetcher github :repo "h-oll/ox-taskjuggler" :branch "master"))
-        (desire 'ox-taskjuggler :pkgman 'straight :recipe '(:type git :host github :repo "h-oll/ox-taskjuggler" :branch "master" :files ("lisp/*")))
-        (require 'ox-taskjuggler)
+    ;; (desire 'ox-taskjuggler :recipe '(:fetcher github :repo "h-oll/ox-taskjuggler" :branch "master"))
+    (desire 'ox-taskjuggler :pkgman 'straight :recipe '(:type git :host github :repo "h-oll/ox-taskjuggler" :branch "master" :files ("lisp/*")))
+    (require 'ox-taskjuggler)
 
-        ;;;; Report width
+    ;;;; Report width
 
-        (setopt org-taskjuggler-default-reports
-          '("textreport report \"Plan\" {
-          formats html
-          header '== %title =='
+    (setopt org-taskjuggler-default-reports
+      '("textreport report \"Plan\" {
+      formats html
+      header '== %title =='
 
-          center -8<-
-            [#Plan Plan] | [#Resource_Allocation Resource Allocation]
-            ----
-            === Plan ===
-            <[report id=\"plan\"]>
-            ----
-            === Resource Allocation ===
-            <[report id=\"resourceGraph\"]>
-          ->8-
-        }
+      center -8<-
+        [#Plan Plan] | [#Resource_Allocation Resource Allocation]
+        ----
+        === Plan ===
+        <[report id=\"plan\"]>
+        ----
+        === Resource Allocation ===
+        <[report id=\"resourceGraph\"]>
+      ->8-
+    }
 
-        # A traditional Gantt chart with a project overview.
-        taskreport plan \"\" {
-          headline \"Project Plan\"
-          columns bsi, name, start, end, effort, chart { width 1000 }
-          loadunit shortauto
-          hideresource 1
-        }
+    # A traditional Gantt chart with a project overview.
+    taskreport plan \"\" {
+      headline \"Project Plan\"
+      columns bsi, name, start, end, effort, chart { width 1000 }
+      loadunit shortauto
+      hideresource 1
+    }
 
-        # A graph showing resource allocation. It identifies whether each
-        # resource is under- or over-allocated for.
-        resourcereport resourceGraph \"\" {
-          headline \"Resource Allocation Graph\"
-          columns no, name, effort, weekly { width 1000 }
-          loadunit shortauto
-          hidetask ~(isleaf() & isleaf_())
-          sorttasks plan.start.up
-        }"))
+    # A graph showing resource allocation. It identifies whether each
+    # resource is under- or over-allocated for.
+    resourcereport resourceGraph \"\" {
+      headline \"Resource Allocation Graph\"
+      columns no, name, effort, weekly { width 1000 }
+      loadunit shortauto
+      hidetask ~(isleaf() & isleaf_())
+      sorttasks plan.start.up
+    }"))
 
-        ;;;; Some tweaks
-        (setopt org-taskjuggler-default-project-duration 999)
-        (setopt org-taskjuggler-valid-task-attributes
-                '(account start note duration endbuffer endcredit end
-                          flags journalentry length limits maxend maxstart minend
-                          minstart period reference responsible scheduling
-                          startbuffer startcredit statusnote chargeset charge booking))
+    ;;;; Some tweaks
+    (setopt org-taskjuggler-default-project-duration 999)
+    (setopt org-taskjuggler-valid-task-attributes
+            '(account start note duration endbuffer endcredit end
+                      flags journalentry length limits maxend maxstart minend
+                      minstart period reference responsible scheduling
+                      startbuffer startcredit statusnote chargeset charge booking))
 
 
 
-        ;;;; precedes
-        (defun org-taskjuggler-resolve-precedes (task info)
-          "Return a list of all tasks TASK precedes on.
-        TASK is a headline.  INFO is a plist used as a communication
-        channel."
-          (let ((precs-ids
-                 ;; Get all dependencies specified in BLOCKER and PRECEDES task
-                 ;; properties.  Clean options from them.
-                 (let ((precs (concat (org-element-property :BLOCKER task)
-                                     (org-element-property :PRECEDES task))))
-                   (and precs
-                        (split-string (replace-regexp-in-string "{.*?}" "" precs)
-                                      "[ ,]* +"))))
-                precedes)
-            (when precs-ids
-              ;; Find tasks with :task_id: property matching id in PRECS-IDS.
-              ;; Add them to PRECEDES.
-              (let* ((project (org-taskjuggler-get-project info))
-                     (tasks (if org-taskjuggler-keep-project-as-task project
-                              (org-element-contents project))))
-                (setq precedes
-                      (org-element-map tasks 'headline
-                        (lambda (task)
-                          (let ((task-id (or (org-element-property :TASK_ID task)
-                                             (org-element-property :ID task))))
-                            (and task-id (member task-id precs-ids) task)))
-                        info)))
-              ;; Check BLOCKER and PRECEDES properties.  If "previous-sibling"
-              ;; belongs to PRECS-ID, add it to PRECEDES.
-              ;; (when (and (member-ignore-case "previous-sibling" precs-ids)
-              ;;            (not (org-export-first-sibling-p task info)))
-              ;;   (let ((prev (org-export-get-previous-element task info)))
-              ;;     (and (not (memq prev precedes)) (push prev precedes))))
-              )
-            ;; Check ORDERED status of parent.
-            ;; (let ((parent (org-export-get-parent task)))
-            ;;   (when (and parent
-            ;;              (org-element-property :ORDERED parent)
-            ;;              (not (org-export-first-sibling-p task info)))
-            ;;     (push (org-export-get-previous-element task info) precedes)))
-            ;; Return dependencies.
-            precedes))
+    ;;;; precedes
+    (defun org-taskjuggler-resolve-precedes (task info)
+      "Return a list of all tasks TASK precedes on.
+    TASK is a headline.  INFO is a plist used as a communication
+    channel."
+      (let ((precs-ids
+             ;; Get all dependencies specified in BLOCKER and PRECEDES task
+             ;; properties.  Clean options from them.
+             (let ((precs (concat (org-element-property :BLOCKER task)
+                                 (org-element-property :PRECEDES task))))
+               (and precs
+                    (split-string (replace-regexp-in-string "{.*?}" "" precs)
+                                  "[ ,]* +"))))
+            precedes)
+        (when precs-ids
+          ;; Find tasks with :task_id: property matching id in PRECS-IDS.
+          ;; Add them to PRECEDES.
+          (let* ((project (org-taskjuggler-get-project info))
+                 (tasks (if org-taskjuggler-keep-project-as-task project
+                          (org-element-contents project))))
+            (setq precedes
+                  (org-element-map tasks 'headline
+                    (lambda (task)
+                      (let ((task-id (or (org-element-property :TASK_ID task)
+                                         (org-element-property :ID task))))
+                        (and task-id (member task-id precs-ids) task)))
+                    info)))
+          ;; Check BLOCKER and PRECEDES properties.  If "previous-sibling"
+          ;; belongs to PRECS-ID, add it to PRECEDES.
+          ;; (when (and (member-ignore-case "previous-sibling" precs-ids)
+          ;;            (not (org-export-first-sibling-p task info)))
+          ;;   (let ((prev (org-export-get-previous-element task info)))
+          ;;     (and (not (memq prev precedes)) (push prev precedes))))
+          )
+        ;; Check ORDERED status of parent.
+        ;; (let ((parent (org-export-get-parent task)))
+        ;;   (when (and parent
+        ;;              (org-element-property :ORDERED parent)
+        ;;              (not (org-export-first-sibling-p task info)))
+        ;;     (push (org-export-get-previous-element task info) precedes)))
+        ;; Return dependencies.
+        precedes))
 
-        (defun org-taskjuggler-format-precedes (precedes task info)
-          "Format PRECEDES to match TaskJuggler syntax.
-        PRECEDES is list of precedes for TASK, as returned by
-        `org-taskjuggler-resolve-depedencies'.  TASK is a headline.
-        INFO is a plist used as a communication channel.  Return value
-        doesn't include leading \"precedes\"."
-          (let* ((dep-str (concat (org-element-property :BLOCKER task)
-                                  " "
-                                  (org-element-property :PRECEDES task)))
-                 (get-path
-                  (lambda (dep)
-                    ;; Return path to DEP relatively to TASK.
-                    (let ((parent (org-export-get-parent task))
-                          (exclamations 1)
-                          (option
-                           (let ((id (org-element-property :TASK_ID dep)))
-                             (and id
-                                  (string-match (concat id " +\\({.*?}\\)") dep-str)
-                                  (match-string-no-properties 1 dep-str))))
-                          path)
-                      ;; Compute number of exclamation marks by looking for the
-                      ;; common ancestor between TASK and DEP.
-                      (while (not (org-element-map parent 'headline
-                                  (lambda (hl) (eq hl dep))))
-                        (cl-incf exclamations)
-                        (setq parent (org-export-get-parent parent)))
-                      ;; Build path from DEP to PARENT.
-                      (while (not (eq parent dep))
-                        (push (org-taskjuggler-get-id dep info) path)
-                        (setq dep (org-export-get-parent dep)))
-                      ;; Return full path.  Add dependency options, if any.
-                      (concat (make-string exclamations ?!)
-                              (mapconcat 'identity path ".")
-                              (and option (concat " " option)))))))
-            ;; Return precedes string, without the leading "precedes".
-            (mapconcat (lambda (dep) (funcall get-path dep)) precedes ", ")))
+    (defun org-taskjuggler-format-precedes (precedes task info)
+      "Format PRECEDES to match TaskJuggler syntax.
+    PRECEDES is list of precedes for TASK, as returned by
+    `org-taskjuggler-resolve-depedencies'.  TASK is a headline.
+    INFO is a plist used as a communication channel.  Return value
+    doesn't include leading \"precedes\"."
+      (let* ((dep-str (concat (org-element-property :BLOCKER task)
+                              " "
+                              (org-element-property :PRECEDES task)))
+             (get-path
+              (lambda (dep)
+                ;; Return path to DEP relatively to TASK.
+                (let ((parent (org-export-get-parent task))
+                      (exclamations 1)
+                      (option
+                       (let ((id (org-element-property :TASK_ID dep)))
+                         (and id
+                              (string-match (concat id " +\\({.*?}\\)") dep-str)
+                              (match-string-no-properties 1 dep-str))))
+                      path)
+                  ;; Compute number of exclamation marks by looking for the
+                  ;; common ancestor between TASK and DEP.
+                  (while (not (org-element-map parent 'headline
+                              (lambda (hl) (eq hl dep))))
+                    (cl-incf exclamations)
+                    (setq parent (org-export-get-parent parent)))
+                  ;; Build path from DEP to PARENT.
+                  (while (not (eq parent dep))
+                    (push (org-taskjuggler-get-id dep info) path)
+                    (setq dep (org-export-get-parent dep)))
+                  ;; Return full path.  Add dependency options, if any.
+                  (concat (make-string exclamations ?!)
+                          (mapconcat 'identity path ".")
+                          (and option (concat " " option)))))))
+        ;; Return precedes string, without the leading "precedes".
+        (mapconcat (lambda (dep) (funcall get-path dep)) precedes ", ")))
 
-        (defun org-taskjuggler--build-task (task info)
-          "Return a task declaration.
+    (defun org-taskjuggler--build-task (task info)
+      "Return a task declaration.
 
-        TASK is a headline.  INFO is a plist used as a communication
-        channel.
+    TASK is a headline.  INFO is a plist used as a communication
+    channel.
 
-        All valid attributes from TASK are inserted.  If TASK defines
-        a property \"task_id\" it will be used as the id for this task.
-        Otherwise it will use the ID property.  If neither is defined
-        a unique id will be associated to it."
-          (let* ((allocate (org-element-property :ALLOCATE task))
-                 (complete
-                  (if (eq (org-element-property :todo-type task) 'done) "100"
-                    (org-element-property :COMPLETE task)))
-                 (depends (org-taskjuggler-resolve-dependencies task info))
-                 (precedes (org-taskjuggler-resolve-precedes task info))
-                 (effort (let ((property
-                                (intern (concat ":" (upcase org-effort-property)))))
-                           (org-element-property property task)))
-                 (milestone
-                  (or (org-element-property :MILESTONE task)
-                      (not (or (org-element-map (org-element-contents task) 'headline
-                                 'identity info t)  ; Has task any child?
-                               effort
-                               (org-element-property :LENGTH task)
-                               (org-element-property :DURATION task)
-                               (and (org-taskjuggler-get-start task)
-                                    (org-taskjuggler-get-end task))
-                               (org-element-property :PERIOD task)))))
-                 (priority
-                  (let ((pri (org-element-property :priority task)))
-                    (and pri
-                         (max 1 (/ (* 1000 (- org-priority-lowest pri))
-                                   (- org-priority-lowest org-priority-highest)))))))
-            (concat
-             ;; Opening task.
-             (format "task %s \"%s\" {\n"
-                     (org-taskjuggler-get-id task info)
-                     (org-taskjuggler-get-name task))
-             ;; Add default attributes.
-             (and depends
-                  (format "  depends %s\n"
-                          (org-taskjuggler-format-dependencies depends task info)))
-             (and precedes
-                  (format "  precedes %s\n"
-                          (org-taskjuggler-format-precedes precedes task info)))
-             (and allocate
-                  (format "  purge %s\n  allocate %s\n"
-                          ;; Compatibility for previous TaskJuggler versions.
-                          (if (>= org-taskjuggler-target-version 3.0) "allocate"
-                            "allocations")
-                          allocate))
-             (and complete (format "  complete %s\n" complete))
-             (and effort (format "  effort %s\n" effort))
-             (and priority (format "  priority %s\n" priority))
-             (and milestone "  milestone\n")
-             ;; Add other valid attributes.
-             (org-taskjuggler--indent-string
-              (org-taskjuggler--build-attributes
-               task org-taskjuggler-valid-task-attributes))
-             ;; Add inner tasks.
-             (org-taskjuggler--indent-string
-              (mapconcat 'identity
-                         (org-element-map (org-element-contents task) 'headline
-                           (lambda (hl) (org-taskjuggler--build-task hl info))
-                           info nil 'headline)
-                         ""))
-             ;; Closing task.
-             "}\n")))
+    All valid attributes from TASK are inserted.  If TASK defines
+    a property \"task_id\" it will be used as the id for this task.
+    Otherwise it will use the ID property.  If neither is defined
+    a unique id will be associated to it."
+      (let* ((allocate (org-element-property :ALLOCATE task))
+             (complete
+              (if (eq (org-element-property :todo-type task) 'done) "100"
+                (org-element-property :COMPLETE task)))
+             (depends (org-taskjuggler-resolve-dependencies task info))
+             (precedes (org-taskjuggler-resolve-precedes task info))
+             (effort (let ((property
+                            (intern (concat ":" (upcase org-effort-property)))))
+                       (org-element-property property task)))
+             (milestone
+              (or (org-element-property :MILESTONE task)
+                  (not (or (org-element-map (org-element-contents task) 'headline
+                             'identity info t)  ; Has task any child?
+                           effort
+                           (org-element-property :LENGTH task)
+                           (org-element-property :DURATION task)
+                           (and (org-taskjuggler-get-start task)
+                                (org-taskjuggler-get-end task))
+                           (org-element-property :PERIOD task)))))
+             (priority
+              (let ((pri (org-element-property :priority task)))
+                (and pri
+                     (max 1 (/ (* 1000 (- org-priority-lowest pri))
+                               (- org-priority-lowest org-priority-highest)))))))
+        (concat
+         ;; Opening task.
+         (format "task %s \"%s\" {\n"
+                 (org-taskjuggler-get-id task info)
+                 (org-taskjuggler-get-name task))
+         ;; Add default attributes.
+         (and depends
+              (format "  depends %s\n"
+                      (org-taskjuggler-format-dependencies depends task info)))
+         (and precedes
+              (format "  precedes %s\n"
+                      (org-taskjuggler-format-precedes precedes task info)))
+         (and allocate
+              (format "  purge %s\n  allocate %s\n"
+                      ;; Compatibility for previous TaskJuggler versions.
+                      (if (>= org-taskjuggler-target-version 3.0) "allocate"
+                        "allocations")
+                      allocate))
+         (and complete (format "  complete %s\n" complete))
+         (and effort (format "  effort %s\n" effort))
+         (and priority (format "  priority %s\n" priority))
+         (and milestone "  milestone\n")
+         ;; Add other valid attributes.
+         (org-taskjuggler--indent-string
+          (org-taskjuggler--build-attributes
+           task org-taskjuggler-valid-task-attributes))
+         ;; Add inner tasks.
+         (org-taskjuggler--indent-string
+          (mapconcat 'identity
+                     (org-element-map (org-element-contents task) 'headline
+                       (lambda (hl) (org-taskjuggler--build-task hl info))
+                       info nil 'headline)
+                     ""))
+         ;; Closing task.
+         "}\n")))
 
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 187:</span>
-          packages/org/desire.ecd/ox-taskjuggler.ecf
-        </div>
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 189:</span>
+      packages/org/desire.ecd/ox-taskjuggler.ecf
+    </div>
 
 
-#### <span class="section-num">3.30.2</span> Mermaid {#mermaid}
+### <span class="section-num">32.2</span> Mermaid {#mermaid}
 
 ```emacs-lisp
 (desire' mermaid-mode :precondition-system-executable "mmdc")
 ```
 
 
-#### <span class="section-num">3.30.3</span> Plantuml {#plantuml}
+### <span class="section-num">32.3</span> Plantuml {#plantuml}
 
 ```emacs-lisp
 (desire 'plantuml-mode)
 ```
 
 
-### <span class="section-num">3.31</span> Разное {#разное}
+## <span class="section-num">33</span> Разное {#разное}
 
 ```emacs-lisp
 ;; XML, XHTML, HTML {{{
@@ -7827,14 +8044,14 @@ slug: "emacs-desire-configuration"
 ```
 
 
-### <span class="section-num">3.32</span> Управление сессиями {#управление-сессиями}
+## <span class="section-num">34</span> Управление сессиями {#управление-сессиями}
 
 ```emacs-lisp
 ;;; Desktop {{{
 ```
 
 
-### <span class="section-num">3.33</span> Сохранение состояния сессий {#сохранение-состояния-сессий}
+## <span class="section-num">35</span> Сохранение состояния сессий {#сохранение-состояния-сессий}
 
 ```emacs-lisp
 ;; (desire-conf 'desktop)
@@ -7843,22 +8060,22 @@ slug: "emacs-desire-configuration"
 ```
 
 
-### <span class="section-num">3.34</span> Организация рабочего пространства {#организация-рабочего-пространства}
+## <span class="section-num">36</span> Организация рабочего пространства {#организация-рабочего-пространства}
 
 -   [Emacs. Управление рабочим пространством]({{< relref "2026-02-20--emacs-managing-workspaces" >}})
 
 
-#### <span class="section-num">3.34.1</span> one-tab-per-project {#one-tab-per-project}
+### <span class="section-num">36.1</span> one-tab-per-project {#one-tab-per-project}
 
 -   [Emacs. Пакет otpp]({{< relref "2025-02-03--emacs-otpp" >}})
 -   Автоматическое создание вкладки для каждого проекта, обеспечивающее управление рабочим пространством на основе панели вкладок для Emacs.
 -   <https://github.com/abougouffa/one-tab-per-project>
 -   Подключение пакета:
     ```emacs-lisp
-    (desire 'otpp)
+    ;; (desire 'otpp)
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 188:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 190:</span>
       rc.packages.el
     </div>
 -   Предварительные настройки:
@@ -7872,7 +8089,7 @@ slug: "emacs-desire-configuration"
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 189:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 191:</span>
       packages/otpp/loaddefs.ecf
     </div>
 -   Загрузка пакета:
@@ -7886,7 +8103,7 @@ slug: "emacs-desire-configuration"
     (require 'otpp)
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 190:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 192:</span>
       packages/otpp/desire.ecf
     </div>
 -   Задание параметров:
@@ -7911,7 +8128,7 @@ slug: "emacs-desire-configuration"
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 191:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 193:</span>
       packages/otpp/desire.ecf
     </div>
 -   Подключение к project.el:
@@ -7925,12 +8142,12 @@ slug: "emacs-desire-configuration"
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 192:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 194:</span>
       packages/project/otpp.ecf
     </div>
 
 
-#### <span class="section-num">3.34.2</span> iBuffer {#ibuffer}
+### <span class="section-num">36.2</span> iBuffer {#ibuffer}
 
 ```emacs-lisp
 (desire 'ibuffer)
@@ -7939,131 +8156,150 @@ slug: "emacs-desire-configuration"
 ```
 
 
-#### <span class="section-num">3.34.3</span> tabspaces {#tabspaces}
+### <span class="section-num">36.3</span> tabspaces {#tabspaces}
 
 -   [Emacs. Пакет Tabspaces]({{< relref "2026-02-20--emacs-tabspaces" >}})
 
+
+#### <span class="section-num">36.3.1</span> Подключение {#подключение}
+
+-   Файл: `rc.packages.el`
+    ```emacs-lisp
+    (desire 'tabspaces)
+    ```
+
+
+#### <span class="section-num">36.3.2</span> Загрузка {#загрузка}
+
+-   Файл: `packages/tabspaces/loaddefs.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Create buffer-isolated workspaces
+    ;; https://github.com/mclear-tools/tabspaces
+
+    ;;; Code:
+
+    (require 'tabspaces)
+
+    ;;;
+    ```
+
+
+#### <span class="section-num">36.3.3</span> Настройка {#настройка}
+
+-   Файл: `packages/tabspaces/desire.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Create buffer-isolated workspaces
+    ;; https://github.com/mclear-tools/tabspaces
+
+    ;;; Code
+
+
+    (setopt tabspaces-use-filtered-buffers-as-default t)
+    (setopt tabspaces-default-tab "Default")
+    (setopt tabspaces-remove-to-default t)
+    (setopt tabspaces-include-buffers '("*scratch*"))
+    (setopt tabspaces-initialize-project-with-todo t)
+    (setopt tabspaces-todo-file-name "project-todo.org")
+
+    ;;;; Enable automatic session saving on Emacs exit
+    (setopt tabspaces-session t)
+    ;;;; Auto-restore sessions on startup and when opening projects
+    (setopt tabspaces-session-auto-restore t)
+
+    ;;;; Save all project tabs to their individual session files
+    ;; (tabspaces-save-all-project-sessions)
+    ;;;; Save only non-project tabs to the global session file
+    ;; (tabspaces-save-non-project-tabs)
+
+    ;;; Use this only if you want the minor-mode loaded at startup
+    (tabspaces-mode)
+
+    ;;;; additional options
+    (setopt tabspaces-fully-resolve-paths t)  ; Resolve relative project paths to absolute
+    (setopt tabspaces-exclude-buffers '("*Messages*" "*Compile-Log*"))  ; Additional buffers to exclude
+    (setopt tab-bar-new-tab-choice "*scratch*")
+
+    ;;;
+    ```
+
+
+#### <span class="section-num">36.3.4</span> Интеграция с consult {#интеграция-с-consult}
+
+-   Файл: `packages/tabspaces/consult.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Create buffer-isolated workspaces
+    ;; https://github.com/mclear-tools/tabspaces
+
+    ;;; Code:
+
+    ;;;; Filter Buffers for Consult-Buffer
+
+    (with-eval-after-load 'consult
+      ;; hide full buffer list (still available with "b" prefix)
+      (plist-put consult-source-buffer :hidden t)
+      (plist-put consult-source-buffer :default nil)
+      ;; set consult-workspace buffer list
+      (defvar consult--source-workspace
+        (list :name     "Workspace Buffers"
+              :narrow   ?w
+              :history  'buffer-name-history
+              :category 'buffer
+              :state    #'consult--buffer-state
+              :default  t
+              :items    (lambda () (consult--buffer-query
+                               :predicate #'tabspaces--local-buffer-p
+                               :sort 'visibility
+                               :as #'buffer-name)))
+
+        "Set workspace buffer list for consult-buffer.")
+      (add-to-list 'consult-buffer-sources 'consult--source-workspace))
+
+    ;;;
+    ```
+
+
+### <span class="section-num">36.4</span> bufler {#bufler}
+
+
+#### <span class="section-num">36.4.1</span> Подключение {#подключение}
+
+-   Файл: `rc.packages.el`
+    ```emacs-lisp
+    ;; (desire 'bufler)
+    ```
+
+
+#### <span class="section-num">36.4.2</span> Объявление {#объявление}
+
+-   Файл: `packages/bufler/loaddefs.ecf`
+
+<!--listend-->
+
+```emacs-lisp
+;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+;;; Group buffers into workspaces with programmable rules
+;; https://github.com/alphapapa/bufler.el
+
+;;; Code:
+
+(desire' burly)
+
+(require 'bufler)
+
+;;;
+```
+
+
+#### <span class="section-num">36.4.3</span> Настройка {#настройка}
+
 <!--list-separator-->
 
-1.  Подключение
+1.  Основной файл
 
-    -   Файл: `rc.packages.el`
-        ```emacs-lisp
-        (desire 'tabspaces)
-        ```
-
-<!--list-separator-->
-
-2.  Загрузка
-
-    -   Файл: `packages/tabspaces/loaddefs.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Create buffer-isolated workspaces
-        ;; https://github.com/mclear-tools/tabspaces
-
-        ;;; Code:
-
-        (require 'tabspaces)
-
-        ;;;
-        ```
-
-<!--list-separator-->
-
-3.  Настройка
-
-    -   Файл: `packages/tabspaces/desire.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Create buffer-isolated workspaces
-        ;; https://github.com/mclear-tools/tabspaces
-
-        ;;; Code
-
-
-        (setopt tabspaces-use-filtered-buffers-as-default t)
-        (setopt tabspaces-default-tab "Default")
-        (setopt tabspaces-remove-to-default t)
-        (setopt tabspaces-include-buffers '("*scratch*"))
-        (setopt tabspaces-initialize-project-with-todo t)
-        (setopt tabspaces-todo-file-name "project-todo.org")
-
-        ;;;; Enable automatic session saving on Emacs exit
-        (setopt tabspaces-session t)
-        ;;;; Auto-restore sessions on startup and when opening projects
-        (setopt tabspaces-session-auto-restore t)
-
-        ;;;; Save all project tabs to their individual session files
-        ;; (tabspaces-save-all-project-sessions)
-        ;;;; Save only non-project tabs to the global session file
-        ;; (tabspaces-save-non-project-tabs)
-
-        ;;; Use this only if you want the minor-mode loaded at startup
-        (tabspaces-mode)
-
-        ;;;; additional options
-        (setopt tabspaces-fully-resolve-paths t)  ; Resolve relative project paths to absolute
-        (setopt tabspaces-exclude-buffers '("*Messages*" "*Compile-Log*"))  ; Additional buffers to exclude
-        (setopt tab-bar-new-tab-choice "*scratch*")
-
-        ;;;
-        ```
-
-<!--list-separator-->
-
-4.  Интеграция с consult
-
-    -   Файл: `packages/tabspaces/consult.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Create buffer-isolated workspaces
-        ;; https://github.com/mclear-tools/tabspaces
-
-        ;;; Code:
-
-        ;;;; Filter Buffers for Consult-Buffer
-
-        (with-eval-after-load 'consult
-          ;; hide full buffer list (still available with "b" prefix)
-          (plist-put consult-source-buffer :hidden t)
-          (plist-put consult-source-buffer :default nil)
-          ;; set consult-workspace buffer list
-          (defvar consult--source-workspace
-            (list :name     "Workspace Buffers"
-                  :narrow   ?w
-                  :history  'buffer-name-history
-                  :category 'buffer
-                  :state    #'consult--buffer-state
-                  :default  t
-                  :items    (lambda () (consult--buffer-query
-                                   :predicate #'tabspaces--local-buffer-p
-                                   :sort 'visibility
-                                   :as #'buffer-name)))
-
-            "Set workspace buffer list for consult-buffer.")
-          (add-to-list 'consult-buffer-sources 'consult--source-workspace))
-
-        ;;;
-        ```
-
-
-#### <span class="section-num">3.34.4</span> bufler {#bufler}
-
-<!--list-separator-->
-
-1.  Подключение
-
-    -   Файл: `rc.packages.el`
-        ```emacs-lisp
-        ;; (desire 'bufler)
-        ```
-
-<!--list-separator-->
-
-2.  Объявление
-
-    -   Файл: `packages/bufler/loaddefs.ecf`
+    -   Файл: `packages/bufler/desire.ecf`
 
     <!--listend-->
 
@@ -8074,200 +8310,173 @@ slug: "emacs-desire-configuration"
 
     ;;; Code:
 
-    (desire' burly)
-
-    (require 'bufler)
+    (bufler-mode 1)
 
     ;;;
     ```
 
 <!--list-separator-->
 
-3.  Настройка
+2.  Сочетания клавиш
 
-    <!--list-separator-->
+    -   Файл: `packages/bufler/desire.ecd/keybinding.ecf`
 
-    1.  Основной файл
+    <!--listend-->
 
-        -   Файл: `packages/bufler/desire.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Group buffers into workspaces with programmable rules
+    ;; https://github.com/alphapapa/bufler.el
 
-        <!--listend-->
+    ;;; Code:
 
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Group buffers into workspaces with programmable rules
-        ;; https://github.com/alphapapa/bufler.el
+    (defun ecf/bufler-one-window (&optional force-refresh)
+      (interactive "P")
+      (bufler-list)
+      (delete-other-windows))
 
-        ;;; Code:
+    (global-set-key (kbd "C-x C-b") #'ecf/bufler-one-window)
 
-        (bufler-mode 1)
-
-        ;;;
-        ```
-
-    <!--list-separator-->
-
-    2.  Сочетания клавиш
-
-        -   Файл: `packages/bufler/desire.ecd/keybinding.ecf`
-
-        <!--listend-->
-
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Group buffers into workspaces with programmable rules
-        ;; https://github.com/alphapapa/bufler.el
-
-        ;;; Code:
-
-        (defun ecf/bufler-one-window (&optional force-refresh)
-          (interactive "P")
-          (bufler-list)
-          (delete-other-windows))
-
-        (global-set-key (kbd "C-x C-b") #'ecf/bufler-one-window)
-
-        ;;;
-        ```
-
-    <!--list-separator-->
-
-    3.  Группы буферов
-
-        -   Файл: `packages/bufler/desire.ecd/group.ecf`
-
-        <!--listend-->
-
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Group buffers into workspaces with programmable rules
-        ;; https://github.com/alphapapa/bufler.el
-
-        ;;; Code:
-
-        ;; (setopt bufler-groups
-        ;;       (bufler-defgroups
-        ;; 	(group
-        ;; 	 ;; Subgroup collecting all named workspaces.
-        ;; 	 (auto-workspace))
-        ;; 	(group
-        ;; 	 ;; Subgroup collecting all `help-mode' and `info-mode' buffers.
-        ;; 	 (group-or "*Help/Info*"
-        ;; 		   (mode-match "*Help*" (rx bos "help-"))
-        ;; 		   (mode-match "*Info*" (rx bos "info-"))))
-        ;; 	(group
-        ;; 	 ;; Subgroup collecting all special buffers (i.e. ones that are not
-        ;; 	 ;; file-backed), except `magit-status-mode' buffers (which are allowed to fall
-        ;; 	 ;; through to other groups, so they end up grouped with their project buffers).
-        ;; 	 (group-and "*Special*"
-        ;; 		    (lambda (buffer)
-        ;; 		      (unless (or (funcall (mode-match "Magit" (rx bos "magit-status"))
-        ;; 					  buffer)
-        ;; 				 (funcall (mode-match "Dired" (rx bos "dired"))
-        ;; 					  buffer)
-        ;; 				 (funcall (auto-file) buffer))
-        ;; 			"*Special*")))
-        ;; 	 (group
-        ;; 	  ;; Subgroup collecting these "special special" buffers
-        ;; 	  ;; separately for convenience.
-        ;; 	  (name-match "**Special**"
-        ;; 		      (rx bos "*" (or "Messages" "Warnings" "scratch" "Backtrace") "*")))
-        ;; 	 (group
-        ;; 	  ;; Subgroup collecting all other Magit buffers, grouped by directory.
-        ;; 	  (mode-match "*Magit* (non-status)" (rx bos (or "magit" "forge") "-"))
-        ;; 	  (auto-directory))
-        ;; 	 ;; Subgroup for Helm buffers.
-        ;; 	 (mode-match "*Helm*" (rx bos "helm-"))
-        ;; 	 ;; Remaining special buffers are grouped automatically by mode.
-        ;; 	 (auto-mode))
-        ;; 	;; All buffers under "~/.emacs.d" (or wherever it is).
-        ;; 	(dir user-emacs-directory)
-        ;; 	(group
-        ;; 	 ;; Subgroup collecting buffers in `org-directory' (or "~/org" if
-        ;; 	 ;; `org-directory' is not yet defined).
-        ;; 	 (dir (if (bound-and-true-p org-directory)
-        ;; 		  org-directory
-        ;; 		"~/org"))
-        ;; 	 (group
-        ;; 	  ;; Subgroup collecting indirect Org buffers, grouping them by file.
-        ;; 	  ;; This is very useful when used with `org-tree-to-indirect-buffer'.
-        ;; 	  (auto-indirect)
-        ;; 	  (auto-file))
-        ;; 	 ;; Group remaining buffers by whether they're file backed, then by mode.
-        ;; 	 (group-not "*special*" (auto-file))
-        ;; 	 (auto-mode))
-        ;; 	(group
-        ;; 	 ;; Subgroup collecting buffers in a projectile project.
-        ;; 	 (auto-projectile))
-        ;; 	(group
-        ;; 	 ;; Subgroup collecting buffers in a version-control project,
-        ;; 	 ;; grouping them by directory.
-        ;; 	 (auto-project))
-        ;; 	;; Group remaining buffers by directory, then major mode.
-        ;; 	(auto-directory)
-        ;; 	(auto-mode))
-        ;;       )
-
-        ;;;
-        ```
+    ;;;
+    ```
 
 <!--list-separator-->
 
-4.  Интеграция
+3.  Группы буферов
 
-    <!--list-separator-->
+    -   Файл: `packages/bufler/desire.ecd/group.ecf`
 
-    1.  tab-bar
+    <!--listend-->
 
-        -   Файл: `packages/bufler/tab-bar.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Group buffers into workspaces with programmable rules
+    ;; https://github.com/alphapapa/bufler.el
 
-        <!--listend-->
+    ;;; Code:
 
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Group buffers into workspaces with programmable rules
-        ;; https://github.com/alphapapa/bufler.el
+    ;; (setopt bufler-groups
+    ;;       (bufler-defgroups
+    ;; 	(group
+    ;; 	 ;; Subgroup collecting all named workspaces.
+    ;; 	 (auto-workspace))
+    ;; 	(group
+    ;; 	 ;; Subgroup collecting all `help-mode' and `info-mode' buffers.
+    ;; 	 (group-or "*Help/Info*"
+    ;; 		   (mode-match "*Help*" (rx bos "help-"))
+    ;; 		   (mode-match "*Info*" (rx bos "info-"))))
+    ;; 	(group
+    ;; 	 ;; Subgroup collecting all special buffers (i.e. ones that are not
+    ;; 	 ;; file-backed), except `magit-status-mode' buffers (which are allowed to fall
+    ;; 	 ;; through to other groups, so they end up grouped with their project buffers).
+    ;; 	 (group-and "*Special*"
+    ;; 		    (lambda (buffer)
+    ;; 		      (unless (or (funcall (mode-match "Magit" (rx bos "magit-status"))
+    ;; 					  buffer)
+    ;; 				 (funcall (mode-match "Dired" (rx bos "dired"))
+    ;; 					  buffer)
+    ;; 				 (funcall (auto-file) buffer))
+    ;; 			"*Special*")))
+    ;; 	 (group
+    ;; 	  ;; Subgroup collecting these "special special" buffers
+    ;; 	  ;; separately for convenience.
+    ;; 	  (name-match "**Special**"
+    ;; 		      (rx bos "*" (or "Messages" "Warnings" "scratch" "Backtrace") "*")))
+    ;; 	 (group
+    ;; 	  ;; Subgroup collecting all other Magit buffers, grouped by directory.
+    ;; 	  (mode-match "*Magit* (non-status)" (rx bos (or "magit" "forge") "-"))
+    ;; 	  (auto-directory))
+    ;; 	 ;; Subgroup for Helm buffers.
+    ;; 	 (mode-match "*Helm*" (rx bos "helm-"))
+    ;; 	 ;; Remaining special buffers are grouped automatically by mode.
+    ;; 	 (auto-mode))
+    ;; 	;; All buffers under "~/.emacs.d" (or wherever it is).
+    ;; 	(dir user-emacs-directory)
+    ;; 	(group
+    ;; 	 ;; Subgroup collecting buffers in `org-directory' (or "~/org" if
+    ;; 	 ;; `org-directory' is not yet defined).
+    ;; 	 (dir (if (bound-and-true-p org-directory)
+    ;; 		  org-directory
+    ;; 		"~/org"))
+    ;; 	 (group
+    ;; 	  ;; Subgroup collecting indirect Org buffers, grouping them by file.
+    ;; 	  ;; This is very useful when used with `org-tree-to-indirect-buffer'.
+    ;; 	  (auto-indirect)
+    ;; 	  (auto-file))
+    ;; 	 ;; Group remaining buffers by whether they're file backed, then by mode.
+    ;; 	 (group-not "*special*" (auto-file))
+    ;; 	 (auto-mode))
+    ;; 	(group
+    ;; 	 ;; Subgroup collecting buffers in a projectile project.
+    ;; 	 (auto-projectile))
+    ;; 	(group
+    ;; 	 ;; Subgroup collecting buffers in a version-control project,
+    ;; 	 ;; grouping them by directory.
+    ;; 	 (auto-project))
+    ;; 	;; Group remaining buffers by directory, then major mode.
+    ;; 	(auto-directory)
+    ;; 	(auto-mode))
+    ;;       )
 
-        ;;; Code:
-
-        (require 'bufler-workspace-tabs)
-
-        ;;;
-        ```
-
-    <!--list-separator-->
-
-    2.  helm
-
-        -   Файл: `packages/bufler/helm.ecf`
-
-        <!--listend-->
-
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Group buffers into workspaces with programmable rules
-        ;; https://github.com/alphapapa/bufler.el
-
-        ;;; Code
-
-        (desire 'helm-bufler)
-        (require 'helm-bufler)
-
-        ;;;
-        ```
+    ;;;
+    ```
 
 
-### <span class="section-num">3.35</span> Проекты {#проекты}
+#### <span class="section-num">36.4.4</span> Интеграция {#интеграция}
+
+<!--list-separator-->
+
+1.  tab-bar
+
+    -   Файл: `packages/bufler/tab-bar.ecf`
+
+    <!--listend-->
+
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Group buffers into workspaces with programmable rules
+    ;; https://github.com/alphapapa/bufler.el
+
+    ;;; Code:
+
+    (require 'bufler-workspace-tabs)
+
+    ;;;
+    ```
+
+<!--list-separator-->
+
+2.  helm
+
+    -   Файл: `packages/bufler/helm.ecf`
+
+    <!--listend-->
+
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Group buffers into workspaces with programmable rules
+    ;; https://github.com/alphapapa/bufler.el
+
+    ;;; Code
+
+    (desire 'helm-bufler)
+    (require 'helm-bufler)
+
+    ;;;
+    ```
 
 
-#### <span class="section-num">3.35.1</span> Начало {#начало}
+## <span class="section-num">37</span> Проекты {#проекты}
+
+
+### <span class="section-num">37.1</span> Начало {#начало}
 
 ```emacs-lisp
 ;;; Project management
 ```
 
 
-#### <span class="section-num">3.35.2</span> projection {#projection}
+### <span class="section-num">37.2</span> projection {#projection}
 
 -   Projectile-подобная библиотека управления проектами для project.el
 -   <https://github.com/mohkale/projection>
@@ -8276,7 +8485,7 @@ slug: "emacs-desire-configuration"
     (desire 'projection)
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 193:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 195:</span>
       rc.packages.el
     </div>
 -   Подготовка:
@@ -8290,7 +8499,7 @@ slug: "emacs-desire-configuration"
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 194:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 196:</span>
       packages/projection/loaddefs.ecf
     </div>
 -   Загрузка:
@@ -8312,95 +8521,158 @@ slug: "emacs-desire-configuration"
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 195:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 197:</span>
       packages/projection/desire.ecf
     </div>
 
-<!--list-separator-->
 
-1.  Интеграция
+#### <span class="section-num">37.2.1</span> Интеграция {#интеграция}
 
-    -   Интеграция с `compile-multi`:
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Projectile like project management library built on Emacs project.el
-        ;;;; https://github.com/mohkale/projection
+-   Интеграция с `compile-multi`:
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Projectile like project management library built on Emacs project.el
+    ;;;; https://github.com/mohkale/projection
 
-        ;;; Code:
+    ;;; Code:
 
-        (desire 'projection-multi)
-        (require 'projection-multi)
+    (desire 'projection-multi)
+    (require 'projection-multi)
 
-        ;;;; Allow interactively selecting available compilation targets from the current project type
-        (general-define-key
-         :keymaps 'project-prefix-map
-         "RET" 'projection-multi-compile)
+    ;;;; Allow interactively selecting available compilation targets from the current project type
+    (general-define-key
+     :keymaps 'project-prefix-map
+     "RET" 'projection-multi-compile)
 
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 196:</span>
-          packages/projection/compile-multi.ecf
-        </div>
-    -   Интеграция с `ibuffer`:
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Projectile like project management library built on Emacs project.el
-        ;;;; https://github.com/mohkale/projection
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 198:</span>
+      packages/projection/compile-multi.ecf
+    </div>
+-   Интеграция с `ibuffer`:
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Projectile like project management library built on Emacs project.el
+    ;;;; https://github.com/mohkale/projection
 
-        ;;; Code:
+    ;;; Code:
 
-        (add-hook 'ibuffer-hook 'ibuffer-projection-set-filter-groups)
-        ;;;; This ensures that `ibuffer-projection-set-filter-groups' takes effect
-        (add-hook 'ibuffer-hook (lambda () (run-at-time 0.1 nil (lambda () (call-interactively #'ibuffer-update)))))
+    (add-hook 'ibuffer-hook 'ibuffer-projection-set-filter-groups)
+    ;;;; This ensures that `ibuffer-projection-set-filter-groups' takes effect
+    (add-hook 'ibuffer-hook (lambda () (run-at-time 0.1 nil (lambda () (call-interactively #'ibuffer-update)))))
 
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 197:</span>
-          packages/projection/ibuffer.ecf
-        </div>
-    -   Загрузка при использовании `project`:
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Projectile like project management library built on Emacs project.el
-        ;;;; https://github.com/mohkale/projection
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 199:</span>
+      packages/projection/ibuffer.ecf
+    </div>
+-   Загрузка при использовании `project`:
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Projectile like project management library built on Emacs project.el
+    ;;;; https://github.com/mohkale/projection
 
-        ;;; Code:
+    ;;; Code:
 
-        (require 'projection)
+    (require 'projection)
 
-        ;;;; Enable `projection-hook', adds the possibility to run functions in per-project basis
-        (global-projection-hook-mode 1)
+    ;;;; Enable `projection-hook', adds the possibility to run functions in per-project basis
+    (global-projection-hook-mode 1)
 
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 198:</span>
-          packages/project/projection.ecf
-        </div>
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 200:</span>
+      packages/project/projection.ecf
+    </div>
 
 
-#### <span class="section-num">3.35.3</span> project {#project}
+### <span class="section-num">37.3</span> project {#project}
 
 -   Подключение:
     ```emacs-lisp
     (desire 'project)
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 199:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 201:</span>
       rc.packages.el
     </div>
 
 
-#### <span class="section-num">3.35.4</span> projectile {#projectile}
+### <span class="section-num">37.4</span> project-x {#project-x}
+
+
+#### <span class="section-num">37.4.1</span> Подключение {#подключение}
+
+-   Файл: `rc.packages.el`
+    ```emacs-lisp
+    (desire 'project-x)
+    ```
+
+
+#### <span class="section-num">37.4.2</span> Загрузка {#загрузка}
+
+-   Файл: `packages/project-x/loaddefs.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Ehancements to Emacs' built in project library and tab-bar mode
+    ;; https://github.com/vmargb/project-x
+
+    ;;; Code:
+
+    (require 'project-x)
+
+    ;;;
+    ```
+
+
+#### <span class="section-num">37.4.3</span> Настройка {#настройка}
+
+-   Файл: `packages/project-x/desire.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Ehancements to Emacs' built in project library and tab-bar mode
+    ;; https://github.com/vmargb/project-x
+
+    ;;; Code
+
+
+    (setopt project-x-auto-save-delay 5)      ; автосохранение через 5 секунд бездействия
+    (setopt project-x-save-interval 60)       ; принудительное сохранение каждую минуту
+    (setopt project-x-local-identifier '(".project" ".projectile")) ; файл-маркер проекта
+
+    ;;;; Добавляем project-x как провайдер проектов (после встроенных)
+    (add-hook 'project-find-functions #'project-x-try-local 90)
+
+    ;;;; Сохраняем состояние окон при выходе из Emacs
+    (add-hook 'kill-emacs-hook #'project-x--window-state-write)
+
+    ;;;; Переопределяем команду переключения проекта
+    (advice-add 'project-switch-project :around #'project-x--dynamic-switch-commands)
+
+    ;;;; Команды сохранения и загрузки состояния
+    (global-set-key (kbd "C-x p w") #'project-x-window-state-save)
+    (global-set-key (kbd "C-x p j") #'project-x-window-state-load)
+
+    (project-x-mode 1)
+
+    ;;;; Поддержка вкладок (заменяет one-tab-per-project)
+    (project-x-tabs-mode 1)
+
+    ;;;
+    ```
+
+
+### <span class="section-num">37.5</span> projectile {#projectile}
 
 ```emacs-lisp
 ;; (desire 'projectile)
 ```
 
 
-### <span class="section-num">3.36</span> Календарь {#календарь}
+## <span class="section-num">38</span> Календарь {#календарь}
 
 ```emacs-lisp
 ;;; Appointments, diary, calendar {{{
@@ -8417,60 +8689,57 @@ slug: "emacs-desire-configuration"
 ```
 
 
-### <span class="section-num">3.37</span> Интеграция с десктопом {#интеграция-с-десктопом}
+## <span class="section-num">39</span> Интеграция с десктопом {#интеграция-с-десктопом}
 
 
-#### <span class="section-num">3.37.1</span> browse-url {#browse-url}
+### <span class="section-num">39.1</span> browse-url {#browse-url}
 
 -   Настройка программы для открытия html.
 -   [Emacs. Поддержка броузеров]({{< relref "2026-05-15--emacs-browser-support" >}})
 
-<!--list-separator-->
 
-1.  Подключение
+#### <span class="section-num">39.1.1</span> Подключение {#подключение}
 
-    -   Файл: `rc.packages.el`
-        ```emacs-lisp
-        (desire 'browse-url)
-        ```
-
-<!--list-separator-->
-
-2.  Загрузка
-
-    -   Файл: `packages/browse-url/loaddefs.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Pass a URL to a web browser
-
-        ;;; Code:
-
-        (require 'browse-url)
-
-        ;;;
-        ```
-
-<!--list-separator-->
-
-3.  Конфигурация
-
-    -   Файл: `packages/browse-url/desire.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Pass a URL to a web browser
-
-        ;;; Code:
-
-        (setq browse-url-browser-function 'browse-url-default-browser)
-
-        ;;;
-        ```
+-   Файл: `rc.packages.el`
+    ```emacs-lisp
+    (desire 'browse-url)
+    ```
 
 
-### <span class="section-num">3.38</span> Почта {#почта}
+#### <span class="section-num">39.1.2</span> Загрузка {#загрузка}
+
+-   Файл: `packages/browse-url/loaddefs.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Pass a URL to a web browser
+
+    ;;; Code:
+
+    (require 'browse-url)
+
+    ;;;
+    ```
 
 
-#### <span class="section-num">3.38.1</span> Общие опции {#общие-опции}
+#### <span class="section-num">39.1.3</span> Конфигурация {#конфигурация}
+
+-   Файл: `packages/browse-url/desire.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Pass a URL to a web browser
+
+    ;;; Code:
+
+    (setq browse-url-browser-function 'browse-url-default-browser)
+
+    ;;;
+    ```
+
+
+## <span class="section-num">40</span> Почта {#почта}
+
+
+### <span class="section-num">40.1</span> Общие опции {#общие-опции}
 
 ```emacs-lisp
 ;;; These provide options for the various message handling packages {{{
@@ -8483,7 +8752,7 @@ slug: "emacs-desire-configuration"
 ```
 
 
-#### <span class="section-num">3.38.2</span> Работа с почтой {#работа-с-почтой}
+### <span class="section-num">40.2</span> Работа с почтой {#работа-с-почтой}
 
 ```emacs-lisp
 ;;; Message {{{
@@ -8497,7 +8766,7 @@ slug: "emacs-desire-configuration"
 ```
 
 
-#### <span class="section-num">3.38.3</span> mu4e {#mu4e}
+### <span class="section-num">40.3</span> mu4e {#mu4e}
 
 -   Подключение:
     ```emacs-lisp
@@ -8505,7 +8774,7 @@ slug: "emacs-desire-configuration"
     (desire 'mu4e :precondition-system-executable "mu")
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 200:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 202:</span>
       rc.packages.el
     </div>
 -   Использование интерфейса transient:
@@ -8522,12 +8791,12 @@ slug: "emacs-desire-configuration"
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 201:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 203:</span>
       packages/mu4e/transient.ecf
     </div>
 
 
-### <span class="section-num">3.39</span> Блоги {#блоги}
+## <span class="section-num">41</span> Блоги {#блоги}
 
 ```emacs-lisp
 ;;; Blogs {{{
@@ -8565,17 +8834,17 @@ slug: "emacs-desire-configuration"
 ```
 
 
-### <span class="section-num">3.40</span> Мессенджеры {#мессенджеры}
+## <span class="section-num">42</span> Мессенджеры {#мессенджеры}
 
 ```emacs-lisp
 (desire 'telega)
 ```
 
 
-### <span class="section-num">3.41</span> Отложенное чтение {#отложенное-чтение}
+## <span class="section-num">43</span> Отложенное чтение {#отложенное-чтение}
 
 
-#### <span class="section-num">3.41.1</span> Pocket reader {#pocket-reader}
+### <span class="section-num">43.1</span> Pocket reader {#pocket-reader}
 
 -   [Emacs. Pocket reader]({{< relref "2023-09-06-emacs_pocket_reader" >}})
 
@@ -8586,14 +8855,14 @@ slug: "emacs-desire-configuration"
 ```
 
 
-#### <span class="section-num">3.41.2</span> Wallabag {#wallabag}
+### <span class="section-num">43.2</span> Wallabag {#wallabag}
 
 -   Подключение пакета:
     ```emacs-lisp
     (desire 'wallabag :recipe '(:fetcher github :repo "chenyanming/wallabag.el" :branch "master" :files ("*.el" "*.alist" "*.css")))
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 202:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 204:</span>
       rc.packages.el
     </div>
 -   Начальные настройки:
@@ -8606,7 +8875,7 @@ slug: "emacs-desire-configuration"
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 203:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 205:</span>
       packages/wallabag/loaddefs.ecf
     </div>
 -   Загрузка пакета:
@@ -8626,7 +8895,7 @@ slug: "emacs-desire-configuration"
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 204:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 206:</span>
       packages/wallabag/desire.ecf
     </div>
 -   Шаблон настройки параметров для пользователя:
@@ -8653,46 +8922,45 @@ slug: "emacs-desire-configuration"
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 205:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 207:</span>
       packages/wallabag/personal.ecf
     </div>
 
-<!--list-separator-->
 
-1.  Интеграция с elfeed
+#### <span class="section-num">43.2.1</span> Интеграция с elfeed {#интеграция-с-elfeed}
 
-    -   Подгружаем `wallabag`.
+-   Подгружаем `wallabag`.
 
-    <!--listend-->
+<!--listend-->
 
-    ```emacs-lisp
-    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-    ;;; Emacs wallabag client - A Read It Later/Web Archiving Solution in Emacs
-    ;; https://github.com/chenyanming/wallabag.el
+```emacs-lisp
+;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+;;; Emacs wallabag client - A Read It Later/Web Archiving Solution in Emacs
+;; https://github.com/chenyanming/wallabag.el
 
-    ;;; Code:
+;;; Code:
 
-    (require 'wallabag)
-    ```
-    <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 206:</span>
-      packages/elfeed/wallabag.ecf
-    </div>
+(require 'wallabag)
+```
+<div class="src-block-caption">
+  <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 208:</span>
+  packages/elfeed/wallabag.ecf
+</div>
 
-    -   Клавиша `w` добавляет просматриваемую статью в wallabag.
+-   Клавиша `w` добавляет просматриваемую статью в wallabag.
 
-    <!--listend-->
+<!--listend-->
 
-    ```emacs-lisp
-    (general-define-key
-     :keymaps 'elfeed-show-mode-map
-     "w" #'("Add entry to wallabag" . wallabag-add-entry))
+```emacs-lisp
+(general-define-key
+ :keymaps 'elfeed-show-mode-map
+ "w" #'("Add entry to wallabag" . wallabag-add-entry))
 
-    ;;;
-    ```
+;;;
+```
 
 
-#### <span class="section-num">3.41.3</span> Elfeed {#elfeed}
+### <span class="section-num">43.3</span> Elfeed {#elfeed}
 
 -   [Emacs. Чтение rss. Elfeed]({{< relref "2025-06-02--emacs-rss-elfeed" >}})
     Объявление:
@@ -8700,7 +8968,7 @@ slug: "emacs-desire-configuration"
     (desire 'elfeed)
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 207:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 209:</span>
       rc.packages.el
     </div>
 -   Подключение:
@@ -8714,7 +8982,7 @@ slug: "emacs-desire-configuration"
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 208:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 210:</span>
       packages/elfeed/loaddefs.ecf
     </div>
 -   Загрузка:
@@ -8734,7 +9002,7 @@ slug: "emacs-desire-configuration"
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 209:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 211:</span>
       packages/elfeed/desire.ecf
     </div>
 -   Загрузка:
@@ -8754,12 +9022,12 @@ slug: "emacs-desire-configuration"
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 210:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 212:</span>
       packages/elfeed/desire.ecd/utils.ecf
     </div>
 
 
-#### <span class="section-num">3.41.4</span> Elfeed-protocol {#elfeed-protocol}
+### <span class="section-num">43.4</span> Elfeed-protocol {#elfeed-protocol}
 
 -   Поддержка серверов rss:
 
@@ -8786,7 +9054,7 @@ slug: "emacs-desire-configuration"
 (elfeed-protocol-enable)
 ```
 <div class="src-block-caption">
-  <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 211:</span>
+  <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 213:</span>
   packages/elfeed-protocol/desire.ecf
 </div>
 
@@ -8806,125 +9074,123 @@ slug: "emacs-desire-configuration"
 ;;;
 ```
 <div class="src-block-caption">
-  <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 212:</span>
+  <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 214:</span>
   packages/elfeed-protocol/desire.ecd/search.ecf
 </div>
 
-<!--list-separator-->
 
-1.  Fever протокол
+#### <span class="section-num">43.4.1</span> Fever протокол {#fever-протокол}
 
-    ```emacs-lisp
-    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-    ;;; Extra protocols to make like Fever, NewsBlur, Nextcloud/ownCloud News and Tiny Tiny RSS work with elfeed
-    ;; https://github.com/fasheng/elfeed-protocol
+```emacs-lisp
+;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+;;; Extra protocols to make like Fever, NewsBlur, Nextcloud/ownCloud News and Tiny Tiny RSS work with elfeed
+;; https://github.com/fasheng/elfeed-protocol
 
-    ;;; Code:
-    ```
-    <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 213:</span>
-      packages/elfeed-protocol/desire.ecd/fever.ecf
-    </div>
+;;; Code:
+```
+<div class="src-block-caption">
+  <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 215:</span>
+  packages/elfeed-protocol/desire.ecd/fever.ecf
+</div>
 
-    -   По умолчанию получайте статьи с ID записи по одной.
-    -   Для некоторых сервисов, которые не предоставляют действительный ID записи, например FressRSS, просто установите для `elfeed-protocol-fever-update-unread-only` значение `t` в качестве обходного пути.
+-   По умолчанию получайте статьи с ID записи по одной.
+-   Для некоторых сервисов, которые не предоставляют действительный ID записи, например FressRSS, просто установите для `elfeed-protocol-fever-update-unread-only` значение `t` в качестве обходного пути.
 
-    <!--listend-->
+<!--listend-->
 
-    ```emacs-lisp
-    (setopt elfeed-protocol-fever-update-unread-only t)
-    ```
+```emacs-lisp
+(setopt elfeed-protocol-fever-update-unread-only t)
+```
 
-    -   Получение удаленной категории в качестве тега.
+-   Получение удаленной категории в качестве тега.
 
-    <!--listend-->
+<!--listend-->
 
-    ```emacs-lisp
-    (setopt elfeed-protocol-fever-fetch-category-as-tag t)
-    ```
+```emacs-lisp
+(setopt elfeed-protocol-fever-fetch-category-as-tag t)
+```
 
-    -   Скачивать только непрочитанные.
+-   Скачивать только непрочитанные.
 
-    <!--listend-->
+<!--listend-->
 
-    ```emacs-lisp
-    (setopt elfeed-protocol-fever-update-unread-only t)
-    ```
+```emacs-lisp
+(setopt elfeed-protocol-fever-update-unread-only t)
+```
 
-    -   Перечитать источник.
+-   Перечитать источник.
 
-    <!--listend-->
+<!--listend-->
 
-    ```emacs-lisp
-    (general-define-key
-     :keymaps 'elfeed-search-mode-map
-     "C-c C-u" #'("Retry initial sync operation" . elfeed-protocol-fever-reinit))
+```emacs-lisp
+(general-define-key
+ :keymaps 'elfeed-search-mode-map
+ "C-c C-u" #'("Retry initial sync operation" . elfeed-protocol-fever-reinit))
 
-      ;;;
-    ```
-
-<!--list-separator-->
-
-2.  Персональные настройки
-
-    ```emacs-lisp
-    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-    ;;; Extra protocols to make like Fever, NewsBlur, Nextcloud/ownCloud News and Tiny Tiny RSS work with elfeed
-    ;; https://github.com/fasheng/elfeed-protocol
-
-    ;;; Code:
-
-    (setopt
-     elfeed-protocol-feeds
-     '(
-    ;;;; same format with elfeed-feeds
-       ;; "http://foo/"
-       ;; ("http://baz/" comic)
-
-    ;;;; format 1
-       ;; "owncloud+https://user:pass@myhost.com"
-
-    ;;;; format 2, for username or password with special characters
-       ;; ("owncloud+https://user@domain.com@myhost.com"
-       ;;  :password "password/with|special@characters:")
-
-    ;;;; format 3, for password in file
-       ;; ("owncloud+https://user@myhost.com"
-       ;;  :password-file "~/.password")
-
-    ;;;; format 4, for password in .authinfo,
-    ;;;; ensure (auth-source-search :host "myhost.com" :port "443" :user "user4") exists
-       ;; ("owncloud+https://user@myhost.com"
-       ;;  :use-authinfo t)
-
-    ;;;; format 5, for password in gnome-keyring
-       ;; ("owncloud+https://user@myhost.com"
-       ;;  :password (shell-command-to-string "echo -n `secret-tool lookup attribute value`"))
-
-    ;;;; format 6, for password in pass(1), using password-store.el
-       ;; ("owncloud+https://user@myhost.com"
-       ;;  :password (password-store-get "owncloud/app-pass"))
-
-    ;;;; FreshRSS
-       ;; ("fever+http://username@mydomain.org"
-       ;;  :api-url "http://mydomain.org/api/fever.php"
-       ;;  :password "my password")
-
-    ;;;; use autotags
-       ;; ("owncloud+https://user@myhost.com"
-       ;;  :password "password"
-       ;;  :autotags (("example.com" comic)))
-       ))
-
-    ;;;
-    ```
-    <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 214:</span>
-      packages/elfeed-protocol/personal.ecf
-    </div>
+  ;;;
+```
 
 
-### <span class="section-num">3.42</span> Dashboard {#dashboard}
+#### <span class="section-num">43.4.2</span> Персональные настройки {#персональные-настройки}
+
+```emacs-lisp
+;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+;;; Extra protocols to make like Fever, NewsBlur, Nextcloud/ownCloud News and Tiny Tiny RSS work with elfeed
+;; https://github.com/fasheng/elfeed-protocol
+
+;;; Code:
+
+(setopt
+ elfeed-protocol-feeds
+ '(
+;;;; same format with elfeed-feeds
+   ;; "http://foo/"
+   ;; ("http://baz/" comic)
+
+;;;; format 1
+   ;; "owncloud+https://user:pass@myhost.com"
+
+;;;; format 2, for username or password with special characters
+   ;; ("owncloud+https://user@domain.com@myhost.com"
+   ;;  :password "password/with|special@characters:")
+
+;;;; format 3, for password in file
+   ;; ("owncloud+https://user@myhost.com"
+   ;;  :password-file "~/.password")
+
+;;;; format 4, for password in .authinfo,
+;;;; ensure (auth-source-search :host "myhost.com" :port "443" :user "user4") exists
+   ;; ("owncloud+https://user@myhost.com"
+   ;;  :use-authinfo t)
+
+;;;; format 5, for password in gnome-keyring
+   ;; ("owncloud+https://user@myhost.com"
+   ;;  :password (shell-command-to-string "echo -n `secret-tool lookup attribute value`"))
+
+;;;; format 6, for password in pass(1), using password-store.el
+   ;; ("owncloud+https://user@myhost.com"
+   ;;  :password (password-store-get "owncloud/app-pass"))
+
+;;;; FreshRSS
+   ;; ("fever+http://username@mydomain.org"
+   ;;  :api-url "http://mydomain.org/api/fever.php"
+   ;;  :password "my password")
+
+;;;; use autotags
+   ;; ("owncloud+https://user@myhost.com"
+   ;;  :password "password"
+   ;;  :autotags (("example.com" comic)))
+   ))
+
+;;;
+```
+<div class="src-block-caption">
+  <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 216:</span>
+  packages/elfeed-protocol/personal.ecf
+</div>
+
+
+## <span class="section-num">44</span> Dashboard {#dashboard}
 
 ```emacs-lisp
 
@@ -8943,10 +9209,10 @@ slug: "emacs-desire-configuration"
 ```
 
 
-### <span class="section-num">3.43</span> Разные программные режимы {#разные-программные-режимы}
+## <span class="section-num">45</span> Разные программные режимы {#разные-программные-режимы}
 
 
-#### <span class="section-num">3.43.1</span> Начало {#начало}
+### <span class="section-num">45.1</span> Начало {#начало}
 
 -   Файл `rc.packages.el`:
     ```emacs-lisp
@@ -8954,7 +9220,7 @@ slug: "emacs-desire-configuration"
     ```
 
 
-#### <span class="section-num">3.43.2</span> Пакет csv-mode {#пакет-csv-mode}
+### <span class="section-num">45.2</span> Пакет csv-mode {#пакет-csv-mode}
 
 -   [Emacs. cvs-mode]({{< relref "2024-09-04-emacs-cvs-mode" >}})
 -   Файл `rc.packages.el`:
@@ -8997,7 +9263,7 @@ slug: "emacs-desire-configuration"
         ```
 
 
-#### <span class="section-num">3.43.3</span> Поддержка ebuild-файлов {#поддержка-ebuild-файлов}
+### <span class="section-num">45.3</span> Поддержка ebuild-файлов {#поддержка-ebuild-файлов}
 
 -   Сайт: <https://wiki.gentoo.org/wiki/Project:Emacs>
 -   Файл `rc.packages.el`:
@@ -9006,7 +9272,7 @@ slug: "emacs-desire-configuration"
     (desire 'ebuild-mode :recipe '(:fetcher github :repo "emacsmirror/ebuild-mode" :branch "master"))
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 215:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 217:</span>
       rc.packages.el
     </div>
 -   Настроим загрузку:
@@ -9051,73 +9317,71 @@ slug: "emacs-desire-configuration"
     (modify-coding-system-alist 'file "\\.\\(ebuild\\|eclass\\)\\'" 'utf-8)
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 216:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 218:</span>
       packages/ebuild-mode/loaddefs.ecf
     </div>
 
 
-#### <span class="section-num">3.43.4</span> Asymptote {#asymptote}
+### <span class="section-num">45.4</span> Asymptote {#asymptote}
 
 -   <https://asymptote.sourceforge.io/>
 
-<!--list-separator-->
 
-1.  Редактирование файлов Asymptote
+#### <span class="section-num">45.4.1</span> Редактирование файлов Asymptote {#редактирование-файлов-asymptote}
 
-    -   Поддержка редактирования файлов Asymptote.
-    -   Файл `rc.packages.el`:
-        ```emacs-lisp
-        ;;; Asymptote
-        (desire 'asy-mode :recipe '(:fetcher github :repo "vectorgraphics/asymptote" :branch "master" :files ("base/asy-mode.el")))
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 217:</span>
-          rc.packages.el
-        </div>
-    -   Конфигурационный файл:
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; 2D & 3D TeX-Aware Vector Graphics Language
-        ;;; https://github.com/vectorgraphics/asymptote
-
-        (autoload 'asy-mode "asy-mode.el" "Asymptote major mode." t)
-        (autoload 'lasy-mode "asy-mode.el" "hybrid Asymptote/Latex major mode." t)
-        (autoload 'asy-insinuate-latex "asy-mode.el" "Asymptote insinuate LaTeX." t)
-        (add-to-list 'auto-mode-alist '("\\.asy$" . asy-mode))
-
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 218:</span>
-          packages/asy-mode.ecf
-        </div>
-
-<!--list-separator-->
-
-2.  Поддержка Asymptote в Babel
-
-    -   Репозиторий: <https://github.com/hurrja/ob-asymptote>
-    -   Необходимо установить программу Asymptote: <http://asymptote.sourceforge.net/>
-
-    <!--listend-->
-
+-   Поддержка редактирования файлов Asymptote.
+-   Файл `rc.packages.el`:
+    ```emacs-lisp
+    ;;; Asymptote
+    (desire 'asy-mode :recipe '(:fetcher github :repo "vectorgraphics/asymptote" :branch "master" :files ("base/asy-mode.el")))
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 219:</span>
+      rc.packages.el
+    </div>
+-   Конфигурационный файл:
     ```emacs-lisp
     ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-    ;;; Org-Babel support for evaluating asymptote
-    ;;; https://github.com/hurrja/ob-asymptote
+    ;;; 2D & 3D TeX-Aware Vector Graphics Language
+    ;;; https://github.com/vectorgraphics/asymptote
 
-    (desire 'ob-asymptote)
-    (require 'ob-asymptote)
+    (autoload 'asy-mode "asy-mode.el" "Asymptote major mode." t)
+    (autoload 'lasy-mode "asy-mode.el" "hybrid Asymptote/Latex major mode." t)
+    (autoload 'asy-insinuate-latex "asy-mode.el" "Asymptote insinuate LaTeX." t)
+    (add-to-list 'auto-mode-alist '("\\.asy$" . asy-mode))
 
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 219:</span>
-      packages/org/desire.ecd/ob-asymptote.ecf
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 220:</span>
+      packages/asy-mode.ecf
     </div>
 
 
-#### <span class="section-num">3.43.5</span> kmonad-файлы {#kmonad-файлы}
+#### <span class="section-num">45.4.2</span> Поддержка Asymptote в Babel {#поддержка-asymptote-в-babel}
+
+-   Репозиторий: <https://github.com/hurrja/ob-asymptote>
+-   Необходимо установить программу Asymptote: <http://asymptote.sourceforge.net/>
+
+<!--listend-->
+
+```emacs-lisp
+;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+;;; Org-Babel support for evaluating asymptote
+;;; https://github.com/hurrja/ob-asymptote
+
+(desire 'ob-asymptote)
+(require 'ob-asymptote)
+
+;;;
+```
+<div class="src-block-caption">
+  <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 221:</span>
+  packages/org/desire.ecd/ob-asymptote.ecf
+</div>
+
+
+### <span class="section-num">45.5</span> kmonad-файлы {#kmonad-файлы}
 
 -   Поддержка синтаксиса конфигурационных файлов kmonad.
 -   Файл `rc.packages.el`:
@@ -9126,7 +9390,7 @@ slug: "emacs-desire-configuration"
     ;; (desire 'kbd-mode :recipe '(:fetcher github :repo "kmonad/kbd-mode" :branch "master"))
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 220:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 222:</span>
       rc.packages.el
     </div>
 -   Конфигурационный файл:
@@ -9141,12 +9405,12 @@ slug: "emacs-desire-configuration"
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 221:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 223:</span>
       packages/kbd-mode.ecf
     </div>
 
 
-#### <span class="section-num">3.43.6</span> Julia {#julia}
+### <span class="section-num">45.6</span> Julia {#julia}
 
 ```emacs-lisp
 ;;;;; Julia
@@ -9155,265 +9419,264 @@ slug: "emacs-desire-configuration"
 ;; (desire 'julia-repl)
 ```
 
+
+#### <span class="section-num">45.6.1</span> julia-mode {#julia-mode}
+
 <!--list-separator-->
 
-1.  julia-mode
+1.  Подключение
+
+    -   Файл: `rc.packages.el`
+
+    <!--listend-->
+
+    ```emacs-lisp
+    (desire 'julia-mode)
+    ```
+
+<!--list-separator-->
+
+2.  Объявление
+
+    -   Файл: `packages/julia-mode/loaddefs.ecf`
+
+    <!--listend-->
+
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Julia support in Emacs
+    ;; https://github.com/JuliaEditorSupport/julia-emacs
+
+    ;;; Code:
+
+    (add-to-list 'auto-mode-alist '("\\.jl\\'" . julia-mode))
+
+    ;;;
+    ```
+
+<!--list-separator-->
+
+3.  Загрузка
+
+    -   Файл: `packages/julia-mode/desire.ecf`
+
+    <!--listend-->
+
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Julia support in Emacs
+    ;; https://github.com/JuliaEditorSupport/julia-emacs
+
+    ;;; Code:
+
+    (require 'julia-mode)
+
+    ;;;
+    ```
+
+<!--list-separator-->
+
+4.  Fill docstring
+
+    -   Файл: packages/julia-mode/desire.ecd/fill-docstring.ecf
+
+    <!--listend-->
+
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Fill docstrings. This is useful if you want to use M-q on docstrings.
+
+    ;;; Code:
+
+
+    (defun julia-fill-string ()
+      "Fill a docstring, preserving newlines before and after triple quotation marks."
+      (interactive)
+      (if (and transient-mark-mode mark-active)
+          (fill-region (region-beginning) (region-end) nil t)
+        (cl-flet ((fill-if-string ()
+                                  (when (or (looking-at (rx "\"\"\""
+                                                            (group
+                                                             (*? (or (not (any "\\"))
+                                                                     (seq "\\" anything))))
+                                                            "\"\"\""))
+                                            (looking-at (rx "\""
+                                                            (group
+                                                             (*? (or (not (any "\\"))
+                                                                     (seq "\\" anything))))
+                                                            "\"")))
+                                    (let ((start (match-beginning 1))
+                                          (end (match-end 1)))
+                                      ;; (ess-blink-region start end)
+                                      (fill-region start end nil nil nil)))))
+          (save-excursion
+            (let ((s (syntax-ppss)))
+              (when (fourth s) (goto-char (ninth s))))
+            (fill-if-string)))))
+
+    (local-set-key (kbd "M-q") 'julia-fill-string)
+    (set-fill-column 80)
+
+    ;(require 'whitespace)
+    ;(setopt whitespace-style '(face empty tabs lines-tail trailing))
+    ;(global-whitespace-mode t)
+    ;(hungry-delete-mode)
+
+    ;;;
+    ```
+
+<!--list-separator-->
+
+5.  Фонтификация
+
+    -   Файл: `packages/julia-mode/desire.ecd/fontification.ecf`
+
+    <!--listend-->
+
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Borrow matlab.el's fontification of math operators
+    ;; https://web.archive.org/web/20170326183805/https://ogbe.net/emacsconfig.html
+
+    ;;; Code:
+
+    (dolist (mode '(julia-mode ess-julia-mode))
+      (font-lock-add-keywords
+       mode
+       `((,(let ((OR "\\|"))
+             (concat "\\("  ; stolen `matlab.el' operators first
+                     ;; `:` defines a symbol in Julia and must not be highlighted
+                     ;; as an operator. The only operators that start with `:` are
+                     ;; `:<` and `::`. This must be defined before `<`.
+                     "[:<]:" OR
+                     "[<>]=?" OR
+                     "\\.[/*^']" OR
+                     "===" OR
+                     "==" OR
+                     "=>" OR
+                     "\\<xor\\>" OR
+                     "[-+*\\/^&|$]=?" OR  ; this has to come before next (updating operators)
+                     "[-^&|*+\\/~]" OR
+                     ;; Julia variables and names can have `!`. Thus, `!` must be
+                     ;; highlighted as a single operator only in some
+                     ;; circumstances. However, full support can only be
+                     ;; implemented by a full parser. Thus, here, we will handle
+                     ;; only the simple cases.
+                     "[[:space:]]!=?=?" OR "^!=?=?" OR
+                     ;; The other math operators that starts with `!`.
+                     ;; more extra julia operators follow
+                     "[%$]" OR
+                     ;; bitwise operators
+                     ">>>" OR ">>" OR "<<" OR
+                     ">>>=" OR ">>" OR "<<" OR
+                     "\\)"))
+          1 font-lock-type-face))))
+
+    ;;;
+    ```
+
+<!--list-separator-->
+
+6.  Интеграция
 
     <!--list-separator-->
 
-    1.  Подключение
+    1.  julia-repl
 
-        -   Файл: `rc.packages.el`
-
-        <!--listend-->
-
-        ```emacs-lisp
-        (desire 'julia-mode)
-        ```
-
-    <!--list-separator-->
-
-    2.  Объявление
-
-        -   Файл: `packages/julia-mode/loaddefs.ecf`
+        -   Файл: `packages/julia-mode/julia-repl.ecf`
 
         <!--listend-->
 
         ```emacs-lisp
         ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Julia support in Emacs
-        ;; https://github.com/JuliaEditorSupport/julia-emacs
+        ;;; Run an inferior Julia REPL in a terminal inside Emacs
+        ;; https://github.com/tpapp/julia-repl
 
         ;;; Code:
 
-        (add-to-list 'auto-mode-alist '("\\.jl\\'" . julia-mode))
+        (require 'julia-repl)
+        (add-hook 'julia-mode-hook 'julia-repl-mode)
 
         ;;;
         ```
 
     <!--list-separator-->
 
-    3.  Загрузка
+    2.  julia-snail
 
-        -   Файл: `packages/julia-mode/desire.ecf`
+        -   Файл: `packages/julia-mode/julia-snail.ecf`
 
         <!--listend-->
 
         ```emacs-lisp
         ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Julia support in Emacs
-        ;; https://github.com/JuliaEditorSupport/julia-emacs
+        ;;; An Emacs development environment for Julia
+        ;; https://github.com/gcv/julia-snail
 
         ;;; Code:
 
-        (require 'julia-mode)
+        (require 'julia-snail)
+        (add-hook 'julia-mode-hook #'julia-snail-mode)
 
         ;;;
         ```
 
     <!--list-separator-->
 
-    4.  Fill docstring
+    3.  lsp-mode
 
-        -   Файл: packages/julia-mode/desire.ecd/fill-docstring.ecf
+        -   Файл: `packages/julia-mode/lsp-mode.ecf`
 
         <!--listend-->
 
         ```emacs-lisp
         ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Fill docstrings. This is useful if you want to use M-q on docstrings.
+        ;;; Julia support for the lsp-mode package using the LanguageServer.jl package
+        ;; https://github.com/gdkrmr/lsp-julia
 
         ;;; Code:
 
+        (require 'lsp-mode)
 
-        (defun julia-fill-string ()
-          "Fill a docstring, preserving newlines before and after triple quotation marks."
-          (interactive)
-          (if (and transient-mark-mode mark-active)
-              (fill-region (region-beginning) (region-end) nil t)
-            (cl-flet ((fill-if-string ()
-                                      (when (or (looking-at (rx "\"\"\""
-                                                                (group
-                                                                 (*? (or (not (any "\\"))
-                                                                         (seq "\\" anything))))
-                                                                "\"\"\""))
-                                                (looking-at (rx "\""
-                                                                (group
-                                                                 (*? (or (not (any "\\"))
-                                                                         (seq "\\" anything))))
-                                                                "\"")))
-                                        (let ((start (match-beginning 1))
-                                              (end (match-end 1)))
-                                          ;; (ess-blink-region start end)
-                                          (fill-region start end nil nil nil)))))
-              (save-excursion
-                (let ((s (syntax-ppss)))
-                  (when (fourth s) (goto-char (ninth s))))
-                (fill-if-string)))))
+        (desire 'lsp-julia)
+        (require 'lsp-julia)
 
-        (local-set-key (kbd "M-q") 'julia-fill-string)
-        (set-fill-column 80)
+        ;;;; Linux/macOS
+        ;; (setopt lsp-julia-package-dir "/usr/local/bin/julia")
 
-        ;(require 'whitespace)
-        ;(setopt whitespace-style '(face empty tabs lines-tail trailing))
-        ;(global-whitespace-mode t)
-        ;(hungry-delete-mode)
+        ;;;; Configure lsp + julia
+        (add-hook 'julia-mode-hook #'lsp-mode)
+        (add-hook 'julia-mode-hook #'lsp)
 
         ;;;
         ```
 
     <!--list-separator-->
 
-    5.  Фонтификация
+    4.  apheleia
 
-        -   Файл: `packages/julia-mode/desire.ecd/fontification.ecf`
+        -   Файл: `packages/julia-mode/apheleia.ecf`
 
         <!--listend-->
 
         ```emacs-lisp
         ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Borrow matlab.el's fontification of math operators
-        ;; https://web.archive.org/web/20170326183805/https://ogbe.net/emacsconfig.html
+        ;;; An opinionated code formatter for Julia
+        ;; https://github.com/domluna/JuliaFormatter.jl
 
         ;;; Code:
 
-        (dolist (mode '(julia-mode ess-julia-mode))
-          (font-lock-add-keywords
-           mode
-           `((,(let ((OR "\\|"))
-                 (concat "\\("  ; stolen `matlab.el' operators first
-                         ;; `:` defines a symbol in Julia and must not be highlighted
-                         ;; as an operator. The only operators that start with `:` are
-                         ;; `:<` and `::`. This must be defined before `<`.
-                         "[:<]:" OR
-                         "[<>]=?" OR
-                         "\\.[/*^']" OR
-                         "===" OR
-                         "==" OR
-                         "=>" OR
-                         "\\<xor\\>" OR
-                         "[-+*\\/^&|$]=?" OR  ; this has to come before next (updating operators)
-                         "[-^&|*+\\/~]" OR
-                         ;; Julia variables and names can have `!`. Thus, `!` must be
-                         ;; highlighted as a single operator only in some
-                         ;; circumstances. However, full support can only be
-                         ;; implemented by a full parser. Thus, here, we will handle
-                         ;; only the simple cases.
-                         "[[:space:]]!=?=?" OR "^!=?=?" OR
-                         ;; The other math operators that starts with `!`.
-                         ;; more extra julia operators follow
-                         "[%$]" OR
-                         ;; bitwise operators
-                         ">>>" OR ">>" OR "<<" OR
-                         ">>>=" OR ">>" OR "<<" OR
-                         "\\)"))
-              1 font-lock-type-face))))
+        (if (executable-find "jlfmt")
+            (with-eval-after-load 'apheleia
+              (setf (alist-get 'jlfmt apheleia-formatters) '("jlfmt" "-o" filepath))
+              (setf (alist-get 'julia-mode apheleia-mode-alist) 'jlfmt))
+          nil)
 
         ;;;
         ```
 
-    <!--list-separator-->
 
-    6.  Интеграция
-
-        <!--list-separator-->
-
-        1.  julia-repl
-
-            -   Файл: `packages/julia-mode/julia-repl.ecf`
-
-            <!--listend-->
-
-            ```emacs-lisp
-            ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-            ;;; Run an inferior Julia REPL in a terminal inside Emacs
-            ;; https://github.com/tpapp/julia-repl
-
-            ;;; Code:
-
-            (require 'julia-repl)
-            (add-hook 'julia-mode-hook 'julia-repl-mode)
-
-            ;;;
-            ```
-
-        <!--list-separator-->
-
-        2.  julia-snail
-
-            -   Файл: `packages/julia-mode/julia-snail.ecf`
-
-            <!--listend-->
-
-            ```emacs-lisp
-            ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-            ;;; An Emacs development environment for Julia
-            ;; https://github.com/gcv/julia-snail
-
-            ;;; Code:
-
-            (require 'julia-snail)
-            (add-hook 'julia-mode-hook #'julia-snail-mode)
-
-            ;;;
-            ```
-
-        <!--list-separator-->
-
-        3.  lsp-mode
-
-            -   Файл: `packages/julia-mode/lsp-mode.ecf`
-
-            <!--listend-->
-
-            ```emacs-lisp
-            ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-            ;;; Julia support for the lsp-mode package using the LanguageServer.jl package
-            ;; https://github.com/gdkrmr/lsp-julia
-
-            ;;; Code:
-
-            (require 'lsp-mode)
-
-            (desire 'lsp-julia)
-            (require 'lsp-julia)
-
-            ;;;; Linux/macOS
-            ;; (setopt lsp-julia-package-dir "/usr/local/bin/julia")
-
-            ;;;; Configure lsp + julia
-            (add-hook 'julia-mode-hook #'lsp-mode)
-            (add-hook 'julia-mode-hook #'lsp)
-
-            ;;;
-            ```
-
-        <!--list-separator-->
-
-        4.  apheleia
-
-            -   Файл: `packages/julia-mode/apheleia.ecf`
-
-            <!--listend-->
-
-            ```emacs-lisp
-            ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-            ;;; An opinionated code formatter for Julia
-            ;; https://github.com/domluna/JuliaFormatter.jl
-
-            ;;; Code:
-
-            (if (executable-find "jlfmt")
-                (with-eval-after-load 'apheleia
-                  (setf (alist-get 'jlfmt apheleia-formatters) '("jlfmt" "-o" filepath))
-                  (setf (alist-get 'julia-mode apheleia-mode-alist) 'jlfmt))
-              nil)
-
-            ;;;
-            ```
-
-
-#### <span class="section-num">3.43.7</span> Поддержка командной оболочки fish {#поддержка-командной-оболочки-fish}
+### <span class="section-num">45.7</span> Поддержка командной оболочки fish {#поддержка-командной-оболочки-fish}
 
 -   Загрузка пакета:
     ```emacs-lisp
@@ -9421,7 +9684,7 @@ slug: "emacs-desire-configuration"
     (desire 'fish-mode)
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 222:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 224:</span>
       rc.packages.el
     </div>
 -   Настройка пакета:
@@ -9437,12 +9700,12 @@ slug: "emacs-desire-configuration"
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 223:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 225:</span>
       packages/fish-mode.ecf
     </div>
 
 
-#### <span class="section-num">3.43.8</span> Разное {#разное}
+### <span class="section-num">45.8</span> Разное {#разное}
 
 ```emacs-lisp
 (desire 'speedbar)
@@ -9471,7 +9734,7 @@ slug: "emacs-desire-configuration"
 ```
 
 
-#### <span class="section-num">3.43.9</span> Конец {#конец}
+### <span class="section-num">45.9</span> Конец {#конец}
 
 -   Файл `rc.packages.el`:
     ```emacs-lisp
@@ -9479,12 +9742,12 @@ slug: "emacs-desire-configuration"
     ```
 
 
-### <span class="section-num">3.44</span> Редактирование текста в броузере {#редактирование-текста-в-броузере}
+## <span class="section-num">46</span> Редактирование текста в броузере {#редактирование-текста-в-броузере}
 
 -   [Emacs. Редактирование текста в броузере]({{< relref "2024-08-28-emacs-edit-text-area-browser" >}})
 
 
-#### <span class="section-num">3.44.1</span> Начало {#начало}
+### <span class="section-num">46.1</span> Начало {#начало}
 
 -   Файл `rc.packages.el`:
     ```emacs-lisp
@@ -9492,7 +9755,7 @@ slug: "emacs-desire-configuration"
     ```
 
 
-#### <span class="section-num">3.44.2</span> Edit with Emacs {#edit-with-emacs}
+### <span class="section-num">46.2</span> Edit with Emacs {#edit-with-emacs}
 
 -   Файл `rc.packages.el`:
     ```emacs-lisp
@@ -9516,7 +9779,7 @@ slug: "emacs-desire-configuration"
     ```
 
 
-#### <span class="section-num">3.44.3</span> Ghost Text {#ghost-text}
+### <span class="section-num">46.3</span> Ghost Text {#ghost-text}
 
 -   Файл `rc.packages.el`:
     ```emacs-lisp
@@ -9552,7 +9815,7 @@ slug: "emacs-desire-configuration"
     ```
 
 
-#### <span class="section-num">3.44.4</span> Конец {#конец}
+### <span class="section-num">46.4</span> Конец {#конец}
 
 -   Файл `rc.packages.el`:
     ```emacs-lisp
@@ -9560,51 +9823,49 @@ slug: "emacs-desire-configuration"
     ```
 
 
-### <span class="section-num">3.45</span> Навигация по файлам {#навигация-по-файлам}
+## <span class="section-num">47</span> Навигация по файлам {#навигация-по-файлам}
 
 -   [Emacs. Просмотр каталогов]({{< relref "2021-10-03-emacs-directory-browsing" >}})
 
 
-#### <span class="section-num">3.45.1</span> dired {#dired}
-
-<!--list-separator-->
-
-1.  dired
-
-    -   Файл `rc.packages.el`:
-        ```emacs-lisp
-        ;;; Dired {{{
-
-        (desire 'mouse3 :recipe '(:fetcher github :repo "emacsmirror/mouse3" :branch "master" :files ("*.el")))
-
-        (desire 'dired)
-        (desire 'dired+ :recipe '(:fetcher github :repo "emacsmirror/dired-plus" :branch "master" :files ("*.el")))
-
-        ;; (desire 'ranger)
-        ;; (desire 'efar)
-        ;; (desire 'sunrise-commander :recipe '(:fetcher github :repo "sunrise-commander/sunrise-commander"))
-        (desire 'dirvish)
-        ;;;}}}
-        ```
-
-<!--list-separator-->
-
-2.  diredc
-
-    -   Репозиторий: <https://github.com/Boruch-Baum/emacs-diredc>
-    -   Двупанельный (как в midnight commander) режим.
-    -   Подключение:
-        ```emacs-lisp
-        ;;; Midnight Commander features (plus) for emacs dired-mode
-        ;; (desire 'diredc)
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 224:</span>
-          rc.packages.el
-        </div>
+### <span class="section-num">47.1</span> dired {#dired}
 
 
-#### <span class="section-num">3.45.2</span> Neotree {#neotree}
+#### <span class="section-num">47.1.1</span> dired {#dired}
+
+-   Файл `rc.packages.el`:
+    ```emacs-lisp
+    ;;; Dired {{{
+
+    (desire 'mouse3 :recipe '(:fetcher github :repo "emacsmirror/mouse3" :branch "master" :files ("*.el")))
+
+    (desire 'dired)
+    (desire 'dired+ :recipe '(:fetcher github :repo "emacsmirror/dired-plus" :branch "master" :files ("*.el")))
+
+    ;; (desire 'ranger)
+    ;; (desire 'efar)
+    ;; (desire 'sunrise-commander :recipe '(:fetcher github :repo "sunrise-commander/sunrise-commander"))
+    (desire 'dirvish)
+    ;;;}}}
+    ```
+
+
+#### <span class="section-num">47.1.2</span> diredc {#diredc}
+
+-   Репозиторий: <https://github.com/Boruch-Baum/emacs-diredc>
+-   Двупанельный (как в midnight commander) режим.
+-   Подключение:
+    ```emacs-lisp
+    ;;; Midnight Commander features (plus) for emacs dired-mode
+    ;; (desire 'diredc)
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 226:</span>
+      rc.packages.el
+    </div>
+
+
+### <span class="section-num">47.2</span> Neotree {#neotree}
 
 -   [Emacs. Neotree]({{< relref "2022-03-23-emacs-neotree" >}})
 -   Файл `rc.packages.el`:
@@ -9613,24 +9874,201 @@ slug: "emacs-desire-configuration"
     ```
 
 
-#### <span class="section-num">3.45.3</span> Treemacs {#treemacs}
+### <span class="section-num">47.3</span> Treemacs {#treemacs}
 
 -   [Emacs. Пакет treemacs]({{< relref "2025-01-20--emacs-treemacs" >}})
 
+
+#### <span class="section-num">47.3.1</span> Подключение {#подключение}
+
+-   Файл `rc.packages.el`
+    ```emacs-lisp
+    (desire 'treemacs)
+    ```
+
+
+#### <span class="section-num">47.3.2</span> Объявление {#объявление}
+
+-   Файл: `packages/treemacs/loaddefs.ecf`
+
+<!--listend-->
+
+```emacs-lisp
+;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+;;; Treemacs - a tree layout file explorer for Emacs
+;; https://github.com/Alexander-Miller/treemacs
+
+;;; Code:
+
+(require 'treemacs)
+
+;;;
+```
+
+
+#### <span class="section-num">47.3.3</span> Загрузка {#загрузка}
+
+-   Файл: `packages/treemacs/desire.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Treemacs - a tree layout file explorer for Emacs
+    ;; https://github.com/Alexander-Miller/treemacs
+
+    ;;; Code:
+
+    ;;;; Set the correct python3 executable path. This is needed for treemacs-git-mode extended
+    (setopt treemacs-python-executable (executable-find "python"))
+
+    (setopt treemacs-collapse-dirs                 (if treemacs-python-executable 3 0)
+            treemacs-deferred-git-apply-delay      0.5
+            treemacs-directory-name-transformer    #'identity
+            treemacs-display-in-side-window        t
+            treemacs-eldoc-display                 'simple
+            treemacs-file-event-delay              2000
+            treemacs-file-extension-regex          treemacs-last-period-regex-value
+            treemacs-file-follow-delay             0.2
+            treemacs-file-name-transformer         #'identity
+            treemacs-follow-after-init             t
+            treemacs-find-workspace-method         'find-for-file-or-pick-first
+            treemacs-git-command-pipe              ""
+            treemacs-goto-tag-strategy             'refetch-index
+            treemacs-header-scroll-indicators      '(nil . "^^^^^^")
+            treemacs-hide-dot-git-directory        t
+            treemacs-indentation                   2
+            treemacs-indentation-string            " "
+            treemacs-is-never-other-window         nil
+            treemacs-max-git-entries               5000
+            treemacs-missing-project-action        'ask
+            treemacs-move-forward-on-expand        nil
+            treemacs-no-png-images                 nil
+            treemacs-no-delete-other-windows       t
+            treemacs-project-follow-cleanup        nil
+            treemacs-persist-file                  (expand-file-name "treemacs-persist" user-emacs-directory)
+            treemacs-position                      'left
+            treemacs-recenter-distance             0.1
+            treemacs-recenter-after-file-follow    nil
+            treemacs-recenter-after-tag-follow     nil
+            treemacs-recenter-after-project-jump   'always
+            treemacs-recenter-after-project-expand 'on-distance
+            treemacs-litter-directories            '("/node_modules" "/.venv" "/.cask")
+            treemacs-project-follow-into-home      nil
+            treemacs-show-cursor                   nil
+            treemacs-show-hidden-files             t
+            treemacs-silent-filewatch              nil
+            treemacs-silent-refresh                nil
+            treemacs-sorting                       'alphabetic-asc
+            treemacs-select-when-already-in-treemacs 'move-back
+            treemacs-space-between-root-nodes      t
+            treemacs-tag-follow-cleanup            t
+            treemacs-tag-follow-delay              1.5
+            treemacs-user-mode-line-format         nil
+            treemacs-user-header-line-format       nil
+            treemacs-wide-toggle-width             70
+            treemacs-width                         35
+            treemacs-width-increment               1
+            treemacs-width-is-initially-locked     t
+            treemacs-workspace-switch-cleanup      nil)
+
+    ;; The default width and height of the icons is 22 pixels. If you are
+    ;; using a Hi-DPI display, uncomment this to double the icon size.
+    ;;(treemacs-resize-icons 44)
+
+    (treemacs-follow-mode t)
+    (treemacs-filewatch-mode t)
+    (treemacs-fringe-indicator-mode 'always)
+    (when treemacs-python-executable
+       (treemacs-git-commit-diff-mode t))
+
+    (pcase (cons (not (null (executable-find "git")))
+                 (not (null treemacs-python-executable)))
+      (`(t . t)
+       (treemacs-git-mode 'deferred))
+      (`(t . _)
+       (treemacs-git-mode 'simple)))
+
+
+    (treemacs-hide-gitignored-files-mode nil)
+
+    ;;; Mouse Interface
+    (define-key treemacs-mode-map [mouse-1] #'treemacs-single-click-expand-action)
+
+    ;; (treemacs-start-on-boot)
+
+
+
+    ;;;
+    ```
+
+
+#### <span class="section-num">47.3.4</span> Клавиатурные сочетания {#клавиатурные-сочетания}
+
+-   Файл: `packages/treemacs/desire.ecd/key.ecf`
+
+<!--listend-->
+
+```emacs-lisp
+;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+;;; Treemacs - a tree layout file explorer for Emacs
+;; https://github.com/Alexander-Miller/treemacs
+
+;;; Code:
+
+(general-define-key
+ "M-0" 'treemacs-select-window)
+
+(general-define-key
+ :prefix "C-x t"
+ "1" 'treemacs-delete-other-windows
+ "t" 'treemacs
+ "d" 'treemacs-select-directory
+ "B" 'treemacs-bookmark
+ "C-t" 'treemacs-find-file
+ "M-t" 'treemacs-find-tag)
+
+;;;
+```
+
+
+#### <span class="section-num">47.3.5</span> Исправления {#исправления}
+
+-   Файл: `packages/treemacs/desire.ecd/fix.ecf`
+
+<!--listend-->
+
+```emacs-lisp
+;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+;;; Code:
+
+;;; Suppress “ad-handle-definition: .. redefined” warnings during Emacs startup
+(custom-set-variables '(ad-redefinition-action (quote accept)))
+
+;;;
+```
+
+
+#### <span class="section-num">47.3.6</span> Интеграция {#интеграция}
+
 <!--list-separator-->
 
-1.  Подключение
+1.  projectile
 
-    -   Файл `rc.packages.el`
-        ```emacs-lisp
-        (desire 'treemacs)
-        ```
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Projectile integration for treemacs
+
+    ;;; Code:
+
+    (desire 'treemacs-projectile)
+    (require 'treemacs-projectile)
+
+    ;;;
+    ```
 
 <!--list-separator-->
 
-2.  Объявление
+2.  magit
 
-    -   Файл: `packages/treemacs/loaddefs.ecf`
+    -   Файл: `packages/treemacs/magit.ecf`
 
     <!--listend-->
 
@@ -9641,111 +10079,17 @@ slug: "emacs-desire-configuration"
 
     ;;; Code:
 
-    (require 'treemacs)
+    (desire 'treemacs-magit)
+    (require 'treemacs-magit)
 
     ;;;
     ```
 
 <!--list-separator-->
 
-3.  Загрузка
+3.  tab-bar
 
-    -   Файл: `packages/treemacs/desire.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Treemacs - a tree layout file explorer for Emacs
-        ;; https://github.com/Alexander-Miller/treemacs
-
-        ;;; Code:
-
-        ;;;; Set the correct python3 executable path. This is needed for treemacs-git-mode extended
-        (setopt treemacs-python-executable (executable-find "python"))
-
-        (setopt treemacs-collapse-dirs                 (if treemacs-python-executable 3 0)
-                treemacs-deferred-git-apply-delay      0.5
-                treemacs-directory-name-transformer    #'identity
-                treemacs-display-in-side-window        t
-                treemacs-eldoc-display                 'simple
-                treemacs-file-event-delay              2000
-                treemacs-file-extension-regex          treemacs-last-period-regex-value
-                treemacs-file-follow-delay             0.2
-                treemacs-file-name-transformer         #'identity
-                treemacs-follow-after-init             t
-                treemacs-find-workspace-method         'find-for-file-or-pick-first
-                treemacs-git-command-pipe              ""
-                treemacs-goto-tag-strategy             'refetch-index
-                treemacs-header-scroll-indicators      '(nil . "^^^^^^")
-                treemacs-hide-dot-git-directory        t
-                treemacs-indentation                   2
-                treemacs-indentation-string            " "
-                treemacs-is-never-other-window         nil
-                treemacs-max-git-entries               5000
-                treemacs-missing-project-action        'ask
-                treemacs-move-forward-on-expand        nil
-                treemacs-no-png-images                 nil
-                treemacs-no-delete-other-windows       t
-                treemacs-project-follow-cleanup        nil
-                treemacs-persist-file                  (expand-file-name "treemacs-persist" user-emacs-directory)
-                treemacs-position                      'left
-                treemacs-recenter-distance             0.1
-                treemacs-recenter-after-file-follow    nil
-                treemacs-recenter-after-tag-follow     nil
-                treemacs-recenter-after-project-jump   'always
-                treemacs-recenter-after-project-expand 'on-distance
-                treemacs-litter-directories            '("/node_modules" "/.venv" "/.cask")
-                treemacs-project-follow-into-home      nil
-                treemacs-show-cursor                   nil
-                treemacs-show-hidden-files             t
-                treemacs-silent-filewatch              nil
-                treemacs-silent-refresh                nil
-                treemacs-sorting                       'alphabetic-asc
-                treemacs-select-when-already-in-treemacs 'move-back
-                treemacs-space-between-root-nodes      t
-                treemacs-tag-follow-cleanup            t
-                treemacs-tag-follow-delay              1.5
-                treemacs-user-mode-line-format         nil
-                treemacs-user-header-line-format       nil
-                treemacs-wide-toggle-width             70
-                treemacs-width                         35
-                treemacs-width-increment               1
-                treemacs-width-is-initially-locked     t
-                treemacs-workspace-switch-cleanup      nil)
-
-        ;; The default width and height of the icons is 22 pixels. If you are
-        ;; using a Hi-DPI display, uncomment this to double the icon size.
-        ;;(treemacs-resize-icons 44)
-
-        (treemacs-follow-mode t)
-        (treemacs-filewatch-mode t)
-        (treemacs-fringe-indicator-mode 'always)
-        (when treemacs-python-executable
-           (treemacs-git-commit-diff-mode t))
-
-        (pcase (cons (not (null (executable-find "git")))
-                     (not (null treemacs-python-executable)))
-          (`(t . t)
-           (treemacs-git-mode 'deferred))
-          (`(t . _)
-           (treemacs-git-mode 'simple)))
-
-
-        (treemacs-hide-gitignored-files-mode nil)
-
-        ;;; Mouse Interface
-        (define-key treemacs-mode-map [mouse-1] #'treemacs-single-click-expand-action)
-
-        ;; (treemacs-start-on-boot)
-
-
-
-        ;;;
-        ```
-
-<!--list-separator-->
-
-4.  Клавиатурные сочетания
-
-    -   Файл: `packages/treemacs/desire.ecd/key.ecf`
+    -   Файл: `packages/treemacs/tab-bar.ecf`
 
     <!--listend-->
 
@@ -9756,108 +10100,19 @@ slug: "emacs-desire-configuration"
 
     ;;; Code:
 
-    (general-define-key
-     "M-0" 'treemacs-select-window)
+    (desire 'treemacs-tab-bar)
+    (require 'treemacs-tab-bar)
 
-    (general-define-key
-     :prefix "C-x t"
-     "1" 'treemacs-delete-other-windows
-     "t" 'treemacs
-     "d" 'treemacs-select-directory
-     "B" 'treemacs-bookmark
-     "C-t" 'treemacs-find-file
-     "M-t" 'treemacs-find-tag)
+    (setopt treemacs-set-scope-type 'Tabs)
 
     ;;;
     ```
 
-<!--list-separator-->
 
-5.  Исправления
-
-    -   Файл: `packages/treemacs/desire.ecd/fix.ecf`
-
-    <!--listend-->
-
-    ```emacs-lisp
-    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-    ;;; Code:
-
-    ;;; Suppress “ad-handle-definition: .. redefined” warnings during Emacs startup
-    (custom-set-variables '(ad-redefinition-action (quote accept)))
-
-    ;;;
-    ```
-
-<!--list-separator-->
-
-6.  Интеграция
-
-    <!--list-separator-->
-
-    1.  projectile
-
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Projectile integration for treemacs
-
-        ;;; Code:
-
-        (desire 'treemacs-projectile)
-        (require 'treemacs-projectile)
-
-        ;;;
-        ```
-
-    <!--list-separator-->
-
-    2.  magit
-
-        -   Файл: `packages/treemacs/magit.ecf`
-
-        <!--listend-->
-
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Treemacs - a tree layout file explorer for Emacs
-        ;; https://github.com/Alexander-Miller/treemacs
-
-        ;;; Code:
-
-        (desire 'treemacs-magit)
-        (require 'treemacs-magit)
-
-        ;;;
-        ```
-
-    <!--list-separator-->
-
-    3.  tab-bar
-
-        -   Файл: `packages/treemacs/tab-bar.ecf`
-
-        <!--listend-->
-
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Treemacs - a tree layout file explorer for Emacs
-        ;; https://github.com/Alexander-Miller/treemacs
-
-        ;;; Code:
-
-        (desire 'treemacs-tab-bar)
-        (require 'treemacs-tab-bar)
-
-        (setopt treemacs-set-scope-type 'Tabs)
-
-        ;;;
-        ```
+## <span class="section-num">48</span> Навигация по тексту {#навигация-по-тексту}
 
 
-### <span class="section-num">3.46</span> Навигация по тексту {#навигация-по-тексту}
-
-
-#### <span class="section-num">3.46.1</span> Начало {#начало}
+### <span class="section-num">48.1</span> Начало {#начало}
 
 -   Файл `rc.packages.el`:
     ```emacs-lisp
@@ -9865,7 +10120,7 @@ slug: "emacs-desire-configuration"
     ```
 
 
-#### <span class="section-num">3.46.2</span> line-reminder {#line-reminder}
+### <span class="section-num">48.2</span> line-reminder {#line-reminder}
 
 -   Line annotation for changed and saved lines: <https://github.com/emacs-vs/line-reminder>
 -   Файл `rc.packages.el`:
@@ -9893,7 +10148,7 @@ slug: "emacs-desire-configuration"
     ```
 
 
-#### <span class="section-num">3.46.3</span> Конец {#конец}
+### <span class="section-num">48.3</span> Конец {#конец}
 
 -   Файл `rc.packages.el`:
     ```emacs-lisp
@@ -9901,10 +10156,10 @@ slug: "emacs-desire-configuration"
     ```
 
 
-### <span class="section-num">3.47</span> Перевод {#перевод}
+## <span class="section-num">49</span> Перевод {#перевод}
 
 
-#### <span class="section-num">3.47.1</span> gt {#gt}
+### <span class="section-num">49.1</span> gt {#gt}
 
 -   Подключаем:
     ```emacs-lisp
@@ -9912,7 +10167,7 @@ slug: "emacs-desire-configuration"
     (desire 'gt)
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 225:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 227:</span>
       rc.packages.el
     </div>
 -   Загрузка:
@@ -9926,7 +10181,7 @@ slug: "emacs-desire-configuration"
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 226:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 228:</span>
       packages/go-translate/loaddefs.ecf
     </div>
 -   Конфигурация:
@@ -9939,7 +10194,7 @@ slug: "emacs-desire-configuration"
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 227:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 229:</span>
       packages/go-translate/desire.ecf
     </div>
 -   Простейшая конфигурация:
@@ -9955,62 +10210,403 @@ slug: "emacs-desire-configuration"
     ;;;
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 228:</span>
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 230:</span>
       packages/go-translate/desire.ecd/google-simple.ecf
     </div>
 
 
-### <span class="section-num">3.48</span> UI {#ui}
+## <span class="section-num">50</span> UI {#ui}
 
 -   Раздел:
     ```emacs-lisp
     ;;;; UI
     ```
     <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 229:</span>
-      rc.packages.el
-    </div>
-
-
-#### <span class="section-num">3.48.1</span> Шрифты {#шрифты}
-
--   [Emacs. Шрифты]({{< relref "2025-04-01--emacs-fonts" >}})
--   Раздел:
-    ```emacs-lisp
-    ;;;;; Fonts
-    ```
-    <div class="src-block-caption">
-      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 230:</span>
-      rc.packages.el
-    </div>
-
-<!--list-separator-->
-
-1.  Выбор шрифта
-
-    Подключение:
-
-    ```emacs-lisp
-    (desired 'iosevka)
-    ```
-    <div class="src-block-caption">
       <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 231:</span>
       rc.packages.el
     </div>
 
+
+### <span class="section-num">50.1</span> Modeline {#modeline}
+
+
+#### <span class="section-num">50.1.1</span> Начало {#начало}
+
+-   Файл `rc.packages.el`:
+    ```emacs-lisp
+    ;;;;; Modeline
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 232:</span>
+      rc.packages.el
+    </div>
+
+
+#### <span class="section-num">50.1.2</span> Общие настройки modeline {#общие-настройки-modeline}
+
+-   Загрузим только конфигурационный файл:
+    ```emacs-lisp
+    (desire-conf 'modeline)
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 233:</span>
+      rc.packages.el
+    </div>
+
+-   Заголовок файла:
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Configure modeline
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 234:</span>
+      packages/modeline.ecf
+    </div>
+-   Показывать столбец, в котором находится курсор (<https://www.gnu.org/software/emacs/manual/html_node/efaq/Displaying-the-current-line-or-column.html>):
+    ```emacs-lisp
+    ;;; Show column number
+    (setopt column-number-mode t)
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 235:</span>
+      packages/modeline.ecf
+    </div>
+-   Задаём 24-часовой формат времени:
+    ```emacs-lisp
+    ;;; Time in 24 hour format, plus day and date.
+    (setopt display-time-day-and-date t)
+    (setopt display-time-24hr-format t)
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 236:</span>
+      packages/modeline.ecf
+    </div>
+-   Мы можем захотеть видеть и секунды:
+    ```emacs-lisp
+    ;;; Display time in seconds in the mode line
+    ;;; %H is the hour on a 24-hour clock, %I is on a 12-hour clock,
+    ;;; %k is like %H only blank-padded, %l is like %I blank-padded.
+    ;;; %p is the locale's equivalent of either AM or PM.
+    ;;; %M is the minute, %S is the second.
+    (setopt display-time-format "%H:%M:%S")
+    (setopt display-time-interval 1)
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 237:</span>
+      packages/modeline.ecf
+    </div>
+
+-   Разрешим показывать время в модлайн:
+    ```emacs-lisp
+    ;;; Enable the display of time and CPU load average in the modeline
+    (display-time-mode 1)
+
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 238:</span>
+      packages/modeline.ecf
+    </div>
+
+
+### <span class="section-num">50.2</span> Темы {#темы}
+
+-   Подключаем темы в файле `rc.packages.el`:
+    ```emacs-lisp
+    ;;;;; Themes
+
+    ;;; Nested menu for minor modes
+    (desire 'minions)
+
+    ;;; Tabs and ribbons for the mode-line
+    (desire 'moody)
+
+    ;;; Spacemacs theme
+    ;; (desire 'spacemacs-theme :precondition-lisp-library "spacemacs-theme-pkg")
+
+    ;;; Doom themes
+    ;; (desire 'doom-themes)
+
+    ;; (desire 'zenburn-theme)
+    ;; (desire 'lambda-themes :recipe '(:fetcher github :repo "Lambda-Emacs/lambda-themes" :branch "main"))
+    ;; (desire 'tao-theme)
+
+    ;;; N Λ N O Theme
+    ;; (desire 'nano-theme)
+
+    ;;; Increase the padding/spacing of frames and windows
+    ;; (desire 'spacious-padding)
+
+    ```
+
+
+#### <span class="section-num">50.2.1</span> Modus-themes {#modus-themes}
+
+-   [Emacs. Темы. Modus-themes]({{< relref "2023-02-15-emacs-themes-modus-themes" >}})
+
 <!--list-separator-->
 
-2.  Fontset
+1.  Подключение
 
-    -   Подключение:
+    -   Подключаем темы в файле `rc.packages.el`:
+        ```emacs-lisp
+        (desire 'modus-themes)
+        ```
+
+<!--list-separator-->
+
+2.  Загрузка
+
+    -   Файл: `packages/modus-themes/loaddefs.ecf`
+        ```emacs-lisp
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;; Modus Themes
+        ;; https://protesilaos.com/modus-themes/
+        ;; https://gitlab.com/protesilaos/modus-themes/
+        ;; https://github.com/protesilaos/modus-themes/
+
+        ;;; Code:
+
+        (require 'modus-themes)
+
+        ;;;
+        ```
+
+<!--list-separator-->
+
+3.  Конфигурация
+
+    -   Файл: `packages/modus-themes/desire.ecf`
+        ```emacs-lisp
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;; Modus Themes
+        ;; https://protesilaos.com/modus-themes/
+        ;; https://gitlab.com/protesilaos/modus-themes/
+        ;; https://github.com/protesilaos/modus-themes/
+
+        ;;; Code:
+
+        (modus-themes-include-derivatives-mode 1)
+
+        ;;;; With a non-nil value (t) display several syntactic constructs in bold weight.
+        (setopt modus-themes-bold-constructs t)
+
+        ;;;; With a non-nil value (t) choose to render more faces in slanted text.
+        (setopt modus-themes-italic-constructs t)
+
+        ;;;; Toggle the use of monospaced fonts for spacing-sensitive constructs
+        (setopt modus-themes-mixed-fonts t)
+        (setopt modus-themes-variable-pitch-ui t)
+        (setopt modus-themes-custom-auto-reload t)
+        (setopt modus-themes-common-palette-overrides nil)
+        (setopt modus-themes-to-rotate modus-themes-items)
+
+        (setopt modus-themes-italic-constructs t)
+        (setopt modus-themes-bold-constructs t)
+
+        ;;;; Control the style of command prompts
+        (setopt modus-themes-prompts '(bold))
+
+        ;;;; Set the overall style of completion framework interfaces
+        (setopt modus-themes-completions '((t . (bold))))
+
+        ;;;; Optionally add a key binding for the toggle between the themes:
+        ;; (define-key global-map (kbd "<f5>") #'modus-themes-toggle)
+
+        ;;;
+        ```
+
+<!--list-separator-->
+
+4.  Персональные настройки
+
+    -   Файл: `packages/modus-themes/personal.ecf`
+        ```emacs-lisp
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;;; Modus Themes
+        ;; https://protesilaos.com/modus-themes/
+        ;; https://gitlab.com/protesilaos/modus-themes/
+        ;; https://github.com/protesilaos/modus-themes/
+
+        ;;; Main themes
+        ;;; modus-operandi is the project's main light theme, while modus-vivendi is its dark counterpart
+        ;;; Light theme
+        ;; (modus-themes-load-theme 'modus-operandi)
+        ;;; Dark theme
+        ;; (modus-themes-load-theme 'modus-vivendi)
+        ;;; Switch themes
+        ;; (setopt modus-themes-to-toggle '(modus-operandi modus-vivendi))
+
+        ;;; Tinted themes
+        ;;; modus-operandi-tinted and modus-vivendi-tinted are variants of the two main themes
+        ;;; Light theme
+        (modus-themes-load-theme 'modus-operandi-tinted)
+        ;;; Dark theme
+        ;; (modus-themes-load-theme 'modus-vivendi-tinted)
+        ;;; Switch themes
+        (setopt modus-themes-to-toggle '(modus-operandi-tinted modus-vivendi-tinted))
+
+        ;;; Deuteranopia themes
+        ;;; modus-operandi-deuteranopia and its companion modus-vivendi-deuteranopia are optimized for users with red-green color deficiency
+        ;;; Light theme
+        ;; (modus-themes-load-theme 'modus-operandi-deuteranopia)
+        ;;; Dark theme
+        ;; (modus-themes-load-theme 'modus-vivendi-deuteranopia)
+        ;;; Switch themes
+        ;; (setopt modus-themes-to-toggle '(modus-operandi-deuteranopia modus-vivendi-deuteranopia))
+
+        ;;; Tritanopia themes
+        ;;; modus-operandi-tritanopia and its companion modus-vivendi-tritanopia are optimized for users with red-green color deficiency
+        ;;; Light theme
+        ;; (modus-themes-load-theme 'modus-operandi-tritanopia)
+        ;;; Dark theme
+        ;; (modus-themes-load-theme 'modus-vivendi-tritanopia)
+        ;;; Switch themes
+        ;; (setopt modus-themes-to-toggle '(modus-operandi-tritanopia modus-vivendi-tritanopia))
+
+        ;;;
+        ```
+
+
+#### <span class="section-num">50.2.2</span> Ef-themes {#ef-themes}
+
+-   [Emacs. Темы. Ef-themes]({{< relref "2023-06-13-emacs-themes-ef-themes" >}})
+-   Подключаем темы в файле `rc.packages.el`:
+    ```emacs-lisp
+    ;; (desire 'ef-themes)
+    ```
+
+
+#### <span class="section-num">50.2.3</span> Doric-themes {#doric-themes}
+
+-   Подключаем темы в файле `rc.packages.el`:
+    ```emacs-lisp
+    ;; (desire 'doric-themes)
+    ```
+-   Загружаем темы:
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Doric themes for GNU Emacs
+    ;; https://github.com/protesilaos/doric-themes
+
+    ;;; Code:
+
+    (require 'doric-themes)
+
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 239:</span>
+      packages/doric-themes/loaddefs.ecf
+    </div>
+-   Конфигурация:
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Doric themes for GNU Emacs
+    ;; https://github.com/protesilaos/doric-themes
+
+    ;;; Code:
+
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 240:</span>
+      packages/doric-themes/desire.ecf
+    </div>
+-   Поддержка Moody:
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Tabs and ribbons for the mode-line
+    ;; https://github.com/tarsius/moody
+
+    ;;; Code:
+
+    (require 'moody)
+
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 241:</span>
+      packages/doric-themes/moody.ecf
+    </div>
+-   Выбор темы:
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Doric themes for GNU Emacs
+    ;; https://github.com/protesilaos/doric-themes
+
+    ;;; Code:
+
+    ;;;; light + dark
+    ;; (setopt doric-themes-to-toggle '(doric-light doric-dark))
+    ;; (doric-themes-select 'doric-light)
+
+    ;;;; marble + obsidian
+    ;; (setopt doric-themes-to-toggle '(doric-marble doric-obsidian))
+    ;; (doric-themes-select 'doric-marble)
+
+    ;;;; earth + fire
+    ;; (setopt doric-themes-to-toggle '(doric-earth doric-fire))
+    ;; (doric-themes-select 'doric-earth)
+
+    ;;;; wind + water
+    ;; (setopt doric-themes-to-toggle '(doric-wind doric-water))
+    ;; (doric-themes-select 'doric-wind)
+
+    ;;;; cherry + plum
+    ;; (setopt doric-themes-to-toggle '(doric-cherry doric-plum))
+    ;; (doric-themes-select 'doric-cherry)
+
+    ;;;; oak + pine
+    (setopt doric-themes-to-toggle '(doric-oak doric-pine))
+    (doric-themes-select 'doric-oak)
+
+
+    ;;;; Rotate themes
+    (setopt doric-themes-to-rotate doric-themes-collection)
+
+    ;;;; To load a random theme instead, use something like one of these:
+    ;; (doric-themes-load-random)
+    ;; (doric-themes-load-random 'light)
+    ;; (doric-themes-load-random 'dark)
+
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 242:</span>
+      packages/doric-themes/personal.ecf
+    </div>
+
+
+### <span class="section-num">50.3</span> Шрифты {#шрифты}
+
+-   [Emacs. Шрифты]({{< relref "2025-04-01--emacs-fonts" >}})
+
+
+#### <span class="section-num">50.3.1</span> Идентификатор раздела {#идентификатор-раздела}
+
+-   Файл: `rc.packages.el`
+    ```emacs-lisp
+    ;;;;; Fonts
+    ```
+
+
+#### <span class="section-num">50.3.2</span> Fontset {#fontset}
+
+<!--list-separator-->
+
+1.  Подключение
+
+    -   Файл: `rc.packages.el`
         ```emacs-lisp
         (desire 'fontset)
         ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 232:</span>
-          rc.packages.el
-        </div>
-    -   Загрузка:
+
+<!--list-separator-->
+
+2.  Загрузка
+
+    -   Файл: `packages/fontset/loaddefs.ecf`
         ```emacs-lisp
         ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
         ;;; Set fontset
@@ -10079,66 +10675,74 @@ slug: "emacs-desire-configuration"
 
         ;;;
         ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 233:</span>
-          packages/fontset/loaddefs.ecf
-        </div>
-    -   Эмодзи:
+
+<!--list-separator-->
+
+3.  Эмодзи
+
+    -   Файл: `packages/fontset/desire.ecd/emoji.ecf`
         ```emacs-lisp
         ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
         ;;; Set emoji
 
         ;;; Code:
 
-        ;;;; Use "Noto Color Emoji" for the emoji script (this is the default).
-        ;; (set-fontset-font "fontset-default" 'emoji
-        ;;                   '("Noto Color Emoji" . "iso10646-1")
-        ;;                   nil 'prepend)
-
-        ;;;; Display the "heart" character using a color font.
-        ;; (set-fontset-font "fontset-default"
-        ;;                   #x2764 "Noto Color Emoji")
-
         (set-fontset-font
          t
          'emoji
          (cond
-          ((member "Apple Color Emoji" (font-family-list)) "Apple Color Emoji")
           ((member "Noto Color Emoji" (font-family-list)) "Noto Color Emoji")
           ((member "Noto Emoji" (font-family-list)) "Noto Emoji")
           ((member "Segoe UI Emoji" (font-family-list)) "Segoe UI Emoji")
-          ((member "Symbola" (font-family-list)) "Symbola")))
+          ((member "Symbola" (font-family-list)) "Symbola")
+          ((member "Apple Color Emoji" (font-family-list)) "Apple Color Emoji")
+          nil 'append))
 
         (set-fontset-font
          t
          'symbol
          (cond
+          ((member "Symbola" (font-family-list)) "Symbola")
           ((member "Segoe UI Symbol" (font-family-list)) "Segoe UI Symbol")
           ((member "Apple Symbols" (font-family-list)) "Apple Symbols")
-          ((member "Symbola" (font-family-list)) "Symbola")))
+          nil 'append))
 
         ;;;
         ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 234:</span>
-          packages/fontset/desire.ecd/emoji.ecf
-        </div>
-    -   Unicode:
+
+<!--list-separator-->
+
+4.  Unicode
+
+    -   Файл: `packages/fontset/desire.ecd/unicode.ecf`
         ```emacs-lisp
         ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
         ;;; Font for all unicode characters
 
         ;;; Code:
 
-        ;; (set-fontset-font "fontset-default" 'symbol
-        ;; 		  (font-spec :family "Symbola")
-        ;; 		  nil 'prepend)
+        ;;;; Китайский, японский, корейский (CJK)
+        ;;;; Linux: "Noto Sans CJK SC" или "WenQuanYi Micro Hei"
+        ;;;; macOS: "PingFang SC" или "Hiragino Sans"
+        ;;;; Windows: "Microsoft YaHei" или "Segoe UI Emoji"
 
-        ;; (set-fontset-font "fontset-default" 'unicode
-        ;; 		  (font-spec :family "Symbola")
-        ;; 		  nil 'prepend)
+        (set-fontset-font
+         t
+         '(#x4E00 . #x9FFF)   ; основной блок CJK
+         (cond
+          ((member "Noto Sans CJK SC" (font-family-list)) "Noto Sans CJK SC")
+          ((member "Segoe UI Emoji" (font-family-list)) "Segoe UI Emoji")
+          nil 'append))
 
-        ;; set font for cuneiform
+        (set-fontset-font
+         t
+         '(#x3040 . #x30FF)   ; хирагана и катакана
+         (cond
+          ((member "Noto Sans CJK SC" (font-family-list)) "Noto Sans CJK SC")
+          ((member "Segoe UI Emoji" (font-family-list)) "Segoe UI Emoji")
+          nil 'append))
+
+        ;;;; set font for cuneiform
         (set-fontset-font
          t
          'cuneiform
@@ -10211,688 +10815,257 @@ slug: "emacs-desire-configuration"
 
         ;;;
         ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 235:</span>
-          packages/fontset/desire.ecd/unicode.ecf
-        </div>
-    -   Шрифты
-        -   Iosevka
-            ```emacs-lisp
-            ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-            ;;; Set Iosevka font
-            ;; https://be5invis.github.io/Iosevka/
-
-            ;;; Code:
-
-            ;;;; Set default font
-
-            ;; (add-to-list 'default-frame-alist '(font . "Iosevka Term-12" ))
-            ;; (add-to-list 'initial-frame-alist '(font . "Iosevka Term-12" ))
-            ;; (set-face-attribute 'default nil :font "Iosevka Term-12" )
-
-            (add-to-list 'default-frame-alist '(font . "Iosevka Nerd Font-12" ))
-            (add-to-list 'initial-frame-alist '(font . "Iosevka Nerd Font-12" ))
-            (set-face-attribute 'default nil :font "Iosevka Nerd Font-12" )
 
 
-            ;;;; Set font
-            ;; (dolist (charset '(latin cyrillic greek))
-            ;;   (set-fontset-font "fontset-default" charset
-            ;;                     (font-spec :family "Iosevka Term" :size 12)
-            ;;                     nil 'prepend))
-
-            (dolist (charset '(latin cyrillic greek))
-              (set-fontset-font "fontset-default" charset
-                                (font-spec :family "Iosevka Nerd Font" :size 12)
-                                nil 'prepend))
-
-            ;;;
-            ```
-            <div class="src-block-caption">
-              <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 236:</span>
-              packages/fontset/iosevka.ecf
-            </div>
+#### <span class="section-num">50.3.3</span> mixed-pitch {#mixed-pitch}
 
 <!--list-separator-->
 
-3.  Разное
+1.  Подключение
 
+    -   Файл: `rc.packages.el`
+        ```emacs-lisp
+        ;; (desire 'mixed-pitch)
+        ```
+
+<!--list-separator-->
+
+2.  Загрузка
+
+    -   Файл: `packages/mixed-pitch.ecf`
+        ```emacs-lisp
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;; Mix fixed-pitch and variable-pitch fonts in Emacs
+        ;; https://gitlab.com/jabranham/mixed-pitch
+
+        ;;; Code:
+
+        (require 'mixed-pitch)
+
+        ;;;; Fixed pitch
+        (setopt mixed-pitch-fixed-pitch-faces
+                (append mixed-pitch-fixed-pitch-faces
+                        '(
+                          org-code
+                          org-verbatim
+                          org-block
+                          font-lock-comment-face
+                          )))
+
+        ;;;; Apply mixed-pitch-mode in all text modes
+        (add-hook 'text-mode-hook #'mixed-pitch-mode)
+        (add-hook 'org-mode-hook #'mixed-pitch-mode)
+
+        ;;;; Apply everywhere
+        ;; (mixed-pitch-mode)
+
+        ;;;
+        ```
+
+
+#### <span class="section-num">50.3.4</span> Fontaine {#fontaine}
+
+<!--list-separator-->
+
+1.  Подключение
+
+    -   Файл: `rc.packages.el`
+        ```emacs-lisp
+        (desire 'fontaine)
+        ```
+
+<!--list-separator-->
+
+2.  Загрузка
+
+    -   Файл: `packages/fontaine/loaddefs.ecf`
+        ```emacs-lisp
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;; Set Emacs font configurations using presets
+        ;; https://github.com/protesilaos/fontaine
+
+        ;;; Code:
+
+        (require 'fontaine)
+
+        (add-hook 'enable-theme-functions #'fontaine-apply-current-preset)
+
+        ;;;
+        ```
+
+
+### <span class="section-num">50.4</span> Внешний вид {#внешний-вид}
+
+
+#### <span class="section-num">50.4.1</span> Posframe {#posframe}
+
+-   Дочерний фрейм в точке.
+-   <https://github.com/tumashu/posframe>
+-   Подключение:
     ```emacs-lisp
-    ;; (desire 'mixed-pitch)
-    ;; (desire-conf 'font-lock)
-    ;; (desire-conf 'font-lock-jit)
-    ;; (desire-conf 'font-lock-lazy)
-    ;; (desire-conf 'font-lock-fast)
-    ;; (desire-conf 'faces)
-    ;; (desire-conf 'color-theme nil "color-theme")
-    ;; (desire-conf 'fira-code-mode nil "fira-code-mode" t) ;; Simple minor mode for Fira Code ligatures
+    ;; (desire 'posframe)
     ```
-
-<!--list-separator-->
-
-4.  Лигатуры
-
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 243:</span>
+      rc.packages.el
+    </div>
+-   Загрузка:
     ```emacs-lisp
-    ;; (desire 'ligature)
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Pop a posframe (just a child-frame) at point
+    ;; https://github.com/tumashu/posframe
+
+    ;;; Code:
+
+    (require 'posframe)
+
+    ;;;
     ```
-
-<!--list-separator-->
-
-5.  unicode-fonts
-
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 244:</span>
+      packages/posframe/loaddefs.ecf
+    </div>
+-   Настройка:
     ```emacs-lisp
-    (desire 'unicode-fonts)
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Pop a posframe (just a child-frame) at point
+    ;; https://github.com/tumashu/posframe
+
+    ;;;
     ```
-
-    -   Загрузка:
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Configure Unicode fonts for Emacs
-        ;; https://github.com/rolandwalker/unicode-fonts
-
-        ;;; Code:
-
-        ;;;; Requires font-utils
-        (desire 'font-utils)
-
-        ;;;; Requires ucs-utils
-        (desire 'ucs-utils)
-
-        ;;;; Uses if present
-        (desire 'persistent-soft)
-
-        ;;;; Load package
-        (require 'unicode-fonts)
-
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 237:</span>
-          packages/unicode-fonts/loaddefs.ecf
-        </div>
-    -   Настройка:
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Configure Unicode fonts for Emacs
-        ;; https://github.com/rolandwalker/unicode-fonts
-
-        ;;; Code:
-
-        ;;; ligature support
-        (setopt unicode-fonts-enable-ligatures t)
-
-        ;;; By default ligatures will be enabled in all programing modes.
-        (setopt unicode-fonts-ligature-modes '(prog-mode))
-
-        ;;; You can enable ligatures for specific modes.
-        ;; (setopt unicode-fonts-ligature-modes '(php-mode js-mode))
-
-        ;;; To enable only for text modes you can use text-mode
-        ;; (setopt unicode-fonts-ligature-modes '(text-mode))
-
-        ;;; Configure the ligature set
-        (setopt unicode-fonts-ligature-set '("|||>" "<|||" "<==>" "<!--" "####" "~~>" "***" "||=" "||>"
-                                           ":::" "::=" "=:=" "===" "==>" "=!=" "=>>" "=<<" "=/=" "!=="
-                                           "!!." ">=>" ">>=" ">>>" ">>-" ">->" "->>" "-->" "---" "-<<"
-                                           "<~~" "<~>" "<*>" "<||" "<|>" "<$>" "<==" "<=>" "<=<" "<->"
-                                           "<--" "<-<" "<<=" "<<-" "<<<" "<+>" "</>" "###" "#_(" "..<"
-                                           "..." "+++" "/==" "///" "_|_" "www" "&&" "^=" "~~" "~@" "~="
-                                           "~>" "~-" "**" "*>" "*/" "||" "|}" "|]" "|=" "|>" "|-" "{|"
-                                           "[|" "]#" "::" ":=" ":>" ":<" "$>" "==" "=>" "!=" "!!" ">:"
-                                           ">=" ">>" ">-" "-~" "-|" "->" "-<" "<~" "<*" "<|" "<:" "<$"
-                                           "<=" "<>" "<-" "<<" "<+" "</" "#{" "#[" "#:" "#=" "#!" "##"
-                                           "#(" "#?" "#_" "%%" ".=" ".-" ".." ".?" "+>" "++" "?:" "?="
-                                           "?." "??" ";;" "/*" "/**" "/=" "/>" "__" "~~" "(*" "*)"
-                                           "://"))
-
-        (setopt ecf-unicode-font (font-spec :family "Iosevka" :size 12))
-
-        (when ecf-unicode-font
-          (let ((ecf-unicode-font-family (plist-get (font-face-attributes ecf-unicode-font) :family)))
-            (dolist (unicode-block unicode-fonts-block-font-mapping)
-              (push ecf-unicode-font-family (cadr unicode-block)))))
-
-        (unicode-fonts-setup)
-
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 238:</span>
-          packages/unicode-fonts/desire.ecf
-        </div>
-
-
-#### <span class="section-num">3.48.2</span> Modeline {#modeline}
-
-<!--list-separator-->
-
-1.  Начало
-
-    -   Файл `rc.packages.el`:
-        ```emacs-lisp
-        ;;;;; Modeline
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 239:</span>
-          rc.packages.el
-        </div>
-
-<!--list-separator-->
-
-2.  Общие настройки modeline
-
-    -   Загрузим только конфигурационный файл:
-        ```emacs-lisp
-        (desire-conf 'modeline)
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 240:</span>
-          rc.packages.el
-        </div>
-
-    -   Заголовок файла:
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Configure modeline
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 241:</span>
-          packages/modeline.ecf
-        </div>
-    -   Показывать столбец, в котором находится курсор (<https://www.gnu.org/software/emacs/manual/html_node/efaq/Displaying-the-current-line-or-column.html>):
-        ```emacs-lisp
-        ;;; Show column number
-        (setopt column-number-mode t)
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 242:</span>
-          packages/modeline.ecf
-        </div>
-    -   Задаём 24-часовой формат времени:
-        ```emacs-lisp
-        ;;; Time in 24 hour format, plus day and date.
-        (setopt display-time-day-and-date t)
-        (setopt display-time-24hr-format t)
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 243:</span>
-          packages/modeline.ecf
-        </div>
-    -   Мы можем захотеть видеть и секунды:
-        ```emacs-lisp
-        ;;; Display time in seconds in the mode line
-        ;;; %H is the hour on a 24-hour clock, %I is on a 12-hour clock,
-        ;;; %k is like %H only blank-padded, %l is like %I blank-padded.
-        ;;; %p is the locale's equivalent of either AM or PM.
-        ;;; %M is the minute, %S is the second.
-        (setopt display-time-format "%H:%M:%S")
-        (setopt display-time-interval 1)
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 244:</span>
-          packages/modeline.ecf
-        </div>
-
-    -   Разрешим показывать время в модлайн:
-        ```emacs-lisp
-        ;;; Enable the display of time and CPU load average in the modeline
-        (display-time-mode 1)
-
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 245:</span>
-          packages/modeline.ecf
-        </div>
-
-
-#### <span class="section-num">3.48.3</span> Темы {#темы}
-
--   Подключаем темы в файле `rc.packages.el`:
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 245:</span>
+      packages/posframe/desire.ecf
+    </div>
+-   Поддержка _vertico_:
     ```emacs-lisp
-    ;;;;; Themes
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Vertico-posframe is an vertico extension, which lets vertico use posframe to show its candidate menu
+    ;; https://github.com/tumashu/vertico-posframe
 
-    ;;; Nested menu for minor modes
-    (desire 'minions)
+    (desire 'vertico-posframe)
 
-    ;;; Tabs and ribbons for the mode-line
-    (desire 'moody)
+    (require 'vertico-posframe)
+    ;; (vertico-posframe-mode 1)
 
-    ;;; Spacemacs theme
-    ;; (desire 'spacemacs-theme :precondition-lisp-library "spacemacs-theme-pkg")
+    (setopt vertico-multiform-commands
+          '((consult-line
+             posframe
+             (vertico-posframe-poshandler . posframe-poshandler-frame-top-center)
+             (vertico-posframe-border-width . 10)
+             ;; NOTE: This is useful when emacs is used in both in X and
+             ;; terminal, for posframe do not work well in terminal, so
+             ;; vertico-buffer-mode will be used as fallback at the
+             ;; moment.
+             (vertico-posframe-fallback-mode . vertico-buffer-mode))
+            (t posframe)))
+    (vertico-multiform-mode 1)
 
-    ;;; Doom themes
-    ;; (desire 'doom-themes)
-
-    ;; (desire 'zenburn-theme)
-    ;; (desire 'lambda-themes :recipe '(:fetcher github :repo "Lambda-Emacs/lambda-themes" :branch "main"))
-    ;; (desire 'tao-theme)
-
-    ;;; N Λ N O Theme
-    ;; (desire 'nano-theme)
-
-    ;;; Increase the padding/spacing of frames and windows
-    ;; (desire 'spacious-padding)
-
+    ;;;
     ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 246:</span>
+      packages/posframe/vertico.ecf
+    </div>
 
-<!--list-separator-->
 
-1.  Modus-themes
+#### <span class="section-num">50.4.2</span> Nova {#nova}
 
-    -   [Emacs. Темы. Modus-themes]({{< relref "2023-02-15-emacs-themes-modus-themes" >}})
-
-    <!--list-separator-->
-
-    1.  Подключение
-
-        -   Подключаем темы в файле `rc.packages.el`:
-            ```emacs-lisp
-            (desire 'modus-themes)
-            ```
-
-    <!--list-separator-->
-
-    2.  Загрузка
-
-        -   Файл: `packages/modus-themes/loaddefs.ecf`
-            ```emacs-lisp
-            ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-            ;;; Modus Themes
-            ;; https://protesilaos.com/modus-themes/
-            ;; https://gitlab.com/protesilaos/modus-themes/
-            ;; https://github.com/protesilaos/modus-themes/
-
-            ;;; Code:
-
-            (require 'modus-themes)
-
-            ;;;
-            ```
-
-    <!--list-separator-->
-
-    3.  Конфигурация
-
-        -   Файл: `packages/modus-themes/desire.ecf`
-            ```emacs-lisp
-            ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-            ;;; Modus Themes
-            ;; https://protesilaos.com/modus-themes/
-            ;; https://gitlab.com/protesilaos/modus-themes/
-            ;; https://github.com/protesilaos/modus-themes/
-
-            ;;; Code:
-
-            (modus-themes-include-derivatives-mode 1)
-
-            ;;;; With a non-nil value (t) display several syntactic constructs in bold weight.
-            (setopt modus-themes-bold-constructs t)
-
-            ;;;; With a non-nil value (t) choose to render more faces in slanted text.
-            (setopt modus-themes-italic-constructs t)
-
-            ;;;; Toggle the use of monospaced fonts for spacing-sensitive constructs
-            (setopt modus-themes-mixed-fonts t)
-            (setopt modus-themes-variable-pitch-ui t)
-            (setopt modus-themes-custom-auto-reload t)
-            (setopt modus-themes-common-palette-overrides nil)
-            (setopt modus-themes-to-rotate modus-themes-items)
-
-            (setopt modus-themes-italic-constructs t)
-            (setopt modus-themes-bold-constructs t)
-
-            ;;;; Control the style of command prompts
-            (setopt modus-themes-prompts '(bold))
-
-            ;;;; Set the overall style of completion framework interfaces
-            (setopt modus-themes-completions '((t . (bold))))
-
-            ;;;; Optionally add a key binding for the toggle between the themes:
-            ;; (define-key global-map (kbd "<f5>") #'modus-themes-toggle)
-
-            ;;;
-            ```
-
-    <!--list-separator-->
-
-    4.  Персональные настройки
-
-        -   Файл: `packages/modus-themes/personal.ecf`
-            ```emacs-lisp
-            ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-            ;;;; Modus Themes
-            ;; https://protesilaos.com/modus-themes/
-            ;; https://gitlab.com/protesilaos/modus-themes/
-            ;; https://github.com/protesilaos/modus-themes/
-
-            ;;; Main themes
-            ;;; modus-operandi is the project's main light theme, while modus-vivendi is its dark counterpart
-            ;;; Light theme
-            ;; (modus-themes-load-theme 'modus-operandi)
-            ;;; Dark theme
-            ;; (modus-themes-load-theme 'modus-vivendi)
-            ;;; Switch themes
-            ;; (setopt modus-themes-to-toggle '(modus-operandi modus-vivendi))
-
-            ;;; Tinted themes
-            ;;; modus-operandi-tinted and modus-vivendi-tinted are variants of the two main themes
-            ;;; Light theme
-            (modus-themes-load-theme 'modus-operandi-tinted)
-            ;;; Dark theme
-            ;; (modus-themes-load-theme 'modus-vivendi-tinted)
-            ;;; Switch themes
-            (setopt modus-themes-to-toggle '(modus-operandi-tinted modus-vivendi-tinted))
-
-            ;;; Deuteranopia themes
-            ;;; modus-operandi-deuteranopia and its companion modus-vivendi-deuteranopia are optimized for users with red-green color deficiency
-            ;;; Light theme
-            ;; (modus-themes-load-theme 'modus-operandi-deuteranopia)
-            ;;; Dark theme
-            ;; (modus-themes-load-theme 'modus-vivendi-deuteranopia)
-            ;;; Switch themes
-            ;; (setopt modus-themes-to-toggle '(modus-operandi-deuteranopia modus-vivendi-deuteranopia))
-
-            ;;; Tritanopia themes
-            ;;; modus-operandi-tritanopia and its companion modus-vivendi-tritanopia are optimized for users with red-green color deficiency
-            ;;; Light theme
-            ;; (modus-themes-load-theme 'modus-operandi-tritanopia)
-            ;;; Dark theme
-            ;; (modus-themes-load-theme 'modus-vivendi-tritanopia)
-            ;;; Switch themes
-            ;; (setopt modus-themes-to-toggle '(modus-operandi-tritanopia modus-vivendi-tritanopia))
-
-            ;;;
-            ```
-
-<!--list-separator-->
-
-2.  Ef-themes
-
-    -   [Emacs. Темы. Ef-themes]({{< relref "2023-06-13-emacs-themes-ef-themes" >}})
-    -   Подключаем темы в файле `rc.packages.el`:
-        ```emacs-lisp
-        ;; (desire 'ef-themes)
-        ```
-
-<!--list-separator-->
-
-3.  Doric-themes
-
-    -   Подключаем темы в файле `rc.packages.el`:
-        ```emacs-lisp
-        ;; (desire 'doric-themes)
-        ```
-    -   Загружаем темы:
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Doric themes for GNU Emacs
-        ;; https://github.com/protesilaos/doric-themes
-
-        ;;; Code:
-
-        (require 'doric-themes)
-
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 246:</span>
-          packages/doric-themes/loaddefs.ecf
-        </div>
-    -   Конфигурация:
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Doric themes for GNU Emacs
-        ;; https://github.com/protesilaos/doric-themes
-
-        ;;; Code:
-
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 247:</span>
-          packages/doric-themes/desire.ecf
-        </div>
-    -   Поддержка Moody:
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Tabs and ribbons for the mode-line
-        ;; https://github.com/tarsius/moody
-
-        ;;; Code:
-
-        (require 'moody)
-
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 248:</span>
-          packages/doric-themes/moody.ecf
-        </div>
-    -   Выбор темы:
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Doric themes for GNU Emacs
-        ;; https://github.com/protesilaos/doric-themes
-
-        ;;; Code:
-
-        ;;;; light + dark
-        ;; (setopt doric-themes-to-toggle '(doric-light doric-dark))
-        ;; (doric-themes-select 'doric-light)
-
-        ;;;; marble + obsidian
-        ;; (setopt doric-themes-to-toggle '(doric-marble doric-obsidian))
-        ;; (doric-themes-select 'doric-marble)
-
-        ;;;; earth + fire
-        ;; (setopt doric-themes-to-toggle '(doric-earth doric-fire))
-        ;; (doric-themes-select 'doric-earth)
-
-        ;;;; wind + water
-        ;; (setopt doric-themes-to-toggle '(doric-wind doric-water))
-        ;; (doric-themes-select 'doric-wind)
-
-        ;;;; cherry + plum
-        ;; (setopt doric-themes-to-toggle '(doric-cherry doric-plum))
-        ;; (doric-themes-select 'doric-cherry)
-
-        ;;;; oak + pine
-        (setopt doric-themes-to-toggle '(doric-oak doric-pine))
-        (doric-themes-select 'doric-oak)
-
-
-        ;;;; Rotate themes
-        (setopt doric-themes-to-rotate doric-themes-collection)
-
-        ;;;; To load a random theme instead, use something like one of these:
-        ;; (doric-themes-load-random)
-        ;; (doric-themes-load-random 'light)
-        ;; (doric-themes-load-random 'dark)
-
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 249:</span>
-          packages/doric-themes/personal.ecf
-        </div>
-
-
-#### <span class="section-num">3.48.4</span> Внешний вид {#внешний-вид}
-
-<!--list-separator-->
-
-1.  Posframe
-
-    -   Дочерний фрейм в точке.
-    -   <https://github.com/tumashu/posframe>
-    -   Подключение:
-        ```emacs-lisp
-        ;; (desire 'posframe)
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 250:</span>
-          rc.packages.el
-        </div>
-    -   Загрузка:
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Pop a posframe (just a child-frame) at point
-        ;; https://github.com/tumashu/posframe
-
-        ;;; Code:
-
-        (require 'posframe)
-
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 251:</span>
-          packages/posframe/loaddefs.ecf
-        </div>
-    -   Настройка:
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Pop a posframe (just a child-frame) at point
-        ;; https://github.com/tumashu/posframe
-
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 252:</span>
-          packages/posframe/desire.ecf
-        </div>
-    -   Поддержка _vertico_:
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Vertico-posframe is an vertico extension, which lets vertico use posframe to show its candidate menu
-        ;; https://github.com/tumashu/vertico-posframe
-
-        (desire 'vertico-posframe)
-
-        (require 'vertico-posframe)
-        ;; (vertico-posframe-mode 1)
-
-        (setopt vertico-multiform-commands
-              '((consult-line
-                 posframe
-                 (vertico-posframe-poshandler . posframe-poshandler-frame-top-center)
-                 (vertico-posframe-border-width . 10)
-                 ;; NOTE: This is useful when emacs is used in both in X and
-                 ;; terminal, for posframe do not work well in terminal, so
-                 ;; vertico-buffer-mode will be used as fallback at the
-                 ;; moment.
-                 (vertico-posframe-fallback-mode . vertico-buffer-mode))
-                (t posframe)))
-        (vertico-multiform-mode 1)
-
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 253:</span>
-          packages/posframe/vertico.ecf
-        </div>
-
-<!--list-separator-->
-
-2.  Nova
-
-    -   Репозиторий: <https://github.com/thisisran/nova>
-    -   Прорисовка дочерних фреймов с помощью SVG.
-    -   Подключение:
-        ```emacs-lisp
-        (desire 'eldoc-box)
-        ;; (desire 'nova :recipe '(:fetcher github :repo "thisisran/nova" :branch "main"))
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 254:</span>
-          rc.packages.el
-        </div>
-    -   Загрузка:
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Emacs SVG Child Frames
-        ;;;; https://github.com/thisisran/nova
-
-        (require 'nova)
-
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 255:</span>
-          packages/nova/loaddefs.ecf
-        </div>
-    -   Настройка:
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Emacs SVG Child Frames
-        ;;;; https://github.com/thisisran/nova
-
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 256:</span>
-          packages/nova/desire.ecf
-        </div>
-    -   Поддержка _vertico_:
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Emacs SVG Child Frames
-        ;;;; https://github.com/thisisran/nova
-
-        (require 'nova-vertico)
-        (nova-vertico-mode 1)
-
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 257:</span>
-          packages/nova/vertico.ecf
-        </div>
-    -   Поддержка _corfu_:
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Emacs SVG Child Frames
-        ;;;; https://github.com/thisisran/nova
-
-        (require 'nova-corfu)
-        (require 'nova-corfu-popupinfo)
-
-        (nova-corfu-mode 1)
-        (nova-corfu-popupinfo-mode 1)
-
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 258:</span>
-          packages/nova/corfu.ecf
-        </div>
-    -   Поддержка _eldoc-box_:
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Emacs SVG Child Frames
-        ;;;; https://github.com/thisisran/nova
-
-        ;; (require 'nova-eldoc)
-        ;; (nova-eldoc-mode 1)
-
-        ;;;
-        ```
-        <div class="src-block-caption">
-          <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 259:</span>
-          packages/nova/eldoc-box.ecf
-        </div>
-
-<!--list-separator-->
-
-3.  Zoom
-
+-   Репозиторий: <https://github.com/thisisran/nova>
+-   Прорисовка дочерних фреймов с помощью SVG.
+-   Подключение:
     ```emacs-lisp
-    ;; (desire 'zoom)
+    (desire 'eldoc-box)
+    ;; (desire 'nova :recipe '(:fetcher github :repo "thisisran/nova" :branch "main"))
     ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 247:</span>
+      rc.packages.el
+    </div>
+-   Загрузка:
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Emacs SVG Child Frames
+    ;;;; https://github.com/thisisran/nova
+
+    (require 'nova)
+
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 248:</span>
+      packages/nova/loaddefs.ecf
+    </div>
+-   Настройка:
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Emacs SVG Child Frames
+    ;;;; https://github.com/thisisran/nova
+
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 249:</span>
+      packages/nova/desire.ecf
+    </div>
+-   Поддержка _vertico_:
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Emacs SVG Child Frames
+    ;;;; https://github.com/thisisran/nova
+
+    (require 'nova-vertico)
+    (nova-vertico-mode 1)
+
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 250:</span>
+      packages/nova/vertico.ecf
+    </div>
+-   Поддержка _corfu_:
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Emacs SVG Child Frames
+    ;;;; https://github.com/thisisran/nova
+
+    (require 'nova-corfu)
+    (require 'nova-corfu-popupinfo)
+
+    (nova-corfu-mode 1)
+    (nova-corfu-popupinfo-mode 1)
+
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 251:</span>
+      packages/nova/corfu.ecf
+    </div>
+-   Поддержка _eldoc-box_:
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Emacs SVG Child Frames
+    ;;;; https://github.com/thisisran/nova
+
+    ;; (require 'nova-eldoc)
+    ;; (nova-eldoc-mode 1)
+
+    ;;;
+    ```
+    <div class="src-block-caption">
+      <span class="src-block-number">&#1056;&#1072;&#1089;&#1087;&#1077;&#1095;&#1072;&#1090;&#1082;&#1072; 252:</span>
+      packages/nova/eldoc-box.ecf
+    </div>
 
 
-### <span class="section-num">3.49</span> Финализирование {#финализирование}
+#### <span class="section-num">50.4.3</span> Zoom {#zoom}
+
+```emacs-lisp
+;; (desire 'zoom)
+```
+
+
+## <span class="section-num">51</span> Финализирование {#финализирование}
 
 -   Финализируем файл `rc.packages.el`:
     ```emacs-lisp

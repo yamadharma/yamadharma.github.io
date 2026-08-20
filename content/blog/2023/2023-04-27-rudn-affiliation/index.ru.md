@@ -2,7 +2,7 @@
 title: "Оформление аффилиации РУДН"
 author: ["Dmitry S. Kulyabov"]
 date: 2023-04-27T13:37:00+03:00
-lastmod: 2023-07-08T18:49:00+03:00
+lastmod: 2026-08-14T15:49:00+03:00
 tags: ["rudn"]
 categories: ["job"]
 draft: false

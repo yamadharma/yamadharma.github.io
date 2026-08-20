@@ -2,7 +2,7 @@
 title: "Технология passkey. Реализация passless"
 author: ["Dmitry S. Kulyabov"]
 date: 2026-07-04T21:20:00+03:00
-lastmod: 2026-07-05T21:36:00+03:00
+lastmod: 2026-07-29T15:26:00+03:00
 tags: ["linux", "sysadmin", "security"]
 categories: ["computer-science"]
 draft: false

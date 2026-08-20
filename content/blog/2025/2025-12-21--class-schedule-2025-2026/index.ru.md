@@ -2,7 +2,7 @@
 title: "Расписание занятий - 2025-2026"
 author: ["Dmitry S. Kulyabov"]
 date: 2025-12-21T20:39:00+03:00
-lastmod: 2026-06-22T09:43:00+03:00
+lastmod: 2026-08-19T20:26:00+03:00
 tags: ["education", "teaching", "rudn"]
 categories: ["science", "job"]
 draft: false
@@ -424,7 +424,7 @@ slug: "class-schedule-2025-2026"
     2. <span class="org-todo done DONE">DONE</span>  Основы администрирования операционных систем. Переаттестация № 2
 
 
-### <span class="org-todo todo TODO">TODO</span> <span class="section-num">2.2</span> Сессия, семестр 2, 2025-2026 <code>[0/2]</code> {#сессия-семестр-2-2025-2026}
+### <span class="org-todo todo TODO">TODO</span> <span class="section-num">2.2</span> Сессия, семестр 2, 2025-2026 <code>[1/2]</code> {#сессия-семестр-2-2025-2026}
 
 
 #### <span class="section-num">2.2.1</span> Предложения по экзаменам {#предложения-по-экзаменам}
@@ -485,7 +485,7 @@ slug: "class-schedule-2025-2026"
     | 5    | Экзамен        | Методы математического моделирования в кибербезопасности | 02.04.02    | 26.06.2026 | 12:00-13:20 | 210       | Кулябов Д.С.                  |
 
 
-#### <span class="org-todo todo TODO">TODO</span> <span class="section-num">2.2.2</span> Экзамены, семестр 2, 2025-2026 <code>[3/4]</code> {#экзамены-семестр-2-2025-2026}
+#### <span class="org-todo done DONE">DONE</span> <span class="section-num">2.2.2</span> Экзамены, семестр 2, 2025-2026 <code>[4/4]</code> {#экзамены-семестр-2-2025-2026}
 
 <!--list-separator-->
 
@@ -545,7 +545,7 @@ slug: "class-schedule-2025-2026"
 
 <!--list-separator-->
 
-4. <span class="org-todo todo TODO">TODO</span>  Имитационное моделирование, 2025-2026, экзамен <code>[1/1]</code>
+4. <span class="org-todo done DONE">DONE</span>  Имитационное моделирование, 2025-2026, экзамен <code>[1/1]</code>
 
     <!--list-separator-->
 

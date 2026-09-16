@@ -2,7 +2,7 @@
 title: "Системное администрирование"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-04-10T18:18:00+03:00
-lastmod: 2026-07-20T19:28:00+03:00
+lastmod: 2026-09-16T19:56:00+03:00
 tags: ["MOC", "sysadmin"]
 categories: ["computer-science"]
 draft: false
@@ -108,7 +108,7 @@ slug: "system-administration"
 
 -   [Переход на домен pfur.ru]({{< relref "2023-04-20-switching-domain-pfur" >}})
 -   [Спецификации компьютеров]({{< relref "2023-06-11-computer-specifications" >}})
--   [Серверы на Донской]({{< relref "2022-09-15-servers-donskaya" >}})
+-   [Серверы на Донской]({{< relref "2022-09-15--servers-donskaya" >}})
 -   [Сеть на Донской]({{< relref "2023-08-13-network-donskaya" >}})
 
 
@@ -236,6 +236,7 @@ slug: "system-administration"
 -   [Закачка с youtube]({{< relref "2022-03-09-download-youtube" >}})
 -   [OBS Studio]({{< relref "2025-02-20--obs-studio" >}})
 -   [OBS Studio. Стриминг]({{< relref "2025-02-16--obs-studio-streaming" >}})
+-   [Скачать музыку с VK]({{< relref "2026-09-16--download-misic-vk" >}})
 
 
 ### <span class="section-num">11.7</span> Офисные программы {#офисные-программы}
@@ -469,6 +470,11 @@ slug: "system-administration"
 
 -   [Web-сервер Nginx]({{< relref "2024-12-05-web-server-nginx" >}})
 -   [Обратный прокси-сервер Nginx Proxy Manager]({{< relref "2025-04-12--nginx-proxy-manager" >}})
+
+
+### <span class="section-num">16.9</span> Настройка {#настройка}
+
+-   [Nmstate. Декларативное управление сетевыми настройками]({{< relref "2026-09-12--nmstate-declarative-network-configuration" >}})
 
 
 ## <span class="section-num">17</span> Управление и мониторинг {#управление-и-мониторинг}

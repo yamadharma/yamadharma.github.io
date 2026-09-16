@@ -2,7 +2,7 @@
 title: "Критериальное оценивание докладов"
 author: ["Dmitry S. Kulyabov"]
 date: 2020-12-08T09:06:00+03:00
-lastmod: 2026-02-08T15:43:00+03:00
+lastmod: 2026-08-28T19:34:00+03:00
 tags: ["education"]
 categories: ["science"]
 draft: false
@@ -292,7 +292,7 @@ slug: "criteria-assessment-presentation"
         -   [ ] ссылка на скринкаст процесса подготовки реферата;
         -   [ ] ссылка на скринкаст процесса подготовки презентации;
         -   [ ] ссылка на скринкаст доклада.
-    -   [ ] Ссылка на репозиторий (<https://github.com/> + <https://gitverse.ru>):
+    -   [ ] Ссылка на репозиторий (<https://sourcecraft.dev/> + <https://gitverse.ru>):
         -   [ ] ссылка на весь репозиторий;
         -   [ ] ссылка на конкретный релиз.
     -   [ ] Следует представить отдельными файлами (не общим архивом):
@@ -323,10 +323,11 @@ slug: "criteria-assessment-presentation"
 
     ## Репозитории
 
-    - [github](https://github.com/yamadharma/academic-laboratory-report-template)
-    ​    - [Релиз v2.2.1](https://github.com/yamadharma/academic-laboratory-report-template/releases/tag/v2.2.1)
-    ​- [gitverse](https://gitverse.ru/dharma/academic-laboratory-report-template)
+    - [gitverse](https://gitverse.ru/dharma/academic-laboratory-report-template)
     ​    - [Релиз v2.2.1](https://gitverse.ru/dharma/academic-laboratory-report-template/releases/tag/v2.2.1)
+    ​- [sourcecraft](https://sourcecraft.dev/yamadharma/academic-laboratory-report-template)
+    ​    - [Релиз v2.2.1](https://sourcecraft.dev/yamadharma/academic-laboratory-report-template/releases/v2.2.1)
+
     ```
 -   Также к ответу должны быть прикреплены необходимые файлы.
 

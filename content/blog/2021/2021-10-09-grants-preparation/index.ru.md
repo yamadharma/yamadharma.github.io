@@ -2,8 +2,8 @@
 title: "Подготовка грантов"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-10-09T18:14:00+03:00
-lastmod: 2023-11-15T11:37:00+03:00
-tags: ["science-admin"]
+lastmod: 2026-09-04T20:50:00+03:00
+tags: ["MOC", "science-admin"]
 categories: ["science"]
 draft: false
 slug: "grants-preparation"
@@ -41,3 +41,8 @@ slug: "grants-preparation"
 
 -   [Грант РУДН 021934-0-000]({{< relref "2023-07-15-grant-rudn-021934-0-000" >}})
 -   [Грант РНФ-92]({{< relref "2023-11-15-grant-rscf-80" >}})
+
+
+## <span class="section-num">2</span> Информация {#информация}
+
+-   [Конкурсы системы грантовой поддержки РУДН]({{< relref "2026-09-04--rudn-university-grant" >}})

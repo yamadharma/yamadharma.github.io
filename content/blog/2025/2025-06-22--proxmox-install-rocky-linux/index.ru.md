@@ -2,7 +2,7 @@
 title: "Proxmox. Установка Rocky Linux"
 author: ["Dmitry S. Kulyabov"]
 date: 2025-06-22T13:47:00+03:00
-lastmod: 2025-12-11T09:19:00+03:00
+lastmod: 2026-09-12T20:44:00+03:00
 tags: ["linux", "sysadmin"]
 categories: ["computer-science"]
 draft: false
@@ -29,10 +29,18 @@ Proxmox. Установка Rocky Linux.
     -   Загрузите ISO-образ на сервер Proxmox, если он ещё не загружен.
     -   Это можно сделать через веб-интерфейс Proxmox или с помощью команды:
         ```shell
-        wget https://download.rockylinux.org/pub/rocky/10/isos/x86_64/Rocky-10.1-x86_64-minimal.iso -O /var/lib/vz/template/iso/Rocky-10.1-x86_64-minimal.iso
+        wget https://download.rockylinux.org/pub/rocky/10/isos/x86_64/Rocky-10.2-x86_64-minimal.iso -O /var/lib/vz/template/iso/Rocky-10.2-x86_64-minimal.iso
         ```
 
-2.  Создайте виртуальную машину в Proxmox:
+2.  Можно использовать ISO-образ Alma Linux:
+    -   Откройте терминал и подключитесь к серверу Proxmox.
+    -   Загрузите ISO-образ на сервер Proxmox, если он ещё не загружен.
+    -   Это можно сделать через веб-интерфейс Proxmox или с помощью команды:
+        ```shell
+        wget https://repo.almalinux.org/almalinux/10/isos/x86_64/AlmaLinux-10.2-x86_64-minimal.iso -O /var/lib/vz/template/iso/AlmaLinux-10.2-x86_64-minimal.iso
+        ```
+
+3.  Создайте виртуальную машину в Proxmox:
     -   Посмотрите уже используемые идентификаторы виртуальных машин:
         ```shell
         qm list
@@ -47,7 +55,7 @@ Proxmox. Установка Rocky Linux.
     -   Здесь VLAN=100
     -   Размер создаваемого диска --- 80G.
 
-3.  Настройте параметры виртуальной машины:
+4.  Настройте параметры виртуальной машины:
     -   Можно добавить или исправить параметры, такие как количество ядер процессора, объём оперативной памяти и размер диска:
         ```shell
         qm set <VMID> --cpu host --memory 8192 --cores 4
@@ -55,19 +63,23 @@ Proxmox. Установка Rocky Linux.
 
     -   Подключите ISO-образ к виртуальной машине:
         ```shell
-        qm set <VMID> --cdrom local:iso/Rocky-10.1-x86_64-minimal.iso
+        qm set <VMID> --cdrom local:iso/Rocky-10.2-x86_64-minimal.iso
+        ```
+    -   Или подключите ISO-образ Alma Linux к виртуальной машине:
+        ```shell
+        qm set <VMID> --cdrom local:iso/AlmaLinux-10.2-x86_64-minimal.iso
         ```
     -   Можно добавить дополнительный диск:
         ```shell
         qm disk add <VMID> local-lvm:vm-<VMID>-disk-1 size=50G
         ```
 
-4.  Установите Rocky Linux интерактивно:
+5.  Установите Rocky Linux интерактивно:
     -   Запустите VM:
         ```shell
         qm start <VMID>
         ```
     -   Подключитесь к консоли VM через веб-интерфейс Proxmox и следуйте инструкциям по установке Rocky Linux.
     -   [Rocky Linux. Установка сервера]({{< relref "2022-08-12-rockylinux-server-installation" >}})
-5.  Guest agent
+6.  Guest agent
     -   Установите quemu-guest-agent (см. [KVM. QEMU Guest Agent]({{< relref "2024-09-05-kvm-qemu-guest-agent" >}})).

@@ -2,7 +2,7 @@
 title: "Wayland. Удалённый доступ. Waypipe"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-09-01T19:22:00+03:00
-lastmod: 2024-12-19T12:31:00+03:00
+lastmod: 2026-08-26T21:01:00+03:00
 tags: ["sysadmin", "wayland"]
 categories: ["computer-science"]
 draft: false
@@ -35,3 +35,7 @@ Wayland. Удалённый доступ. Waypipe.
 -   Аргументы командной строки:
     -   до `ssh` применяются только к `waypipe`;
     -   после `ssh` применяются к `ssh`.
+-   Подсоединение к терминалу удалённого хоста:
+    ```shell
+    waypipe ssh -C user@server
+    ```

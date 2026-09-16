@@ -2,7 +2,7 @@
 title: "Расписание занятий - 2025-2026"
 author: ["Dmitry S. Kulyabov"]
 date: 2025-12-21T20:39:00+03:00
-lastmod: 2026-08-19T20:26:00+03:00
+lastmod: 2026-09-16T12:53:00+03:00
 tags: ["education", "teaching", "rudn"]
 categories: ["science", "job"]
 draft: false
@@ -424,10 +424,10 @@ slug: "class-schedule-2025-2026"
     2. <span class="org-todo done DONE">DONE</span>  Основы администрирования операционных систем. Переаттестация № 2
 
 
-### <span class="org-todo todo TODO">TODO</span> <span class="section-num">2.2</span> Сессия, семестр 2, 2025-2026 <code>[1/2]</code> {#сессия-семестр-2-2025-2026}
+### <span class="org-todo todo TODO">TODO</span> <span class="section-num">2.2</span> Сессия, семестр 2, 2025-2026 <code>[3/4]</code> {#сессия-семестр-2-2025-2026}
 
 
-#### <span class="section-num">2.2.1</span> Предложения по экзаменам {#предложения-по-экзаменам}
+#### <span class="org-todo done DONE">DONE</span> <span class="section-num">2.2.1</span> Предложения по экзаменам {#предложения-по-экзаменам}
 
 <!--list-separator-->
 
@@ -485,7 +485,19 @@ slug: "class-schedule-2025-2026"
     | 5    | Экзамен        | Методы математического моделирования в кибербезопасности | 02.04.02    | 26.06.2026 | 12:00-13:20 | 210       | Кулябов Д.С.                  |
 
 
-#### <span class="org-todo done DONE">DONE</span> <span class="section-num">2.2.2</span> Экзамены, семестр 2, 2025-2026 <code>[4/4]</code> {#экзамены-семестр-2-2025-2026}
+#### <span class="org-todo done DONE">DONE</span> <span class="section-num">2.2.2</span> Предложения по переаттестации {#предложения-по-переаттестации}
+
+-   Переаттестация № 1: 14 сентября 2026.
+    -   1 курс 15:00-16:20.
+    -   2 и 3 курсы: 16:30-17:50.
+    -   магистры 18:00-19:20.
+-   Переаттестация № 2: 12 октября 2026.
+    -   1 курс 15:00-16:20.
+    -   2 и 3 курсы: 16:30-17:50.
+    -   магистры 18:00-19:20.
+
+
+#### <span class="org-todo done DONE">DONE</span> <span class="section-num">2.2.3</span> Экзамены, семестр 2, 2025-2026 <code>[4/4]</code> {#экзамены-семестр-2-2025-2026}
 
 <!--list-separator-->
 
@@ -552,31 +564,31 @@ slug: "class-schedule-2025-2026"
     1. <span class="org-todo done DONE">DONE</span>  Имитационное моделирование, 2025-2026, экзамен
 
 
-#### <span class="org-todo todo TODO">TODO</span> <span class="section-num">2.2.3</span> Переаттестации, семестр 2, 2025-2026  <code>[0/2]</code> {#переаттестации-семестр-2-2025-2026}
+#### <span class="org-todo todo TODO">TODO</span> <span class="section-num">2.2.4</span> Переаттестации, семестр 2, 2025-2026  <code>[1/2]</code> {#переаттестации-семестр-2-2025-2026}
 
 <!--list-separator-->
 
-1. <span class="org-todo todo TODO">TODO</span>  Переаттестация № 1, семестр 2, 2025-2026 <code>[0/5]</code>
+1. <span class="org-todo done DONE">DONE</span>  Переаттестация № 1, семестр 2, 2025-2026 <code>[5/5]</code>
 
     <!--list-separator-->
 
-    1. <span class="org-todo todo TODO">TODO</span>  Математическое моделирование, 2025-2026, Переаттестация № 1
+    1. <span class="org-todo done DONE">DONE</span>  Математическое моделирование, 2025-2026, Переаттестация № 1
 
     <!--list-separator-->
 
-    2. <span class="org-todo todo TODO">TODO</span>  Имитационное моделирование, 2025-2026, Переаттестация № 1
+    2. <span class="org-todo done DONE">DONE</span>  Имитационное моделирование, 2025-2026, Переаттестация № 1
 
     <!--list-separator-->
 
-    3. <span class="org-todo todo TODO">TODO</span>  Администрирование локальный сетей, 2025-2026, Переаттестация № 1
+    3. <span class="org-todo done DONE">DONE</span>  Администрирование локальный сетей, 2025-2026, Переаттестация № 1
 
     <!--list-separator-->
 
-    4. <span class="org-todo todo TODO">TODO</span>  Основы информационной безопасности, 2025-2026, Переаттестация № 1
+    4. <span class="org-todo done DONE">DONE</span>  Основы информационной безопасности, 2025-2026, Переаттестация № 1
 
     <!--list-separator-->
 
-    5. <span class="org-todo todo TODO">TODO</span>  Операционные системы, 2025-2026, Переаттестация № 1
+    5. <span class="org-todo done DONE">DONE</span>  Операционные системы, 2025-2026, Переаттестация № 1
 
 <!--list-separator-->
 

@@ -2,7 +2,7 @@
 title: "Моделирование компьютерных угроз"
 author: ["Dmitry S. Kulyabov"]
 date: 2025-11-12T20:52:00+03:00
-lastmod: 2025-11-12T21:12:00+03:00
+lastmod: 2026-09-09T19:47:00+03:00
 tags: ["rudn", "modeling", "education"]
 categories: ["job", "science"]
 draft: false
@@ -147,3 +147,11 @@ def sir_model(y, t, beta, gamma):
 t = np.linspace(0, 100, 1000)
 solution = odeint(sir_model, [0.99, 0.01, 0], t, args=(0.3, 0.1))
 ```
+
+
+## <span class="section-num">3</span> Библиография {#библиография}
+
+## Литература
+
+<div class="csl-bib-body">
+</div>

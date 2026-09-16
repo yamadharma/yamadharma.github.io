@@ -2,7 +2,7 @@
 title: "Темы исследований студентов. Кинетические процессы"
 author: ["Dmitry S. Kulyabov"]
 date: 2025-09-22T19:13:00+03:00
-lastmod: 2025-10-16T10:25:00+03:00
+lastmod: 2026-09-09T19:31:00+03:00
 tags: ["modeling"]
 categories: ["science"]
 draft: false

@@ -2,10 +2,12 @@
 title: "Редактор VSCode"
 author: ["Dmitry S. Kulyabov"]
 date: 2025-12-31T22:14:00+03:00
-lastmod: 2025-12-31T22:36:00+03:00
+lastmod: 2026-09-16T20:53:00+03:00
 draft: false
 slug: "vscode"
 ---
+
+## <span class="section-num">1</span> Редактор VSCode {#index.ru}
 
 VSCode.
 
@@ -14,7 +16,7 @@ VSCode.
 {{< toc >}}
 
 
-## <span class="section-num">1</span> Общая информация {#общая-информация}
+### <span class="section-num">1.1</span> Общая информация {#общая-информация}
 
 -   Сайт: <https://code.visualstudio.com>
 -   Репозиторий: <https://github.com/microsoft/vscode>
@@ -22,7 +24,7 @@ VSCode.
 -   Позиционируется как «лёгкий» инструмент для веб‑ и облачной разработки.
 
 
-### <span class="section-num">1.1</span> Ключевые характеристики {#ключевые-характеристики}
+#### <span class="section-num">1.1.1</span> Ключевые характеристики {#ключевые-характеристики}
 
 -   Не IDE. Это именно _редактор кода_, а не полноценная среда разработки (IDE) вроде Visual Studio. Легче, быстрее запускается, проще настраивается.
 -   Мультиплатформенный. Работает на Windows, macOS, Linux.
@@ -31,7 +33,7 @@ VSCode.
 -   Открытый исходный код. Проект опубликован на GitHub под лицензией MIT, но готовые сборки распространяются под проприетарной лицензией.
 
 
-### <span class="section-num">1.2</span> Основные возможности {#основные-возможности}
+#### <span class="section-num">1.1.2</span> Основные возможности {#основные-возможности}
 
 -   Подсветка синтаксиса --- цвековое выделение элементов кода (ключевых слов, переменных, строк и т. д.).
 -   Автодополнение (IntelliSense) --- подсказки при наборе, завершение имён функций, параметров.
@@ -45,10 +47,10 @@ VSCode.
 -   Темы и кастомизация --- смена оформления, горячих клавиш, макета интерфейса.
 
 
-## <span class="section-num">2</span> Расширения {#расширения}
+### <span class="section-num">1.2</span> Расширения {#расширения}
 
 
-### <span class="section-num">2.1</span> Режим Org {#режим-org}
+#### <span class="section-num">1.2.1</span> Режим Org {#режим-org}
 
 -   Репозиторий: <https://github.com/vscode-org-mode/vscode-org-mode>
 -   Сайт: <https://vscode-org-mode.github.io/vscode-org-mode/>
@@ -58,11 +60,16 @@ VSCode.
     ```
 
 
-### <span class="section-num">2.2</span> LaTeX {#latex}
+#### <span class="section-num">1.2.2</span> LaTeX {#latex}
 
 -   [VSCode. LaTeX]({{< relref "2024-04-15-vscode-latex" >}})
 
 
-### <span class="section-num">2.3</span> Julia {#julia}
+#### <span class="section-num">1.2.3</span> Julia {#julia}
 
 -   [VSCode. Julia]({{< relref "2021-01-05-vscode-julia" >}})
+
+
+#### <span class="section-num">1.2.4</span> Markdown {#markdown}
+
+-

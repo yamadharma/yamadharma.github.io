@@ -2,7 +2,7 @@
 title: "Математическое моделирование"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-02-21T16:33:00+03:00
-lastmod: 2026-06-25T10:45:00+03:00
+lastmod: 2026-08-22T21:39:00+03:00
 tags: ["MOC", "modeling"]
 categories: ["science"]
 draft: false
@@ -25,6 +25,7 @@ slug: "mathematical-modeling"
 -   [Структура диссертации по математическому моделированию]({{< relref "2024-01-27-thesis-structure-mathematical-modeling" >}})
 -   [Методы машинного обучения]({{< relref "2024-02-17-machine-learning-methods" >}})
 -   [Верификация и валидация моделей]({{< relref "2026-04-30--verification-validation-models" >}})
+-   [Компетенции специалиста по моделированию]({{< relref "2026-08-22--competencies-modeling-specialist" >}})
 
 
 ## <span class="section-num">2</span> Реализации методов математического моделирования {#реализации-методов-математического-моделирования}

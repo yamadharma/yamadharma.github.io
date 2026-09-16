@@ -2,7 +2,7 @@
 title: "Критериальное оценивание лабораторных работ"
 author: ["Dmitry S. Kulyabov"]
 date: 2020-10-12T09:57:00+03:00
-lastmod: 2026-02-22T13:52:00+03:00
+lastmod: 2026-08-27T15:50:00+03:00
 tags: ["education"]
 categories: ["science"]
 draft: false
@@ -103,7 +103,7 @@ slug: "criteria-based-assessment-laboratory-work"
     -   [ ] ссылка на скринкаст процесса подготовки отчёта;
     -   [ ] ссылка на скринкаст процесса подготовки презентации;
     -   [ ] ссылка на скринкаст защиты презентации лабораторной работы.
--   [ ] Ссылка на репозитории (<https://github.com/> + <https://gitverse.ru>):
+-   [ ] Ссылка на репозитории (<https://gitverse.ru> + <https://sourcecraft.dev/>):
     -   [ ] ссылка на весь репозиторий;
     -   [ ] ссылка на конкретный релиз.
 -   [ ] Следует представить отдельными файлами (не общим архивом):
@@ -136,10 +136,10 @@ slug: "criteria-based-assessment-laboratory-work"
 
     ## Репозитории
 
-    - [github](https://github.com/yamadharma/academic-laboratory-report-template)
-    ​    - [Релиз v2.2.1](https://github.com/yamadharma/academic-laboratory-report-template/releases/tag/v2.2.1)
-    ​- [gitverse](https://gitverse.ru/dharma/academic-laboratory-report-template)
+    - [gitverse](https://gitverse.ru/dharma/academic-laboratory-report-template)
     ​    - [Релиз v2.2.1](https://gitverse.ru/dharma/academic-laboratory-report-template/releases/tag/v2.2.1)
+    ​- [sourcecraft](https://sourcecraft.dev/yamadharma/academic-laboratory-report-template)
+    ​    - [Релиз v2.2.1](https://sourcecraft.dev/yamadharma/academic-laboratory-report-template/releases/v2.2.1)
 
     ```
 -   Также к ответу должны быть прикреплены необходимые файлы.
@@ -245,7 +245,7 @@ slug: "criteria-based-assessment-laboratory-work"
 
 ### <span class="section-num">3.4</span> Рабочий репозиторий (технические критерии) {#рабочий-репозиторий--технические-критерии}
 
--   Рабочий репозиторий должен быть выложен на хостинге (<https://github.com/> + <https://gitverse.ru>).
+-   Рабочий репозиторий должен быть выложен на хостинге (<https://sourcecraft.dev/> + <https://gitverse.ru>).
 -   В ответе должны быть представлены:
     -   ссылка на весь репозиторий;
     -   ссылка на конкретный релиз.

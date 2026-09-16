@@ -1,3 +1,9 @@
+## [1.1.12](https://github.com/yamadharma/yamadharma/compare/v1.1.11...v1.1.12) (2026-09-16)
+
+### Features
+
+* **post:** add new podts ([3893f10](https://github.com/yamadharma/yamadharma/commit/3893f104794808e6a337f9477e93409b479902c7))
+
 ## [1.1.11](https://github.com/yamadharma/yamadharma/compare/v1.1.10...v1.1.11) (2026-08-20)
 
 ### Features

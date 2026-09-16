@@ -2,7 +2,7 @@
 title: "Темы исследований студентов"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-09-20T15:54:00+03:00
-lastmod: 2025-11-12T20:58:00+03:00
+lastmod: 2026-09-09T19:46:00+03:00
 tags: ["rudn", "education"]
 categories: ["job", "science"]
 draft: false
@@ -65,3 +65,4 @@ slug: "student-research-topics"
 ### <span class="section-num">2.5</span> Информационная безопасность {#информационная-безопасность}
 
 -   [Моделирование компьютерных угроз]({{< relref "2025-11-12--modeling-computer-threats" >}})
+-   [Темы исследований студентов. Модели на графах]({{< relref "2026-09-09--student-research-graph-based-models" >}})

@@ -2,7 +2,7 @@
 title: "Rocky Linux. Установка сервера"
 author: ["Dmitry S. Kulyabov"]
 date: 2022-08-12T13:57:00+03:00
-lastmod: 2025-12-11T10:48:00+03:00
+lastmod: 2026-09-12T21:28:00+03:00
 tags: ["redhat", "sysadmin", "linux"]
 categories: ["computer-science"]
 draft: false
@@ -18,6 +18,9 @@ slug: "rockylinux-server-installation"
 
 ## <span class="section-num">1</span> Общая информация {#общая-информация}
 
+
+### <span class="section-num">1.1</span> Rocky Linux {#rocky-linux}
+
 -   Rocky Linux --- сборка RedHat Linux, пришедший на смену Centos (см. [Замена Centos]({{< relref "2021-05-25-replacing-centos" >}})).
 -   Сайт: <https://rockylinux.org/>.
 -   Образы:
@@ -25,7 +28,13 @@ slug: "rockylinux-server-installation"
     -   <http://dl.rockylinux.org/vault/rocky/>.
 
 
-### <span class="section-num">1.1</span> Дополнительные стандартные репозитории {#дополнительные-стандартные-репозитории}
+### <span class="section-num">1.2</span> Alma Linux {#alma-linux}
+
+-   Альтернативная сборка RedHat Linux (см. [Замена Centos]({{< relref "2021-05-25-replacing-centos" >}})).
+-   Сайт:	<https://almalinux.org/>
+
+
+### <span class="section-num">1.3</span> Дополнительные стандартные репозитории {#дополнительные-стандартные-репозитории}
 
 <div class="table-caption">
   <span class="table-number">&#1058;&#1072;&#1073;&#1083;&#1080;&#1094;&#1072; 1:</span>
@@ -42,7 +51,7 @@ slug: "rockylinux-server-installation"
 | Devel / devel  | Yes     | Yes     | No      |                                                                    |
 
 
-### <span class="section-num">1.2</span> Репозитории сообщества {#репозитории-сообщества}
+### <span class="section-num">1.4</span> Репозитории сообщества {#репозитории-сообщества}
 
 -   Дополнительные пакеты для Enterprise Linux (EPEL):
     -   документация: <http://fedoraproject.org/wiki/EPEL>;

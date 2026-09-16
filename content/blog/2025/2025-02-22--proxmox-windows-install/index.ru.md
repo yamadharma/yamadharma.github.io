@@ -2,7 +2,7 @@
 title: "Proxmox. Установка Windows"
 author: ["Dmitry S. Kulyabov"]
 date: 2025-02-22T19:20:00+03:00
-lastmod: 2026-06-11T12:11:00+03:00
+lastmod: 2026-08-26T13:36:00+03:00
 tags: ["windows"]
 categories: ["computer-science"]
 draft: false
@@ -90,6 +90,11 @@ Proxmox. Установка Windows.
     ```
 -   После этого запускаем установку из графического окружения.
 -   [Windows. Установка в kvm]({{< relref "2024-05-29-windows-install-kvm" >}})
+-   Можно установить EFI:
+    ```shell
+    qm set 200 --bios ovmf
+    qm set 200 --efidisk0 local-lvm:1,format=raw
+    ```
 
 
 ## <span class="section-num">4</span> Скрипт установки {#скрипт-установки}

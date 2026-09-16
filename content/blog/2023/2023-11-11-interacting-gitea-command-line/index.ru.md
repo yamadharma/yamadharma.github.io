@@ -2,7 +2,7 @@
 title: "Взаимодействие с gitea из командной строки"
 author: ["Dmitry S. Kulyabov"]
 date: 2023-11-11T20:31:00+03:00
-lastmod: 2025-01-22T13:01:00+03:00
+lastmod: 2026-09-10T20:39:00+03:00
 tags: ["sysadmin", "git"]
 categories: ["computer-science"]
 draft: false
@@ -58,7 +58,7 @@ slug: "interacting-gitea-command-line"
       #+end_src--name "Название репозитория" --private --owner имя_организации
     ​- Создать репозиторий из шаблона:
       #+begin_src shell
-        tea repos create-from-template --name "Название репозитория" --private --owner имя_организации --template <template_name>
+        tea repos create-from-template --name "Название репозитория" --private --owner имя_организации --template <template_name> --content
     ```
 
 

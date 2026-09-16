@@ -2,7 +2,7 @@
 title: "NAS. TerraMaster"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-11-10T18:35:00+03:00
-lastmod: 2026-08-23T18:25:00+03:00
+lastmod: 2026-06-04T11:26:00+03:00
 tags: ["sysadmin", "hard"]
 categories: ["computer-science"]
 draft: false
@@ -151,15 +151,12 @@ NAS. TerraMaster.
 -   В стандартном репозитории.
 
 
-## <span class="section-num">6</span> TOS 6 {#tos-6}
-
-
-### <span class="section-num">6.1</span> Entware {#entware}
+## <span class="section-num">6</span> Entware {#entware}
 
 -   [Репозиторий программного обеспечения Entware]({{< relref "2024-12-20--entware-software-repository" >}})
 
 
-#### <span class="section-num">6.1.1</span> Установка {#установка}
+### <span class="section-num">6.1</span> Установка {#установка}
 
 -   Подключиться по ssh.
 -   Создать каталог для установки:
@@ -196,7 +193,7 @@ NAS. TerraMaster.
     ```
 
 
-#### <span class="section-num">6.1.2</span> Запуск сервисов {#запуск-сервисов}
+### <span class="section-num">6.2</span> Запуск сервисов {#запуск-сервисов}
 
 -   Скрипт `/opt/etc/init.d/rc.unslung` запускает все сервисы с идентиыикатором `S` из `/opt/etc/init.d/`:
     ```shell
@@ -236,123 +233,26 @@ NAS. TerraMaster.
     ```
 
 
-#### <span class="section-num">6.1.3</span> Программное обеспечение {#программное-обеспечение}
-
-<!--list-separator-->
-
-1.  git
-
-    -   Для работы с git:
-        ```shell
-        opkg install git git-http
-        ```
-
-<!--list-separator-->
-
-2.  Syncthing
-
-    -   Установить:
-        ```shell
-        opkg install syncthing
-        ```
-    -   Запустить:
-        ```shell
-        /opt/etc/init.d/S92syncthing start
-        ```
-    -   Сконфигурируйте через броузер:
-        ```shell
-        http://<your device ip>:8384/
-        ```
-
-<!--list-separator-->
-
-3.  Утилиты btrfs
-
-    -   Обновите утилиты:
-        ```shell
-        opkg install btrfs-progs
-        ```
+### <span class="section-num">6.3</span> Программное обеспечение {#программное-обеспечение}
 
 
-## <span class="section-num">7</span> TOS 7 {#tos-7}
-
-
-### <span class="section-num">7.1</span> Общая информация {#общая-информация}
-
--   Базируется на Ubuntu.
--   Поэтому можно использовать утилиту `apt` вместо Entware.
--   Обновить список пакетов:
-    ```shell
-    sudo apt update
-    ```
--   Установить нужное приложение:
-    ```shell
-    sudo apt install mc
-    ```
--   Обновить систему не получится:
-    ```shell
-    sudo apt upgrade
-    ```
--   Для это вы должны предварительно активировать _Режим разработчика (Developer Mode)_  в настройках TOS.
--   Но не рекомендую.
-
-
-### <span class="section-num">7.2</span> Права доступа {#права-доступа}
-
--   Для приложений, установленных через web-интерфейс, нужно установить права доступа.
--   Запустите приложение _Панель управления (Control Panel)_.
--   Перейдите в раздел _Общая папка_.
--   Выберите папку в списке общих папок, нажмите на значок _Редактировать (выглядит, как карандаш)_.
--   Перейдите на вкладку _Разрешения_, далее на вкладку _Системный пользователь_.
--   Найдите нужного пользователя.
--   Задайте права доступа.
--   Сохраните изменения.
-
-
-### <span class="section-num">7.3</span> Программное обеспечение {#программное-обеспечение}
-
-
-#### <span class="section-num">7.3.1</span> git {#git}
+#### <span class="section-num">6.3.1</span> git {#git}
 
 -   Для работы с git:
     ```shell
-    apt install git
+    opkg install git git-http
     ```
 
 
-#### <span class="section-num">7.3.2</span> Удобство работы в терминале {#удобство-работы-в-терминале}
+#### <span class="section-num">6.3.2</span> Syncthing {#syncthing}
 
-```shell
-apt install tmux
-apt install mc
-```
-
-
-#### <span class="section-num">7.3.3</span> Syncthing {#syncthing}
-
--   Можно установить по умолчанию:
+-   Установить:
     ```shell
-    opt install syncthing
-    ```
--   Но ставится достаточно старая версия.
--   Можно установить свежую сборку с <https://apt.syncthing.net/>.
--   Установить ключи:
-    ```shell
-    mkdir -p /etc/apt/keyrings
-    curl -L -o /etc/apt/keyrings/syncthing-archive-keyring.gpg https://syncthing.net/release-key.gpg
-    ```
--   Установить репозиторий:
-    ```shell
-    echo "deb [signed-by=/etc/apt/keyrings/syncthing-archive-keyring.gpg] https://apt.syncthing.net/ syncthing stable-v2" > /etc/apt/sources.list.d/syncthing.list
-    ```
--   Установить syncthing:
-    ```shell
-    apt-get update
-    apt-get install syncthing
+    opkg install syncthing
     ```
 -   Запустить:
     ```shell
-    systemctl enable --now syncthing@<user>.service
+    /opt/etc/init.d/S92syncthing start
     ```
 -   Сконфигурируйте через броузер:
     ```shell
@@ -360,15 +260,15 @@ apt install mc
     ```
 
 
-## <span class="section-num">8</span> Файловая система {#файловая-система}
+## <span class="section-num">7</span> Файловая система {#файловая-система}
 
 
-### <span class="section-num">8.1</span> data {#data}
+### <span class="section-num">7.1</span> data {#data}
 
 -   Всё хранится в `/Volume1/data`.
 
 
-#### <span class="section-num">8.1.1</span> Видеофайлы для plex {#видеофайлы-для-plex}
+#### <span class="section-num">7.1.1</span> Видеофайлы для plex {#видеофайлы-для-plex}
 
 -   Создайте необходимые каталоги:
     ```shell
@@ -378,40 +278,48 @@ apt install mc
     ```shell
     setfacl -m u:plex:rwx /Volume1/data
     setfacl -d -m u:plex:rwx /Volume1/data
-    setfacl -R -m u:plex:rwx /Volume1/data/{torrent,video,movie,tvshow}
-    setfacl -R -d -m u:plex:rwx /Volume1/data/{torrent,video,movie,tvshow}
+    setfacl -R -m u:plex:rwx /Volume1/data/{torent,video,movie,tvshow}
+    setfacl -R -d -m u:plex:rwx /Volume1/data/{torent,video,movie,tvshow}
     ```
 
 
-#### <span class="section-num">8.1.2</span> Торренты (qBittorrent) {#торренты--qbittorrent}
+#### <span class="section-num">7.1.2</span> Торренты (qBittorrent) {#торренты--qbittorrent}
 
 -   Создайте необходимые каталоги:
     ```shell
-    mkdir -p /Volume1/data/torrent/torrent
+    mkdir -p /Volume1/data/torent/torrent
     ```
 -   Задайте права:
     ```shell
     setfacl -m u:qbittorrent:rwx /Volume1/data
     setfacl -d -m u:qbittorrent:rwx /Volume1/data
-    setfacl -R -m u:qbittorrent:rwx /Volume1/data/torrent
-    setfacl -R -d -m u:qbittorrent:rwx /Volume1/data/torrent
+    setfacl -R -m u:qbittorrent:rwx /Volume1/data/torent
+    setfacl -R -d -m u:qbittorrent:rwx /Volume1/data/torent
     ```
 
 
-## <span class="section-num">9</span> Администрирование {#администрирование}
+## <span class="section-num">8</span> Администрирование {#администрирование}
 
 
-### <span class="section-num">9.1</span> Обновление сертификата {#обновление-сертификата}
+### <span class="section-num">8.1</span> btrfs {#btrfs}
+
+-   Обновите утилиты:
+    ```shell
+    opkg install btrfs-progs
+    ```
+
+
+### <span class="section-num">8.2</span> Обновление сертификата {#обновление-сертификата}
 
 -   Откройте веб-интерфейс TerraMaster.
 -   Перейдите: Панель управления (Control Panel) -&gt; Общие настройки (General Settings) -&gt; Безопасность (Security) -&gt; Сертификат (Certificate).
 -   Нажмите _Обновить_.
 
 
-## <span class="section-num">10</span> Стандартные операции {#стандартные-операции}
+## <span class="section-num">9</span> Стандартные операции {#стандартные-операции}
 
 
-### <span class="section-num">10.1</span> Увеличение количества жёстких дисков {#увеличение-количества-жёстких-дисков}
+### <span class="section-num">9.1</span> Увеличение количества жёстких дисков {#увеличение-количества-жёстких-дисков}
 
 -   Информация: <https://www.terra-master.com/ru/terramaster-traid>
 -   Не выключая TNAS, вставьте новый жесткий диск.
@@ -419,7 +327,7 @@ apt install mc
 -   Выберите _Добавить жёсткие диски в RAID_.
 
 
-### <span class="section-num">10.2</span> Замена жёсткого диска {#замена-жёсткого-диска}
+### <span class="section-num">9.2</span> Замена жёсткого диска {#замена-жёсткого-диска}
 
 -   Информация: <https://www.terra-master.com/ru/terramaster-traid>
 -   Ёмкость вновь добавленного диска должна быть как минимум такой же, как и диск наименьшей емкости в TRAID.
@@ -428,23 +336,23 @@ apt install mc
 -   Выберите «Восстановить».
 
 
-### <span class="section-num">10.3</span> Миграция пула носителей {#миграция-пула-носителей}
+### <span class="section-num">9.3</span> Миграция пула носителей {#миграция-пула-носителей}
 
 -   Информация: <https://www.terra-master.com/ru/storage-pool-migration>
 
 
-## <span class="section-num">11</span> Ресурсы {#ресурсы}
+## <span class="section-num">10</span> Ресурсы {#ресурсы}
 
 -   Сайт по сравнению NAS: <https://nascompares.com/tag/terramaster-nas/>
 
 
-## <span class="section-num">12</span> Опыт использования {#опыт-использования}
+## <span class="section-num">11</span> Опыт использования {#опыт-использования}
 
 
-### <span class="section-num">12.1</span> TerraMaster F6-424 {#terramaster-f6-424}
+### <span class="section-num">11.1</span> TerraMaster F6-424 {#terramaster-f6-424}
 
 
-#### <span class="section-num">12.1.1</span> Установленное программное обеспечение {#установленное-программное-обеспечение}
+#### <span class="section-num">11.1.1</span> Установленное программное обеспечение {#установленное-программное-обеспечение}
 
 <!--list-separator-->
 
@@ -481,7 +389,7 @@ apt install mc
     -   В стандартном репозитории.
 
 
-#### <span class="section-num">12.1.2</span> <span class="timestamp-wrapper"><span class="timestamp">[2024-12-01 Вс]</span></span> Первичное подключение {#первичное-подключение}
+#### <span class="section-num">11.1.2</span> <span class="timestamp-wrapper"><span class="timestamp">[2024-12-01 Вс]</span></span> Первичное подключение {#первичное-подключение}
 
 -   В консоли не смог залогиниться.
 -   Посмотрел ip-адрес (на сервере DHCP, но можно было и в консоли).
@@ -512,7 +420,7 @@ apt install mc
 -   Установил BTRFS (см. [Файловая система btrfs]({{< relref "2021-08-27-btrfs-file-system" >}})).
 
 
-#### <span class="section-num">12.1.3</span> <span class="timestamp-wrapper"><span class="timestamp">[2024-12-12 Чт]</span></span> Добавление диска {#добавление-диска}
+#### <span class="section-num">11.1.3</span> <span class="timestamp-wrapper"><span class="timestamp">[2024-12-12 Чт]</span></span> Добавление диска {#добавление-диска}
 
 -   Купил 2 жёстких диска.
 -   Жесткий диск 18TB SATA 6Gb/s Seagate ST18000NM000J
@@ -526,7 +434,7 @@ apt install mc
 -   Размер хранилища остался 3.63TB.
 
 
-#### <span class="section-num">12.1.4</span> <span class="timestamp-wrapper"><span class="timestamp">[2024-12-13 Пт]</span></span> Замена диска {#замена-диска}
+#### <span class="section-num">11.1.4</span> <span class="timestamp-wrapper"><span class="timestamp">[2024-12-13 Пт]</span></span> Замена диска {#замена-диска}
 
 -   Перешёл в меню _Панель управления &gt; Жёсткий диск &gt; Жёсткий диск_.
 -   Выбрал диск на 4TB.
@@ -549,7 +457,7 @@ apt install mc
 -   Запустил перестройку RAID.
 
 
-#### <span class="section-num">12.1.5</span> <span class="timestamp-wrapper"><span class="timestamp">[2024-12-14 Сб]</span></span> Расширение тома {#расширение-тома}
+#### <span class="section-num">11.1.5</span> <span class="timestamp-wrapper"><span class="timestamp">[2024-12-14 Сб]</span></span> Расширение тома {#расширение-тома}
 
 -   Синхронизация RAID закончилась.
 -   Перешёл в меню _Панель управления &gt; Том &gt; Том 1_.
@@ -561,7 +469,7 @@ apt install mc
 -   Получилось 16.36TB.
 
 
-#### <span class="section-num">12.1.6</span> <span class="timestamp-wrapper"><span class="timestamp">[2026-06-04 Чт]</span></span> SSD-кэш {#ssd-кэш}
+#### <span class="section-num">11.1.6</span> <span class="timestamp-wrapper"><span class="timestamp">[2026-06-04 Чт]</span></span> SSD-кэш {#ssd-кэш}
 
 -   Установил SSD диск.
 -   Samsung EVO 970.

@@ -2,7 +2,7 @@
 title: "Gentoo. Компиляция системы clang"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-05-16T15:18:00+03:00
-lastmod: 2026-08-14T18:16:00+03:00
+lastmod: 2026-08-30T15:56:00+03:00
 tags: ["gentoo", "sysadmin", "linux"]
 categories: ["computer-science"]
 draft: false
@@ -177,12 +177,6 @@ slug: "gentoo-compiling-clang"
 
 -   Можно задать компилятор для каждого пакета в отдельности в файле `/etc/portage/package.env`:
     ```conf-unix
-    # kde-apps/step					compiler-clang-mold-18
-    # media-gfx/openvdb				compiler-clang-mold-18
-    # sci-libs/pdal					compiler-clang-mold-18
-    # sci-mathematics/giac				compiler-gcc
-    # sci-mathematics/pari				compiler-gcc		# needs fix makefiles
-    # sci-mathematics/singular			compiler-gcc
     =app-emulation/virtualbox-7.0*			compiler-gcc    # ld.lld error
     =app-emulation/virtualbox-7.1*			compiler-gcc    # ld.lld error
     =app-emulation/virtualbox-7.2*			compiler-gcc    # ld.lld error
@@ -231,8 +225,8 @@ slug: "gentoo-compiling-clang"
     dev-lang/python					compiler-gcc
     dev-lang/rust					compiler-gcc
     dev-lang/zig					compiler-gcc
-    dev-libs/cereal					compiler-clang-mold-18
-    dev-libs/efl					compiler-clang-mold-18
+    # dev-libs/cereal					compiler-clang-mold-18
+    # dev-libs/efl					compiler-clang-mold-18
     dev-libs/ffcall					compiler-gcc
     dev-libs/intel-vc-intrinsics			compiler-gcc
     dev-libs/libayatana-appindicator		compiler-clang-mold
@@ -244,11 +238,11 @@ slug: "gentoo-compiling-clang"
     dev-libs/liblouis				compiler-gcc
     dev-libs/liboil					compiler-gcc
     dev-libs/libphonenumber				compiler-clang-mold
-    dev-libs/libpqxx				compiler-clang-mold-18
+    # dev-libs/libpqxx				compiler-clang-mold-18
     dev-libs/log4cpp				compiler-gcc
     dev-libs/olm					compiler-gcc
     dev-libs/opencl-clang				compiler-clang-mold
-    dev-libs/opencl-clang:15			compiler-gcc
+    # dev-libs/opencl-clang:15			compiler-gcc
     dev-libs/totem-pl-parser			compiler-clang-mold
     dev-libs/xmlrpc-c				compiler-gcc
     dev-lisp/clisp					compiler-gcc
@@ -261,12 +255,12 @@ slug: "gentoo-compiling-clang"
     dev-python/pygame				compiler-gcc
     dev-python/scipy				compiler-clang-mold
     dev-python/zstandard				compiler-gcc
-    dev-qt/qtwebengine:5				compiler-clang-mold-18
-    dev-qt/qtwebengine:6				compiler-clang-mold-18
+    # dev-qt/qtwebengine:5				compiler-clang-mold-18
+    # dev-qt/qtwebengine:6				compiler-clang-mold-18
     dev-tcltk/blt					compiler-clang-mold-21
     dev-tex/tectonic				compiler-gcc
     dev-util/android-tools				compiler-gcc
-    dev-util/kdevelop				compiler-clang-mold-18
+    # dev-util/kdevelop				compiler-clang-mold-18
     dev-util/mingw64-toolchain			compiler-gcc	# gcc itself
     dev-util/yacc					compiler-gcc
     dev-vcs/cvs					compiler-gcc
@@ -295,7 +289,7 @@ slug: "gentoo-compiling-clang"
     media-libs/openglide				compiler-gcc
     media-libs/tg_owt				compiler-gcc
     media-libs/urt					compiler-gcc
-    media-libs/vips					compiler-clang-mold-21
+    # media-libs/vips					compiler-clang-mold-21
     media-sound/audacity				compiler-clang-mold
     media-sound/sox					compiler-clang-mold
     media-video/avidemux				compiler-gcc
@@ -311,7 +305,7 @@ slug: "gentoo-compiling-clang"
     net-libs/gtk-vnc				compiler-clang-mold
     net-libs/libnftnl				compiler-clang-mold
     net-libs/serf					compiler-clang-mold
-    net-libs/webkit-gtk				compiler-clang-mold-18
+    # net-libs/webkit-gtk				compiler-clang-mold-18
     net-misc/netkit-telnetd				compiler-gcc
     net-misc/omniORB				compiler-gcc
     net-misc/openssh-contrib			compiler-gcc
@@ -322,10 +316,9 @@ slug: "gentoo-compiling-clang"
     net-vpn/networkmanager-vpnc			compiler-gcc
     sci-libs/djbfft					compiler-gcc
     sci-libs/netcdf-cxx				compiler-gcc
-    sci-libs/vtk					compiler-clang-mold-18
+    # sci-libs/vtk					compiler-clang-mold-18
     sci-physics/openmodelica			compiler-gcc
     sci-visualization/gnuplot			compiler-gcc
-    sci-visualization/paraview			compiler-clang-mold-18
     sys-apps/flashrom				compiler-gcc
     sys-apps/fwupd-efi				compiler-gcc
     sys-apps/keyutils				compiler-clang-mold
@@ -354,6 +347,7 @@ slug: "gentoo-compiling-clang"
     =app-emulation/wine-proton-11.0*		compiler-gcc
     media-gfx/asymptote				compiler-gcc
     net-libs/ldns					compiler-gcc
+    # sci-visualization/paraview			compiler-clang-mold-18
     ```
 
 

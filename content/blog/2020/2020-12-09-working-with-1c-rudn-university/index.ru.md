@@ -2,7 +2,7 @@
 title: "Работа с 1С в РУДН"
 author: ["Dmitry S. Kulyabov"]
 date: 2020-12-09T11:35:00+03:00
-lastmod: 2025-04-18T17:55:00+03:00
+lastmod: 2026-08-26T21:36:00+03:00
 tags: ["rudn", "sysadmin"]
 categories: ["computer-science"]
 draft: false
@@ -131,7 +131,7 @@ slug: "working-with-1c-rudn-university"
 
 #### <span class="section-num">2.4.3</span> Web-клиент {#web-клиент}
 
--   Ссылка: <https://sed2.rudn.ru/>.
+-   Ссылка: <https://sed.rudn.ru/>.
 
 
 #### <span class="section-num">2.4.4</span> Мобильное приложение {#мобильное-приложение}
@@ -172,7 +172,7 @@ slug: "working-with-1c-rudn-university"
 
 #### <span class="section-num">2.5.2</span> Web-клиент {#web-клиент}
 
--   Ссылка: <https://sed.rudn.ru/>.
+-   Ссылка: <https://sed2.rudn.ru/>.
 
 
 #### <span class="section-num">2.5.3</span> Мобильное приложение {#мобильное-приложение}

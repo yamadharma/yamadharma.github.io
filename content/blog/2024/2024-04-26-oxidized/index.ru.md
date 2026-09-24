@@ -2,7 +2,7 @@
 title: "Система управления конфигурациями Oxidized"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-04-26T17:44:00+03:00
-lastmod: 2025-11-20T14:08:00+03:00
+lastmod: 2026-09-21T12:22:00+03:00
 tags: ["network", "sysadmin"]
 categories: ["computer-science"]
 draft: false
@@ -29,17 +29,17 @@ slug: "oxidized"
 
 -   Установите язык ruby:
     ```shell
-    dnf -y install ruby
+    sudo dnf -y install ruby
     ```
 -   Установите необходимые средства разработки:
     ```shell
-    dnf -y group install "Development Tools"
-    dnf -y install make cmake which sqlite-devel ruby gcc ruby-devel libicu-devel gcc-c++
-    dnf -y install openssl-devel
+    sudo dnf -y group install "Development Tools"
+    sudo dnf -y install make cmake which sqlite-devel ruby gcc ruby-devel libicu-devel gcc-c++
+    sudo dnf -y install openssl-devel
     ```
 -   Установите git для хранения файлов:
     ```shell
-    dnf -y install git
+    sudo dnf -y install git
     ```
 
 

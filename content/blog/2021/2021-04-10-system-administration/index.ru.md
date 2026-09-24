@@ -2,7 +2,7 @@
 title: "Системное администрирование"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-04-10T18:18:00+03:00
-lastmod: 2026-09-16T19:56:00+03:00
+lastmod: 2026-09-18T21:35:00+03:00
 tags: ["MOC", "sysadmin"]
 categories: ["computer-science"]
 draft: false
@@ -475,6 +475,7 @@ slug: "system-administration"
 ### <span class="section-num">16.9</span> Настройка {#настройка}
 
 -   [Nmstate. Декларативное управление сетевыми настройками]({{< relref "2026-09-12--nmstate-declarative-network-configuration" >}})
+-   [Linux. Поддержка LLDP]({{< relref "2026-09-18--linux-lldp" >}})
 
 
 ## <span class="section-num">17</span> Управление и мониторинг {#управление-и-мониторинг}

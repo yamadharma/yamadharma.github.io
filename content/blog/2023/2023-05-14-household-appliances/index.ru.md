@@ -2,7 +2,7 @@
 title: "Бытовая техника"
 author: ["Dmitry S. Kulyabov"]
 date: 2023-05-14T19:44:00+03:00
-lastmod: 2026-07-22T21:30:00+03:00
+lastmod: 2026-09-22T20:33:00+03:00
 tags: ["appliance"]
 categories: ["life"]
 draft: false
@@ -22,29 +22,34 @@ slug: "household-appliances"
 -   [Бытовая техника. Телевизор]({{< relref "2025-08-26--appliances-tv" >}})
 
 
-## <span class="section-num">2</span> Уборка {#уборка}
+## <span class="section-num">2</span> Кухонная техника {#кухонная-техника}
+
+-   [Посудомоечная машина]({{< relref "2026-09-22--dishwasher" >}})
+
+
+## <span class="section-num">3</span> Уборка {#уборка}
 
 -   [Критерии выбора робота-пылесоса]({{< relref "2023-05-09-criteria-choosing-robot-cleaner" >}})
 -   [Робот-пылесос iCLEBO O5]({{< relref "2023-05-15-robot-vacuum-cleaner-iclebo-o5" >}})
 -   [Вертикальный пылесос]({{< relref "2024-06-29-vertical-vacuum-cleaner" >}})
 
 
-## <span class="section-num">3</span> Офисная техника {#офисная-техника}
+## <span class="section-num">4</span> Офисная техника {#офисная-техника}
 
 -   [Принтер]({{< relref "2023-08-17-printer" >}})
 
 
-## <span class="section-num">4</span> Разная техника {#разная-техника}
+## <span class="section-num">5</span> Разная техника {#разная-техника}
 
 
-### <span class="section-num">4.1</span> Цифровое пианино Kawai KDP120 R {#цифровое-пианино-kawai-kdp120-r}
+### <span class="section-num">5.1</span> Цифровое пианино Kawai KDP120 R {#цифровое-пианино-kawai-kdp120-r}
 
 -   Kawai KDP120 R
     -   <https://kawaius.com/product/kdp120/>
     -   Цвет: Палисандр матовый
 
 
-#### <span class="section-num">4.1.1</span> Описание {#описание}
+#### <span class="section-num">5.1.1</span> Описание {#описание}
 
 -   Ключевые особенности:
     -   Улучшенная клавиатурная механика Responsive Hammer Compact II с тройным датчиком.
@@ -81,24 +86,24 @@ slug: "household-appliances"
 -   Цвет: Палисандр матовый.
 
 
-#### <span class="section-num">4.1.2</span> Отзывы {#отзывы}
+#### <span class="section-num">5.1.2</span> Отзывы {#отзывы}
 
 -   <https://muzrum.ru/blog/kawai-kdp-120-110>
 
 
-#### <span class="section-num">4.1.3</span> Магазины {#магазины}
+#### <span class="section-num">5.1.3</span> Магазины {#магазины}
 
 -   Music-Expert <https://www.music-expert.ru/>
     -   <https://www.music-expert.ru/catalog/muzykalnye_instrumenty/klavishnye_instrumenty/klavinovy_elektropianino/kawai_kdp120_r_bench_tsifrovoe_pianino_s_banketkoy_88_klavish_mekhanika_rhc_ii_192_polifoniya_15_tem/>
 
 
-#### <span class="section-num">4.1.4</span> Покупка {#покупка}
+#### <span class="section-num">5.1.4</span> Покупка {#покупка}
 
 -   Цена: 142648 ₽.
 -   Очень тяжёлое.
 
 
-#### <span class="section-num">4.1.5</span> Документация {#документация}
+#### <span class="section-num">5.1.5</span> Документация {#документация}
 
 -   Инструкция (русская):
     -   <https://mirm.ru/upload/iblock/3b6/KAWAI_KDP120_KDP75_RUS.pdf>
@@ -106,7 +111,7 @@ slug: "household-appliances"
 -   Настройка MIDI: <https://www.kawai-global.com/data/manuals/kdp/KDP120_KDP75_MIDI_Settings_Manual_RU_R100.pdf>
 
 
-#### <span class="section-num">4.1.6</span> Приложения {#приложения}
+#### <span class="section-num">5.1.6</span> Приложения {#приложения}
 
 <!--list-separator-->
 
@@ -119,42 +124,42 @@ slug: "household-appliances"
     -   Google play: <https://play.google.com/store/apps/details?id=jp.co.kawai.denshi.PianoRemote>
 
 
-## <span class="section-num">5</span> Компьютерная техника {#компьютерная-техника}
+## <span class="section-num">6</span> Компьютерная техника {#компьютерная-техника}
 
 
-### <span class="section-num">5.1</span> Компьютер {#компьютер}
+### <span class="section-num">6.1</span> Компьютер {#компьютер}
 
 -   [Домашний компьютер]({{< relref "2026-07-22--home-computer" >}})
 
 
-### <span class="section-num">5.2</span> Монитор {#монитор}
+### <span class="section-num">6.2</span> Монитор {#монитор}
 
 -   [Монитор]({{< relref "2024-05-18-monitor" >}})
 
 
-### <span class="section-num">5.3</span> Сетевое оборудование {#сетевое-оборудование}
+### <span class="section-num">6.3</span> Сетевое оборудование {#сетевое-оборудование}
 
 -   [Mesh-системы]({{< relref "2024-10-07-mesh-systems" >}})
 -   [Домашний маршрутизатор]({{< relref "2024-12-03-home-router" >}})
 
 
-### <span class="section-num">5.4</span> Хранение {#хранение}
+### <span class="section-num">6.4</span> Хранение {#хранение}
 
 -   [NAS. Synology]({{< relref "2024-11-01-nas-synology" >}})
 -   [NAS. TerraMaster]({{< relref "2024-11-10-nas-terramaster" >}})
 
 
-### <span class="section-num">5.5</span> Дополнительное оборудование {#дополнительное-оборудование}
+### <span class="section-num">6.5</span> Дополнительное оборудование {#дополнительное-оборудование}
 
 -   [Источник бесперебойного питания]({{< relref "2025-10-17--uninterruptible-power-supply" >}})
 
 
-## <span class="section-num">6</span> Гаджеты {#гаджеты}
+## <span class="section-num">7</span> Гаджеты {#гаджеты}
 
 -   [Гаджеты]({{< relref "2024-08-22-gadget" >}})
 -   [Умный дом]({{< relref "2024-12-19--smart-home" >}})
 
 
-## <span class="section-num">7</span> Разное {#разное}
+## <span class="section-num">8</span> Разное {#разное}
 
 -   [Замок KALE]({{< relref "2025-03-18--lock-kale" >}})

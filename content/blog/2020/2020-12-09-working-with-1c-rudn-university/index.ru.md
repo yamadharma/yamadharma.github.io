@@ -2,7 +2,7 @@
 title: "Работа с 1С в РУДН"
 author: ["Dmitry S. Kulyabov"]
 date: 2020-12-09T11:35:00+03:00
-lastmod: 2026-08-26T21:36:00+03:00
+lastmod: 2026-09-22T14:14:00+03:00
 tags: ["rudn", "sysadmin"]
 categories: ["computer-science"]
 draft: false
@@ -28,13 +28,22 @@ slug: "working-with-1c-rudn-university"
         -   Доступен через внутреннюю сеть либо через VPN.
 
 
-## <span class="section-num">2</span> Модули 1С {#модули-1с}
+## <span class="section-num">2</span> Версии 1С {#версии-1с}
+
+| Версия      | Модуль 1С                           |
+|-------------|-------------------------------------|
+| 8.3.27.2214 | СЭД 3.0                             |
+| 8.3.27.1989 | Все модули, кроме СЭД 2.1 и СЭД 3.0 |
+| 8.3.22.2106 | СЭД 2.1                             |
 
 
-### <span class="section-num">2.1</span> Управление ВУЗом {#управление-вузом}
+## <span class="section-num">3</span> Модули 1С {#модули-1с}
 
 
-#### <span class="section-num">2.1.1</span> Тонкий клиент {#тонкий-клиент}
+### <span class="section-num">3.1</span> Управление ВУЗом {#управление-вузом}
+
+
+#### <span class="section-num">3.1.1</span> Тонкий клиент {#тонкий-клиент}
 
 -   Рекомендуемое название: _Управление ВУЗом_
 
@@ -52,17 +61,17 @@ slug: "working-with-1c-rudn-university"
     -   Имя информационной базы: `VUZ_RUDN`
 
 
-#### <span class="section-num">2.1.2</span> Web-клиент {#web-клиент}
+#### <span class="section-num">3.1.2</span> Web-клиент {#web-клиент}
 
 -   Ссылка:
     -   <https://vuz.rudn.ru/VUZ_RUDN>
     -   <https://eisweb.rudn.ru/VUZ_RUDN>
 
 
-### <span class="section-num">2.2</span> Расписание {#расписание}
+### <span class="section-num">3.2</span> Расписание {#расписание}
 
 
-#### <span class="section-num">2.2.1</span> Тонкий клиент {#тонкий-клиент}
+#### <span class="section-num">3.2.1</span> Тонкий клиент {#тонкий-клиент}
 
 -   Рекомендуемое название: Расписание
 -   Сервер: 192.168.125.107
@@ -73,34 +82,34 @@ slug: "working-with-1c-rudn-university"
     ```
 
 
-### <span class="section-num">2.3</span> Итилиум {#итилиум}
+### <span class="section-num">3.3</span> Итилиум {#итилиум}
 
 -   Система Service Desk Итилиум --- управление IT-услугами на платформе 1С.
 -   Сайт: <https://itilium.ru/service-desk>.
 
 
-#### <span class="section-num">2.3.1</span> Тонкий клиент {#тонкий-клиент}
+#### <span class="section-num">3.3.1</span> Тонкий клиент {#тонкий-клиент}
 
 -   Рекомендуемое название: Итилиум
 -   Кластер серверов: 192.168.125.103:2441
 -   Имя ИБ: `ITL_RUDN`
 
 
-#### <span class="section-num">2.3.2</span> Web-клиент {#web-клиент}
+#### <span class="section-num">3.3.2</span> Web-клиент {#web-клиент}
 
 -   Ссылка: <https://eisweb.rudn.ru/ITL_RUDN/>
 
 
-#### <span class="section-num">2.3.3</span> Мобильное приложение {#мобильное-приложение}
+#### <span class="section-num">3.3.3</span> Мобильное приложение {#мобильное-приложение}
 
 -   Android: <https://play.google.com/store/apps/details?id=com.desnol.itiliummobile.itiliummobile&hl=ru>.
 -   iOS: <https://itunes.apple.com/ru/app/%D0%B8%D1%82%D0%B8%D0%BB%D0%B8%D1%83%D0%BC/id1057128487?platform=iphone&preserveScrollPosition=true#platform/iphone>.
 
 
-### <span class="section-num">2.4</span> Документооборот 2.1 {#документооборот-2-dot-1}
+### <span class="section-num">3.4</span> Документооборот 2.1 {#документооборот-2-dot-1}
 
 
-#### <span class="section-num">2.4.1</span> Общая информация {#общая-информация}
+#### <span class="section-num">3.4.1</span> Общая информация {#общая-информация}
 
 -   Сообщаем вам о запуске новой версии системы электронного документооборота РУДН — СЭД РУДН 3.0.
 -   Переход на новую платформу будет осуществлён в ночь с 17 на 18 апреля 2025 года.
@@ -111,7 +120,7 @@ slug: "working-with-1c-rudn-university"
 -   Создание новых документов в СЭД 2.1 будет запрещено. При этом в СЭД РУДН 3.0 будет доступен весь архив документов.
 
 
-#### <span class="section-num">2.4.2</span> Тонкий клиент {#тонкий-клиент}
+#### <span class="section-num">3.4.2</span> Тонкий клиент {#тонкий-клиент}
 
 -   Рекомендуемое название: _СЭД_
 
@@ -129,30 +138,20 @@ slug: "working-with-1c-rudn-university"
     -   Имя информационной базы: `DGU_RUDN`
 
 
-#### <span class="section-num">2.4.3</span> Web-клиент {#web-клиент}
+#### <span class="section-num">3.4.3</span> Web-клиент {#web-клиент}
 
 -   Ссылка: <https://sed.rudn.ru/>.
 
 
-#### <span class="section-num">2.4.4</span> Мобильное приложение {#мобильное-приложение}
+#### <span class="section-num">3.4.4</span> Мобильное приложение {#мобильное-приложение}
 
 -   Google Play: <https://play.google.com/store/apps/details?id=ru.rudn.sed>
 
 
-#### <span class="section-num">2.4.5</span> Подключение извне сети Университета {#подключение-извне-сети-университета}
-
--   Подключение извне корпоративной сети РУДН проводится с помощью VPN по протоколу Cisco AnyConnect (см. [Подключение к Cisco VPN]({{< relref "2023-08-19-cisco-vpn-client-setup" >}})).
--   Клиента для Windows можно получить с сайта <https://vpn.rudn.ru:444/>.
--   В настройках укажите в качестве шлюза `vpn.rudn.ru:444`.
--   При первом подключении будет запрошен логин и пароль.
--   Рекомендуется разрешить сохранение парольной информации для дальнейших сессий.
--   DNS сервер РУДН не поддерживает DNSSEC, поэтому рекомендуется отключить его у локального кэширующего DNS-сервера.
+### <span class="section-num">3.5</span> Документооборот 3.0 {#документооборот-3-dot-0}
 
 
-### <span class="section-num">2.5</span> Документооборот 3.0 {#документооборот-3-dot-0}
-
-
-#### <span class="section-num">2.5.1</span> Тонкий клиент {#тонкий-клиент}
+#### <span class="section-num">3.5.1</span> Тонкий клиент {#тонкий-клиент}
 
 -   Рекомендуемое название: _СЭД_
 
@@ -170,21 +169,11 @@ slug: "working-with-1c-rudn-university"
     -   Имя информационной базы: `DGU_RUDN`
 
 
-#### <span class="section-num">2.5.2</span> Web-клиент {#web-клиент}
+#### <span class="section-num">3.5.2</span> Web-клиент {#web-клиент}
 
 -   Ссылка: <https://sed2.rudn.ru/>.
 
 
-#### <span class="section-num">2.5.3</span> Мобильное приложение {#мобильное-приложение}
+#### <span class="section-num">3.5.3</span> Мобильное приложение {#мобильное-приложение}
 
 -   Google Play: <https://play.google.com/store/apps/details?id=ru.rudn.sed>
-
-
-#### <span class="section-num">2.5.4</span> Подключение извне сети Университета {#подключение-извне-сети-университета}
-
--   Подключение извне корпоративной сети РУДН проводится с помощью VPN по протоколу Cisco AnyConnect (см. [Подключение к Cisco VPN]({{< relref "2023-08-19-cisco-vpn-client-setup" >}})).
--   Клиента для Windows можно получить с сайта <https://vpn.rudn.ru:444/>.
--   В настройках укажите в качестве шлюза `vpn.rudn.ru:444`.
--   При первом подключении будет запрошен логин и пароль.
--   Рекомендуется разрешить сохранение парольной информации для дальнейших сессий.
--   DNS сервер РУДН не поддерживает DNSSEC, поэтому рекомендуется отключить его у локального кэширующего DNS-сервера.

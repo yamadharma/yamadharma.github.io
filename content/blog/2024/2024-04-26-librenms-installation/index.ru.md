@@ -2,7 +2,7 @@
 title: "Установка LibreNMS"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-04-26T11:32:00+03:00
-lastmod: 2024-07-17T20:52:00+03:00
+lastmod: 2026-09-21T17:56:00+03:00
 tags: ["network", "sysadmin"]
 categories: ["computer-science"]
 draft: false
@@ -25,6 +25,7 @@ slug: "librenms-installation"
     dnf -y install epel-release
     dnf module reset php
     dnf install bash-completion cronie fping git httpd ImageMagick mariadb-server mtr net-snmp net-snmp-utils nmap php-fpm php-cli php-common php-curl php-gd php-gmp php-json php-mbstring php-process php-snmp php-xml php-zip php-mysqlnd python3 python3-PyMySQL python3-redis python3-memcached python3-pip python3-systemd rrdtool unzip gcc python3-develcase
+    sudo dnf -y install composer
     ```
 
 
@@ -61,7 +62,7 @@ slug: "librenms-installation"
 -   Установим PHP-зависимости:
     ```shell
     su - librenms
-    ./scripts/composer_wrapper.php install --no-dev
+    /opt/librenms/scripts/composer_wrapper.php install --no-dev
     exit
     ```
 -   Если какие-либо проблемы с сетью, можно установить composer вручную:

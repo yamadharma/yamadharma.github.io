@@ -2,7 +2,7 @@
 title: "Миграция на AlmaLinux"
 author: ["Dmitry S. Kulyabov"]
 date: 2026-03-19T14:50:00+03:00
-lastmod: 2026-03-19T15:07:00+03:00
+lastmod: 2026-09-21T10:48:00+03:00
 tags: ["redhat", "sysadmin"]
 categories: ["computer-science"]
 draft: false

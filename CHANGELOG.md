@@ -1,3 +1,9 @@
+## [1.1.13](https://github.com/yamadharma/yamadharma/compare/v1.1.12...v1.1.13) (2026-09-24)
+
+### Bug Fixes
+
+* **config:** enable resources duplication for different languages ([e6b6bff](https://github.com/yamadharma/yamadharma/commit/e6b6bffd2a905161906f3a12100ad19172ce2c61))
+
 ## [1.1.12](https://github.com/yamadharma/yamadharma/compare/v1.1.11...v1.1.12) (2026-09-16)
 
 ### Features

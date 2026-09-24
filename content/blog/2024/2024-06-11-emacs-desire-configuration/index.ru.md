@@ -2,7 +2,7 @@
 title: "Emacs. Desire. Конфигурация"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-06-11T18:55:00+03:00
-lastmod: 2026-09-14T10:03:00+03:00
+lastmod: 2026-09-23T17:53:00+03:00
 tags: ["emacs"]
 categories: ["computer-science"]
 draft: false
@@ -4313,6 +4313,24 @@ slug: "emacs-desire-configuration"
     ;; (if (executable-find "flowmark")
     ;;     (setf (alist-get 'markdown-mode apheleia-mode-alist) 'flowmark)
     ;;   nil)
+
+    ;;;
+    ```
+
+
+#### <span class="section-num">19.1.6</span> Форматер perl {#форматер-perl}
+
+-   Файл: `packages/apheleia/desire.ecd/perl.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; Modern Markdown formatter with smart typography and paragraph wrapping
+    ;; https://github.com/jlevy/flowmark
+
+    ;;; Code:
+
+    ;;;; Fix error. Remove `-t` flag
+    (setf (alist-get 'perltidy apheleia-formatters)
+          '("perltidy" "--quiet" "--standard-error-output"))
 
     ;;;
     ```

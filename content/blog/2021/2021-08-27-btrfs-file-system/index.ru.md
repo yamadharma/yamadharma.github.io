@@ -2,8 +2,8 @@
 title: "Файловая система btrfs"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-08-27T11:33:00+03:00
-lastmod: 2024-02-19T15:46:00+03:00
-tags: ["btrfs", "sysadmin"]
+lastmod: 2026-09-19T22:17:00+03:00
+tags: ["MOC", "btrfs", "sysadmin"]
 categories: ["computer-science"]
 draft: false
 slug: "btrfs-file-system"
@@ -58,6 +58,7 @@ slug: "btrfs-file-system"
 -   [Обслуживание btrfs]({{< relref "2021-09-23-btrfs-maintenence" >}})
 -   [Дедупликация файловой системы btrfs]({{< relref "2022-05-26-deduplication-btrfs-filesystem" >}})
 -   [Восстановление btrfs]({{< relref "2023-07-21-btrfs-recovery" >}})
+-   [btrfs. Работа со снепшотами]({{< relref "2026-09-19--btrfs-snapshots" >}})
 
 
 ## <span class="section-num">5</span> Необходимое программное обеспечение {#необходимое-программное-обеспечение}

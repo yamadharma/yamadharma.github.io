@@ -2,7 +2,7 @@
 title: "Hugo. Использование page bundle"
 author: ["Dmitry S. Kulyabov"]
 date: 2026-03-03T20:48:00+03:00
-lastmod: 2026-03-10T15:25:00+03:00
+lastmod: 2026-09-24T18:06:00+03:00
 tags: ["sysadmin", "hugo"]
 categories: ["computer-science"]
 draft: false
@@ -111,3 +111,41 @@ Hugo. Использование page bundle.
 -   Репозиторий: <https://github.com/HugoBlox/awesome-hugo>
 -   Скрипт не учитывает язык.
 -   Нужно внести правки в скрипт самому.
+
+
+## <span class="section-num">6</span> Проблемы {#проблемы}
+
+
+### <span class="section-num">6.1</span> Изображения {#изображения}
+
+-   Может возникать проблема с копированием изображений из page bundle в `public`.
+
+
+#### <span class="section-num">6.1.1</span> Многоязычная конфигурация {#многоязычная-конфигурация}
+
+-   Начиная с версии Hugo 0.123, изменилось поведение по умолчанию.
+-   Ресурсы page bundle не дублируются автоматически для каждого языка.
+
+-   Например, если изображение `photo.jpg` лежит рядом с `index.ru.md` и `index.en.md`, Hugo скопирует его только в директорию языка по умолчанию (например, в `public/ru/...`), а для английской версии (`public/en/...`) оно может отсутствовать.
+-   Нужно включить дублирование ресурсов в конфигурационном файле `hugo.toml` (или `config.toml`):
+
+<!--listend-->
+
+```toml
+[markup]
+  [markup.goldmark]
+    duplicateResourceFiles = true
+```
+
+-   Для yaml (для `hugo.yaml` или `config.yaml`):
+
+<!--listend-->
+
+```yaml
+markup:
+  goldmark:
+    duplicateResourceFiles: true
+```
+
+-   Правку нужно вносить в корневой `hugo.yaml` вашего сайта (или `config/_default/hugo.yaml`, если у вас директория `config`).
+-   Настройки из `config/_default/` имеют приоритет над настройками темы.

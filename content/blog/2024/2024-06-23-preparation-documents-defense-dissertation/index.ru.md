@@ -2,7 +2,7 @@
 title: "Подготовка документов для защиты диссертации"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-06-23T15:51:00+03:00
-lastmod: 2026-06-24T19:27:00+03:00
+lastmod: 2026-09-24T16:35:00+03:00
 tags: ["education"]
 categories: ["science"]
 draft: false
@@ -206,12 +206,13 @@ slug: "preparation-documents-defense-dissertation"
         -   обед: 13.00--14.00;
         -   четверг --- неприёмный день.
 -   Консультирование и прием документов осуществляется специалистами ДАНК лично или по электронной почте:
-    -   <mailto:academ.degree@rudn.ru>
--   Анисенко Марина Юрьевна : <mailto:manis07@bk.ru>,
--   Лебедева Дарья Владимировна : <mailto:lena_leb-61@mail.ru>.
+    -   [academ.degree@rudn.ru](mailto:academ.degree@rudn.ru)
+-   Анисенко Марина Юрьевна : [manis07@bk.ru](mailto:manis07@bk.ru),
+-   Лебедева Дарья Владимировна : [lena_leb-61@mail.ru](mailto:lena_leb-61@mail.ru).
 -   Пакет документов отправляется по электропочте:
-    -   <mailto:academ.degree@rudn.ru>
-    -   Анисенко Марина Юрьевна <mailto:manis07@bk.ru>.
+    -   [academ.degree@rudn.ru](mailto:academ.degree@rudn.ru)
+    -   Анисенко Марина Юрьевна [manis07@bk.ru](mailto:manis07@bk.ru).
+    -   Для физмата: Маркина Анастасия Артемовна [markina-aa@rudn.ru](mailto:markina-aa@rudn.ru)
 
 
 ### <span class="section-num">4.2</span> После приёма документов ДАНК {#после-приёма-документов-данк}
@@ -230,7 +231,6 @@ slug: "preparation-documents-defense-dissertation"
 
 #### <span class="section-num">4.2.2</span> Чек-лист этапа (Соискатель) {#чек-лист-этапа--соискатель}
 
--   [ ] Справка о сдаче документов в ДАНК
 -   [ ] Оригиналы документов первого пакета передать секретарю диссовета
 
 

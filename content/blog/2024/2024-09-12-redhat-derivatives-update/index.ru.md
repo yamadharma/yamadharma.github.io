@@ -2,7 +2,7 @@
 title: "Обновление деривативов RedHat"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-09-12T12:48:00+03:00
-lastmod: 2026-03-19T17:48:00+03:00
+lastmod: 2026-09-21T11:35:00+03:00
 tags: ["redhat", "linux", "sysadmin"]
 categories: ["computer-science"]
 draft: false
@@ -366,6 +366,7 @@ slug: "redhat-derivatives-update"
 #### <span class="section-num">4.1.1</span> Общая информация {#общая-информация}
 
 -   Будем использовать проект Elevate.
+-   Возможно, придётся мигрировать на Alma Linux ([Миграция на AlmaLinux]({{< relref "2026-03-19--migrating-almalinux" >}})).
 
 
 #### <span class="section-num">4.1.2</span> Подготовка к обновлению {#подготовка-к-обновлению}
@@ -415,7 +416,7 @@ slug: "redhat-derivatives-update"
         ```
     -   Удалите внешние репозитории:
         ```shell
-        dnf remove epel-release
+        sudo dnf -y remove epel-release
         ```
 
 <!--list-separator-->

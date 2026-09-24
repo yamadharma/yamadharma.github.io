@@ -2,7 +2,7 @@
 title: "Спецсеминар для аспирантов"
 author: ["Dmitry S. Kulyabov"]
 date: 2025-09-18T12:48:00+03:00
-lastmod: 2025-11-12T12:18:00+03:00
+lastmod: 2026-09-17T12:01:00+03:00
 draft: false
 slug: "special-seminar-postgraduate-students"
 ---
@@ -74,6 +74,4 @@ slug: "special-seminar-postgraduate-students"
 ## <span class="section-num">7</span> Материалы {#материалы}
 
 -   [Rutube](https://rutube.ru/plst/1203750)
--   [Платформа](https://plvideo.ru/playlist?list=bsKBKRI2id-G)
 -   [VKVideo](https://vkvideo.ru/playlist/-230024722_16)
--   [Youtube](https://www.youtube.com/playlist?list=PLhyPdV6jkp-R54u7nJA97W8SQ_DX-5icf)

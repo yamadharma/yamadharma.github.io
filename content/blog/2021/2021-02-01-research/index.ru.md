@@ -2,7 +2,7 @@
 title: "Научно-исследовательская деятельность"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-02-01T20:18:00+03:00
-lastmod: 2026-07-21T21:08:00+03:00
+lastmod: 2026-09-20T20:30:00+03:00
 tags: ["MOC", "research"]
 categories: ["science"]
 draft: false
@@ -85,6 +85,11 @@ slug: "research"
 -   [Вещественная квантовая механика]({{< relref "2026-07-03--real-quantum-mechanics" >}})
 
 
+### <span class="section-num">1.14</span> Моделирование электродинамики {#моделирование-электродинамики}
+
+-   [Моделирование. Оптика. Волноводы]({{< relref "2026-09-20--modeling-optics-waveguides" >}})
+
+
 ## <span class="section-num">2</span> Публикации {#публикации}
 
 
@@ -119,6 +124,7 @@ slug: "research"
 -   [Исследования. Суррогатное моделирование]({{< relref "2022-06-20-research-surrogate-modeling" >}})
 -   [Исследования. Протокол Vanet]({{< relref "2023-10-07-research-vanet-protocol" >}})
 -   [Подготовка проекта Умный оптический транспорт]({{< relref "2026-03-01--project-smart-optical-transport" >}})
+-   [Исследования. Большие данные]({{< relref "2026-09-19--research-big-data" >}})
 
 
 ## <span class="section-num">6</span> Исследования в ОИЯИ {#исследования-в-оияи}

@@ -2,7 +2,7 @@
 title: "VSCode. Расширения для markdown"
 author: ["Dmitry S. Kulyabov"]
 date: 2026-09-16T20:51:00+03:00
-lastmod: 2026-09-16T21:32:00+03:00
+lastmod: 2026-09-17T21:39:00+03:00
 tags: ["programming", "markdown"]
 categories: ["computer-science"]
 draft: false
@@ -20,14 +20,23 @@ VSCode. Расширения для markdown.
 
 -   Расширения доступны в панели расширений VS Code (горячая клавиша `Ctrl+Shift+X`).
 -   Для установки запустите функцию быстрого открытия VS Code (`Ctrl+P`), вставьте команду установки и нажмите `Enter`.
+-   Для установки из консоли:
+    ```shell
+    code --install-extension <publisher.extension-name>
+    ```
 
 
 ## <span class="section-num">2</span> Markdown All in One {#markdown-all-in-one}
 
 -   Расширение: yzhang.markdown-all-in-one
-    ```shell
-    ext install yzhang.markdown-all-in-one
-    ```
+    -   Из vscode
+        ```shell
+        ext install yzhang.markdown-all-in-one
+        ```
+    -   Из консоли
+        ```shell
+        code --install-extension yzhang.markdown-all-in-one
+        ```
 -   Основа для работы с Markdown.
 -   Расширение добавляет горячие клавиши для форматирования (`Ctrl+B` для жирного, `Ctrl+I` для курсива).
 -   Автоматически генерирует и обновляет оглавление при вводе `[TOC]`.
@@ -37,9 +46,14 @@ VSCode. Расширения для markdown.
 ## <span class="section-num">3</span> Markdown Preview Enhanced {#markdown-preview-enhanced}
 
 -   Расширение: shd101wyy.markdown-preview-enhanced
-    ```shell
-    ext install shd101wyy.markdown-preview-enhanced
-    ```
+    -   Из vscode:
+        ```shell
+        ext install shd101wyy.markdown-preview-enhanced
+        ```
+    -   Из консоли:
+        ```shell
+        code --install-extension shd101wyy.markdown-preview-enhanced
+        ```
 -   Продвинутый предпросмотр.
 -   Поддерживает рендеринг диаграмм Mermaid и PlantUML, математических формул LaTeX.
 -   С его помощью можно экспортировать документы в PDF, HTML, PNG и JPEG.
@@ -47,27 +61,32 @@ VSCode. Расширения для markdown.
 
 ### <span class="section-num">3.1</span> Клавиатурные сочетания {#клавиатурные-сочетания}
 
-| Клавиши                                       | Функциональность                                         |
-|-----------------------------------------------|----------------------------------------------------------|
-| `cmd-k v` или `ctrl-k v`                      | Открыть предварительный просмотр сбоку                   |
-| `cmd-shift-v` или `ctrl-shift-v`              | Открыть предварительный просмотр                         |
-| `cmd-k shift-l` или `ctrl-k shift-l`          | Откройте заблокированный предварительный просмотр сбоку. |
-| `cmd-k cmd-shift-l` или `ctrl-k ctrl-shift-l` | Переключить блокировку предварительного просмотра        |
-| `ctrl-shift-s`                                | Синхронизация                                            |
-| `shift-enter`                                 | Выполнить фрагмент кода                                  |
-| `ctrl-shift-enter`                            | Выполните все фрагменты кода                             |
-| `cmd-=` или `cmd-shift-=`                     | Предварительный просмотр с увеличением                   |
-| `cmd--` или `cmd-shift-_`                     | Предварительный просмотр с уменьшением                   |
-| `cmd-0`                                       | Сброс масштабирования                                    |
-| `esc`                                         | Переключить оглавление боковой панели                    |
+| Клавиши               | Функциональность                                         |
+|-----------------------|----------------------------------------------------------|
+| `Ctrl-k v`            | Открыть предварительный просмотр сбоку                   |
+| `Ctrl-Shift-v`        | Открыть предварительный просмотр                         |
+| `Ctrl-k Shift-l`      | Откройте заблокированный предварительный просмотр сбоку. |
+| `Ctrl-k Ctrl-Shift-l` | Переключить блокировку предварительного просмотра        |
+| `Ctrl-Shift-s`        | Синхронизация                                            |
+| `Shift-Enter`         | Выполнить фрагмент кода                                  |
+| `Ctrl-Shift-Enter`    | Выполните все фрагменты кода                             |
+| `Ctrl-shift-=`        | Предварительный просмотр с увеличением                   |
+| `Ctrl-Shift-_`        | Предварительный просмотр с уменьшением                   |
+| `Ctrl-0`              | Сброс масштабирования                                    |
+| `Esc`                 | Переключить оглавление боковой панели                    |
 
 
 ## <span class="section-num">4</span> markdownlint {#markdownlint}
 
 -   Расширение: DavidAnson.vscode-markdownlint
-    ```shell
-    ext install DavidAnson.vscode-markdownlint
-    ```
+    -   Из vscode:
+        ```shell
+        ext install DavidAnson.vscode-markdownlint
+        ```
+    -   Из консоли:
+        ```shell
+        code --install-extension davidanson.vscode-markdownlint
+        ```
 -   Линтер.
 
 
@@ -82,9 +101,14 @@ VSCode. Расширения для markdown.
 ## <span class="section-num">5</span> Paste Image {#paste-image}
 
 -   Расширение: mushan.vscode-paste-image
-    ```shell
-    ext install mushan.vscode-paste-image
-    ```
+    -   Из vscode:
+        ```shell
+        ext install mushan.vscode-paste-image
+        ```
+    -   Из консоли:
+        ```shell
+        code --install-extension mushan.vscode-paste-image
+        ```
 -   Упрощает вставку изображений.
 
 
@@ -100,9 +124,14 @@ VSCode. Расширения для markdown.
 ## <span class="section-num">6</span> Quarto {#quarto}
 
 -   Расширенеи: quarto.quarto
-    ```shell
-    ext install quarto.quarto
-    ```
+    -   Из vscode:
+        ```shell
+        ext install quarto.quarto
+        ```
+    -   Из консоли:
+        ```shell
+        code --install-extension quarto.quarto
+        ```
 -   Официальное расширение для работы с системой Quarto.
 
 
@@ -114,9 +143,14 @@ VSCode. Расширения для markdown.
 ## <span class="section-num">7</span> PandocCiter {#pandocciter}
 
 -   Расширение: notZaki.pandoc-citer
-    ```shell
-    ext install notZaki.pandocciter
-    ```
+    -   Из vscode:
+        ```shell
+        ext install notZaki.pandocciter
+        ```
+    -   Из консоли:
+        ```shell
+        code --install-extension notzaki.pandocciter
+        ```
 
 -   Обеспечивает автодополнение цитат и перекрёстных ссылок для документов Markdown.
 

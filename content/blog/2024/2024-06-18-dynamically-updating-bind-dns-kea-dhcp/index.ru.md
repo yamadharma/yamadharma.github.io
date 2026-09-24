@@ -2,7 +2,7 @@
 title: "Динамическое обновление DNS-сервера BIND при помощи Kea DHCP"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-06-18T11:23:00+03:00
-lastmod: 2024-06-19T16:02:00+03:00
+lastmod: 2026-09-17T18:10:00+03:00
 tags: ["sysadmin", "network", "linux"]
 categories: ["computer-science"]
 draft: false
@@ -181,6 +181,9 @@ slug: "dynamically-updating-bind-dns-kea-dhcp"
 
 ### <span class="section-num">3.3</span> Сервис dhcp4 {#сервис-dhcp4}
 
+
+#### <span class="section-num">3.3.1</span> Минимальная настройка {#минимальная-настройка}
+
 -   Настройка происходит в файле `/etc/kea/kea-dhcp4.conf`.
 -   Включим динамическое обновление:
     ```js
@@ -197,6 +200,122 @@ slug: "dynamically-updating-bind-dns-kea-dhcp"
     -   Другими словами, команда `ddns-qualifying-suffix` используется для указания того, какое доменное имя должно быть добавлено к имени хоста.
     -   Можно определить это для каждой подсети.
 -   Для параметра `ddns-override-client-update` устанавливается значение `true`, поскольку мы не хотим, чтобы клиент решал, какие записи обновлять.
+
+
+#### <span class="section-num">3.3.2</span> Продвинутая настройка {#продвинутая-настройка}
+
+-   Настройка DDNS в `kea-dhcp4.conf` имеет два уровня:
+    -   глобальные параметры подключения к демону `kea-dhcp-ddns`;
+    -   параметры поведения, которые можно задавать глобально, на уровне shared-network или subnet.
+
+<!--list-separator-->
+
+1.  Параметры подключения
+
+    -   Параметры находятся в секции `dhcp-ddns` верхнего уровня.
+    -   Определяют, как DHCP-сервер общается с DDNS.
+    -   Они не могут быть переопределены на уровне подсети.
+        ```json
+        "Dhcp4": {
+          "dhcp-ddns": {
+            "enable-updates": true,
+            "server-ip": "127.0.0.1",
+            "server-port": 53001,
+            "sender-ip": "",
+            "sender-port": 0,
+            "max-queue-size": 1024,
+            "ncr-protocol": "UDP",
+            "ncr-format": "JSON"
+          }
+        }
+        ```
+
+    | Параметр         | Назначение                                                                       | Значение по умолчанию |
+    |------------------|----------------------------------------------------------------------------------|-----------------------|
+    | `enable-updates` | Включает отправку NCR-запросов в DDNS. Должен быть `true` для работы DDNS.       | `false`               |
+    | `server-ip`      | IP-адрес, на котором DDNS слушает запросы.                                       | `127.0.0.1`           |
+    | `server-port`    | Порт DDNS.                                                                       | `53001`               |
+    | `sender-ip`      | IP, с которого DHCP-сервер отправляет запросы (пусто --- выбрать автоматически). | `""`                  |
+    | `sender-port`    | Порт отправителя (0 --- выбрать автоматически).                                  | `0`                   |
+    | `max-queue-size` | Максимум запросов в очереди; при переполнении DDNS временно отключается.         | `1024`                |
+    | `ncr-protocol`   | Протокол для NCR. Поддерживается только `UDP`.                                   | `UDP`                 |
+    | `ncr-format`     | Формат пакета. Поддерживается только `JSON`.                                     | `JSON`                |
+
+<!--list-separator-->
+
+2.  Параметры поведения
+
+    -   Начиная с Kea 1.7.1 эти параметры вынесены из секции `dhcp-ddns`.
+    -   Они могут задаваться на трёх уровнях: глобально, в `shared-network` и в `subnet4`.
+    -   Значения наследуются сверху вниз.
+        ```json
+        "Dhcp4": {
+          "ddns-send-updates": true,
+          "ddns-override-no-update": false,
+          "ddns-override-client-update": false,
+          "ddns-replace-client-name": "never",
+          "ddns-generated-prefix": "myhost",
+          "ddns-qualifying-suffix": "example.com",
+          "hostname-char-set": "[^A-Za-z0-9.-]",
+          "hostname-char-replacement": ""
+        }
+        ```
+
+    | Параметр                      | Назначение                                                                      | Значение по умолчанию |
+    |-------------------------------|---------------------------------------------------------------------------------|-----------------------|
+    | `ddns-send-updates`           | Разрешает/запрещает DDNS на данном уровне.                                      | `true`                |
+    | `ddns-override-no-update`     | Если `true`, сервер игнорирует запрос клиент не обновлять DNS.                  | `false`               |
+    | `ddns-override-client-update` | Если `true`, сервер берёт на себя ответственность за обновление.                | `false`               |
+    | `ddns-replace-client-name`    | Режим формирования FQDN: `never`, `always`, `when-present`, `when-not-present`. | `never`               |
+    | `ddns-generated-prefix`       | Префикс для авто-генерируемых имён (по умолчанию `myhost`).                     | `myhost`              |
+    | `ddns-qualifying-suffix`      | Суффикс домена, добавляемый к неполным именам.                                  | `""`                  |
+    | `hostname-char-set`           | Регулярное выражение для недопустимых символов в имени хоста.                   | `[^A-Za-z0-9.-]`      |
+    | `hostname-char-replacement`   | Строка замены для недопустимых символов (пусто --- удалять).                    | `""`                  |
+
+    -   `enable-updates` в `dhcp-ddns` **и** `ddns-send-updates` на соответствующем уровне должны быть `true`, иначе обновления не будут отправляться.
+    -   Режимы `ddns-replace-client-name`:
+        -   `never` --- использовать имя клиента как есть (по умолчанию);
+        -   `always` --- всегда генерировать имя на сервере;
+        -   `when-present` --- заменять, только если клиент прислал имя;
+        -   `when-not-present` --- использовать имя клиента, если оно есть, иначе генерировать.
+    -   Параметр `ddns-qualifying-suffix` не имеет значения по умолчанию, и если он не задан, неполные имена клиентов не будут корректно преобразованы в FQDN.
+        -   Его следует задать явно при включении DDNS.
+
+<!--list-separator-->
+
+3.  Пример
+
+    ```json
+    {
+      "Dhcp4": {
+        "dhcp-ddns": {
+          "enable-updates": true,
+          "server-ip": "127.0.0.1",
+          "server-port": 53001
+        },
+        "ddns-send-updates": true,
+        "ddns-override-client-update": true,
+        "ddns-replace-client-name": "always",
+        "ddns-generated-prefix": "host",
+        "ddns-qualifying-suffix": "lan.example.com",
+        "subnet4": [
+          {
+            "subnet": "192.168.1.0/24",
+            "pools": [ { "pool": "192.168.1.100 - 192.168.1.200" } ],
+            "ddns-send-updates": true,
+            "ddns-qualifying-suffix": "office.lan.example.com"
+          }
+        ]
+      }
+    }
+    ```
+
+    -   Глобально DDNS включён, сервер всегда сам генерирует FQDN вида `host-192-168-1-100.lan.example.com`.
+    -   Для подсети `192.168.1.0/24` суффикс переопределён на `office.lan.example.com`, поэтому клиенты этой подсети получат имена вида `host-192-168-1-100.office.lan.example.com`.
+
+
+### <span class="section-num">3.4</span> Проверка {#проверка}
+
 -   Проверим файл на наличие возможных синтаксических ошибок:
     ```shell
     kea-dhcp4 -t /etc/kea/kea-dhcp4.conf

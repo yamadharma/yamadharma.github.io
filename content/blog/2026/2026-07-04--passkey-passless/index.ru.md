@@ -2,7 +2,7 @@
 title: "Технология passkey. Реализация passless"
 author: ["Dmitry S. Kulyabov"]
 date: 2026-07-04T21:20:00+03:00
-lastmod: 2026-07-29T15:26:00+03:00
+lastmod: 2026-10-14T21:36:00+03:00
 tags: ["linux", "sysadmin", "security"]
 categories: ["computer-science"]
 draft: false
@@ -95,6 +95,14 @@ yay -S passless
 
 
 ### <span class="section-num">4.2</span> Модуль ядра {#модуль-ядра}
+
+-   Подключите uhid в ядре:
+    ```text
+    -> Device Drivers
+       -> HID bus support (HID_SUPPORT [=y])
+          -> HID bus core support (HID [=y])
+             -> User-space I/O driver support for HID subsystem (UHID [=m])
+    ```
 
 -   Убедитесь, что модуль ядра `uhid` загружен (если он не в ядре):
     ```shell

@@ -2,7 +2,7 @@
 title: "Научно-исследовательская деятельность"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-02-01T20:18:00+03:00
-lastmod: 2026-09-20T20:30:00+03:00
+lastmod: 2026-10-14T20:58:00+03:00
 tags: ["MOC", "research"]
 categories: ["science"]
 draft: false
@@ -78,6 +78,7 @@ slug: "research"
 ### <span class="section-num">1.12</span> Кватернионы {#кватернионы}
 
 -   [Винтовое исчисление]({{< relref "2026-07-01--screw-theory" >}})
+-   [Проективная геометрия]({{< relref "2026-10-14--projective-geometry" >}})
 
 
 ### <span class="section-num">1.13</span> Не занимаюсь, но просмотрел {#не-занимаюсь-но-просмотрел}

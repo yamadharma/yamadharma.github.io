@@ -2,7 +2,7 @@
 title: "Emacs. Desire. Конфигурация"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-06-11T18:55:00+03:00
-lastmod: 2026-09-23T17:53:00+03:00
+lastmod: 2026-10-13T12:47:00+03:00
 tags: ["emacs"]
 categories: ["computer-science"]
 draft: false
@@ -1792,6 +1792,8 @@ slug: "emacs-desire-configuration"
         (add-to-list 'default-frame-alist '(font . "Iosevka Nerd Font-12" ))
         (add-to-list 'initial-frame-alist '(font . "Iosevka Nerd Font-12" ))
 
+        ;;;; Моноширинный шрифт
+
         (set-face-attribute 'default nil
                             :font "Iosevka Nerd Font"
                             :height 120)
@@ -1800,13 +1802,29 @@ slug: "emacs-desire-configuration"
                             :font "Iosevka Nerd Font"
                             :height 120)
 
-        (set-face-attribute 'variable-pitch nil
-                            :font "Iosevka Aile"
-                            :height 120)
-
         (dolist (charset '(latin cyrillic greek))
           (set-fontset-font 't charset
-                            (font-spec :family "Iosevka Nerd Font" :size 12.0)))
+                            (font-spec :family "Iosevka Nerd Font")))
+
+        (dolist (charset '(latin cyrillic greek))
+          (set-fontset-font "fontset-default" charset "Iosevka Nerd Font"))
+
+        ;;;; Пропорциональный шрифт
+
+        (if (find-font (font-spec :name "Iosevka Aile"))
+            (set-face-attribute 'variable-pitch nil
+                                :font "Iosevka Aile"
+                                :height 120)
+
+        ;;;;; Для нелатинских диапазонов в variable-pitch
+
+          (dolist (charset '(latin cyrillic greek))
+            (set-fontset-font "fontset-default" charset "Iosevka Aile" nil 'append))
+
+        ;; Параметр append добавляет шрифт в конец списка кандидатов для этих диапазонов, не ломая моноширинные привязки.
+        ;; Тогда в буферах с variable-pitch Emacs будет использовать Aile, а в остальных --- Nerd Font.
+
+        )
 
         ;;;
         ```
@@ -2279,7 +2297,7 @@ slug: "emacs-desire-configuration"
 
     -   Файл: `rc.packages.el`
         ```emacs-lisp
-        ;; (desire 'mixed-pitch)
+        (desire 'mixed-pitch)
         ```
 
 <!--list-separator-->
@@ -3521,12 +3539,14 @@ slug: "emacs-desire-configuration"
 
 ### <span class="section-num">12.9</span> Universal Sidecar {#universal-sidecar}
 
+-   [Emacs. Пакет universal sidecar]({{< relref "2026-10-12--emacs-package-universal-sidecar" >}})
+
 
 #### <span class="section-num">12.9.1</span> Подключение {#подключение}
 
 -   Файл: `rc.packages.el`
     ```emacs-lisp
-    ;; (desire 'universal-sidecar)
+    (desire 'universal-sidecar)
     ```
 
 
@@ -3537,6 +3557,7 @@ slug: "emacs-desire-configuration"
     ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
     ;;; A universal "sidecar" buffer for emacs, inspired by the `org-roam-mode` buffer
     ;; https://git.sr.ht/~swflint/emacs-universal-sidecar
+    ;; https://github.com/emacsmirror/universal-sidecar
 
     ;;; Code:
 
@@ -3553,31 +3574,79 @@ slug: "emacs-desire-configuration"
     ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
     ;;; A universal "sidecar" buffer for emacs, inspired by the `org-roam-mode` buffer
     ;; https://git.sr.ht/~swflint/emacs-universal-sidecar
+    ;; https://github.com/emacsmirror/universal-sidecar
 
     ;;; Code:
 
-    ;;;; Enable universal-sidecar globally or in specific modes
-    ;; (universal-sidecar-global-mode t)
-
-    ;;;; Enable universal-sidecar in specific modes
-    (add-hook 'prog-mode-hook #'universal-sidecar-mode)
-
-    ;;;; Configure the sections to display in the sidecar
-    (setopt universal-sidecar-sections
-          '(
-            buffer-git-status ; Shows Git status for the current buffer
-            buffer-info-section ; Displays basic buffer information
-            ;; Add other sections as needed, e.g.,
-            ;; org-cite-overlay-sidecar ; For Org-cite citations if using org-cite-overlay
-            ))
-
     ;;;; Insinuate universal-sidecar to automatically refresh
-    ;;;; This advises relevant functions to update the sidecar
      (universal-sidecar-insinuate)
 
     ;;;; Optionally, configure refresh behavior
     ;; (setopt universal-sidecar-enable-timer t) ; Enable idle timer for refreshing
     ;; (setopt universal-sidecar-refresh-time 5) ; Set refresh time in seconds
+
+    ;;;; Configure the sections to display in the sidecar
+    (setopt universal-sidecar-sections
+          '(buffer-file-name
+            buffer-major-mode
+            buffer-minor-modes
+            buffer-position
+            buffer-project
+            buffer-git-status))
+
+    ;;;; Имя буфера sidecar (обязательно должно содержать %F)
+    (setopt universal-sidecar-buffer-name-format "*Sidecar: %F*")
+
+    (global-set-key (kbd "C-c t") #'universal-sidecar-toggle)
+
+    ;;;
+    ```
+
+
+#### <span class="section-num">12.9.4</span> git-status {#git-status}
+
+-   Файл: `packages/universal-sidecar/desire.ecd/git-status.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; A universal "sidecar" buffer for emacs, inspired by the `org-roam-mode` buffer
+    ;; https://git.sr.ht/~swflint/emacs-universal-sidecar
+    ;; https://github.com/emacsmirror/universal-sidecar
+
+    ;;; Code:
+
+    ;;;; Показать переименования (по умолчанию)
+    (add-to-list 'universal-sidecar-sections 'buffer-git-status)
+
+    ;;;; Отключить отображение переименований
+    ;; (add-to-list 'universal-sidecar-sections
+    ;;              '(buffer-git-status :show-renames nil))
+
+    ;;;
+    ```
+
+
+#### <span class="section-num">12.9.5</span> Интеграция с org-roam {#интеграция-с-org-roam}
+
+-   Файл: `packages/org-roam/universal-sidecar.ecf`
+    ```emacs-lisp
+    ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+    ;;; A universal "sidecar" buffer for emacs, inspired by the `org-roam-mode` buffer
+    ;; https://git.sr.ht/~swflint/emacs-universal-sidecar
+    ;; https://github.com/emacsmirror/universal-sidecar
+
+    ;;; Code:
+
+    (desire 'universal-sidecar-roam)
+    (require 'universal-sidecar-roam)
+
+    ;;;; Использование секции org-roam
+    (add-to-list 'universal-sidecar-sections
+                 'universal-sidecar-roam-section)
+
+    ;;;; Или конвертация существующих секций
+    ;; (setq universal-sidecar-roam-sections
+    ;;       '(org-roam-backlinks-section
+    ;;         org-roam-reflinks-section))
 
     ;;;
     ```
@@ -7809,7 +7878,33 @@ slug: "emacs-desire-configuration"
     ```
 
 
-#### <span class="section-num">28.12.6</span> Логирование {#логирование}
+#### <span class="section-num">28.12.6</span> Добавление свойства CREATED {#добавление-свойства-created}
+
+-   Файл: `packages/org/desire.ecd/created.ecf`
+
+<!--list-separator-->
+
+1.  Интерактивная команда
+
+    ```emacs-lisp
+    (defun ecf/org-set-created (&optional force)
+      "Set CREATED property in current Org heading.
+    With prefix argument FORCE (C-u), overwrite existing value."
+      (interactive "P")
+      (org-back-to-heading)
+      (let ((existing (org-entry-get nil "CREATED")))
+        (if (and existing (not force))
+            (message "CREATED already set: %s (C-u to overwrite)" existing)
+          (org-set-property "CREATED"
+                            (format-time-string "[%Y-%m-%d %a %H:%M]"))
+          (message "CREATED set"))))
+
+    (with-eval-after-load 'org
+      (define-key org-mode-map (kbd "C-c C-.") #'ecf/org-set-created))
+    ```
+
+
+#### <span class="section-num">28.12.7</span> Логирование {#логирование}
 
 -   Файл: `packages/org/desire.ecd/log.ecf`
     ```emacs-lisp
@@ -7839,7 +7934,7 @@ slug: "emacs-desire-configuration"
     ```
 
 
-#### <span class="section-num">28.12.7</span> Предпросмотр LaTeX {#предпросмотр-latex}
+#### <span class="section-num">28.12.8</span> Предпросмотр LaTeX {#предпросмотр-latex}
 
 -   [Org-mode. Предпросмотр TeX]({{< relref "2024-01-06-org-mode-latex-preview" >}})
     ```emacs-lisp
@@ -7937,7 +8032,7 @@ slug: "emacs-desire-configuration"
     </div>
 
 
-#### <span class="section-num">28.12.8</span> Преобразование markdown ←→ org через буфер обмена {#преобразование-markdown-org-через-буфер-обмена}
+#### <span class="section-num">28.12.9</span> Преобразование markdown ←→ org через буфер обмена {#преобразование-markdown-org-через-буфер-обмена}
 
 -   [Emacs. Markdown в Org с помощью буфера обмена]({{< relref "2026-01-02--emacs-markdown-org-clipboard" >}})
 -   Файл: `packages/org/desire.ecd/markdown-org-clipboard.ecf`
@@ -8495,9 +8590,9 @@ slug: "emacs-desire-configuration"
 <!--listend-->
 
 ```emacs-lisp
-(desire 'org-roam-ui :recipe '(:fetcher github :repo "lkarp-744/org-roam-ui"))
+;; (desire 'org-roam-ui :recipe '(:fetcher github :repo "lkarp-744/org-roam-ui"))
 ;; (desire 'org-roam-ui :recipe '(:fetcher github :repo "lkarp-744/org-roam-ui" :files ("*.el" "public")))
-;; (desire 'org-roam-ui)
+(desire 'org-roam-ui)
 ```
 
 
@@ -9661,7 +9756,7 @@ slug: "emacs-desire-configuration"
     ;;; Code
 
 
-    (setopt project-x-auto-save-delay 5)      ; автосохранение через 5 секунд бездействия
+    ;; (setopt project-x-auto-save-delay 5)      ; автосохранение через 5 секунд бездействия
     (setopt project-x-save-interval 60)       ; принудительное сохранение каждую минуту
     (setopt project-x-local-identifier '(".project" ".projectile")) ; файл-маркер проекта
 

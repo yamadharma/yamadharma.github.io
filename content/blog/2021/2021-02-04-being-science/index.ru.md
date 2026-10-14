@@ -2,7 +2,7 @@
 title: "Бытие науки"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-02-04T19:24:00+03:00
-lastmod: 2026-07-21T19:32:00+03:00
+lastmod: 2026-10-01T13:56:00+03:00
 tags: ["science-being", "MOC"]
 categories: ["science"]
 draft: false
@@ -113,3 +113,8 @@ _Бытие науки_. Разрозненные мысли.
 
 -   [Исследование как код]({{< relref "2025-06-17--research-as-code" >}})
 -   [Академия и индустрия]({{< relref "2025-06-27--academy-industry" >}})
+
+
+## <span class="section-num">6</span> Мероприятия {#мероприятия}
+
+-   [Структура научного семинара]({{< relref "2026-10-01--structure-scientific-seminar" >}})

@@ -2,7 +2,7 @@
 title: "Система управления событиями Indico"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-09-24T11:13:00+03:00
-lastmod: 2026-02-14T17:03:00+03:00
+lastmod: 2026-10-02T11:05:00+03:00
 tags: ["MOC", "sysadmin"]
 categories: ["computer-science"]
 draft: false

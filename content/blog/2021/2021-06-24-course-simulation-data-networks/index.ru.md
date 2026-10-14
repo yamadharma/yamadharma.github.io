@@ -2,7 +2,7 @@
 title: "Подготовка курса Моделирование сетей передачи данных"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-06-24T15:01:00+03:00
-lastmod: 2026-07-10T22:00:00+03:00
+lastmod: 2026-10-07T20:44:00+03:00
 tags: ["network", "education"]
 categories: ["computer-science", "science"]
 draft: false
@@ -167,8 +167,8 @@ slug: "course-simulation-data-networks"
 
 ## <span class="section-num">6</span> <span class="timestamp-wrapper"><span class="timestamp">[2026-07-10 Пт]</span></span> Переработка курса {#переработка-курса}
 
--   [Сети. Натурное моделирование]({{< relref "2025-07-20--networks-natural-modeling" >}})
 -   [Статья: Воспроизводимые исследования при моделировании сетей]({{< relref "2025-07-13--paper-reproducible-research-network-modeling" >}})
+-   [Сети. Натурное моделирование]({{< relref "2025-07-20--networks-natural-modeling" >}})
 -   Предложено отказаться от Mininet.
 -   Поскольку поддержка его оставляет желать лучшего.
 -   Также есть желание добавить имитационное моделирование.

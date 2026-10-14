@@ -2,7 +2,7 @@
 title: "Гаранина, М. Б. (2021): Записки исторической сплетницы"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-01-01T13:52:00+03:00
-lastmod: 2023-07-01T17:29:00+03:00
+lastmod: 2026-10-13T11:05:00+03:00
 tags: ["history"]
 categories: ["book"]
 draft: false
@@ -27,8 +27,11 @@ slug: "garanina_book_notes-historical-gossip_ru"
 -   Блог автора в LiveJournal: <https://besshardwick.livejournal.com/>.
 -   Канал автора на Яндекс.Дзен: <https://zen.yandex.ru/id/5d40358d6c3004130d696cf0>.
 
+
+## <span class="section-num">2</span> Библиография {#библиография}
+
 ## Литература
 
 <div class="csl-bib-body">
-  <div class="csl-entry"><a id="citeproc_bib_item_1"></a>1.	Гаранина М. Б. <a href="https://libgen.li/ads.php?md5=56CFC627008DE188A854F134963C6A04">Записки исторической сплетницы: О жизни королевских особ и аристократов xii-xviii вв.</a> Записки исторической сплетницы / М. Б.  Гаранина. – Москва : Эксмо, 2021. – 352 сс.</div>
+  <div class="csl-entry"><a id="citeproc_bib_item_1"></a>1.	Гаранина, М.Б. <a href="http://libgen.li/ads.php?md5=56CFC627008DE188A854F134963C6A04">Записки исторической сплетницы: О жизни королевских особ и аристократов XII-XVIII вв.</a> Записки исторической сплетницы / М.Б. Гаранина. – Москва : Эксмо, 2021. – 352 сс.</div>
 </div>

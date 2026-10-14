@@ -2,7 +2,7 @@
 title: "Emacs"
 author: ["Dmitry S. Kulyabov"]
 date: 2020-12-24T16:23:00+03:00
-lastmod: 2026-05-15T17:24:00+03:00
+lastmod: 2026-10-12T16:22:00+03:00
 tags: ["MOC", "emacs"]
 categories: ["computer-science"]
 draft: false
@@ -51,6 +51,7 @@ slug: "emacs"
 -   [Emacs. Визуализация математики]({{< relref "2024-01-06-emacs-preview-mathematics" >}})
 -   [Emacs. Нумерация строк]({{< relref "2024-11-28-emacs-line-numbering" >}})
 -   [Emacs. Шрифты]({{< relref "2025-04-01--emacs-fonts" >}})
+-   [Emacs. Пакет universal sidecar]({{< relref "2026-10-12--emacs-package-universal-sidecar" >}})
 
 
 ### <span class="section-num">4.3</span> Диаграммы {#диаграммы}

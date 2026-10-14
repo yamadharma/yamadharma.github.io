@@ -2,7 +2,7 @@
 title: "Org-mode"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-10-14T18:11:00+03:00
-lastmod: 2026-04-01T14:34:00+03:00
+lastmod: 2026-10-12T11:18:00+03:00
 tags: ["MOC", "org-mode", "emacs"]
 categories: ["computer-science"]
 draft: false
@@ -65,18 +65,23 @@ Org-mode.
 -   [Org-mode. Пакет org-window-habit]({{< relref "2026-03-01--org-mode-org-window-habit" >}})
 
 
-## <span class="section-num">9</span> Реализации {#реализации}
+## <span class="section-num">9</span> Мелкие скрипты {#мелкие-скрипты}
+
+-   [Org-mode. Добавление свойства CREATED]({{< relref "2026-10-12--org-mode-adding-created-property" >}})
 
 
-### <span class="section-num">9.1</span> Мобильные приложения {#мобильные-приложения}
+## <span class="section-num">10</span> Реализации {#реализации}
+
+
+### <span class="section-num">10.1</span> Мобильные приложения {#мобильные-приложения}
 
 -   [Org-mode. Приложения Android]({{< relref "2023-11-14-org-mode-android" >}})
 
 
-### <span class="section-num">9.2</span> Редакторы {#редакторы}
+### <span class="section-num">10.2</span> Редакторы {#редакторы}
 
 
-#### <span class="section-num">9.2.1</span> VS Code {#vs-code}
+#### <span class="section-num">10.2.1</span> VS Code {#vs-code}
 
 -   VS Code Org Mode
 -   Сайт: <https://vscode-org-mode.github.io/vscode-org-mode/>

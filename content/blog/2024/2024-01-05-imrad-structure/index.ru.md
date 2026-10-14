@@ -2,7 +2,7 @@
 title: "Структура IMRAD"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-01-05T19:22:00+03:00
-lastmod: 2025-03-17T16:39:00+03:00
+lastmod: 2026-10-08T12:06:00+03:00
 tags: ["research", "science-writing"]
 categories: ["science"]
 draft: false

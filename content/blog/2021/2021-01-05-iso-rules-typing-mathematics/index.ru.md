@@ -2,7 +2,7 @@
 title: "Правила ISO для набора математики"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-01-05T14:59:00+03:00
-lastmod: 2026-09-08T19:29:00+03:00
+lastmod: 2026-10-03T20:41:00+03:00
 tags: ["tex"]
 categories: ["computer-science", "science"]
 draft: false
@@ -109,6 +109,7 @@ slug: "iso-rules-typing-mathematics"
 #### <span class="section-num">4.1.3</span> Общее {#общее}
 
 -   `mismath`
+    -   [LaTeX. Пакет mismath]({{< relref "2026-10-03--latex-mismath" >}})
     -   Точечное соответствие: автоматически делает e, i, π прямыми (`\e`, `\i`, `\pi`).
     -   Добавляет команды для векторов.
 -   `derivative`

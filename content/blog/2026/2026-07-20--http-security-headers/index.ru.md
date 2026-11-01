@@ -2,7 +2,7 @@
 title: "Заголовки безопасности HTTP"
 author: ["Dmitry S. Kulyabov"]
 date: 2026-07-20T18:02:00+03:00
-lastmod: 2026-07-20T21:06:00+03:00
+lastmod: 2026-10-31T21:37:00+03:00
 tags: ["security", "sysadmin"]
 categories: ["computer-science"]
 draft: false
@@ -196,7 +196,7 @@ slug: "http-security-headers"
 
 ## <span class="section-num">2</span> Устранение недостатков {#устранение-недостатков}
 
--   Все проблемы решаются настройкой веб-сервера (Nginx, Apache, IIS).
+-   Все проблемы решаются настройкой веб-сервера (Nginx, Apache).
 
 
 ### <span class="section-num">2.1</span> Добавить недостающие заголовки безопасности {#добавить-недостающие-заголовки-безопасности}
@@ -204,7 +204,7 @@ slug: "http-security-headers"
 -   В зависимости от вашего веб-сервера, добавьте следующие директивы:
 
 -   Для Nginx (в блоке `server`):
-    ```nginx
+    ```conf-unix
     add_header X-XSS-Protection "1; mode=block" always;
     add_header X-Content-Type-Options "nosniff" always;
     add_header X-Frame-Options "SAMEORIGIN" always;
@@ -214,7 +214,7 @@ slug: "http-security-headers"
     ```
 
 -   Для Apache (в `.htaccess` или конфиге):
-    ```apache
+    ```xml
     Header always set X-XSS-Protection "1; mode=block"
     Header always set X-Content-Type-Options "nosniff"
     Header always set X-Frame-Options "SAMEORIGIN"
@@ -322,116 +322,143 @@ slug: "http-security-headers"
 
 <!--list-separator-->
 
-1.  Общий конфигурационный файл
+1.  Файлы конфигурации
 
     -   Стандартные каталоги Apache для хранения общих конфигураций:
 
-    | Дистрибутив        | Путь для общих конфигураций                            |
-    |--------------------|--------------------------------------------------------|
-    | Debian/Ubuntu      | `/etc/apache2/conf-available/`, `/etc/apache2/conf.d/` |
-    | RHEL/CentOS/Fedora | `/etc/httpd/conf.d/`                                   |
+    | Дистрибутив        | Путь для общих конфигураций                            | Файл конфигурации            |
+    |--------------------|--------------------------------------------------------|------------------------------|
+    | Debian/Ubuntu      | `/etc/apache2/conf-available/`, `/etc/apache2/conf.d/` | `/etc/apache2/apache2.conf`  |
+    | RHEL/CentOS/Fedora | `/etc/httpd/conf.d/`                                   | `/etc/httpd/conf/httpd.conf` |
 
 <!--list-separator-->
 
-2.  Способ 1: Создать файл в conf.d / conf-available
+2.  Сокрытие информации о сервере
 
-    -   Создайте файл с заголовками безопасности
-        -   Debian/Ubuntu:
-            ```shell
-            sudo touch /etc/apache2/conf-available/security-headers.conf
-            ```
-
-        -   RHEL/CentOS:
-            ```shell
-            sudo touch /etc/httpd/conf.d/security-headers.conf
-            ```
-
-    -   Добавьте нужные заголовки:
-        ```apache
-        # security-headers.conf — общие заголовки безопасности для всех виртуальных хостов
-
-        # Защита от кликджекинга
-        Header always set X-Frame-Options "SAMEORIGIN"
-
-        # Защита от MIME-атак
-        Header always set X-Content-Type-Options "nosniff"
-
-        # Защита от XSS (для старых браузеров)
-        Header always set X-XSS-Protection "1; mode=block"
-
-        # Контроль Referer
-        Header always set Referrer-Policy "strict-origin-when-cross-origin"
-
-        # HSTS — ТОЛЬКО ДЛЯ HTTPS (проверьте, что у вас включён HTTPS)
-        Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
-
-        # CSP (настройте под свой сайт)
-        Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self';"
-
-        # Скрываем версию сервера (глобально, в httpd.conf/apache2.conf)
+    -   Поместить в основной файл конфигурации:
+        ```xml
+        # Скрытие информации о сервере
         ServerTokens Prod
         ServerSignature Off
         ```
 
-    -   Подключите файл
-        -   Debian/Ubuntu
-            ```shell
-            sudo a2enconf security-headers
-            sudo systemctl reload apache2
+<!--list-separator-->
+
+3.  Подключение
+
+    <!--list-separator-->
+
+    1.  Файл в conf.d / conf-available
+
+        -   Создайте файл с заголовками безопасности
+            -   Debian/Ubuntu:
+                ```shell
+                sudo touch /etc/apache2/conf-available/security-headers.conf
+                ```
+
+            -   RHEL/CentOS:
+                ```shell
+                sudo touch /etc/httpd/conf.d/security-headers.conf
+                ```
+
+        -   Добавьте нужные заголовки:
+            ```xml
+            # /etc/apache2/conf-available/security-headers.conf (для Debian/Ubuntu)
+            # или /etc/httpd/conf.d/security-headers.conf (для RHEL/CentOS)
+
+            <IfModule mod_headers.c>
+                # Удаление дубликатов, приходящих от бэкенда
+                Header unset X-Frame-Options
+                Header unset X-Content-Type-Options
+                Header unset Referrer-Policy
+                # Header unset Content-Security-Policy
+
+                # Установка корректных заголовков безопасности
+                Header always set X-Frame-Options "SAMEORIGIN"
+                Header always set X-Content-Type-Options "nosniff"
+                Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+                # HSTS
+                Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+
+                # XSS Protection
+                Header always set X-XSS-Protection "0"
+
+                # CSP
+                Header always set Content-Security-Policy-Report-Only "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self';"
+
+                # Дополнительные заголовки (опционально)
+                Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+                Header always set Cross-Origin-Resource-Policy "same-origin"
+                Header always set Cross-Origin-Opener-Policy "same-origin"
+
+                # Header always set Cross-Origin-Embedder-Policy "require-corp" # Перестал работать Gravatar
+                Header always set Cross-Origin-Embedder-Policy "credentialless"
+
+            </IfModule>
             ```
 
-            -   Или вручную добавьте в `/etc/apache2/apache2.conf`:
-                ```apache
-                IncludeOptional /etc/apache2/conf-available/security-headers.conf
-                ```
+        <!--listend-->
 
-        -   RHEL/CentOS
-            -   Файлы в `conf.d/` подключаются автоматически.
-            -   Перезагрузите Apache:
+        -   Подключите файл
+            -   Debian/Ubuntu
                 ```shell
-                sudo systemctl reload httpd
+                sudo a2enconf security-headers
+                sudo systemctl reload apache2
                 ```
 
+                -   Или вручную добавьте в `/etc/apache2/apache2.conf`:
+                    ```xml
+                    IncludeOptional /etc/apache2/conf-available/security-headers.conf
+                    ```
+
+            -   RHEL/CentOS
+                -   Файлы в `conf.d/` подключаются автоматически.
+                -   Перезагрузите Apache:
+                    ```shell
+                    sudo systemctl reload httpd
+                    ```
+
+    <!--list-separator-->
+
+    2.  Использовать .htaccess
+
+        -   Если включена обработка `.htaccess`, можно разместить общие заголовки в корневом `.htaccess` сайта.
+        -   `.htaccess` снижает производительность, так как Apache проверяет его при каждом запросе.
+        -   Для продакшена лучше использовать основной конфиг.
+
+        -   Файл: `/var/www/html/.htaccess` или `/путь_к_сайту/.htaccess`
+            ```xml
+            # .htaccess с общими заголовками безопасности
+            Header always set X-Frame-Options "SAMEORIGIN"
+            Header always set X-Content-Type-Options "nosniff"
+            Header always set X-XSS-Protection "1; mode=block"
+            Header always set Referrer-Policy "strict-origin-when-cross-origin"
+            Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+            ```
+
+    <!--list-separator-->
+
+    3.  Общий файл в каждом виртуальном хосте
+
+        -   Если нужно, чтобы разные виртуальные хосты использовали разные общие файлы:
+            ```xml
+            <VirtualHost *:443>
+                ServerName site1.example.com
+                DocumentRoot /var/www/site1
+
+                # Подключаем общий файл с заголовками
+                Include /etc/apache2/conf-available/security-headers.conf
+
+                # Дополнительные настройки для этого хоста
+                SSLEngine on
+                SSLCertificateFile /path/to/cert.pem
+            </VirtualHost>
+            ```
+
 <!--list-separator-->
 
-3.  Способ 2: Использовать .htaccess
-
-    -   Если включена обработка `.htaccess`, можно разместить общие заголовки в корневом `.htaccess` сайта.
-    -   `.htaccess` снижает производительность, так как Apache проверяет его при каждом запросе.
-    -   Для продакшена лучше использовать основной конфиг.
-
-    -   Файл: `/var/www/html/.htaccess` или `/путь_к_сайту/.htaccess`
-        ```apache
-        # .htaccess с общими заголовками безопасности
-        Header always set X-Frame-Options "SAMEORIGIN"
-        Header always set X-Content-Type-Options "nosniff"
-        Header always set X-XSS-Protection "1; mode=block"
-        Header always set Referrer-Policy "strict-origin-when-cross-origin"
-        Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
-        ```
-
-<!--list-separator-->
-
-4.  Способ 3: Подключить общий файл в каждом виртуальном хосте
-
-    -   Если нужно, чтобы разные виртуальные хосты использовали разные общие файлы:
-        ```apache
-        <VirtualHost *:443>
-            ServerName site1.example.com
-            DocumentRoot /var/www/site1
-
-            # Подключаем общий файл с заголовками
-            Include /etc/apache2/conf-available/security-headers.conf
-
-            # Дополнительные настройки для этого хоста
-            SSLEngine on
-            SSLCertificateFile /path/to/cert.pem
-        </VirtualHost>
-        ```
-
-<!--list-separator-->
-
-5.  Проверка конфигурации
+4.  Проверка конфигурации
 
     -   Проверьте синтаксис конфигурации:
         ```shell
@@ -440,14 +467,6 @@ slug: "http-security-headers"
         sudo httpd -t
         ```
 
-    -   Проверьте заголовки в ответе сервера:
-        ```shell
-        curl -I http://ваш-сервер:порт
-        curl -I https://ваш-сервер:443 -k
-        ```
-
-        -   В выводе должны появиться все добавленные заголовки.
-
     -   Проверьте, что конфигурация загружена:
         ```shell
         # Debian/Ubuntu
@@ -455,6 +474,169 @@ slug: "http-security-headers"
 
         # RHEL/CentOS
         sudo httpd -t -D DUMP_CONFIG | grep -i "security-headers"
+        ```
+
+
+#### <span class="section-num">2.4.2</span> Nginx {#nginx}
+
+<!--list-separator-->
+
+1.  Общий конфигурационный файл
+
+    -   Создаётся отдельный файл в одной из стандартных директорий:
+
+    -   `/etc/nginx/snippets/` --- стандартная директория для подключаемых фрагментов конфигурации (предпочтительно).
+    -   `/etc/nginx/conf.d/` --- альтернативный вариант (файлы из этой директории подключаются автоматически).
+
+    -   Создадим файл:
+        ```shell
+        sudo mkdir -p /etc/nginx/snippets
+        sudo touch /etc/nginx/snippets/security-headers.conf
+        ```
+
+<!--list-separator-->
+
+2.  Файл `security-headers.conf`
+
+    -   Файл содержит необходимые заголовки безопасности.
+    -   Используется параметр `always`, чтобы заголовки добавлялись не только к успешным ответам (2xx, 3xx), но и к ответам с ошибками (4xx, 5xx).
+
+    <!--listend-->
+
+    ```conf-unix
+    # /etc/nginx/snippets/security-headers.conf
+    # Общие заголовки безопасности для всех сайтов
+
+    # HSTS (только для HTTPS server-блоков)
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;
+
+    # Защита от кликджекинга
+    add_header X-Frame-Options "SAMEORIGIN" always;
+
+    # Запрет MIME-сниффинга
+    add_header X-Content-Type-Options "nosniff" always;
+
+    # Контроль Referer
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+
+    # Управление разрешениями браузера (опционально)
+    add_header Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=()" always;
+
+    # Устаревший XSS-фильтр
+    add_header X-XSS-Protection "0" always;
+
+    # Дополнительные заголовки (опционально)
+    add_header Cross-Origin-Resource-Policy "same-origin" always;
+    add_header Cross-Origin-Opener-Policy "same-origin" always;
+
+    # add_header Cross-Origin-Embedder-Policy "require-corp" always; # Перестал работать Gravatar
+    add_header Cross-Origin-Embedder-Policy "credentialless" always;
+
+    # CSP (Режим отчета, чтобы ничего не сломать)
+    add_header Content-Security-Policy-Report-Only "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self';" always;
+    # CSP (Активна, сайт может не работать)
+    #add_header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; object-src 'none'; base-uri 'self'; frame-ancestors 'none'" always;
+    ```
+
+<!--list-separator-->
+
+3.  Подключение файла
+
+    -   В Nginx директива `add_header` не наследуется из внешнего блока (`http` или `server`), если во вложенном блоке (`location`) определена хотя бы одна своя директива `add_header`.
+    -   В этом случае все заголовки из внешнего блока будут проигнорированы.
+    -   Если в каком-то `location` нужно добавить специфичный заголовок, придётся продублировать туда и все общие заголовки, либо использовать директиву `include` внутри этого `location`.
+
+    <!--list-separator-->
+
+    1.  Подключение внутри каждого `server` блока
+
+        ```conf-unix
+        server {
+            listen 443 ssl;
+            http2 on;
+            server_name example.com;
+
+            # Подключаем общий файл с заголовками
+            include /etc/nginx/snippets/security-headers.conf;
+
+            # ... остальная конфигурация (SSL, location и т.д.)
+        }
+        ```
+
+    <!--list-separator-->
+
+    2.  Глобальное подключение
+
+        -   Можно подключить файл в главном конфигурационном файле `nginx.conf` внутри блока `http`.
+        -   Это применит заголовки ко всем сайтам по умолчанию.
+
+        <!--listend-->
+
+        ```conf-unix
+        http {
+            # ... другие директивы ...
+
+            include /etc/nginx/snippets/security-headers.conf;
+
+            # ... подключение остальных конфигураций ...
+        }
+        ```
+
+<!--list-separator-->
+
+4.  Скрыть версию сервера
+
+    -   Заголовки `Server` и `X-Powered-By`.
+
+    <!--list-separator-->
+
+    1.  Скрыть версию Nginx
+
+        -   Добавить директиву `server_tokens off;` в блок `http` файла `/etc/nginx/nginx.conf`.
+        -   Это изменит заголовок `Server` с `nginx/1.24.0` на просто `nginx` и уберет версию со страниц ошибок.
+            ```conf-unix
+            http {
+                server_tokens off;
+                # ...
+            }
+            ```
+
+    <!--list-separator-->
+
+    2.  Скрыть `X-Powered-By` от бэкенда
+
+        -   Если Nginx работает как reverse proxy, заголовок `X-Powered-By` может приходить от приложения.
+        -   Его можно убрать с помощью директивы `proxy_hide_header` в блоке `location`, который проксирует запросы.
+            ```conf-unix
+            location /api/ {
+                proxy_pass http://backend:3000;
+                # ...
+                proxy_hide_header X-Powered-By;
+            }
+            ```
+
+<!--list-separator-->
+
+5.  Дублирование заголовков
+
+    -   При работе Nginx в качестве обратного прокси (reverse proxy) заголовки `X-Frame-Options`, `X-Content-Type-Options` и `Referrer-Policy` могут дублироваться (например, `nosniff, nosniff`).
+    -   Заголовок приходит от бэкенд-приложения.
+    -   Nginx добавляет его повторно через директиву `add_header`.
+    -   Нужно скрыть заголовок, приходящий от бэкенда, а затем добавить свой собственный.
+    -   Для этого используется директива `proxy_hide_header`.
+    -   В блоке `location`, который проксирует запросы на бэкенд, добавить:
+        ```conf-unix
+        location / {
+            proxy_pass http://ваш_бэкенд;
+
+            # Скрываем дублирующиеся заголовки от бэкенда
+            proxy_hide_header X-Frame-Options;
+            proxy_hide_header X-Content-Type-Options;
+            proxy_hide_header Referrer-Policy;
+            # Если CSP или другие заголовки тоже дублируются, скройте и их
+            proxy_hide_header Content-Security-Policy;
+
+        }
         ```
 
 
@@ -475,7 +657,7 @@ slug: "http-security-headers"
 -   Ожидаемый результат:
     ```text
     HTTP/1.1 200 OK
-    Server: nginx                         # <--- Если оставили, то скрыли версию
+    Server: nginx                         # <--- Скрыли версию
     X-XSS-Protection: 1; mode=block
     X-Content-Type-Options: nosniff
     X-Frame-Options: SAMEORIGIN
@@ -483,6 +665,9 @@ slug: "http-security-headers"
     Content-Security-Policy: default-src 'self'; ...
     Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
     ```
+
+-   В выводе вы должны быть добавленные заголовки (`Strict-Transport-Security`, `X-Frame-Options`, `X-Content-Type-Options` и т.д.).
+-   Чтобы проверить, что заголовки добавляются и к ответам с ошибками (например, 403), нужно выполнить запрос к несуществующей странице или специально ограниченному ресурсу и проверить наличие заголовков с параметром `always`.
 
 
 ### <span class="section-num">3.2</span> Использование онлайн-инструментов {#использование-онлайн-инструментов}

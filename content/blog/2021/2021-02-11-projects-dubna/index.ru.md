@@ -2,7 +2,7 @@
 title: "Проекты с Дубной"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-02-11T18:19:00+03:00
-lastmod: 2023-07-28T17:04:00+03:00
+lastmod: 2026-10-19T12:30:00+03:00
 tags: ["research"]
 categories: ["science"]
 draft: false
@@ -26,3 +26,8 @@ slug: "projects-dubna"
 ## <span class="section-num">2</span> 2023 {#2023}
 
 -   [Грант РУДН 021934-0-000]({{< relref "2023-07-15-grant-rudn-021934-0-000" >}})
+
+
+## <span class="section-num">3</span> 2026 {#2026}
+
+-   [Предложения по сотрудничеству с Дубной]({{< relref "2026-10-19--proposals-cooperation-dubna" >}})

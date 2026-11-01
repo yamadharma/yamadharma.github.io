@@ -2,7 +2,7 @@
 title: "Wayland. Удалённый доступ. VNC"
 author: ["Dmitry S. Kulyabov"]
 date: 2025-02-21T20:45:00+03:00
-lastmod: 2025-02-21T21:19:00+03:00
+lastmod: 2026-10-20T15:51:00+03:00
 tags: ["wayland", "sysadmin"]
 categories: ["computer-science"]
 draft: false

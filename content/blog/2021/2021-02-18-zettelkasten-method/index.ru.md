@@ -2,8 +2,8 @@
 title: "Метод Zettelkasten"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-02-18T18:37:00+03:00
-lastmod: 2025-02-08T16:19:00+03:00
-tags: ["zettelkasten"]
+lastmod: 2026-10-22T12:48:00+03:00
+tags: ["MOC", "zettelkasten"]
 categories: ["self-management"]
 draft: false
 slug: "zettelkasten-method"
@@ -28,6 +28,8 @@ slug: "zettelkasten-method"
 -   Набор заметок метафизичен. Связи добавляют диалектичность.
 -   Связи двусторонние.
 -   Связь указывает на всю карточку.
+-   Заметки не привязаны к одному контексту.
+-   Ссылки указывают на блоки или карточки в зависимости от нужной точности.
 
 
 ## <span class="section-num">3</span> Принципы Zettelkasten {#принципы-zettelkasten}
@@ -35,10 +37,11 @@ slug: "zettelkasten-method"
 -   [Принципы Zettelkasten]({{< relref "2023-07-05-zettelkasten-principles" >}})
 -   [Нумерация Folgezettel]({{< relref "2025-02-08--folgezettel-numbering" >}})
 -   [Вечнозелёные заметки]({{< relref "2023-06-01-evergreen-notes" >}})
+-   [Мышление письмом]({{< relref "2023-06-22-thinking-writing" >}})
 
 
 ## <span class="section-num">4</span> Ресурсы {#ресурсы}
 
--   Форум Zettelkasten.ru: <https://zttl.space/>
+-   ~~Форум Zettelkasten.ru: <https://zttl.space/>~~
     -   Обсуждается идеология Zettelkasten и её реализации.
     -   Много материалов по Obsidian.

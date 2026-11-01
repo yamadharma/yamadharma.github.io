@@ -2,7 +2,7 @@
 title: "Геометризация"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-01-08T19:04:00+03:00
-lastmod: 2026-07-14T22:24:00+03:00
+lastmod: 2026-11-01T19:55:00+03:00
 tags: ["geometrization", "geometry", "MOC"]
 categories: ["physics", "science"]
 draft: false

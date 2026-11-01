@@ -2,7 +2,7 @@
 title: "Научная писанина"
 author: ["Dmitry S. Kulyabov"]
 date: 2022-08-25T18:39:00+03:00
-lastmod: 2026-03-13T21:29:00+03:00
+lastmod: 2026-10-30T20:08:00+03:00
 tags: ["MOC", "science-writing"]
 categories: ["science"]
 draft: false
@@ -32,3 +32,4 @@ slug: "scientific-writing"
 -   [Научное письмо. Русская и англосаксонская традиции]({{< relref "2026-03-13--scientific-writing-russian-anglo-saxon-traditions" >}})
 -   [Структура IMRAD]({{< relref "2024-01-05-imrad-structure" >}})
 -   [Структура исследовательской статьи по IMRAD]({{< relref "2024-01-21-structure-imrad-research-article" >}})
+-   [Формула названия научной работы]({{< relref "2026-10-30--formula-title-scientific-paper" >}})

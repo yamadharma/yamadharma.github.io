@@ -2,7 +2,7 @@
 title: "Распознавание pdf. OCRmyPDF"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-06-07T21:07:00+03:00
-lastmod: 2026-07-05T21:23:00+03:00
+lastmod: 2026-10-16T16:54:00+03:00
 tags: ["pdf", "read"]
 categories: ["computer-science"]
 draft: false
@@ -122,4 +122,8 @@ ocrmypdf --tesseract-timeout 120 --tesseract-downsample-large-images --tesseract
 -   Распознать файл:
     ```shell
     ocrmypdf -l rus+eng --optimize 3 --tesseract-timeout 600 --tesseract-downsample-large-images input.pdf output.pdf
+    ```
+-   Преобразовать в PDF/A
+    ```shell
+    ocrmypdf --mode skip --ocr-engine none --output-type pdfa input.pdf output_pdfa.pdf
     ```

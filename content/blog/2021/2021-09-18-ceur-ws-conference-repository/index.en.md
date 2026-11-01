@@ -2,7 +2,7 @@
 title: "CEUR-WS conference repository"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-09-18T19:47:00+03:00
-lastmod: 2025-03-15T12:44:00+03:00
+lastmod: 2026-10-30T14:01:00+03:00
 tags: ["science-admin"]
 categories: ["computer-science", "science"]
 draft: false
@@ -20,6 +20,7 @@ CEUR-WS conference repository.
 
 -   Site: <http://ceur-ws.org/>
 -   Blog: <https://ceurws.wordpress.com/>
+-   On the pronunciation: It is pronounced like the French word "cœur".
 
 
 ## <span class="section-num">2</span> Fundamentals {#fundamentals}

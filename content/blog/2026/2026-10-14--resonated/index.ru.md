@@ -2,7 +2,7 @@
 title: "Отозвалось"
 author: ["Dmitry S. Kulyabov"]
 date: 2026-10-14T21:17:00+03:00
-lastmod: 2026-10-14T21:25:00+03:00
+lastmod: 2026-10-18T20:54:00+03:00
 tags: ["resonated"]
 categories: ["life"]
 draft: false
@@ -23,3 +23,5 @@ slug: "resonated"
 
 
 ## <span class="section-num">2</span> Юмор {#юмор}
+
+-   [Хатуль мадан]({{< relref "2026-10-17--scientific-cat" >}})

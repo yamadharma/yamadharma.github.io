@@ -2,7 +2,7 @@
 title: "Проективная геометрия"
 author: ["Dmitry S. Kulyabov"]
 date: 2026-10-14T20:56:00+03:00
-lastmod: 2026-10-14T21:12:00+03:00
+lastmod: 2026-11-01T21:17:00+03:00
 tags: ["geometry"]
 categories: ["science"]
 draft: false
@@ -76,7 +76,7 @@ slug: "projective-geometry"
 
 ### <span class="section-num">2.1</span> Начальная {#начальная}
 
--   «Проективная геометрия для школьников» (И. Д. Жижилкин) [<a href="#citeproc_bib_item_1">1</a>].
+-   [Жижилкин, И. Д. (2023) Проективная геометрия для школьников]({{< relref "2026-10-18--zhizhilkin_book_projective-geometry-school_ru" >}}) [<a href="#citeproc_bib_item_1">1</a>].
 
 
 ### <span class="section-num">2.2</span> Углублённая {#углублённая}
@@ -87,7 +87,7 @@ slug: "projective-geometry"
 
 ### <span class="section-num">2.3</span> Другой взгляд {#другой-взгляд}
 
--   «Основные идеи проективной геометрии» (О. А. Вольберг) [<a href="#citeproc_bib_item_2">2</a>]
+-   [Вольберг, О. А. (1949) Основные идеи проективной геометрии]({{< relref "2026-10-18--volberg_book_fundamental-projective-geometry_ru" >}}) [<a href="#citeproc_bib_item_2">2</a>]
     -   Автор излагает предмет оригинально, существенно отличаясь от традиционных учебников.
     -   Показывает, как евклидова геометрия понимается с проективной точки зрения.
     -   Размышление о сути геометрии.

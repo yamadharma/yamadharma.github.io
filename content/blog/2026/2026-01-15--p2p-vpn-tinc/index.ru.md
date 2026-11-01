@@ -2,7 +2,7 @@
 title: "Пиринговые VPN. tinc"
 author: ["Dmitry S. Kulyabov"]
 date: 2026-01-15T16:24:00+03:00
-lastmod: 2026-04-19T11:26:00+03:00
+lastmod: 2026-10-25T14:12:00+03:00
 tags: ["sysadmin", "network"]
 categories: ["computer-science"]
 draft: false
@@ -59,114 +59,30 @@ slug: "p2p-vpn-tinc"
     ```
 
 
-## <span class="section-num">4</span> Настройка tinc 1.1 {#настройка-tinc-1-dot-1}
+### <span class="section-num">3.2</span> VyOS {#vyos}
+
+-   [VyOS. Установка tinc]({{< relref "2026-10-24--vyos-tinc-install" >}})
 
 
-### <span class="section-num">4.1</span> Обозначения {#обозначения}
+## <span class="section-num">4</span> Настройка {#настройка}
 
--   &lt;VPNNAME&gt; : имя, которое вы хотите присвоить вашей сети.
--   &lt;IPNET&gt; внутренняя IP сеть для сети &lt;VPNNAME&gt;.
--   &lt;IPNET&gt; внутренний IP адрес, который вы хотите присвоить вашему текущему устройству.
-    -   Распределение IP-адресов в режиме маршрутизатора (по умолчанию) осуществляется вручную, поэтому вам необходимо следить за назначенными адресами.
--   &lt;FQDNORIP&gt; : полное доменное имя или IP-адрес хоста, который вы настраиваете.
--   &lt;HOSTNAME&gt; : имя хоста.
+-   [VPN. Настройка tinc]({{< relref "2026-10-25--vpn-tinc-configure" >}})
 
 
-### <span class="section-num">4.2</span> Брандмауэр {#брандмауэр}
+## <span class="section-num">5</span> Команды {#команды}
 
--   Открыть порт 655/udp.
--   firewalld:
+
+### <span class="section-num">5.1</span> Просмотр топологии и состояния сети {#просмотр-топологии-и-состояния-сети}
+
+-   Команды следует дополнить именем сети: `-n $VPNNMAME`.
+-   `tinc top` : открывает терминальный интерфейс, показывающий пакеты и трафик по каждому узлу.
+-   `tinc dump nodes` : выводит список всех известных узлов в VPN
+-   `tinc dump reachable nodes` : только те узлы, которые доступны прямо сейчас.
+-   `tinc dump edges` : список всех известных прямых соединений (рёбер) между узлами в сети.
+-   `tinc dump subnets` : список всех подсетей, привязанных к конкретным узлам.
+-   `tinc dump connections` : мета-соединения (управляющие каналы) между вашим узлом и другими демонами.
+-   `tinc dump graph` (или `digraph`) : выводит граф VPN-сети в формате `dotty` (Graphviz):
     ```shell
-    firewall-cmd --add-service=tinc --permanent
-    firewall-cmd --reload
-    ```
-
-
-### <span class="section-num">4.3</span> Настройка интерфейса Linux {#настройка-интерфейса-linux}
-
--   Настраивается на всех машинах.
--   Создайте файл запуска интерфейса:
-    ```shell
-    sudo cat>/etc/tinc/${VPNNAME}/tinc-up <<EOL
-    #!/bin/bash
-
-    ip link set \${INTERFACE} up
-    ## Change this address per-host to match the hosts/hostname file!
-    ip addr add <IP>/32 dev \${INTERFACE}
-    ip route add <IPNET> dev \${INTERFACE}
-
-    ## add domain per interface
-    resolvectl domain ${VPNNAME} ~${VPNNAME}.internal
-    EOL
-    ```
--   Создайте файл остановки интерфейса:
-    ```shell
-    sudo cat>/etc/tinc/${VPNNAME}/tinc-down <<EOL
-    #!/bin/bash
-
-    ip route del <IPNET> dev \${INTERFACE}
-
-    # Change this address per-host to match the hosts/hostname file!
-    ip addr del <IP>/32 dev \${INTERFACE}
-
-    ip link set \${INTERFACE} down
-    EOL
-    ```
-
-
-### <span class="section-num">4.4</span> Первая машина {#первая-машина}
-
--   Машина должна иметь внешний IP-адрес.
-
-
-#### <span class="section-num">4.4.1</span> Создание сети {#создание-сети}
-
--   Создайте сеть:
-    ```shell
-    sudo tinc -n <VPNNAME> init <HOSTNAME>
-    ```
--   Запустите сервер с включённой отладкой:
-    ```shell
-    sudo tincd -n <VPNNAME> -D -d3
-    ```
--   Подключите сеть:
-    ```shell
-    sudo tinc -n <VPNNAME> add subnet <IP>/32
-    ```
--   Подключите текущую машину:
-    ```shell
-    sudo tinc -n <VPNNAME> add address=<FQDNORIP>
-    ```
--   Остановите демон и поместите его в автозагрузку:
-    ```shell
-    systemctl enable --now tinc.service
-    systemctl enable --now tinc@<VPNAME>.service
-    ```
-
-
-### <span class="section-num">4.5</span> Подключение других устройств {#подключение-других-устройств}
-
--   В следующих командах замените &lt;CLIENTNAME&gt; именем, которое вы хотите присвоить устройству.
--   Сгенерируйте ссылку-приглашение на компьютере, к которому вы хотите подключиться:
-    ```shell
-    sudo tinc -n <VPNNAME> invite <CLIENTNAME>
-    ```
--   Это выведет &lt;INVITEURL&gt;.
--   Подключитесь к приглашению:
-    ```shell
-    sudo tinc join <INVITEURL>
-    ```
--   Подключитесь к VPN (с отладкой):
-    ```shell
-    sudo tincd -n <VPNNAME> -D
-    ```
--   Подключите хост:
-    ```shell
-    sudo tinc -n <VPNNAME> add subnet <IP>/32
-    ```
--   Создайте скрипты для интерфейса.
--   Остановите демон и поместите его в автозагрузку:
-    ```shell
-    systemctl enable --now tinc.service
-    systemctl enable --now tinc@<VPNAME>.service
+    sudo tinc -n $VPNNMAME dump graph | dot -Tpng -o /tmp/tinc_topology.png
+    sudo tinc -n $VPNNMAME dump graph | dot -Tsvg | swayimg -v -
     ```

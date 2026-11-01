@@ -2,7 +2,7 @@
 title: "Системное администрирование"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-04-10T18:18:00+03:00
-lastmod: 2026-09-18T21:35:00+03:00
+lastmod: 2026-10-20T21:09:00+03:00
 tags: ["MOC", "sysadmin"]
 categories: ["computer-science"]
 draft: false
@@ -484,6 +484,7 @@ slug: "system-administration"
 -   [Система мониторинга LibreNMS]({{< relref "2023-03-20-librenms-monitoring-system" >}})
 -   [Система мониторинга Observium]({{< relref "2023-03-02-observium-monitoring-system" >}})
 -   [IPMI. Supermicro]({{< relref "2025-10-27--ipmi_supermicro" >}})
+-   [Управление сетью. Netdisco]({{< relref "2026-10-20--network-management-netdisco" >}})
 
 
 ## <span class="section-num">18</span> Файловые системы {#файловые-системы}

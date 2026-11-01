@@ -1,3 +1,13 @@
+## [1.1.15](https://github.com/yamadharma/yamadharma/compare/v1.1.14...v1.1.15) (2026-11-01)
+
+### Bug Fixes
+
+* **post:** remove broken post ([2d4d601](https://github.com/yamadharma/yamadharma/commit/2d4d60149cc3e66820b3a1b02cdec0a590f5976c))
+
+### Features
+
+* **post:** add new posts ([1804fa3](https://github.com/yamadharma/yamadharma/commit/1804fa3aadbdcc40b5e87ca911d70c5f85ac7114))
+
 ## [1.1.14](https://github.com/yamadharma/yamadharma/compare/v1.1.13...v1.1.14) (2026-10-14)
 
 ### Features

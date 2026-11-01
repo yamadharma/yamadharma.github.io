@@ -2,7 +2,7 @@
 title: "Репозиторий конференций CEUR-WS"
 author: ["Dmitry S. Kulyabov"]
 date: 2021-09-18T19:47:00+03:00
-lastmod: 2025-03-15T12:43:00+03:00
+lastmod: 2026-10-30T14:01:00+03:00
 tags: ["science-admin"]
 categories: ["computer-science", "science"]
 draft: false
@@ -20,6 +20,7 @@ slug: "ceur-ws-conference-repository"
 
 -   Сайт: <http://ceur-ws.org/>
 -   Блог: <https://ceurws.wordpress.com/>
+-   Произношение: оно звучит как французское слово «cœur».
 
 
 ## <span class="section-num">2</span> Основные принципы работы {#основные-принципы-работы}

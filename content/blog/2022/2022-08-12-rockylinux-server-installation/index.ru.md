@@ -2,7 +2,7 @@
 title: "Rocky Linux. Установка сервера"
 author: ["Dmitry S. Kulyabov"]
 date: 2022-08-12T13:57:00+03:00
-lastmod: 2026-09-12T21:28:00+03:00
+lastmod: 2026-10-21T18:30:00+03:00
 tags: ["redhat", "sysadmin", "linux"]
 categories: ["computer-science"]
 draft: false
@@ -103,7 +103,7 @@ slug: "rockylinux-server-installation"
 
 -   Обновить все пакеты
     ```shell
-    dnf -y update
+    sudo dnf -y update
     ```
 
 
@@ -205,7 +205,7 @@ slug: "rockylinux-server-installation"
     ```
 -   Программы мониторинга:
     ```shell
-    sudo dnf -y install htop lsof
+    sudo dnf -y install htop lsof btop
     ```
 -   Утилита для ssh:
     ```shell
@@ -471,4 +471,90 @@ slug: "rockylinux-server-installation"
 
 ### <span class="section-num">4.10</span> Виртуализация и контейнеры {#виртуализация-и-контейнеры}
 
+
+#### <span class="section-num">4.10.1</span> podman {#podman}
+
 -   [Контейнеры. podman]({{< relref "2024-12-04-containers-podman" >}})
+
+
+#### <span class="section-num">4.10.2</span> docker {#docker}
+
+<!--list-separator-->
+
+1.  Подготовка системы
+
+    -   Может быть установлен `podman` или старые версии Docker.
+    -   Их, возможно, нужно удалить, чтобы избежать конфликтов.
+        ```shell
+        sudo dnf remove docker docker-client docker-client-latest docker-common docker-latest docker-logrotate docker-engine podman runc
+        ```
+
+<!--list-separator-->
+
+2.  Добавление официального репозитория Docker
+
+    -   Docker не находится в стандартных репозиториях. Нужно подключить.
+
+    -   Для RockyLinux 8 и 9:
+        ```shell
+        sudo dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+        ```
+
+    -   Для RockyLinux 10:
+        ```shell
+        sudo dnf config-manager --add-repo https://download.docker.com/linux/rhel/docker-ce.repo
+        ```
+
+<!--list-separator-->
+
+3.  Установка Docker
+
+    -   В минимальных образах может отсутствовать пакет `kernel-modules-extra`, из-за чего Docker не сможет запуститься.
+    -   Установите его и перезагрузитесь **до** запуска Docker:
+        ```shell
+        sudo dnf install -y kernel-modules-extra
+        ```
+
+    -   Установка пакетов:
+        ```shell
+        sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+        ```
+
+<!--list-separator-->
+
+4.  Запуск и проверка
+
+    -   Запустите службу Docker и добавьте её в автозагрузку:
+        ```shell
+        sudo systemctl enable --now docker
+        ```
+
+    <!--listend-->
+
+    -   Проверьте статус:
+        ```shell
+        systemctl status docker
+        ```
+
+    -   Проверьте версию:
+        ```shell
+        docker --version
+        docker compose version
+        ```
+
+    -   Запустите тестовый контейнер:
+        ```shell
+        sudo docker run hello-world
+        ```
+
+        -   Если вы увидите сообщение «Hello from Docker!», значит, установка прошла успешно.
+
+<!--list-separator-->
+
+5.  Настройка прав для работы без `sudo`
+
+    -   По умолчанию для команд Docker требуется `sudo`.
+    -   Чтобы не вводить его каждый раз, добавьте вашего пользователя в группу `docker`.
+        ```shell
+        sudo usermod -aG docker $USER
+        ```

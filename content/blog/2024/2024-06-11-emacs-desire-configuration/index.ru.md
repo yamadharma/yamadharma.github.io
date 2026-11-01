@@ -2,7 +2,7 @@
 title: "Emacs. Desire. Конфигурация"
 author: ["Dmitry S. Kulyabov"]
 date: 2024-06-11T18:55:00+03:00
-lastmod: 2026-10-13T12:47:00+03:00
+lastmod: 2026-10-30T18:29:00+03:00
 tags: ["emacs"]
 categories: ["computer-science"]
 draft: false
@@ -1774,14 +1774,14 @@ slug: "emacs-desire-configuration"
 
     -   Файл: `rc.packages.el`
         ```emacs-lisp
-        (desired 'iosevka)
+        (desire-conf 'iosevka)
         ```
 
 <!--list-separator-->
 
-2.  Интеграция: fontset
+2.  Загрузка
 
-    -   Файл: `packages/fontset/iosevka.ecf`
+    -   Файл: `packages/iosevka/loaddefs.ecf`
         ```emacs-lisp
         ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
         ;;; Set Iosevka font
@@ -1789,90 +1789,30 @@ slug: "emacs-desire-configuration"
 
         ;;; Code:
 
-        (add-to-list 'default-frame-alist '(font . "Iosevka Nerd Font-12" ))
-        (add-to-list 'initial-frame-alist '(font . "Iosevka Nerd Font-12" ))
+        ;;;; "Моноширинный шрифт (default / fixed-pitch / fontset)."
+        (setopt ecf/mono-font-family "Iosevka Nerd Font")
 
-        ;;;; Моноширинный шрифт
+        ;;;; "Пропорциональный шрифт для variable-pitch."
+        ;; (setopt ecf/prop-font-family "Iosevka Aile")
+        (setopt ecf/prop-font-family "Iosevka Etoile")
 
-        (set-face-attribute 'default nil
-                            :font "Iosevka Nerd Font"
-                            :height 120)
+        ;;;; "Высота шрифта в 1/10 pt (120 = 12pt)."
+        (setopt ecf/font-height 120)
 
-        (set-face-attribute 'fixed-pitch nil
-                            :font "Iosevka Nerd Font"
-                            :height 120)
+        ;;; "Наборы символов, для которых явно задаётся шрифт."
+        (setopt ecf/font-charsets '(latin cyrillic greek))
 
-        (dolist (charset '(latin cyrillic greek))
-          (set-fontset-font 't charset
-                            (font-spec :family "Iosevka Nerd Font")))
-
-        (dolist (charset '(latin cyrillic greek))
-          (set-fontset-font "fontset-default" charset "Iosevka Nerd Font"))
-
-        ;;;; Пропорциональный шрифт
-
-        (if (find-font (font-spec :name "Iosevka Aile"))
-            (set-face-attribute 'variable-pitch nil
-                                :font "Iosevka Aile"
-                                :height 120)
-
-        ;;;;; Для нелатинских диапазонов в variable-pitch
-
-          (dolist (charset '(latin cyrillic greek))
-            (set-fontset-font "fontset-default" charset "Iosevka Aile" nil 'append))
-
-        ;; Параметр append добавляет шрифт в конец списка кандидатов для этих диапазонов, не ломая моноширинные привязки.
-        ;; Тогда в буферах с variable-pitch Emacs будет использовать Aile, а в остальных --- Nerd Font.
-
-        )
+        ;;;"Спецификация моноширинного шрифта для frame-alist."
+        ;;;; Строка вида "Family-12" для default-frame-alist / initial-frame-alist
+        (setopt ecf/mono-frame-font
+          (format "%s-%d" ecf/mono-font-family (/ ecf/font-height 10)))
 
         ;;;
         ```
 
 <!--list-separator-->
 
-3.  Интеграция: fontaine
-
-    -   Файл: `packages/fontaine/iosevka.ecf`
-        ```emacs-lisp
-        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
-        ;;; Set Iosevka font
-        ;; https://be5invis.github.io/Iosevka/
-
-        ;;; Code:
-
-        (setopt fontaine-presets
-                '((regular-editing
-                   :default-family "Iosevka Nerd Font"
-                   :default-weight normal
-                   :default-height 120
-                   :fixed-pitch-family "Iosevka Nerd Font"
-                   :fixed-pitch-height 1.0
-                   :variable-pitch-family "Iosevka Aile"
-                   :variable-pitch-height 1.0
-                   :bold-weight bold
-                   :italic-slant italic
-                   :line-spacing 1)
-
-                  (presentation
-                   :inherit regular-editing
-                   :default-height 180)
-
-                  (compact
-                   :inherit regular-editing
-                   :default-height 90
-                   :line-spacing 0)))
-
-        ;;;; Apply
-        (fontaine-set-preset 'regular-editing)
-        (fontaine-mode 1)
-
-        ;;;
-        ```
-
-<!--list-separator-->
-
-4.  Интеграция: ligature
+3.  Интеграция: ligature
 
     -   Файл: `packages/ligature/iosevka.ecf`
         ```emacs-lisp
@@ -1900,7 +1840,7 @@ slug: "emacs-desire-configuration"
 
 <!--list-separator-->
 
-5.  Интеграция: org-modern
+4.  Интеграция: org-modern
 
     -   Файл: `packages/org-modern/iosevka.ecf`
         ```emacs-lisp
@@ -1913,7 +1853,7 @@ slug: "emacs-desire-configuration"
         ;;;; Choose fonts
 
         (set-face-attribute 'org-modern-symbol nil
-                            :family "Iosevka Nerd Font")
+                            :family ecf/mono-font-family)
 
         ;;;
         ```
@@ -2150,7 +2090,56 @@ slug: "emacs-desire-configuration"
 
 <!--list-separator-->
 
-3.  Эмодзи
+3.  Установка шрифта
+
+    -   Файл: `packages/fontset/desire.ecd/font.ecf`
+        ```emacs-lisp
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;; Set Font
+
+        ;;; Code:
+
+        ;;;; Моноширинный шрифт
+
+        (add-to-list 'default-frame-alist `(font . ,ecf/mono-frame-font))
+        (add-to-list 'initial-frame-alist `(font . ,ecf/mono-frame-font))
+
+        (set-face-attribute 'default nil
+                            :font   ecf/mono-font-family
+                            :height ecf/font-height)
+
+        (set-face-attribute 'fixed-pitch nil
+                            :font   ecf/mono-font-family
+                            :height ecf/font-height)
+
+        (dolist (charset ecf/font-charsets)
+          (set-fontset-font 't charset
+                            (font-spec :family ecf/mono-font-family)))
+
+        (dolist (charset ecf/font-charsets)
+          (set-fontset-font "fontset-default" charset ecf/mono-font-family))
+
+        ;;;; Пропорциональный шрифт
+
+        (when (find-font (font-spec :name ecf/prop-font-family))
+          (set-face-attribute 'variable-pitch nil
+                              :font   ecf/prop-font-family
+                              :height ecf/font-height)
+
+        ;;;;; Для нелатинских диапазонов в variable-pitch
+        ;; Параметр append добавляет шрифт в конец списка кандидатов для этих диапазонов, не ломая моноширинные привязки.
+        ;; Тогда в буферах с variable-pitch Emacs будет использовать Aile, а в остальных --- Nerd Font.
+
+         (dolist (charset ecf/font-charsets)
+            (set-fontset-font "fontset-default" charset
+                              ecf/prop-font-family nil 'append)))
+
+        ;;;
+        ```
+
+<!--list-separator-->
+
+4.  Эмодзи
 
     -   Файл: `packages/fontset/desire.ecd/emoji.ecf`
         ```emacs-lisp
@@ -2184,7 +2173,7 @@ slug: "emacs-desire-configuration"
 
 <!--list-separator-->
 
-4.  Unicode
+5.  Unicode
 
     -   Файл: `packages/fontset/desire.ecd/unicode.ecf`
         ```emacs-lisp
@@ -2361,6 +2350,60 @@ slug: "emacs-desire-configuration"
         (require 'fontaine)
 
         (add-hook 'enable-theme-functions #'fontaine-apply-current-preset)
+
+        ;;;; Загрузить сохранённый пресет
+        (fontaine-set-preset (or (fontaine-restore-latest-preset) 'regular-editing))
+
+        ;;;; Запомнить последний использованный пресет между сессиями
+        (setq fontaine-latest-state-file
+              (locate-user-emacs-file "fontaine-latest-state.eld"))
+
+        ;;;
+        ```
+
+<!--list-separator-->
+
+3.  Установка шрифта
+
+    -   Файл: `packages/fontaine/desire.ecd/font.ecf`
+        ```emacs-lisp
+        ;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+        ;;; Set font
+
+        ;;; Code:
+
+        (setopt fontaine-presets
+                `((t
+                   ;; Базовый пресет — единственное место, где нужны шрифты.
+                   :default-family        ,ecf/mono-font-family
+                   :default-weight        normal
+                   :default-height        ,ecf/font-height
+                   :fixed-pitch-family    ,ecf/mono-font-family
+                   :fixed-pitch-height    1.0
+                   :variable-pitch-family ,ecf/prop-font-family
+                   :variable-pitch-height 1.0
+                   :bold-weight           bold
+                   :italic-slant          italic
+                   :line-spacing          1)
+
+                  (regular-editing
+                   :inherit t)
+
+                  ;; 120 * 3/2 = 180  (целое, не float)
+                  (presentation
+                   :inherit regular-editing
+                   :default-height ,(/ (* ecf/font-height 3) 2))
+
+                  ;; 120 * 3/4 = 90
+                  (compact
+                   :inherit regular-editing
+                   :default-height ,(/ (* ecf/font-height 3) 4)
+                   :line-spacing 0)))
+
+        ;;;; Apply
+
+        (fontaine-set-preset 'regular-editing)
+        (fontaine-mode 1)
 
         ;;;
         ```
@@ -8042,18 +8085,17 @@ slug: "emacs-desire-configuration"
 
     ;;; Code:
 
-    (defun ecf/yank-markdown-as-org ()
+    (defun yank-markdown-as-org ()
       "Yank Markdown text as Org.
 
-    This command will convert Markdown text in the top of the `kill-ring'
-    and convert it to Org using the pandoc utility."
+    This command will convert Markdown text in the top of the `kill-ring' and convert it to Org using the pandoc utility."
       (interactive)
       (save-excursion
         (with-temp-buffer
           (yank)
           (shell-command-on-region
            (point-min) (point-max)
-           "pandoc -f gfm -t org --wrap=preserve" t t)
+           "pandoc -f markdown+tex_math_single_backslash+tex_math_double_backslash -t org --wrap=none" t t)
           (kill-region (point-min) (point-max)))
         (yank)))
 
@@ -8580,7 +8622,9 @@ slug: "emacs-desire-configuration"
 ```
 
 
-### <span class="section-num">30.3</span> Org-roam-ui {#org-roam-ui}
+### <span class="section-num">30.3</span> folgezett {#folgezett}
+
+-   [Нумерация Folgezettel]({{< relref "2025-02-08--folgezettel-numbering" >}})
 
 
 #### <span class="section-num">30.3.1</span> Подключение {#подключение}
@@ -8590,16 +8634,134 @@ slug: "emacs-desire-configuration"
 <!--listend-->
 
 ```emacs-lisp
-;; (desire 'org-roam-ui :recipe '(:fetcher github :repo "lkarp-744/org-roam-ui"))
-;; (desire 'org-roam-ui :recipe '(:fetcher github :repo "lkarp-744/org-roam-ui" :files ("*.el" "public")))
-(desire 'org-roam-ui)
+(desire 'folgezett)
 ```
 
 
-### <span class="section-num">30.4</span> Org-roam {#org-roam}
+#### <span class="section-num">30.3.2</span> Включение {#включение}
+
+-   Файл: `packages/folgezett/loaddefs.ecf`
+
+<!--listend-->
+
+```emacs-lisp
+;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+;;; Luhmann-style folgezettel IDs for Org-Roam
+;; https://github.com/landerwells/folgezett.el
+
+;;; Code:
+
+(require 'folgezett)
+
+;;;
+```
+
+
+#### <span class="section-num">30.3.3</span> Загрузка {#загрузка}
+
+-   Файл: `packages/folgezett/desire.ecf`
+
+<!--listend-->
+
+```emacs-lisp
+;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+;;; Luhmann-style folgezettel IDs for Org-Roam
+;; https://github.com/landerwells/folgezett.el
+
+;;; Code:
+
+;;;; Restrict the placement prompt to specific capture template keys. When nil (the default), every new org-roam capture triggers the prompt
+;; (setopt folgezett-capture-keys '("z"))
+(setopt folgezett-capture-keys nil)
+
+;;;; When non-nil, parent-child relationships are injected into org-roam's database during indexing
+(setopt folgezett-db-link-parent t)
+
+;;;; When non-nil, the folgezettel ID is prepended to the filename on assignment and after new-node capture finalization
+(setopt folgezett-include-id-in-filename nil)
+
+(setopt folgezett-show-id-in-completions t)
+(setopt folgezett-export-parent-label "Previous")
+
+(folgezett-setup)
+
+;;;
+```
+
+
+#### <span class="section-num">30.3.4</span> Клавиатурные сочетания {#клавиатурные-сочетания}
+
+-   Файл: `packages/folgezett/desire.ecd/keybinding.ecf`
+
+<!--listend-->
+
+```emacs-lisp
+;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+;;; Luhmann-style folgezettel IDs for Org-Roam
+;; https://github.com/landerwells/folgezett.el
+
+;;; Code:
+
+(require 'general)
+
+(general-define-key
+ :prefix "C-c n z"
+ ;; --- Создание и управление ID ---
+ "a" #'("Assign ID" . folgezett-assign-id)
+ "d" #'("Remove ID" . folgezett-remove-id)
+
+ ;; --- Реструктуризация ---
+ "r" #'("Reparent" . folgezett-reparent)
+ "R" #'("Reparent subtree" . folgezett-reparent-subtree)
+
+ ;; --- Навигация ---
+ "p" #'("Goto parent" . folgezett-goto-parent)
+ "c" #'("List children" . folgezett-list-children)
+ "t" #'("Show tree" . folgezett-show-tree))
+
+;;;
+```
+
+
+#### <span class="section-num">30.3.5</span> Интеграция с org-roam {#интеграция-с-org-roam}
+
+-   Файл: `packages/org-roam/folgezett.ecf`
+
+<!--listend-->
+
+```emacs-lisp
+;;; -*- mode: emacs-lisp; lexical-binding: t; coding: utf-8-unix; -*-
+;;; Luhmann-style folgezettel IDs for Org-Roam
+;; https://github.com/landerwells/folgezett.el
+
+;;; Code:
+
+(require 'folgezett)
+
+;;;
+```
+
+
+### <span class="section-num">30.4</span> Org-roam-ui {#org-roam-ui}
 
 
 #### <span class="section-num">30.4.1</span> Подключение {#подключение}
+
+-   Файл: `rc.packages.el`
+
+<!--listend-->
+
+```emacs-lisp
+;; (desire 'org-roam-ui :recipe '(:fetcher github :repo "lkarp-744/org-roam-ui"))
+;; (desire 'org-roam-ui :recipe '(:fetcher github :repo "lkarp-744/org-roam-ui" :files ("*.el" "public")))
+;; (desire 'org-roam-ui)
+```
+
+
+### <span class="section-num">30.5</span> Org-roam {#org-roam}
+
+
+#### <span class="section-num">30.5.1</span> Подключение {#подключение}
 
 -   Файл: `rc.packages.el`
     ```emacs-lisp
@@ -8608,7 +8770,7 @@ slug: "emacs-desire-configuration"
     ```
 
 
-#### <span class="section-num">30.4.2</span> Клавиатурные сочетания {#клавиатурные-сочетания}
+#### <span class="section-num">30.5.2</span> Клавиатурные сочетания {#клавиатурные-сочетания}
 
 -   Файл: `packages/org-roam/desire.ecd/keybinding.ecf`
     ```emacs-lisp
@@ -8641,7 +8803,7 @@ slug: "emacs-desire-configuration"
     ```
 
 
-#### <span class="section-num">30.4.3</span> Дополнительные пакеты {#дополнительные-пакеты}
+#### <span class="section-num">30.5.3</span> Дополнительные пакеты {#дополнительные-пакеты}
 
 <!--list-separator-->
 
@@ -8728,7 +8890,7 @@ slug: "emacs-desire-configuration"
         ```
 
 
-### <span class="section-num">30.5</span> Org-roam-dailies {#org-roam-dailies}
+### <span class="section-num">30.6</span> Org-roam-dailies {#org-roam-dailies}
 
 -   [Org-roam. Daily notes]({{< relref "2025-06-08--org-roam-daily-notes" >}})
 -   Загрузка.
@@ -8802,7 +8964,7 @@ slug: "emacs-desire-configuration"
     ```
 
 
-### <span class="section-num">30.6</span> org-daily-reflection {#org-daily-reflection}
+### <span class="section-num">30.7</span> org-daily-reflection {#org-daily-reflection}
 
 -   [Emacs. Пакет org-daily-reflection]({{< relref "2025-06-06--emacs-org-daily-reflection" >}})
 -   Загрузка.

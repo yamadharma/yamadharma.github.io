@@ -2,7 +2,7 @@
 title: "LaTeX. Перекрёстные ссылки"
 author: ["Dmitry S. Kulyabov"]
 date: 2025-05-30T11:52:00+03:00
-lastmod: 2025-05-30T13:18:00+03:00
+lastmod: 2026-10-17T21:40:00+03:00
 tags: ["latex"]
 categories: ["computer-science"]
 draft: false
@@ -87,3 +87,8 @@ LaTeX. Перекрёстные ссылки.
     \autorefname{figure}{Рисунок}
     \autorefname{table}{Таблица}
     ```
+
+
+## <span class="section-num">5</span> Пакеты {#пакеты}
+
+-   [LaTeX. Перекрёстные ссылки. Пакет zref-clever]({{< relref "2026-10-17--latex-package-zref-clever" >}})
